@@ -7,14 +7,17 @@
     "dev": "expo start --web",
     "android": "expo run:android",
     "ios": "expo run:ios",
+    "eject": "expo eject",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eas:dev:android": "eas build --profile development --platform android",
+    "eas:dev:ios": "eas build --profile development --platform ios"
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
     "@repo/ui": "*",
     "expo": "^54.0.0",
     "expo-constants": "~18.0.12",
+    "expo-dev-client": "~6.0.20",
     "expo-linking": "~8.0.10",
     "expo-router": "~6.0.19",
     "expo-status-bar": "~3.0.9",
@@ -30,6 +33,7 @@
   "devDependencies": {
     "@babel/core": "^7.23.7",
     "@expo/webpack-config": "19.0.1",
+    "@types/minimatch": "^6.0.0",
     "@types/react": "~19.1.10",
     "babel-preset-expo": "~54.0.0",
     "typescript": "~5.9.2"

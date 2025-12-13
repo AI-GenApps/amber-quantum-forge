@@ -1,11 +1,21 @@
 {
-    "mcpServers":{
-        "context7":{
-            "url":"https://mcp.context7.com/mcp"
-        },
-        "next-devtools": {
+  "mcpServers": {
+    "context7": {
+      "url": "https://mcp.context7.com/mcp"
+    },
+    "next-devtools": {
       "command": "npx",
-      "args": ["-y", "next-devtools-mcp@latest"]
+      "args": [
+        "-y",
+        "next-devtools-mcp@latest"
+      ]
+    },
+    "shadcn": {
+      "command": "npx",
+      "args": [
+        "shadcn@latest",
+        "mcp"
+      ]
     }
-    }
+  }
 }
