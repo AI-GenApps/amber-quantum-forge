@@ -1,15 +1,28 @@
 import { Hono } from 'hono'
 import { handle } from 'hono/vercel'
+import authRoutes from './routes/auth.js'
 
 const app = new Hono()
 
-const welcomeStrings = [
-  'Hello Hono!',
-  'To learn more about Hono on Vercel, visit https://vercel.com/docs/frameworks/backend/hono'
-]
+app.use('/*', async (c, next) => {
+  c.header('Access-Control-Allow-Origin', '*')
+  c.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+  c.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  if (c.req.method === 'OPTIONS') {
+    return c.newResponse(null, 204)
+  }
+  await next()
+})
 
 app.get('/', (c) => {
-  return c.text(welcomeStrings.join('\n\n'))
+  return c.json({ message: 'Hono API is running' })
+})
+
+app.route('/auth', authRoutes)
+
+app.onError((err, c) => {
+  console.error('Error:', err)
+  return c.json({ error: 'Internal server error', message: err.message }, 500)
 })
 
 export default handle(app)

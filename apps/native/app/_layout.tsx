@@ -1,7 +1,12 @@
 import { Stack } from "expo-router"
+import { AuthProvider } from "../contexts/AuthContext"
 
 const AppLayout = () => {
-  return <Stack />
+  return (
+    <AuthProvider>
+      <Stack />
+    </AuthProvider>
+  )
 }
 
 export default AppLayout

@@ -34,7 +34,15 @@
       "bundler": "metro"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "@react-native-firebase/app",
+      "@react-native-google-signin/google-signin",
+      [
+        "expo-apple-authentication",
+        {
+          "appleTeamId": "YOUR_APPLE_TEAM_ID"
+        }
+      ]
     ],
     "extra": {
       "router": {},
