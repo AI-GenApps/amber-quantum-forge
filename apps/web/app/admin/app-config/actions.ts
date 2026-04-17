@@ -1,7 +1,6 @@
 "use server";
 
-import { db, appConfig } from "@repo/db";
-import { eq } from "drizzle-orm";
+import { db, appConfig, eq } from "@repo/db";
 
 export async function getAppConfig() {
   try {

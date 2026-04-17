@@ -25,7 +25,7 @@ export function UsersTableClient({ initialUsers }: UsersTableClientProps) {
     try {
       const result = await getUsers();
       if (result.success) {
-        setUsers(result.data);
+        setUsers(result.data ?? []);
       }
     } catch (error) {
       console.error("Failed to refresh users:", error);
@@ -34,8 +34,5 @@ export function UsersTableClient({ initialUsers }: UsersTableClientProps) {
     }
   };
 
-  return (
-    <UsersTable users={users} onUserUpdated={refreshUsers} />
-  );
+  return <UsersTable users={users} onUserUpdated={refreshUsers} />;
 }
-

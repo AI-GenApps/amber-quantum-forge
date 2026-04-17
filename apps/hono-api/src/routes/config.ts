@@ -1,13 +1,11 @@
-import { Hono } from 'hono';
-import { db } from '@repo/db';
-import { appConfig } from '@repo/db';
-import { eq } from 'drizzle-orm';
-import { authMiddleware } from '../middleware/auth.js';
+import { Hono } from "hono";
+import { db, appConfig, eq } from "@repo/db";
+import { authMiddleware } from "../middleware/auth";
 
 const configRoutes = new Hono();
 
 // Public endpoint — no auth required
-configRoutes.get('/app-metadata', async (c) => {
+configRoutes.get("/app-metadata", async (c) => {
   try {
     const rows = await db.select().from(appConfig);
     const config: Record<string, unknown> = {};
@@ -16,23 +14,27 @@ configRoutes.get('/app-metadata', async (c) => {
     }
     return c.json(config);
   } catch (error) {
-    console.error('Error fetching app config:', error);
-    return c.json({ error: 'Internal server error' }, 500);
+    console.error("Error fetching app config:", error);
+    return c.json({ error: "Internal server error" }, 500);
   }
 });
 
 // Protected endpoint — update a config entry
-configRoutes.put('/:key', authMiddleware, async (c) => {
+configRoutes.put("/:key", authMiddleware, async (c) => {
   try {
-    const key = c.req.param('key');
+    const key = c.req.param("key");
     const body = await c.req.json();
     const { value } = body;
 
     if (value === undefined) {
-      return c.json({ error: 'value is required' }, 400);
+      return c.json({ error: "value is required" }, 400);
     }
 
-    const existing = await db.select().from(appConfig).where(eq(appConfig.key, key)).limit(1);
+    const existing = await db
+      .select()
+      .from(appConfig)
+      .where(eq(appConfig.key, key))
+      .limit(1);
 
     if (existing.length > 0) {
       await db
@@ -45,8 +47,8 @@ configRoutes.put('/:key', authMiddleware, async (c) => {
 
     return c.json({ success: true, key, value });
   } catch (error) {
-    console.error('Error updating app config:', error);
-    return c.json({ error: 'Internal server error' }, 500);
+    console.error("Error updating app config:", error);
+    return c.json({ error: "Internal server error" }, 500);
   }
 });
 

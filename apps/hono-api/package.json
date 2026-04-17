@@ -1,11 +1,16 @@
 {
   "name": "@repo/api",
   "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "dependencies": {
-    "hono": "^4.11.0",
     "@repo/db": "*",
+    "@vercel/blob": "^2.0.0",
+    "drizzle-orm": "0.36.4",
     "firebase-admin": "^13.0.0",
-    "@vercel/blob": "^2.0.0"
+    "hono": "^4.11.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",

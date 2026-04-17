@@ -3,7 +3,7 @@ import { UsersTableClient } from "./components/UsersTableClient";
 
 export default async function UsersPage() {
   const result = await getUsers();
-  const users = result.success ? result.data : [];
+  const users = result.success ? (result.data ?? []) : [];
 
   return (
     <div>
@@ -12,4 +12,3 @@ export default async function UsersPage() {
     </div>
   );
 }
-

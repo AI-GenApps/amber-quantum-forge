@@ -22,18 +22,27 @@ export function UpdateProvider({ children }: { children: ReactNode }) {
   const [isCheckingUpdate, setIsCheckingUpdate] = useState(false);
   const versionInfo = getVersionInfo();
 
-  const checkForUpdate = async () => {
+  const checkAndAutoApply = async () => {
     if (!areUpdatesEnabled()) return;
 
     try {
       setIsCheckingUpdate(true);
       const updateInfo = await checkForUpdates();
       setIsUpdateAvailable(updateInfo.isUpdateAvailable);
+
+      if (updateInfo.isUpdateAvailable) {
+        console.log('OTA update available, downloading and applying silently...');
+        await downloadAndApplyUpdate(true);
+      }
     } catch (error) {
-      console.error('Failed to check for updates:', error);
+      console.error('Failed to check/apply OTA update:', error);
     } finally {
       setIsCheckingUpdate(false);
     }
+  };
+
+  const checkForUpdate = async () => {
+    await checkAndAutoApply();
   };
 
   const applyUpdate = async () => {
@@ -48,7 +57,7 @@ export function UpdateProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    checkForUpdate();
+    checkAndAutoApply();
   }, []);
 
   return (

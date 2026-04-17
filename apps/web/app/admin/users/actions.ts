@@ -1,7 +1,6 @@
 "use server";
 
-import { db, users } from "@repo/db";
-import { eq } from "drizzle-orm";
+import { db, users, eq } from "@repo/db";
 
 export async function getUsers() {
   try {
@@ -54,7 +53,7 @@ export async function createUser(data: { name: string; email: string }) {
 
 export async function updateUser(
   id: number,
-  data: { name?: string; email?: string }
+  data: { name?: string; email?: string },
 ) {
   try {
     if (data.email) {
@@ -102,4 +101,3 @@ export async function deleteUser(id: number) {
     return { success: false, error: "Failed to delete user" };
   }
 }
-
