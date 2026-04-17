@@ -3,7 +3,7 @@
     "name": "native",
     "slug": "expo-next",
     "version": "1.0.0",
-    "scheme": "com.turbo.example",
+    "scheme": "app.w3dev.starter",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -14,20 +14,34 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "url": "https://u.expo.dev/9a09e290-1a74-48f1-86e5-0f47c293206f"
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "app.w3dev.starter",
+      "infoPlist": {
+        "UIBackgroundModes": ["remote-notification"]
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.turbo.example"
+      "package": "app.w3dev.starter",
+      "googleServicesFile": "./google-services.json",
+      "statusBar": {
+        "barStyle": "dark-content",
+        "backgroundColor": "#ffffff",
+        "translucent": false
+      },
+      "permissions": ["RECEIVE_BOOT_COMPLETED", "VIBRATE"]
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -42,8 +56,23 @@
         {
           "appleTeamId": "YOUR_APPLE_TEAM_ID"
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#2f80ed",
+          "sounds": [],
+          "defaultChannel": "default"
+        }
       ]
     ],
+    "notification": {
+      "icon": "./assets/icon.png",
+      "color": "#2f80ed",
+      "androidMode": "default",
+      "androidCollapsedTitle": "Starter App"
+    },
     "extra": {
       "router": {},
       "eas": {
