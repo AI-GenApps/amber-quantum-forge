@@ -5,6 +5,7 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import { Platform } from 'react-native';
 import { registerDevice } from '../services/deviceRegistration';
 import { getApiUrl } from '../firebase.config';
+import { initializeRevenueCat, setRevenueCatUserId, logoutRevenueCat } from '../services/revenuecat';
 
 interface User {
   uid: string;
@@ -45,6 +46,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
     });
 
+    const initializeServices = async () => {
+      try {
+        await initializeRevenueCat();
+      } catch (error) {
+        console.error('Error initializing RevenueCat:', error);
+      }
+    };
+
+    initializeServices();
+
     const unsubscribe = auth().onAuthStateChanged(async (firebaseUser: FirebaseAuthTypes.User | null) => {
       if (firebaseUser) {
         const userData: User = {
@@ -58,11 +69,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         try {
           const idToken = await firebaseUser.getIdToken();
           await registerDevice(idToken);
+          
+          try {
+            await setRevenueCatUserId(firebaseUser.uid);
+          } catch (error) {
+            console.error('Error setting RevenueCat user ID:', error);
+          }
         } catch (error) {
           console.error('Error registering device:', error);
         }
       } else {
         setUser(null);
+        try {
+          await logoutRevenueCat();
+        } catch (error) {
+          console.error('Error logging out RevenueCat user:', error);
+        }
       }
       setLoading(false);
     });
