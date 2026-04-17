@@ -42,3 +42,6 @@ Migrations are stored in the `migrations/` directory. To create a new migration:
 2. Run `bun run db:generate` to generate migration files
 3. Run `bun run db:migrate` to apply the migration
 
+
+
+

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "756858745786",
+    "project_id": "mobile-starter-next",
+    "storage_bucket": "mobile-starter-next.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:756858745786:android:1302b801531232567c6383",
+        "android_client_info": {
+          "package_name": "app.w3dev.starter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjyi-DUV1cQHorlp7Rz8VxOhzqCg_l2Co"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
