@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Users } from "lucide-react";
+import { Users, Settings } from "lucide-react";
 import { cn } from "../../lib/utils";
 
 export function AdminNav() {
@@ -13,6 +13,11 @@ export function AdminNav() {
       title: "Users",
       href: "/admin/users",
       icon: Users,
+    },
+    {
+      title: "App Config",
+      href: "/admin/app-config",
+      icon: Settings,
     },
   ];
 
