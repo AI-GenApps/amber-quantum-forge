@@ -4,7 +4,8 @@
   "dependencies": {
     "hono": "^4.11.0",
     "@repo/db": "*",
-    "firebase-admin": "^13.0.0"
+    "firebase-admin": "^13.0.0",
+    "@vercel/blob": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",

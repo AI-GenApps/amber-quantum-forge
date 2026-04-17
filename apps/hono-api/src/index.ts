@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { handle } from 'hono/vercel'
 import authRoutes from './routes/auth.js'
+import profileRoutes from './routes/profile.js'
 
 const app = new Hono()
 
@@ -19,6 +20,7 @@ app.get('/', (c) => {
 })
 
 app.route('/auth', authRoutes)
+app.route('/profile', profileRoutes)
 
 app.onError((err, c) => {
   console.error('Error:', err)

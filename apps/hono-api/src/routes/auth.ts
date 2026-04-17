@@ -85,6 +85,7 @@ authRoutes.post('/register-device', authMiddleware, async (c) => {
         id: userRecord.id,
         email: userRecord.email,
         name: userRecord.name,
+        profilePictureUrl: userRecord.profilePictureUrl,
       },
     });
   } catch (error) {
@@ -111,6 +112,7 @@ authRoutes.get('/me', authMiddleware, async (c) => {
       id: userRecord.id,
       email: userRecord.email,
       name: userRecord.name,
+      profilePictureUrl: userRecord.profilePictureUrl,
       createdAt: userRecord.createdAt,
       updatedAt: userRecord.updatedAt,
     });

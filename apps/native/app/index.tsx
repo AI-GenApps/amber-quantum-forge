@@ -1,10 +1,15 @@
-import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useAuth } from "../contexts/AuthContext";
 import { AuthScreen } from "../components/AuthScreen";
+import { ProfilePictureEditor } from "../components/ProfilePictureEditor";
+import { useState, useEffect } from "react";
+import { getApiUrl } from "../firebase.config";
 
 export default function Native() {
-  const { user, loading, signOut } = useAuth();
+  const { user, loading, signOut, getIdToken } = useAuth();
+  const [profilePictureUrl, setProfilePictureUrl] = useState<string | null>(null);
+  const [fetchingProfile, setFetchingProfile] = useState(false);
 
   if (loading) {
     return (
@@ -14,6 +19,36 @@ export default function Native() {
       </View>
     );
   }
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!user) return;
+      
+      try {
+        setFetchingProfile(true);
+        const idToken = await getIdToken();
+        if (!idToken) return;
+
+        const apiUrl = getApiUrl();
+        const response = await fetch(`${apiUrl}/auth/me`, {
+          headers: {
+            'Authorization': `Bearer ${idToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setProfilePictureUrl(data.profilePictureUrl || null);
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      } finally {
+        setFetchingProfile(false);
+      }
+    };
+
+    fetchProfile();
+  }, [user, getIdToken]);
 
   if (!user) {
     return (
@@ -25,23 +60,29 @@ export default function Native() {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.header}>Welcome!</Text>
       <Text style={styles.subtitle}>{user.email}</Text>
       {user.displayName && <Text style={styles.subtitle}>{user.displayName}</Text>}
+      
+      <ProfilePictureEditor
+        profilePictureUrl={profilePictureUrl}
+        onUpdate={setProfilePictureUrl}
+      />
+
       <View style={styles.buttonContainer}>
         <Text style={styles.button} onPress={signOut}>
           Sign Out
         </Text>
       </View>
       <StatusBar style="auto" />
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
