@@ -1,32 +1,28 @@
-# Turborepo react-native starter
+# Starter Expo Mobile
 
-This is a community-maintained example. If you experience a problem, please submit a pull request with a fix. GitHub Issues will be closed.
+Turborepo monorepo with an Expo/React Native mobile app, Next.js web app, and Hono API.
 
-## Using this example
+## Architecture
 
-Run the following command:
-
-```sh
-npx create-turbo@latest -e with-react-native-web
+```
+apps/
+  native/     Expo SDK 55 (React Native 0.83) — Firebase Auth, RevenueCat, push notifications
+  web/        Next.js 16 — hosts the Hono API at /api/*
+  hono-api/   Hono API server (Vercel)
+packages/
+  db/         Drizzle ORM + PostgreSQL
+  ui/         Shared React component library
+  typescript-config/  Shared tsconfig
 ```
 
-## What's inside?
+## Setup
 
-This Turborepo includes the following packages/apps:
+```bash
+bun install
+bun run dev       # all apps
+bun run build     # all apps
+bun run format    # prettier
+bun run clean     # remove build outputs + node_modules
+```
 
-### Apps and Packages
-
-- `native`: a [react-native](https://reactnative.dev/) app built with [expo](https://docs.expo.dev/)
-- `web`: a [Next.js](https://nextjs.org/) app built with standard React/web components
-- `@repo/ui`: a component library with standard React/web components for the web application
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [Expo](https://docs.expo.dev/) for native development
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [Prettier](https://prettier.io) for code formatting
+See individual READMEs: [native](apps/native/README.md) | [web](apps/web/README.md) | [hono-api](apps/hono-api/README.md) | [db](packages/db/README.md)

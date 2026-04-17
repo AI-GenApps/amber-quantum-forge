@@ -1,28 +1,16 @@
-Prerequisites:
+# Hono API
 
-- [Vercel CLI](https://vercel.com/docs/cli) installed globally
+[Hono](https://hono.dev/) API server designed to run on Vercel. Routes are defined in `src/routes/`.
 
-To develop locally:
+The API app is exported from `@repo/api` and mounted in the [web app](../web/README.md) at `/api/*` via a Next.js catch-all route handler.
 
-```
-npm install
-vc dev
-```
+## Development
 
-```
-open http://localhost:3000
+```bash
+bun run dev      # standalone dev server
+bun run build
 ```
 
-To build locally:
+## Auth
 
-```
-npm install
-vc build
-```
-
-To deploy:
-
-```
-npm install
-vc deploy
-```
+Firebase tokens are validated server-side via `firebase-admin`. See the web app's `/api/*` routes for the full integration.

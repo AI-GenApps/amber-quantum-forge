@@ -7,7 +7,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -19,14 +18,13 @@
     "runtimeVersion": {
       "policy": "sdkVersion"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "app.w3dev.starter",
       "infoPlist": {
-        "UIBackgroundModes": ["remote-notification"]
+        "UIBackgroundModes": [
+          "remote-notification"
+        ]
       }
     },
     "android": {
@@ -36,12 +34,10 @@
       },
       "package": "app.w3dev.starter",
       "googleServicesFile": "./google-services.json",
-      "statusBar": {
-        "barStyle": "dark-content",
-        "backgroundColor": "#ffffff",
-        "translucent": false
-      },
-      "permissions": ["RECEIVE_BOOT_COMPLETED", "VIBRATE"]
+      "permissions": [
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -67,12 +63,6 @@
         }
       ]
     ],
-    "notification": {
-      "icon": "./assets/icon.png",
-      "color": "#2f80ed",
-      "androidMode": "default",
-      "androidCollapsedTitle": "Starter App"
-    },
     "extra": {
       "router": {},
       "eas": {
