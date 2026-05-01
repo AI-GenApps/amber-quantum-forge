@@ -5,15 +5,22 @@
     "build": "turbo run build",
     "clean": "turbo run clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\" --ignore-path .gitignore",
+    "check:max-lines": "bun run scripts/check-max-lines.ts",
+    "check:staged-types": "bun run scripts/check-staged-types.ts",
+    "check:no-middleware": "bun run scripts/check-no-middleware.ts",
+    "check:banned-deps": "bun run scripts/check-banned-deps.ts",
     "prepare": "husky"
   },
   "devDependencies": {
     "@types/minimatch": "^6.0.0",
+    "@types/node": "^20.11.17",
     "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
     "native": "workspace:*",
     "prettier": "^3.1.1",
     "shadcn": "^3.6.0",
-    "turbo": "^2.6.3"
+    "turbo": "^2.6.3",
+    "typescript": "^5.9.2"
   },
   "engines": {
     "node": ">=18"
@@ -23,5 +30,10 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,md,css}": [
+      "prettier --write"
+    ]
+  }
 }
