@@ -1,21 +1,27 @@
-import Purchases, { CustomerInfo, Offerings, PurchasesPackage } from 'react-native-purchases';
-import Constants from 'expo-constants';
-import { Platform } from 'react-native';
+import Constants from "expo-constants";
+import { Platform } from "react-native";
+import Purchases, {
+  type CustomerInfo,
+  type PurchasesOfferings,
+  type PurchasesPackage,
+} from "react-native-purchases";
 
 const getEnvVar = (key: string, extraKey?: string): string | undefined => {
   if (extraKey && Constants.expoConfig?.extra?.[extraKey]) {
     return Constants.expoConfig.extra[extraKey] as string;
   }
-  if (typeof process !== 'undefined' && process.env) {
+  if (typeof process !== "undefined" && process.env) {
     return process.env[key];
   }
   return undefined;
 };
 
 const getRevenueCatApiKey = (): string => {
-  const apiKey = getEnvVar('EXPO_PUBLIC_REVENUECAT_API_KEY', 'revenueCatApiKey');
+  const apiKey = getEnvVar("EXPO_PUBLIC_REVENUECAT_API_KEY", "revenueCatApiKey");
   if (!apiKey) {
-    throw new Error('RevenueCat API key is missing. Please set EXPO_PUBLIC_REVENUECAT_API_KEY environment variable.');
+    throw new Error(
+      "RevenueCat API key is missing. Please set EXPO_PUBLIC_REVENUECAT_API_KEY environment variable.",
+    );
   }
   return apiKey;
 };
@@ -24,7 +30,7 @@ export const initializeRevenueCat = async (): Promise<void> => {
   try {
     const alreadyConfigured = await Purchases.isConfigured();
     if (alreadyConfigured) {
-      console.log('RevenueCat SDK already configured');
+      console.log("RevenueCat SDK already configured");
       return;
     }
 
@@ -36,17 +42,15 @@ export const initializeRevenueCat = async (): Promise<void> => {
       apiKey,
       appUserID: null,
       useAmazon: false,
-      storeKitVersion: Platform.OS === 'ios' 
-        ? Purchases.STOREKIT_VERSION.STOREKIT_2 
-        : undefined,
+      storeKitVersion: Platform.OS === "ios" ? Purchases.STOREKIT_VERSION.STOREKIT_2 : undefined,
       entitlementVerificationMode: Purchases.ENTITLEMENT_VERIFICATION_MODE.DISABLED,
       diagnosticsEnabled: false,
       automaticDeviceIdentifierCollectionEnabled: true,
     });
 
-    console.log('RevenueCat SDK initialized successfully');
+    console.log("RevenueCat SDK initialized successfully");
   } catch (error) {
-    console.error('Error initializing RevenueCat:', error);
+    console.error("Error initializing RevenueCat:", error);
     throw error;
   }
 };
@@ -55,13 +59,13 @@ export const setRevenueCatUserId = async (userId: string): Promise<CustomerInfo>
   try {
     const { customerInfo, created } = await Purchases.logIn(userId);
     if (created) {
-      console.log('New RevenueCat user created');
+      console.log("New RevenueCat user created");
     } else {
-      console.log('Existing RevenueCat user logged in');
+      console.log("Existing RevenueCat user logged in");
     }
     return customerInfo;
   } catch (error) {
-    console.error('Error setting RevenueCat user ID:', error);
+    console.error("Error setting RevenueCat user ID:", error);
     throw error;
   }
 };
@@ -69,28 +73,30 @@ export const setRevenueCatUserId = async (userId: string): Promise<CustomerInfo>
 export const logoutRevenueCat = async (): Promise<CustomerInfo> => {
   try {
     const customerInfo = await Purchases.logOut();
-    console.log('RevenueCat user logged out');
+    console.log("RevenueCat user logged out");
     return customerInfo;
   } catch (error) {
-    console.error('Error logging out RevenueCat user:', error);
+    console.error("Error logging out RevenueCat user:", error);
     throw error;
   }
 };
 
-export const getOfferings = async (): Promise<Offerings> => {
+export const getOfferings = async (): Promise<PurchasesOfferings> => {
   try {
     return await Purchases.getOfferings();
   } catch (error) {
-    console.error('Error fetching offerings:', error);
+    console.error("Error fetching offerings:", error);
     throw error;
   }
 };
 
-export const purchasePackage = async (pkg: PurchasesPackage): Promise<{ customerInfo: CustomerInfo; productIdentifier: string }> => {
+export const purchasePackage = async (
+  pkg: PurchasesPackage,
+): Promise<{ customerInfo: CustomerInfo; productIdentifier: string }> => {
   try {
     return await Purchases.purchasePackage(pkg);
   } catch (error) {
-    console.error('Error purchasing package:', error);
+    console.error("Error purchasing package:", error);
     throw error;
   }
 };
@@ -99,7 +105,7 @@ export const getCustomerInfo = async (): Promise<CustomerInfo> => {
   try {
     return await Purchases.getCustomerInfo();
   } catch (error) {
-    console.error('Error fetching customer info:', error);
+    console.error("Error fetching customer info:", error);
     throw error;
   }
 };
@@ -108,20 +114,20 @@ export const restorePurchases = async (): Promise<CustomerInfo> => {
   try {
     return await Purchases.restorePurchases();
   } catch (error) {
-    console.error('Error restoring purchases:', error);
+    console.error("Error restoring purchases:", error);
     throw error;
   }
 };
 
 export const showManageSubscriptions = async (): Promise<void> => {
   try {
-    if (Platform.OS === 'ios') {
+    if (Platform.OS === "ios") {
       await Purchases.showManageSubscriptions();
     } else {
-      throw new Error('Manage subscriptions is only available on iOS');
+      throw new Error("Manage subscriptions is only available on iOS");
     }
   } catch (error) {
-    console.error('Error showing manage subscriptions:', error);
+    console.error("Error showing manage subscriptions:", error);
     throw error;
   }
 };
@@ -130,8 +136,7 @@ export const isRevenueCatConfigured = async (): Promise<boolean> => {
   try {
     return await Purchases.isConfigured();
   } catch (error) {
-    console.error('Error checking RevenueCat configuration:', error);
+    console.error("Error checking RevenueCat configuration:", error);
     return false;
   }
 };
-

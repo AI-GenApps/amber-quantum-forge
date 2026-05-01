@@ -1,0 +1,4 @@
+{
+  "$schema": "https://docs.fallow.tools/schema/fallowrc.json",
+  "ignoreDependencies": ["expo-dev-client"]
+}

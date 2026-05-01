@@ -1,0 +1,64 @@
+# Preview deploy for apps/web on PRs. Skips PRs whose title starts with WIP.
+# Required secrets: VERCEL_TOKEN. Fill in vercel_project_id and vercel_project_name.
+name: Deploy to Vercel - Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'apps/**'
+      - 'packages/**'
+      - 'package.json'
+      - 'bun.lock'
+      - '.github/workflows/deploy-vercel-preview.yml'
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to deploy'
+        required: false
+        type: string
+
+concurrency:
+  group: preview-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  deployments: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  deploy-preview:
+    runs-on: self-hosted
+    if: >
+      github.event_name != 'pull_request' ||
+      (!startsWith(github.event.pull_request.title, 'WIP') &&
+       !startsWith(github.event.pull_request.title, 'wip') &&
+       !startsWith(github.event.pull_request.title, '[WIP]') &&
+       !startsWith(github.event.pull_request.title, '[wip]'))
+    environment:
+      name: preview
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Deploy to Vercel
+        uses: W3Dev/vercel-deploy@main
+        with:
+          vercel_token: ${{ secrets.VERCEL_TOKEN }}
+          vercel_org_id: 'team_M1i3qUTW4i3A6mETy54E1Fy8'
+          vercel_project_id: '<TODO_FILL_IN>'
+          vercel_project_name: '<TODO_FILL_IN>'
+          package_manager: 'bun'
+          node_version: '22'
+          deploy_args: '--archive=tgz'
+          alias_prefix: 'starter-expo-mobile'
+          environment: 'preview'
+          prebuild_script: |
+            git config --global user.email "ashutosh@w3dev.in"
+            git config --global user.name "Ashutosh"
+            git commit --amend --no-edit --author="Ashutosh <ashutosh@w3dev.in>"

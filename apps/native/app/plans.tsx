@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Pressable,
   ActivityIndicator,
   Alert,
+  FlatList,
   Platform,
+  Pressable,
   ScrollView,
-} from 'react-native';
-import { useRouter } from 'expo-router';
-import { useRevenueCat } from '../contexts/RevenueCatContext';
-import { useAuth } from '../contexts/AuthContext';
-import { PurchasesPackage } from 'react-native-purchases';
-import Purchases from 'react-native-purchases';
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import Purchases, { type PurchasesPackage } from "react-native-purchases";
+import { useAuth } from "../contexts/AuthContext";
+import { useRevenueCat } from "../contexts/RevenueCatContext";
 
 export default function PlansScreen() {
   const router = useRouter();
-  const { user } = useAuth();
+  useAuth();
   const {
     packages,
     customerInfo,
@@ -44,25 +43,23 @@ export default function PlansScreen() {
     setPurchasing(true);
     try {
       const newCustomerInfo = await purchasePackage(pkg);
-      
+
       const hasActiveEntitlement = Object.keys(newCustomerInfo.entitlements.active).length > 0;
-      
+
       if (hasActiveEntitlement) {
-        Alert.alert(
-          'Success!',
-          'Your subscription is now active. Thank you for subscribing!',
-          [{ text: 'OK' }]
-        );
+        Alert.alert("Success!", "Your subscription is now active. Thank you for subscribing!", [
+          { text: "OK" },
+        ]);
         await refreshCustomerInfo();
       }
     } catch (err: any) {
       if (err.userCancelled) {
-        console.log('User cancelled purchase');
+        console.log("User cancelled purchase");
       } else if (err.code === Purchases.PURCHASES_ERROR_CODE.PRODUCT_ALREADY_PURCHASED_ERROR) {
-        Alert.alert('Already Subscribed', 'You already have an active subscription.');
+        Alert.alert("Already Subscribed", "You already have an active subscription.");
         await refreshCustomerInfo();
       } else {
-        Alert.alert('Purchase Error', err.message || 'Failed to complete purchase');
+        Alert.alert("Purchase Error", err.message || "Failed to complete purchase");
       }
     } finally {
       setPurchasing(false);
@@ -74,22 +71,17 @@ export default function PlansScreen() {
     try {
       const restoredCustomerInfo = await restorePurchases();
       const hasActiveEntitlement = Object.keys(restoredCustomerInfo.entitlements.active).length > 0;
-      
+
       if (hasActiveEntitlement) {
-        Alert.alert(
-          'Restored!',
-          'Your subscription has been restored successfully.',
-          [{ text: 'OK' }]
-        );
+        Alert.alert("Restored!", "Your subscription has been restored successfully.", [
+          { text: "OK" },
+        ]);
         await refreshCustomerInfo();
       } else {
-        Alert.alert(
-          'No Subscription Found',
-          'No active subscription found to restore.'
-        );
+        Alert.alert("No Subscription Found", "No active subscription found to restore.");
       }
     } catch (err: any) {
-      Alert.alert('Restore Error', err.message || 'Failed to restore purchases');
+      Alert.alert("Restore Error", err.message || "Failed to restore purchases");
     } finally {
       setRestoring(false);
     }
@@ -97,16 +89,16 @@ export default function PlansScreen() {
 
   const handleManageSubscriptions = async () => {
     try {
-      if (Platform.OS === 'ios') {
+      if (Platform.OS === "ios") {
         await showManageSubscriptions();
       } else {
         Alert.alert(
-          'Manage Subscriptions',
-          'Please manage your subscription through the Google Play Store.'
+          "Manage Subscriptions",
+          "Please manage your subscription through the Google Play Store.",
         );
       }
     } catch (err: any) {
-      Alert.alert('Error', err.message || 'Failed to open subscription management');
+      Alert.alert("Error", err.message || "Failed to open subscription management");
     }
   };
 
@@ -115,7 +107,7 @@ export default function PlansScreen() {
     const isCurrentPlan = customerInfo
       ? customerInfo.allPurchasedProductIdentifiers.includes(product.identifier) ||
         Object.values(customerInfo.entitlements.active).some(
-          (entitlement) => entitlement.productIdentifier === product.identifier
+          (entitlement) => entitlement.productIdentifier === product.identifier,
         )
       : false;
     const isPurchasing = purchasing;
@@ -150,9 +142,7 @@ export default function PlansScreen() {
         </View>
         <View style={styles.packagePriceContainer}>
           <Text style={styles.packagePrice}>{product.priceString}</Text>
-          {isCurrentPlan && (
-            <Text style={styles.currentPlanText}>Active</Text>
-          )}
+          {isCurrentPlan && <Text style={styles.currentPlanText}>Active</Text>}
         </View>
       </Pressable>
     );
@@ -164,7 +154,7 @@ export default function PlansScreen() {
     }
 
     const activeEntitlement = Object.values(customerInfo.entitlements.active)[0];
-    if (!activeEntitlement) {
+    if (!activeEntitlement?.expirationDate) {
       return null;
     }
 
@@ -176,24 +166,20 @@ export default function PlansScreen() {
         <Text style={styles.sectionTitle}>Current Subscription</Text>
         <View style={styles.subscriptionCard}>
           <View style={styles.subscriptionHeader}>
-            <Text style={styles.subscriptionTitle}>
-              {activeEntitlement.productIdentifier}
-            </Text>
+            <Text style={styles.subscriptionTitle}>{activeEntitlement.productIdentifier}</Text>
             <View style={[styles.statusBadge, isExpired && styles.expiredBadge]}>
-              <Text style={styles.statusBadgeText}>
-                {isExpired ? 'Expired' : 'Active'}
-              </Text>
+              <Text style={styles.statusBadgeText}>{isExpired ? "Expired" : "Active"}</Text>
             </View>
           </View>
           <Text style={styles.subscriptionDetail}>
             Expires: {expirationDate.toLocaleDateString()}
           </Text>
           <Text style={styles.subscriptionDetail}>
-            Will Renew: {activeEntitlement.willRenew ? 'Yes' : 'No'}
+            Will Renew: {activeEntitlement.willRenew ? "Yes" : "No"}
           </Text>
           {activeEntitlements.length > 0 && (
             <Text style={styles.subscriptionDetail}>
-              Entitlements: {activeEntitlements.join(', ')}
+              Entitlements: {activeEntitlements.join(", ")}
             </Text>
           )}
         </View>
@@ -262,17 +248,15 @@ export default function PlansScreen() {
           </Pressable>
 
           {isSubscribed && (
-            <Pressable
-              onPress={handleManageSubscriptions}
-              style={styles.actionButton}
-            >
+            <Pressable onPress={handleManageSubscriptions} style={styles.actionButton}>
               <Text style={styles.actionButtonText}>Manage Subscription</Text>
             </Pressable>
           )}
         </View>
 
         <Text style={styles.termsText}>
-          By subscribing, you agree to our Terms and Conditions. Subscriptions will auto-renew unless cancelled.
+          By subscribing, you agree to our Terms and Conditions. Subscriptions will auto-renew
+          unless cancelled.
         </Text>
       </ScrollView>
 
@@ -280,7 +264,7 @@ export default function PlansScreen() {
         <View style={styles.overlay}>
           <ActivityIndicator size="large" color="#fff" />
           <Text style={styles.overlayText}>
-            {purchasing ? 'Processing purchase...' : 'Restoring purchases...'}
+            {purchasing ? "Processing purchase..." : "Restoring purchases..."}
           </Text>
         </View>
       )}
@@ -291,44 +275,44 @@ export default function PlansScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
   loadingText: {
     marginTop: 16,
     fontSize: 16,
-    color: '#666',
+    color: "#666",
   },
   header: {
     paddingTop: 60,
     paddingBottom: 20,
     paddingHorizontal: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
+    borderBottomColor: "#e0e0e0",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
   },
   closeButton: {
-    position: 'absolute',
+    position: "absolute",
     left: 20,
     top: 60,
     padding: 8,
   },
   closeButtonText: {
     fontSize: 24,
-    color: '#333',
+    color: "#333",
   },
   headerTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
   },
   content: {
     flex: 1,
@@ -337,65 +321,65 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   errorContainer: {
-    backgroundColor: '#fee',
+    backgroundColor: "#fee",
     padding: 16,
     borderRadius: 8,
     marginBottom: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   errorText: {
-    color: '#c00',
+    color: "#c00",
     marginBottom: 12,
-    textAlign: 'center',
+    textAlign: "center",
   },
   retryButton: {
     paddingHorizontal: 16,
     paddingVertical: 8,
-    backgroundColor: '#2f80ed',
+    backgroundColor: "#2f80ed",
     borderRadius: 6,
   },
   retryButtonText: {
-    color: '#fff',
-    fontWeight: '600',
+    color: "#fff",
+    fontWeight: "600",
   },
   currentSubscriptionContainer: {
     marginBottom: 32,
   },
   subscriptionCard: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
     padding: 16,
     borderRadius: 12,
     marginTop: 12,
   },
   subscriptionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 12,
   },
   subscriptionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
     flex: 1,
   },
   statusBadge: {
-    backgroundColor: '#4caf50',
+    backgroundColor: "#4caf50",
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
   },
   expiredBadge: {
-    backgroundColor: '#f44336',
+    backgroundColor: "#f44336",
   },
   statusBadgeText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   subscriptionDetail: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
     marginTop: 8,
   },
   availablePlansContainer: {
@@ -403,26 +387,26 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
     marginBottom: 16,
   },
   packagesList: {
     gap: 12,
   },
   packageItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 16,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: "#f9f9f9",
     borderRadius: 12,
     borderWidth: 2,
-    borderColor: '#e0e0e0',
+    borderColor: "#e0e0e0",
   },
   currentPackageItem: {
-    borderColor: '#4caf50',
-    backgroundColor: '#f1f8f4',
+    borderColor: "#4caf50",
+    backgroundColor: "#f1f8f4",
   },
   disabledPackageItem: {
     opacity: 0.6,
@@ -432,60 +416,60 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   packageHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 4,
   },
   packageTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
     flex: 1,
   },
   currentBadge: {
-    backgroundColor: '#4caf50',
+    backgroundColor: "#4caf50",
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 8,
     marginLeft: 8,
   },
   currentBadgeText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 10,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   packageDescription: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
     marginTop: 4,
   },
   introPricing: {
     fontSize: 12,
-    color: '#4caf50',
+    color: "#4caf50",
     marginTop: 4,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   packagePriceContainer: {
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
   },
   packagePrice: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
   },
   currentPlanText: {
     fontSize: 12,
-    color: '#4caf50',
+    color: "#4caf50",
     marginTop: 4,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   emptyContainer: {
     padding: 32,
-    alignItems: 'center',
+    alignItems: "center",
   },
   emptyText: {
     fontSize: 16,
-    color: '#999',
+    color: "#999",
   },
   actionsContainer: {
     gap: 12,
@@ -493,39 +477,38 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     padding: 16,
-    backgroundColor: '#2f80ed',
+    backgroundColor: "#2f80ed",
     borderRadius: 12,
-    alignItems: 'center',
+    alignItems: "center",
   },
   disabledButton: {
     opacity: 0.6,
   },
   actionButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   termsText: {
     fontSize: 12,
-    color: '#999',
-    textAlign: 'center',
+    color: "#999",
+    textAlign: "center",
     lineHeight: 18,
     marginBottom: 20,
   },
   overlay: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   overlayText: {
-    color: '#fff',
+    color: "#fff",
     marginTop: 16,
     fontSize: 16,
   },
 });
-

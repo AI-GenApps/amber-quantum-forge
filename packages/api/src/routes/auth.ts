@@ -1,6 +1,6 @@
+import { and, auth, db, deviceRegistrations, eq, users } from "@repo/db";
 import { Hono } from "hono";
-import { db, users, auth, deviceRegistrations, eq, and } from "@repo/db";
-import { authMiddleware, AuthUser } from "../middleware/auth";
+import { type AuthUser, authMiddleware } from "../middleware/auth";
 
 const authRoutes = new Hono();
 
@@ -32,12 +32,8 @@ authRoutes.post("/register-device", authMiddleware, async (c) => {
       userRecord = newUser;
     }
 
-    const authResults = await db
-      .select()
-      .from(auth)
-      .where(eq(auth.firebaseUid, user.uid))
-      .limit(1);
-    let authRecord = authResults[0] || null;
+    const authResults = await db.select().from(auth).where(eq(auth.firebaseUid, user.uid)).limit(1);
+    const authRecord = authResults[0] || null;
 
     if (!authRecord) {
       await db.insert(auth).values({
@@ -181,9 +177,7 @@ authRoutes.delete("/device/:fcmToken", authMiddleware, async (c) => {
       return c.json({ error: "Device not found" }, 404);
     }
 
-    await db
-      .delete(deviceRegistrations)
-      .where(eq(deviceRegistrations.id, device.id));
+    await db.delete(deviceRegistrations).where(eq(deviceRegistrations.id, device.id));
 
     return c.json({
       success: true,

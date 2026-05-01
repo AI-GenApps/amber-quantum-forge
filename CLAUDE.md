@@ -14,8 +14,14 @@ bun run dev
 # Build all apps
 bun run build
 
-# Format code
+# Format + lint everything (Biome)
+bun run check
+
+# Format only
 bun run format
+
+# Lint only
+bun run lint
 
 # Clean all build outputs and node_modules
 bun run clean
@@ -38,7 +44,6 @@ bun run ios          # Run on iOS
 cd apps/web
 bun run dev          # Runs on port 4001
 bun run build
-bun run lint
 ```
 
 **Database (Drizzle):**
@@ -77,6 +82,8 @@ This is a Turborepo monorepo with:
 
 ## Key Integration Points
 
-- **Hono API in Next.js**: The `@repo/api` package exports the Hono app which is imported and mounted in `apps/web/app/api/[[..route]]/route.ts` as a catch-all route handler.
+- **Hono API in Next.js**: The `@repo/api` package exports the Hono app which is imported and mounted in `apps/web/app/api/[...route]/route.ts` as a catch-all route handler.
 - **Firebase Auth**: Native app uses `@react-native-firebase/auth` with Google Sign-In. API validates Firebase tokens via `firebase-admin`.
-- **Database Access**: Both `apps/web` and `@repo/api` import `@repo/db` to access the database. Schema defines users, auth (Firebase links), and device registrations tables.
+- **Admin gating**: `/admin` (web) and `PUT /api/config/:key` (Hono) require admin. Admin = the Firebase custom claim `admin: true` (granted via `bun --cwd packages/api run grant-admin <uid>`) or membership in the `ADMIN_UIDS` env allowlist (transitional bootstrap). Web sessions are signed JWT cookies in `apps/web/lib/admin-session.ts`; gating happens in `apps/web/proxy.ts` (Next.js 16 — `proxy.ts`, not `middleware.ts`; enforced by `scripts/check-no-middleware.ts`).
+- **App metadata**: The native app reads from `GET /api/config/app-metadata` via `apps/native/services/appMetadata.ts`. The typed key registry lives in `packages/api/src/types/config.ts` and is imported by both web admin and the native app for type safety.
+- **Database Access**: Both `apps/web` and `@repo/api` import `@repo/db` to access the database. Schema defines users, auth (Firebase links), device registrations, and the freeform `app_config` JSONB table.

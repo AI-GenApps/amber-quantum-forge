@@ -18,11 +18,16 @@ packages/
 ## Setup
 
 ```bash
+cp .env.example .env   # then fill in values — see .env.example for the full list
 bun install
-bun run dev       # all apps
-bun run build     # all apps
-bun run format    # prettier
-bun run clean     # remove build outputs + node_modules
+bun run dev            # all apps
+bun run build          # all apps
+bun run format         # prettier
+bun run clean          # remove build outputs + node_modules
 ```
+
+## Admin panel
+
+The web app exposes `/admin` for managing app metadata that the native app reads from `/api/config/app-metadata` — version gate, feature flags, maintenance mode, store URLs, support/legal URLs — plus a users + devices view. Access is gated by a Firebase `admin: true` custom claim (or the `ADMIN_UIDS` allowlist while bootstrapping). See [apps/web/README.md](apps/web/README.md#admin-panel).
 
 See individual READMEs: [native](apps/native/README.md) | [web](apps/web/README.md) | [api](packages/api/README.md) | [db](packages/db/README.md)

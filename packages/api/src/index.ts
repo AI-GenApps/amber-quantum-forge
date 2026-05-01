@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
 import authRoutes from "./routes/auth";
-import profileRoutes from "./routes/profile";
 import configRoutes from "./routes/config";
+import profileRoutes from "./routes/profile";
 
 const app = new Hono();
 
@@ -20,6 +20,10 @@ app.get("/", (c) => {
   return c.json({ message: "Hono API is running" });
 });
 
+app.get("/health", (c) => {
+  return c.json({ ok: true });
+});
+
 app.route("/auth", authRoutes);
 app.route("/profile", profileRoutes);
 app.route("/config", configRoutes);
@@ -29,4 +33,5 @@ app.onError((err, c) => {
   return c.json({ error: "Internal server error", message: err.message }, 500);
 });
 
+export { app };
 export default handle(app);

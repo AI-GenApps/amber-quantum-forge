@@ -1,10 +1,4 @@
-import * as React from "react";
-import {
-  StyleSheet,
-  GestureResponderEvent,
-  Text,
-  Pressable,
-} from "react-native";
+import { type GestureResponderEvent, Pressable, StyleSheet, Text } from "react-native";
 
 export interface ButtonProps {
   text: string;
@@ -35,7 +29,3 @@ const styles = StyleSheet.create({
     color: "white",
   },
 });
-
-
-
-

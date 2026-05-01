@@ -10,15 +10,12 @@
 
 import { execFileSync } from "node:child_process";
 
-const MIDDLEWARE_PATTERN =
-  /^apps\/web\/(?:.*\/)?middleware\.(ts|tsx|js|jsx|mts|cts|mjs|cjs)$/;
+const MIDDLEWARE_PATTERN = /^apps\/web\/(?:.*\/)?middleware\.(ts|tsx|js|jsx|mts|cts|mjs|cjs)$/;
 
 function getStagedFiles(): string[] {
-  const output = execFileSync(
-    "git",
-    ["diff", "--cached", "--name-only", "--diff-filter=ACMR"],
-    { encoding: "utf8" },
-  ).trim();
+  const output = execFileSync("git", ["diff", "--cached", "--name-only", "--diff-filter=ACMR"], {
+    encoding: "utf8",
+  }).trim();
 
   if (!output) return [];
 
@@ -28,14 +25,10 @@ function getStagedFiles(): string[] {
     .filter(Boolean);
 }
 
-const violations = getStagedFiles().filter((file) =>
-  MIDDLEWARE_PATTERN.test(file),
-);
+const violations = getStagedFiles().filter((file) => MIDDLEWARE_PATTERN.test(file));
 
 if (violations.length > 0) {
-  console.error(
-    "\nCommit blocked: middleware files are not supported in Next.js 16+.\n",
-  );
+  console.error("\nCommit blocked: middleware files are not supported in Next.js 16+.\n");
 
   for (const file of violations) {
     const proxy = file.replace(/middleware(\.[^.]+)$/, "proxy$1");
@@ -44,9 +37,7 @@ if (violations.length > 0) {
     console.error(`    -> rename exported function: middleware -> proxy`);
   }
 
-  console.error(
-    '\nNext.js 16 replaced the "middleware" convention with "proxy".',
-  );
+  console.error('\nNext.js 16 replaced the "middleware" convention with "proxy".');
   console.error(
     "See: https://nextjs.org/docs/app/guides/upgrading/version-16#middleware-to-proxy\n",
   );

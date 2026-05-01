@@ -9,11 +9,9 @@ const TYPE_EXTENSIONS = new Set([".ts", ".tsx", ".mts", ".cts"]);
 const cwd = process.cwd();
 
 function getStagedFiles(): string[] {
-  const output = execFileSync(
-    "git",
-    ["diff", "--cached", "--name-only", "--diff-filter=ACMR"],
-    { encoding: "utf8" },
-  ).trim();
+  const output = execFileSync("git", ["diff", "--cached", "--name-only", "--diff-filter=ACMR"], {
+    encoding: "utf8",
+  }).trim();
   if (!output) return [];
 
   return output
@@ -118,9 +116,7 @@ function checkFileGroup(tsconfigPath: string, stagedFiles: string[]): string[] {
 }
 
 const stagedFiles = getStagedFiles();
-const stagedTypeFiles = stagedFiles.filter(
-  (file) => hasTypeExtension(file) && existsSync(file),
-);
+const stagedTypeFiles = stagedFiles.filter((file) => hasTypeExtension(file) && existsSync(file));
 
 if (stagedTypeFiles.length === 0) {
   process.exit(0);
@@ -135,9 +131,7 @@ for (const [tsconfigPath, files] of groupedFiles.entries()) {
 }
 
 if (errors.length > 0) {
-  console.error(
-    "\nCommit blocked: staged TypeScript files contain type errors.\n",
-  );
+  console.error("\nCommit blocked: staged TypeScript files contain type errors.\n");
   for (const error of errors) {
     console.error(`- ${error}`);
   }

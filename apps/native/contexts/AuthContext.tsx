@@ -1,11 +1,15 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import * as AppleAuthentication from 'expo-apple-authentication';
-import { Platform } from 'react-native';
-import { registerDevice } from '../services/deviceRegistration';
-import { getApiUrl } from '../firebase.config';
-import { initializeRevenueCat, setRevenueCatUserId, logoutRevenueCat } from '../services/revenuecat';
+import auth, { type FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import * as AppleAuthentication from "expo-apple-authentication";
+import type React from "react";
+import { createContext, type ReactNode, useContext, useEffect, useState } from "react";
+import { Platform } from "react-native";
+import { registerDevice } from "../services/deviceRegistration";
+import {
+  initializeRevenueCat,
+  logoutRevenueCat,
+  setRevenueCatUserId,
+} from "../services/revenuecat";
 
 interface User {
   uid: string;
@@ -28,7 +32,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
@@ -50,44 +54,46 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       try {
         await initializeRevenueCat();
       } catch (error) {
-        console.error('Error initializing RevenueCat:', error);
+        console.error("Error initializing RevenueCat:", error);
       }
     };
 
     initializeServices();
 
-    const unsubscribe = auth().onAuthStateChanged(async (firebaseUser: FirebaseAuthTypes.User | null) => {
-      if (firebaseUser) {
-        const userData: User = {
-          uid: firebaseUser.uid,
-          email: firebaseUser.email,
-          displayName: firebaseUser.displayName,
-          photoURL: firebaseUser.photoURL,
-        };
-        setUser(userData);
+    const unsubscribe = auth().onAuthStateChanged(
+      async (firebaseUser: FirebaseAuthTypes.User | null) => {
+        if (firebaseUser) {
+          const userData: User = {
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+            displayName: firebaseUser.displayName,
+            photoURL: firebaseUser.photoURL,
+          };
+          setUser(userData);
 
-        try {
-          const idToken = await firebaseUser.getIdToken();
-          await registerDevice(idToken);
-          
           try {
-            await setRevenueCatUserId(firebaseUser.uid);
+            const idToken = await firebaseUser.getIdToken();
+            await registerDevice(idToken);
+
+            try {
+              await setRevenueCatUserId(firebaseUser.uid);
+            } catch (error) {
+              console.error("Error setting RevenueCat user ID:", error);
+            }
           } catch (error) {
-            console.error('Error setting RevenueCat user ID:', error);
+            console.error("Error registering device:", error);
           }
-        } catch (error) {
-          console.error('Error registering device:', error);
+        } else {
+          setUser(null);
+          try {
+            await logoutRevenueCat();
+          } catch (error) {
+            console.error("Error logging out RevenueCat user:", error);
+          }
         }
-      } else {
-        setUser(null);
-        try {
-          await logoutRevenueCat();
-        } catch (error) {
-          console.error('Error logging out RevenueCat user:', error);
-        }
-      }
-      setLoading(false);
-    });
+        setLoading(false);
+      },
+    );
 
     return unsubscribe;
   }, []);
@@ -99,15 +105,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       await auth().signInWithCredential(googleCredential);
     } catch (error) {
-      console.error('Google Sign In Error:', error);
+      console.error("Google Sign In Error:", error);
       throw error;
     }
   };
 
   const signInWithApple = async () => {
     try {
-      if (Platform.OS !== 'ios') {
-        throw new Error('Apple Sign In is only available on iOS');
+      if (Platform.OS !== "ios") {
+        throw new Error("Apple Sign In is only available on iOS");
       }
 
       const appleCredential = await AppleAuthentication.signInAsync({
@@ -117,19 +123,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         ],
       });
 
-      const { identityToken, nonce } = appleCredential;
+      const { identityToken } = appleCredential;
       if (!identityToken) {
-        throw new Error('Apple Sign In failed: No identity token');
+        throw new Error("Apple Sign In failed: No identity token");
       }
 
-      const credential = auth.AppleAuthProvider.credential({
-        idToken: identityToken,
-        rawNonce: nonce || undefined,
-      });
+      const credential = auth.AppleAuthProvider.credential(identityToken);
 
       await auth().signInWithCredential(credential);
     } catch (error) {
-      console.error('Apple Sign In Error:', error);
+      console.error("Apple Sign In Error:", error);
       throw error;
     }
   };
@@ -140,7 +143,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       await auth().signOut();
       setUser(null);
     } catch (error) {
-      console.error('Sign Out Error:', error);
+      console.error("Sign Out Error:", error);
       throw error;
     }
   };
@@ -153,7 +156,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }
       return null;
     } catch (error) {
-      console.error('Error getting ID token:', error);
+      console.error("Error getting ID token:", error);
       return null;
     }
   };
@@ -169,4 +172,3 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
-

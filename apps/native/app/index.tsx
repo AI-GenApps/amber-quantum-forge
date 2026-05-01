@@ -1,15 +1,41 @@
-import { StyleSheet, Text, View, ActivityIndicator, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useAuth } from "../contexts/AuthContext";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from "react-native";
 import { AuthScreen } from "../components/AuthScreen";
 import { ProfilePictureEditor } from "../components/ProfilePictureEditor";
-import { useState, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { getApiUrl } from "../firebase.config";
 
 export default function Native() {
   const { user, loading, signOut, getIdToken } = useAuth();
   const [profilePictureUrl, setProfilePictureUrl] = useState<string | null>(null);
-  const [fetchingProfile, setFetchingProfile] = useState(false);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!user) return;
+
+      try {
+        const idToken = await getIdToken();
+        if (!idToken) return;
+
+        const apiUrl = getApiUrl();
+        const response = await fetch(`${apiUrl}/auth/me`, {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setProfilePictureUrl(data.profilePictureUrl || null);
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    };
+
+    fetchProfile();
+  }, [user, getIdToken]);
 
   if (loading) {
     return (
@@ -19,36 +45,6 @@ export default function Native() {
       </View>
     );
   }
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (!user) return;
-      
-      try {
-        setFetchingProfile(true);
-        const idToken = await getIdToken();
-        if (!idToken) return;
-
-        const apiUrl = getApiUrl();
-        const response = await fetch(`${apiUrl}/auth/me`, {
-          headers: {
-            'Authorization': `Bearer ${idToken}`,
-          },
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setProfilePictureUrl(data.profilePictureUrl || null);
-        }
-      } catch (error) {
-        console.error('Error fetching profile:', error);
-      } finally {
-        setFetchingProfile(false);
-      }
-    };
-
-    fetchProfile();
-  }, [user, getIdToken]);
 
   if (!user) {
     return (
@@ -64,11 +60,8 @@ export default function Native() {
       <Text style={styles.header}>Welcome!</Text>
       <Text style={styles.subtitle}>{user.email}</Text>
       {user.displayName && <Text style={styles.subtitle}>{user.displayName}</Text>}
-      
-      <ProfilePictureEditor
-        profilePictureUrl={profilePictureUrl}
-        onUpdate={setProfilePictureUrl}
-      />
+
+      <ProfilePictureEditor profilePictureUrl={profilePictureUrl} onUpdate={setProfilePictureUrl} />
 
       <View style={styles.buttonContainer}>
         <Text style={styles.button} onPress={signOut}>

@@ -23,9 +23,7 @@ function getFirebaseAdmin() {
   return admin;
 }
 
-export const verifyIdToken = async (
-  idToken: string,
-): Promise<admin.auth.DecodedIdToken> => {
+export const verifyIdToken = async (idToken: string): Promise<admin.auth.DecodedIdToken> => {
   try {
     const decodedToken = await getFirebaseAdmin().auth().verifyIdToken(idToken);
     return decodedToken;

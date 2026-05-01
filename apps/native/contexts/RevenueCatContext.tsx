@@ -1,18 +1,22 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
-import { CustomerInfo, Offerings, PurchasesPackage } from 'react-native-purchases';
-import Purchases from 'react-native-purchases';
+import type React from "react";
+import { createContext, type ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import Purchases, {
+  type CustomerInfo,
+  type PurchasesOfferings,
+  type PurchasesPackage,
+} from "react-native-purchases";
 import {
-  initializeRevenueCat,
-  getOfferings as fetchOfferings,
-  purchasePackage as purchasePackageService,
   getCustomerInfo as fetchCustomerInfo,
+  getOfferings as fetchOfferings,
+  initializeRevenueCat,
+  purchasePackage as purchasePackageService,
   restorePurchases as restorePurchasesService,
   showManageSubscriptions as showManageSubscriptionsService,
-} from '../services/revenuecat';
+} from "../services/revenuecat";
 
 interface RevenueCatContextType {
   customerInfo: CustomerInfo | null;
-  offerings: Offerings | null;
+  offerings: PurchasesOfferings | null;
   packages: PurchasesPackage[];
   loading: boolean;
   error: string | null;
@@ -30,7 +34,7 @@ const RevenueCatContext = createContext<RevenueCatContextType | undefined>(undef
 export const useRevenueCat = () => {
   const context = useContext(RevenueCatContext);
   if (!context) {
-    throw new Error('useRevenueCat must be used within a RevenueCatProvider');
+    throw new Error("useRevenueCat must be used within a RevenueCatProvider");
   }
   return context;
 };
@@ -41,7 +45,7 @@ interface RevenueCatProviderProps {
 
 export const RevenueCatProvider: React.FC<RevenueCatProviderProps> = ({ children }) => {
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo | null>(null);
-  const [offerings, setOfferings] = useState<Offerings | null>(null);
+  const [offerings, setOfferings] = useState<PurchasesOfferings | null>(null);
   const [packages, setPackages] = useState<PurchasesPackage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -52,8 +56,8 @@ export const RevenueCatProvider: React.FC<RevenueCatProviderProps> = ({ children
       setCustomerInfo(info);
       setError(null);
     } catch (err: any) {
-      console.error('Error refreshing customer info:', err);
-      setError(err.message || 'Failed to refresh customer info');
+      console.error("Error refreshing customer info:", err);
+      setError(err.message || "Failed to refresh customer info");
     }
   }, []);
 
@@ -62,7 +66,7 @@ export const RevenueCatProvider: React.FC<RevenueCatProviderProps> = ({ children
       setLoading(true);
       const offeringsData = await fetchOfferings();
       setOfferings(offeringsData);
-      
+
       if (offeringsData.current && offeringsData.current.availablePackages.length > 0) {
         setPackages(offeringsData.current.availablePackages);
       } else {
@@ -70,29 +74,32 @@ export const RevenueCatProvider: React.FC<RevenueCatProviderProps> = ({ children
       }
       setError(null);
     } catch (err: any) {
-      console.error('Error fetching offerings:', err);
-      setError(err.message || 'Failed to fetch offerings');
+      console.error("Error fetching offerings:", err);
+      setError(err.message || "Failed to fetch offerings");
       setPackages([]);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const purchasePackageHandler = useCallback(async (pkg: PurchasesPackage): Promise<CustomerInfo> => {
-    try {
-      setLoading(true);
-      const { customerInfo: newCustomerInfo } = await purchasePackageService(pkg);
-      setCustomerInfo(newCustomerInfo);
-      setError(null);
-      return newCustomerInfo;
-    } catch (err: any) {
-      console.error('Error purchasing package:', err);
-      setError(err.message || 'Failed to purchase package');
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const purchasePackageHandler = useCallback(
+    async (pkg: PurchasesPackage): Promise<CustomerInfo> => {
+      try {
+        setLoading(true);
+        const { customerInfo: newCustomerInfo } = await purchasePackageService(pkg);
+        setCustomerInfo(newCustomerInfo);
+        setError(null);
+        return newCustomerInfo;
+      } catch (err: any) {
+        console.error("Error purchasing package:", err);
+        setError(err.message || "Failed to purchase package");
+        throw err;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
 
   const restorePurchasesHandler = useCallback(async (): Promise<CustomerInfo> => {
     try {
@@ -102,8 +109,8 @@ export const RevenueCatProvider: React.FC<RevenueCatProviderProps> = ({ children
       setError(null);
       return customerInfoData;
     } catch (err: any) {
-      console.error('Error restoring purchases:', err);
-      setError(err.message || 'Failed to restore purchases');
+      console.error("Error restoring purchases:", err);
+      setError(err.message || "Failed to restore purchases");
       throw err;
     } finally {
       setLoading(false);
@@ -114,8 +121,8 @@ export const RevenueCatProvider: React.FC<RevenueCatProviderProps> = ({ children
     try {
       await showManageSubscriptionsService();
     } catch (err: any) {
-      console.error('Error showing manage subscriptions:', err);
-      setError(err.message || 'Failed to show manage subscriptions');
+      console.error("Error showing manage subscriptions:", err);
+      setError(err.message || "Failed to show manage subscriptions");
       throw err;
     }
   }, []);
@@ -126,15 +133,15 @@ export const RevenueCatProvider: React.FC<RevenueCatProviderProps> = ({ children
     const initialize = async () => {
       try {
         await initializeRevenueCat();
-        
+
         if (isMounted) {
           await refreshCustomerInfo();
           await fetchOfferingsHandler();
         }
       } catch (err: any) {
-        console.error('Error initializing RevenueCat:', err);
+        console.error("Error initializing RevenueCat:", err);
         if (isMounted) {
-          setError(err.message || 'Failed to initialize RevenueCat');
+          setError(err.message || "Failed to initialize RevenueCat");
           setLoading(false);
         }
       }
@@ -156,9 +163,7 @@ export const RevenueCatProvider: React.FC<RevenueCatProviderProps> = ({ children
     };
   }, [refreshCustomerInfo, fetchOfferingsHandler]);
 
-  const activeEntitlements = customerInfo
-    ? Object.keys(customerInfo.entitlements.active)
-    : [];
+  const activeEntitlements = customerInfo ? Object.keys(customerInfo.entitlements.active) : [];
 
   const isSubscribed = activeEntitlements.length > 0;
 
@@ -179,7 +184,3 @@ export const RevenueCatProvider: React.FC<RevenueCatProviderProps> = ({ children
 
   return <RevenueCatContext.Provider value={value}>{children}</RevenueCatContext.Provider>;
 };
-
-
-
-

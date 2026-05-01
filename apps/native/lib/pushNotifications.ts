@@ -1,6 +1,6 @@
-import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
-import { Platform } from 'react-native';
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
+import { Platform } from "react-native";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -15,24 +15,24 @@ export async function registerForPushNotificationsAsync(): Promise<string | null
   let token: string | null = null;
 
   if (!Device.isDevice) {
-    console.log('Push notifications require a physical device');
+    console.log("Push notifications require a physical device");
     return null;
   }
 
-  if (Platform.OS === 'android') {
-    await Notifications.setNotificationChannelAsync('default', {
-      name: 'Default',
+  if (Platform.OS === "android") {
+    await Notifications.setNotificationChannelAsync("default", {
+      name: "Default",
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#2f80ed',
-      sound: 'default',
+      lightColor: "#2f80ed",
+      sound: "default",
     });
   }
 
   const { status: existingStatus } = await Notifications.getPermissionsAsync();
   let finalStatus = existingStatus;
 
-  if (existingStatus !== 'granted') {
+  if (existingStatus !== "granted") {
     const { status } = await Notifications.requestPermissionsAsync({
       ios: {
         allowAlert: true,
@@ -43,17 +43,17 @@ export async function registerForPushNotificationsAsync(): Promise<string | null
     finalStatus = status;
   }
 
-  if (finalStatus !== 'granted') {
-    console.log('Push notification permission not granted');
+  if (finalStatus !== "granted") {
+    console.log("Push notification permission not granted");
     return null;
   }
 
   try {
     const deviceToken = await Notifications.getDevicePushTokenAsync();
     token = deviceToken.data;
-    console.log('Push Token:', token);
+    console.log("Push Token:", token);
   } catch (error) {
-    console.error('Error getting device push token:', error);
+    console.error("Error getting device push token:", error);
   }
 
   return token;
@@ -63,8 +63,10 @@ export function addNotificationListeners(
   onNotificationReceived: (notification: Notifications.Notification) => void,
   onNotificationResponse: (response: Notifications.NotificationResponse) => void,
 ) {
-  const notificationListener = Notifications.addNotificationReceivedListener(onNotificationReceived);
-  const responseListener = Notifications.addNotificationResponseReceivedListener(onNotificationResponse);
+  const notificationListener =
+    Notifications.addNotificationReceivedListener(onNotificationReceived);
+  const responseListener =
+    Notifications.addNotificationResponseReceivedListener(onNotificationResponse);
 
   return () => {
     notificationListener.remove();

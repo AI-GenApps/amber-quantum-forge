@@ -4,16 +4,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 
 const MAX_LINES = 800;
-const CODE_EXTENSIONS = new Set([
-  ".ts",
-  ".tsx",
-  ".js",
-  ".jsx",
-  ".mjs",
-  ".cjs",
-  ".mts",
-  ".cts",
-]);
+const CODE_EXTENSIONS = new Set([".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".mts", ".cts"]);
 const TEST_FILE_PATTERN = /\.(test|spec)\.(ts|tsx|js|jsx|mts|cts|mjs|cjs)$/;
 const TEST_DIR_PATTERN = /(?:^|\/)__tests__\//;
 
@@ -24,11 +15,9 @@ function countLines(text: string): number {
 }
 
 function getStagedFiles(): string[] {
-  const output = execFileSync(
-    "git",
-    ["diff", "--cached", "--name-only", "--diff-filter=ACMR"],
-    { encoding: "utf8" },
-  ).trim();
+  const output = execFileSync("git", ["diff", "--cached", "--name-only", "--diff-filter=ACMR"], {
+    encoding: "utf8",
+  }).trim();
 
   if (!output) return [];
 
@@ -70,9 +59,7 @@ for (const file of codeFiles) {
 }
 
 if (violations.length > 0) {
-  console.error(
-    `\nCommit blocked: code files must be <= ${MAX_LINES} lines.\n`,
-  );
+  console.error(`\nCommit blocked: code files must be <= ${MAX_LINES} lines.\n`);
 
   for (const violation of violations) {
     console.error(`- ${violation.file}: ${violation.lines} lines`);

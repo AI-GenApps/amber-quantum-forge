@@ -1,0 +1,52 @@
+# Production deploy for apps/web. The linked Vercel project must have its
+# Root Directory set to `apps/web`. Required secrets: VERCEL_TOKEN.
+# Fill in vercel_project_id and vercel_project_name after linking the project.
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: false
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - preview
+
+permissions:
+  contents: read
+  deployments: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    environment:
+      name: ${{ (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production')) && 'production' || 'preview' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Deploy to Vercel
+        uses: W3Dev/vercel-deploy@main
+        with:
+          vercel_token: ${{ secrets.VERCEL_TOKEN }}
+          vercel_org_id: 'team_M1i3qUTW4i3A6mETy54E1Fy8'
+          vercel_project_id: '<TODO_FILL_IN>'
+          vercel_project_name: '<TODO_FILL_IN>'
+          package_manager: 'bun'
+          node_version: '22'
+          deploy_args: '--archive=tgz'
+          environment: ${{ (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production')) && 'production' || 'preview' }}
+          prebuild_script: |
+            git config --global user.email "ashutosh@w3dev.in"
+            git config --global user.name "Ashutosh"
+            git commit --amend --no-edit --author="Ashutosh <ashutosh@w3dev.in>"

@@ -22,9 +22,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "app.w3dev.starter",
       "infoPlist": {
-        "UIBackgroundModes": [
-          "remote-notification"
-        ]
+        "UIBackgroundModes": ["remote-notification"]
       }
     },
     "android": {
@@ -34,10 +32,7 @@
       },
       "package": "app.w3dev.starter",
       "googleServicesFile": "./google-services.json",
-      "permissions": [
-        "RECEIVE_BOOT_COMPLETED",
-        "VIBRATE"
-      ]
+      "permissions": ["RECEIVE_BOOT_COMPLETED", "VIBRATE"]
     },
     "web": {
       "favicon": "./assets/favicon.png",

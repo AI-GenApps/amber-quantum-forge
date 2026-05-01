@@ -1,12 +1,21 @@
-import React, { createContext, useContext, useEffect, useState, useCallback, useRef, ReactNode } from 'react';
-import { AppState, AppStateStatus } from 'react-native';
+import type React from "react";
 import {
+  createContext,
+  type ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { AppState, type AppStateStatus } from "react-native";
+import {
+  type AppMetadata,
   fetchAppMetadata,
   getAppVersion,
   getUpdateStatus,
-  AppMetadata,
-  UpdateStatus,
-} from '../services/appMetadata';
+  type UpdateStatus,
+} from "../services/appMetadata";
 
 interface AppConfigContextType {
   appMetadata: AppMetadata | null;
@@ -25,7 +34,7 @@ const AppConfigContext = createContext<AppConfigContextType | undefined>(undefin
 export const useAppConfig = () => {
   const context = useContext(AppConfigContext);
   if (!context) {
-    throw new Error('useAppConfig must be used within an AppConfigProvider');
+    throw new Error("useAppConfig must be used within an AppConfigProvider");
   }
   return context;
 };
@@ -43,6 +52,7 @@ export const AppConfigProvider: React.FC<AppConfigProviderProps> = ({ children }
   const retryCountRef = useRef(0);
   const MAX_RETRIES = 5;
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: scheduleRetry depends on loadMetadata; including it here would create a render loop. scheduleRetry is stable enough for this use.
   const loadMetadata = useCallback(async () => {
     try {
       const metadata = await fetchAppMetadata();
@@ -50,8 +60,8 @@ export const AppConfigProvider: React.FC<AppConfigProviderProps> = ({ children }
       setError(null);
       retryCountRef.current = 0;
     } catch (err) {
-      console.error('Failed to fetch app metadata:', err);
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      console.error("Failed to fetch app metadata:", err);
+      setError(err instanceof Error ? err.message : "Unknown error");
       scheduleRetry();
     } finally {
       setIsLoading(false);
@@ -63,7 +73,7 @@ export const AppConfigProvider: React.FC<AppConfigProviderProps> = ({ children }
     if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current);
 
     // Exponential backoff: 5s, 10s, 20s, 40s, 80s
-    const delay = 5000 * Math.pow(2, retryCountRef.current);
+    const delay = 5000 * 2 ** retryCountRef.current;
     retryCountRef.current += 1;
 
     retryTimeoutRef.current = setTimeout(() => {
@@ -74,13 +84,13 @@ export const AppConfigProvider: React.FC<AppConfigProviderProps> = ({ children }
   // Retry when app comes back to foreground
   useEffect(() => {
     const handleAppStateChange = (nextState: AppStateStatus) => {
-      if (nextState === 'active' && error) {
+      if (nextState === "active" && error) {
         retryCountRef.current = 0;
         loadMetadata();
       }
     };
 
-    const subscription = AppState.addEventListener('change', handleAppStateChange);
+    const subscription = AppState.addEventListener("change", handleAppStateChange);
     return () => subscription.remove();
   }, [error, loadMetadata]);
 
@@ -98,7 +108,7 @@ export const AppConfigProvider: React.FC<AppConfigProviderProps> = ({ children }
 
   const isFeatureEnabled = useCallback(
     (key: string): boolean => featureFlags[key] === true,
-    [featureFlags]
+    [featureFlags],
   );
 
   const dismissUpdate = useCallback(() => setUpdateDismissed(true), []);

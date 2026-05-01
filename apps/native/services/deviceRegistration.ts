@@ -1,5 +1,5 @@
-import messaging from '@react-native-firebase/messaging';
-import { getApiUrl } from '../firebase.config';
+import messaging from "@react-native-firebase/messaging";
+import { getApiUrl } from "../firebase.config";
 
 export const registerDevice = async (idToken: string) => {
   try {
@@ -7,30 +7,32 @@ export const registerDevice = async (idToken: string) => {
 
     try {
       const authStatus = await messaging().requestPermission();
-      if (authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-          authStatus === messaging.AuthorizationStatus.PROVISIONAL) {
+      if (
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL
+      ) {
         fcmToken = await messaging().getToken();
       }
     } catch (error) {
-      console.warn('Error getting FCM token:', error);
+      console.warn("Error getting FCM token:", error);
     }
 
     if (!fcmToken) {
-      console.warn('FCM token not available, skipping device registration');
+      console.warn("FCM token not available, skipping device registration");
       return;
     }
 
     const apiUrl = getApiUrl();
     const response = await fetch(`${apiUrl}/auth/register-device`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${idToken}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${idToken}`,
       },
       body: JSON.stringify({
         fcmToken,
         deviceInfo: {
-          platform: 'react-native',
+          platform: "react-native",
         },
       }),
     });
@@ -43,7 +45,7 @@ export const registerDevice = async (idToken: string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Device registration error:', error);
+    console.error("Device registration error:", error);
     throw error;
   }
 };
@@ -52,9 +54,9 @@ export const unregisterDevice = async (idToken: string, fcmToken: string) => {
   try {
     const apiUrl = getApiUrl();
     const response = await fetch(`${apiUrl}/auth/device/${encodeURIComponent(fcmToken)}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Authorization': `Bearer ${idToken}`,
+        Authorization: `Bearer ${idToken}`,
       },
     });
 
@@ -65,11 +67,7 @@ export const unregisterDevice = async (idToken: string, fcmToken: string) => {
 
     return await response.json();
   } catch (error) {
-    console.error('Device unregistration error:', error);
+    console.error("Device unregistration error:", error);
     throw error;
   }
 };
-
-
-
-

@@ -1,6 +1,7 @@
+import { appConfig, db, eq } from "@repo/db";
 import { Hono } from "hono";
-import { db, appConfig, eq } from "@repo/db";
-import { authMiddleware } from "../middleware/auth";
+import { authMiddleware, requireAdmin } from "../middleware/auth";
+import { CONFIG_KEYS, CONFIG_PARSERS, type ConfigKey } from "../types/config";
 
 const configRoutes = new Hono();
 
@@ -19,33 +20,45 @@ configRoutes.get("/app-metadata", async (c) => {
   }
 });
 
-// Protected endpoint — update a config entry
-configRoutes.put("/:key", authMiddleware, async (c) => {
+// Admin-only — update a config entry
+configRoutes.put("/:key", authMiddleware, requireAdmin, async (c) => {
   try {
     const key = c.req.param("key");
+    if (!CONFIG_KEYS.includes(key as ConfigKey)) {
+      return c.json({ error: `Unknown config key: ${key}` }, 400);
+    }
+
     const body = await c.req.json();
     const { value } = body;
-
     if (value === undefined) {
       return c.json({ error: "value is required" }, 400);
     }
 
-    const existing = await db
-      .select()
-      .from(appConfig)
-      .where(eq(appConfig.key, key))
-      .limit(1);
+    let parsed: unknown;
+    try {
+      parsed = CONFIG_PARSERS[key as ConfigKey](value);
+    } catch (err) {
+      return c.json(
+        {
+          error: "Invalid value",
+          message: err instanceof Error ? err.message : "Validation failed",
+        },
+        400,
+      );
+    }
+
+    const existing = await db.select().from(appConfig).where(eq(appConfig.key, key)).limit(1);
 
     if (existing.length > 0) {
       await db
         .update(appConfig)
-        .set({ value, updatedAt: new Date() })
+        .set({ value: parsed, updatedAt: new Date() })
         .where(eq(appConfig.key, key));
     } else {
-      await db.insert(appConfig).values({ key, value });
+      await db.insert(appConfig).values({ key, value: parsed });
     }
 
-    return c.json({ success: true, key, value });
+    return c.json({ success: true, key, value: parsed });
   } catch (error) {
     console.error("Error updating app config:", error);
     return c.json({ error: "Internal server error" }, 500);

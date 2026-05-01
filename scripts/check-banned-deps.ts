@@ -35,11 +35,9 @@ const BANNED_RULES: BannedRule[] = [
 ];
 
 function getStagedFiles(): string[] {
-  const output = execFileSync(
-    "git",
-    ["diff", "--cached", "--name-only", "--diff-filter=ACMR"],
-    { encoding: "utf8" },
-  ).trim();
+  const output = execFileSync("git", ["diff", "--cached", "--name-only", "--diff-filter=ACMR"], {
+    encoding: "utf8",
+  }).trim();
   if (!output) return [];
   return output
     .split("\n")
@@ -66,9 +64,7 @@ interface Violation {
 }
 
 const stagedFiles = getStagedFiles();
-const packageJsonFiles = stagedFiles.filter((f) =>
-  /^apps\/[^/]+\/package\.json$/.test(f),
-);
+const packageJsonFiles = stagedFiles.filter((f) => /^apps\/[^/]+\/package\.json$/.test(f));
 
 const violations: Violation[] = [];
 
@@ -103,9 +99,7 @@ for (const file of packageJsonFiles) {
 }
 
 if (violations.length > 0) {
-  console.error(
-    "\nCommit blocked: banned dependencies found in apps/*/package.json.\n",
-  );
+  console.error("\nCommit blocked: banned dependencies found in apps/*/package.json.\n");
 
   for (const { file, pkg, rule } of violations) {
     console.error(`  x ${file}`);

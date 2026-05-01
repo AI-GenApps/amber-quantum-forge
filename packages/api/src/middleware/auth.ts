@@ -1,4 +1,4 @@
-import { Context, Next } from "hono";
+import type { Context, Next } from "hono";
 import { verifyIdToken } from "../firebase/admin";
 
 export interface AuthUser {
@@ -6,6 +6,7 @@ export interface AuthUser {
   email: string | null;
   emailVerified: boolean;
   provider: string;
+  isAdmin: boolean;
 }
 
 declare module "hono" {
@@ -17,11 +18,8 @@ declare module "hono" {
 export const authMiddleware = async (c: Context, next: Next) => {
   try {
     const authHeader = c.req.header("Authorization");
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return c.json(
-        { error: "Unauthorized: Missing or invalid Authorization header" },
-        401,
-      );
+    if (!authHeader?.startsWith("Bearer ")) {
+      return c.json({ error: "Unauthorized: Missing or invalid Authorization header" }, 401);
     }
 
     const idToken = authHeader.substring(7);
@@ -34,6 +32,7 @@ export const authMiddleware = async (c: Context, next: Next) => {
       email: decodedToken.email || null,
       emailVerified: decodedToken.email_verified || false,
       provider,
+      isAdmin: (decodedToken as { admin?: unknown }).admin === true,
     });
 
     await next();
@@ -46,4 +45,12 @@ export const authMiddleware = async (c: Context, next: Next) => {
       401,
     );
   }
+};
+
+export const requireAdmin = async (c: Context, next: Next) => {
+  const user = c.get("user");
+  if (!user?.isAdmin) {
+    return c.json({ error: "Forbidden: Admin access required" }, 403);
+  }
+  await next();
 };

@@ -1,4 +1,4 @@
-import * as Updates from 'expo-updates';
+import * as Updates from "expo-updates";
 
 export interface UpdateInfo {
   isUpdateAvailable: boolean;
@@ -17,7 +17,7 @@ export interface VersionInfo {
 export async function checkForUpdates(): Promise<UpdateInfo> {
   try {
     if (__DEV__) {
-      console.log('Updates disabled in development mode');
+      console.log("Updates disabled in development mode");
       return { isUpdateAvailable: false, isUpdatePending: false };
     }
 
@@ -29,7 +29,7 @@ export async function checkForUpdates(): Promise<UpdateInfo> {
       manifest: update.manifest,
     };
   } catch (error) {
-    console.error('Error checking for updates:', error);
+    console.error("Error checking for updates:", error);
     throw error;
   }
 }
@@ -37,7 +37,7 @@ export async function checkForUpdates(): Promise<UpdateInfo> {
 export async function downloadAndApplyUpdate(forceReload: boolean = true): Promise<boolean> {
   try {
     if (__DEV__) {
-      console.log('Updates disabled in development mode');
+      console.log("Updates disabled in development mode");
       return false;
     }
 
@@ -52,7 +52,7 @@ export async function downloadAndApplyUpdate(forceReload: boolean = true): Promi
 
     return false;
   } catch (error) {
-    console.error('Error downloading/applying update:', error);
+    console.error("Error downloading/applying update:", error);
     throw error;
   }
 }
@@ -61,10 +61,10 @@ export function getVersionInfo(): VersionInfo {
   const manifest = Updates.manifest as any;
 
   return {
-    appVersion: manifest?.version || '1.0.0',
-    runtimeVersion: Updates.runtimeVersion || 'Unknown',
-    updateId: Updates.updateId || 'Development',
-    channel: Updates.channel || 'Development',
+    appVersion: manifest?.version || "1.0.0",
+    runtimeVersion: Updates.runtimeVersion || "Unknown",
+    updateId: Updates.updateId || "Development",
+    channel: Updates.channel || "Development",
     isEmbeddedLaunch: Updates.isEmbeddedLaunch,
   };
 }

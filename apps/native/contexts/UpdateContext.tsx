@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, type ReactNode, useContext, useEffect, useState } from "react";
+import type { VersionInfo } from "../lib/updates";
 import {
+  areUpdatesEnabled,
   checkForUpdates,
   downloadAndApplyUpdate,
   getVersionInfo,
-  areUpdatesEnabled,
-} from '../lib/updates';
-import type { VersionInfo } from '../lib/updates';
+} from "../lib/updates";
 
 type UpdateContextType = {
   isUpdateAvailable: boolean;
@@ -31,11 +31,11 @@ export function UpdateProvider({ children }: { children: ReactNode }) {
       setIsUpdateAvailable(updateInfo.isUpdateAvailable);
 
       if (updateInfo.isUpdateAvailable) {
-        console.log('OTA update available, downloading and applying silently...');
+        console.log("OTA update available, downloading and applying silently...");
         await downloadAndApplyUpdate(true);
       }
     } catch (error) {
-      console.error('Failed to check/apply OTA update:', error);
+      console.error("Failed to check/apply OTA update:", error);
     } finally {
       setIsCheckingUpdate(false);
     }
@@ -51,17 +51,20 @@ export function UpdateProvider({ children }: { children: ReactNode }) {
     try {
       await downloadAndApplyUpdate(true);
     } catch (error) {
-      console.error('Failed to apply update:', error);
+      console.error("Failed to apply update:", error);
       throw error;
     }
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: run once on mount; checkAndAutoApply is recreated each render but only the initial check is needed.
   useEffect(() => {
     checkAndAutoApply();
   }, []);
 
   return (
-    <UpdateContext.Provider value={{ isUpdateAvailable, isCheckingUpdate, versionInfo, checkForUpdate, applyUpdate }}>
+    <UpdateContext.Provider
+      value={{ isUpdateAvailable, isCheckingUpdate, versionInfo, checkForUpdate, applyUpdate }}
+    >
       {children}
     </UpdateContext.Provider>
   );
@@ -70,7 +73,7 @@ export function UpdateProvider({ children }: { children: ReactNode }) {
 export function useUpdate() {
   const context = useContext(UpdateContext);
   if (!context) {
-    throw new Error('useUpdate must be used within UpdateProvider');
+    throw new Error("useUpdate must be used within UpdateProvider");
   }
   return context;
 }

@@ -1,7 +1,7 @@
+import { db, eq, users } from "@repo/db";
+import { del, put } from "@vercel/blob";
 import { Hono } from "hono";
-import { db, users, eq } from "@repo/db";
-import { authMiddleware, AuthUser } from "../middleware/auth";
-import { put, del } from "@vercel/blob";
+import { type AuthUser, authMiddleware } from "../middleware/auth";
 
 const profileRoutes = new Hono();
 
@@ -101,10 +101,7 @@ profileRoutes.delete("/picture", authMiddleware, async (c) => {
         token: process.env.BLOB_READ_WRITE_TOKEN,
       });
     } catch (error) {
-      console.warn(
-        "Failed to delete profile picture from blob storage:",
-        error,
-      );
+      console.warn("Failed to delete profile picture from blob storage:", error);
     }
 
     await db
