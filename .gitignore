@@ -42,3 +42,4 @@ yarn-error.log*
 # ios xcode generated files
 apps-native/ios-app/*.xcodeproj
 apps-native/ios-app/*.xcworkspace
+apps-native/ios-app/Starter/GoogleService-Info.plist

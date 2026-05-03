@@ -24,6 +24,7 @@ targets:
       - package: StarterAuth
       - package: StarterAI
       - package: StarterChat
+      - package: RevenueCat
   StarterWidget:
     type: app-extension
     platform: iOS
@@ -41,3 +42,6 @@ packages:
     path: ../../plugins/ios/ai
   StarterChat:
     path: ../../plugins/ios/chat-module
+  RevenueCat:
+    url: https://github.com/RevenueCat/purchases-ios
+    from: "5.0.0"
