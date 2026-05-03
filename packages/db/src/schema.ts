@@ -1,5 +1,14 @@
 import { relations } from "drizzle-orm";
-import { boolean, integer, jsonb, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  integer,
+  jsonb,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+  unique,
+} from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -46,6 +55,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   }),
   deviceRegistrations: many(deviceRegistrations),
   refreshTokens: many(authRefreshTokens),
+  chatMessages: many(chatMessages),
 }));
 
 export const authRelations = relations(auth, ({ one }) => ({
@@ -79,6 +89,29 @@ export const authRefreshTokens = pgTable("auth_refresh_tokens", {
 export const authRefreshTokensRelations = relations(authRefreshTokens, ({ one }) => ({
   user: one(users, {
     fields: [authRefreshTokens.userId],
+    references: [users.id],
+  }),
+}));
+
+export const chatMessages = pgTable(
+  "chat_messages",
+  {
+    id: serial("id").primaryKey(),
+    clientId: text("client_id").notNull(),
+    userId: integer("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    role: text("role").notNull(),
+    content: text("content").notNull(),
+    createdAtClient: timestamp("created_at_client").notNull(),
+    syncedAt: timestamp("synced_at").defaultNow().notNull(),
+  },
+  (t) => [unique().on(t.clientId, t.userId)],
+);
+
+export const chatMessagesRelations = relations(chatMessages, ({ one }) => ({
+  user: one(users, {
+    fields: [chatMessages.userId],
     references: [users.id],
   }),
 }));

@@ -3,6 +3,7 @@ import { handle } from "hono/vercel";
 import aiRoutes from "./routes/ai";
 import authRoutes from "./routes/auth";
 import { authTokenRoutes } from "./routes/auth-tokens";
+import chatRoutes from "./routes/chat";
 import configRoutes from "./routes/config";
 import profileRoutes from "./routes/profile";
 
@@ -29,6 +30,7 @@ app.get("/health", (c) => {
 app.route("/auth", authRoutes);
 app.route("/auth", authTokenRoutes);
 app.route("/ai", aiRoutes);
+app.route("/chat", chatRoutes);
 app.route("/profile", profileRoutes);
 app.route("/config", configRoutes);
 
