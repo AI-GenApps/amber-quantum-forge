@@ -14,6 +14,7 @@
     "check:staged-types": "bun run scripts/check-staged-types.ts",
     "check:no-middleware": "bun run scripts/check-no-middleware.ts",
     "check:banned-deps": "bun run scripts/check-banned-deps.ts",
+    "codegen:swift": "bun scripts/codegen-swift.ts",
     "prepare": "husky"
   },
   "devDependencies": {
