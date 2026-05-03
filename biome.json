@@ -9,6 +9,7 @@
     "includes": [
       "apps/**",
       "packages/**",
+      "plugins/**",
       "scripts/**",
       "!**/node_modules",
       "!**/.next",
