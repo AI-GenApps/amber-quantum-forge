@@ -1,5 +1,5 @@
 import type { Context, Next } from "hono";
-import { verifyIdToken } from "../firebase/admin";
+import { verifyAccessToken } from "../lib/jwt";
 
 export interface AuthUser {
   uid: string;
@@ -21,29 +21,18 @@ export const authMiddleware = async (c: Context, next: Next) => {
     if (!authHeader?.startsWith("Bearer ")) {
       return c.json({ error: "Unauthorized: Missing or invalid Authorization header" }, 401);
     }
-
-    const idToken = authHeader.substring(7);
-    const decodedToken = await verifyIdToken(idToken);
-
-    const provider = decodedToken.firebase?.sign_in_provider || "unknown";
-
+    const token = authHeader.substring(7);
+    const payload = await verifyAccessToken(token);
     c.set("user", {
-      uid: decodedToken.uid,
-      email: decodedToken.email || null,
-      emailVerified: decodedToken.email_verified || false,
-      provider,
-      isAdmin: (decodedToken as { admin?: unknown }).admin === true,
+      uid: payload.uid,
+      email: payload.email,
+      emailVerified: payload.emailVerified,
+      provider: payload.provider,
+      isAdmin: payload.admin,
     });
-
     await next();
-  } catch (error) {
-    return c.json(
-      {
-        error: "Unauthorized: Invalid token",
-        message: error instanceof Error ? error.message : "Unknown error",
-      },
-      401,
-    );
+  } catch {
+    return c.json({ error: "Unauthorized: Invalid or expired API token" }, 401);
   }
 };
 
