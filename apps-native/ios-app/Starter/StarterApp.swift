@@ -4,6 +4,8 @@ import SwiftUI
 
 @main
 struct StarterApp: App {
+    @State private var viewModel = OnboardingViewModel()
+
     init() {
         FirebaseApp.configure()
         Purchases.configure(withAPIKey: AppConfig.revenueCatKey)
@@ -11,7 +13,11 @@ struct StarterApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if viewModel.isComplete {
+                ContentView()
+            } else {
+                OnboardingView()
+            }
         }
     }
 }
