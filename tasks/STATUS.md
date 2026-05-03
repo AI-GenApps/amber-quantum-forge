@@ -8,7 +8,7 @@ Last updated: manually — update when each epic is fully completed.
 - [x] 01 — Auth Redesign (JWT two-stage auth, exchange/refresh/revoke endpoints)
 - [x] 02 — AI Server (packages/ai, Vercel AI SDK, /api/ai/chat, /api/chat/sync)
 - [x] 03 — Expo Plugins (plugins/expo/auth, plugins/expo/ai, plugins/expo/chat-module)
-- [ ] 04 — Expo App Upgrade (Zustand, React Query, axios, themed components, onboarding)
+- [x] 04 — Expo App Upgrade (Zustand, React Query, axios, themed components, onboarding)
 - [ ] 05 — iOS Scaffold (XcodeGen, SPM, SwiftUI, Widget, codegen script)
 - [ ] 06 — iOS Auth Plugin (plugins/ios/auth — Apple/Google sign-in, Keychain, refresh interceptor)
 - [ ] 07 — iOS AI Plugin (plugins/ios/ai — AICore, SSE parser, OnDeviceAI stub)
