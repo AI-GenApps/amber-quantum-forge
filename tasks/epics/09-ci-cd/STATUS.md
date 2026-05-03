@@ -5,15 +5,15 @@ task: STATUS
 
 # Epic 09 — CI/CD
 
-## Status: pending
+## Status: complete
 
 ## Tasks
 
 | # | Task | Status | Estimate |
 |---|---|---|---|
-| 00 | ios-ci-self-hosted | pending | M |
-| 01 | eas-expo-workflow | pending | M |
-| 02 | web-ci | pending | S |
+| 00 | ios-ci-self-hosted | complete | M |
+| 01 | eas-expo-workflow | complete | M |
+| 02 | web-ci | complete | S |
 
 ## Depends On
 - epic 05-ios-scaffold (complete)
