@@ -1,10 +1,11 @@
-import { AuthProvider } from "@plugin/expo-auth";
+import { AuthProvider, useAuth } from "@plugin/expo-auth";
+import { syncMessages } from "@plugin/expo-chat-module";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import crashlytics from "@react-native-firebase/crashlytics";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, AppState, View } from "react-native";
 import { MaintenanceBanner } from "../components/MaintenanceBanner";
 import { UpdatePrompt } from "../components/UpdatePrompt";
 import { AppConfigProvider } from "../contexts/AppConfigContext";
@@ -18,6 +19,7 @@ const queryClient = new QueryClient();
 
 function RootNavigator() {
   const router = useRouter();
+  const { getAccessToken } = useAuth();
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -29,6 +31,17 @@ function RootNavigator() {
       }
     });
   }, [router]);
+
+  useEffect(() => {
+    const sub = AppState.addEventListener("change", (state) => {
+      if (state === "active") {
+        getAccessToken().then((token) => {
+          if (token) syncMessages(token);
+        });
+      }
+    });
+    return () => sub.remove();
+  }, [getAccessToken]);
 
   if (!ready) {
     return (
