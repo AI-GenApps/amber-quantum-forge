@@ -9,7 +9,7 @@ Last updated: manually — update when each epic is fully completed.
 - [x] 02 — AI Server (packages/ai, Vercel AI SDK, /api/ai/chat, /api/chat/sync)
 - [x] 03 — Expo Plugins (plugins/expo/auth, plugins/expo/ai, plugins/expo/chat-module)
 - [x] 04 — Expo App Upgrade (Zustand, React Query, axios, themed components, onboarding)
-- [ ] 05 — iOS Scaffold (XcodeGen, SPM, SwiftUI, Widget, codegen script)
+- [x] 05 — iOS Scaffold (XcodeGen, SPM, SwiftUI, Widget, codegen script)
 - [ ] 06 — iOS Auth Plugin (plugins/ios/auth — Apple/Google sign-in, Keychain, refresh interceptor)
 - [ ] 07 — iOS AI Plugin (plugins/ios/ai — AICore, SSE parser, OnDeviceAI stub)
 - [ ] 08 — iOS Chat Module (plugins/ios/chat-module — SwiftUI chat, SwiftData, sync)
