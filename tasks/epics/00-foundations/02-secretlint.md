@@ -1,7 +1,7 @@
 ---
 epic: 00-foundations
 task: 02-secretlint
-status: pending
+status: completed
 depends_on:
   - 00-foundations/00-husky-lintstaged
 estimate: S
@@ -40,11 +40,11 @@ This must run in addition to (not instead of) the Biome steps.
 
 ## Implementation Checklist
 
-- [ ] Install secretlint:
+- [x] Install secretlint:
   ```bash
   bun add -d secretlint @secretlint/secretlint-rule-preset-recommend
   ```
-- [ ] Create `.secretlintrc.json` at repo root:
+- [x] Create `.secretlintrc.json` at repo root:
   ```json
   {
     "rules": [
@@ -55,7 +55,7 @@ This must run in addition to (not instead of) the Biome steps.
     "ignoreFilePath": ".secretlintignore"
   }
   ```
-- [ ] Create `.secretlintignore` at repo root to avoid scanning generated/vendor files:
+- [x] Create `.secretlintignore` at repo root to avoid scanning generated/vendor files:
   ```
   node_modules/
   .next/
@@ -67,7 +67,7 @@ This must run in addition to (not instead of) the Biome steps.
   docs/
   tasks/
   ```
-- [ ] Update `.lintstagedrc.json` to add secretlint as a step for all files. The final `.lintstagedrc.json` should look like:
+- [x] Update `.lintstagedrc.json` to add secretlint as a step for all files. The final `.lintstagedrc.json` should look like:
   ```json
   {
     "*.{ts,tsx,js,jsx}": ["biome check --write --no-errors-on-unmatched"],
@@ -75,8 +75,8 @@ This must run in addition to (not instead of) the Biome steps.
     "*": ["secretlint --secretlintignore .secretlintignore"]
   }
   ```
-- [ ] Test secretlint on a clean file: `bunx secretlint "package.json"` should exit 0.
-- [ ] Verify `.env` files are in `.gitignore` (they should be; confirm and add if not).
+- [x] Test secretlint on a clean file: `bunx secretlint "package.json"` should exit 0.
+- [x] Verify `.env` files are in `.gitignore` (they should be; confirm and add if not).
 
 ## Files Touched
 
