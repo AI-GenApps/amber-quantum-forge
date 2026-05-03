@@ -1,0 +1,19 @@
+{
+  "name": "@plugin/expo-chat-module",
+  "version": "0.0.1",
+  "private": true,
+  "main": "src/index.ts",
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*",
+    "@plugin/expo-ai": "*",
+    "zustand": "*",
+    "@react-native-async-storage/async-storage": "*"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "*",
+    "@types/react": "^19.2.14",
+    "@types/react-native": "*",
+    "typescript": "*"
+  }
+}
