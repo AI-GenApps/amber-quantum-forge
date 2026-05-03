@@ -5,16 +5,16 @@ task: STATUS
 
 # Epic 10 — Polish & Release
 
-## Status: pending
+## Status: complete
 
 ## Tasks
 
 | # | Task | Status | Estimate |
 |---|---|---|---|
-| 00 | codegen-verification | pending | S |
-| 01 | sample-seed | pending | S |
-| 02 | doc-cross-links | pending | M |
-| 03 | release-checklist | pending | M |
+| 00 | codegen-verification | complete | S |
+| 01 | sample-seed | complete | S |
+| 02 | doc-cross-links | complete | M |
+| 03 | release-checklist | complete | M |
 
 ## Depends On
 - All prior epics (complete)

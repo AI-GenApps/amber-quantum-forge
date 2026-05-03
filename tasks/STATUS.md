@@ -14,7 +14,7 @@ Last updated: manually — update when each epic is fully completed.
 - [x] 07 — iOS AI Plugin (plugins/ios/ai — AICore, SSE parser, OnDeviceAI stub)
 - [x] 08 — iOS Chat Module (plugins/ios/chat-module — SwiftUI chat, SwiftData, sync)
 - [x] 09 — CI/CD (ios-ci self-hosted, EAS expo workflow, web-ci)
-- [ ] 10 — Polish & Release (codegen verification, seed data, doc cross-links, release checklist)
+- [x] 10 — Polish & Release (codegen verification, seed data, doc cross-links, release checklist)
 
 ## How to read this file
 
