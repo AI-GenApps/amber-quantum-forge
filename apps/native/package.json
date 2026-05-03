@@ -28,6 +28,7 @@
     "@react-native-firebase/messaging": "^21.5.0",
     "@react-native-google-signin/google-signin": "^12.1.0",
     "@repo/analytics": "workspace:*",
+    "@plugin/expo-auth": "workspace:*",
     "@repo/ui": "*",
     "@tanstack/react-query": "^5.100.9",
     "axios": "^1.16.0",

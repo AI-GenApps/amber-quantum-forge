@@ -1,6 +1,6 @@
+import { useAuth } from "@plugin/expo-auth";
 import { StyleSheet } from "react-native";
 import { ThemedText, ThemedView, useToken } from "../../components/themed";
-import { useAuth } from "../../contexts/AuthContext";
 
 export default function ProfileScreen() {
   const { user, signOut } = useAuth();

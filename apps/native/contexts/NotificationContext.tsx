@@ -1,3 +1,4 @@
+import { useAuth } from "@plugin/expo-auth";
 import type * as Notifications from "expo-notifications";
 import type React from "react";
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
@@ -6,7 +7,6 @@ import {
   registerForPushNotificationsAsync,
   setBadgeCount,
 } from "../lib/pushNotifications";
-import { useAuth } from "./AuthContext";
 
 type NotificationContextType = {
   pushToken: string | null;

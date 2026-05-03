@@ -1,3 +1,4 @@
+import { useAuth } from "@plugin/expo-auth";
 import type React from "react";
 import { useState } from "react";
 import {
@@ -9,7 +10,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useAuth } from "../contexts/AuthContext";
 import { deleteProfilePicture, pickImage, uploadProfilePicture } from "../services/profilePicture";
 
 interface ProfilePictureEditorProps {
@@ -21,7 +21,7 @@ export const ProfilePictureEditor: React.FC<ProfilePictureEditorProps> = ({
   profilePictureUrl,
   onUpdate,
 }) => {
-  const { getIdToken } = useAuth();
+  const { getAccessToken } = useAuth();
   const [uploading, setUploading] = useState(false);
 
   const handlePickAndUpload = async () => {
@@ -30,15 +30,18 @@ export const ProfilePictureEditor: React.FC<ProfilePictureEditorProps> = ({
       if (!imageUri) return;
 
       setUploading(true);
-      const idToken = await getIdToken();
+      const idToken = await getAccessToken();
       if (!idToken) {
         throw new Error("Not authenticated");
       }
 
       const url = await uploadProfilePicture(imageUri, idToken);
       onUpdate(url);
-    } catch (error: any) {
-      Alert.alert("Upload Error", error.message || "Failed to upload profile picture");
+    } catch (error: unknown) {
+      Alert.alert(
+        "Upload Error",
+        error instanceof Error ? error.message : "Failed to upload profile picture",
+      );
     } finally {
       setUploading(false);
     }
@@ -57,15 +60,18 @@ export const ProfilePictureEditor: React.FC<ProfilePictureEditorProps> = ({
             onPress: async () => {
               try {
                 setUploading(true);
-                const idToken = await getIdToken();
+                const idToken = await getAccessToken();
                 if (!idToken) {
                   throw new Error("Not authenticated");
                 }
 
                 await deleteProfilePicture(idToken);
                 onUpdate(null);
-              } catch (error: any) {
-                Alert.alert("Delete Error", error.message || "Failed to delete profile picture");
+              } catch (error: unknown) {
+                Alert.alert(
+                  "Delete Error",
+                  error instanceof Error ? error.message : "Failed to delete profile picture",
+                );
               } finally {
                 setUploading(false);
               }
@@ -73,8 +79,8 @@ export const ProfilePictureEditor: React.FC<ProfilePictureEditorProps> = ({
           },
         ],
       );
-    } catch (error: any) {
-      Alert.alert("Error", error.message || "An error occurred");
+    } catch (error: unknown) {
+      Alert.alert("Error", error instanceof Error ? error.message : "An error occurred");
     }
   };
 

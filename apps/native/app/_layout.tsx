@@ -1,3 +1,4 @@
+import { AuthProvider } from "@plugin/expo-auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import crashlytics from "@react-native-firebase/crashlytics";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -7,7 +8,6 @@ import { ActivityIndicator, View } from "react-native";
 import { MaintenanceBanner } from "../components/MaintenanceBanner";
 import { UpdatePrompt } from "../components/UpdatePrompt";
 import { AppConfigProvider } from "../contexts/AppConfigContext";
-import { AuthProvider } from "../contexts/AuthContext";
 import { NotificationProvider } from "../contexts/NotificationContext";
 import { RevenueCatProvider } from "../contexts/RevenueCatContext";
 import { UpdateProvider } from "../contexts/UpdateContext";

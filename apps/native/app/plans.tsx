@@ -1,3 +1,4 @@
+import { useAuth } from "@plugin/expo-auth";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
@@ -12,7 +13,6 @@ import {
   View,
 } from "react-native";
 import Purchases, { type PurchasesPackage } from "react-native-purchases";
-import { useAuth } from "../contexts/AuthContext";
 import { useRevenueCat } from "../contexts/RevenueCatContext";
 
 export default function PlansScreen() {

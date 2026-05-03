@@ -1,7 +1,7 @@
+import { useAuth } from "@plugin/expo-auth";
 import type React from "react";
 import { useState } from "react";
 import { Alert, Platform, StyleSheet, Text, View } from "react-native";
-import { useAuth } from "../contexts/AuthContext";
 import { AuthButton } from "./AuthButton";
 
 export const AuthScreen: React.FC = () => {

@@ -1,14 +1,14 @@
+import { useAuth } from "@plugin/expo-auth";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, ScrollView, StyleSheet } from "react-native";
 import { AuthScreen } from "../../components/AuthScreen";
 import { ProfilePictureEditor } from "../../components/ProfilePictureEditor";
 import { ThemedText, ThemedView, useToken } from "../../components/themed";
-import { useAuth } from "../../contexts/AuthContext";
 import { getApiUrl } from "../../firebase.config";
 
 export default function Native() {
-  const { user, loading, signOut, getIdToken } = useAuth();
+  const { user, loading, signOut, getAccessToken } = useAuth();
   const [profilePictureUrl, setProfilePictureUrl] = useState<string | null>(null);
   const primary = useToken("primary");
 
@@ -16,7 +16,7 @@ export default function Native() {
     const fetchProfile = async () => {
       if (!user) return;
       try {
-        const idToken = await getIdToken();
+        const idToken = await getAccessToken();
         if (!idToken) return;
         const apiUrl = getApiUrl();
         const response = await fetch(`${apiUrl}/auth/me`, {
@@ -31,7 +31,7 @@ export default function Native() {
       }
     };
     fetchProfile();
-  }, [user, getIdToken]);
+  }, [user, getAccessToken]);
 
   if (loading) {
     return (
