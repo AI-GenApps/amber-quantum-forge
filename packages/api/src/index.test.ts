@@ -12,8 +12,8 @@ describe("Hono app smoke", () => {
   it("GET /health returns ok", async () => {
     const res = await app.request("/health");
     expect(res.status).toBe(200);
-    const body = (await res.json()) as { ok: boolean };
-    expect(body.ok).toBe(true);
+    const body = (await res.json()) as { status: string };
+    expect(body.status).toBe("ok");
   });
 
   it("OPTIONS preflight returns 204 with CORS headers", async () => {

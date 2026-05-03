@@ -49,7 +49,31 @@ Mobile App
 | `revoked` | boolean | set true on explicit revoke |
 | `created_at` | timestamptz | |
 
-## Endpoints
+## Public vs Protected Endpoints
+
+### Public (no auth required)
+
+| Method | Path | Description |
+|---|---|---|
+| GET | /health | Health check |
+| GET | /config/app-metadata | App config |
+| POST | /auth/exchange | Firebase token → API JWT |
+| POST | /auth/refresh | Rotate refresh token |
+| POST | /auth/revoke | Revoke refresh token |
+
+### Protected (`Authorization: Bearer <apiJwt>`)
+
+| Method | Path | Description |
+|---|---|---|
+| POST | /auth/register-device | Register FCM token |
+| DELETE | /auth/device/:fcmToken | Unregister device |
+| GET | /auth/me | Current user profile |
+| GET | /profile/* | Profile routes |
+| PUT | /config/:key | Update config (admin only) |
+| POST | /ai/chat | AI chat stream (epic 02) |
+| POST | /chat/sync | Chat history sync (epic 02) |
+
+
 
 ### `POST /api/auth/exchange`
 - Public (no auth required)

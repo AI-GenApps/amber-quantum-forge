@@ -22,7 +22,7 @@ app.get("/", (c) => {
 });
 
 app.get("/health", (c) => {
-  return c.json({ ok: true });
+  return c.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
 app.route("/auth", authRoutes);
