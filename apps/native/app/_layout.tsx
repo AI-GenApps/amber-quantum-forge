@@ -26,7 +26,10 @@ const AppLayout = () => {
               <UpdateProvider>
                 <UpdatePrompt />
                 <MaintenanceBanner />
-                <Stack />
+                <Stack>
+                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                  <Stack.Screen name="plans" />
+                </Stack>
               </UpdateProvider>
             </NotificationProvider>
           </RevenueCatProvider>
