@@ -1,7 +1,7 @@
 ---
 epic: 00-foundations
 task: 00-husky-lintstaged
-status: pending
+status: completed
 depends_on: []
 estimate: S
 commit_scope: foundations
@@ -39,22 +39,22 @@ Ensure the existing husky + lint-staged setup is complete, documented, and worki
 
 ## Implementation Checklist
 
-- [ ] Read `.husky/pre-commit` to confirm all 5 checks are present. If any are missing, add them.
-- [ ] Read `package.json` to find any existing `lint-staged` config.
-- [ ] Create or update `.lintstagedrc.json` at the repo root:
+- [x] Read `.husky/pre-commit` to confirm all 5 checks are present. If any are missing, add them.
+- [x] Read `package.json` to find any existing `lint-staged` config.
+- [x] Create or update `.lintstagedrc.json` at the repo root:
   ```json
   {
     "*.{ts,tsx,js,jsx}": ["biome check --write --no-errors-on-unmatched"],
     "*.{json,md}": ["biome format --write --no-errors-on-unmatched"]
   }
   ```
-- [ ] Verify `husky` and `lint-staged` are in `devDependencies` of root `package.json`. If not, run:
+- [x] Verify `husky` and `lint-staged` are in `devDependencies` of root `package.json`. If not, run:
   ```bash
   bun add -d husky lint-staged
   ```
-- [ ] Run `bun run prepare` to ensure husky is initialized (creates `.husky/` if not present).
-- [ ] Test the hook by staging a `.ts` file with a trivial change and running `git commit --dry-run` (or simply confirm `bunx lint-staged` runs without error).
-- [ ] Add a `## Pre-commit Hooks` section to `docs/setup/00-overview.md` (that file will be created in task 03; create a placeholder if it doesn't exist yet).
+- [x] Run `bun run prepare` to ensure husky is initialized (creates `.husky/` if not present).
+- [x] Test the hook by staging a `.ts` file with a trivial change and running `git commit --dry-run` (or simply confirm `bunx lint-staged` runs without error).
+- [x] Add a `## Pre-commit Hooks` section to `docs/setup/00-overview.md` (that file will be created in task 03; create a placeholder if it doesn't exist yet).
 
 ## Files Touched
 

@@ -35,10 +35,5 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ],
-  "lint-staged": {
-    "*.{ts,tsx,js,jsx,json,jsonc,css}": [
-      "biome check --write --no-errors-on-unmatched"
-    ]
-  }
+  ]
 }
