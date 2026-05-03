@@ -1,33 +1,52 @@
-# Starter Expo Mobile
+# Starter Expo Mobile — Powerpack
 
-Turborepo monorepo with an Expo/React Native mobile app and a Next.js web app that hosts a shared Hono API.
+Turborepo + Bun monorepo that bootstraps a production-ready mobile product with an Expo/React Native app, a native iOS SwiftUI app, and a Next.js + Hono API backend.
+
+## What you get
+
+- **Expo app** (`apps/native`) — Firebase Auth, RevenueCat, 3-screen onboarding, streaming AI chat
+- **Next.js web app** (`apps/web`) — Tailwind CSS, shadcn/ui, admin panel
+- **Hono API** (`packages/api`) — hosted in Next.js, JWT auth, OpenAI streaming chat, config system
+- **SwiftUI iOS app** (`apps-native/ios-app`) — XcodeGen, SPM, SwiftData, widget
+- **Two-stage JWT auth** — Firebase ID token → API access token + refresh token
+- **OpenAI streaming chat** — Vercel AI SDK server-side, native SSE parser on iOS
+- **Plugin architecture** — features in `plugins/expo/*` and `plugins/ios/*`
+- **CI/CD** — self-hosted macOS runner (iOS), EAS (Expo), GitHub Actions (web)
+
+## Quick start
+
+```bash
+bun install
+cp .env.example .env   # fill in values — see docs/setup/02-env-vars.md
+cd packages/db && bun run db:push
+bun run dev
+```
+
+## Docs
+
+| File | Contents |
+|---|---|
+| [docs/setup/00-overview.md](docs/setup/00-overview.md) | Repo overview, hooks, commit format |
+| [docs/setup/01-prerequisites.md](docs/setup/01-prerequisites.md) | Bun, Xcode, tools |
+| [docs/setup/02-env-vars.md](docs/setup/02-env-vars.md) | All environment variables |
+| [docs/setup/03-database.md](docs/setup/03-database.md) | Postgres + Drizzle |
+| [docs/setup/04-firebase.md](docs/setup/04-firebase.md) | Firebase project setup |
+| [docs/setup/05-revenuecat.md](docs/setup/05-revenuecat.md) | RevenueCat setup |
+| [docs/setup/06-expo.md](docs/setup/06-expo.md) | EAS + Expo CLI |
+| [docs/setup/07-ios-app.md](docs/setup/07-ios-app.md) | Xcode + XcodeGen |
+| [docs/setup/08-ios-plugins.md](docs/setup/08-ios-plugins.md) | iOS plugin system |
+| [docs/setup/09-expo-plugins.md](docs/setup/09-expo-plugins.md) | Expo plugin system |
+| [docs/setup/10-ci-cd.md](docs/setup/10-ci-cd.md) | CI/CD pipelines |
+| [docs/setup/11-release.md](docs/setup/11-release.md) | Release checklist |
+
+## Task system
+
+This repo is built task-by-task. See [`tasks/START.md`](tasks/START.md) for the full execution guide.
 
 ## Architecture
 
-```
-apps/
-  native/     Expo SDK 55 (React Native 0.83) — Firebase Auth, RevenueCat, push notifications
-  web/        Next.js 16 — hosts the Hono API at /api/*
-packages/
-  api/        Hono API (mounted in web at /api/*)
-  db/         Drizzle ORM + PostgreSQL
-  ui/         Shared React component library
-  typescript-config/  Shared tsconfig
-```
-
-## Setup
-
-```bash
-cp .env.example .env   # then fill in values — see .env.example for the full list
-bun install
-bun run dev            # all apps
-bun run build          # all apps
-bun run format         # prettier
-bun run clean          # remove build outputs + node_modules
-```
-
-## Admin panel
-
-The web app exposes `/admin` for managing app metadata that the native app reads from `/api/config/app-metadata` — version gate, feature flags, maintenance mode, store URLs, support/legal URLs — plus a users + devices view. Access is gated by a Firebase `admin: true` custom claim (or the `ADMIN_UIDS` allowlist while bootstrapping). See [apps/web/README.md](apps/web/README.md#admin-panel).
-
-See individual READMEs: [native](apps/native/README.md) | [web](apps/web/README.md) | [api](packages/api/README.md) | [db](packages/db/README.md)
+- [Auth](docs/architecture/auth.md) — two-stage JWT flow
+- [AI](docs/architecture/ai.md) — Vercel AI SDK + SSE streaming
+- [Analytics](docs/architecture/analytics.md) — event registry + Swift codegen
+- [Config](docs/architecture/config.md) — app_config table + typed key registry
+- [Design tokens](docs/architecture/design-tokens.md) — token registry + Swift codegen
