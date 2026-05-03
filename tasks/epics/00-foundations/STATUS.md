@@ -11,7 +11,7 @@ Set up developer tooling and documentation skeleton that every subsequent epic d
 - [x] 00 — husky + lint-staged pre-commit hooks
 - [x] 01 — commitlint (conventional commits enforcement)
 - [x] 02 — secretlint (secret leak prevention)
-- [ ] 03 — docs/setup skeleton (11 setup docs)
+- [x] 03 — docs/setup skeleton (11 setup docs)
 - [ ] 04 — root README + AGENTS.md + CLAUDE.md updates
 
 ## Notes

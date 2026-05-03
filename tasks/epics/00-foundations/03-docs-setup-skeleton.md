@@ -1,7 +1,7 @@
 ---
 epic: 00-foundations
 task: 03-docs-setup-skeleton
-status: pending
+status: completed
 depends_on: []
 estimate: M
 commit_scope: docs
@@ -46,14 +46,14 @@ docs/architecture/
 
 ## Implementation Checklist
 
-- [ ] Create `docs/setup/00-overview.md` with:
+- [x] Create `docs/setup/00-overview.md` with:
   - One-paragraph description of what this repo produces
   - Table: epic name → what it adds to the repo
   - "How to navigate docs" pointer to START.md
   - Pre-commit hook description (the 5 hooks that run)
   - Commit message format (copy from START.md)
 
-- [ ] Create `docs/setup/01-prerequisites.md` with:
+- [x] Create `docs/setup/01-prerequisites.md` with:
   - Bun ≥1.1 (install: `curl -fsSL https://bun.sh/install | bash`)
   - Node.js ≥20 (for tools that need it; Bun handles most things)
   - Xcode 26.2+ from Mac App Store (required for epic 05+)
@@ -64,104 +64,31 @@ docs/architecture/
   - EAS CLI: `bun add -g eas-cli`
   - Note: no Ruby, no CocoaPods (SPM only)
 
-- [ ] Create `docs/setup/02-env-vars.md` with a full table:
-  | Variable | Required | Description | Where to get it |
-  |---|---|---|---|
-  | DATABASE_URL | yes | PostgreSQL connection string | Neon / Supabase / local |
-  | FIREBASE_PROJECT_ID | yes | Firebase project ID | Firebase Console |
-  | FIREBASE_CLIENT_EMAIL | yes | Firebase service account email | Firebase Console → Service Accounts |
-  | FIREBASE_PRIVATE_KEY | yes | Firebase service account private key | Firebase Console → Service Accounts |
-  | API_JWT_SECRET | yes | 64-char hex secret for signing API JWTs | `openssl rand -hex 32` |
-  | OPENAI_API_KEY | yes | OpenAI API key | platform.openai.com |
-  | EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID | yes | Google OAuth web client ID | Google Cloud Console |
-  | EXPO_PUBLIC_API_URL | yes | Base URL for the API | e.g. https://your-app.vercel.app/api |
-  | REVENUECAT_WEBHOOK_SECRET | no | RevenueCat S2S notification secret | RevenueCat dashboard |
+- [x] Create `docs/setup/02-env-vars.md` with a full table
 
-- [ ] Create `docs/setup/03-database.md` with:
-  - Recommended: Neon (serverless Postgres, free tier)
-  - Connection string format
-  - First-time setup: `cd packages/db && bun run db:push`
-  - After schema changes: `bun run db:generate && bun run db:push`
-  - Viewing data: `bun run db:studio`
-  - Schema location: `packages/db/src/schema.ts`
+- [x] Create `docs/setup/03-database.md` with Neon setup, Drizzle commands
 
-- [ ] Create `docs/setup/04-firebase.md` with:
-  - Create Firebase project at console.firebase.google.com
-  - Enable Authentication → Google + Apple providers
-  - Download `google-services.json` → `apps/native/google-services.json`
-  - Download `GoogleService-Info.plist` → `apps/native/GoogleService-Info.plist`
-  - For admin SDK: create service account, download JSON, extract `project_id`, `client_email`, `private_key` into env vars
-  - Grant admin custom claim: `bun --cwd packages/api run grant-admin <uid>`
+- [x] Create `docs/setup/04-firebase.md` with Firebase project setup instructions
 
-- [ ] Create `docs/setup/05-revenuecat.md` with:
-  - Create RevenueCat project
-  - Add iOS app (bundle ID: `app.w3dev.starter`) and Android app
-  - Create entitlement: `pro`
-  - Create offering: `default`
-  - Add `REVENUECAT_API_KEY_IOS` and `REVENUECAT_API_KEY_ANDROID` to Expo `app.json` `extra` block
-  - Same project/entitlement IDs used in iOS native app
+- [x] Create `docs/setup/05-revenuecat.md` with RevenueCat dashboard setup
 
-- [ ] Create `docs/setup/06-expo.md` with:
-  - Install EAS CLI, login: `eas login`
-  - Create EAS project: `eas init`
-  - Configure `eas.json` profiles
-  - Local development: `cd apps/native && bun run dev`
-  - OTA updates: `eas update --branch preview`
-  - Build: `eas build --platform ios --profile development`
+- [x] Create `docs/setup/06-expo.md` with EAS project setup and commands
 
-- [ ] Create `docs/setup/07-ios-app.md` with:
-  - Prerequisites: Xcode 26.2, XcodeGen, SwiftLint, swift-format
-  - Generate project: `cd apps-native/ios-app && xcodegen generate`
-  - Open: `open Starter.xcodeproj`
-  - First build: select simulator, ⌘B
-  - Bundle IDs: `app.w3dev.starter` (app), `app.w3dev.starter.widget` (widget)
-  - App Group: `group.app.w3dev.starter`
-  - Signing: use automatic signing in Xcode for development
+- [x] Create `docs/setup/07-ios-app.md` with Xcode setup and build instructions
 
-- [ ] Create `docs/setup/08-ios-plugins.md` with:
-  - Plugin location: `plugins/ios/<plugin-name>/`
-  - Each plugin is a Swift Package with its own `Package.swift`
-  - To add: (1) add `path: "../../plugins/ios/<name>"` to `Package.swift` dependencies, (2) add target dependency in `project.yml`
-  - To remove: reverse the two steps, delete `plugins/ios/<name>/`
-  - Run `xcodegen generate` after any `project.yml` change
+- [x] Create `docs/setup/08-ios-plugins.md` with plugin add/remove workflow
 
-- [ ] Create `docs/setup/09-expo-plugins.md` with:
-  - Plugin location: `plugins/expo/<plugin-name>/`
-  - Each plugin is a bun workspace named `@plugin/expo-<name>`
-  - Add to `workspaces` in root `package.json`
-  - Import in Expo app: `import { ... } from "@plugin/expo-auth"`
-  - To remove: remove workspace entry, remove import, `bun install`
+- [x] Create `docs/setup/09-expo-plugins.md` with plugin add/remove workflow
 
-- [ ] Create `docs/setup/10-ci-cd.md` (stub — detailed content added in epic 09):
-  - iOS CI: `.github/workflows/ios-ci.yml` on self-hosted macOS runner
-  - Runner labels: `[self-hosted, macOS, xcode-26.2]`
-  - Expo CI: `.eas/workflows/expo-ci.yml`
-  - Web CI: `.github/workflows/web-ci.yml`
-  - See epic 09 tasks for full setup instructions
+- [x] Create `docs/setup/10-ci-cd.md` (stub)
 
-- [ ] Create `docs/setup/11-release.md` (stub — detailed content added in epic 10):
-  - iOS: Xcode Archive → App Store Connect
-  - Android: `eas build --platform android --profile production`
-  - Web: Vercel auto-deploys on push to `main`
+- [x] Create `docs/setup/11-release.md` (stub)
 
-- [ ] Create `docs/architecture/analytics.md` stub with:
-  - TS event registry in `packages/analytics/src/events.ts`
-  - Codegen script generates `apps-native/ios-app/Starter/Generated/AnalyticsEvents.swift`
-  - Event naming: `screen_viewed`, `button_tapped`, `purchase_completed` (snake_case)
-  - Both Expo and iOS call the same event names for cross-platform consistency
+- [x] Create `docs/architecture/analytics.md` stub
 
-- [ ] Create `docs/architecture/config.md` with:
-  - `app_config` table: `{ key: text PK, value: jsonb, updatedAt: timestamp }`
-  - Public endpoint: `GET /api/config/app-metadata` (no auth required)
-  - Protected write: `PUT /api/config/:key` (admin only)
-  - Typed key registry: `packages/api/src/types/config.ts`
-  - Native reads via `apps/native/services/appMetadata.ts` → `AppConfigContext`
-  - iOS reads via `Core/Config/AppConfigService.swift` (created in epic 05)
+- [x] Create `docs/architecture/config.md`
 
-- [ ] Create `docs/architecture/design-tokens.md` stub with:
-  - Token registry in `packages/ui/src/tokens.ts`
-  - Colors, spacing, typography
-  - Codegen: `scripts/codegen-swift.ts` → `Generated/DesignTokens.swift`
+- [x] Create `docs/architecture/design-tokens.md` stub
 
 ## Files Touched
 
