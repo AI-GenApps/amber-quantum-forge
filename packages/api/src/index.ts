@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
 import authRoutes from "./routes/auth";
+import { authTokenRoutes } from "./routes/auth-tokens";
 import configRoutes from "./routes/config";
 import profileRoutes from "./routes/profile";
 
@@ -25,6 +26,7 @@ app.get("/health", (c) => {
 });
 
 app.route("/auth", authRoutes);
+app.route("/auth", authTokenRoutes);
 app.route("/profile", profileRoutes);
 app.route("/config", configRoutes);
 
