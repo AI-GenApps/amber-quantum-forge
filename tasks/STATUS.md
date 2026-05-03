@@ -11,7 +11,7 @@ Last updated: manually — update when each epic is fully completed.
 - [x] 04 — Expo App Upgrade (Zustand, React Query, axios, themed components, onboarding)
 - [x] 05 — iOS Scaffold (XcodeGen, SPM, SwiftUI, Widget, codegen script)
 - [x] 06 — iOS Auth Plugin (plugins/ios/auth — Apple/Google sign-in, Keychain, refresh interceptor)
-- [ ] 07 — iOS AI Plugin (plugins/ios/ai — AICore, SSE parser, OnDeviceAI stub)
+- [x] 07 — iOS AI Plugin (plugins/ios/ai — AICore, SSE parser, OnDeviceAI stub)
 - [ ] 08 — iOS Chat Module (plugins/ios/chat-module — SwiftUI chat, SwiftData, sync)
 - [ ] 09 — CI/CD (ios-ci self-hosted, EAS expo workflow, web-ci)
 - [ ] 10 — Polish & Release (codegen verification, seed data, doc cross-links, release checklist)

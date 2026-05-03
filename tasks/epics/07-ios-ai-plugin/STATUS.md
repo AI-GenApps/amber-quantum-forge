@@ -5,16 +5,16 @@ task: STATUS
 
 # Epic 07 — iOS AI Plugin
 
-## Status: pending
+## Status: complete
 
 ## Tasks
 
 | # | Task | Status | Estimate |
 |---|---|---|---|
-| 00 | aicore-module | pending | M |
-| 01 | ainetworking-sse-parser | pending | M |
-| 02 | vercel-datastream-parser | pending | M |
-| 03 | ondevice-ai-stub | pending | S |
+| 00 | aicore-module | complete | M |
+| 01 | ainetworking-sse-parser | complete | M |
+| 02 | vercel-datastream-parser | complete | M |
+| 03 | ondevice-ai-stub | complete | S |
 
 ## Depends On
 - epic 05-ios-scaffold (complete)
