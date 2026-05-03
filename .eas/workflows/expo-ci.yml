@@ -1,0 +1,33 @@
+name: Expo CI
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - apps/native/**
+      - packages/**
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    name: Lint
+    type: managed
+    steps:
+      - name: Check out repository
+        uses: eas/checkout
+      - name: Set up Bun
+        uses: eas/use_npm_token
+      - name: Install dependencies
+        run: bun install
+      - name: Run Biome checks
+        run: bun run check
+
+  build:
+    name: Preview build
+    type: build
+    needs: [lint]
+    params:
+      platform: all
+      profile: preview
