@@ -299,3 +299,11 @@ bun run scripts/codegen-swift.ts
 # iOS: regenerate Xcode project after editing project.yml
 cd apps-native/ios-app && xcodegen generate
 ```
+
+## Architecture references
+
+- [Auth flow](../docs/architecture/auth.md)
+- [AI streaming](../docs/architecture/ai.md)
+- [Analytics](../docs/architecture/analytics.md)
+- [Config system](../docs/architecture/config.md)
+- [Design tokens](../docs/architecture/design-tokens.md)

@@ -128,3 +128,9 @@ Web admin sessions use a separate cookie flow (`apps/web/lib/admin-session.ts`) 
 - Access tokens are not revocable (short TTL mitigates this)
 - `ADMIN_UIDS` env var provides bootstrap admin access before custom claims are set
 - All token operations use parameterized queries via Drizzle ORM
+
+## See also
+
+- [Setup: Firebase](../setup/04-firebase.md)
+- [Setup: Environment variables](../setup/02-env-vars.md)
+- [Epic 01 status](../../tasks/epics/01-auth-redesign/STATUS.md)

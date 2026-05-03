@@ -151,3 +151,9 @@ export async function createChatStream(
 | `OPENAI_API_KEY` | yes | server-side only, never exposed to client |
 | `AI_DEFAULT_MODEL` | no | defaults to `gpt-4o-mini` |
 | `AI_SYSTEM_PROMPT` | no | injected as system message if set |
+
+## See also
+
+- [Setup: Environment variables](../setup/02-env-vars.md)
+- [Setup: iOS plugins](../setup/08-ios-plugins.md)
+- [Epic 02 status](../../tasks/epics/02-ai-server/STATUS.md)
