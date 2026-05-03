@@ -1,0 +1,28 @@
+name: iOS CI
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps-native/**'
+      - 'plugins/ios/**'
+      - '.github/workflows/ios-ci.yml'
+  pull_request:
+    paths:
+      - 'apps-native/**'
+      - 'plugins/ios/**'
+jobs:
+  build:
+    runs-on: [self-hosted, macOS, xcode-26.2]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen || true
+      - name: Generate Xcode project
+        run: xcodegen generate
+        working-directory: apps-native/ios-app
+      - name: Resolve SPM packages
+        run: xcodebuild -project Starter.xcodeproj -resolvePackageDependencies
+        working-directory: apps-native/ios-app
+      - name: Build
+        run: xcodebuild -project Starter.xcodeproj -scheme Starter -destination generic/platform=iOS build CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+        working-directory: apps-native/ios-app
