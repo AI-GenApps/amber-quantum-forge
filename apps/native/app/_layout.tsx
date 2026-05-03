@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { MaintenanceBanner } from "../components/MaintenanceBanner";
 import { UpdatePrompt } from "../components/UpdatePrompt";
@@ -7,21 +8,25 @@ import { NotificationProvider } from "../contexts/NotificationContext";
 import { RevenueCatProvider } from "../contexts/RevenueCatContext";
 import { UpdateProvider } from "../contexts/UpdateContext";
 
+const queryClient = new QueryClient();
+
 const AppLayout = () => {
   return (
-    <AppConfigProvider>
-      <AuthProvider>
-        <RevenueCatProvider>
-          <NotificationProvider>
-            <UpdateProvider>
-              <UpdatePrompt />
-              <MaintenanceBanner />
-              <Stack />
-            </UpdateProvider>
-          </NotificationProvider>
-        </RevenueCatProvider>
-      </AuthProvider>
-    </AppConfigProvider>
+    <QueryClientProvider client={queryClient}>
+      <AppConfigProvider>
+        <AuthProvider>
+          <RevenueCatProvider>
+            <NotificationProvider>
+              <UpdateProvider>
+                <UpdatePrompt />
+                <MaintenanceBanner />
+                <Stack />
+              </UpdateProvider>
+            </NotificationProvider>
+          </RevenueCatProvider>
+        </AuthProvider>
+      </AppConfigProvider>
+    </QueryClientProvider>
   );
 };
 
