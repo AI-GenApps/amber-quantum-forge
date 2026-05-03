@@ -6,7 +6,7 @@ Last updated: manually — update when each epic is fully completed.
 
 - [x] 00 — Foundations (husky, lint-staged, commitlint, secretlint, docs skeleton)
 - [x] 01 — Auth Redesign (JWT two-stage auth, exchange/refresh/revoke endpoints)
-- [ ] 02 — AI Server (packages/ai, Vercel AI SDK, /api/ai/chat, /api/chat/sync)
+- [x] 02 — AI Server (packages/ai, Vercel AI SDK, /api/ai/chat, /api/chat/sync)
 - [ ] 03 — Expo Plugins (plugins/expo/auth, plugins/expo/ai, plugins/expo/chat-module)
 - [ ] 04 — Expo App Upgrade (Zustand, React Query, axios, themed components, onboarding)
 - [ ] 05 — iOS Scaffold (XcodeGen, SPM, SwiftUI, Widget, codegen script)
