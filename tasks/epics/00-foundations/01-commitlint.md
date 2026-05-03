@@ -1,7 +1,7 @@
 ---
 epic: 00-foundations
 task: 01-commitlint
-status: pending
+status: completed
 depends_on:
   - 00-foundations/00-husky-lintstaged
 estimate: S
@@ -42,11 +42,11 @@ Use latest commitlint v19+. Check `https://commitlint.js.org` if needed.
 
 ## Implementation Checklist
 
-- [ ] Install commitlint packages:
+- [x] Install commitlint packages:
   ```bash
   bun add -d @commitlint/cli @commitlint/config-conventional
   ```
-- [ ] Create `commitlint.config.ts` at repo root:
+- [x] Create `commitlint.config.ts` at repo root:
   ```typescript
   import type { UserConfig } from "@commitlint/types";
 
@@ -61,14 +61,14 @@ Use latest commitlint v19+. Check `https://commitlint.js.org` if needed.
 
   export default config;
   ```
-- [ ] Create `.husky/commit-msg` hook:
+- [x] Create `.husky/commit-msg` hook:
   ```bash
   #!/bin/sh
   bunx --no -- commitlint --edit $1
   ```
-- [ ] Make the hook executable: `chmod +x .husky/commit-msg`
-- [ ] Test with a valid commit message: `echo "feat(auth): add exchange endpoint [01-auth-redesign/02]" | bunx --no -- commitlint`
-- [ ] Test with an invalid message to confirm rejection: `echo "added stuff" | bunx --no -- commitlint` should exit non-zero.
+- [x] Make the hook executable: `chmod +x .husky/commit-msg`
+- [x] Test with a valid commit message: `echo "feat(auth): add exchange endpoint [01-auth-redesign/02]" | bunx --no -- commitlint`
+- [x] Test with an invalid message to confirm rejection: `echo "added stuff" | bunx --no -- commitlint` should exit non-zero.
 
 ## Files Touched
 
