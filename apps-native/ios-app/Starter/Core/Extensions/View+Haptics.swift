@@ -1,17 +1,18 @@
 import SwiftUI
 
-struct HapticModifier: ViewModifier {
-    let style: UIImpactFeedbackGenerator.FeedbackStyle
+private struct HapticModifier: ViewModifier {
+    let feedback: SensoryFeedback
+    @State private var trigger = false
 
     func body(content: Content) -> some View {
-        content.onTapGesture {
-            UIImpactFeedbackGenerator(style: style).impactOccurred()
-        }
+        content
+            .onTapGesture { trigger.toggle() }
+            .sensoryFeedback(feedback, trigger: trigger)
     }
 }
 
 extension View {
-    func hapticImpact(_ style: UIImpactFeedbackGenerator.FeedbackStyle = .medium) -> some View {
-        modifier(HapticModifier(style: style))
+    func hapticImpact(_ feedback: SensoryFeedback = .impact(weight: .medium)) -> some View {
+        modifier(HapticModifier(feedback: feedback))
     }
 }

@@ -1,15 +1,16 @@
 import SwiftUI
 
-private struct OnboardingSlide {
+private struct OnboardingSlide: Identifiable {
+    let id: String
     let emoji: String
     let title: String
     let body: String
 }
 
 private let slides: [OnboardingSlide] = [
-    OnboardingSlide(emoji: "👋", title: "Welcome", body: "Your AI-powered starter app."),
-    OnboardingSlide(emoji: "💬", title: "Chat", body: "Ask anything, get instant answers."),
-    OnboardingSlide(emoji: "🚀", title: "Get Started", body: "Sign in to unlock all features."),
+    OnboardingSlide(id: "welcome", emoji: "👋", title: "Welcome", body: "Your AI-powered starter app."),
+    OnboardingSlide(id: "chat", emoji: "💬", title: "Chat", body: "Ask anything, get instant answers."),
+    OnboardingSlide(id: "get-started", emoji: "🚀", title: "Get Started", body: "Sign in to unlock all features."),
 ]
 
 struct OnboardingView: View {
@@ -18,17 +19,17 @@ struct OnboardingView: View {
 
     var body: some View {
         TabView(selection: $page) {
-            ForEach(slides.indices, id: \.self) { index in
+            ForEach(Array(slides.enumerated()), id: \.element.id) { index, slide in
                 VStack(spacing: 24) {
-                    Text(slides[index].emoji).font(.system(size: 64))
-                    Text(slides[index].title).font(.title).bold()
-                    Text(slides[index].body).font(.body).multilineTextAlignment(.center)
+                    Text(slide.emoji).font(.system(size: 64))
+                    Text(slide.title).font(.title).bold()
+                    Text(slide.body).font(.body).multilineTextAlignment(.center)
                     if index == slides.count - 1 {
                         Button("Get Started") {
                             viewModel.completeOnboarding()
                         }
                         .buttonStyle(.borderedProminent)
-                        .hapticImpact(.heavy)
+                        .hapticImpact(.impact(weight: .heavy))
                     }
                 }
                 .padding()

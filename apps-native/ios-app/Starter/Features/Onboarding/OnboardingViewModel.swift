@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 @Observable
 class OnboardingViewModel {
     private let onboardingKey = "onboarding_seen"

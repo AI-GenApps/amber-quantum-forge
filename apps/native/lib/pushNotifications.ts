@@ -1,6 +1,5 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
-import { Platform } from "react-native";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -19,7 +18,7 @@ export async function registerForPushNotificationsAsync(): Promise<string | null
     return null;
   }
 
-  if (Platform.OS === "android") {
+  if (process.env.EXPO_OS === "android") {
     await Notifications.setNotificationChannelAsync("default", {
       name: "Default",
       importance: Notifications.AndroidImportance.MAX,

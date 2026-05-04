@@ -32,11 +32,12 @@ export async function refreshToken(token: string, apiBaseUrl: string): Promise<R
 }
 
 export async function revokeToken(token: string, apiBaseUrl: string): Promise<void> {
-  await fetch(`${apiBaseUrl}/auth/revoke`, {
+  const res = await fetch(`${apiBaseUrl}/auth/revoke`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ refreshToken: token }),
   });
+  if (!res.ok) throw new Error(`revoke failed: ${res.status}`);
 }
 
 export async function registerDevice(
@@ -45,7 +46,7 @@ export async function registerDevice(
   deviceInfo: unknown,
   apiBaseUrl: string,
 ): Promise<void> {
-  await fetch(`${apiBaseUrl}/auth/register-device`, {
+  const res = await fetch(`${apiBaseUrl}/auth/register-device`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -53,4 +54,5 @@ export async function registerDevice(
     },
     body: JSON.stringify({ fcmToken, deviceInfo }),
   });
+  if (!res.ok) throw new Error(`register-device failed: ${res.status}`);
 }

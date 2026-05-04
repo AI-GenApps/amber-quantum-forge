@@ -6,7 +6,7 @@ export async function syncMessages(accessToken: string): Promise<void> {
   const { messages, markSynced } = useChatStore.getState();
   const unsynced = messages.filter((m) => !m.synced);
   if (unsynced.length === 0) return;
-  await fetch(`${API_BASE_URL}/chat/sync`, {
+  const res = await fetch(`${API_BASE_URL}/chat/sync`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -21,5 +21,6 @@ export async function syncMessages(accessToken: string): Promise<void> {
       })),
     }),
   });
+  if (!res.ok) throw new Error(`sync failed: ${res.status}`);
   markSynced(unsynced.map((m) => m.id));
 }

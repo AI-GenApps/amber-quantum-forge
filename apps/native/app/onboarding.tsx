@@ -1,7 +1,7 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
+import * as SecureStore from "expo-secure-store";
 import { useCallback, useRef, useState } from "react";
-import { FlatList, StyleSheet, TouchableOpacity } from "react-native";
+import { FlatList, Pressable } from "react-native";
 import { DotIndicator } from "../components/onboarding/DotIndicator";
 import { OnboardingSlide } from "../components/onboarding/OnboardingSlide";
 import { ThemedText, ThemedView, useToken } from "../components/themed";
@@ -38,12 +38,12 @@ export default function OnboardingScreen() {
 
   const handleGetStarted = async () => {
     await hapticSuccess();
-    await AsyncStorage.setItem(ONBOARDING_KEY, "true");
+    await SecureStore.setItemAsync(ONBOARDING_KEY, "true");
     router.replace("/(tabs)/");
   };
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={{ flex: 1 }}>
       <FlatList
         ref={listRef}
         data={SLIDES}
@@ -57,26 +57,26 @@ export default function OnboardingScreen() {
           <OnboardingSlide title={item.title} body={item.body} emoji={item.emoji} />
         )}
       />
-      <ThemedView style={styles.footer}>
+      <ThemedView
+        style={{ paddingBottom: 48, paddingHorizontal: 24, gap: 24, alignItems: "center" }}
+      >
         <DotIndicator labels={SLIDES.map((s) => s.title)} activeIndex={activeIndex} />
         {activeIndex === SLIDES.length - 1 && (
-          <TouchableOpacity
-            style={[styles.button, { backgroundColor: primary }]}
+          <Pressable
+            style={{
+              backgroundColor: primary,
+              borderRadius: 12,
+              paddingVertical: 14,
+              paddingHorizontal: 40,
+            }}
             onPress={handleGetStarted}
           >
-            <ThemedText variant="body" style={[styles.buttonText, { color: "#fff" }]}>
+            <ThemedText variant="body" style={{ fontWeight: "700", color: "#fff" }}>
               Get Started
             </ThemedText>
-          </TouchableOpacity>
+          </Pressable>
         )}
       </ThemedView>
     </ThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  footer: { paddingBottom: 48, paddingHorizontal: 24, gap: 24, alignItems: "center" },
-  button: { borderRadius: 12, paddingVertical: 14, paddingHorizontal: 40 },
-  buttonText: { fontWeight: "700" },
-});

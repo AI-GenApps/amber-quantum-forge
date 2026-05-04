@@ -2,8 +2,9 @@ import Foundation
 import StarterAI
 import SwiftData
 
+@MainActor
 @Observable
-public final class ChatViewModel: ObservableObject {
+public final class ChatViewModel {
     public var messages: [AIMessage] = []
     public var isStreaming: Bool = false
     public var error: AIError?
@@ -20,7 +21,6 @@ public final class ChatViewModel: ObservableObject {
         self.sessionId = sessionId
     }
 
-    @MainActor
     public func send(_ text: String) async {
         let userMessage = AIMessage(role: .user, content: text)
         messages.append(userMessage)

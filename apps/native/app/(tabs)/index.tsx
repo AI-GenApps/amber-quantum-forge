@@ -1,7 +1,7 @@
 import { useAuth } from "@plugin/expo-auth";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, ScrollView, StyleSheet } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView } from "react-native";
 import { AuthScreen } from "../../components/AuthScreen";
 import { ProfilePictureEditor } from "../../components/ProfilePictureEditor";
 import { ThemedText, ThemedView, useToken } from "../../components/themed";
@@ -26,8 +26,8 @@ export default function Native() {
           const data = await response.json();
           setProfilePictureUrl((data as { profilePictureUrl?: string }).profilePictureUrl ?? null);
         }
-      } catch {
-        // ignore
+      } catch (err) {
+        console.error("Failed to fetch profile:", err);
       }
     };
     fetchProfile();
@@ -35,7 +35,7 @@ export default function Native() {
 
   if (loading) {
     return (
-      <ThemedView style={styles.container}>
+      <ThemedView style={{ flex: 1, alignItems: "center", justifyContent: "center", padding: 20 }}>
         <ActivityIndicator size="large" color={primary} />
         <StatusBar style="auto" />
       </ThemedView>
@@ -44,7 +44,7 @@ export default function Native() {
 
   if (!user) {
     return (
-      <ThemedView style={styles.container}>
+      <ThemedView style={{ flex: 1, alignItems: "center", justifyContent: "center", padding: 20 }}>
         <AuthScreen />
         <StatusBar style="auto" />
       </ThemedView>
@@ -52,33 +52,34 @@ export default function Native() {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <ThemedText variant="heading" style={styles.header}>
+    <ScrollView
+      contentContainerStyle={{
+        flexGrow: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 20,
+      }}
+    >
+      <ThemedText variant="heading" style={{ marginBottom: 10 }}>
         Welcome!
       </ThemedText>
-      <ThemedText variant="body" style={styles.subtitle}>
+      <ThemedText variant="body" style={{ marginBottom: 8 }}>
         {user.email}
       </ThemedText>
       {user.displayName && (
-        <ThemedText variant="body" style={styles.subtitle}>
+        <ThemedText variant="body" style={{ marginBottom: 8 }}>
           {user.displayName}
         </ThemedText>
       )}
       <ProfilePictureEditor profilePictureUrl={profilePictureUrl} onUpdate={setProfilePictureUrl} />
-      <ThemedView style={styles.buttonContainer}>
-        <ThemedText variant="body" style={[styles.button, { color: primary }]} onPress={signOut}>
-          Sign Out
-        </ThemedText>
+      <ThemedView style={{ marginTop: 20 }}>
+        <Pressable onPress={signOut} style={{ padding: 10 }}>
+          <ThemedText variant="body" style={{ fontSize: 16, fontWeight: "600", color: primary }}>
+            Sign Out
+          </ThemedText>
+        </Pressable>
       </ThemedView>
       <StatusBar style="auto" />
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flexGrow: 1, alignItems: "center", justifyContent: "center", padding: 20 },
-  header: { marginBottom: 10 },
-  subtitle: { marginBottom: 8 },
-  buttonContainer: { marginTop: 20 },
-  button: { fontSize: 16, fontWeight: "600", padding: 10 },
-});

@@ -1,5 +1,4 @@
 import Constants from "expo-constants";
-import { Platform } from "react-native";
 import Purchases, {
   type CustomerInfo,
   type PurchasesOfferings,
@@ -42,7 +41,8 @@ export const initializeRevenueCat = async (): Promise<void> => {
       apiKey,
       appUserID: null,
       useAmazon: false,
-      storeKitVersion: Platform.OS === "ios" ? Purchases.STOREKIT_VERSION.STOREKIT_2 : undefined,
+      storeKitVersion:
+        process.env.EXPO_OS === "ios" ? Purchases.STOREKIT_VERSION.STOREKIT_2 : undefined,
       entitlementVerificationMode: Purchases.ENTITLEMENT_VERIFICATION_MODE.DISABLED,
       diagnosticsEnabled: false,
       automaticDeviceIdentifierCollectionEnabled: true,
@@ -121,7 +121,7 @@ export const restorePurchases = async (): Promise<CustomerInfo> => {
 
 export const showManageSubscriptions = async (): Promise<void> => {
   try {
-    if (Platform.OS === "ios") {
+    if (process.env.EXPO_OS === "ios") {
       await Purchases.showManageSubscriptions();
     } else {
       throw new Error("Manage subscriptions is only available on iOS");

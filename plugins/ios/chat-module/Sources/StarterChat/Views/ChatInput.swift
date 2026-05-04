@@ -6,6 +6,17 @@ struct ChatInput: View {
     @State private var text = ""
     @State private var isSending = false
 
+    private func submit() {
+        guard !text.isEmpty, !isSending else { return }
+        let message = text
+        text = ""
+        isSending = true
+        Task {
+            await onSend(message)
+            isSending = false
+        }
+    }
+
     var body: some View {
         HStack(spacing: 8) {
             TextField("Message", text: $text, axis: .vertical)
@@ -14,21 +25,13 @@ struct ChatInput: View {
                 .padding(.vertical, 8)
                 .background(Color(.secondarySystemBackground))
                 .clipShape(RoundedRectangle(cornerRadius: 20))
-            Button {
-                guard !text.isEmpty, !isSending else { return }
-                let message = text
-                text = ""
-                isSending = true
-                Task {
-                    await onSend(message)
-                    isSending = false
-                }
-            } label: {
+            Button(action: submit) {
                 Image(systemName: "arrow.up.circle.fill")
                     .font(.system(size: 32))
                     .foregroundStyle(text.isEmpty || isSending ? Color.secondary : Color.accentColor)
             }
             .disabled(text.isEmpty || isSending)
+            .accessibilityLabel("Send message")
         }
         .padding(.horizontal)
         .padding(.vertical, 8)

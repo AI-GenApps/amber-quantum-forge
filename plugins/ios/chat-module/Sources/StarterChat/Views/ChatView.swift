@@ -2,7 +2,7 @@ import StarterAI
 import SwiftUI
 
 public struct ChatView: View {
-    @ObservedObject public var viewModel: ChatViewModel
+    @Bindable public var viewModel: ChatViewModel
 
     public init(viewModel: ChatViewModel) {
         self.viewModel = viewModel

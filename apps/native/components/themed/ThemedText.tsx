@@ -4,15 +4,17 @@ import { useToken } from "./useThemeColor";
 
 interface ThemedTextProps extends TextProps {
   variant?: "body" | "heading" | "caption";
+  selectable?: boolean;
 }
 
 export function ThemedText({
   variant = "body",
   style,
+  selectable = false,
   ...props
 }: ThemedTextProps): React.ReactElement {
   const color = useToken("text");
-  return <Text style={[styles[variant], { color }, style]} {...props} />;
+  return <Text selectable={selectable} style={[styles[variant], { color }, style]} {...props} />;
 }
 
 const styles = StyleSheet.create({

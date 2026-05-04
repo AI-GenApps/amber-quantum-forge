@@ -1,4 +1,4 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Image } from "expo-image";
 import { Tabs } from "expo-router";
 import { useToken } from "../../components/themed";
 
@@ -14,21 +14,33 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color, size }) => <Ionicons name="home" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Image source="sf:house.fill" style={{ width: size, height: size, tintColor: color }} />
+          ),
         }}
       />
       <Tabs.Screen
         name="chat"
         options={{
           title: "Chat",
-          tabBarIcon: ({ color, size }) => <Ionicons name="chatbubble" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source="sf:bubble.left.fill"
+              style={{ width: size, height: size, tintColor: color }}
+            />
+          ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: "Profile",
-          tabBarIcon: ({ color, size }) => <Ionicons name="person" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source="sf:person.fill"
+              style={{ width: size, height: size, tintColor: color }}
+            />
+          ),
         }}
       />
     </Tabs>

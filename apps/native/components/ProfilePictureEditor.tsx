@@ -1,15 +1,8 @@
 import { useAuth } from "@plugin/expo-auth";
+import { Image } from "expo-image";
 import type React from "react";
 import { useState } from "react";
-import {
-  ActivityIndicator,
-  Alert,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ActivityIndicator, Alert, Pressable, Text, View } from "react-native";
 import { deleteProfilePicture, pickImage, uploadProfilePicture } from "../services/profilePicture";
 
 interface ProfilePictureEditorProps {
@@ -85,108 +78,81 @@ export const ProfilePictureEditor: React.FC<ProfilePictureEditorProps> = ({
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
+    <View style={{ alignItems: "center", marginVertical: 20 }}>
+      <View style={{ position: "relative", marginBottom: 20 }}>
         {profilePictureUrl ? (
-          <Image source={{ uri: profilePictureUrl }} style={styles.image} />
+          <Image
+            source={{ uri: profilePictureUrl }}
+            style={{ width: 120, height: 120, borderRadius: 60, backgroundColor: "#f0f0f0" }}
+          />
         ) : (
-          <View style={styles.placeholder}>
-            <Text style={styles.placeholderText}>No Photo</Text>
+          <View
+            style={{
+              width: 120,
+              height: 120,
+              borderRadius: 60,
+              backgroundColor: "#e0e0e0",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: "#999", fontSize: 14 }}>No Photo</Text>
           </View>
         )}
         {uploading && (
-          <View style={styles.overlay}>
+          <View
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              borderRadius: 60,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <ActivityIndicator size="large" color="#fff" />
           </View>
         )}
       </View>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={[styles.button, styles.uploadButton]}
+      <View style={{ width: "100%", maxWidth: 200 }}>
+        <Pressable
+          style={{
+            paddingVertical: 12,
+            paddingHorizontal: 24,
+            borderRadius: 8,
+            marginVertical: 6,
+            alignItems: "center",
+            backgroundColor: "#2f80ed",
+          }}
           onPress={handlePickAndUpload}
           disabled={uploading}
         >
-          <Text style={styles.buttonText}>
+          <Text style={{ color: "#fff", fontSize: 16, fontWeight: "600" }}>
             {profilePictureUrl ? "Change Photo" : "Upload Photo"}
           </Text>
-        </TouchableOpacity>
+        </Pressable>
         {profilePictureUrl && (
-          <TouchableOpacity
-            style={[styles.button, styles.deleteButton]}
+          <Pressable
+            style={{
+              paddingVertical: 12,
+              paddingHorizontal: 24,
+              borderRadius: 8,
+              marginVertical: 6,
+              alignItems: "center",
+              backgroundColor: "transparent",
+              borderWidth: 1,
+              borderColor: "#ff4444",
+            }}
             onPress={handleDelete}
             disabled={uploading}
           >
-            <Text style={[styles.buttonText, styles.deleteButtonText]}>Delete Photo</Text>
-          </TouchableOpacity>
+            <Text style={{ color: "#ff4444", fontSize: 16, fontWeight: "600" }}>Delete Photo</Text>
+          </Pressable>
         )}
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    marginVertical: 20,
-  },
-  imageContainer: {
-    position: "relative",
-    marginBottom: 20,
-  },
-  image: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: "#f0f0f0",
-  },
-  placeholder: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: "#e0e0e0",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  placeholderText: {
-    color: "#999",
-    fontSize: 14,
-  },
-  overlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    borderRadius: 60,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonContainer: {
-    width: "100%",
-    maxWidth: 200,
-  },
-  button: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    marginVertical: 6,
-    alignItems: "center",
-  },
-  uploadButton: {
-    backgroundColor: "#2f80ed",
-  },
-  deleteButton: {
-    backgroundColor: "transparent",
-    borderWidth: 1,
-    borderColor: "#ff4444",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  deleteButtonText: {
-    color: "#ff4444",
-  },
-});

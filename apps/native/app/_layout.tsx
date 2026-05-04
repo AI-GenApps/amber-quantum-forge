@@ -1,9 +1,9 @@
 import { AuthProvider, useAuth } from "@plugin/expo-auth";
 import { syncMessages } from "@plugin/expo-chat-module";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import crashlytics from "@react-native-firebase/crashlytics";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack, useRouter } from "expo-router";
+import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, AppState, View } from "react-native";
 import { MaintenanceBanner } from "../components/MaintenanceBanner";
@@ -24,7 +24,7 @@ function RootNavigator() {
 
   useEffect(() => {
     crashlytics().setCrashlyticsCollectionEnabled(!__DEV__);
-    AsyncStorage.getItem(ONBOARDING_KEY).then((val) => {
+    SecureStore.getItemAsync(ONBOARDING_KEY).then((val) => {
       setReady(true);
       if (!val) {
         router.replace("/onboarding");
