@@ -1,6 +1,6 @@
 # 00 — Overview
 
-`starter-expo-mobile` is a Turborepo + Bun monorepo that bootstraps a production-ready mobile app with both an Expo/React Native app and a native iOS SwiftUI app, backed by a Next.js + Hono API with Drizzle ORM.
+`starter-expo-mobile` is a Turborepo + Bun monorepo that bootstraps a production-ready mobile app with an Expo/React Native app, a native iOS SwiftUI app, and a Flutter app, backed by a Next.js + Hono API with Drizzle ORM.
 
 ## What each epic adds
 
@@ -17,6 +17,7 @@
 | 08 | iOS Chat Module | `plugins/ios/chat-module` — SwiftUI chat, SwiftData, sync |
 | 09 | CI/CD | Self-hosted macOS runner, EAS workflow, web CI |
 | 10 | Polish & Release | Codegen verification, seed data, doc cross-links, release checklist |
+| 12 | Flutter App | `apps-native/flutter-app`, `plugins/flutter/{auth,ai,chat}`, shared codegen registry, `codegen-dart.ts`, Flutter CI |
 
 ## How to navigate docs
 

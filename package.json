@@ -15,6 +15,8 @@
     "check:no-middleware": "bun run scripts/check-no-middleware.ts",
     "check:banned-deps": "bun run scripts/check-banned-deps.ts",
     "codegen:swift": "bun scripts/codegen-swift.ts",
+    "codegen:dart": "bun scripts/codegen-dart.ts",
+    "codegen": "bun scripts/codegen-swift.ts && bun scripts/codegen-dart.ts",
     "prepare": "husky"
   },
   "devDependencies": {

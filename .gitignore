@@ -43,3 +43,18 @@ yarn-error.log*
 apps-native/ios-app/*.xcodeproj
 apps-native/ios-app/*.xcworkspace
 apps-native/ios-app/Starter/GoogleService-Info.plist
+
+# flutter build artifacts
+apps-native/flutter-app/build/
+apps-native/flutter-app/.dart_tool/
+apps-native/flutter-app/.flutter-plugins
+apps-native/flutter-app/.flutter-plugins-dependencies
+plugins/flutter/**/.dart_tool/
+plugins/flutter/**/build/
+
+# flutter firebase config (keep .template files committed)
+**/google-services.json
+**/GoogleService-Info.plist
+!**/google-services.json.template
+!**/GoogleService-Info.plist.template
+**/firebase_options.dart

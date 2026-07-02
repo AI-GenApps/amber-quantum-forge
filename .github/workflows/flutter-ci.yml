@@ -1,0 +1,71 @@
+name: Flutter CI
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps-native/flutter-app/**'
+      - 'plugins/flutter/**'
+      - '.github/workflows/flutter-ci.yml'
+  pull_request:
+    paths:
+      - 'apps-native/flutter-app/**'
+      - 'plugins/flutter/**'
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.24.0
+      - name: pub get (auth plugin)
+        run: flutter pub get
+        working-directory: plugins/flutter/auth
+      - name: pub get (ai plugin)
+        run: flutter pub get
+        working-directory: plugins/flutter/ai
+      - name: pub get (chat plugin)
+        run: flutter pub get
+        working-directory: plugins/flutter/chat
+      - name: pub get (app)
+        run: flutter pub get
+        working-directory: apps-native/flutter-app
+      - name: Analyze
+        run: flutter analyze
+        working-directory: apps-native/flutter-app
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed .
+        working-directory: apps-native/flutter-app
+      - name: Test
+        run: flutter test
+        working-directory: apps-native/flutter-app
+      - name: Build debug APK
+        run: flutter build apk --debug
+        working-directory: apps-native/flutter-app
+
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.24.0
+      - name: pub get (auth plugin)
+        run: flutter pub get
+        working-directory: plugins/flutter/auth
+      - name: pub get (ai plugin)
+        run: flutter pub get
+        working-directory: plugins/flutter/ai
+      - name: pub get (chat plugin)
+        run: flutter pub get
+        working-directory: plugins/flutter/chat
+      - name: pub get (app)
+        run: flutter pub get
+        working-directory: apps-native/flutter-app
+      - name: Build iOS (no codesign)
+        run: flutter build ios --no-codesign
+        working-directory: apps-native/flutter-app

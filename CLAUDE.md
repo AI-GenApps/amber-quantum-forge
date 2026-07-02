@@ -65,10 +65,21 @@ cd apps-native/ios-app
 xcodegen generate    # Regenerate Xcode project after editing project.yml
 ```
 
+**Flutter app:**
+
+```bash
+cd apps-native/flutter-app
+flutter pub get
+flutter run --dart-define=API_BASE_URL=http://localhost:4001 --dart-define=REVENUECAT_API_KEY=your_key
+flutter build apk --debug          # Android
+flutter build ios --no-codesign    # iOS
+```
+
 **Codegen:**
 
 ```bash
 bun run scripts/codegen-swift.ts   # generate Swift types from TS
+bun run codegen:dart               # generate Dart types from TS
 ```
 
 ## Task system
@@ -84,6 +95,7 @@ This is a Turborepo monorepo with:
 - **`apps/native`**: Expo/React Native app using expo-router for navigation. Uses Firebase Auth (Google Sign-In, Apple Auth), RevenueCat for subscriptions, and communicates with the API.
 - **`apps/web`**: Next.js 16 app with Tailwind CSS and shadcn/ui components. Hosts the Hono API via catch-all route.
 - **`apps-native/ios-app`**: SwiftUI app using XcodeGen + SPM. **NOT a bun workspace.** iOS 17 min, Xcode 26.2.
+- **`apps-native/flutter-app`**: Flutter app mirroring the iOS app's feature set (onboarding, two-stage Firebase→JWT auth, streaming AI chat, RevenueCat, config gating). **NOT a bun workspace.** Targets Android and iOS.
 
 ### Packages
 
@@ -98,6 +110,7 @@ This is a Turborepo monorepo with:
 
 - **`plugins/expo/*`**: Bun workspaces named `@plugin/expo-<name>`. Feature modules for the Expo app.
 - **`plugins/ios/*`**: Swift packages. Feature modules for the iOS app. Linked via `project.yml`.
+- **`plugins/flutter/*`**: Dart packages. Feature modules for the Flutter app. Linked via path deps in `pubspec.yaml`.
 
 ## Auth architecture
 
