@@ -18,7 +18,7 @@ Update the three root guidance files so that any agent or human developer who cl
 
 ### Files to update
 
-**`README.md`** — public-facing, should explain what the repo is, how to get started, link to `docs/setup/`.
+**`README.md`** — public-facing, should explain what the repo is, how to get started, link to `docs-internal/setup/`.
 
 **`AGENTS.md`** — instructions for AI coding agents (Copilot, Claude, etc.). Must be specific about rules, file locations, and commands.
 

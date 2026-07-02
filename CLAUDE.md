@@ -86,6 +86,17 @@ bun run codegen:dart               # generate Dart types from TS
 
 This repo is built task-by-task. See [`tasks/START.md`](tasks/START.md) for the execution protocol. Always check `tasks/STATUS.md` first to find the next task.
 
+## Documentation
+
+- Internal implementation and operational documentation belongs in `docs-internal/` (for example `docs-internal/setup/*`, `docs-internal/architecture/*`, and `docs-internal/openapi/api.yaml`).
+- Public documentation belongs in `docs-public/`, organized by context (tabs like getting started, troubleshooting, and support) rather than one long page.
+- Run docs locally with Mintlify:
+  - `bun run docs:internal` for private docs.
+  - `bun run docs:public` for public docs.
+- Pre-commit validation includes:
+  - `bun run check:doc-paths` to block `docs/` or `*/docs/*` paths.
+  - `bun run check:staged-docs` to validate only staged `docs-internal/` and `docs-public/` files with `mintlify validate`.
+
 ## Architecture
 
 This is a Turborepo monorepo with:
@@ -122,7 +133,7 @@ Two-stage JWT flow:
 4. All subsequent mobile API calls use `Authorization: Bearer <accessToken>`
 5. Web admin keeps existing cookie/session flow
 
-See [`docs/architecture/auth.md`](docs/architecture/auth.md) for full details.
+See [`docs-internal/architecture/auth.md`](docs-internal/architecture/auth.md) for full details.
 
 ## Key Integration Points
 

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "Starter Expo Mobile Public Docs",
+  "theme": "mint",
+  "colors": {
+    "primary": "#3b82f6"
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Get Started",
+        "icon": "rocket",
+        "pages": [
+          "getting-started/quick-start",
+          "getting-started/public-setup"
+        ]
+      },
+      {
+        "tab": "Troubleshooting",
+        "icon": "life-buoy",
+        "pages": [
+          "troubleshooting/auth-issues",
+          "troubleshooting/build-errors"
+        ]
+      },
+      {
+        "tab": "Support",
+        "icon": "message-circle",
+        "pages": [
+          "support/known-issues",
+          "support/faq"
+        ]
+      }
+    ]
+  }
+}

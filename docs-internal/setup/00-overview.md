@@ -21,9 +21,9 @@
 
 ## How to navigate docs
 
-- Start here, then read `docs/setup/01-prerequisites.md` before writing any code.
+- Start here, then read `docs-internal/setup/01-prerequisites.md` before writing any code.
 - For task execution rules, read `tasks/START.md`.
-- Architecture decisions are in `docs/architecture/`.
+- Architecture decisions are in `docs-internal/architecture/`.
 
 ## Pre-commit Hooks
 

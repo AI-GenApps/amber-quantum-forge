@@ -13,7 +13,7 @@ commit_scope: docs
 # 03 — Release checklist doc
 
 ## Goal
-Create `docs/release-checklist.md` covering App Store, Play Store, and Vercel deployment steps so any team member can ship a release independently.
+Create `docs-internal/release-checklist.md` covering App Store, Play Store, and Vercel deployment steps so any team member can ship a release independently.
 
 ## Context
 - This is a documentation-only task — no code changes
@@ -21,7 +21,7 @@ Create `docs/release-checklist.md` covering App Store, Play Store, and Vercel de
 - References existing scripts and commands from the repo
 
 ## Implementation Checklist
-- [ ] Create `docs/release-checklist.md` with sections:
+- [ ] Create `docs-internal/release-checklist.md` with sections:
   1. **Pre-release** — `bun run check`, `bun run build` (all apps), `bun run codegen:swift`, run migrations
   2. **Environment variables** — table of all required env vars per environment (local, staging, prod)
   3. **Database** — `bun run db:migrate`, `bun run db:seed` for fresh deployments
@@ -41,7 +41,7 @@ Create `docs/release-checklist.md` covering App Store, Play Store, and Vercel de
   8. **Rollback** — how to revert a bad deploy on each platform
 
 ## Files Touched
-- `docs/release-checklist.md` — create
+- `docs-internal/release-checklist.md` — create
 
 ## Verification
 - [ ] File exists and is readable

@@ -54,7 +54,7 @@ Ensure the existing husky + lint-staged setup is complete, documented, and worki
   ```
 - [x] Run `bun run prepare` to ensure husky is initialized (creates `.husky/` if not present).
 - [x] Test the hook by staging a `.ts` file with a trivial change and running `git commit --dry-run` (or simply confirm `bunx lint-staged` runs without error).
-- [x] Add a `## Pre-commit Hooks` section to `docs/setup/00-overview.md` (that file will be created in task 03; create a placeholder if it doesn't exist yet).
+- [x] Add a `## Pre-commit Hooks` section to `docs-internal/setup/00-overview.md` (that file will be created in task 03; create a placeholder if it doesn't exist yet).
 
 ## Files Touched
 

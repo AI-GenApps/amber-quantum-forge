@@ -10,7 +10,7 @@ import 'models/exchange_response.dart';
 import 'storage/token_storage.dart';
 
 /// Drives the two-stage Firebase -> API JWT auth flow described in
-/// `docs/architecture/auth.md`. Mirrors the Swift `actor AuthManager`:
+/// `docs-internal/architecture/auth.md`. Mirrors the Swift `actor AuthManager`:
 /// - `signIn`: Firebase sign-in -> `POST /api/auth/exchange`
 /// - `authorizedFetch`/`request`: attaches the bearer token, retries once on
 ///   401 via a single-flight `POST /api/auth/refresh`

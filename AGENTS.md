@@ -73,8 +73,10 @@ The `.husky/pre-commit` hook runs:
 1. `bun run check:max-lines` — no file > 300 lines
 2. `bun run check:no-middleware` — `apps/web/middleware.ts` must not exist
 3. `bun run check:banned-deps` — no banned npm packages
-4. `bun run check:staged-types` — TypeScript check on staged files
-5. `bunx lint-staged` — Biome format/lint + secretlint on staged files
+4. `bun run check:doc-paths` — enforce docs stay only in `docs-internal/` or `docs-public/`
+5. `bun run check:staged-docs` — run `mintlify validate` for any staged files under `docs-internal/` or `docs-public/`
+6. `bun run check:staged-types` — TypeScript check on staged files
+7. `bunx lint-staged` — Biome format/lint + secretlint on staged files
 
 The `.husky/commit-msg` hook runs commitlint to enforce conventional commits.
 
@@ -97,9 +99,11 @@ packages/
   analytics/        TS event registry
 scripts/
   codegen-swift.ts  generates Swift types from TS
-docs/
+docs-internal/
   setup/            11 setup guides
-  architecture/     architecture decision docs
+  architecture/      architecture decision docs
+  openapi/          OpenAPI spec for internal API docs
+docs-public/         public problem-oriented docs
 tasks/
   START.md          execution guide
   STATUS.md         global epic checklist

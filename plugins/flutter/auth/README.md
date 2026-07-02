@@ -1,7 +1,7 @@
 # starter_auth
 
 Dart package providing two-stage Firebase + API JWT auth for the Flutter app.
-Mirrors `plugins/ios/auth` (`StarterAuth`) — see `docs/architecture/auth.md`
+Mirrors `plugins/ios/auth` (`StarterAuth`) — see `docs-internal/architecture/auth.md`
 for the wire contract.
 
 ## Overview

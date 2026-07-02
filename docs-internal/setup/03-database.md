@@ -8,9 +8,8 @@ This project uses [Drizzle ORM](https://orm.drizzle.team/) with PostgreSQL.
 
 ## Connection string format
 
-```
-postgresql://<user>:<password>@<host>/<database>?sslmode=require
-```
+Keep `DATABASE_URL` as the provider-supplied Postgres URI (for example from Neon, Supabase, or RDS).
+Store the exact value only in deployment environment variables.
 
 Set this as `DATABASE_URL` in `.env`.
 

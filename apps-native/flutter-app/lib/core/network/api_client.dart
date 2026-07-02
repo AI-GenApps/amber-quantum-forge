@@ -39,7 +39,7 @@ class ApiException implements Exception {
 /// Generic JSON client over `package:http`. Dart analog of `APIClient`
 /// in `APIClient.swift`, extended with an auth header hook since the
 /// Flutter app needs `Authorization: Bearer <token>` on mobile requests
-/// (see docs/architecture/auth.md).
+/// (see docs-internal/architecture/auth.md).
 class ApiClient {
   ApiClient({
     required this.baseUrl,

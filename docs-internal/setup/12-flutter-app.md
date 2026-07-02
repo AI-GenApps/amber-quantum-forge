@@ -69,7 +69,7 @@ flutter build ios --no-codesign --dart-define=API_BASE_URL=... --dart-define=REV
 - `lib/core/config/` — `AppConfig` reads `--dart-define` values
 - `lib/core/network/` — generic JSON API client, mirrors `APIClient.swift`
 - `lib/features/{onboarding,home,profile}/` — thin screens mirroring the iOS `Features/` tree
-- `lib/generated/` — codegen output from `bun run codegen:dart` (see `docs/setup/13-flutter-plugins.md`); never edit by hand
+- `lib/generated/` — codegen output from `bun run codegen:dart` (see `docs-internal/setup/13-flutter-plugins.md`); never edit by hand
 
 ## Known gap vs. iOS
 

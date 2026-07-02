@@ -20,7 +20,7 @@ Implement `VercelDataStreamParser` that converts raw SSE lines from `AINetworkCl
   - Other prefixes — ignore
 - Parser is stateless: call `parse(line:)` per line
 - Integrates into `RemoteAISession.send()` which bridges to `AsyncThrowingStream<String, Error>`
-- Target: ~80 LOC (see `docs/architecture/ai.md`)
+- Target: ~80 LOC (see `docs-internal/architecture/ai.md`)
 
 ## Implementation Checklist
 - [ ] Create `plugins/ios/ai/Sources/StarterAI/Parsing/VercelDataStreamParser.swift`:

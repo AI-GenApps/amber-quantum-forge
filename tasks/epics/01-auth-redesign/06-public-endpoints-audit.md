@@ -59,15 +59,15 @@ Also check `packages/api/src/routes/config.ts` — `GET /config/app-metadata` sh
   ```typescript
   app.get("/health", (c) => c.json({ status: "ok", timestamp: new Date().toISOString() }));
   ```
-- [ ] Create or update `docs/architecture/auth.md` with a table of public vs protected endpoints (this file is created as a full doc in a separate task but add a ## Public Endpoints section here).
-- [ ] Update `docs/setup/02-env-vars.md` to add `API_JWT_SECRET` if it was missed.
+- [ ] Create or update `docs-internal/architecture/auth.md` with a table of public vs protected endpoints (this file is created as a full doc in a separate task but add a ## Public Endpoints section here).
+- [ ] Update `docs-internal/setup/02-env-vars.md` to add `API_JWT_SECRET` if it was missed.
 
 ## Files Touched
 
 - `packages/api/src/index.ts` — add health endpoint if missing
 - `packages/api/src/routes/auth.ts` — verify correctness (no changes expected if previous tasks done correctly)
 - `packages/api/src/routes/config.ts` — verify auth boundaries
-- `docs/architecture/auth.md` — add public/protected endpoint table
+- `docs-internal/architecture/auth.md` — add public/protected endpoint table
 
 ## Verification
 

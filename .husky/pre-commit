@@ -3,5 +3,7 @@
 bun run check:max-lines || exit 1
 bun run check:no-middleware || exit 1
 bun run check:banned-deps || exit 1
+bun run check:doc-paths || exit 1
+bun run check:staged-docs || exit 1
 bun run check:staged-types || exit 1
 bunx lint-staged || exit 1

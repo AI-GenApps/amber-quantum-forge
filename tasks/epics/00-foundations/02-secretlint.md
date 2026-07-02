@@ -64,7 +64,8 @@ This must run in addition to (not instead of) the Biome steps.
   *.lock
   bun.lockb
   CHANGELOG.md
-  docs/
+  docs-internal/
+  docs-public/
   tasks/
   ```
 - [x] Update `.lintstagedrc.json` to add secretlint as a step for all files. The final `.lintstagedrc.json` should look like:

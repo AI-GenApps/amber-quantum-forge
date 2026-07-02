@@ -1,6 +1,6 @@
 /// Two-stage Firebase -> API JWT auth for the Flutter app.
 ///
-/// Mirrors `plugins/ios/auth` (StarterAuth). See docs/architecture/auth.md
+/// Mirrors `plugins/ios/auth` (StarterAuth). See docs-internal/architecture/auth.md
 /// for the exact wire contract this package implements.
 library starter_auth;
 

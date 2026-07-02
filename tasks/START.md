@@ -58,7 +58,7 @@ starter-expo-mobile/
     check-staged-types.ts           # existing
     check-no-middleware.ts          # existing
     check-banned-deps.ts            # existing
-  docs/
+  docs-internal/
     setup/
       00-overview.md
       01-prerequisites.md
@@ -78,6 +78,7 @@ starter-expo-mobile/
       analytics.md
       config.md
       design-tokens.md
+  docs-public/                  # public docs for users/support
   tasks/
     START.md                        # this file
     STATUS.md                       # global epic checklist
@@ -247,10 +248,10 @@ If a task is blocked (missing secret, external service not configured, etc.):
 
 ## Architecture references
 
-Before implementing auth tasks, read: `docs/architecture/auth.md`
-Before implementing AI tasks, read: `docs/architecture/ai.md`
-Before implementing analytics: `docs/architecture/analytics.md` (created in epic 00)
-Config system: `docs/architecture/config.md` (created in epic 00)
+Before implementing auth tasks, read: `docs-internal/architecture/auth.md`
+Before implementing AI tasks, read: `docs-internal/architecture/ai.md`
+Before implementing analytics: `docs-internal/architecture/analytics.md` (created in epic 00)
+Config system: `docs-internal/architecture/config.md` (created in epic 00)
 
 ---
 
@@ -302,8 +303,8 @@ cd apps-native/ios-app && xcodegen generate
 
 ## Architecture references
 
-- [Auth flow](../docs/architecture/auth.md)
-- [AI streaming](../docs/architecture/ai.md)
-- [Analytics](../docs/architecture/analytics.md)
-- [Config system](../docs/architecture/config.md)
-- [Design tokens](../docs/architecture/design-tokens.md)
+- [Auth flow](../docs-internal/architecture/auth.md)
+- [AI streaming](../docs-internal/architecture/ai.md)
+- [Analytics](../docs-internal/architecture/analytics.md)
+- [Config system](../docs-internal/architecture/config.md)
+- [Design tokens](../docs-internal/architecture/design-tokens.md)

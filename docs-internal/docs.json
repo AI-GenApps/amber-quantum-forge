@@ -1,0 +1,63 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "Starter Expo Mobile Internal Docs",
+  "theme": "mint",
+  "colors": {
+    "primary": "#3b82f6"
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Setup",
+        "icon": "book-open",
+        "groups": [
+          {
+            "group": "Documentation",
+            "pages": [
+              "setup/00-overview",
+              "setup/01-prerequisites",
+              "setup/02-env-vars",
+              "setup/03-database",
+              "setup/04-firebase",
+              "setup/05-revenuecat",
+              "setup/06-expo",
+              "setup/07-ios-app",
+              "setup/08-ios-plugins",
+              "setup/09-expo-plugins",
+              "setup/10-ci-cd",
+              "setup/11-release",
+              "setup/12-flutter-app",
+              "setup/13-flutter-plugins"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Architecture",
+        "icon": "layers",
+        "groups": [
+          {
+            "group": "Core Design",
+            "pages": [
+              "architecture/ai",
+              "architecture/auth",
+              "architecture/analytics",
+              "architecture/config",
+              "architecture/design-tokens"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Operations",
+        "icon": "activity",
+        "pages": ["release-checklist"]
+      },
+      {
+        "tab": "API Reference",
+        "icon": "square-terminal",
+        "openapi": "openapi/api.yaml"
+      }
+    ]
+  }
+}

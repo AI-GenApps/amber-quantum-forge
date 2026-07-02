@@ -117,7 +117,7 @@ Wait — the endpoint is `POST /api/chat/sync` per the original plan. Create a s
   app.route("/chat", chatRoutes);
   ```
 - [ ] Add tests in `packages/api/src/routes/__tests__/chat.test.ts`.
-- [ ] Update `docs/architecture/ai.md` with a section on the sync protocol.
+- [ ] Update `docs-internal/architecture/ai.md` with a section on the sync protocol.
 
 ## Files Touched
 
