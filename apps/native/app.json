@@ -7,20 +7,14 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "updates": {
       "url": "https://u.expo.dev/9a09e290-1a74-48f1-86e5-0f47c293206f"
     },
-    "runtimeVersion": {
-      "policy": "sdkVersion"
-    },
+    "runtimeVersion": "1.0.0",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "app.w3dev.starter",
+      "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
         "UIBackgroundModes": ["remote-notification"]
       }
@@ -41,6 +35,7 @@
     "plugins": [
       "expo-router",
       "@react-native-firebase/app",
+      "./config-plugins/withFirebaseAppDelegate.js",
       "@react-native-google-signin/google-signin",
       [
         "expo-apple-authentication",
@@ -56,7 +51,29 @@
           "sounds": [],
           "defaultChannel": "default"
         }
-      ]
+      ],
+      "expo-image",
+      "expo-secure-store",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ],
+      "expo-font",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ],
+      "@react-native-firebase/auth",
+      "@react-native-firebase/crashlytics",
+      "@react-native-firebase/messaging"
     ],
     "extra": {
       "router": {},
