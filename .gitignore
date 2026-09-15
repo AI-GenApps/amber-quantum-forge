@@ -16,6 +16,8 @@ build
 
 # expo
 .expo
+/.vercel/
+/apps/native/ios/
 
 # misc
 .DS_Store

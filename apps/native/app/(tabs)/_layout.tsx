@@ -1,48 +1,20 @@
-import { Image } from "expo-image";
-import { Tabs } from "expo-router";
-import { useToken } from "../../components/themed";
+import { NativeTabs } from "expo-router/unstable-native-tabs";
 
 export default function TabsLayout() {
-  const primary = useToken("primary");
-  const textSecondary = useToken("textSecondary");
-
   return (
-    <Tabs
-      screenOptions={{ tabBarActiveTintColor: primary, tabBarInactiveTintColor: textSecondary }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <Image source="sf:house.fill" style={{ width: size, height: size, tintColor: color }} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="chat"
-        options={{
-          title: "Chat",
-          tabBarIcon: ({ color, size }) => (
-            <Image
-              source="sf:bubble.left.fill"
-              style={{ width: size, height: size, tintColor: color }}
-            />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Profile",
-          tabBarIcon: ({ color, size }) => (
-            <Image
-              source="sf:person.fill"
-              style={{ width: size, height: size, tintColor: color }}
-            />
-          ),
-        }}
-      />
-    </Tabs>
+    <NativeTabs>
+      <NativeTabs.Trigger name="index">
+        <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf="house.fill" md="home" />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="chat">
+        <NativeTabs.Trigger.Label>Chat</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf="bubble.left.fill" md="chat" />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="profile">
+        <NativeTabs.Trigger.Label>Profile</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf="person.fill" md="person" />
+      </NativeTabs.Trigger>
+    </NativeTabs>
   );
 }

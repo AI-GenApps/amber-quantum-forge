@@ -16,6 +16,7 @@ Last updated: manually — update when each epic is fully completed.
 - [x] 09 — CI/CD (ios-ci self-hosted, EAS expo workflow, web-ci)
 - [x] 10 — Polish & Release (codegen verification, seed data, doc cross-links, release checklist)
 - [x] 11 — Optional KMP shared logic example (Service Status)
+- [x] 12 — Repository Hygiene (NativeTabs review and local artifact exclusions)
 
 ## How to read this file
 
