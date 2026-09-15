@@ -32,7 +32,6 @@
   },
   "devDependencies": {
     "@repo/typescript-config": "*",
-    "@types/minimatch": "^6.0.0",
     "@types/node": "^20.10.6",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",

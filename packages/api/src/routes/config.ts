@@ -5,6 +5,10 @@ import { CONFIG_KEYS, CONFIG_PARSERS, type ConfigKey } from "../types/config";
 
 const configRoutes = new Hono();
 
+function isConfigKey(value: unknown): value is ConfigKey {
+  return typeof value === "string" && CONFIG_KEYS.includes(value as ConfigKey);
+}
+
 // Public endpoint — no auth required
 configRoutes.get("/app-metadata", async (c) => {
   try {
@@ -24,7 +28,7 @@ configRoutes.get("/app-metadata", async (c) => {
 configRoutes.put("/:key", authMiddleware, requireAdmin, async (c) => {
   try {
     const key = c.req.param("key");
-    if (!CONFIG_KEYS.includes(key as ConfigKey)) {
+    if (!isConfigKey(key)) {
       return c.json({ error: `Unknown config key: ${key}` }, 400);
     }
 
@@ -36,7 +40,7 @@ configRoutes.put("/:key", authMiddleware, requireAdmin, async (c) => {
 
     let parsed: unknown;
     try {
-      parsed = CONFIG_PARSERS[key as ConfigKey](value);
+      parsed = CONFIG_PARSERS[key](value);
     } catch (err) {
       return c.json(
         {

@@ -58,3 +58,10 @@ plugins/flutter/**/build/
 !**/google-services.json.template
 !**/GoogleService-Info.plist.template
 **/firebase_options.dart
+
+# optional Kotlin Multiplatform sample
+apps-native/kmp/.gradle/
+apps-native/kmp/**/build/
+apps-native/kmp/local.properties
+apps-native/ios-kmp-sample/*.xcodeproj
+apps-native/ios-kmp-sample/*.xcworkspace

@@ -17,7 +17,6 @@
   },
   "devDependencies": {
     "@repo/typescript-config": "*",
-    "@types/minimatch": "^6.0.0",
     "@types/node": "^20.10.6",
     "drizzle-kit": "^0.31.5",
     "dotenv": "^16.4.7",

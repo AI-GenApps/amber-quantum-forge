@@ -1,11 +1,7 @@
 import { Hono } from "hono";
-import { beforeAll, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { signAccessToken } from "../../lib/jwt";
 import { authMiddleware, requireAdmin } from "../auth";
-
-beforeAll(() => {
-  process.env.API_JWT_SECRET = "test-secret-that-is-at-least-32-chars-long-for-test";
-});
 
 function makeApp() {
   const app = new Hono();

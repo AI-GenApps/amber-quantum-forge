@@ -1,12 +1,4 @@
-import { beforeAll, describe, expect, it, vi } from "vitest";
-
-beforeAll(() => {
-  process.env.API_JWT_SECRET = "test-secret-that-is-at-least-32-chars-long-for-test";
-  process.env.FIREBASE_PROJECT_ID = "test";
-  process.env.FIREBASE_CLIENT_EMAIL = "test@test.iam.gserviceaccount.com";
-  process.env.FIREBASE_PRIVATE_KEY =
-    "-----BEGIN PRIVATE KEY-----\ntest\n-----END PRIVATE KEY-----\n";
-});
+import { describe, expect, it, vi } from "vitest";
 
 vi.mock("../../firebase/admin", () => ({
   verifyIdToken: vi.fn(),

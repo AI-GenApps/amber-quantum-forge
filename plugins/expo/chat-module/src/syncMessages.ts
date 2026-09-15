@@ -1,6 +1,6 @@
 import { useChatStore } from "./useChatStore";
 
-const API_BASE_URL = process.env["EXPO_PUBLIC_API_URL"] ?? "";
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? "";
 
 export async function syncMessages(accessToken: string): Promise<void> {
   const { messages, markSynced } = useChatStore.getState();

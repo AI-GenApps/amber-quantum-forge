@@ -2,6 +2,7 @@
 
 import admin from "@repo/api/firebase";
 import { auth, db, deviceRegistrations, eq, sql, users } from "@repo/db";
+import { after } from "next/server";
 import { assertAdmin } from "../../../lib/admin-session";
 
 export interface UserRow {
@@ -79,7 +80,9 @@ export async function getUserDetail(userId: number): Promise<UserDetail | null> 
     .from(deviceRegistrations)
     .where(eq(deviceRegistrations.userId, userId))
     .orderBy(deviceRegistrations.createdAt);
-  return { user: userRow[0]!, devices };
+  const [user] = userRow;
+  if (!user) return null;
+  return { user, devices };
 }
 
 export async function revokeDevice(
@@ -104,10 +107,11 @@ export async function disableUser(
       .from(auth)
       .where(eq(auth.userId, userId))
       .limit(1);
-    if (link.length === 0 || !link[0]!.firebaseUid) {
+    const [linkedAuth] = link;
+    if (!linkedAuth?.firebaseUid) {
       return { ok: false, error: "User has no Firebase account linked" };
     }
-    await admin.auth().updateUser(link[0]!.firebaseUid, { disabled: true });
+    await admin.auth().updateUser(linkedAuth.firebaseUid, { disabled: true });
     return { ok: true };
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : "Failed to disable" };
@@ -124,12 +128,13 @@ export async function deleteUser(
       .from(auth)
       .where(eq(auth.userId, userId))
       .limit(1);
-    if (link.length > 0 && link[0]!.firebaseUid) {
+    const [linkedAuth] = link;
+    if (linkedAuth?.firebaseUid) {
       try {
-        await admin.auth().deleteUser(link[0]!.firebaseUid);
+        await admin.auth().deleteUser(linkedAuth.firebaseUid);
       } catch (err) {
         // continue even if Firebase deletion fails (user may already be gone)
-        console.warn("firebase deleteUser:", err);
+        after(() => console.warn("firebase deleteUser:", err));
       }
     }
     await db.delete(users).where(eq(users.id, userId));

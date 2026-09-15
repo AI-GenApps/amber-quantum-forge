@@ -29,7 +29,6 @@
     "@commitlint/cli": "^20.5.3",
     "@commitlint/config-conventional": "^20.5.3",
     "@secretlint/secretlint-rule-preset-recommend": "^12.3.1",
-    "@types/minimatch": "^6.0.0",
     "@types/node": "^20.11.17",
     "husky": "^9.1.7",
     "lint-staged": "^15.2.10",

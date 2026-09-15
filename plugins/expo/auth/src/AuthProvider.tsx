@@ -1,6 +1,6 @@
 import auth from "@react-native-firebase/auth";
 import type React from "react";
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { exchangeToken, refreshToken, revokeToken } from "./apiClient";
 import { clearTokens, getTokens, saveTokens } from "./authStorage";
 import { isTokenExpiringSoon } from "./tokenUtils";
@@ -26,7 +26,7 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-const API_BASE_URL = process.env["EXPO_PUBLIC_API_URL"] ?? "";
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? "";
 
 export function AuthProvider({ children }: { children: React.ReactNode }): React.ReactElement {
   const [user, setUser] = useState<AuthUser | null>(null);
@@ -87,21 +87,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }): React
     await auth().signOut();
   }, []);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        loading,
-        accessToken,
-        signInWithGoogle,
-        signInWithApple,
-        signOut,
-        getAccessToken,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  const contextValue = useMemo(
+    () => ({
+      user,
+      loading,
+      accessToken,
+      signInWithGoogle,
+      signInWithApple,
+      signOut,
+      getAccessToken,
+    }),
+    [user, loading, accessToken, signInWithGoogle, signInWithApple, signOut, getAccessToken],
   );
+
+  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth(): AuthContextValue {

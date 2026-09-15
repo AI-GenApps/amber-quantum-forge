@@ -15,6 +15,7 @@ Last updated: manually — update when each epic is fully completed.
 - [x] 08 — iOS Chat Module (plugins/ios/chat-module — SwiftUI chat, SwiftData, sync)
 - [x] 09 — CI/CD (ios-ci self-hosted, EAS expo workflow, web-ci)
 - [x] 10 — Polish & Release (codegen verification, seed data, doc cross-links, release checklist)
+- [x] 11 — Optional KMP shared logic example (Service Status)
 
 ## How to read this file
 

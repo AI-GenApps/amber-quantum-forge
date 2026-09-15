@@ -9,7 +9,6 @@
         "@commitlint/cli": "^20.5.3",
         "@commitlint/config-conventional": "^20.5.3",
         "@secretlint/secretlint-rule-preset-recommend": "^12.3.1",
-        "@types/minimatch": "^6.0.0",
         "@types/node": "^20.11.17",
         "husky": "^9.1.7",
         "lint-staged": "^15.2.10",
@@ -107,7 +106,6 @@
       },
       "devDependencies": {
         "@repo/typescript-config": "*",
-        "@types/minimatch": "^6.0.0",
         "@types/node": "^20.10.6",
         "@types/react": "19.2.7",
         "@types/react-dom": "19.2.3",
@@ -168,7 +166,6 @@
       },
       "devDependencies": {
         "@repo/typescript-config": "*",
-        "@types/minimatch": "^6.0.0",
         "@types/node": "^20.10.6",
         "dotenv": "^16.4.7",
         "drizzle-kit": "^0.31.5",
@@ -184,7 +181,6 @@
       "version": "0.0.0",
       "devDependencies": {
         "@repo/typescript-config": "*",
-        "@types/minimatch": "^6.0.0",
         "@types/react": "19.2.7",
         "minimatch": "^9.0.0",
         "tsup": "^8.0.1",
@@ -1164,8 +1160,6 @@
     "@types/jsonwebtoken": ["@types/jsonwebtoken@9.0.10", "", { "dependencies": { "@types/ms": "*", "@types/node": "*" } }, "sha512-asx5hIG9Qmf/1oStypjanR7iKTv0gXQ1Ov/jfrX6kS/EO0OFni8orbmGCn0672NHR3kXHwpAwR+B368ZGN/2rA=="],
 
     "@types/long": ["@types/long@4.0.2", "", {}, "sha512-MqTGEo5bj5t157U6fA/BiDynNkn0YknVdh48CMPkTSpFTVmvao5UQmm7uEF6xBEo7qIMAlY/JSleYaE6VOdpaA=="],
-
-    "@types/minimatch": ["@types/minimatch@6.0.0", "", { "dependencies": { "minimatch": "*" } }, "sha512-zmPitbQ8+6zNutpwgcQuLcsEpn/Cj54Kbn7L5pX0Os5kdWplB7xPgEh/g+SWOB/qmows2gpuCaPyduq8ZZRnxA=="],
 
     "@types/ms": ["@types/ms@2.1.0", "", {}, "sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA=="],
 

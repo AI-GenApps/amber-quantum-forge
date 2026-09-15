@@ -4,7 +4,7 @@ import { DefaultChatTransport } from "ai";
 import { useEffect, useState } from "react";
 import type { UseAIChatOptions } from "./types";
 
-const API_BASE_URL = process.env["EXPO_PUBLIC_API_URL"] ?? "";
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? "";
 
 export function useAIChat(options: UseAIChatOptions = {}) {
   const { getAccessToken } = useAuth();

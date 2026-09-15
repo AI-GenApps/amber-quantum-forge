@@ -1,9 +1,5 @@
-import { beforeAll, expect, test } from "vitest";
+import { expect, test } from "vitest";
 import { generateRefreshToken, hashRefreshToken, signAccessToken, verifyAccessToken } from "../jwt";
-
-beforeAll(() => {
-  process.env.API_JWT_SECRET = "test-secret-that-is-at-least-32-chars-long-for-test";
-});
 
 test("signs and verifies access token", async () => {
   const payload = {
