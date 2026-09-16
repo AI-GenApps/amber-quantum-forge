@@ -12,7 +12,7 @@ on:
       - 'plugins/ios/**'
 jobs:
   build:
-    runs-on: [self-hosted, macOS, xcode-26.2]
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v4
       - name: Install XcodeGen
