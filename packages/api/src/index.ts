@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
+import { createConfiguredGameRoutes } from "./games";
 import aiRoutes from "./routes/ai";
 import authRoutes from "./routes/auth";
 import { authTokenRoutes } from "./routes/auth-tokens";
@@ -33,6 +34,7 @@ app.route("/ai", aiRoutes);
 app.route("/chat", chatRoutes);
 app.route("/profile", profileRoutes);
 app.route("/config", configRoutes);
+app.route("/games", createConfiguredGameRoutes());
 
 app.onError((err, c) => {
   console.error("Error:", err);
