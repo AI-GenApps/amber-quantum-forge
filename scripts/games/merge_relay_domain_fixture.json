@@ -1,0 +1,39 @@
+{
+  "contract_version": "merge-relay.v1",
+  "rule_version": "MR-2D-1",
+  "checkpoint": {
+    "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+    "score": 0,
+    "move_count": 0,
+    "seed": 12345,
+    "rng_state": 1955480042,
+    "rule_version": "MR-2D-1"
+  },
+  "checkpoint_hash": "b1fdc3e958425be541383b1e84d5425b83400ec4b490b96f6377dbb10861541a",
+  "ordinary_replay": {
+    "moves": ["left", "up", "right", "down", "left"],
+    "expected": {
+      "board": [8, 2, 0, 0, 4, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+      "score": 12,
+      "move_count": 5,
+      "seed": 12345,
+      "rng_state": 150275943,
+      "rule_version": "MR-2D-1"
+    }
+  },
+  "ranked_replay": {
+    "max_legal_moves": 3,
+    "moves": ["left", "up", "right"],
+    "expected": {
+      "board": [8, 2, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0],
+      "score": 12,
+      "move_count": 3,
+      "seed": 12345,
+      "rng_state": 2188185676,
+      "rule_version": "MR-2D-1"
+    },
+    "score_gained": 12,
+    "max_tile": 8,
+    "outcome": "completed"
+  }
+}

@@ -3,6 +3,7 @@ import 'package:platform_core/platform_core.dart';
 import 'merge_board.dart';
 
 const mergeRuleVersion = 'MR-2D-1';
+const mergeSchemaVersion = 1;
 const maxMergeScore = 1000000000000;
 const maxMergeMoves = 100000;
 const maxMergeSeed = 0xffffffff;
@@ -25,7 +26,7 @@ final class MergeGameState {
     if (seed < 0 || seed > maxMergeSeed) {
       throw ArgumentError.value(seed, 'seed');
     }
-    if (rngState < 0 || rngState > maxMergeSeed) {
+    if (rngState <= 0 || rngState > maxMergeSeed) {
       throw ArgumentError.value(rngState, 'rngState');
     }
     if (ruleVersion != mergeRuleVersion) {
@@ -47,21 +48,58 @@ final class MergeGameState {
     );
   }
 
-  factory MergeGameState.fromJson(Map<String, Object?> json) {
+  factory MergeGameState.fromJson(Map<String, Object?> json) =>
+      MergeGameState.fromLegacyJson(json);
+
+  factory MergeGameState.fromLegacyJson(Map<String, Object?> json) {
+    return _decode(json, requireRuleVersion: false, normalizeRng: true);
+  }
+
+  static Map<String, Object?> migrateLegacyJson(Map<String, Object?> json) =>
+      MergeGameState.fromLegacyJson(json).toWireJson();
+
+  factory MergeGameState.fromWireJson(Map<String, Object?> json) {
+    const fields = {
+      'board',
+      'score',
+      'move_count',
+      'seed',
+      'rng_state',
+      'rule_version',
+    };
+    if (json.keys.any((key) => !fields.contains(key)) ||
+        json.length != fields.length) {
+      throw const FormatException('Unexpected merge state fields');
+    }
+    return _decode(json, requireRuleVersion: true, normalizeRng: false);
+  }
+
+  static MergeGameState _decode(
+    Map<String, Object?> json, {
+    required bool requireRuleVersion,
+    required bool normalizeRng,
+  }) {
     final board = json['board'];
     final ruleVersion = json['rule_version'];
     if (board is! List || board.any((value) => value is! int)) {
       throw const FormatException('Invalid merge board');
     }
-    if (ruleVersion != null && ruleVersion != mergeRuleVersion) {
+    if ((requireRuleVersion && ruleVersion != mergeRuleVersion) ||
+        (!requireRuleVersion &&
+            ruleVersion != null &&
+            ruleVersion != mergeRuleVersion)) {
       throw const FormatException('Unsupported merge rule version');
+    }
+    final rngState = _integer(json['rng_state'], 'rng_state');
+    if (rngState < 0 || rngState > maxMergeSeed) {
+      throw const FormatException('Invalid merge RNG state');
     }
     return MergeGameState(
       board: MergeBoard(board.cast<int>()),
       score: _integer(json['score'], 'score'),
       moveCount: _integer(json['move_count'], 'move_count'),
       seed: _integer(json['seed'], 'seed'),
-      rngState: _integer(json['rng_state'], 'rng_state'),
+      rngState: normalizeRng ? _normalizeRng(rngState) : rngState,
       ruleVersion: mergeRuleVersion,
     );
   }
@@ -85,6 +123,8 @@ final class MergeGameState {
       'rule_version': ruleVersion,
     };
   }
+
+  Map<String, Object?> toWireJson() => toJson();
 
   MergeGameState copyWith({
     MergeBoard? board,
@@ -118,4 +158,7 @@ final class MergeGameState {
     if (value is! int) throw FormatException('Missing integer $name');
     return value;
   }
+
+  static int _normalizeRng(int value) =>
+      DeterministicRng.fromState(value).state32;
 }

@@ -5,6 +5,7 @@ resolution: workspace
 environment:
   sdk: ">=3.11.0 <4.0.0"
 dependencies:
+  crypto: ^3.0.7
   platform_core:
     path: ../platform_core
 dev_dependencies:

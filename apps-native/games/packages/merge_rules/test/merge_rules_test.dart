@@ -135,4 +135,120 @@ void main() {
       throwsArgumentError,
     );
   });
+
+  test('capped tiles do not merge or create a legal move', () {
+    final state = MergeGameState(
+      board: MergeBoard([
+        maxMergeTile,
+        maxMergeTile,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64,
+        128,
+        256,
+        512,
+        1024,
+        2048,
+        4096,
+        8192,
+        16384,
+      ]),
+      score: 0,
+      moveCount: 0,
+      seed: 1,
+      rngState: 2,
+    );
+
+    expect(state.isTerminal, isTrue);
+    expect(rules.apply(state, MergeDirection.left).reason, 'terminal');
+  });
+
+  test('move trace reports merge pairs and spawn details', () {
+    final state = MergeGameState(
+      board: MergeBoard([2, 2, 0, 0, ...List<int>.filled(12, 0)]),
+      score: 0,
+      moveCount: 0,
+      seed: 7,
+      rngState: 123,
+    );
+
+    final result = rules.apply(state, MergeDirection.left);
+
+    expect(result.trace.before, state);
+    expect(result.trace.after, result.state);
+    expect(result.trace.mergedPairs.single.toJson(), {
+      'source_cells': [0, 1],
+      'value': 4,
+    });
+    expect(result.trace.scoreDelta, 4);
+    expect(result.trace.spawnedCell, isNotNull);
+    expect(result.trace.spawnedValue, anyOf(2, 4));
+  });
+
+  test('wire decoding is strict while legacy decoding is explicit', () {
+    final wire = MergeGameState.newGame(seed: 0).toWireJson();
+    expect(MergeGameState.fromWireJson(wire).toWireJson(), wire);
+    expect(
+      () => MergeGameState.fromWireJson({...wire, 'extra': true}),
+      throwsFormatException,
+    );
+    expect(
+      () => MergeGameState.fromWireJson({...wire}..remove('rule_version')),
+      throwsFormatException,
+    );
+    expect(
+      () => MergeGameState.fromWireJson({...wire, 'rng_state': 0}),
+      throwsArgumentError,
+    );
+    final legacy = {...wire}
+      ..remove('rule_version')
+      ..['rng_state'] = 0;
+    final migrated = MergeGameState.fromLegacyJson(legacy);
+    expect(migrated.rngState, isNonZero);
+    expect(migrated.toWireJson()['rule_version'], mergeRuleVersion);
+    expect(MergeGameState.migrateLegacyJson(legacy), migrated.toWireJson());
+  });
+
+  test('score and move bounds fail with stable rule errors', () {
+    final scoreLimited = MergeGameState(
+      board: MergeBoard([2, 2, ...List<int>.filled(14, 0)]),
+      score: maxMergeScore,
+      moveCount: 0,
+      seed: 1,
+      rngState: 2,
+    );
+    expect(
+      () => rules.apply(scoreLimited, MergeDirection.left),
+      throwsA(
+        isA<MergeRuleError>().having(
+          (error) => error.code,
+          'code',
+          'score_limit',
+        ),
+      ),
+    );
+
+    final moveLimited = MergeGameState(
+      board: MergeBoard([2, 2, ...List<int>.filled(14, 0)]),
+      score: 0,
+      moveCount: maxMergeMoves,
+      seed: 1,
+      rngState: 2,
+    );
+    expect(
+      () => rules.apply(moveLimited, MergeDirection.left),
+      throwsA(
+        isA<MergeRuleError>().having(
+          (error) => error.code,
+          'code',
+          'move_limit',
+        ),
+      ),
+    );
+  });
 }
+
+Matcher get isNonZero => isNot(0);

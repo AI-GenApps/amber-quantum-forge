@@ -32,8 +32,8 @@ final class MergeBoard {
     for (var row = 0; row < 4; row += 1) {
       for (var column = 0; column < 4; column += 1) {
         final value = at(row, column);
-        if (row < 3 && value == at(row + 1, column)) return true;
-        if (column < 3 && value == at(row, column + 1)) return true;
+        if (row < 3 && _canMerge(value, at(row + 1, column))) return true;
+        if (column < 3 && _canMerge(value, at(row, column + 1))) return true;
       }
     }
     return false;
@@ -43,6 +43,9 @@ final class MergeBoard {
 
   static bool _isPowerOfTwo(int value) =>
       value > 0 && (value & (value - 1)) == 0;
+
+  static bool _canMerge(int first, int second) =>
+      first != maxMergeTile && first == second;
 }
 
 const maxMergeTile = 1 << 30;
