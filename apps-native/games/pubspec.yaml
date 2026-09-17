@@ -1,0 +1,17 @@
+name: gaming_workspace
+description: Scoped Pub workspace for the five gaming applications.
+publish_to: none
+environment:
+  sdk: ">=3.13.3 <4.0.0"
+workspace:
+  - packages/platform_core
+  - packages/merge_rules
+  - packages/biome_rules
+  - packages/heist_rules
+  - packages/court_rules
+  - packages/snapquest_rules
+  - merge_relay
+  - pocket_biome
+  - sixty_second_heist
+  - meme_court
+  - snapquest

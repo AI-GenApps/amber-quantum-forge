@@ -1,0 +1,8 @@
+name: snapquest_rules
+description: Pure Dart SnapQuest and Peeklings quest, recognition and album rules.
+publish_to: none
+resolution: workspace
+environment:
+  sdk: ">=3.11.0 <4.0.0"
+dev_dependencies:
+  test: ^1.26.3
