@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "content_version": "v0.3-fixture",
+  "license": "Repository-authored fixture text. No external customer content or unreviewed production copy.",
+  "approval_status": "pending_human_review",
+  "source_ids": [
+    "14xC0VFZywMMT3hETrKQoAtf7ZwnfwBI3",
+    "1073cIXJsPuQvwDCN2gCp6dkMzE-CaxsL",
+    "1dm1TlyzALuZcSgitHvBvK1SLkh6fsT0N"
+  ],
+  "prompts": [
+    {
+      "id": "fixture-prompt-001",
+      "text": "Choose a title for an imaginary local sample round.",
+      "status": "fixture-only"
+    }
+  ]
+}
+

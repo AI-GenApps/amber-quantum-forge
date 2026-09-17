@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "app": "pocket-biome",
+  "production_id": "app.w3dev.pocketbiome",
+  "public_title": "Pocket Biome",
+  "internal_slug": "pocket_biome",
+  "retrieved_at": "2026-09-16T16:40:29Z",
+  "canonical_folder": "https://drive.google.com/drive/folders/1vSp7KrVxMNdTPqP_3hzRQ7kr9HB7kJeZ",
+  "record_policy": "All current index, PRD, detailed references, validation, decisions, and platform records are listed. The v0.1 archive is retained only to explain superseded scope. No source body is copied into the repository.",
+  "records": [
+    {
+      "key": "canonical-app-folder",
+      "source_type": "folder",
+      "id": "1vSp7KrVxMNdTPqP_3hzRQ7kr9HB7kJeZ",
+      "canonical_url": "https://drive.google.com/drive/folders/1vSp7KrVxMNdTPqP_3hzRQ7kr9HB7kJeZ",
+      "status": "canonical-container",
+      "retrieved_at": "2026-09-16T16:40:29Z",
+      "sha256": null
+    },
+    {
+      "key": "index",
+      "source_type": "app-index",
+      "id": "1BuNUE6IlMVKs37nJ30mpdEGH3_iFs1PP",
+      "canonical_url": "https://drive.google.com/file/d/1BuNUE6IlMVKs37nJ30mpdEGH3_iFs1PP/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:24:15.200Z",
+      "local_cache": "/tmp/luna-source/pocket-biome__index.md",
+      "sha256": "7e681ea016fe17b407bcc8bfd9f4d1302d6fbfea33150752231dd0216a82382e"
+    },
+    {
+      "key": "prd",
+      "source_type": "prd",
+      "id": "1JMY2Yt-w0q54LchlJ8BNn2rpPLwCpxSb",
+      "canonical_url": "https://drive.google.com/file/d/1JMY2Yt-w0q54LchlJ8BNn2rpPLwCpxSb/view",
+      "version": "v0.3",
+      "status": "current-authority",
+      "drive_modified_at": "2026-09-10T20:22:03.853Z",
+      "local_cache": "/tmp/luna-source/pocket-biome__prd.md",
+      "sha256": "30e436ad689827e8a0dd1155cebb78b006c2a5c2137f1e4059688b76a83ffdab"
+    },
+    {
+      "key": "gameplay",
+      "source_type": "reference",
+      "id": "1iu74KBtt3E6Fj-FfeAI-mVsUUA0gnQ8U",
+      "canonical_url": "https://drive.google.com/file/d/1iu74KBtt3E6Fj-FfeAI-mVsUUA0gnQ8U/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:05:46.720Z",
+      "local_cache": "/tmp/luna-source/pocket-biome__gameplay-and-experience.md",
+      "sha256": "51d5957597dc0e6a52df821f70108a5f2886b6122d84b730968e9160812d5253"
+    },
+    {
+      "key": "technical",
+      "source_type": "reference",
+      "id": "1ZyMnpriR9IXIENbiGqfBvMGPfX4EZesS",
+      "canonical_url": "https://drive.google.com/file/d/1ZyMnpriR9IXIENbiGqfBvMGPfX4EZesS/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:01:19.843Z",
+      "local_cache": "/tmp/luna-source/pocket-biome__technical-specification.md",
+      "sha256": "50131e5dc72dbd266a38a608adffecc8f28c9eb385cc3f0af3ab8560e0dcd48f"
+    },
+    {
+      "key": "economy-operations",
+      "source_type": "reference",
+      "id": "1vSY0o94Je-6GbM9fvNCgvXbXsGQxodVu",
+      "canonical_url": "https://drive.google.com/file/d/1vSY0o94Je-6GbM9fvNCgvXbXsGQxodVu/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:01:28.201Z",
+      "local_cache": "/tmp/luna-source/pocket-biome__economy-and-operations.md",
+      "sha256": "daf253b9653dbb25ec0f33e61973d6f15043ff1b3b1123661e5cbc88406fbe3b"
+    },
+    {
+      "key": "validation-delivery",
+      "source_type": "validation",
+      "id": "1_QZMfUWRio5EP_LBy6ofwmq5A76kN1xu",
+      "canonical_url": "https://drive.google.com/file/d/1_QZMfUWRio5EP_LBy6ofwmq5A76kN1xu/view",
+      "version": "v0.3",
+      "status": "current-authority",
+      "drive_modified_at": "2026-09-10T20:21:54.086Z",
+      "local_cache": "/tmp/luna-source/pocket-biome__validation-and-delivery.md",
+      "sha256": "8da5d4b4314755969d3fb6cf25bdbe84e506ad379eb469c81c45c277ea05c4b6"
+    },
+    {
+      "key": "decisions",
+      "source_type": "reference",
+      "id": "1noJh260EalFKmFMAEFcKm75DSh_0kSzh",
+      "canonical_url": "https://drive.google.com/file/d/1noJh260EalFKmFMAEFcKm75DSh_0kSzh/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:01:45.097Z",
+      "local_cache": "/tmp/luna-source/pocket-biome__decisions.md",
+      "sha256": "08baf49f2d33160541cd0e84905b88a59215b9080a7dfd0a935238c69b86157f"
+    },
+    {
+      "key": "apple-ios",
+      "source_type": "platform-record",
+      "id": "1CV0U0zN5YO3mPUguOtu7f_InsOmFl_P6",
+      "canonical_url": "https://drive.google.com/file/d/1CV0U0zN5YO3mPUguOtu7f_InsOmFl_P6/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:07:59.269Z",
+      "local_cache": "/tmp/luna-source/pocket-biome__apple-ios.md",
+      "sha256": "73d6dce041413171cef93ce7547d52b2702bf8542a94c1af6305e1c84d4fe6c4"
+    },
+    {
+      "key": "google-play",
+      "source_type": "platform-record",
+      "id": "1WtLSE-WQa0l3ZnzDdhtkCsQhTfi0drHf",
+      "canonical_url": "https://drive.google.com/file/d/1WtLSE-WQa0l3ZnzDdhtkCsQhTfi0drHf/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:08:12.142Z",
+      "local_cache": "/tmp/luna-source/pocket-biome__google-play.md",
+      "sha256": "918169b01b7763da5b312563c585ed99a6fe17858f6e83634c1042aa45c030f4"
+    },
+    {
+      "key": "superseded-v0.1-archive",
+      "source_type": "archive",
+      "id": "1-tsxhhSA42IweoKb00o7TH6pFCyqwe1y",
+      "canonical_url": "https://drive.google.com/file/d/1-tsxhhSA42IweoKb00o7TH6pFCyqwe1y/view",
+      "version": "v0.1",
+      "status": "superseded-reference",
+      "local_cache": "/tmp/luna-source/pocket-archive.md",
+      "sha256": "342bf9a80fb0cf43ea2a1e33090a54c853b2aeb178a9b37422a5636d4a8406fd"
+    }
+  ],
+  "revision_check": {
+    "checked_at": "2026-09-16T16:40:29Z",
+    "authority_records": [
+      "prd",
+      "validation-delivery"
+    ],
+    "later_approved_revision": false,
+    "evidence": "Drive revision listings for the current PRD and validation record returned the v0.3 revision as latest; no later approved revision was found."
+  }
+}

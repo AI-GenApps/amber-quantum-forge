@@ -1,0 +1,30 @@
+name: pocket_biome
+description: Pocket Biome Flutter client.
+publish_to: none
+resolution: workspace
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.13.3 <4.0.0"
+  flutter: ">=3.47.3"
+
+dependencies:
+  biome_rules:
+    path: ../packages/biome_rules
+  flame: 1.38.2
+  flutter:
+    sdk: flutter
+  path_provider: ^2.1.5
+  platform_core:
+    path: ../packages/platform_core
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - content/

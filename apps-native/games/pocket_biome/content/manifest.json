@@ -1,0 +1,12 @@
+{
+  "app_id": "pocket_biome",
+  "canonical_name": "Pocket Biome",
+  "public_title": "Pocket Biome",
+  "subtitle": "Grow tiny worlds",
+  "rule_version": "PB-2D-1",
+  "stage": "foundation_playable_slice",
+  "target_species": 30,
+  "target_behaviors": 6,
+  "implemented_species": 6,
+  "content_owner": "pocket-biome"
+}

@@ -1,0 +1,655 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-17T09:22:27.336Z",
+  "status": "authoritative final Android provenance ledger",
+  "scope": "Final optimized release-mode debug-ID APKs installed and smoke-checked on one physical Android device; production-ID AABs built and verified with an isolated nonpublishable test key, with no upload.",
+  "device": {
+    "model": "SM-A525F",
+    "serial": "RZ8R32EAB7T",
+    "androidRelease": "14",
+    "sdk": 34,
+    "evidence": "/tmp/amber-android-final-device-inventory.log"
+  },
+  "sourceCommit": "30b3057f166883d65da4107cd9801166d55aab0c",
+  "sharedSourceSha256": "023c03ee010ad5b449024de3bdeec81157dd0b64dc5be56a36b94ae20cced167",
+  "deviceInventoryLog": "/tmp/amber-android-final-device-inventory.log",
+  "buildInvocations": {
+    "apk": "bun scripts/games/cli.ts build --app <app> --platform android --mode release --environment debug",
+    "aab": "bun scripts/games/cli.ts build --app <app> --platform android --mode aab --environment production"
+  },
+  "staleMetadataNote": "This ledger supersedes older luna-game-metadata sidecars that reference shared source 424dc4... or 4f43be.... The five official metadata sidecars named below were generated for this final batch and all record shared source 023c03....",
+  "deviceRestrictionsObserved": [
+    "No uninstall",
+    "No pm clear",
+    "No simulator/emulator",
+    "No iOS"
+  ],
+  "apps": [
+    {
+      "id": "meme_court",
+      "label": "Meme Court",
+      "device": {
+        "model": "SM-A525F",
+        "serial": "RZ8R32EAB7T",
+        "androidRelease": "14",
+        "sdk": 34,
+        "evidence": "/tmp/amber-android-final-device-inventory.log"
+      },
+      "source": {
+        "commit": "30b3057f166883d65da4107cd9801166d55aab0c",
+        "worktreeDirty": true,
+        "appSourceSha256": "12eff4e8c9e5d42925f3809f095464f7785a6831cab4344c560f867bf63d87db",
+        "sharedSourceSha256": "023c03ee010ad5b449024de3bdeec81157dd0b64dc5be56a36b94ae20cced167",
+        "metadataDebug": "/tmp/amber-android-final-metadata-meme_court.json",
+        "metadataProduction": "/tmp/amber-android-final-metadata-meme_court-production.json"
+      },
+      "debugArtifact": {
+        "packageId": "app.w3dev.memecourt.debug",
+        "versionName": "0.1.0",
+        "versionCode": 1,
+        "artifactId": "meme_court-android-debug-0.1.0+1",
+        "path": "/Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge-games/apps-native/games/meme_court/build/app/outputs/flutter-apk/app-release.apk",
+        "sha256": "c57fce059a9aec3122fe120217b6d2ad87b2baf9784fe02c9cedde262ae02872",
+        "bytes": 46395092,
+        "buildMode": "release",
+        "environment": "debug",
+        "buildLog": {
+          "path": "/tmp/amber-android-final-build-meme_court.log",
+          "mtime": "2026-09-17T09:08:39.107Z"
+        },
+        "install": {
+          "pmPath": "/data/app/~~tjzSsG-FrBvWcjU7XmmYVg==/app.w3dev.memecourt.debug-YyBipTvBy0RQB3wLGauqBQ==/base.apk",
+          "pulledBaseApk": "/tmp/amber-installed-final-meme_court.apk",
+          "pulledSha256": "c57fce059a9aec3122fe120217b6d2ad87b2baf9784fe02c9cedde262ae02872",
+          "sha256MatchesBuild": true
+        },
+        "verificationLog": "/tmp/amber-android-final-apk-verification.log",
+        "manifestLog": "/tmp/amber-android-final-apk-manifest-clean.log",
+        "zipalign16KiB": "passed",
+        "debuggable": false
+      },
+      "productionArtifact": {
+        "packageId": "app.w3dev.memecourt",
+        "versionName": "0.1.0",
+        "versionCode": 1,
+        "artifactId": "meme_court-android-production-0.1.0+1",
+        "path": "/Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge-games/apps-native/games/meme_court/build/app/outputs/bundle/release/app-release.aab",
+        "sha256": "446949938550456e1cdc1bfd6410346c9cc567b2ff853476a4feee1da89de307",
+        "bytes": 46112012,
+        "buildMode": "aab",
+        "environment": "production",
+        "buildLog": {
+          "path": "/tmp/amber-android-final-aab-build-meme_court.log",
+          "mtime": "2026-09-17T09:11:32.259Z"
+        },
+        "signing": {
+          "subject": "CN=Amber Games Nonpublishable Test, O=Amber Games, OU=QA, C=US",
+          "certificateSha256": "47:05:EB:8D:F0:6E:2F:95:06:7D:06:70:BA:65:13:3C:B3:FD:D6:D2:44:37:43:6C:73:F1:C7:78:17:F2:CC:EB",
+          "publishable": false,
+          "uploaded": false,
+          "temporaryKeyDeleted": true
+        },
+        "verificationLog": "/tmp/amber-android-final-aab-verification.log",
+        "manifestEvidence": "/tmp/amber-android-final-aab-manifest-strings.log",
+        "zipalign16KiB": "passed",
+        "jarsigner": "passed",
+        "installedOnDevice": false
+      },
+      "tests": {
+        "flutterTestPassed": true,
+        "testCount": 5,
+        "analyzePassed": true,
+        "log": "/tmp/amber-android-final-test-analyze.log"
+      },
+      "screenshotEvidence": [
+        {
+          "path": "/tmp/amber-android-court-final-reset-confirmation.png",
+          "sha256": "7316ba97980117f31bb9b66e4e700d98218b1b92d9aa1008032cecb83d7c44a3",
+          "bytes": 134428,
+          "dimensions": "1080x2400",
+          "route": "App bar reset",
+          "observed": "Start over confirmation is visible; it states the current docket and saved picks will be cleared."
+        },
+        {
+          "path": "/tmp/amber-android-court-final-selected-both.png",
+          "sha256": "fa168ae25e9e75001ac134750ac8a1bc5c9874ca070351c1f7ac92579b214370",
+          "bytes": 243962,
+          "dimensions": "1080x2400",
+          "route": "Practice round with both caption cards",
+          "observed": "Alice's pick and Bea's pick show different selected caption text and Picked state."
+        },
+        {
+          "path": "/tmp/amber-android-court-final-frozen.png",
+          "sha256": "4f8901e59074478d66e257319a012768172bfe510233dc945598ee3166cdf91f",
+          "bytes": 110492,
+          "dimensions": "1080x2400",
+          "route": "Open the vote",
+          "observed": "Docket frozen state shows the Open the vote action."
+        },
+        {
+          "path": "/tmp/amber-android-court-final-verdict.png",
+          "sha256": "eb28ac1671a2c755a8110438beefffc78518876f9cab614e05cc4a715d089976",
+          "bytes": 155560,
+          "dimensions": "1080x2400",
+          "route": "Vote then verdict",
+          "observed": "Verdict names Alice and displays the winning caption: Midnight snack, daytime confidence."
+        },
+        {
+          "path": "/tmp/amber-android-court-final-relaunch.png",
+          "sha256": "6af424981df71be9a383fd3624d312d743d56c1d780f2b580894ceab86c7ec75",
+          "bytes": 158048,
+          "dimensions": "1080x2400",
+          "route": "Relaunch from verdict",
+          "observed": "Verdict state and winning caption persist after relaunch."
+        },
+        {
+          "path": "/tmp/amber-android-final-memecourt-relaunch.png",
+          "sha256": "db9ae41d778a81738ba62bcae0886b5ea2ad440f0cccc747464cb9e20598ef83",
+          "bytes": 156416,
+          "dimensions": "1080x2400",
+          "route": "Final APK smoke relaunch",
+          "observed": "Final release-mode debug-ID APK opens at persisted Verdict ready state."
+        }
+      ],
+      "primaryJoin": "Gameplay screenshots were captured on the same c57fce... APK bytes; the final rebuild was byte-identical and the final installed pull matches c57fce... .",
+      "cameraNote": null
+    },
+    {
+      "id": "merge_relay",
+      "label": "Merge Relay",
+      "device": {
+        "model": "SM-A525F",
+        "serial": "RZ8R32EAB7T",
+        "androidRelease": "14",
+        "sdk": 34,
+        "evidence": "/tmp/amber-android-final-device-inventory.log"
+      },
+      "source": {
+        "commit": "30b3057f166883d65da4107cd9801166d55aab0c",
+        "worktreeDirty": true,
+        "appSourceSha256": "a73f41e13cda0f00a44e8c605a0460b522122eed3e0a0a97a037955698e6a4c4",
+        "sharedSourceSha256": "023c03ee010ad5b449024de3bdeec81157dd0b64dc5be56a36b94ae20cced167",
+        "metadataDebug": "/tmp/amber-android-final-metadata-merge_relay.json",
+        "metadataProduction": "/tmp/amber-android-final-metadata-merge_relay-production.json"
+      },
+      "debugArtifact": {
+        "packageId": "app.w3dev.mergerelay.debug",
+        "versionName": "0.1.0",
+        "versionCode": 1,
+        "artifactId": "merge_relay-android-debug-0.1.0+1",
+        "path": "/Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge-games/apps-native/games/merge_relay/build/app/outputs/flutter-apk/app-release.apk",
+        "sha256": "3c8bb71bde67b602a5bf78fd6546ff4884ea922df3c090a2cb44c7486ceb2956",
+        "bytes": 45983701,
+        "buildMode": "release",
+        "environment": "debug",
+        "buildLog": {
+          "path": "/tmp/amber-android-final-build-merge_relay.log",
+          "mtime": "2026-09-17T09:09:05.575Z"
+        },
+        "install": {
+          "pmPath": "/data/app/~~HplN1TEgANf5iZ2iGAc1VA==/app.w3dev.mergerelay.debug-HWy4YUurJ7mOgeFYOw8xdw==/base.apk",
+          "pulledBaseApk": "/tmp/amber-installed-final-merge_relay.apk",
+          "pulledSha256": "3c8bb71bde67b602a5bf78fd6546ff4884ea922df3c090a2cb44c7486ceb2956",
+          "sha256MatchesBuild": true
+        },
+        "verificationLog": "/tmp/amber-android-final-apk-verification.log",
+        "manifestLog": "/tmp/amber-android-final-apk-manifest-clean.log",
+        "zipalign16KiB": "passed",
+        "debuggable": false
+      },
+      "productionArtifact": {
+        "packageId": "app.w3dev.mergerelay",
+        "versionName": "0.1.0",
+        "versionCode": 1,
+        "artifactId": "merge_relay-android-production-0.1.0+1",
+        "path": "/Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge-games/apps-native/games/merge_relay/build/app/outputs/bundle/release/app-release.aab",
+        "sha256": "36fe4512e99f741963aae1887a5c5a19b36ce4cc78751ca84099185189fb2f3c",
+        "bytes": 45706698,
+        "buildMode": "aab",
+        "environment": "production",
+        "buildLog": {
+          "path": "/tmp/amber-android-final-aab-build-merge_relay.log",
+          "mtime": "2026-09-17T09:11:46.845Z"
+        },
+        "signing": {
+          "subject": "CN=Amber Games Nonpublishable Test, O=Amber Games, OU=QA, C=US",
+          "certificateSha256": "47:05:EB:8D:F0:6E:2F:95:06:7D:06:70:BA:65:13:3C:B3:FD:D6:D2:44:37:43:6C:73:F1:C7:78:17:F2:CC:EB",
+          "publishable": false,
+          "uploaded": false,
+          "temporaryKeyDeleted": true
+        },
+        "verificationLog": "/tmp/amber-android-final-aab-verification.log",
+        "manifestEvidence": "/tmp/amber-android-final-aab-manifest-strings.log",
+        "zipalign16KiB": "passed",
+        "jarsigner": "passed",
+        "installedOnDevice": false
+      },
+      "tests": {
+        "flutterTestPassed": true,
+        "testCount": 5,
+        "analyzePassed": true,
+        "log": "/tmp/amber-android-final-test-analyze.log"
+      },
+      "screenshotEvidence": [
+        {
+          "path": "/tmp/amber-android-merge-relay-real-merge.png",
+          "sha256": "4e88eb791b951c955afd9d492f19d2ba5dbedd7d7859d01791032f5f2cfbc983",
+          "bytes": 132878,
+          "dimensions": "1080x2400",
+          "route": "Move and merge",
+          "observed": "A real merge route is visible with score 8 and best tile 4."
+        },
+        {
+          "path": "/tmp/amber-android-merge-relay-new-confirmation.png",
+          "sha256": "f46ebd830577f34ef0819452c8a8a7b4512eabe41ec1c99bf4b19f3c0aa9cc67",
+          "bytes": 149931,
+          "dimensions": "1080x2400",
+          "route": "New round confirmation",
+          "observed": "Reset/new-round confirmation is visible before data is cleared."
+        },
+        {
+          "path": "/tmp/amber-android-merge-relay-new-round.png",
+          "sha256": "ba9a11af591f1d2d91905eaf75dfa52c82123d3f69cba16cace2496d34a9ad0a",
+          "bytes": 129895,
+          "dimensions": "1080x2400",
+          "route": "New round",
+          "observed": "A fresh Round 1 board is shown after the confirmed new round."
+        },
+        {
+          "path": "/tmp/amber-android-merge-relay-relaunch.png",
+          "sha256": "49be2bbaa35fd2c7171e6224c97fbe30d6828e11bdfb4db9296ae6b4b294d98d",
+          "bytes": 130291,
+          "dimensions": "1080x2400",
+          "route": "Saved board relaunch",
+          "observed": "The saved board is restored after relaunch."
+        },
+        {
+          "path": "/tmp/amber-android-final-mergerelay-relaunch.png",
+          "sha256": "2d50c94e729f7837cabe72142871cb8259afa8b7200ef6f9a289c8504a208d48",
+          "bytes": 128744,
+          "dimensions": "1080x2400",
+          "route": "Final APK smoke relaunch",
+          "observed": "Final release-mode debug-ID APK opens at the saved board route."
+        }
+      ],
+      "primaryJoin": "Gameplay screenshots were captured on the same 3c8bb7... APK bytes; the final rebuild was byte-identical and the final installed pull matches 3c8bb7... .",
+      "cameraNote": null
+    },
+    {
+      "id": "pocket_biome",
+      "label": "Pocket Biome",
+      "device": {
+        "model": "SM-A525F",
+        "serial": "RZ8R32EAB7T",
+        "androidRelease": "14",
+        "sdk": 34,
+        "evidence": "/tmp/amber-android-final-device-inventory.log"
+      },
+      "source": {
+        "commit": "30b3057f166883d65da4107cd9801166d55aab0c",
+        "worktreeDirty": true,
+        "appSourceSha256": "dcaffc6ebdd8c566be163e2d4aa66ca47c55dfdd22a307493db8563bc1f80d35",
+        "sharedSourceSha256": "023c03ee010ad5b449024de3bdeec81157dd0b64dc5be56a36b94ae20cced167",
+        "metadataDebug": "/tmp/amber-android-final-metadata-pocket_biome.json",
+        "metadataProduction": "/tmp/amber-android-final-metadata-pocket_biome-production.json"
+      },
+      "debugArtifact": {
+        "packageId": "app.w3dev.pocketbiome.debug",
+        "versionName": "0.1.0",
+        "versionCode": 1,
+        "artifactId": "pocket_biome-android-debug-0.1.0+1",
+        "path": "/Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge-games/apps-native/games/pocket_biome/build/app/outputs/flutter-apk/app-release.apk",
+        "sha256": "bd517a39269a183a01188b3e2c1c0f4485f9470effe5161b85b466946df033b3",
+        "bytes": 45809289,
+        "buildMode": "release",
+        "environment": "debug",
+        "buildLog": {
+          "path": "/tmp/amber-android-final-build-pocket_biome.log",
+          "mtime": "2026-09-17T09:09:25.806Z"
+        },
+        "install": {
+          "pmPath": "/data/app/~~L_tFE9VAkirICiMIjAaArQ==/app.w3dev.pocketbiome.debug-j59uaEAJTUFX9-EVLE1tVg==/base.apk",
+          "pulledBaseApk": "/tmp/amber-installed-final-pocket_biome.apk",
+          "pulledSha256": "bd517a39269a183a01188b3e2c1c0f4485f9470effe5161b85b466946df033b3",
+          "sha256MatchesBuild": true
+        },
+        "verificationLog": "/tmp/amber-android-final-apk-verification.log",
+        "manifestLog": "/tmp/amber-android-final-apk-manifest-clean.log",
+        "zipalign16KiB": "passed",
+        "debuggable": false
+      },
+      "productionArtifact": {
+        "packageId": "app.w3dev.pocketbiome",
+        "versionName": "0.1.0",
+        "versionCode": 1,
+        "artifactId": "pocket_biome-android-production-0.1.0+1",
+        "path": "/Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge-games/apps-native/games/pocket_biome/build/app/outputs/bundle/release/app-release.aab",
+        "sha256": "e5e58484a53a1bf991f69b32946e345f0d19d49e523b35913e09dbee9595216b",
+        "bytes": 45607247,
+        "buildMode": "aab",
+        "environment": "production",
+        "buildLog": {
+          "path": "/tmp/amber-android-final-aab-build-pocket_biome.log",
+          "mtime": "2026-09-17T09:12:01.869Z"
+        },
+        "signing": {
+          "subject": "CN=Amber Games Nonpublishable Test, O=Amber Games, OU=QA, C=US",
+          "certificateSha256": "47:05:EB:8D:F0:6E:2F:95:06:7D:06:70:BA:65:13:3C:B3:FD:D6:D2:44:37:43:6C:73:F1:C7:78:17:F2:CC:EB",
+          "publishable": false,
+          "uploaded": false,
+          "temporaryKeyDeleted": true
+        },
+        "verificationLog": "/tmp/amber-android-final-aab-verification.log",
+        "manifestEvidence": "/tmp/amber-android-final-aab-manifest-strings.log",
+        "zipalign16KiB": "passed",
+        "jarsigner": "passed",
+        "installedOnDevice": false
+      },
+      "tests": {
+        "flutterTestPassed": true,
+        "testCount": 8,
+        "analyzePassed": true,
+        "log": "/tmp/amber-android-final-test-analyze.log"
+      },
+      "screenshotEvidence": [
+        {
+          "path": "/tmp/amber-android-pocket-biome-plant.png",
+          "sha256": "084635ef0df3c152f84520b16b7880af54a0cccdf8a286d545bd3432f34f80e3",
+          "bytes": 161071,
+          "dimensions": "1080x2400",
+          "route": "Plant",
+          "observed": "Plant Mossling action is available and a seedling is shown."
+        },
+        {
+          "path": "/tmp/amber-android-pocket-biome-inspect-ready.png",
+          "sha256": "fb187d51d91fbb5d39ed486010753081fd3bd6b4e86f8923d81a8dd9f59c5345",
+          "bytes": 158914,
+          "dimensions": "1080x2400",
+          "route": "Inspect",
+          "observed": "The selected pot is inspectable and its growth route is visible."
+        },
+        {
+          "path": "/tmp/amber-android-pocket-biome-harvest.png",
+          "sha256": "6c9a8132e6dd777fd3a503ff99fccea8ab377c352916251bc14159111068f39f",
+          "bytes": 153738,
+          "dimensions": "1080x2400",
+          "route": "Harvest",
+          "observed": "Harvest completes and the album shows Mossling."
+        },
+        {
+          "path": "/tmp/amber-android-pocket-biome-lifecycle-growing.png",
+          "sha256": "e52f0475919b78d97fac0f98cb3e0872368ba270a50a9f211f23370e6c39b6b8",
+          "bytes": 160528,
+          "dimensions": "1080x2400",
+          "route": "Lifecycle relaunch",
+          "observed": "A growing lifecycle state is retained after relaunch."
+        },
+        {
+          "path": "/tmp/amber-android-pocket-biome-relaunch.png",
+          "sha256": "58c76eb9d2912ae0b094e903bb6ca4ad8c67c76962063003204abf6bbbfcdba7",
+          "bytes": 152894,
+          "dimensions": "1080x2400",
+          "route": "Saved album relaunch",
+          "observed": "Album and retained pot state are visible after relaunch."
+        },
+        {
+          "path": "/tmp/amber-android-final-pocketbiome-relaunch.png",
+          "sha256": "d3c8c3afd79bf0ab3945b0121ca5a91ef8f6517961b595969750a2dc85398ccf",
+          "bytes": 159155,
+          "dimensions": "1080x2400",
+          "route": "Final APK smoke relaunch",
+          "observed": "Final release-mode debug-ID APK opens with album 1, compost 6, and Mossling ready."
+        }
+      ],
+      "primaryJoin": "Gameplay screenshots were captured on the same bd517a... APK bytes; the final rebuild was byte-identical and the final installed pull matches bd517a... .",
+      "cameraNote": null
+    },
+    {
+      "id": "sixty_second_heist",
+      "label": "Sixty-Second Heist",
+      "device": {
+        "model": "SM-A525F",
+        "serial": "RZ8R32EAB7T",
+        "androidRelease": "14",
+        "sdk": 34,
+        "evidence": "/tmp/amber-android-final-device-inventory.log"
+      },
+      "source": {
+        "commit": "30b3057f166883d65da4107cd9801166d55aab0c",
+        "worktreeDirty": true,
+        "appSourceSha256": "6037b8df81bfbd116503cf210b0a04b60af1e4dbc1ac45b47dd0c122e6e6152d",
+        "sharedSourceSha256": "023c03ee010ad5b449024de3bdeec81157dd0b64dc5be56a36b94ae20cced167",
+        "metadataDebug": "/tmp/amber-android-final-metadata-sixty_second_heist.json",
+        "metadataProduction": "/tmp/amber-android-final-metadata-sixty_second_heist-production.json"
+      },
+      "debugArtifact": {
+        "packageId": "app.w3dev.sixtysecondheist.debug",
+        "versionName": "0.1.0",
+        "versionCode": 1,
+        "artifactId": "sixty_second_heist-android-debug-0.1.0+1",
+        "path": "/Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge-games/apps-native/games/sixty_second_heist/build/app/outputs/flutter-apk/app-release.apk",
+        "sha256": "84dcd681a09902dbe587f8e7a5ab885574f7502c9c3767374561bda0a701c1d8",
+        "bytes": 45970701,
+        "buildMode": "release",
+        "environment": "debug",
+        "buildLog": {
+          "path": "/tmp/amber-android-final-build-sixty_second_heist.log",
+          "mtime": "2026-09-17T09:09:50.161Z"
+        },
+        "install": {
+          "pmPath": "/data/app/~~OPx-oUG1FG1RS-sKKrByBw==/app.w3dev.sixtysecondheist.debug-XaENS_vG92D7HvbCm9zgqA==/base.apk",
+          "pulledBaseApk": "/tmp/amber-installed-final-sixty_second_heist.apk",
+          "pulledSha256": "84dcd681a09902dbe587f8e7a5ab885574f7502c9c3767374561bda0a701c1d8",
+          "sha256MatchesBuild": true
+        },
+        "verificationLog": "/tmp/amber-android-final-apk-verification.log",
+        "manifestLog": "/tmp/amber-android-final-apk-manifest-clean.log",
+        "zipalign16KiB": "passed",
+        "debuggable": false
+      },
+      "productionArtifact": {
+        "packageId": "app.w3dev.sixtysecondheist",
+        "versionName": "0.1.0",
+        "versionCode": 1,
+        "artifactId": "sixty_second_heist-android-production-0.1.0+1",
+        "path": "/Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge-games/apps-native/games/sixty_second_heist/build/app/outputs/bundle/release/app-release.aab",
+        "sha256": "75de69e566933ba79c0d6502de2de49e667cb0c964749851a195ed6c9a800b24",
+        "bytes": 45701972,
+        "buildMode": "aab",
+        "environment": "production",
+        "buildLog": {
+          "path": "/tmp/amber-android-final-aab-build-sixty_second_heist.log",
+          "mtime": "2026-09-17T09:12:15.630Z"
+        },
+        "signing": {
+          "subject": "CN=Amber Games Nonpublishable Test, O=Amber Games, OU=QA, C=US",
+          "certificateSha256": "47:05:EB:8D:F0:6E:2F:95:06:7D:06:70:BA:65:13:3C:B3:FD:D6:D2:44:37:43:6C:73:F1:C7:78:17:F2:CC:EB",
+          "publishable": false,
+          "uploaded": false,
+          "temporaryKeyDeleted": true
+        },
+        "verificationLog": "/tmp/amber-android-final-aab-verification.log",
+        "manifestEvidence": "/tmp/amber-android-final-aab-manifest-strings.log",
+        "zipalign16KiB": "passed",
+        "jarsigner": "passed",
+        "installedOnDevice": false
+      },
+      "tests": {
+        "flutterTestPassed": true,
+        "testCount": 8,
+        "analyzePassed": true,
+        "log": "/tmp/amber-android-final-test-analyze.log"
+      },
+      "screenshotEvidence": [
+        {
+          "path": "/tmp/amber-android-heist-draft-relaunch.png",
+          "sha256": "cb1dfbbe2072e060a5bcd1622ed037e7664a8dafbaaf3aa4b5f95bdec0e7d12d",
+          "bytes": 166901,
+          "dimensions": "1080x2400",
+          "route": "Draft relaunch",
+          "observed": "Draft route and planned controls are restored after relaunch."
+        },
+        {
+          "path": "/tmp/amber-android-heist-success.png",
+          "sha256": "21f04ede7a6bbb0cbc5f2e84243d3365deada90836d31c1569aefe629f6bf58d",
+          "bytes": 146150,
+          "dimensions": "1080x2400",
+          "route": "Successful escape",
+          "observed": "Escaped state shows route 2, path 3, loot YES, and the right/right plan."
+        },
+        {
+          "path": "/tmp/amber-android-heist-success-relaunch.png",
+          "sha256": "18bb8d77fa08a668e5c8ff5e84814316ced20561f39f12b6fad03803f1068736",
+          "bytes": 146170,
+          "dimensions": "1080x2400",
+          "route": "Success relaunch",
+          "observed": "Escaped state persists after relaunch."
+        },
+        {
+          "path": "/tmp/amber-android-final-heist-relaunch.png",
+          "sha256": "cba02ee0dfcc5213c3278a4e55e1d61f9133081d21c3fefd6307a477645e38da",
+          "bytes": 145287,
+          "dimensions": "1080x2400",
+          "route": "Final APK smoke relaunch",
+          "observed": "Final release-mode debug-ID APK opens at Escaped with route 2, path 3, loot YES."
+        }
+      ],
+      "primaryJoin": "Gameplay screenshots were captured on the same 84dcd6... APK bytes; the final rebuild was byte-identical and the final installed pull matches 84dcd6... .",
+      "cameraNote": null
+    },
+    {
+      "id": "snapquest",
+      "label": "Peeklings",
+      "device": {
+        "model": "SM-A525F",
+        "serial": "RZ8R32EAB7T",
+        "androidRelease": "14",
+        "sdk": 34,
+        "evidence": "/tmp/amber-android-final-device-inventory.log"
+      },
+      "source": {
+        "commit": "30b3057f166883d65da4107cd9801166d55aab0c",
+        "worktreeDirty": true,
+        "appSourceSha256": "5c1d5dbfb33781d62f12e4f299c1e43943fc7099c8e1b351a5a39345eda0ae90",
+        "sharedSourceSha256": "023c03ee010ad5b449024de3bdeec81157dd0b64dc5be56a36b94ae20cced167",
+        "metadataDebug": "/tmp/amber-android-final-metadata-snapquest.json",
+        "metadataProduction": "/tmp/amber-android-final-metadata-snapquest-production.json"
+      },
+      "debugArtifact": {
+        "packageId": "app.w3dev.snapquest.debug",
+        "versionName": "0.1.0",
+        "versionCode": 1,
+        "artifactId": "snapquest-android-debug-0.1.0+1",
+        "path": "/Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge-games/apps-native/games/snapquest/build/app/outputs/flutter-apk/app-release.apk",
+        "sha256": "e11e7f4d2ecc5474b4de0fd25c299e4c3aa1ac2baf42316265b1520f9fcd723a",
+        "bytes": 48543811,
+        "buildMode": "release",
+        "environment": "debug",
+        "buildLog": {
+          "path": "/tmp/amber-android-final-build-snapquest.log",
+          "mtime": "2026-09-17T09:10:13.911Z"
+        },
+        "install": {
+          "pmPath": "/data/app/~~71-4gDiFmw1TjJQNHaAHiA==/app.w3dev.snapquest.debug-5zfpxEmuEltiSYEbzBnhrA==/base.apk",
+          "pulledBaseApk": "/tmp/amber-installed-final-snapquest.apk",
+          "pulledSha256": "e11e7f4d2ecc5474b4de0fd25c299e4c3aa1ac2baf42316265b1520f9fcd723a",
+          "sha256MatchesBuild": true
+        },
+        "verificationLog": "/tmp/amber-android-final-apk-verification.log",
+        "manifestLog": "/tmp/amber-android-final-apk-manifest-clean.log",
+        "zipalign16KiB": "passed",
+        "debuggable": false
+      },
+      "productionArtifact": {
+        "packageId": "app.w3dev.snapquest",
+        "versionName": "0.1.0",
+        "versionCode": 1,
+        "artifactId": "snapquest-android-production-0.1.0+1",
+        "path": "/Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge-games/apps-native/games/snapquest/build/app/outputs/bundle/release/app-release.aab",
+        "sha256": "b68f1d99861e4ef35bc15ed0e10404f02bec5b5a483408a4438345430c915028",
+        "bytes": 48926941,
+        "buildMode": "aab",
+        "environment": "production",
+        "buildLog": {
+          "path": "/tmp/amber-android-final-aab-build-snapquest.log",
+          "mtime": "2026-09-17T09:12:33.510Z"
+        },
+        "signing": {
+          "subject": "CN=Amber Games Nonpublishable Test, O=Amber Games, OU=QA, C=US",
+          "certificateSha256": "47:05:EB:8D:F0:6E:2F:95:06:7D:06:70:BA:65:13:3C:B3:FD:D6:D2:44:37:43:6C:73:F1:C7:78:17:F2:CC:EB",
+          "publishable": false,
+          "uploaded": false,
+          "temporaryKeyDeleted": true
+        },
+        "verificationLog": "/tmp/amber-android-final-aab-verification.log",
+        "manifestEvidence": "/tmp/amber-android-final-aab-manifest-strings.log",
+        "zipalign16KiB": "passed",
+        "jarsigner": "passed",
+        "installedOnDevice": false
+      },
+      "tests": {
+        "flutterTestPassed": true,
+        "testCount": 19,
+        "analyzePassed": true,
+        "log": "/tmp/amber-android-final-test-analyze.log"
+      },
+      "screenshotEvidence": [
+        {
+          "path": "/tmp/amber-android-final-snapquest-reset-confirmation.png",
+          "sha256": "0842cd8c8620249f296208dd13734c1b756825e35f73e043f24cbe02137b14bd",
+          "bytes": 137949,
+          "dimensions": "1080x2400",
+          "route": "Clear local album confirmation",
+          "observed": "Destructive local reset requires confirmation; the dialog states it clears the local collection."
+        },
+        {
+          "path": "/tmp/amber-android-final-snapquest-primary-start.png",
+          "sha256": "a37e21bdc21726c4e6d5306f874b87e0fb70c09c8faf495462589efeceba1d8b",
+          "bytes": 165839,
+          "dimensions": "1080x2400",
+          "route": "Primary desk hunt start",
+          "observed": "0 hunts complete; red target Emberling and red, blue, and gold desk objects are visible."
+        },
+        {
+          "path": "/tmp/amber-android-final-snapquest-primary-wrong.png",
+          "sha256": "0cd023fdedb78ce7130933905ec7ef289c3dbf6060357b71a357f0776cd5194e",
+          "bytes": 167994,
+          "dimensions": "1080x2400",
+          "route": "Wrong desk choice",
+          "observed": "Blue shell missed message identifies the red target and leaves the hunt available."
+        },
+        {
+          "path": "/tmp/amber-android-final-snapquest-primary-first-success.png",
+          "sha256": "5b2b9aa0ecb39ab2d5a3c02b30efc8505c0a580c0773798d6340183fa9722f84",
+          "bytes": 181198,
+          "dimensions": "1080x2400",
+          "route": "First correct choice",
+          "observed": "Emberling joins the album and the second blue target hunt appears."
+        },
+        {
+          "path": "/tmp/amber-android-final-snapquest-primary-complete.png",
+          "sha256": "6d58f6fd6530350fb6208119956ea3a69a5ecaf70c668695c89368d1648900e8",
+          "bytes": 140793,
+          "dimensions": "1080x2400",
+          "route": "Second correct choice and album",
+          "observed": "Azurling joins; 2 hunts complete, 2 in album, and distinct Emberling/Azurling art is shown."
+        },
+        {
+          "path": "/tmp/amber-android-final-snapquest-primary-relaunch.png",
+          "sha256": "b1deb80542fc20100672bc0faf3a654883c54ef82e5c0dfbf4fd65f8f873c37a",
+          "bytes": 140737,
+          "dimensions": "1080x2400",
+          "route": "Primary route relaunch",
+          "observed": "Your collection is back after relaunch with both creatures retained."
+        }
+      ],
+      "primaryJoin": "Primary and relaunch screenshots were captured after the final e11e7f... APK was installed. The controlled in-app Clear local album confirmation was used to exercise the primary route, then both hunts were completed and the collection was restored before relaunch.",
+      "cameraNote": "Camera recognition remains unvalidated. No raw frames or photo archive are included; the prior camera metadata evidence is separate from this final desk-hunt artifact join."
+    }
+  ],
+  "unavailableOrUnclaimed": [
+    "Google Play publication/upload: NOT RUN.",
+    "Production AAB installation: NOT RUN; only the debug-ID release APKs were installed on the physical device.",
+    "Camera recognition validation: NOT CLAIMED; SnapQuest descriptorId remains null/unvalidated."
+  ]
+}

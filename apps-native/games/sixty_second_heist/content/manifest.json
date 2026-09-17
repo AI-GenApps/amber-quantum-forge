@@ -1,0 +1,12 @@
+{
+  "app_id": "sixty_second_heist",
+  "canonical_name": "Sixty-Second Heist",
+  "public_title": "Sixty-Second Heist",
+  "subtitle": "Plan the perfect escape",
+  "rule_version": "SH-2D-1",
+  "stage": "foundation_playable_slice",
+  "target_levels": 80,
+  "target_obstacles": 12,
+  "implemented_fixture_levels": 1,
+  "content_owner": "sixty-second-heist"
+}

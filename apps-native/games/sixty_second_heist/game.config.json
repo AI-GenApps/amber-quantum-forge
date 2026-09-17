@@ -1,0 +1,31 @@
+{
+  "id": "sixty_second_heist",
+  "canonicalName": "Sixty-Second Heist",
+  "publicTitle": "Sixty-Second Heist",
+  "environment": "debug",
+  "productionId": "app.w3dev.sixtysecondheist",
+  "debugId": "app.w3dev.sixtysecondheist.debug",
+  "activeId": "app.w3dev.sixtysecondheist.debug",
+  "saveNamespace": "games.sixty_second_heist.debug",
+  "saveSchemaVersion": 1,
+  "analyticsNamespace": "game.sixty_second_heist.debug",
+  "entitlementsNamespace": "games.sixty_second_heist.entitlements",
+  "rulesPackage": "apps-native/games/packages/heist_rules",
+  "capabilities": {
+    "specified": [
+      "game_loop",
+      "save_sync",
+      "billing",
+      "ads",
+      "sharing"
+    ],
+    "implemented": [],
+    "enabled": []
+  },
+  "permissions": {
+    "specified": [],
+    "enabled": []
+  },
+  "version": "0.1.0",
+  "buildNumber": 1
+}

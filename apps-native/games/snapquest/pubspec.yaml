@@ -1,0 +1,31 @@
+name: snapquest
+description: SnapQuest Flutter client; proposed public title Peeklings.
+publish_to: none
+resolution: workspace
+version: 0.1.0+1
+
+environment:
+  sdk: ">=3.13.3 <4.0.0"
+  flutter: ">=3.47.3"
+
+dependencies:
+  camera: 0.12.1
+  flutter:
+    sdk: flutter
+  path_provider: ^2.1.5
+  platform_core:
+    path: ../packages/platform_core
+  snapquest_rules:
+    path: ../packages/snapquest_rules
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  config:
+    enable-swift-package-manager: false
+  uses-material-design: true
+  assets:
+    - assets/

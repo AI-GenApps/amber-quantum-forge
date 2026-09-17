@@ -8,6 +8,7 @@ Turborepo + Bun monorepo that bootstraps a production-ready mobile product with 
 - **Next.js web app** (`apps/web`) — Tailwind CSS, shadcn/ui, admin panel
 - **Hono API** (`packages/api`) — hosted in Next.js, JWT auth, OpenAI streaming chat, config system
 - **SwiftUI iOS app** (`apps-native/ios-app`) — XcodeGen, SPM, SwiftData, widget
+- **Gaming portfolio** (`apps-native/games`) — five independent Flutter apps with a scoped Pub workspace, per-app native identities, and isolated release artifacts
 - **Two-stage JWT auth** — Firebase ID token → API access token + refresh token
 - **OpenAI streaming chat** — Vercel AI SDK server-side, native SSE parser on iOS
 - **Plugin architecture** — features in `plugins/expo/*` and `plugins/ios/*`
@@ -21,6 +22,17 @@ cp .env.example .env   # fill in values — see docs-internal/setup/02-env-vars.
 cd packages/db && bun run db:push
 bun run dev
 ```
+
+Gaming development uses the additive commands below and keeps the existing Bun workspace, Expo app, SwiftUI app, and Flutter starter independent:
+
+```bash
+bun run games:bootstrap
+bun run games:doctor -- --strict
+bun run games:list
+bun run games:test
+```
+
+The complete gaming command reference, source provenance, architecture, deletion evidence, and build report are in [`docs-internal/gaming/commands.md`](docs-internal/gaming/commands.md) and the [gaming portfolio docs](docs-internal/gaming/repository-audit.md).
 
 ## Docs
 

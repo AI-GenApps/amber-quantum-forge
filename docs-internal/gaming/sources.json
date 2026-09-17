@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "retrieved_at": "2026-09-16T16:40:29Z",
+  "source_policy": {
+    "authority": "Current v0.3 portfolio, app index, per-app index, PRD, references, validation, decisions, and platform records.",
+    "precedence": "A newer approved revision supersedes older material; current v0.3 scope corrections supersede v0.2 quantity limits and deferrals.",
+    "cache": "Read-only snapshots are outside the repository at /tmp/luna-playbook.md, /tmp/luna-app-specs.md, /tmp/luna-portfolio-direction.md, and /tmp/luna-source/.",
+    "build_input": "Builds and tests must not require Drive access or the temporary cache.",
+    "refresh": "Use connected Drive fetch and revision listing, compare approved revision metadata and SHA-256, update this registry and the affected handoff, then rerun docs validation."
+  },
+  "canonical_drive_root": {
+    "id": "1L2E8-khlFGrahvDoCyF6bZajwke2SuCY",
+    "url": "https://drive.google.com/drive/folders/1L2E8-khlFGrahvDoCyF6bZajwke2SuCY",
+    "apps_folder_id": "11IgeEVUsVC9sUqSqDauB2N6_MBxy_kc3",
+    "apps_folder_url": "https://drive.google.com/drive/folders/11IgeEVUsVC9sUqSqDauB2N6_MBxy_kc3"
+  },
+  "production_identifiers": {
+    "decision": "Repository technical identifiers are finalized; external registration remains unverified.",
+    "debug_suffix": "Append .debug only for local debug configuration and never label it as a production identifier.",
+    "apps": {
+      "merge_relay": {
+        "app_id": "app.w3dev.mergerelay",
+        "public_title": "Merge Relay",
+        "internal_slug": "merge_relay"
+      },
+      "pocket_biome": {
+        "app_id": "app.w3dev.pocketbiome",
+        "public_title": "Pocket Biome",
+        "internal_slug": "pocket_biome"
+      },
+      "sixty_second_heist": {
+        "app_id": "app.w3dev.sixtysecondheist",
+        "public_title": "Sixty-Second Heist",
+        "internal_slug": "sixty_second_heist"
+      },
+      "meme_court": {
+        "app_id": "app.w3dev.memecourt",
+        "public_title": "Meme Court",
+        "internal_slug": "meme_court"
+      },
+      "snapquest": {
+        "app_id": "app.w3dev.snapquest",
+        "public_title": "Peeklings",
+        "internal_name": "SnapQuest",
+        "internal_slug": "snapquest"
+      }
+    }
+  },
+  "manifests": [
+    "docs-internal/gaming/sources/merge-relay.json",
+    "docs-internal/gaming/sources/pocket-biome.json",
+    "docs-internal/gaming/sources/sixty-second-heist.json",
+    "docs-internal/gaming/sources/meme-court.json",
+    "docs-internal/gaming/sources/snapquest.json"
+  ],
+  "records": [
+    {
+      "key": "playbook",
+      "source_type": "playbook",
+      "id": "1IYNjeRi7i3pBPD2kY6TpbWQWzr6u_F1O",
+      "canonical_url": "https://drive.google.com/file/d/1IYNjeRi7i3pBPD2kY6TpbWQWzr6u_F1O/view",
+      "version": "execution-playbook",
+      "status": "authority",
+      "drive_modified_at": "2026-09-16T16:21:53.951Z",
+      "local_cache": "/tmp/luna-playbook.md",
+      "sha256": "385b430e78359ad65bd04a69d0be8db78f68880de67ee396fdb5168f1aa9e14e"
+    },
+    {
+      "key": "app-specifications-index",
+      "source_type": "app-index",
+      "id": "1mRDQtNvsJYxJlo3qLO5tNf-5VGOBYMqd",
+      "canonical_url": "https://drive.google.com/file/d/1mRDQtNvsJYxJlo3qLO5tNf-5VGOBYMqd/view",
+      "version": "v0.3",
+      "status": "authority",
+      "drive_modified_at": "2026-09-10T20:24:51.800Z",
+      "local_cache": "/tmp/luna-app-specs.md",
+      "sha256": "04095340bb2bd99bfa1d52e7d992bf3ca1a795810b4f78360804fca7c335df62"
+    },
+    {
+      "key": "portfolio-direction",
+      "source_type": "portfolio-direction",
+      "id": "1f_Gi1mQP9PoPhEu0M5zDT_nHfb044tbA",
+      "canonical_url": "https://drive.google.com/file/d/1f_Gi1mQP9PoPhEu0M5zDT_nHfb044tbA/view",
+      "version": "v0.3",
+      "status": "authority",
+      "drive_modified_at": "2026-09-10T20:21:13.843Z",
+      "local_cache": "/tmp/luna-portfolio-direction.md",
+      "sha256": "6e2ca40be85745405988fc9d1636c41ec42638ea410963f42dafee7eff3da65a"
+    },
+    {
+      "key": "research-index",
+      "source_type": "research-index",
+      "id": "1Ye70t4rpxT9eNMgBunhLVvY-SWftMqbs",
+      "canonical_url": "https://drive.google.com/file/d/1Ye70t4rpxT9eNMgBunhLVvY-SWftMqbs/view",
+      "version": "research-index",
+      "status": "supporting",
+      "drive_modified_at": "2026-09-10T20:09:33.176Z",
+      "local_cache": "/tmp/luna-source/research-index.md",
+      "sha256": "ed3c32e8edad8d05b62795626e2d3ec2473f835683cd8c48c4650d0aed847c17"
+    },
+    {
+      "key": "original-research",
+      "source_type": "research",
+      "id": "1k1qUHfQ_CgRvYGjZypSUPn2uMBqKlME2",
+      "canonical_url": "https://drive.google.com/file/d/1k1qUHfQ_CgRvYGjZypSUPn2uMBqKlME2/view",
+      "version": "research",
+      "status": "supporting",
+      "drive_modified_at": "2026-09-10T16:19:36.110Z",
+      "local_cache": "/tmp/luna-source/original-research.md",
+      "sha256": "c48a37e046582fcd63f92975b03c636565c664cae5c4d25e2958b5dd2fef96e4"
+    }
+  ],
+  "revision_checks": [
+    {
+      "source": "app-specifications-index",
+      "checked_at": "2026-09-16T16:40:29Z",
+      "latest_revision_at": "2026-09-10T20:24:51.800Z",
+      "later_approved_revision": false,
+      "evidence": "Drive revision listing returned the current v0.3 record and no later approved revision."
+    },
+    {
+      "source": "portfolio-direction",
+      "checked_at": "2026-09-16T16:40:29Z",
+      "latest_revision_at": "2026-09-10T20:21:13.843Z",
+      "later_approved_revision": false,
+      "evidence": "Drive revision listing returned the current v0.3 record and no later approved revision."
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "id": "snapquest",
+  "canonicalName": "SnapQuest",
+  "publicTitle": "Peeklings",
+  "environment": "debug",
+  "productionId": "app.w3dev.snapquest",
+  "debugId": "app.w3dev.snapquest.debug",
+  "activeId": "app.w3dev.snapquest.debug",
+  "saveNamespace": "games.snapquest.debug",
+  "saveSchemaVersion": 1,
+  "analyticsNamespace": "game.snapquest.debug",
+  "entitlementsNamespace": "games.snapquest.entitlements",
+  "rulesPackage": "apps-native/games/packages/snapquest_rules",
+  "capabilities": {
+    "specified": [
+      "game_loop",
+      "camera",
+      "save_sync",
+      "billing",
+      "sharing",
+      "notifications"
+    ],
+    "implemented": [
+      "camera"
+    ],
+    "enabled": [
+      "camera"
+    ]
+  },
+  "permissions": {
+    "specified": [
+      "camera"
+    ],
+    "enabled": [
+      "camera"
+    ]
+  },
+  "version": "0.1.0",
+  "buildNumber": 1
+}

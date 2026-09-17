@@ -1,0 +1,31 @@
+{
+  "id": "pocket_biome",
+  "canonicalName": "Pocket Biome",
+  "publicTitle": "Pocket Biome",
+  "environment": "debug",
+  "productionId": "app.w3dev.pocketbiome",
+  "debugId": "app.w3dev.pocketbiome.debug",
+  "activeId": "app.w3dev.pocketbiome.debug",
+  "saveNamespace": "games.pocket_biome.debug",
+  "saveSchemaVersion": 1,
+  "analyticsNamespace": "game.pocket_biome.debug",
+  "entitlementsNamespace": "games.pocket_biome.entitlements",
+  "rulesPackage": "apps-native/games/packages/biome_rules",
+  "capabilities": {
+    "specified": [
+      "game_loop",
+      "save_sync",
+      "billing",
+      "sharing",
+      "notifications"
+    ],
+    "implemented": [],
+    "enabled": []
+  },
+  "permissions": {
+    "specified": [],
+    "enabled": []
+  },
+  "version": "0.1.0",
+  "buildNumber": 1
+}

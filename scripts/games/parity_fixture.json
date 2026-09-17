@@ -1,0 +1,12 @@
+{
+  "seed": 12345,
+  "moves": ["left", "up", "right", "down", "left"],
+  "expected": {
+    "board": [8, 2, 0, 0, 4, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+    "score": 12,
+    "move_count": 5,
+    "seed": 12345,
+    "rng_state": 150275943,
+    "rule_version": "MR-2D-1"
+  }
+}

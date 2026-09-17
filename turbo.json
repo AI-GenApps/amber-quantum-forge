@@ -1,6 +1,15 @@
 {
   "$schema": "https://turborepo.com/schema.json",
   "ui": "tui",
+  "globalPassThroughEnv": [
+    "IOS_DEVELOPMENT_TEAM",
+    "IOS_DISTRIBUTION_TEAM",
+    "IOS_EXPORT_OPTIONS_PLIST",
+    "ANDROID_KEYSTORE_PATH",
+    "ANDROID_KEY_ALIAS",
+    "ANDROID_KEY_PASSWORD",
+    "ANDROID_STORE_PASSWORD"
+  ],
   "tasks": {
     "build": {
       "inputs": ["$TURBO_DEFAULT$", ".env*"],

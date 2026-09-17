@@ -28,7 +28,7 @@ function getStagedDocsFolders(stagedFiles: string[]): Set<"internal" | "public">
 }
 
 function runValidation(folderName: "docs-internal" | "docs-public"): void {
-  execFileSync("bunx", ["mintlify", "validate"], {
+  execFileSync("bun", ["x", "--bun", "mintlify", "validate"], {
     cwd: resolve(process.cwd(), folderName),
     stdio: "inherit",
   });

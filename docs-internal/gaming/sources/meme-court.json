@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "app": "meme-court",
+  "production_id": "app.w3dev.memecourt",
+  "public_title": "Meme Court",
+  "internal_slug": "meme_court",
+  "retrieved_at": "2026-09-16T16:40:29Z",
+  "canonical_folder": "https://drive.google.com/drive/folders/1X6UE5pvTtDxNhUYNHGRVp1A5XKlCeGad",
+  "record_policy": "All current index, PRD, detailed references, validation, decisions, and platform records are listed. The v0.1 archive is retained only to explain superseded scope. No source body is copied into the repository.",
+  "records": [
+    {
+      "key": "canonical-app-folder",
+      "source_type": "folder",
+      "id": "1X6UE5pvTtDxNhUYNHGRVp1A5XKlCeGad",
+      "canonical_url": "https://drive.google.com/drive/folders/1X6UE5pvTtDxNhUYNHGRVp1A5XKlCeGad",
+      "status": "canonical-container",
+      "retrieved_at": "2026-09-16T16:40:29Z",
+      "sha256": null
+    },
+    {
+      "key": "index",
+      "source_type": "app-index",
+      "id": "14xC0VFZywMMT3hETrKQoAtf7ZwnfwBI3",
+      "canonical_url": "https://drive.google.com/file/d/14xC0VFZywMMT3hETrKQoAtf7ZwnfwBI3/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:24:29.801Z",
+      "local_cache": "/tmp/luna-source/meme-court__index.md",
+      "sha256": "bfd90ae623a7a1d1467fdbd03629c671cac4a5230aed1570b780692cc68f1b14"
+    },
+    {
+      "key": "prd",
+      "source_type": "prd",
+      "id": "1073cIXJsPuQvwDCN2gCp6dkMzE-CaxsL",
+      "canonical_url": "https://drive.google.com/file/d/1073cIXJsPuQvwDCN2gCp6dkMzE-CaxsL/view",
+      "version": "v0.3",
+      "status": "current-authority",
+      "drive_modified_at": "2026-09-10T20:22:39.263Z",
+      "local_cache": "/tmp/luna-source/meme-court__prd.md",
+      "sha256": "0bf176a8825e0aae731655ba63e8aadd8c57e0bc4e9adcbdb3da4690b1eb517d"
+    },
+    {
+      "key": "gameplay",
+      "source_type": "reference",
+      "id": "1ojX8jrzhAGb6okcMUy1yB_TTxem-PPBE",
+      "canonical_url": "https://drive.google.com/file/d/1ojX8jrzhAGb6okcMUy1yB_TTxem-PPBE/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:02:48.388Z",
+      "local_cache": "/tmp/luna-source/meme-court__gameplay-and-experience.md",
+      "sha256": "d057d806a82f18b451a081642c2b231bb9c6531136df21ee6612069623175979"
+    },
+    {
+      "key": "technical",
+      "source_type": "reference",
+      "id": "1pZAeqGaZLkP7pyBiCM_Sdu1Db1HioCks",
+      "canonical_url": "https://drive.google.com/file/d/1pZAeqGaZLkP7pyBiCM_Sdu1Db1HioCks/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:02:55.718Z",
+      "local_cache": "/tmp/luna-source/meme-court__technical-specification.md",
+      "sha256": "567a5481c5c1236ba3b7566687f0ee52ab58fef3f6c2d070e8a33c4c71862c16"
+    },
+    {
+      "key": "economy-operations",
+      "source_type": "reference",
+      "id": "1EIhRgglc4slFpFLGsmHWcne1CaQQQi8a",
+      "canonical_url": "https://drive.google.com/file/d/1EIhRgglc4slFpFLGsmHWcne1CaQQQi8a/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:03:06.419Z",
+      "local_cache": "/tmp/luna-source/meme-court__economy-and-operations.md",
+      "sha256": "6d46b22b3580d2d8f054983d1c8d8395caa3ae1c3a4189fac1660de6e8e7853c"
+    },
+    {
+      "key": "validation-delivery",
+      "source_type": "validation",
+      "id": "1dm1TlyzALuZcSgitHvBvK1SLkh6fsT0N",
+      "canonical_url": "https://drive.google.com/file/d/1dm1TlyzALuZcSgitHvBvK1SLkh6fsT0N/view",
+      "version": "v0.3",
+      "status": "current-authority",
+      "drive_modified_at": "2026-09-10T20:22:31.596Z",
+      "local_cache": "/tmp/luna-source/meme-court__validation-and-delivery.md",
+      "sha256": "05414f00d147d02ac54bd737ab1f9521490615d68071fd2cacfdb3bdcfdf4790"
+    },
+    {
+      "key": "decisions",
+      "source_type": "reference",
+      "id": "1G6Nsk7d3NEUS-xYWOOlCbHuAFluq_7xM",
+      "canonical_url": "https://drive.google.com/file/d/1G6Nsk7d3NEUS-xYWOOlCbHuAFluq_7xM/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:03:33.349Z",
+      "local_cache": "/tmp/luna-source/meme-court__decisions.md",
+      "sha256": "72c50e92ca7c82c8d4c6e586819b784174b0bfc65be05ccce29bff5c528b8dab"
+    },
+    {
+      "key": "apple-ios",
+      "source_type": "platform-record",
+      "id": "14xMnpRoJlTK4B8X-f5eXMWFYEiLY6NuA",
+      "canonical_url": "https://drive.google.com/file/d/14xMnpRoJlTK4B8X-f5eXMWFYEiLY6NuA/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:08:40.608Z",
+      "local_cache": "/tmp/luna-source/meme-court__apple-ios.md",
+      "sha256": "48f60b4e397fb97b9ac1a7d287769d0748b0945f2e6269fbefa201f6673fbfdc"
+    },
+    {
+      "key": "google-play",
+      "source_type": "platform-record",
+      "id": "131DigQkNI7begXDfEngnszsO0OwL7jxz",
+      "canonical_url": "https://drive.google.com/file/d/131DigQkNI7begXDfEngnszsO0OwL7jxz/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:08:51.185Z",
+      "local_cache": "/tmp/luna-source/meme-court__google-play.md",
+      "sha256": "71ae6a313e3d2519ea91ac007cfe29cd2c82b81885a2fc2586524e538a5ce65e"
+    },
+    {
+      "key": "superseded-v0.1-archive",
+      "source_type": "archive",
+      "id": "1Hea7s2F4Fe0qxUYOz9tK2lUBF-mgQhCj",
+      "canonical_url": "https://drive.google.com/file/d/1Hea7s2F4Fe0qxUYOz9tK2lUBF-mgQhCj/view",
+      "version": "v0.1",
+      "status": "superseded-reference",
+      "local_cache": "/tmp/luna-source/meme-archive.md",
+      "sha256": "40979de378103a33dab1989463c8384870cf82cf7762d6684897d61bc1db4a56"
+    }
+  ],
+  "revision_check": {
+    "checked_at": "2026-09-16T16:40:29Z",
+    "authority_records": [
+      "prd",
+      "validation-delivery"
+    ],
+    "later_approved_revision": false,
+    "evidence": "Drive revision listings for the current PRD and validation record returned the v0.3 revision as latest; no later approved revision was found."
+  }
+}

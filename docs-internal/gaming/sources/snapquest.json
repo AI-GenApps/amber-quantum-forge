@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "app": "snapquest",
+  "production_id": "app.w3dev.snapquest",
+  "public_title": "Peeklings",
+  "internal_name": "SnapQuest",
+  "internal_slug": "snapquest",
+  "retrieved_at": "2026-09-16T16:40:29Z",
+  "canonical_folder": "https://drive.google.com/drive/folders/1uB2q8utiOSwCENVhX3yFHbwm6pmjDhnc",
+  "record_policy": "All current index, PRD, detailed references, validation, decisions, and platform records are listed. The v0.1 archive is retained only to explain superseded scope. No source body is copied into the repository.",
+  "records": [
+    {
+      "key": "canonical-app-folder",
+      "source_type": "folder",
+      "id": "1uB2q8utiOSwCENVhX3yFHbwm6pmjDhnc",
+      "canonical_url": "https://drive.google.com/drive/folders/1uB2q8utiOSwCENVhX3yFHbwm6pmjDhnc",
+      "status": "canonical-container",
+      "retrieved_at": "2026-09-16T16:40:29Z",
+      "sha256": null
+    },
+    {
+      "key": "index",
+      "source_type": "app-index",
+      "id": "15qaZXs1Z1CF2XXTRPtqgTqcat8m9nb",
+      "canonical_url": "https://drive.google.com/file/d/15qaZXs1Z1CF2XXTRPtqgTqcat8m9nb/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:24:37.694Z",
+      "local_cache": "/tmp/luna-source/snapquest__index.md",
+      "sha256": "f49b97bb0cca2dcd9a3256142711dfcff71603e00adede682f8d41034fbcd66a"
+    },
+    {
+      "key": "prd",
+      "source_type": "prd",
+      "id": "1ACvWairYy-8v8vqq1cId_oJKuWpYhG1Q",
+      "canonical_url": "https://drive.google.com/file/d/1ACvWairYy-8v8vqq1cId_oJKuWpYhG1Q/view",
+      "version": "v0.3",
+      "status": "current-authority",
+      "drive_modified_at": "2026-09-10T20:22:54.380Z",
+      "local_cache": "/tmp/luna-source/snapquest__prd.md",
+      "sha256": "c9fb345878f2a6d6f0556a0d91197f9c1d79f1118c0981271fef12c83b9dcfce"
+    },
+    {
+      "key": "gameplay",
+      "source_type": "reference",
+      "id": "1WCaNEHVDe2qmRu4xN953nIkFngMGZl3T",
+      "canonical_url": "https://drive.google.com/file/d/1WCaNEHVDe2qmRu4xN953nIkFngMGZl3T/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:03:47.772Z",
+      "local_cache": "/tmp/luna-source/snapquest__gameplay-and-experience.md",
+      "sha256": "38ee21e0200bc7445f32e4623751365434c0f6239924da4aa3f2a65bcb515890"
+    },
+    {
+      "key": "technical",
+      "source_type": "reference",
+      "id": "1-4EqGJrDHLFQ3J5WG-F1smBaUWYh1vRl",
+      "canonical_url": "https://drive.google.com/file/d/1-4EqGJrDHLFQ3J5WG-F1smBaUWYh1vRl/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:03:56.382Z",
+      "local_cache": "/tmp/luna-source/snapquest__technical-specification.md",
+      "sha256": "aefbb308a4935a39a13135f5fd31b62d0cec9c3b0922af451ec2697950086fc5"
+    },
+    {
+      "key": "economy-operations",
+      "source_type": "reference",
+      "id": "1O07cxpeNqkL_Yp1yrcwScJwtHiJBSkNc",
+      "canonical_url": "https://drive.google.com/file/d/1O07cxpeNqkL_Yp1yrcwScJwtHiJBSkNc/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:04:06.094Z",
+      "local_cache": "/tmp/luna-source/snapquest__economy-and-operations.md",
+      "sha256": "0e840bc53697400aefe8f02deb7024d8a714dfe6c910c8c9a93440f3519654ed"
+    },
+    {
+      "key": "validation-delivery",
+      "source_type": "validation",
+      "id": "1GD_bS-niOlam1AYn2z5draah5JJOX5ep",
+      "canonical_url": "https://drive.google.com/file/d/1GD_bS-niOlam1AYn2z5draah5JJOX5ep/view",
+      "version": "v0.3",
+      "status": "current-authority",
+      "drive_modified_at": "2026-09-10T20:22:46.578Z",
+      "local_cache": "/tmp/luna-source/snapquest__validation-and-delivery.md",
+      "sha256": "3eb00b323247062990bff3f27e6b7b4265be76513d823a76f623d024bacde207"
+    },
+    {
+      "key": "decisions",
+      "source_type": "reference",
+      "id": "1dr_Ey9qyl7-5vXy8AfCo0ainJRna6i2W",
+      "canonical_url": "https://drive.google.com/file/d/1dr_Ey9qyl7-5vXy8AfCo0ainJRna6i2W/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:04:22.292Z",
+      "local_cache": "/tmp/luna-source/snapquest__decisions.md",
+      "sha256": "34cfd58de92f7fd524bf482c016f0a27effca2f1874b6594b0c1d7b2378d6fc4"
+    },
+    {
+      "key": "apple-ios",
+      "source_type": "platform-record",
+      "id": "1RKUy7L-W1Aaw72zy3oLYGRcH3BIJNWqw",
+      "canonical_url": "https://drive.google.com/file/d/1RKUy7L-W1Aaw72zy3oLYGRcH3BIJNWqw/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:08:58.957Z",
+      "local_cache": "/tmp/luna-source/snapquest__apple-ios.md",
+      "sha256": "5fbf16c3153a71de8e27506ed420d4c29aa9939cafc7ff97d97bceaad7ae8955"
+    },
+    {
+      "key": "google-play",
+      "source_type": "platform-record",
+      "id": "1tGAs_d-ixcaxTsk_CAl_S9fQ8zjA4Y35",
+      "canonical_url": "https://drive.google.com/file/d/1tGAs_d-ixcaxTsk_CAl_S9fQ8zjA4Y35/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:09:06.944Z",
+      "local_cache": "/tmp/luna-source/snapquest__google-play.md",
+      "sha256": "72ade5096fe267f4b2b705cc57db52df19b1d9044025994e197e69598ff46ce0"
+    },
+    {
+      "key": "superseded-v0.1-archive",
+      "source_type": "archive",
+      "id": "1AfEj0hOE4InnIT4UU7Kra11RZ7ppmyOI",
+      "canonical_url": "https://drive.google.com/file/d/1AfEj0hOE4InnIT4UU7Kra11RZ7ppmyOI/view",
+      "version": "v0.1",
+      "status": "superseded-reference",
+      "local_cache": "/tmp/luna-source/snapquest-archive.md",
+      "sha256": "bac13181be3827669778459e60f0a2c9e1ae7f7a1b6b3cb7213b2b2f30fd4165"
+    }
+  ],
+  "revision_check": {
+    "checked_at": "2026-09-16T16:40:29Z",
+    "authority_records": [
+      "prd",
+      "validation-delivery"
+    ],
+    "later_approved_revision": false,
+    "evidence": "Drive revision listings for the current PRD and validation record returned the v0.3 revision as latest; no later approved revision was found."
+  }
+}

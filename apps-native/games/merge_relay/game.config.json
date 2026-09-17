@@ -1,0 +1,32 @@
+{
+  "id": "merge_relay",
+  "canonicalName": "Merge Relay",
+  "publicTitle": "Merge Relay",
+  "environment": "debug",
+  "productionId": "app.w3dev.mergerelay",
+  "debugId": "app.w3dev.mergerelay.debug",
+  "activeId": "app.w3dev.mergerelay.debug",
+  "saveNamespace": "games.merge_relay.debug",
+  "saveSchemaVersion": 1,
+  "analyticsNamespace": "game.merge_relay.debug",
+  "entitlementsNamespace": "games.merge_relay.entitlements",
+  "rulesPackage": "apps-native/games/packages/merge_rules",
+  "capabilities": {
+    "specified": [
+      "game_loop",
+      "guest_identity",
+      "save_sync",
+      "billing",
+      "ads",
+      "sharing"
+    ],
+    "implemented": [],
+    "enabled": []
+  },
+  "permissions": {
+    "specified": [],
+    "enabled": []
+  },
+  "version": "0.1.0",
+  "buildNumber": 1
+}
