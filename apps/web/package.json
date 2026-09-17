@@ -19,7 +19,6 @@
     "@repo/ui": "*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "drizzle-orm": "0.36.4",
     "firebase": "^11.10.0",
     "jose": "^5.9.6",
     "lucide-react": "^0.468.0",

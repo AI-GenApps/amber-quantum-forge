@@ -1,0 +1,48 @@
+{
+  "$schema": "./node_modules/knip/schema.json",
+  "ignoreBinaries": [
+    "dart",
+    "eas",
+    "flutter",
+    "xcodegen"
+  ],
+  "ignoreDependencies": [
+    "@babel/core",
+    "@secretlint/secretlint-rule-preset-recommend",
+    "@types/react-native",
+    "bun-types",
+    "native",
+    "shadcn"
+  ],
+  "ignoreIssues": {
+    ".agents/skills/expo-cicd-workflows/scripts/fetch.js": ["files"],
+    ".agents/skills/expo-cicd-workflows/scripts/validate.js": ["files"],
+    "apps/native/components/Button.tsx": ["files"],
+    "apps/native/config-plugins/withFirebaseAppDelegate.js": ["files"],
+    "apps/native/services/deviceRegistration.ts": ["files"],
+    "apps/web/app/components/ui/alert.tsx": ["files"],
+    "packages/api/src/lib/index.ts": ["files"],
+    "apps/native/components/themed/index.ts": ["exports", "types"],
+    "apps/native/components/themed/useThemeColor.ts": ["exports"],
+    "apps/native/contexts/NotificationContext.tsx": ["exports"],
+    "apps/native/contexts/UpdateContext.tsx": ["exports"],
+    "apps/native/firebase.config.ts": ["exports"],
+    "apps/native/lib/pushNotifications.ts": ["exports"],
+    "apps/native/services/revenuecat.ts": ["exports"],
+    "apps/native/utils/haptics.ts": ["exports"],
+    "apps/web/app/components/ui/badge.tsx": ["exports", "types"],
+    "apps/web/app/components/ui/button.tsx": ["exports", "types"],
+    "apps/web/app/components/ui/card.tsx": ["exports"],
+    "apps/web/app/components/ui/table.tsx": ["exports"],
+    "apps/web/app/components/ui/dialog.tsx": ["exports"],
+    "apps/native/services/appMetadata.ts": ["types"],
+    "apps/web/app/admin/users/actions.ts": ["types"],
+    "packages/api/src/routes/auth-tokens.ts": ["exports"],
+    "packages/api/src/games/contracts.ts": ["exports", "types"],
+    "packages/api/src/games/index.ts": ["exports", "types"],
+    "packages/api/src/games/validation.ts": ["exports"],
+    "plugins/expo/auth/src/apiClient.ts": ["exports"],
+    "plugins/expo/auth/src/tokenUtils.ts": ["exports"],
+    "scripts/games/codegen.ts": ["files", "unresolved"]
+  }
+}
