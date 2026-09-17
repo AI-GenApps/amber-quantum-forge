@@ -1,0 +1,193 @@
+name: Gaming portfolio CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps-native/games/**"
+      - "scripts/games/**"
+      - "scripts/codegen*.ts"
+      - "scripts/codegen/**"
+      - "package.json"
+      - "bun.lock"
+      - "turbo.json"
+      - "knip.json"
+      - "packages/api/**"
+      - "packages/db/**"
+      - ".github/workflows/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "apps-native/games/**"
+      - "scripts/games/**"
+      - "scripts/codegen*.ts"
+      - "scripts/codegen/**"
+      - "package.json"
+      - "bun.lock"
+      - "turbo.json"
+      - "knip.json"
+      - "packages/api/**"
+      - "packages/db/**"
+      - ".github/workflows/**"
+  workflow_dispatch:
+
+concurrency:
+  group: games-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  BUN_VERSION: "1.3.3"
+  FLUTTER_VERSION: "3.47.3"
+
+jobs:
+  affected:
+    name: Determine affected games
+    runs-on: ubuntu-latest
+    outputs:
+      apps: ${{ steps.detect.outputs.apps }}
+      fallback: ${{ steps.detect.outputs.fallback }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@3d267786b128fe76c2f16a390aa2448b815359f3
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - id: detect
+        shell: bash
+        run: |
+          set -euo pipefail
+          base=""
+          case "${{ github.event_name }}" in
+            pull_request) base="${{ github.event.pull_request.base.sha }}" ;;
+            push) base="${{ github.event.before }}" ;;
+            workflow_dispatch) base="refs/heads/__dispatch_requires_full_matrix__" ;;
+          esac
+          if [[ -z "$base" || "$base" =~ ^0+$ ]]; then
+            base="refs/heads/__missing_event_base__"
+          fi
+          result="$(bun scripts/games/cli.ts affected --base "$base")"
+          echo "$result"
+          echo "apps=$(echo "$result" | jq -c '.apps')" >> "$GITHUB_OUTPUT"
+          echo "fallback=$(echo "$result" | jq -r '.fallback')" >> "$GITHUB_OUTPUT"
+
+  dart:
+    name: Pure Dart packages
+    needs: affected
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@3d267786b128fe76c2f16a390aa2448b815359f3
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - uses: subosito/flutter-action@fd55f4c5af5b953cc57a2be44cb082c8f6635e8e
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+      - run: bun install --frozen-lockfile
+      - run: dart pub get --enforce-lockfile
+        working-directory: apps-native/games
+      - run: |
+          set -euo pipefail
+          while IFS= read -r package; do
+            (cd "$package" && dart analyze && dart test)
+          done < <(find packages -mindepth 1 -maxdepth 1 -type d -exec test -f '{}/pubspec.yaml' \; -print)
+        working-directory: apps-native/games
+
+  quality:
+    name: Gaming configuration and tooling gates
+    needs: affected
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@3d267786b128fe76c2f16a390aa2448b815359f3
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - uses: subosito/flutter-action@fd55f4c5af5b953cc57a2be44cb082c8f6635e8e
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+      - run: bun install --frozen-lockfile
+      - run: bun run games:bootstrap
+      - run: bun run games:format:check
+      - run: bun run games:validate:strict
+      - run: bun run games:content:validate
+      - run: bun run games:icons:check
+      - run: bun run games:test:tooling
+      - run: bun run games:codegen
+      - run: git diff --exit-code -- apps-native/games/merge_relay/game.config.json apps-native/games/pocket_biome/game.config.json apps-native/games/sixty_second_heist/game.config.json apps-native/games/meme_court/game.config.json apps-native/games/snapquest/game.config.json apps-native/games/packages/platform_core/lib/src/generated/game_app_registry.dart
+
+  android:
+    name: Android ${{ matrix.app }}
+    needs: [affected, dart, quality]
+    if: needs.affected.outputs.apps != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        app: ${{ fromJSON(needs.affected.outputs.apps) }}
+    uses: ./.github/workflows/games-build.yml
+    with:
+      app: ${{ matrix.app }}
+      platform: android
+      environment: debug
+      mode: debug
+
+  ios_unsigned:
+    name: iOS unsigned ${{ matrix.app }}
+    needs: [affected, dart, quality]
+    if: needs.affected.outputs.apps != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        app: ${{ fromJSON(needs.affected.outputs.apps) }}
+    uses: ./.github/workflows/games-build.yml
+    with:
+      app: ${{ matrix.app }}
+      platform: ios
+      environment: debug
+      mode: unsigned
+
+  generator:
+    name: Generic sixth-app generator
+    needs: affected
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: oven-sh/setup-bun@3d267786b128fe76c2f16a390aa2448b815359f3
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - uses: subosito/flutter-action@fd55f4c5af5b953cc57a2be44cb082c8f6635e8e
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+      - run: bun install --frozen-lockfile
+      - run: |
+          set -euo pipefail
+          parent="$(mktemp -d)"
+          output="$parent/generated_sixth"
+          bun scripts/games/cli.ts generate --id generated_sixth --title "Generated Sixth" --output "$output"
+          bun scripts/games/cli.ts validate-generated --output "$output"
+          cd "$output"
+          flutter pub get
+          flutter analyze
+          flutter test
+
+  knip:
+    name: Knip stale-code gate
+    needs: affected
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: oven-sh/setup-bun@3d267786b128fe76c2f16a390aa2448b815359f3
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - run: bun run knip:ci
