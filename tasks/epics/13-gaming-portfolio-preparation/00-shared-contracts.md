@@ -1,7 +1,7 @@
 ---
 epic: 13-gaming-portfolio-preparation
 task: 00-shared-contracts
-status: in-progress
+status: completed
 commit_scope: gaming
 depends_on: []
 estimate: M
@@ -15,13 +15,13 @@ The repository already contains a standalone Flutter starter and separate Expo a
 
 ## Implementation Checklist
 
-- [ ] Add the scoped `apps-native/games` Pub workspace.
-- [ ] Add `packages/platform_core` as a pure Dart package.
-- [ ] Implement injected clock and deterministic random interfaces.
-- [ ] Implement bounded, versioned replay and save envelopes with app identity checks.
-- [ ] Implement redacted telemetry interfaces.
-- [ ] Add unit tests for determinism, limits, migration, redaction, and camera denial.
-- [ ] Publish the frozen path and dependency rules in gaming architecture docs.
+- [x] Add the scoped `apps-native/games` Pub workspace.
+- [x] Add `packages/platform_core` as a pure Dart package.
+- [x] Implement injected clock and deterministic random interfaces.
+- [x] Implement bounded, versioned replay and save envelopes with app identity checks.
+- [x] Implement redacted telemetry interfaces.
+- [x] Add unit tests for determinism, limits, migration, redaction, and camera denial.
+- [x] Publish the frozen path and dependency rules in gaming architecture docs.
 
 ## Verification
 

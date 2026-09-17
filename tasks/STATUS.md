@@ -17,6 +17,7 @@ Last updated: manually — update when each epic is fully completed.
 - [x] 10 — Polish & Release (codegen verification, seed data, doc cross-links, release checklist)
 - [x] 11 — Optional KMP shared logic example (Service Status)
 - [x] 12 — Repository Hygiene (NativeTabs review and local artifact exclusions)
+- [x] 13 — Gaming Portfolio Preparation (five independent Flutter game targets)
 
 ## How to read this file
 
