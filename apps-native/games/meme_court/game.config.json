@@ -1,0 +1,31 @@
+{
+  "id": "meme_court",
+  "canonicalName": "Meme Court",
+  "publicTitle": "Meme Court",
+  "environment": "debug",
+  "productionId": "app.w3dev.memecourt",
+  "debugId": "app.w3dev.memecourt.debug",
+  "activeId": "app.w3dev.memecourt.debug",
+  "saveNamespace": "games.meme_court.debug",
+  "saveSchemaVersion": 1,
+  "analyticsNamespace": "game.meme_court.debug",
+  "entitlementsNamespace": "games.meme_court.entitlements",
+  "rulesPackage": "apps-native/games/packages/court_rules",
+  "capabilities": {
+    "specified": [
+      "save_sync",
+      "billing",
+      "sharing",
+      "moderation",
+      "web_voting"
+    ],
+    "implemented": [],
+    "enabled": []
+  },
+  "permissions": {
+    "specified": [],
+    "enabled": []
+  },
+  "version": "0.1.0",
+  "buildNumber": 1
+}
