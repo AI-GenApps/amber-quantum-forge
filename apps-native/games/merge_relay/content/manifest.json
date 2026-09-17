@@ -1,0 +1,18 @@
+{
+  "app_id": "merge_relay",
+  "rule_version": "MR-2D-1",
+  "public_title": "Merge Relay",
+  "subtitle": "Merge tiles. Challenge friends",
+  "stage": "P0 playable foundation; relay service and expanded MVP remain handoff work",
+  "checkpoint": {
+    "board_size": 4,
+    "max_ranked_moves": 3,
+    "initial_tiles": 2,
+    "spawn_distribution": {"2": 0.9, "4": 0.1}
+  },
+  "content_targets": {
+    "daily_and_endless": true,
+    "immutable_rescue_checkpoints": true,
+    "server_validated_relays": true
+  }
+}

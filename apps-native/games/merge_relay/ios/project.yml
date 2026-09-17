@@ -1,0 +1,98 @@
+name: Runner
+options:
+  bundleIdPrefix: app.w3dev
+  deploymentTarget:
+    iOS: "15.0"
+  createIntermediateGroups: true
+configs:
+  Debug: debug
+  Release: release
+  Profile: release
+settings:
+  base:
+    CLANG_ENABLE_MODULES: YES
+    ENABLE_BITCODE: NO
+    IPHONEOS_DEPLOYMENT_TARGET: "15.0"
+    SWIFT_VERSION: "5.0"
+targets:
+  Runner:
+    type: application
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: Runner/AppDelegate.swift
+      - path: Runner/SceneDelegate.swift
+      - path: Runner/GeneratedPluginRegistrant.m
+      - path: Runner/Assets.xcassets
+        buildPhase: resources
+      - path: Runner/Base.lproj/LaunchScreen.storyboard
+        buildPhase: resources
+      - path: Runner/Base.lproj/Main.storyboard
+        buildPhase: resources
+    configFiles:
+      Debug: Flutter/Debug.xcconfig
+      Release: Flutter/Release.xcconfig
+      Profile: Flutter/Release.xcconfig
+    settings:
+      base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CURRENT_PROJECT_VERSION: "$(FLUTTER_BUILD_NUMBER)"
+        INFOPLIST_FILE: Runner/Info.plist
+        LD_RUNPATH_SEARCH_PATHS:
+          - "$(inherited)"
+          - "@executable_path/Frameworks"
+        PRODUCT_BUNDLE_IDENTIFIER: app.w3dev.mergerelay
+        PRODUCT_NAME: "$(TARGET_NAME)"
+        SWIFT_OBJC_BRIDGING_HEADER: Runner/Runner-Bridging-Header.h
+        VERSIONING_SYSTEM: apple-generic
+      configs:
+        Debug:
+          PRODUCT_BUNDLE_IDENTIFIER: app.w3dev.mergerelay.debug
+          CODE_SIGNING_ALLOWED: NO
+        Release:
+          PRODUCT_BUNDLE_IDENTIFIER: app.w3dev.mergerelay
+          CODE_SIGNING_ALLOWED: NO
+        Profile:
+          PRODUCT_BUNDLE_IDENTIFIER: app.w3dev.mergerelay.debug
+          CODE_SIGNING_ALLOWED: NO
+    preBuildScripts:
+      - name: Run Flutter Build
+        script: /bin/sh "$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh" build
+        basedOnDependencyAnalysis: false
+    postBuildScripts:
+      - name: Embed Flutter Frameworks
+        script: /bin/sh "$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh" embed_and_thin
+        basedOnDependencyAnalysis: false
+  RunnerTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: RunnerTests
+    dependencies:
+      - target: Runner
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: app.w3dev.mergerelay.tests
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Runner.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Runner"
+schemes:
+  Runner:
+    build:
+      targets:
+        Runner: all
+        RunnerTests: [test]
+    run:
+      config: Debug
+      customLLDBInitFile: "$(SRCROOT)/Flutter/ephemeral/flutter_lldbinit"
+    test:
+      config: Debug
+      customLLDBInitFile: "$(SRCROOT)/Flutter/ephemeral/flutter_lldbinit"
+      targets:
+        - RunnerTests
+    profile:
+      config: Profile
+    analyze:
+      config: Debug
+    archive:
+      config: Release
