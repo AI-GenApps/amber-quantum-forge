@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "app": "merge-relay",
+  "production_id": "app.w3dev.mergerelay",
+  "public_title": "Merge Relay",
+  "internal_slug": "merge_relay",
+  "retrieved_at": "2026-09-16T16:40:29Z",
+  "canonical_folder": "https://drive.google.com/drive/folders/1bFFgFE6bEDIbGVTSxDGT8nbMZoBxyRkv",
+  "record_policy": "All current index, PRD, detailed references, validation, decisions, and platform records are listed. The v0.1 archive is retained only to explain superseded scope. No source body is copied into the repository.",
+  "records": [
+    {
+      "key": "canonical-app-folder",
+      "source_type": "folder",
+      "id": "1bFFgFE6bEDIbGVTSxDGT8nbMZoBxyRkv",
+      "canonical_url": "https://drive.google.com/drive/folders/1bFFgFE6bEDIbGVTSxDGT8nbMZoBxyRkv",
+      "status": "canonical-container",
+      "retrieved_at": "2026-09-16T16:40:29Z",
+      "sha256": null
+    },
+    {
+      "key": "index",
+      "source_type": "app-index",
+      "id": "1MJMWtgjZSFfjHB7y6rmjsF65jl01Wmsk",
+      "canonical_url": "https://drive.google.com/file/d/1MJMWtgjZSFfjHB7y6rmjsF65jl01Wmsk/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:24:05.524Z",
+      "local_cache": "/tmp/luna-source/merge-relay__index.md",
+      "sha256": "18081e7efb2efe0d66ae620b1ca78d6a81d92359727ebbc0160fd5ade49a7bb8"
+    },
+    {
+      "key": "prd",
+      "source_type": "prd",
+      "id": "1A8ib92CGqfUHqc7-kmoUT3kzwpjdmOrK",
+      "canonical_url": "https://drive.google.com/file/d/1A8ib92CGqfUHqc7-kmoUT3kzwpjdmOrK/view",
+      "version": "v0.3",
+      "status": "current-authority",
+      "drive_modified_at": "2026-09-10T20:21:46.058Z",
+      "local_cache": "/tmp/luna-source/merge-relay__prd.md",
+      "sha256": "4ac1f75a45d51ab9f33e50332c08421440c8441a5c5de979e46dae91eab8ad19"
+    },
+    {
+      "key": "gameplay",
+      "source_type": "reference",
+      "id": "1cbBaHo1eUCCjz42rktsePWPOyJSNuI7i",
+      "canonical_url": "https://drive.google.com/file/d/1cbBaHo1eUCCjz42rktsePWPOyJSNuI7i/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:04:58.768Z",
+      "local_cache": "/tmp/luna-source/merge-relay__gameplay-and-experience.md",
+      "sha256": "b04c2c8a6cd6cf005864f78f230c65dff474b6a3331dd8c65ac35891ece45f6a"
+    },
+    {
+      "key": "technical",
+      "source_type": "reference",
+      "id": "1EOcW3_mroZJYj_g07FVDAgi740o3LZE5",
+      "canonical_url": "https://drive.google.com/file/d/1EOcW3_mroZJYJg07FVDAgi740o3LZE5/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:05:07.013Z",
+      "local_cache": "/tmp/luna-source/merge-relay__technical-specification.md",
+      "sha256": "5861106c60d6de74f3437f20b8abbbcf6159ce4088c35f478f8d6cea8f71b7c7"
+    },
+    {
+      "key": "economy-operations",
+      "source_type": "reference",
+      "id": "1x9lGUIzozY6Oca9qQCNSaubupU32qVwK",
+      "canonical_url": "https://drive.google.com/file/d/1x9lGUIzozY6Oca9qQCNSaubupU32qVwK/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:05:17.662Z",
+      "local_cache": "/tmp/luna-source/merge-relay__economy-and-operations.md",
+      "sha256": "638ea066f7a425670328f83dacab56029ba4e8fba8d984fbf5067c981b7417c1"
+    },
+    {
+      "key": "validation-delivery",
+      "source_type": "validation",
+      "id": "1EzTnN_gSBWJO5DIF-bmKPNK8cGbrPBny",
+      "canonical_url": "https://drive.google.com/file/d/1EzTnN_gSBWJO5DIF-bmKPNK8cGbrPBny/view",
+      "version": "v0.3",
+      "status": "current-authority",
+      "drive_modified_at": "2026-09-10T20:21:35.903Z",
+      "local_cache": "/tmp/luna-source/merge-relay__validation-and-delivery.md",
+      "sha256": "23bc2b7229ff9f1c9af4b07e39952a21ebd00531ac92a0715ec71bbc6c8fc214"
+    },
+    {
+      "key": "decisions",
+      "source_type": "reference",
+      "id": "1jwBJ_xu4JjtwB6M_jQ1UObZcUsPpUzYn",
+      "canonical_url": "https://drive.google.com/file/d/1jwBJ_xu4JjtwB6M_jQ1UObZcUsPpUzYn/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:05:36.606Z",
+      "local_cache": "/tmp/luna-source/merge-relay__decisions.md",
+      "sha256": "9d258a95d9e119cb6857fb6d0acb8e774092cdf796dbaa5268f9b10658706580"
+    },
+    {
+      "key": "apple-ios",
+      "source_type": "platform-record",
+      "id": "13O7t_hCI4d0Vp7AMXsF1UEY1PHAfJlLA",
+      "canonical_url": "https://drive.google.com/file/d/13O7t_hCI4d0Vp7AMXsF1UEY1PHAfJlLA/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:07:39.036Z",
+      "local_cache": "/tmp/luna-source/merge-relay__apple-ios.md",
+      "sha256": "62f61055c94089c93c42f60bc81ac77c2369d8b033566822b1c2eb27c2f4bbf3"
+    },
+    {
+      "key": "google-play",
+      "source_type": "platform-record",
+      "id": "15N_pjA8jiscelitHym_8-g-nPO5D3p4l",
+      "canonical_url": "https://drive.google.com/file/d/15N_pjA8jiscelitHym_8-g-nPO5D3p4l/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:07:48.161Z",
+      "local_cache": "/tmp/luna-source/merge-relay__google-play.md",
+      "sha256": "5bc1a58bea79e350c36f9c8ab6f30188b82394b4499138af5ce1cb70021955c8"
+    },
+    {
+      "key": "superseded-v0.1-archive",
+      "source_type": "archive",
+      "id": "1eLIVZDjz1EWU67cWl84JrcIPUPahbtcZ",
+      "canonical_url": "https://drive.google.com/file/d/1eLIVZDjz1EWU67cWl84JrcIPUPahbtcZ/view",
+      "version": "v0.1",
+      "status": "superseded-reference",
+      "local_cache": "/tmp/luna-source/merge-archive.md",
+      "sha256": "0c823c7fe5d0bc44784152f5e3952a116bb38aa0fba91e86311ba5f01b2061e4"
+    }
+  ],
+  "revision_check": {
+    "checked_at": "2026-09-16T16:40:29Z",
+    "authority_records": [
+      "prd",
+      "validation-delivery"
+    ],
+    "later_approved_revision": false,
+    "evidence": "Drive revision listings for the current PRD and validation record returned the v0.3 revision as latest; no later approved revision was found."
+  }
+}

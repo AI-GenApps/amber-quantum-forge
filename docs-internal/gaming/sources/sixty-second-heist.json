@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "app": "sixty-second-heist",
+  "production_id": "app.w3dev.sixtysecondheist",
+  "public_title": "Sixty-Second Heist",
+  "internal_slug": "sixty_second_heist",
+  "retrieved_at": "2026-09-16T16:40:29Z",
+  "canonical_folder": "https://drive.google.com/drive/folders/1BENH1-3-tmnQlh3m16zlk0_Ut63PkBZo",
+  "record_policy": "All current index, PRD, detailed references, validation, decisions, and platform records are listed. The v0.1 archive is retained only to explain superseded scope. No source body is copied into the repository.",
+  "records": [
+    {
+      "key": "canonical-app-folder",
+      "source_type": "folder",
+      "id": "1BENH1-3-tmnQlh3m16zlk0_Ut63PkBZo",
+      "canonical_url": "https://drive.google.com/drive/folders/1BENH1-3-tmnQlh3m16zlk0_Ut63PkBZo",
+      "status": "canonical-container",
+      "retrieved_at": "2026-09-16T16:40:29Z",
+      "sha256": null
+    },
+    {
+      "key": "index",
+      "source_type": "app-index",
+      "id": "1-_MqNs9Ul080QmH05rHsLORSGRq83F9J",
+      "canonical_url": "https://drive.google.com/file/d/1-_MqNs9Ul080QmH05rHsLORSGRq83F9J/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:24:22.081Z",
+      "local_cache": "/tmp/luna-source/sixty-second-heist__index.md",
+      "sha256": "58b495e5131f99f68b0795b0c5f5336ae788ada4f2cad3bd6bc639070feffc13"
+    },
+    {
+      "key": "prd",
+      "source_type": "prd",
+      "id": "1rYuGJ2CMTOY8oFfrWIOIaPsHd5B3QA31",
+      "canonical_url": "https://drive.google.com/file/d/1rYuGJ2CMTOY8oFfrWIOIaPsHd5B3QA31/view",
+      "version": "v0.3",
+      "status": "current-authority",
+      "drive_modified_at": "2026-09-10T20:22:21.316Z",
+      "local_cache": "/tmp/luna-source/sixty-second-heist__prd.md",
+      "sha256": "8573d8a7d22991195b9f73be0bdb18e5904d1b078f913ea43549a09f5853bdbc"
+    },
+    {
+      "key": "gameplay",
+      "source_type": "reference",
+      "id": "1T9Z9hUpkvr16dEY1CgDb0Au-GaZvgKAv",
+      "canonical_url": "https://drive.google.com/file/d/1T9Z9hUpkvr16dEY1CgDb0Au-GaZvgKAv/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:01:54.481Z",
+      "local_cache": "/tmp/luna-source/sixty-second-heist__gameplay-and-experience.md",
+      "sha256": "ee8ee24f408b49d3bce66ef95cdce2eefbd8b1a13d6174cf1f488fb7e80ae396"
+    },
+    {
+      "key": "technical",
+      "source_type": "reference",
+      "id": "1BX_1pdHdQUKrVR_UoCptB6Q1XlZWtNb7",
+      "canonical_url": "https://drive.google.com/file/d/1BX_1pdHdQUKrVR_UoCptB6Q1XlZWtNb7/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:02:13.226Z",
+      "local_cache": "/tmp/luna-source/sixty-second-heist__technical-specification.md",
+      "sha256": "0d0454d83175bc8c0e99a84b76054aa9b8051421db2003275791626f14e0a843"
+    },
+    {
+      "key": "economy-operations",
+      "source_type": "reference",
+      "id": "14RWnfZ3Bxg91WwTAb0SaP3JBg5aFEhiJ",
+      "canonical_url": "https://drive.google.com/file/d/14RWnfZ3Bxg91WwTAb0SaP3JBg5aFEhiJ/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:02:20.372Z",
+      "local_cache": "/tmp/luna-source/sixty-second-heist__economy-and-operations.md",
+      "sha256": "9aedfd21f3c3cffd8acdc2e8ae3d81a6563637fdfdef33ec8f45748a4bc2bf4e"
+    },
+    {
+      "key": "validation-delivery",
+      "source_type": "validation",
+      "id": "1hbkoiUUOfXLWGuzJjyEfOeZY8hqif1M2",
+      "canonical_url": "https://drive.google.com/file/d/1hbkoiUUOfXLWGuzJjyEfOeZY8hqif1M2/view",
+      "version": "v0.3",
+      "status": "current-authority",
+      "drive_modified_at": "2026-09-10T20:22:12.675Z",
+      "local_cache": "/tmp/luna-source/sixty-second-heist__validation-and-delivery.md",
+      "sha256": "42a971e1e5da3b5348cd1c547fc202ab7e7b8808a716be283e6bd787f3e3efe0"
+    },
+    {
+      "key": "decisions",
+      "source_type": "reference",
+      "id": "1Z9VDZkjAjHpzh_MlUmKq1ed4aFARJKN3",
+      "canonical_url": "https://drive.google.com/file/d/1Z9VDZkjAjHpzh_MlUmKq1ed4aFARJKN3/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:02:39.355Z",
+      "local_cache": "/tmp/luna-source/sixty-second-heist__decisions.md",
+      "sha256": "d1a45590ce2736b95c0c000fc6ac06e9cf341e08c9160eeb64e6116e0dad25f8"
+    },
+    {
+      "key": "apple-ios",
+      "source_type": "platform-record",
+      "id": "1w_8-8w1dz5wui1o4HuGYefxi0SCpAMDb",
+      "canonical_url": "https://drive.google.com/file/d/1w_8-8w1dz5wui1o4HuGYefxi0SCpAMDb/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:08:20.489Z",
+      "local_cache": "/tmp/luna-source/sixty-second-heist__apple-ios.md",
+      "sha256": "9d97de35cbd6f012677490116852a749dce558976160ec20d1c1fd4cf4e72f2a"
+    },
+    {
+      "key": "google-play",
+      "source_type": "platform-record",
+      "id": "1AI_CX5bgOyaSYC6ardJ6WlCZ1A5-wNRv",
+      "canonical_url": "https://drive.google.com/file/d/1AI_CX5bgOyaSYC6ardJ6WlCZ1A5-wNRv/view",
+      "version": "v0.3",
+      "status": "current",
+      "drive_modified_at": "2026-09-10T20:08:30.513Z",
+      "local_cache": "/tmp/luna-source/sixty-second-heist__google-play.md",
+      "sha256": "ab899c173ef60c0b9a0d74cabb46390531908dfc7877e909df9a89ed5777d838"
+    },
+    {
+      "key": "superseded-v0.1-archive",
+      "source_type": "archive",
+      "id": "1Xj2jiPM8JVEeDbXJ3VxC18wb-qXrSMAx",
+      "canonical_url": "https://drive.google.com/file/d/1Xj2jiPM8JVEeDbXJ3VxC18wb-qXrSMAx/view",
+      "version": "v0.1",
+      "status": "superseded-reference",
+      "local_cache": "/tmp/luna-source/heist-archive.md",
+      "sha256": "1b4d3f774a3c5371649569cb25588cff4f949cf5bad297b968afbe5bfc7c31bb"
+    }
+  ],
+  "revision_check": {
+    "checked_at": "2026-09-16T16:40:29Z",
+    "authority_records": [
+      "prd",
+      "validation-delivery"
+    ],
+    "later_approved_revision": false,
+    "evidence": "Drive revision listings for the current PRD and validation record returned the v0.3 revision as latest; no later approved revision was found."
+  }
+}

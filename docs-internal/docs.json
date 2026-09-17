@@ -49,6 +49,32 @@
         ]
       },
       {
+        "tab": "Gaming",
+        "icon": "gamepad-2",
+        "groups": [
+          {
+            "group": "Portfolio readiness",
+            "pages": [
+              "gaming/repository-audit",
+              "gaming/architecture",
+              "gaming/app-source-registry",
+              "gaming/requirements-reconciliation",
+              "gaming/commands",
+              "gaming/visual-review",
+              "gaming/migration-deletion-log",
+              "gaming/verification",
+              "gaming/integration-staging-plan",
+              "gaming/team-handoff",
+              "gaming/handoffs/merge-relay",
+              "gaming/handoffs/pocket-biome",
+              "gaming/handoffs/sixty-second-heist",
+              "gaming/handoffs/meme-court",
+              "gaming/handoffs/snapquest"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "Operations",
         "icon": "activity",
         "pages": ["release-checklist"]
