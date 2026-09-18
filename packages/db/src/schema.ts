@@ -1,13 +1,18 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   boolean,
+  check,
+  foreignKey,
+  index,
   integer,
   jsonb,
   pgTable,
+  primaryKey,
   serial,
   text,
   timestamp,
   unique,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -115,3 +120,106 @@ export const chatMessagesRelations = relations(chatMessages, ({ one }) => ({
     references: [users.id],
   }),
 }));
+
+export const mergeRelayScopes = pgTable(
+  "merge_relay_scopes",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    revision: integer("revision").notNull().default(0),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [primaryKey({ columns: [table.appId, table.environment] })],
+);
+
+export const mergeRelayRecords = pgTable(
+  "merge_relay_records",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    recordType: text("record_type").notNull(),
+    recordId: text("record_id").notNull(),
+    revision: integer("revision"),
+    ownerSubject: text("owner_subject"),
+    challengeId: text("challenge_id"),
+    resultId: text("result_id"),
+    idempotencyKey: text("idempotency_key"),
+    alias: text("alias"),
+    targetSubject: text("target_subject"),
+    lookupKey: text("lookup_key"),
+    parentRecordType: text("parent_record_type"),
+    parentRecordId: text("parent_record_id"),
+    payload: jsonb("payload").notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.appId, table.environment, table.recordType, table.recordId] }),
+    index("merge_relay_records_owner_idx").on(
+      table.appId,
+      table.environment,
+      table.recordType,
+      table.ownerSubject,
+      table.updatedAt,
+    ),
+    index("merge_relay_records_challenge_idx").on(
+      table.appId,
+      table.environment,
+      table.recordType,
+      table.challengeId,
+      table.ownerSubject,
+      table.updatedAt,
+    ),
+    index("merge_relay_records_result_idx").on(
+      table.appId,
+      table.environment,
+      table.recordType,
+      table.resultId,
+      table.ownerSubject,
+      table.updatedAt,
+    ),
+    index("merge_relay_records_idempotency_idx").on(
+      table.appId,
+      table.environment,
+      table.recordType,
+      table.idempotencyKey,
+      table.ownerSubject,
+    ),
+    index("merge_relay_records_alias_idx").on(
+      table.appId,
+      table.environment,
+      table.recordType,
+      table.alias,
+    ),
+    index("merge_relay_records_target_idx").on(
+      table.appId,
+      table.environment,
+      table.recordType,
+      table.ownerSubject,
+      table.targetSubject,
+    ),
+    index("merge_relay_records_lookup_idx").on(
+      table.appId,
+      table.environment,
+      table.recordType,
+      table.lookupKey,
+    ),
+    index("merge_relay_records_config_revision_idx").on(
+      table.appId,
+      table.environment,
+      table.recordType,
+      table.revision,
+    ),
+    uniqueIndex("merge_relay_records_scope_idempotency_unique")
+      .on(table.appId, table.environment, table.recordType, table.idempotencyKey)
+      .where(sql`"idempotency_key" IS NOT NULL`),
+    check(
+      "merge_relay_records_parent_pair_check",
+      sql`("parent_record_type" IS NULL) = ("parent_record_id" IS NULL)`,
+    ),
+    foreignKey({
+      columns: [table.appId, table.environment, table.parentRecordType, table.parentRecordId],
+      foreignColumns: [table.appId, table.environment, table.recordType, table.recordId],
+      name: "merge_relay_records_parent_fk",
+    }),
+  ],
+);

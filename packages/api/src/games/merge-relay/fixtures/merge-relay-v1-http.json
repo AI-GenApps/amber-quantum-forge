@@ -1,0 +1,185 @@
+{
+  "create_challenge": {
+    "contract_version": "merge-relay.v1",
+    "data": {
+      "challenge": {
+        "challenge_id": "ch_fixture_1",
+        "creator_alias": "Ada",
+        "mode": "rescue",
+        "origin_mode": "daily",
+        "config_revision": 1,
+        "checkpoint": {
+          "board": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "score": 0,
+          "move_count": 0,
+          "seed": 7,
+          "rng_state": 123,
+          "rule_version": "MR-2D-1",
+          "max_legal_moves": 3,
+          "content_version": "MR-CONTENT-1",
+          "spawn_two_weight": 90,
+          "spawn_four_weight": 10,
+          "content_id": "daily_20260101"
+        },
+        "checkpoint_hash": "4958db1a3980078b5a74ad03f82378dc32d33052b44b0902b08a3be2381f96b1",
+        "payload_hash": "0e31240918ea595af17ffb11aac552bb8f2d9d559c5d5310d2dd18464dec300d",
+        "parent_challenge_id": null,
+        "status": "open",
+        "created_at": "2026-01-01T00:00:00.000Z"
+      },
+      "idempotent": false
+    }
+  },
+  "resolve_challenge": {
+    "contract_version": "merge-relay.v1",
+    "data": {
+      "challenge_id": "ch_fixture_1",
+      "creator_alias": "Ada",
+      "mode": "rescue",
+      "origin_mode": "daily",
+      "config_revision": 1,
+      "checkpoint": {
+        "board": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 7,
+        "rng_state": 123,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "content_version": "MR-CONTENT-1",
+        "spawn_two_weight": 90,
+        "spawn_four_weight": 10,
+        "content_id": "daily_20260101"
+      },
+      "checkpoint_hash": "4958db1a3980078b5a74ad03f82378dc32d33052b44b0902b08a3be2381f96b1",
+      "payload_hash": "0e31240918ea595af17ffb11aac552bb8f2d9d559c5d5310d2dd18464dec300d",
+      "parent_challenge_id": null,
+      "status": "open",
+      "created_at": "2026-01-01T00:00:00.000Z"
+    }
+  },
+  "reserve_attempt": {
+    "contract_version": "merge-relay.v1",
+    "data": {
+      "attempt": {
+        "attempt_id": "att_fixture_1",
+        "challenge_id": "ch_fixture_1",
+        "environment": "debug",
+        "recipient_subject": "owner",
+        "checkpoint": {
+          "board": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          "score": 0,
+          "move_count": 0,
+          "seed": 7,
+          "rng_state": 123,
+          "rule_version": "MR-2D-1",
+          "max_legal_moves": 3,
+          "content_version": "MR-CONTENT-1",
+          "spawn_two_weight": 90,
+          "spawn_four_weight": 10,
+          "content_id": "daily_20260101"
+        },
+        "moves": [],
+        "max_legal_moves": 3,
+        "status": "reserved",
+        "reservation_key": "fixture-reservation",
+        "reserved_at": "2026-01-01T00:00:00.000Z",
+        "expires_at": "2026-01-02T00:00:00.000Z",
+        "version": 0,
+        "result_id": null,
+        "updated_at": "2026-01-01T00:00:00.000Z"
+      },
+      "idempotent": false
+    }
+  },
+  "submit_moves": {
+    "contract_version": "merge-relay.v1",
+    "data": {
+      "attempt": {
+        "attempt_id": "att_fixture_1",
+        "challenge_id": "ch_fixture_1",
+        "environment": "debug",
+        "recipient_subject": "owner",
+        "checkpoint": {
+          "board": [4, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+          "score": 4,
+          "move_count": 1,
+          "seed": 7,
+          "rng_state": 4018661298,
+          "rule_version": "MR-2D-1",
+          "max_legal_moves": 3,
+          "content_version": "MR-CONTENT-1",
+          "spawn_two_weight": 90,
+          "spawn_four_weight": 10,
+          "content_id": "daily_20260101"
+        },
+        "moves": ["left"],
+        "max_legal_moves": 3,
+        "status": "reserved",
+        "reservation_key": "fixture-reservation",
+        "reserved_at": "2026-01-01T00:00:00.000Z",
+        "expires_at": "2026-01-02T00:00:00.000Z",
+        "version": 1,
+        "result_id": null,
+        "updated_at": "2026-01-01T00:00:00.000Z"
+      }
+    }
+  },
+  "finalize_attempt": {
+    "contract_version": "merge-relay.v1",
+    "data": {
+      "result": {
+        "result_id": "res_fixture_1",
+        "attempt_id": "att_fixture_1",
+        "challenge_id": "ch_fixture_1",
+        "recipient_subject": "owner",
+        "environment": "debug",
+        "score_delta": 4,
+        "final_score": 4,
+        "max_tile": 4,
+        "moves_used": 1,
+        "outcome": "early_finish",
+        "mode": "rescue",
+        "origin_mode": "daily",
+        "config_revision": 1,
+        "challenge_payload_hash": "0e31240918ea595af17ffb11aac552bb8f2d9d559c5d5310d2dd18464dec300d",
+        "return_challenge_id": null,
+        "created_at": "2026-01-01T00:00:00.000Z"
+      },
+      "return_challenge": null,
+      "idempotent": false
+    }
+  },
+  "daily": {
+    "contract_version": "merge-relay.v1",
+    "data": {
+      "date": "2026-01-01",
+      "mode": "daily",
+      "max_legal_moves": 3,
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 678263699,
+        "rng_state": 3487586716,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "content_id": "daily_20260101",
+        "content_version": "MR-CONTENT-1",
+        "spawn_two_weight": 90,
+        "spawn_four_weight": 10
+      },
+      "content_revision": "MR-CONTENT-1",
+      "generated": true,
+      "updated_at": "2026-01-01T00:00:00.000Z"
+    }
+  },
+  "invalid_request": {
+    "contract_version": "merge-relay.v1",
+    "error": {
+      "code": "invalid_challenge_payload",
+      "message": "Challenge payload is invalid",
+      "diagnostic_id": "route"
+    }
+  }
+}

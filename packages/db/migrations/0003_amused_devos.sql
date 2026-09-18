@@ -1,0 +1,5 @@
+ALTER TABLE "merge_relay_records" ADD COLUMN "parent_record_type" text;--> statement-breakpoint
+ALTER TABLE "merge_relay_records" ADD COLUMN "parent_record_id" text;--> statement-breakpoint
+ALTER TABLE "merge_relay_records" ADD CONSTRAINT "merge_relay_records_parent_fk" FOREIGN KEY ("app_id","environment","parent_record_type","parent_record_id") REFERENCES "public"."merge_relay_records"("app_id","environment","record_type","record_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+CREATE UNIQUE INDEX "merge_relay_records_scope_idempotency_unique" ON "merge_relay_records" USING btree ("app_id","environment","record_type","idempotency_key") WHERE "idempotency_key" IS NOT NULL;--> statement-breakpoint
+ALTER TABLE "merge_relay_records" ADD CONSTRAINT "merge_relay_records_parent_pair_check" CHECK (("parent_record_type" IS NULL) = ("parent_record_id" IS NULL));

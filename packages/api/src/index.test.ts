@@ -21,4 +21,9 @@ describe("Hono app smoke", () => {
     expect(res.status).toBe(204);
     expect(res.headers.get("Access-Control-Allow-Origin")).toBe("*");
   });
+
+  it("mounts Merge Relay below its stable app ID", async () => {
+    const res = await app.request("/games/merge_relay/debug/config");
+    expect(res.status).not.toBe(404);
+  });
 });
