@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "apps-native/games/**"
+      - "apps/web/**"
       - "scripts/games/**"
       - "scripts/codegen*.ts"
       - "scripts/codegen/**"
@@ -19,6 +20,7 @@ on:
     branches: [main]
     paths:
       - "apps-native/games/**"
+      - "apps/web/**"
       - "scripts/games/**"
       - "scripts/codegen*.ts"
       - "scripts/codegen/**"
@@ -124,6 +126,108 @@ jobs:
       - run: bun run games:test:tooling
       - run: bun run games:codegen
       - run: git diff --exit-code -- apps-native/games/merge_relay/game.config.json apps-native/games/pocket_biome/game.config.json apps-native/games/sixty_second_heist/game.config.json apps-native/games/meme_court/game.config.json apps-native/games/snapquest/game.config.json apps-native/games/packages/platform_core/lib/src/generated/game_app_registry.dart
+
+  merge_relay_backend:
+    name: Merge Relay API and Next smoke
+    needs: quality
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16.15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: merge_relay_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d merge_relay_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      DATABASE_URL: postgresql://postgres:ci@127.0.0.1:5432/merge_relay_ci
+      MERGE_RELAY_TEST_DATABASE_URL: postgresql://postgres:ci@127.0.0.1:5432/merge_relay_ci
+      GAME_TOKEN_ISSUER: https://ci.invalid/merge-relay
+      GAME_TOKEN_AUDIENCE: merge-relay-ci
+      GAME_TOKEN_SECRET_MERGE_RELAY_DEBUG: ci-only-merge-relay-debug-secret-0123456789
+      MERGE_RELAY_LOCAL_STORE: memory
+      MERGE_RELAY_PUBLIC_ORIGIN: http://127.0.0.1:4173
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@3d267786b128fe76c2f16a390aa2448b815359f3
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - name: Verify PostgreSQL service
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! pg_isready --host 127.0.0.1 --port 5432 --username postgres --dbname merge_relay_ci; then
+            echo "NOT RUN: PostgreSQL 16.15 service is unavailable; migration and lifecycle checks were not executed." >&2
+            exit 1
+          fi
+          psql "$DATABASE_URL" -Atqc "select version();" | sed 's/^/PostgreSQL: /'
+      - name: Apply isolated migrations
+        run: bun run --cwd packages/db db:migrate
+      - name: Run PostgreSQL migration and lifecycle checks
+        run: >-
+          bun run --cwd packages/api test --
+          src/games/merge-relay/drizzle-postgres.test.ts
+          src/games/merge-relay/drizzle-postgres-lifecycle.test.ts
+      - name: Typecheck API
+        run: bun run --filter @repo/api typecheck
+      - name: Build Next entry
+        working-directory: apps/web
+        run: bun run build
+        env:
+          SKIP_ENV_VALIDATION: "1"
+      - name: Start Next local QA API
+        working-directory: apps/web
+        shell: bash
+        run: |
+          set -euo pipefail
+          log="$RUNNER_TEMP/merge-relay-next.log"
+          pid_file="$RUNNER_TEMP/merge-relay-next.pid"
+          (exec bunx next dev --port 4173 >"$log" 2>&1) &
+          echo "$!" >"$pid_file"
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:4173/api/health >/dev/null; then
+              exit 0
+            fi
+            if [ "$attempt" -eq 30 ]; then
+              cat "$log"
+              echo "Next.js did not become healthy" >&2
+              exit 1
+            fi
+            sleep 1
+          done
+      - name: Run real Next/API Merge Relay smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          qa_output="$(bun run games:qa -- --base-url http://127.0.0.1:4173/api --environment debug --date 2026-01-01)"
+          printf '%s\n' "$qa_output"
+          challenge_id="$(printf '%s\n' "$qa_output" | awk -F': ' '/^challenge id:/ { print $2; exit }')"
+          [[ "$challenge_id" =~ ^[A-Za-z0-9_-]{1,128}$ ]] || { echo "Merge Relay QA did not return a valid challenge ID" >&2; exit 1; }
+          preview="$(curl --fail --silent "http://127.0.0.1:4173/games/merge-relay/challenges/$challenge_id?environment=debug")"
+          [ "$(grep -Fc "Preview unavailable" <<<"$preview" || true)" -eq 0 ]
+          for expected in "Read-only preview" "Open in Merge Relay" "Local QA" "Board preview"; do grep -Fq "$expected" <<<"$preview"; done
+      - name: Stop Next smoke server
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          pid_file="$RUNNER_TEMP/merge-relay-next.pid"
+          if [ -f "$pid_file" ]; then
+            kill "$(cat "$pid_file")" 2>/dev/null || true
+          fi
+          if [ -f "$RUNNER_TEMP/merge-relay-next.log" ]; then
+            tail -n 80 "$RUNNER_TEMP/merge-relay-next.log"
+          fi
 
   android:
     name: Android ${{ matrix.app }}

@@ -22,8 +22,35 @@ Run commands from the repository root after Bun, Flutter 3.47.3, and Dart 3.13.3
 | `bun run games:codegen` | Regenerates app configs and the Dart registry from the TypeScript registry. Use `-- --environment production` only for an intentional production config build. |
 | `bun run games:test:tooling` | Runs registry, content, affected-target, generator, metadata, parity, and CLI tests. |
 | `bun run games:parity` | Runs the checked-in Merge Relay Dart VM and compiled-JS replay fixture and requires identical output. |
+| `bun run games:qa -- --base-url http://127.0.0.1:4173/api --environment debug --date 2026-01-01` | Provisions an immutable local daily, creates a real authenticated challenge, and prints its preview/app-link codes. It requires the local token variables below. |
 | `bun run games:native` | Applies generated Android environment and identity guards after native project generation. |
 | `bun run games:xcodegen` | Regenerates each iOS project from its checked-in `ios/project.yml`; it does not sign or submit an app. |
 | `bun run knip:ci` | Runs pinned Knip analysis with exact, documented exceptions. |
 
 Build commands never submit to stores, distribute externally, spend money, run production migrations, or boot a simulator. `--mode release --environment debug` remains local debug-signed verification. Production builds stop with `NOT RUN` until registration and distribution signing are verified. CI uses a Linux Android debug job and a macOS unsigned iOS job through [`games-build.yml`](../../.github/workflows/games-build.yml).
+
+## Merge Relay local HTTP smoke
+
+The real Next route can run a non-production in-memory store for local QA. From
+the repository root, start the web server in development mode, then run the QA
+command in another shell:
+
+```bash
+export GAME_TOKEN_ISSUER=https://ci.invalid/merge-relay
+export GAME_TOKEN_AUDIENCE=merge-relay-ci
+export GAME_TOKEN_SECRET_MERGE_RELAY_DEBUG=local-only-merge-relay-debug-secret-0123456789
+export MERGE_RELAY_LOCAL_STORE=memory
+export MERGE_RELAY_PUBLIC_ORIGIN=http://127.0.0.1:4173
+(cd apps/web && bunx next dev --port 4173)
+```
+
+```bash
+bun run games:qa -- --base-url http://127.0.0.1:4173/api --environment debug --date 2026-01-01
+```
+
+The QA command provisions the daily record through its protected route, reads it
+back without a GET write, creates a challenge, and prints a read-only share URL.
+The same sequence runs in [`games-ci.yml`](../../.github/workflows/games-ci.yml)
+with PostgreSQL migration/lifecycle checks. A production Next process refuses
+the in-memory store and requires configured durable storage; that fail-closed
+behavior is intentional.

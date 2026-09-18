@@ -17,6 +17,7 @@ Status: in-progress
 | 08 | Android/native owner | Optional PGS v2 bridge, guest-first auth and provider outbox seam | [~] typed bridge/tests; live project NOT RUN |
 | 09 | Android/client owner | Strict HTTP gateway, links, recovery, sync and service error states | [~] gateway/fixture path present; full two-device gate open |
 | 10 | Merge service owner | Bounded backend corrective foundation and PostgreSQL/provider regression gates | [x] 35 focused tests, 6 isolated PostgreSQL tests; full-MVP gates remain open |
+| 11 | Integration/tooling owner | Pinned backend/Next maintenance CI and local share-preview smoke | [x] actionlint, root gates, docs, and local smoke pass; release gates remain open |
 
 The v0.3 source scope is the active target. P0 local play remains an early
 checkpoint; these tasks do not mark the product published or market validated.

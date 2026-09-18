@@ -31,6 +31,7 @@
     "games:test": "bun scripts/games/cli.ts test",
     "games:test:tooling": "bun test --max-concurrency=1 scripts/games/*.test.ts",
     "games:parity": "bun scripts/games/parity.ts",
+    "games:qa": "bun scripts/games/qa.ts",
     "games:validate": "bun scripts/games/cli.ts validate",
     "games:validate:strict": "bun scripts/games/cli.ts validate --strict",
     "games:content:validate": "bun scripts/games/cli.ts content validate",

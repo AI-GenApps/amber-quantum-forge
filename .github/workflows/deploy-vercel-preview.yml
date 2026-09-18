@@ -1,5 +1,5 @@
 # Preview deploy for apps/web on PRs. Skips PRs whose title starts with WIP.
-# Required secrets: VERCEL_TOKEN. Fill in vercel_project_id and vercel_project_name.
+# Required secret: VERCEL_TOKEN. The Vercel project controls its own root directory.
 name: Deploy to Vercel - Preview
 
 on:
@@ -50,15 +50,10 @@ jobs:
         uses: W3Dev/vercel-deploy@main
         with:
           vercel_token: ${{ secrets.VERCEL_TOKEN }}
-          vercel_org_id: 'team_M1i3qUTW4i3A6mETy54E1Fy8'
-          vercel_project_id: '<TODO_FILL_IN>'
-          vercel_project_name: '<TODO_FILL_IN>'
+          vercel_org_id: 'team_bhbVYR6BqVYMXKwAp7F1k5ib'
+          vercel_project_id: 'prj_MaMno1fEzSLQoMHGsrGF3fV28ocH'
           package_manager: 'bun'
           node_version: '22'
           deploy_args: '--archive=tgz'
           alias_prefix: 'starter-expo-mobile'
           environment: 'preview'
-          prebuild_script: |
-            git config --global user.email "ashutosh@w3dev.in"
-            git config --global user.name "Ashutosh"
-            git commit --amend --no-edit --author="Ashutosh <ashutosh@w3dev.in>"
