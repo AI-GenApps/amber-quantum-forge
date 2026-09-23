@@ -1,0 +1,15 @@
+{
+  "content_version": "MR-THEMES-1",
+  "themes": [
+    {
+      "id": "signal",
+      "name": "Signal",
+      "description": "Navy, blue, and coral relay lights."
+    },
+    {
+      "id": "ember",
+      "name": "Ember",
+      "description": "Plum, amber, and warm relay lights."
+    }
+  ]
+}

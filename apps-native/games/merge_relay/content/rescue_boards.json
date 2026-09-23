@@ -1,0 +1,291 @@
+{
+  "content_version": "MR-CONTENT-1",
+  "rule_version": "MR-2D-1",
+  "rescue_boards": [
+    {
+      "id": "rescue-signal",
+      "board": [
+        4,
+        2,
+        0,
+        0,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0
+      ],
+      "score": 4,
+      "move_count": 3,
+      "seed": 101,
+      "rng_state": 1947480432,
+      "rule_version": "MR-2D-1",
+      "origin_seed": 101,
+      "origin_moves": [
+        "left",
+        "left",
+        "up"
+      ],
+      "provenance": {
+        "source": "deterministic_play_trace",
+        "algorithm": "merge-rescue-trace-v1",
+        "config_revision": 1,
+        "spawn_two_weight": 90,
+        "spawn_four_weight": 10,
+        "trace_hash": "fa8781a8be8393d59e11a828c57ec9a60a3d4ba18382318137dadce1e7a7780a"
+      },
+      "difficulty": {
+        "origin_move_count": 3,
+        "checkpoint_legal_moves": 4,
+        "checkpoint_merge_options": 2,
+        "best_score_delta": 8,
+        "filled_cells": 4,
+        "max_tile": 4
+      },
+      "title": "Signal in",
+      "subtitle": "Pair the blue tiles.",
+      "objective": "Reach 16 points.",
+      "goal_revision": "MR-GOALS-2",
+      "target_score": 16
+    },
+    {
+      "id": "rescue-echo",
+      "board": [
+        8,
+        2,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0
+      ],
+      "score": 12,
+      "move_count": 4,
+      "seed": 202,
+      "rng_state": 883788728,
+      "rule_version": "MR-2D-1",
+      "origin_seed": 202,
+      "origin_moves": [
+        "right",
+        "right",
+        "up",
+        "left"
+      ],
+      "provenance": {
+        "source": "deterministic_play_trace",
+        "algorithm": "merge-rescue-trace-v1",
+        "config_revision": 1,
+        "spawn_two_weight": 90,
+        "spawn_four_weight": 10,
+        "trace_hash": "0e543b30e73a1608fe5ab782309d1f7686c90e79e4e13d12b88a52b9909302ac"
+      },
+      "difficulty": {
+        "origin_move_count": 4,
+        "checkpoint_legal_moves": 2,
+        "checkpoint_merge_options": 2,
+        "best_score_delta": 4,
+        "filled_cells": 4,
+        "max_tile": 8
+      },
+      "title": "Echo lane",
+      "subtitle": "Find the matching pair.",
+      "objective": "Reach 16 points.",
+      "goal_revision": "MR-GOALS-2",
+      "target_score": 16
+    },
+    {
+      "id": "rescue-crossing",
+      "board": [
+        4,
+        8,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "score": 16,
+      "move_count": 5,
+      "seed": 303,
+      "rng_state": 3293524061,
+      "rule_version": "MR-2D-1",
+      "origin_seed": 303,
+      "origin_moves": [
+        "up",
+        "down",
+        "left",
+        "down",
+        "down"
+      ],
+      "provenance": {
+        "source": "deterministic_play_trace",
+        "algorithm": "merge-rescue-trace-v1",
+        "config_revision": 1,
+        "spawn_two_weight": 90,
+        "spawn_four_weight": 10,
+        "trace_hash": "fffe42b825dc4ba723538edb58f267c2e6bd56bf1e654eb51e098c8488122434"
+      },
+      "difficulty": {
+        "origin_move_count": 5,
+        "checkpoint_legal_moves": 4,
+        "checkpoint_merge_options": 0,
+        "best_score_delta": 0,
+        "filled_cells": 4,
+        "max_tile": 8
+      },
+      "title": "Crossing",
+      "subtitle": "Open a path through the middle.",
+      "objective": "Reach 28 points.",
+      "goal_revision": "MR-GOALS-2",
+      "target_score": 28
+    },
+    {
+      "id": "rescue-coral",
+      "board": [
+        8,
+        4,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "score": 20,
+      "move_count": 6,
+      "seed": 404,
+      "rng_state": 411945653,
+      "rule_version": "MR-2D-1",
+      "origin_seed": 404,
+      "origin_moves": [
+        "up",
+        "right",
+        "up",
+        "left",
+        "down",
+        "down"
+      ],
+      "provenance": {
+        "source": "deterministic_play_trace",
+        "algorithm": "merge-rescue-trace-v1",
+        "config_revision": 1,
+        "spawn_two_weight": 90,
+        "spawn_four_weight": 10,
+        "trace_hash": "6f9eec91dda6de637238f247d98739fafc2cf28c889c4f53a541adec4314048d"
+      },
+      "difficulty": {
+        "origin_move_count": 6,
+        "checkpoint_legal_moves": 4,
+        "checkpoint_merge_options": 0,
+        "best_score_delta": 0,
+        "filled_cells": 4,
+        "max_tile": 8
+      },
+      "title": "Coral turn",
+      "subtitle": "Bring the warm pair together.",
+      "objective": "Reach 24 points.",
+      "goal_revision": "MR-GOALS-2",
+      "target_score": 24
+    },
+    {
+      "id": "rescue-late",
+      "board": [
+        8,
+        2,
+        2,
+        0,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "score": 20,
+      "move_count": 7,
+      "seed": 505,
+      "rng_state": 1358598625,
+      "rule_version": "MR-2D-1",
+      "origin_seed": 505,
+      "origin_moves": [
+        "right",
+        "up",
+        "up",
+        "left",
+        "up",
+        "right",
+        "down"
+      ],
+      "provenance": {
+        "source": "deterministic_play_trace",
+        "algorithm": "merge-rescue-trace-v1",
+        "config_revision": 1,
+        "spawn_two_weight": 90,
+        "spawn_four_weight": 10,
+        "trace_hash": "e2d84988183cc4ded97a003de70ef31be92d822c9db6d22d21e1b646f145a493"
+      },
+      "difficulty": {
+        "origin_move_count": 7,
+        "checkpoint_legal_moves": 4,
+        "checkpoint_merge_options": 4,
+        "best_score_delta": 4,
+        "filled_cells": 5,
+        "max_tile": 8
+      },
+      "title": "Late relay",
+      "subtitle": "Choose the cleanest first move.",
+      "objective": "Reach 28 points.",
+      "goal_revision": "MR-GOALS-2",
+      "target_score": 28
+    }
+  ],
+  "schema_version": 1,
+  "rule_config": {
+    "revision": 1,
+    "rules_version": "MR-2D-1",
+    "spawn_two_weight": 90,
+    "spawn_four_weight": 10
+  },
+  "generator": {
+    "algorithm": "merge-rescue-trace-v1"
+  }
+}

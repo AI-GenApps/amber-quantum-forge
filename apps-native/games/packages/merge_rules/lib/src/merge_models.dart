@@ -1,4 +1,5 @@
 import 'merge_codec.dart';
+import 'merge_config.dart';
 import 'merge_game.dart';
 
 enum MergeRelayMode { rescue, daily, endless }
@@ -12,6 +13,7 @@ final class MergeCheckpoint {
     this.contentId,
     this.contentVersion,
     this.parentChallengeId,
+    this.spawnWeights,
   }) {
     if (state.isTerminal) {
       throw const FormatException('A Merge checkpoint must be playable');
@@ -30,12 +32,14 @@ final class MergeCheckpoint {
     String? contentId,
     String? contentVersion,
     String? parentChallengeId,
+    MergeSpawnWeights? spawnWeights,
   }) => MergeCheckpoint(
     state: state,
     maxLegalMoves: maxLegalMoves,
     contentId: contentId,
     contentVersion: contentVersion,
     parentChallengeId: parentChallengeId,
+    spawnWeights: spawnWeights,
   );
 
   factory MergeCheckpoint.fromJson(Map<String, Object?> json) {
@@ -52,6 +56,8 @@ final class MergeCheckpoint {
       'content_id',
       'content_version',
       'parent_challenge_id',
+      'spawn_two_weight',
+      'spawn_four_weight',
     };
     if (json.keys.any(
       (key) => !stateFields.contains(key) && !metadataFields.contains(key),
@@ -66,6 +72,8 @@ final class MergeCheckpoint {
     final contentId = json['content_id'];
     final contentVersion = json['content_version'];
     final parentChallengeId = json['parent_challenge_id'];
+    final spawnTwoWeight = json['spawn_two_weight'];
+    final spawnFourWeight = json['spawn_four_weight'];
     if (maxLegalMoves != null && maxLegalMoves is! int) {
       throw const FormatException('Invalid checkpoint move budget');
     }
@@ -74,12 +82,24 @@ final class MergeCheckpoint {
         parentChallengeId != null && parentChallengeId is! String) {
       throw const FormatException('Invalid checkpoint metadata');
     }
+    final hasTwoWeight = json.containsKey('spawn_two_weight');
+    final hasFourWeight = json.containsKey('spawn_four_weight');
+    if (hasTwoWeight != hasFourWeight ||
+        (hasTwoWeight && (spawnTwoWeight is! int || spawnFourWeight is! int))) {
+      throw const FormatException('Invalid checkpoint spawn weights');
+    }
     return MergeCheckpoint(
       state: state,
       maxLegalMoves: maxLegalMoves as int? ?? 3,
       contentId: contentId as String?,
       contentVersion: contentVersion as String?,
       parentChallengeId: parentChallengeId as String?,
+      spawnWeights: !hasTwoWeight
+          ? null
+          : MergeSpawnWeights(
+              spawnTwoWeight: spawnTwoWeight as int,
+              spawnFourWeight: spawnFourWeight as int,
+            ),
     );
   }
 
@@ -88,6 +108,7 @@ final class MergeCheckpoint {
   final String? contentId;
   final String? contentVersion;
   final String? parentChallengeId;
+  final MergeSpawnWeights? spawnWeights;
 
   Map<String, Object?> toWireJson() => state.toWireJson();
 
@@ -97,6 +118,7 @@ final class MergeCheckpoint {
     if (contentId != null) 'content_id': contentId,
     if (contentVersion != null) 'content_version': contentVersion,
     if (parentChallengeId != null) 'parent_challenge_id': parentChallengeId,
+    if (spawnWeights != null) ...spawnWeights!.toJson(),
   };
 
   String get checkpointHash => sha256Hex(toWireJson());

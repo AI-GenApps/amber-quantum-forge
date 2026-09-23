@@ -1,4 +1,5 @@
 import 'merge_codec.dart';
+import 'merge_game.dart';
 import 'merge_models.dart';
 
 final class MergeContentEntry {
@@ -14,6 +15,11 @@ final class MergeContentEntry {
     if (mode == MergeRelayMode.daily) {
       if (utcDate == null || !_isUtcDate(utcDate!)) {
         throw const FormatException('Daily Merge content requires a UTC date');
+      }
+      if (checkpoint.state.seed != mergeDailySeed(utcDate!)) {
+        throw const FormatException(
+          'Daily Merge seed does not match its UTC date',
+        );
       }
     } else if (utcDate != null) {
       throw const FormatException('Only daily Merge content has a UTC date');
@@ -144,4 +150,15 @@ bool _isUtcDate(String value) {
   if (!RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(value)) return false;
   final date = DateTime.tryParse('${value}T00:00:00Z');
   return date != null && date.toUtc().toIso8601String().startsWith('${value}T');
+}
+
+int mergeDailySeed(String utcDate) {
+  if (!_isUtcDate(utcDate)) {
+    throw ArgumentError.value(utcDate, 'utcDate');
+  }
+  var hash = 17;
+  for (final codeUnit in utcDate.codeUnits) {
+    hash = ((hash * 31) + codeUnit) & maxMergeSeed;
+  }
+  return hash == 0 ? 1 : hash;
 }

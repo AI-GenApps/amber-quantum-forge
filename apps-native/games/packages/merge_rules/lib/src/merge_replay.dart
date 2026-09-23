@@ -1,5 +1,6 @@
 import 'merge_models.dart';
 import 'merge_board.dart';
+import 'merge_config.dart';
 import 'merge_game.dart';
 import 'merge_rules.dart';
 import 'merge_trace.dart';
@@ -22,6 +23,7 @@ final class MergeReplayResult {
     required this.outcome,
     this.contentId,
     this.contentVersion,
+    this.spawnWeights,
   }) : traces = List.unmodifiable(traces);
 
   final MergeGameState initialState;
@@ -30,6 +32,7 @@ final class MergeReplayResult {
   final MergeAttemptOutcome outcome;
   final String? contentId;
   final String? contentVersion;
+  final MergeSpawnWeights? spawnWeights;
 
   int get legalMoves => traces.where((trace) => trace.changed).length;
 
@@ -50,6 +53,7 @@ final class MergeReplayResult {
       contentId: contentId,
       contentVersion: contentVersion,
       parentChallengeId: parentChallengeId,
+      spawnWeights: spawnWeights,
     );
   }
 
@@ -62,19 +66,35 @@ final class MergeReplayResult {
     'max_tile': maxTile,
     'outcome': mergeAttemptOutcomeName(outcome),
     'traces': traces.map((trace) => trace.toJson()).toList(),
+    if (contentId != null) 'content_id': contentId,
+    if (contentVersion != null) 'content_version': contentVersion,
+    if (spawnWeights != null) ...spawnWeights!.toJson(),
   };
 }
 
 extension MergeRulesReplay on MergeRules {
-  MergeGameState replay(int seed, Iterable<MergeDirection> moves) =>
-      replayFrom(MergeGameState.newGame(seed: seed), moves).finalState;
+  MergeGameState replay(int seed, Iterable<MergeDirection> moves) => replayFrom(
+    MergeGameState.newGame(seed: seed, spawnWeights: config.spawnWeights),
+    moves,
+    spawnWeights: config.spawnWeights,
+  ).finalState;
 
   MergeReplayResult replayFrom(
     MergeGameState initialState,
     Iterable<MergeDirection> moves, {
     bool rejectNoOp = false,
     int? maxLegalMoves,
+    bool finish = false,
+    String? contentId,
+    String? contentVersion,
+    MergeSpawnWeights? spawnWeights,
   }) {
+    if (spawnWeights != null && !spawnWeights.matches(config.spawnWeights)) {
+      throw MergeRuleError(
+        'config_mismatch',
+        'Replay spawn weights do not match the configured rules',
+      );
+    }
     if (maxLegalMoves != null && (maxLegalMoves < 1 || maxLegalMoves > 3)) {
       throw ArgumentError.value(maxLegalMoves, 'maxLegalMoves');
     }
@@ -108,7 +128,12 @@ extension MergeRulesReplay on MergeRules {
           ? MergeAttemptOutcome.terminal
           : maxLegalMoves != null && legalMoves == maxLegalMoves
           ? MergeAttemptOutcome.completed
+          : finish
+          ? MergeAttemptOutcome.earlyFinish
           : MergeAttemptOutcome.inProgress,
+      contentId: contentId,
+      contentVersion: contentVersion,
+      spawnWeights: spawnWeights,
     );
   }
 
@@ -116,10 +141,28 @@ extension MergeRulesReplay on MergeRules {
     MergeCheckpoint checkpoint,
     Iterable<MergeDirection> moves, {
     bool finish = false,
+    int? maxLegalMoves,
   }) {
+    if (checkpoint.spawnWeights == null &&
+        !config.spawnWeights.matches(const MergeSpawnWeights.legacy())) {
+      throw MergeRuleError(
+        'config_mismatch',
+        'Custom replay checkpoints must include spawn weights',
+      );
+    }
+    if (checkpoint.spawnWeights != null &&
+        !checkpoint.spawnWeights!.matches(config.spawnWeights)) {
+      throw MergeRuleError(
+        'config_mismatch',
+        'Checkpoint spawn weights do not match the configured rules',
+      );
+    }
     var state = checkpoint.state;
     final traces = <MergeMoveTrace>[];
-    final maxLegalMoves = checkpoint.maxLegalMoves;
+    final moveBudget = maxLegalMoves ?? checkpoint.maxLegalMoves;
+    if (moveBudget < 1 || moveBudget > 3) {
+      throw ArgumentError.value(moveBudget, 'maxLegalMoves');
+    }
     for (final move in moves) {
       if (state.isTerminal) {
         throw MergeRuleError(
@@ -128,7 +171,7 @@ extension MergeRulesReplay on MergeRules {
         );
       }
       final legalMoves = traces.where((trace) => trace.changed).length;
-      if (legalMoves >= maxLegalMoves) {
+      if (legalMoves >= moveBudget) {
         throw MergeRuleError(
           'over_budget',
           'Ranked replay exceeds move budget',
@@ -143,7 +186,7 @@ extension MergeRulesReplay on MergeRules {
     }
     final outcome = state.isTerminal
         ? MergeAttemptOutcome.terminal
-        : traces.length == maxLegalMoves
+        : traces.where((trace) => trace.changed).length == moveBudget
         ? MergeAttemptOutcome.completed
         : finish
         ? MergeAttemptOutcome.earlyFinish
@@ -155,6 +198,7 @@ extension MergeRulesReplay on MergeRules {
       outcome: outcome,
       contentId: checkpoint.contentId,
       contentVersion: checkpoint.contentVersion,
+      spawnWeights: checkpoint.spawnWeights,
     );
   }
 }

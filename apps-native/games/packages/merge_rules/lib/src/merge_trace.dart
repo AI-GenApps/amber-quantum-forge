@@ -2,10 +2,16 @@ import 'merge_board.dart';
 import 'merge_game.dart';
 
 final class MergePairTrace {
-  MergePairTrace({required Iterable<int> sourceCells, required this.value})
-    : sourceCells = List.unmodifiable(sourceCells) {
+  MergePairTrace({
+    required Iterable<int> sourceCells,
+    required this.destinationCell,
+    required this.value,
+  }) : sourceCells = List.unmodifiable(sourceCells) {
     if (this.sourceCells.length != 2) {
       throw ArgumentError.value(this.sourceCells, 'sourceCells');
+    }
+    if (destinationCell < 0 || destinationCell >= 16) {
+      throw ArgumentError.value(destinationCell, 'destinationCell');
     }
     if (value <= 0 || value > maxMergeTile) {
       throw ArgumentError.value(value, 'value');
@@ -13,10 +19,12 @@ final class MergePairTrace {
   }
 
   final List<int> sourceCells;
+  final int destinationCell;
   final int value;
 
   Map<String, Object?> toJson() => {
     'source_cells': sourceCells,
+    'destination_cell': destinationCell,
     'value': value,
   };
 }

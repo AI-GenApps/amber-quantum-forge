@@ -1,9 +1,10 @@
 {
   "app_id": "merge_relay",
   "rule_version": "MR-2D-1",
+  "content_version": "MR-CONTENT-1",
   "public_title": "Merge Relay",
   "subtitle": "Merge tiles. Challenge friends",
-  "stage": "P0 playable foundation; relay service and expanded MVP remain handoff work",
+  "stage": "Rescue-first client milestone; relay service integration remains pending",
   "checkpoint": {
     "board_size": 4,
     "max_ranked_moves": 3,
@@ -14,5 +15,26 @@
     "daily_and_endless": true,
     "immutable_rescue_checkpoints": true,
     "server_validated_relays": true
+  },
+  "client_milestone": {
+    "rescue_boards": {
+      "count": 5,
+      "source": "original-authored valid MR-2D-1 boards",
+      "provenance": "Each checkpoint includes origin_seed and origin_moves; the client replays the trace and rejects mismatched state."
+    },
+    "themes": {
+      "count": 2,
+      "ids": ["signal", "ember"],
+      "source": "original-authored palettes"
+    },
+    "modes": {
+      "rescue": "playable",
+      "daily": "local-practice",
+      "endless": "playable"
+    },
+    "online": {
+      "server_validated_relays": "pending backend integration",
+      "ranked_results": "disabled until service contract"
+    }
   }
 }

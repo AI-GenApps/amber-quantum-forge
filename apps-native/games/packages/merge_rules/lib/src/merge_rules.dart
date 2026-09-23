@@ -1,6 +1,7 @@
 import 'package:platform_core/platform_core.dart';
 
 import 'merge_board.dart';
+import 'merge_config.dart';
 import 'merge_game.dart';
 import 'merge_trace.dart';
 
@@ -33,7 +34,9 @@ final class MergeMoveResult {
 }
 
 final class MergeRules {
-  const MergeRules();
+  const MergeRules({this.config = const MergeRuleConfig.legacy()});
+
+  final MergeRuleConfig config;
 
   MergeMoveResult apply(MergeGameState state, MergeDirection direction) {
     final before = state.board.cells;
@@ -80,7 +83,7 @@ final class MergeRules {
     var board = moved.board;
     if (empty.isNotEmpty) {
       spawnedCell = empty[rng.nextInt(empty.length)];
-      spawnedValue = rng.oneIn(10) ? 4 : 2;
+      spawnedValue = config.spawnWeights.nextValue(rng);
       draws = 2;
       final cells = [...board.cells]..[spawnedCell] = spawnedValue;
       board = board.withCells(cells);
@@ -136,11 +139,13 @@ final class MergeRules {
             current.value == compact[index + 1].value &&
             current.value < maxMergeTile) {
           final value = current.value * 2;
+          final destinationCell = indexes[merged.length];
           merged.add(value);
           scoreDelta += value;
           mergedPairs.add(
             MergePairTrace(
               sourceCells: [current.cell, compact[index + 1].cell],
+              destinationCell: destinationCell,
               value: value,
             ),
           );

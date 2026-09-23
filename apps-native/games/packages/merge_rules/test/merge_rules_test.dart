@@ -181,6 +181,7 @@ void main() {
     expect(result.trace.after, result.state);
     expect(result.trace.mergedPairs.single.toJson(), {
       'source_cells': [0, 1],
+      'destination_cell': 0,
       'value': 4,
     });
     expect(result.trace.scoreDelta, 4);

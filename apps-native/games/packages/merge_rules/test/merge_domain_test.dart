@@ -23,6 +23,15 @@ void main() {
       MergeCheckpoint.fromJson(checkpoint.toJson()).toJson(),
       checkpoint.toJson(),
     );
+    final weightedCheckpoint = MergeCheckpoint.fromState(
+      state,
+      spawnWeights: MergeSpawnWeights(spawnTwoWeight: 80, spawnFourWeight: 20),
+    );
+    expect(
+      MergeCheckpoint.fromJson(weightedCheckpoint.toJson()).toJson(),
+      weightedCheckpoint.toJson(),
+    );
+    expect(weightedCheckpoint.toWireJson(), state.toWireJson());
     expect(
       () => MergeCheckpoint.fromState(
         MergeGameState(
@@ -154,7 +163,7 @@ void main() {
       throwsFormatException,
     );
     final dailyCheckpoint = MergeCheckpoint.fromState(
-      MergeGameState.newGame(seed: 8),
+      MergeGameState.newGame(seed: mergeDailySeed('2026-09-17')),
       contentId: 'daily-1',
       contentVersion: 'v1',
     );
@@ -188,6 +197,12 @@ void main() {
       ),
       throwsFormatException,
     );
+  });
+
+  test('daily seed uses the shared UTC date algorithm', () {
+    expect(mergeDailySeed('2026-09-17'), 678502064);
+    expect(mergeDailySeed('1970-01-01'), greaterThan(0));
+    expect(() => mergeDailySeed('2026-02-30'), throwsArgumentError);
   });
 
   test('attempt model enforces reservation lifecycle and budget', () {

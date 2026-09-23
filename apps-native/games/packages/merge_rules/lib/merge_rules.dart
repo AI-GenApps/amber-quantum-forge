@@ -1,9 +1,13 @@
 export 'src/merge_board.dart';
 export 'src/merge_attempt.dart';
 export 'src/merge_codec.dart';
+export 'src/merge_config.dart';
 export 'src/merge_content.dart';
 export 'src/merge_game.dart';
 export 'src/merge_models.dart';
 export 'src/merge_replay.dart';
+export 'src/merge_rescue_content.dart';
+export 'src/merge_rescue_generator.dart';
 export 'src/merge_rules.dart';
+export 'src/merge_session.dart';
 export 'src/merge_trace.dart';

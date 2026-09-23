@@ -1,8 +1,8 @@
 import 'package:platform_core/platform_core.dart';
 
 import 'merge_board.dart';
+import 'merge_config.dart';
 
-const mergeRuleVersion = 'MR-2D-1';
 const mergeSchemaVersion = 1;
 const maxMergeScore = 1000000000000;
 const maxMergeMoves = 100000;
@@ -34,11 +34,14 @@ final class MergeGameState {
     }
   }
 
-  factory MergeGameState.newGame({int seed = 1}) {
+  factory MergeGameState.newGame({
+    int seed = 1,
+    MergeSpawnWeights spawnWeights = const MergeSpawnWeights.legacy(),
+  }) {
     final rng = DeterministicRng(seed);
     var board = MergeBoard.empty();
-    board = _spawn(board, rng).$1;
-    board = _spawn(board, rng).$1;
+    board = _spawn(board, rng, spawnWeights).$1;
+    board = _spawn(board, rng, spawnWeights).$1;
     return MergeGameState(
       board: board,
       score: 0,
@@ -142,14 +145,18 @@ final class MergeGameState {
     );
   }
 
-  static (MergeBoard, int) _spawn(MergeBoard board, DeterministicRng rng) {
+  static (MergeBoard, int) _spawn(
+    MergeBoard board,
+    DeterministicRng rng,
+    MergeSpawnWeights spawnWeights,
+  ) {
     final empty = <int>[];
     for (var index = 0; index < board.cells.length; index += 1) {
       if (board.cells[index] == 0) empty.add(index);
     }
     if (empty.isEmpty) return (board, 0);
     final index = empty[rng.nextInt(empty.length)];
-    final value = rng.oneIn(10) ? 4 : 2;
+    final value = spawnWeights.nextValue(rng);
     final cells = [...board.cells]..[index] = value;
     return (board.withCells(cells), index);
   }
