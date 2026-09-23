@@ -27,3 +27,12 @@
 - Config in `.github/workflows/web-ci.yml`
 - Runs: `bun run check`, `bun run typecheck`, `bun run build`
 - Deploys to Vercel on merge to `main` (auto-configured by Vercel GitHub integration)
+
+### Vercel deployment action
+
+The repository workflows use `W3Dev/vercel-deploy@main` with team
+`team_bhbVYR6BqVYMXKwAp7F1k5ib` and project
+`prj_MaMno1fEzSLQoMHGsrGF3fV28ocH`. `VERCEL_TOKEN` remains a GitHub Actions
+secret. The workflows intentionally omit the action's optional
+`working_directory` input; set the web project's Root Directory in Vercel
+project settings before enabling a deployment.

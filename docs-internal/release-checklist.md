@@ -54,6 +54,10 @@ eas submit --platform android
 ## 6. Web (Vercel)
 
 - `git push origin main` triggers automatic Vercel deploy
+- Confirm Vercel project `prj_MaMno1fEzSLQoMHGsrGF3fV28ocH` is in team
+  `team_bhbVYR6BqVYMXKwAp7F1k5ib`.
+- Set the web project's Root Directory in Vercel project settings; the
+  repository workflow leaves the action working directory unset.
 - Verify all env vars are set in Vercel dashboard (see §2)
 - Run `bun run db:migrate` against production DB before or immediately after deploy
 
