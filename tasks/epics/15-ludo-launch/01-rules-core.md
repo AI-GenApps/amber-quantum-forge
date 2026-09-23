@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 01-rules-core
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/00-registry-and-ci]
 estimate: L
@@ -63,42 +63,42 @@ later match bit-for-bit.
 
 ## Implementation Checklist
 
-- [ ] Create `lib/src/ludo_config.dart`: `LudoRuleset` with a named constant
+- [x] Create `lib/src/ludo_config.dart`: `LudoRuleset` with a named constant
   for `classic` and `quick` (track length 52, home length 6, tokens per
   player 4, yard-exit roll 6, safe/star indices, and the Quick-specific
   deltas chosen above), a `schemaVersion`, and a `rulesVersion` string.
-- [ ] Create `lib/src/ludo_board.dart`: track/home-stretch geometry, per-color
+- [x] Create `lib/src/ludo_board.dart`: track/home-stretch geometry, per-color
   start index and path-distance-to-home-index mapping, safe-cell membership
   check.
-- [ ] Create `lib/src/ludo_models.dart`: `LudoToken` (yard/track/home/finished
+- [x] Create `lib/src/ludo_models.dart`: `LudoToken` (yard/track/home/finished
   state + owner + path distance), `LudoPlayerState`, `LudoMatchState`
   (players, current turn, current-roll streak of sixes, phase: `awaitingRoll`
   / `awaitingMove` / `finished`, winner order).
-  - [ ] Player identity fields carry an opaque `subject` (string) and a
+  - [x] Player identity fields carry an opaque `subject` (string) and a
     `seat` index only; no PII, display name, or avatar reference belongs in
     this pure package — the client attaches presentation data separately.
-- [ ] Create `lib/src/ludo_engine.dart`: pure functions `rollDice(state,
+- [x] Create `lib/src/ludo_engine.dart`: pure functions `rollDice(state,
   diceSource)`, `legalMoves(state)`, `applyMove(state, tokenId)`, and
   `isTerminal(state)` implementing: yard-exit-on-6, extra roll on 6, third-six
   forfeit, capture-sends-home, capture bonus roll, home-arrival bonus roll,
   no blockades, exact-roll-to-finish, auto-pass when no legal move exists.
-- [ ] Create `lib/src/ludo_replay.dart`: an append-only event log
+- [x] Create `lib/src/ludo_replay.dart`: an append-only event log
   (`diceRolled`, `tokenMoved`, `tokenCaptured`, `tokenFinished`,
   `turnForfeited`, `matchFinished`) and a pure `replay(events, ruleset) ->
   LudoMatchState` function that must reproduce `applyMove`'s result exactly.
-- [ ] Add `bin/replay_fixture.dart`: reads a JSON fixture (ruleset + seeded
+- [x] Add `bin/replay_fixture.dart`: reads a JSON fixture (ruleset + seeded
   dice sequence + player count), runs a full match, and prints the resulting
   event log and final state as JSON — this is the format task 02's
   cross-runtime fixtures and task 17's TS parity test consume.
-- [ ] Add `test/ludo_engine_test.dart`, `test/ludo_board_test.dart`,
+- [x] Add `test/ludo_engine_test.dart`, `test/ludo_board_test.dart`,
   `test/ludo_replay_test.dart` covering: yard exit, extra roll, three-sixes
   forfeit, capture + bonus roll, safe-square immunity, home-arrival bonus
   roll, exact-finish rejection of overshoot, auto-pass, a full 2-player and a
   full 4-player match to completion, and Classic vs Quick producing different
   legal-move sets from the same seed.
-- [ ] Export the public API from `lib/ludo_rules.dart` (replace the task 00
+- [x] Export the public API from `lib/ludo_rules.dart` (replace the task 00
   placeholder).
-- [ ] Fill in `apps-native/games/packages/ludo_rules/pubspec.yaml` `dev_dependencies` (`test`/`flutter_lints`-equivalent Dart lints) matching
+- [x] Fill in `apps-native/games/packages/ludo_rules/pubspec.yaml` `dev_dependencies` (`test`/`flutter_lints`-equivalent Dart lints) matching
   `merge_rules/pubspec.yaml`'s dependency style, without adding any
   Flutter/Flame dependency.
 
@@ -143,7 +143,15 @@ The `apps-native/games/ludo` client app is not scaffolded yet (that's task
   `packageDirectories()` unconditionally before looping selected apps)
 - `cd apps-native/games/packages/ludo_rules && dart test` (equivalently,
   `bun run games:test` with no `--app` flag)
-- `bun run games:validate -- --strict`
+
+`bun run games:validate` (strict or not) fails for `ludo` until task 03 lands the
+client's native scaffold and content manifest — `scripts/games/content.ts`'s
+`validateContent()` checks every registered game's content manifest
+unconditionally, and `scripts/games/config.ts`'s `validateGameConfigs()` calls
+`validateNativeIds()` unconditionally for every game with a generated
+`game.config.json` (which `ludo` already has, from task 00), checking its
+`android/`/`ios/` native projects. Neither is scoped to this task; full
+`games:validate -- --strict` coverage starts at task 03.
 
 ## Out of Scope
 
