@@ -1,0 +1,115 @@
+[
+  {
+    "name": "nested-unicode-null-bool",
+    "schema_version": 1,
+    "payload": {
+      "z": [null, true, false, "é🚀", {"b": 2, "a": 1}],
+      "a": {"unicode": "中文", "empty": []}
+    },
+    "canonical": "{\"payload\":{\"a\":{\"empty\":[],\"unicode\":\"中文\"},\"z\":[null,true,false,\"é🚀\",{\"a\":1,\"b\":2}]},\"schemaVersion\":1}",
+    "fingerprint": "a67acd16e4da849e4ae5aeaa773b23fb8b3febc00727e6ea4b325b1950621b22"
+  },
+  {
+    "name": "numeric-boundaries",
+    "schema_version": 1,
+    "payload": {
+      "negativeZero": 0,
+      "integralFloat": 1,
+      "fraction": 1.5,
+      "tinyExponent": 0.0000001,
+      "tinyFixed": 0.000001,
+      "safeMax": 9007199254740991,
+      "safeMin": -9007199254740991
+    },
+    "canonical": "{\"payload\":{\"fraction\":1.5,\"integralFloat\":1,\"negativeZero\":0,\"safeMax\":9007199254740991,\"safeMin\":-9007199254740991,\"tinyExponent\":1e-7,\"tinyFixed\":0.000001},\"schemaVersion\":1}",
+    "fingerprint": "be3b7a6895b872e92656771ae5929f4722941c7f4b227f0627b44c9b6d26d387"
+  },
+  {
+    "name": "unicode-key-order",
+    "schema_version": 1,
+    "payload": {"é": 1, "e": 2, "😀": 3, "中": 4},
+    "canonical": "{\"payload\":{\"e\":2,\"é\":1,\"中\":4,\"😀\":3},\"schemaVersion\":1}",
+    "fingerprint": "9dffb920dc6591a54cc2fa780c23bd423d4e58efa0d153f298ae0a595348807e"
+  },
+  {
+    "name": "empty-and-negative",
+    "schema_version": 1,
+    "payload": {"emptyObject": {}, "emptyArray": [], "negative": -42, "zero": 0},
+    "canonical": "{\"payload\":{\"emptyArray\":[],\"emptyObject\":{},\"negative\":-42,\"zero\":0},\"schemaVersion\":1}",
+    "fingerprint": "6b3cd0e7d929d8ade521ee8cb88a3b75609ed7f30379aa41f1508abc3252bbdc"
+  },
+  {
+    "name": "boundary-lower-exponent",
+    "schema_version": 1,
+    "payload": {"value": 1e-7},
+    "canonical": "{\"payload\":{\"value\":1e-7},\"schemaVersion\":1}",
+    "fingerprint": "650b0d82735823ba6eefb920a8faf981b9f213d8d6c57f58651926d1fadfec8c"
+  },
+  {
+    "name": "boundary-lower-fixed",
+    "schema_version": 1,
+    "payload": {"value": 0.000001},
+    "canonical": "{\"payload\":{\"value\":0.000001},\"schemaVersion\":1}",
+    "fingerprint": "41b40d98ea15c7bc214b8d42e8536d322132c67987b58fe57b31e35db7c8d531"
+  },
+  {
+    "name": "boundary-lower-near-exponent",
+    "schema_version": 1,
+    "payload": {"value": 0.000000999999},
+    "canonical": "{\"payload\":{\"value\":9.99999e-7},\"schemaVersion\":1}",
+    "fingerprint": "33a1695ac7bcda9822b1489b4fe7949f3d1884a4881360bb7a28b41e61e147df"
+  },
+  {
+    "name": "boundary-lower-near-fixed",
+    "schema_version": 1,
+    "payload": {"value": 0.000001000001},
+    "canonical": "{\"payload\":{\"value\":0.000001000001},\"schemaVersion\":1}",
+    "fingerprint": "98623343f25a60d49943fc7ceca55f0cea037599be810f7868182fe2259dc87f"
+  },
+  {
+    "name": "safe-integral-double",
+    "schema_version": 1,
+    "payload": {"value": 9007199254740991},
+    "canonical": "{\"payload\":{\"value\":9007199254740991},\"schemaVersion\":1}",
+    "fingerprint": "2be3adcdb742bb00ca2c37d80cf9d555ec8e169f7c3b8a244d40836a6958930a"
+  },
+  {
+    "name": "subnormal-minimum",
+    "schema_version": 1,
+    "payload": {"value": 5e-324},
+    "canonical": "{\"payload\":{\"value\":5e-324},\"schemaVersion\":1}",
+    "fingerprint": "5ca95df40b14be325acc047ba38ee0b28317c4f26d1b6d015fd22942eee95c65"
+  },
+  {
+    "name": "subnormal-next",
+    "schema_version": 1,
+    "payload": {"value": 1e-323},
+    "canonical": "{\"payload\":{\"value\":1e-323},\"schemaVersion\":1}",
+    "fingerprint": "5820311c0120936431ad7b0b49ed7ca8ad96b9e8a116ac99a9b08d01d5c03398"
+  },
+  {
+    "name": "negative-zero",
+    "schema_version": 1,
+    "payload": {"value": 0},
+    "canonical": "{\"payload\":{\"value\":0},\"schemaVersion\":1}",
+    "fingerprint": "15df6f73849c79991beb105671f8ca56937a294619cc35f70c7976b4bca5ea4f"
+  },
+  {
+    "name": "boundary-upper-fixed-rejected",
+    "schema_version": 1,
+    "payload": {"value": 1e20},
+    "error": "JavaScript-safe"
+  },
+  {
+    "name": "boundary-upper-exponent-rejected",
+    "schema_version": 1,
+    "payload": {"value": 1e21},
+    "error": "JavaScript-safe"
+  },
+  {
+    "name": "unsafe-integral-rejected",
+    "schema_version": 1,
+    "payload": {"value": 9007199254740992},
+    "error": "JavaScript-safe"
+  }
+]
