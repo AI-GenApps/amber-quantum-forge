@@ -12,8 +12,15 @@
 // argument, or from stdin when no argument is given. Dice are drawn from a
 // `platform_core` `DeterministicRng` seeded by `seed`, so the same fixture
 // always produces byte-identical output. Where more than one legal move
-// exists for a roll, the lowest token id is chosen — a fixed, documented
-// tie-break, not a bot strategy (bot strategies are task 02's concern).
+// exists for a roll:
+//
+// - By default (no `--bot` flag), the lowest token id is chosen — a fixed,
+//   documented tie-break, not a bot strategy.
+// - With `--bot <difficulty>` (`easy`/`medium`/`hard`), the named
+//   `LudoBotStrategy` from `ludo_bot.dart` (task 02) chooses the move
+//   instead, drawing its own tie-break randomness from the same seeded
+//   `DeterministicRng` used for dice, so output stays byte-identical for a
+//   given seed + difficulty.
 import 'dart:convert';
 import 'dart:io';
 
@@ -24,8 +31,24 @@ import 'package:platform_core/platform_core.dart';
 const _maxTurns = 100000;
 
 Future<void> main(List<String> args) async {
-  final raw = args.isNotEmpty
-      ? File(args.first).readAsStringSync()
+  String? botFlag;
+  final positional = <String>[];
+  for (var i = 0; i < args.length; i++) {
+    final arg = args[i];
+    if (arg == '--bot') {
+      if (i + 1 >= args.length) {
+        throw const FormatException('--bot requires a difficulty argument');
+      }
+      botFlag = args[i + 1];
+      i++;
+    } else {
+      positional.add(arg);
+    }
+  }
+  final bot = botFlag == null ? null : ludoBotStrategyById(botFlag);
+
+  final raw = positional.isNotEmpty
+      ? File(positional.first).readAsStringSync()
       : await stdin.transform(utf8.decoder).join();
   final decoded = jsonDecode(raw);
   if (decoded is! Map) {
@@ -73,8 +96,10 @@ Future<void> main(List<String> args) async {
     state = rollResult.state;
     events.addAll(rollResult.events);
     if (state.phase == LudoMatchPhase.awaitingMove) {
-      final moves = List<int>.of(legalMoves(state))..sort();
-      final moveResult = applyMove(state, moves.first);
+      final chosen = bot != null
+          ? bot.selectMove(state, rng)
+          : (List<int>.of(legalMoves(state))..sort()).first;
+      final moveResult = applyMove(state, chosen);
       state = moveResult.state;
       events.addAll(moveResult.events);
     }

@@ -196,6 +196,14 @@ LudoMatchState replay(
     state = rollResult.state;
     index++;
 
+    // A move that captures emits its `tokenCaptured` event(s) *before* the
+    // `tokenMoved` event that triggered them (see `applyMove` in
+    // `ludo_engine.dart`), so skip past any of those before checking
+    // whether a move follows this roll.
+    while (index < log.length && log[index] is LudoTokenCapturedEvent) {
+      index++;
+    }
+
     final next = index < log.length ? log[index] : null;
     if (next is LudoTokenMovedEvent) {
       final moveResult = applyMove(state, next.tokenId);

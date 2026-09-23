@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 02-rules-bots-fixtures
-status: pending
+status: complete
 commit_scope: ludo
 depends_on: [15-ludo-launch/01-rules-core]
 estimate: M
@@ -55,19 +55,19 @@ compares against does not exist until then.
 
 ## Implementation Checklist
 
-- [ ] Add `lib/src/ludo_bot.dart` with an abstract `LudoBotStrategy` and
+- [x] Add `lib/src/ludo_bot.dart` with an abstract `LudoBotStrategy` and
   `EasyBotStrategy`, `MediumBotStrategy`, `HardBotStrategy` implementations
   per the priority ladders above.
-- [ ] Add `test/ludo_bot_test.dart` covering each tier's priority ordering
+- [x] Add `test/ludo_bot_test.dart` covering each tier's priority ordering
   with constructed board states (forced finish-available, forced
   capture-available, forced yard-exit-available, forced no-preference).
-- [ ] Extend `bin/replay_fixture.dart` with a `--bot <difficulty>` flag that
+- [x] Extend `bin/replay_fixture.dart` with a `--bot <difficulty>` flag that
   runs the match end-to-end using the named strategy instead of requiring
   external move input.
-- [ ] Generate and check in at least 8 fixtures under
+- [x] Generate and check in at least 8 fixtures under
   `packages/ludo_rules/test/fixtures/` covering the {classic, quick} x
   {2-player, 4-player} x {dice-only, bot-driven} matrix.
-- [ ] Add `test/ludo_fixture_replay_test.dart` that loads every checked-in
+- [x] Add `test/ludo_fixture_replay_test.dart` that loads every checked-in
   fixture, replays its event log through `ludo_replay.dart`'s `replay()`, and
   asserts the final state matches the fixture's recorded final state.
 
@@ -78,6 +78,8 @@ compares against does not exist until then.
 - `apps-native/games/packages/ludo_rules/bin/replay_fixture.dart`
 - `apps-native/games/packages/ludo_rules/test/fixtures/*.json`
 - `apps-native/games/packages/ludo_rules/test/ludo_fixture_replay_test.dart`
+- `apps-native/games/packages/ludo_rules/lib/src/ludo_replay.dart` (small,
+  necessary bugfix — see Implementation Notes below)
 
 ## Acceptance Criteria
 
@@ -112,6 +114,23 @@ unconditionally, and `scripts/games/config.ts`'s `validateGameConfigs()` calls
 `game.config.json` (which `ludo` already has, from task 00), checking its
 `android/`/`ios/` native projects. Neither is scoped to this task; full
 `games:validate -- --strict` coverage starts at task 03.
+
+## Implementation Notes
+
+- `ludo_replay.dart`'s `replay()` (task 01) had a latent bug: it assumed the
+  event immediately following a `diceRolled` event was always a
+  `tokenMoved` (or a `turnForfeited`/`matchFinished`), but `applyMove`
+  actually emits any `tokenCaptured` events *before* `tokenMoved`. Task 01's
+  own `ludo_replay_test.dart` never exercised a capture (its fixed PRNG
+  seed happened not to produce one), so this went unnoticed. Every fixture
+  generated for this task that includes a capture (7 of the 8 checked-in
+  fixtures) hit it immediately (`Bad state: rollDice called outside of
+  awaitingRoll phase`), which is this task's own acceptance criterion
+  ("every fixture replays to its recorded final state exactly through
+  `replay()`"), so it was fixed in place: `replay()` now skips past any
+  leading `tokenCaptured` events before checking for the follow-up
+  `tokenMoved`. No fixture was edited to work around this — see Out of
+  Scope's rule against editing fixtures to satisfy a checker.
 
 ## Out of Scope
 
