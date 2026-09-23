@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Ludo" tests="20" failures="0" errors="0" skipped="0" time="0.014">
+  <testsuite name="W3Dev.Ludo.Tests.LudoRulesTests" tests="20" failures="0" errors="0" skipped="0" time="0.014">
+    <testcase name="DeterministicDiceSourceReturnsInjectedSequence" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.008" />
+    <testcase name="FourPlayerStateKeepsAllSeatsActive" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.002" />
+    <testcase name="FourPlayerTurnFollowsSeatOrderAfterSelectedStarter" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.000" />
+    <testcase name="FourthFinishedTokenSetsWinnerAndFinishedPhase" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.001" />
+    <testcase name="HomeMoveIgnoresPerimeterBlockade" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.000" />
+    <testcase name="OpponentBlockadeCannotBeCrossed" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.000" />
+    <testcase name="OpponentBlockadeCannotBeEntered" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.000" />
+    <testcase name="OvershootFromHomeIsIllegal" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.000" />
+    <testcase name="RandomDiceSourceProducesValidFaces" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.001" />
+    <testcase name="SafeCellPreventsCapture" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.000" />
+    <testcase name="SamePlayerMayCrossBlockade" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.000" />
+    <testcase name="SixKeepsTurnAfterMoving" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.000" />
+    <testcase name="SixWithNoLegalMoveKeepsTurn" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.000" />
+    <testcase name="ThirdSixForfeitsTurn" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.000" />
+    <testcase name="TrackDestinationCannotExceedMaximumOccupancy" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.000" />
+    <testcase name="TrackToHomeCannotCrossPerimeterBlockade" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.000" />
+    <testcase name="TwoPlayerStateActivatesHumanAndOppositeSeat" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.000" />
+    <testcase name="TwoPlayerTurnAdvancesToActivePartner" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.000" />
+    <testcase name="UnsafeOpponentCanBeCapturedWhenFriendlyTokenOccupiesCell" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.000" />
+    <testcase name="UnsafeSingleOpponentIsCaptured" classname="W3Dev.Ludo.Tests.LudoRulesTests" time="0.000">
+      <system-out>Saving results to: /Users/ashutosh/Library/Application Support/DefaultCompany/Ludo/TestResults.xml</system-out>
+    </testcase>
+  </testsuite>
+</testsuites>

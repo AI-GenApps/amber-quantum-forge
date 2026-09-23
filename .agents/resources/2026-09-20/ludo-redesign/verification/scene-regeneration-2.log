@@ -1,0 +1,614 @@
+Unity Editor version:    6000.6.2f1 (770e33f6875c)
+Branch:                  6000.6/staging
+Build type:              Release
+Batch mode:              YES
+macOS version:           Version 15.7.4 (Build 24G517)
+Darwin version:          24.6.0
+Architecture:            arm64
+Running under Rosetta:   NO
+Available memory:        32768 MB
+Date:                    2026-09-19T20:03:35Z
+Launching external process: /Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Resources/Scripting/NetCoreRuntime/dotnet
+VBCSCompilerPreWarmer: pre-warm launched (dotnet PID 91143)
+VBCSCompiler prewarm took 15.13 ms
+[Licensing::Module] Trying to connect to existing licensing client channel...
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ashutosh" at "2026-09-19T20:03:35.618816Z"
+Launching external process: /Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Helpers/PackageManager/Server/UnityPackageManager
+
+COMMAND LINE ARGUMENTS:
+/Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/MacOS/Unity
+-batchmode
+-quit
+-projectPath
+/Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo
+-executeMethod
+W3Dev.Ludo.Editor.LudoSceneBuilder.BuildScene
+-logFile
+/Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/.agents/resources/2026-09-20/ludo-redesign/verification/scene-regeneration-2.log
+-hubSessionId
+3c596474-73d2-4dfd-bd00-f881638cf407
+-accessToken
+VJr63FzT6OJWqf5ctx10Bl5nQU5zBnzm8vwfntgHnrM00cf
+Successfully changed project path to: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo
+/Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-remapper-allocator-initial-capacity=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-main-allocator-mimalloc-enabled=1"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Logging is directed to a specific file, skipping project log.
+Player connection [8698569280]  Target information:
+
+Player connection [8698569280]  * "[IP] 192.168.1.35 [Port] 55504 [Flags] 2 [Guid] 3143996960 [EditorId] 3143996960 [Version] 1048832 [Id] OSXEditor(0,Ashutoshs-MacBook-Pro.local) [Debug] 1 [PackageName] OSXEditor [ProjectName] Editor" 
+
+Player connection [8698569280]  * "[IP] 100.92.18.1 [Port] 55504 [Flags] 2 [Guid] 3143996960 [EditorId] 3143996960 [Version] 1048832 [Id] OSXEditor(0,Ashutoshs-MacBook-Pro.local) [Debug] 1 [PackageName] OSXEditor [ProjectName] Editor" 
+
+Player connection [8698569280] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [8698569280] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.3+d7ffd15
+  Session Id:              55e7e803d0af4eb8825b4f1934a90892
+  Correlation Id:          4bac218ce578f93ef795cad787516935
+  External correlation Id: 2608632112353161439
+  Machine Id:              EkGRc9PV56pFzD56S3auySym7fg=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-ashutosh" (connect: 0.00s, validation: 0.00s, handshake: 0.41s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ashutosh-notifications" at "2026-09-19T20:03:36.032703Z"
+[Licensing::Client] Successfully updated the access token
+[Licensing::Module] Successfully updated the access token VJr63FzT6O...
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: F4-GT88-H65H-3FCR-JG95-XXXX
+  Product: Unity Personal
+  Type: ULF
+  Expiration: 2026-10-26T20:54:41Z
+[Licensing::Module] License group:
+  Id: 13469619118298-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: F4-GT88-H65H-3FCR-JG95-XXXX
+  Product: Unity Personal
+  Type: ULF
+  Expiration: 2026-10-26T20:54:41Z
+[Licensing::Module] License group:
+  Id: 13469619118298-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Module] Licensing Background thread has ended after 0.42s
+Initialising UDS system complete:
+  - System type: Client
+  - Resource namespace: 355de4df8228b387338e62f47be078ac
+  - Shared memory size: 1073741824
+  - Command buffer id: 1052672
+  - Command buffer size: 8192
+  - Hashmap size: 4194304
+  - Service connected: false
+[Package Manager] Connected to IPC stream "Upm-91138" after 0.4 seconds.
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: F4-GT88-H65H-3FCR-JG95-XXXX
+  Product: Unity Personal
+  Type: ULF
+  Expiration: 2026-10-26T20:54:41Z
+[Licensing::Module] License group:
+  Id: 13469619118298-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+Library Redirect Path: Library/
+Launching Unity Data Store - /Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Helpers/Unity.DataStore 
+Unity Data Store artifact dir = Library/DataStore, working dir = /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Unity Data Store running and initialised
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: F4-GT88-H65H-3FCR-JG95-XXXX
+  Product: Unity Personal
+  Type: ULF
+  Expiration: 2026-10-26T20:54:41Z
+[Licensing::Module] License group:
+  Id: 13469619118298-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+Initialize engine version: 6000.6.2f1 (770e33f6875c)
+[EntityIdStore] init: VM path (explicit commit), pageSize=16384, blockCount=262144, entitiesPerBlock=1024, slots reserved=4294967296 bytes
+[Subsystems] Discovering subsystems at path /Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+ preferred device: Apple M2 Max (high power)
+Metal devices available: 1
+0: Apple M2 Max (high power)
+Using device Apple M2 Max (high power)
+Initializing Metal device caps: Apple M2 Max
+Mac GPU Family: 2
+Apple GPU Family: 8
+MSL Version: 3.0
+Has Float MSAA: 1
+Has Float Filtering: 1
+ReadWrite Texture Tier: 2
+Initialize mono
+Mono path[0] = '/Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Resources/Scripting/Managed'
+Mono path[1] = '/Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Resources/Scripting/BCLExtensions/runtime/netstandard2.1'
+Mono path[2] = '/Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Resources/Scripting/MonoBleedingEdge/lib/mono/unityjit-macos'
+Mono config path = '/Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Resources/Scripting/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56138
+CodeReloadManager initialized
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: /Applications/Unity/Hub/Editor/6000.6.2f1/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: /Applications/Unity/Hub/Editor/6000.6.2f1/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: /Applications/Unity/Hub/Editor/6000.6.2f1/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.002501 seconds.
+Native extension for Android target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Package Manager log level set to [2]
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Scripting: successfully reloaded assembly
+- Finished resetting the current domain, in  0.803 seconds
+Domain Reload Profiling: 1264ms
+	BeginReloadAssembly (108ms)
+		CreateAndSetChildDomain (6ms)
+	RebuildCommonClasses (4ms)
+	RebuildNativeTypeToScriptingClass (20ms)
+	initialDomainReloadingComplete (50ms)
+	LoadAllAssembliesAndSetupDomain (278ms)
+		LoadAssemblies (103ms)
+		TypeCache.Refresh (202ms)
+			TypeCache.ScanAssembly (187ms)
+		AnalyzeDomain (1ms)
+	FinalizeReload (804ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (6ms)
+			BeforeProcessingInitializeOnLoad (72ms)
+			ProcessInitializeOnLoadAttributes (63ms)
+			ProcessInitializeOnLoadMethodAttributes (503ms)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: F4-GT88-H65H-3FCR-JG95-XXXX
+  Product: Unity Personal
+  Type: ULF
+  Expiration: 2026-10-26T20:54:41Z
+[Licensing::Module] License group:
+  Id: 13469619118298-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: F4-GT88-H65H-3FCR-JG95-XXXX
+  Product: Unity Personal
+  Type: ULF
+  Expiration: 2026-10-26T20:54:41Z
+[Licensing::Module] License group:
+  Id: 13469619118298-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+Application.AssetDatabase Initial Refresh Start
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 61 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.ai.navigation@2.0.14 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.ai.navigation@134dd6a3b97b)
+    com.unity.collab-proxy@2.13.6 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.collab-proxy@4628d2ba6ea4)
+    com.unity.ide.rider@3.0.38 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.ide.rider@1f60b3138684)
+    com.unity.ide.visualstudio@2.0.26 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.ide.visualstudio@a99d56dec63f)
+    com.unity.inputsystem@1.20.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.inputsystem@7a4e1a2a8194)
+    com.unity.visualscripting@1.9.12 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.visualscripting@4edfcc09512f)
+    com.unity.pipeline@0.7.0-exp.1 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.pipeline@ab05e9cd7f74)
+    com.unity.nuget.mono-cecil@1.11.6 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.nuget.newtonsoft-json@3.2.2 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.nuget.newtonsoft-json@4dfd81071c64)
+    com.unity.searcher@4.9.5 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.searcher@a463122f2c00)
+    com.unity.profiling.core@1.0.3 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.profiling.core@8a49f7027d06)
+  Built-in packages:
+    com.unity.render-pipelines.universal@17.6.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.render-pipelines.universal@1e1cf3dcbd40)
+    com.unity.test-framework@1.8.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.test-framework@7a3849e09bd0)
+    com.unity.timeline@6.6.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.timeline@c56d56b0070b)
+    com.unity.ugui@2.6.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.ugui@0f30cee369f3)
+    com.unity.modules.accessibility@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.physics2d)
+    com.unity.modules.physicscore2d@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.physicscore2d)
+    com.unity.modules.screencapture@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.terrainphysics)
+    com.unity.modules.tetgen@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.tetgen)
+    com.unity.modules.tilemap@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.tilemap)
+    com.unity.modules.timelinefoundation@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.timelinefoundation)
+    com.unity.modules.ui@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.video)
+    com.unity.modules.wind@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.modules.hierarchycore)
+    com.unity.ext.nunit@2.1.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.ext.nunit@0198eae3b53e)
+    com.unity.render-pipelines.core@17.6.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.render-pipelines.core@a14850be21a6)
+    com.unity.shadergraph@17.6.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.shadergraph@96a7923f6bed)
+    com.unity.render-pipelines.universal-config@17.6.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.render-pipelines.universal-config@561422b74439)
+    com.unity.graph-authoring@1.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.graph-authoring@cfd2588851ee)
+    com.unity.burst@2.0.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.burst@626e66ab421b)
+    com.unity.collections@6.6.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.collections@10fff0607388)
+    com.unity.test-framework.performance@6.6.0 (location: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Library/PackageCache/com.unity.test-framework.performance@0a60b857a52e)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.00 seconds
+[ScriptCompilation] Requested script compilation because: AssetDatabase observed changes in script compilation related files
+Starting: /Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Resources/BuildPipeline/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/1300b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo
+DisplayProgressbar: Compiling Scripts
+ExitCode: 4 Duration: 0s197ms
+Rebuilding DAG because FileSignature timestamp changed: Library/Bee/1300b0aE-inputdata.json
+*** Tundra requires additional run (0.18 seconds), 0 items updated, 2 evaluated
+Starting: /Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Resources/Scripting/DotNetSdk/dotnet "/Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Resources/BuildPipeline/ScriptCompilationBuildProgram.exe" "Library/Bee/1300b0aE.dag.json" "Library/Bee/1300b0aE-inputdata.json" "Library/Bee/buildprogram0.traceevents"
+WorkingDir: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo
+ExitCode: 0 Duration: 1s392ms
+Starting: /Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Resources/BuildPipeline/bee_backend --ipc --defer-dag-verification --dagfile="Library/Bee/1300b0aE.dag" --continue-on-failure --dagfilejson="Library/Bee/1300b0aE.dag.json" --profile="Library/Bee/backend2.traceevents" ScriptAssemblies
+WorkingDir: /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.runtime.interopservices.windowsruntime has duplicate hint path. Ignoring "/Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Resources/Scripting/NetStandard/Extensions/2.0.0/System.Runtime.InteropServices.WindowsRuntime.dll" in favor of "/Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Resources/Scripting/UnityReferenceAssemblies/unity-4.8-api/Facades/System.Runtime.InteropServices.WindowsRuntime.dll"
+warn: Unity.ILPP.Runner.PostProcessingAssemblyLoadContext[0]
+      Assembly system.componentmodel.composition has duplicate hint path. Ignoring "/Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Resources/Scripting/NetStandard/compat/2.1.0/shims/netfx/System.ComponentModel.Composition.dll" in favor of "/Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Resources/Scripting/UnityReferenceAssemblies/unity-4.8-api/System.ComponentModel.Composition.dll"
+ExitCode: 0 Duration: 2s8ms
+Finished compiling graph: 976 nodes, 20804 flattened edges (17638 ToBuild, 162 ToUse), maximum node priority 1078
+[505/973    0s] WriteText Library/Bee/artifacts/1300b0aE.dag/W3Dev.Ludo.Rules.Tests.rsp
+[737/973    0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[957/973    1s] Csc Library/Bee/artifacts/1300b0aE.dag/W3Dev.Ludo.Rules.dll (+2 others)
+[958/973    0s] ILPostProcess Library/Bee/artifacts/1300b0aE.dag/post-processed/W3Dev.Ludo.Rules.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1300b0aE.dag/W3Dev.Ludo.Rules.dll, with 156 defines and 155 references
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.CodeReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+1 processor(s) skipped this assembly
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running Unity.Pipeline.CodeGen.CodeReloadInPlaceILPostProcessor
+[959/973    0s] CopyFiles Library/ScriptAssemblies/W3Dev.Ludo.Rules.pdb
+[960/973    0s] CopyFiles Library/ScriptAssemblies/W3Dev.Ludo.Rules.dll
+[961/973    0s] Csc Library/Bee/artifacts/1300b0aE.dag/W3Dev.Ludo.Rules.Tests.dll (+2 others)
+[962/973    0s] Csc Library/Bee/artifacts/1300b0aE.dag/Assembly-CSharp.dll (+2 others)
+[963/973    0s] ILPostProcess Library/Bee/artifacts/1300b0aE.dag/post-processed/W3Dev.Ludo.Rules.Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1300b0aE.dag/W3Dev.Ludo.Rules.Tests.dll, with 154 defines and 305 references
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.CodeReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+1 processor(s) skipped this assembly
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running Unity.Pipeline.CodeGen.CodeReloadInPlaceILPostProcessor
+[964/973    0s] ILPostProcess Library/Bee/artifacts/1300b0aE.dag/post-processed/Assembly-CSharp.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1300b0aE.dag/Assembly-CSharp.dll, with 156 defines and 362 references
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.CodeReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+1 processor(s) skipped this assembly
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running Unity.Pipeline.CodeGen.CodeReloadInPlaceILPostProcessor
+[965/973    0s] CopyFiles Library/ScriptAssemblies/W3Dev.Ludo.Rules.Tests.dll
+[966/973    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.pdb
+[967/973    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp.dll
+[968/973    0s] CopyFiles Library/ScriptAssemblies/W3Dev.Ludo.Rules.Tests.pdb
+[969/973    0s] Csc Library/Bee/artifacts/1300b0aE.dag/Assembly-CSharp-Editor.dll (+2 others)
+[970/973    0s] ILPostProcess Library/Bee/artifacts/1300b0aE.dag/post-processed/Assembly-CSharp-Editor.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1300b0aE.dag/Assembly-CSharp-Editor.dll, with 154 defines and 389 references
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, Unity.Pipeline.CodeGen.CodeReloadInPlaceILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+1 processor(s) skipped this assembly
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+running Unity.Pipeline.CodeGen.CodeReloadInPlaceILPostProcessor
+[971/973    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.pdb
+[972/973    0s] CopyFiles Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+*** Tundra build success (1.99 seconds), 18 items updated, 973 evaluated
+AssetDatabase: script compilation time: 4.421245s
+Total cache size 166765537
+Total cache size after purge 166765537, took 00:00:00.2664757
+Begin MonoManager ReloadAssembly
+Symbol file LoadedFromMemory is not a mono symbol file
+'Packages/com.unity.render-pipelines.core/Editor/Deprecated.cs' contains partial class of Unity.Object, exactly 1 of the partial classes needs to be in a file with the same filename. This is to know the one that can be referenced from ie. GameObjects
+'Packages/com.unity.render-pipelines.core/Editor/Deprecated.cs' contains partial class of Unity.Object, exactly 1 of the partial classes needs to be in a file with the same filename. This is to know the one that can be referenced from ie. GameObjects
+Native extension for Android target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Start HTTP server: port:7800
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Scripting: successfully reloaded assembly
+- Finished resetting the current domain, in  0.892 seconds
+Domain Reload Profiling: 1697ms
+	BeginReloadAssembly (175ms)
+		DisableScriptedObjects (13ms)
+		CreateAndSetChildDomain (49ms)
+	RebuildCommonClasses (7ms)
+	RebuildNativeTypeToScriptingClass (13ms)
+	initialDomainReloadingComplete (47ms)
+	LoadAllAssembliesAndSetupDomain (563ms)
+		LoadAssemblies (252ms)
+		TypeCache.Refresh (217ms)
+			TypeCache.ScanAssembly (200ms)
+		AnalyzeDomain (60ms)
+			BuildScriptInfoCaches (54ms)
+			ResolveRequiredComponents (5ms)
+	FinalizeReload (893ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (4ms)
+			BeforeProcessingInitializeOnLoad (72ms)
+			ProcessInitializeOnLoadAttributes (439ms)
+			ProcessInitializeOnLoadMethodAttributes (43ms)
+		AwakeInstancesAfterBackupRestoration (15ms)
+Starting new worker id: 0 with log in /Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge/apps-native/unity/ludo/Logs/AssetImportWorkerHW0.log
+Launching external process: /Applications/Unity/Hub/Editor/6000.6.2f1/Unity.app/Contents/Helpers/UnityShaderCompiler
+
+Asset Pipeline Refresh (id=35e1418a6f9644ddbb4456227e92166c): Total: 7.516 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	(Values over 0.05ms)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=0 ms, native=1935 ms
+		Asset DB Callback time: managed=272 ms, native=11 ms
+		Scripting: domain reloads=1, domain reload time=831 ms, compile time=4422 ms, other=41 ms
+		Project Asset Count: scripts=1455, non-scripts=2361
+		Asset File Changes: new=2, changed=20, moved=0, deleted=0
+		Scan Filter Count: 1
+	InvokePackagesCallback: 7.258ms
+	ApplyChangesToAssetFolders: 0.245ms
+	Scan: 729.101ms
+	Collect global state as custom dependencies: 15.588ms
+	OnSourceAssetsModified: 0.441ms
+	CategorizeScriptCompilationAssets: 51.304ms
+	ProcessAssetsWithTransientArtifactChanges: 49.565ms
+	CategorizeAssets: 64.793ms
+	CompileScripts: 4422.464ms
+	ImportOutOfDateAssets: 904.740ms (897.780ms without children)
+		UnloadImportedAssets: 0.817ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 0.593ms
+		ImportSchedulerStart: 5.518ms
+	PostProcessAllAssets: 273.062ms
+		VCAutoAddAssetPostprocess 1.022ms
+		XRBuildSystem.XRAssetImported 0.126ms
+		PostProcessCallbackCreateDeferredMaterials 0.079ms
+		ShaderAssetModifiedCallback 0.053ms
+		MonoPostProcessAllAssets: 271.086ms
+			SyncVS.PostprocessSyncProject 178.502ms
+			AssetPostprocessor.OnPostprocessAllAssets 42.753ms
+			StyleCatalogPostProcessor.OnPostprocessAllAssets 15.887ms
+			UniversalRenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 10.109ms
+			BuilderAssetPostprocessor.OnPostprocessAllAssets 4.318ms
+			ShaderGraphAssetPostProcessor.OnPostprocessAllAssets 1.446ms
+			AssetChangedListener.OnPostprocessAllAssets 1.137ms
+			SpeedTree9Postprocessor.OnPostprocessAllAssets 1.036ms
+			WindowAssetPostprocessingWatcher.OnPostprocessAllAssets 0.990ms
+			RetainedModeAssetPostprocessor.OnPostprocessAllAssets 0.826ms
+			EditModeScopePostprocessor.OnPostprocessAllAssets 0.532ms
+			MaterialPostprocessor.OnPostprocessAllAssets 0.525ms
+			RenderPipelineGlobalSettingsPostprocessor.OnPostprocessAllAssets 0.508ms
+			ArtifactBrowserPostProcessor.OnPostprocessAllAssets 0.374ms
+			PostProcessor.OnPostprocessAllAssets 0.323ms
+			TextAssetPostProcessor.OnPostprocessAllAssets 0.322ms
+			ShaderReflectionAssetPostProcessor.OnPostprocessAllAssets 0.316ms
+			InputActionAssetPostprocessor.OnPostprocessAllAssets 0.278ms
+			InputActionJsonNameModifierAssetProcessor.OnPostprocessAllAssets 0.214ms
+			AudioMixerPostprocessor.OnPostprocessAllAssets 0.197ms
+			UVCSAssetPostprocessor.OnPostprocessAllAssets 0.195ms
+			ReferencedClipsPostProcessor.OnPostprocessAllAssets 0.191ms
+			SpeedTreePostProcessor.OnPostprocessAllAssets 0.183ms
+			TerrainToolbarOverlayPostProcessor.OnPostprocessAllAssets 0.168ms
+			TMPro_TexturePostProcessor.OnPostprocessAllAssets 0.158ms
+			AssetEvents.OnPostprocessAllAssets 0.158ms
+			ProjectSettingsPostprocessor.OnPostprocessAllAssets 0.120ms
+			SamplePostprocessor.OnPostprocessAllAssets 0.088ms
+			AssetDatabaseCallbacks.OnPostprocessAllAssets 0.087ms
+			ThemePostprocessor.OnPostprocessAllAssets 0.084ms
+			ConfigAssetsTracker.OnPostprocessAllAssets 0.077ms
+			ScenarioDriftAssetsTracker.OnPostprocessAllAssets 0.063ms
+			AssetReloadNotifier.OnPostprocessAllAssets 0.057ms
+	PostAssetChangesProfiler: 4.714ms
+	UnloadStreamsBegin: 1.290ms
+	PersistCurrentRevisions: 0.093ms
+	GenerateScriptTypeHashes: 0.992ms
+	GenerateScriptTypeSerializationHashes: 1.886ms
+	Untracked: 988.773ms
+
+Application.AssetDatabase Initial Refresh End
+Shader Hidden/ChartRasterizerHardware is not supported: GPU does not support conservative rasterization
+Launched and connected shader compiler UnityShaderCompiler after 0.04 seconds
+Shader Hidden/ChartRasterizerHardware is not supported: GPU does not support conservative rasterization
+Scanning for USB devices : 0.266ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-Ludo
+2026-09-20 01:33:46.233 Unity[91138:71101197] NSEventModifierFlagFunction specified to -setKeyEquivalentModifierMask: for item <NSMenuItem: 0xc72fafa10 SDF, ke='Command-F12'>, but is only supported for system-provided menu items; will not be used
+2026-09-20 01:33:46.357 Unity[91138:71101197] NSEventModifierFlagFunction specified to -setKeyEquivalentModifierMask: for item <NSMenuItem: 0xc72eb3780 SDF, ke='Command-F12'>, but is only supported for system-provided menu items; will not be used
+Unloading 66 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 7002 unused Assets / (12.3 MB). Loaded Objects now: 7937.
+Memory consumption went from 264.6 MB to 252.3 MB.
+Total: 9.928833 ms (FindLiveObjects: 0.632209 ms CreateObjectMapping: 0.403750 ms MarkObjects: 6.364791 ms  DeleteObjects: 2.398750 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 1 unused Assets / (108.5 KB). Loaded Objects now: 7939.
+Memory consumption went from 248.5 MB to 248.4 MB.
+Total: 6.042833 ms (FindLiveObjects: 0.285666 ms CreateObjectMapping: 0.107542 ms MarkObjects: 5.509958 ms  DeleteObjects: 0.011375 ms)
+
+Asset Pipeline Refresh (id=ee94c57bec9674e46ab41223399a9ef4): Total: 0.051 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 7ba30e1f7d967450d9ef719884b4bd03 - Path: Assets/Art/Materials/Board.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 7ba30e1f7d967450d9ef719884b4bd03' -> (Import Result ID: '697dbd760d706297124feda8454ea035') in 0.003 seconds [static dependencies only]. Details - ImportResultOutputID=23a277e738f2c15810614ac28751f4d6 DependenciesID=5f0b866cec1ec8b67564d73b230e7c60 StaticDependenciesID=1acbc7e5342bb34519eefc9ee9016ff5 
+Asset Pipeline Refresh (id=563db52ac3b7a4bc3b5a338fade0cea1): Total: 0.040 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=2b603a4fd83364a9facd5e6023bfbe9a): Total: 0.028 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 05e0052b4e2784f909afc5d9b5dc4888 - Path: Assets/Art/Materials/Ivory.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 05e0052b4e2784f909afc5d9b5dc4888' -> (Import Result ID: 'a405ad8c927823dfdc73283637742d76') in 0.002 seconds [static dependencies only]. Details - ImportResultOutputID=6502896895abc9454f7b2cfbab3b248b DependenciesID=5ca6cb1012dae6fded27a9922330c999 StaticDependenciesID=92907110845083554a65475e0224f734 
+Asset Pipeline Refresh (id=382f38a047e6542d3be44f46d5cc6ce3): Total: 0.033 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=3c7936a7b6b2d49ac87783774504077a): Total: 0.029 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 4737d8222f8c84d148438f8dcd64ade1 - Path: Assets/Art/Materials/Ruby.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 4737d8222f8c84d148438f8dcd64ade1' -> (Import Result ID: '5fb4c42cb8714e0f019fe1245d729b8a') in 0.000 seconds [static dependencies only]. Details - ImportResultOutputID=eea2076c1ca5ab8d12676449057b2455 DependenciesID=7bf5ec9a3d668116573b862d7c06f3b0 StaticDependenciesID=d30c721321b8c949604f8b20e6a6355b 
+Asset Pipeline Refresh (id=3ffaeccb7deb3499592a9c6f9143001f): Total: 0.032 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=7ae96bc138fb247a1920884f5232b520): Total: 0.025 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: b5f4f1c0e4b054382912503885bfe635 - Path: Assets/Art/Materials/Jade.mat' with importer (NativeFormatImporter)
+Imported 'GUID: b5f4f1c0e4b054382912503885bfe635' -> (Import Result ID: 'c2cd65fa12aec4e28da30caba0998024') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=5d7b50c6c2178291c007f69a1b33005f DependenciesID=1b6d74c215c7ca8ed3ef2f4f692d41b6 StaticDependenciesID=43907b8dc23d8fbaa1c4a1a6270d4f15 
+Asset Pipeline Refresh (id=9bd819fef6ebd4f068749f60945d2df7): Total: 0.030 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=61e890af2a8694eeb9138c729ba1faf9): Total: 0.025 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: eb9d2aad4384f4fb588dde698f673fb6 - Path: Assets/Art/Materials/Sun.mat' with importer (NativeFormatImporter)
+Imported 'GUID: eb9d2aad4384f4fb588dde698f673fb6' -> (Import Result ID: '6a8d94b83dad472a688602871d42192c') in 0.000 seconds [static dependencies only]. Details - ImportResultOutputID=bfb1597e8201b2b21de4900d28e7eb6c DependenciesID=4c209c5eb1de28fbd3ed020320da21ab StaticDependenciesID=36df9fb410a6ce9aaf8c5445535859e4 
+Asset Pipeline Refresh (id=9eb33bc87d01247948f047024720d99f): Total: 0.033 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=3fc67214df658442fad334900093f985): Total: 0.025 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: b1136b82a07a34addbbac35f2b09cf28 - Path: Assets/Art/Materials/Azure.mat' with importer (NativeFormatImporter)
+Imported 'GUID: b1136b82a07a34addbbac35f2b09cf28' -> (Import Result ID: '3a128bf32a1c4a520f87196387738834') in 0.000 seconds [static dependencies only]. Details - ImportResultOutputID=aeea71546e5f335596dfc7b3fa3107fc DependenciesID=6894cf5032dcfa963bec42b80ca9845c StaticDependenciesID=2fdcb42cce21ff1504e45dadab165c02 
+Asset Pipeline Refresh (id=ab0ffd751297c4a0fae4e0606c57166f): Total: 0.031 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=fe81c27994cd14a599dc926a917e1e1b): Total: 0.026 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 0adf5e8cd67204935b5497ef765319c9 - Path: Assets/Art/Materials/SafeMarker.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 0adf5e8cd67204935b5497ef765319c9' -> (Import Result ID: '8d27afc8571a9207323f23dac0ae1e06') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=b6f7880375d459bb74fbbc65d7eb02d7 DependenciesID=41911759f369c6fb0321a59d1b623ce9 StaticDependenciesID=279082bdfa5a6c127d4a58a02704a627 
+Asset Pipeline Refresh (id=7396597e173b44e8b8ed094c3b9f8175): Total: 0.033 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=032caa7e9f8ba45f6ad978374aeb54e5): Total: 0.026 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 5884c59d16cd0479292932f324c7f5f3 - Path: Assets/Art/Materials/Token.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 5884c59d16cd0479292932f324c7f5f3' -> (Import Result ID: 'f110f6362bca1a2ca36c3daa5f79922d') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=3c8a073fa86116600d6eead4d7b3c96d DependenciesID=0993cc48e9dd5659c4b1de1270bb163e StaticDependenciesID=12accd18d81ded81a7706855d7d49abc 
+Asset Pipeline Refresh (id=61921bc4216ed46b08809f286b5fc762): Total: 0.031 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=b8458be143f3d464285e79365a3f3789): Total: 0.026 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 1956ad9d6a0fc474b9cb1e20042b3e30 - Path: Assets/Art/Materials/TokenDark.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 1956ad9d6a0fc474b9cb1e20042b3e30' -> (Import Result ID: '88b7e585de9398bb55e9c27134dd3360') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=288128cce17bf6603d71579cab581451 DependenciesID=4c022ba8cc3d5804c790e29498084d6f StaticDependenciesID=8f76519b0e0e18777e12ddb8794fff90 
+Asset Pipeline Refresh (id=5c6275d5d5f2e4efa8b0fb12319afcd6): Total: 0.032 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=295a57c488ca84c3f981818697615c40): Total: 0.030 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=d4f9b5f7786a14d9e8f1b718b0cd2792): Total: 0.030 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=9008856db408a47ff8376733c8a93410): Total: 0.026 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=7d40c45d9bbea4bb2bf238f235b3a2e8): Total: 0.030 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=b0befdc6042164c2d9cae6d1646c29ee): Total: 0.026 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=b9e807db0172f43c493abe3325c57066): Total: 0.035 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=4290ff2d82de645378a757c3315241cb): Total: 0.028 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=28c68b4583ed3489897a6616563745d4): Total: 0.033 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Worker ready: AssetImportWorkerHW0 0
+Asset Pipeline Refresh (id=89a23375f834a4864848be37410d8f4c): Total: 0.029 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=810b3fcc2225342ffaa4a716b080c2d0): Total: 0.032 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=404039d0bd28141bbbf2ac72e9c1c5c5): Total: 0.004 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 9185cb192ec834f28b38575fd197c57c - Path: Assets/Art/UI/LudoCircle.asset' with importer (NativeFormatImporter)
+Imported 'GUID: 9185cb192ec834f28b38575fd197c57c' -> (Import Result ID: '8f5fd6c5f6c798bb6e246ea5a01660bf') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=13119e2989e81119762145dd1f36f513 DependenciesID=9d8588fe5a19450d2b56e810bbaae1a7 StaticDependenciesID=927380b2e9b25ecceac79fb6fe7e58b6 
+Asset Pipeline Refresh (id=b9aae732eaa064b61a55bb077e9be23f): Total: 0.032 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: b1136b82a07a34addbbac35f2b09cf28 - Path: Assets/Art/Materials/Azure.mat' with importer (NativeFormatImporter)
+Imported 'GUID: b1136b82a07a34addbbac35f2b09cf28' -> (Import Result ID: 'b163cb1c3fd8cd15da479f05858bc881') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=aeea71546e5f335596dfc7b3fa3107fc DependenciesID=9ae4145865e794ec70dada988eda8de9 StaticDependenciesID=e95a0a75c1dcaa867f59e90ea349fd5a 
+Importing 'GUID: 05e0052b4e2784f909afc5d9b5dc4888 - Path: Assets/Art/Materials/Ivory.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 05e0052b4e2784f909afc5d9b5dc4888' -> (Import Result ID: '02f774c1b04f9b10e2e0d85dbe8a568b') in 0.000 seconds [static dependencies only]. Details - ImportResultOutputID=6502896895abc9454f7b2cfbab3b248b DependenciesID=0bf08c264efd82f16ec4f3e412ac4dc7 StaticDependenciesID=5602931588607469a3d94312f9560786 
+Importing 'GUID: b5f4f1c0e4b054382912503885bfe635 - Path: Assets/Art/Materials/Jade.mat' with importer (NativeFormatImporter)
+Imported 'GUID: b5f4f1c0e4b054382912503885bfe635' -> (Import Result ID: 'e5eacb92289c97c91dd8a9a0b607b78b') in 0.000 seconds [static dependencies only]. Details - ImportResultOutputID=5d7b50c6c2178291c007f69a1b33005f DependenciesID=52586e81dc1b96fb5ad417b86858621b StaticDependenciesID=46f445e9fab39ce4c4ff93830394b308 
+Importing 'GUID: 4737d8222f8c84d148438f8dcd64ade1 - Path: Assets/Art/Materials/Ruby.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 4737d8222f8c84d148438f8dcd64ade1' -> (Import Result ID: '9a2eb1eb6b226b3d4547a30ee5c9dea1') in 0.000 seconds [static dependencies only]. Details - ImportResultOutputID=eea2076c1ca5ab8d12676449057b2455 DependenciesID=4dbf0ecc1208a07413d8246cc0c7fe42 StaticDependenciesID=4d44f362951a1837b61f4fa9c0d51f2a 
+Importing 'GUID: 5884c59d16cd0479292932f324c7f5f3 - Path: Assets/Art/Materials/Token.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 5884c59d16cd0479292932f324c7f5f3' -> (Import Result ID: '3d112299c60bdea384dbcf189d866bfd') in 0.000 seconds [static dependencies only]. Details - ImportResultOutputID=3c8a073fa86116600d6eead4d7b3c96d DependenciesID=8ac678e5c3ee770f2e02ddd9f5a4b4b9 StaticDependenciesID=4160d9a2784e6c69628a052a5af29ea4 
+Importing 'GUID: 1956ad9d6a0fc474b9cb1e20042b3e30 - Path: Assets/Art/Materials/TokenDark.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 1956ad9d6a0fc474b9cb1e20042b3e30' -> (Import Result ID: '70b11678732c1120967d2606eab5a8dc') in 0.000 seconds [static dependencies only]. Details - ImportResultOutputID=288128cce17bf6603d71579cab581451 DependenciesID=985222a4c47c32fcb49d90dbbcb4b9ae StaticDependenciesID=1dcdcf105978523b0fef4cb57d0c46a1 
+Importing 'GUID: 0adf5e8cd67204935b5497ef765319c9 - Path: Assets/Art/Materials/SafeMarker.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 0adf5e8cd67204935b5497ef765319c9' -> (Import Result ID: '58b9981b8e51f250ec0265ac07e6d224') in 0.000 seconds [static dependencies only]. Details - ImportResultOutputID=b6f7880375d459bb74fbbc65d7eb02d7 DependenciesID=7f8ab8efa9a37f8c2dbb85efbdab3984 StaticDependenciesID=d2cfe998d5b94249a064c2fe62df1252 
+Importing 'GUID: 7ba30e1f7d967450d9ef719884b4bd03 - Path: Assets/Art/Materials/Board.mat' with importer (NativeFormatImporter)
+Imported 'GUID: 7ba30e1f7d967450d9ef719884b4bd03' -> (Import Result ID: '89f33e6bc5a0fa228426ddbb78538bd1') in 0.000 seconds [static dependencies only]. Details - ImportResultOutputID=23a277e738f2c15810614ac28751f4d6 DependenciesID=a24a7ff0743b4e6c9d163681e0e063bc StaticDependenciesID=95cf58fa01b12ebc4c468f79a57ecac3 
+Importing 'GUID: eb9d2aad4384f4fb588dde698f673fb6 - Path: Assets/Art/Materials/Sun.mat' with importer (NativeFormatImporter)
+Imported 'GUID: eb9d2aad4384f4fb588dde698f673fb6' -> (Import Result ID: '2ef9abf2738b87f93959a918edf26eb0') in 0.000 seconds [static dependencies only]. Details - ImportResultOutputID=bfb1597e8201b2b21de4900d28e7eb6c DependenciesID=b6245dbd9315a7cdbffd26465cb9bffb StaticDependenciesID=932e471204de9f73ce404a2fafcea0fa 
+Importing 'GUID: 9185cb192ec834f28b38575fd197c57c - Path: Assets/Art/UI/LudoCircle.asset' with importer (NativeFormatImporter)
+Imported 'GUID: 9185cb192ec834f28b38575fd197c57c' -> (Import Result ID: '31234ae2a8d9f8bcfa1a2e288b195497') in 0.000 seconds [static dependencies only]. Details - ImportResultOutputID=9c962889300fe29bccd28b16e774b118 DependenciesID=437f79408dc809804555d656eb971855 StaticDependenciesID=3047ed9a72aecebf1d6c3776f886704d 
+Asset Pipeline Refresh (id=f48be1378faae4144ab46ad4796f1669): Total: 0.037 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+PlayerSettings.applicationIdentifier only changes the identifier for the currently active platform. Please use SetApplicationIdentifier to set it for any platform
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace () (at /Users/bokken/build/output/unity/unity/Runtime/Export/Scripting/StackTrace.cs:23)
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogWarning (object)
+UnityEditor.PlayerSettings:set_applicationIdentifier (string) (at /Users/bokken/build/output/unity/unity/Editor/Mono/PlayerSettings.bindings.cs:1600)
+W3Dev.Ludo.Editor.LudoSceneProject:ConfigureProject (string) (at Assets/Editor/LudoSceneProject.cs:43)
+W3Dev.Ludo.Editor.LudoSceneBuilder:BuildScene () (at Assets/Editor/LudoSceneBuilder.cs:33)
+
+(Filename: /Users/bokken/build/output/unity/unity/Editor/Mono/PlayerSettings.bindings.cs Line: 1600)
+
+Importing 'GUID: 00000000000000004000000000000000 - Path: ProjectSettings/ProjectSettings.asset' with importer (LibraryAssetImporter)
+Imported 'GUID: 00000000000000004000000000000000' -> (Import Result ID: '4f4e245336d6349213035ee602902ab2') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=054c890a8f4b6dddbea933bc5e4b7df4 DependenciesID=e79efafa3c839c33a83845dc2eb1323c StaticDependenciesID=9cc33f71aaa1042c42550edd3aa6f112 
+Asset Pipeline Refresh (id=cf6a948208d07456198f3431267ece42): Total: 0.010 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Importing 'GUID: 03751fd02ff934af3991aa86842f1560 - Path: Assets/Scenes/LudoBoard.unity' with importer (DefaultImporter)
+Imported 'GUID: 03751fd02ff934af3991aa86842f1560' -> (Import Result ID: '48ccab2c9142d7258cd65497cb7e9baf') in 0.001 seconds [static dependencies only]. Details - ImportResultOutputID=3fce10b4d9e703ba396028987fa3c34b DependenciesID=a76f664684591be70cdb4f75653fda97 StaticDependenciesID=20fb25e19dcd2cd36ba450dae245e157 
+Asset Pipeline Refresh (id=70501f6bf92bb40a5bf9767d15103ff6): Total: 0.028 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Asset Pipeline Refresh (id=1c1305f9871154789a4d4551a92c4c33): Total: 0.298 seconds - Initiated by RefreshV2(NoUpdateAssetOptions)
+Thread 0xc77d9b000 may have been prematurely finalized
+Batchmode quit successfully invoked - shutting down!
+Pipeline Server stopped
+Thread 0xc783c7000 may have been prematurely finalized
+Killing ADB server in 0.09328 seconds.
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+Shutting down MSBuild server...
+Shutting down VB/C# compiler server...
+VB/C# compiler server shut down successfully.
+MSBuild server shut down successfully.
+Thread 0x170377000 may have been prematurely finalized
+Thread 0x17048f000 may have been prematurely finalized
+Thread 0x170633000 may have been prematurely finalized
+Thread 0x170403000 may have been prematurely finalized
+Thread 0x17074b000 may have been prematurely finalized
+Thread 0x1706bf000 may have been prematurely finalized
+Thread 0x1705a7000 may have been prematurely finalized
+Thread 0x17051b000 may have been prematurely finalized
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+[Licensing::IpcConnector] LicenseClient-ashutosh-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-ashutosh channel disconnected successfully.
+Shut down UDS service system complete
+Lingering sessions upon destruction of worker manager
+Unity Data Store service was successfully shut down
+UDS shutting down local client system
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+CodeReloadManager destroyed
+debugger-agent: Unable to listen on 43
+Exiting batchmode successfully now!
+[ExitDontLaunchBugReporter] Exiting without the bug reporter. Application will exit with return code 0
+[Package Manager] Server process was shutdown
