@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 03-client-scaffold
-status: pending
+status: complete
 commit_scope: ludo
 depends_on: [15-ludo-launch/02-rules-bots-fixtures]
 estimate: L
@@ -72,15 +72,15 @@ later task to fill in.
 
 ## Implementation Checklist
 
-- [ ] Create `apps-native/games/ludo/pubspec.yaml` per the shape above.
-- [ ] Create `lib/main.dart`, `lib/src/app.dart` with a minimal
+- [x] Create `apps-native/games/ludo/pubspec.yaml` per the shape above.
+- [x] Create `lib/main.dart`, `lib/src/app.dart` with a minimal
   `MaterialApp`/Flame `GameWidget` root showing a placeholder home screen
   (real screens are tasks 14-16).
-- [ ] Create `lib/src/assets/ludo_art_manifest.dart` with every named slot
+- [x] Create `lib/src/assets/ludo_art_manifest.dart` with every named slot
   listed above, each initially pointing at a `TODO(task-12)`/
   `TODO(task-13)` placeholder implementation that still compiles (e.g. a
   solid-color `CustomPainter` stub for visuals, a silent no-op for audio).
-- [ ] Create `apps-native/games/ludo/content/manifest.json` (the default
+- [x] Create `apps-native/games/ludo/content/manifest.json` (the default
   manifest path/shape from `scripts/games/content.ts`'s `manifestSpec()` —
   `ludo` is not `meme_court`/`snapquest`, so `relativePath` is
   `content/manifest.json` and `appIdRequired` is `true`) with `app_id:
@@ -93,7 +93,7 @@ later task to fill in.
   `customer_export`, `exif`, `ocr`, matched case/underscore-insensitively) —
   `validateContent()` also requires at least one JSON file under
   `content/`/`assets/content/`, which the manifest itself satisfies.
-- [ ] Generate `android/` (and `ios/`) native projects via the documented
+- [x] Generate `android/` (and `ios/`) native projects via the documented
   `games:native`/`games:xcodegen` bootstrap, with application id
   `app.w3dev.ludo` / debug suffix `.debug`. This must satisfy
   `scripts/games/config.ts`'s `validateNativeIds()`: `android/app/
@@ -113,13 +113,13 @@ later task to fill in.
   `NSCameraUsageDescription`) that isn't in the registry's enabled
   capabilities/permissions for `ludo` — see
   `scripts/games/config.ts`'s `validateOptionalNativeAccess()`.
-- [ ] Add `test/widget_test.dart` asserting the app boots and renders the
+- [x] Add `test/widget_test.dart` asserting the app boots and renders the
   placeholder home screen with no Firebase/network dependency.
-- [ ] Re-run `games:codegen` after any registry tweak from this task so
+- [x] Re-run `games:codegen` after any registry tweak from this task so
   `apps-native/games/ludo/game.config.json` is not stale (`scripts/games/
   config.ts`'s `validateGameConfigs()` byte-compares it against
   `configForGame()`'s current output).
-- [ ] Confirm `bun run games:list` and `bun run games:doctor` recognize the
+- [x] Confirm `bun run games:list` and `bun run games:doctor` recognize the
   new app's toolchain requirements with no missing-file errors.
 
 ## Files Touched

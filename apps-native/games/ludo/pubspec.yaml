@@ -9,10 +9,12 @@ environment:
   flutter: ">=3.47.3"
 
 dependencies:
+  flame: 1.38.2
   flutter:
     sdk: flutter
   ludo_rules:
     path: ../packages/ludo_rules
+  path_provider: ^2.1.5
   platform_core:
     path: ../packages/platform_core
 
@@ -23,3 +25,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/
+    - content/

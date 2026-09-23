@@ -1,0 +1,1 @@
+Runtime art and audio for Ludo belong in this app-owned directory. The rules package (`ludo_rules`) stays asset-free so it can be reused by validators and content tools. Slot names for every planned asset live in `lib/src/assets/ludo_art_manifest.dart`; this directory is where a later, human-reviewed art/audio session drops the matching files.
