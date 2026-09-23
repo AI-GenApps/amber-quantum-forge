@@ -1,192 +1,230 @@
 import 'dart:async';
 
-import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:merge_rules/merge_rules.dart';
 import 'package:platform_core/platform_core.dart';
 
-import 'merge_relay_board_art.dart';
+import 'merge_relay_content.dart';
+import 'merge_relay_game.dart';
+import 'merge_relay_relay_controller.dart';
+import 'merge_relay_theme.dart';
 import 'merge_relay_ui.dart';
+import 'platform/merge_relay_challenge_links.dart';
+import 'platform/merge_relay_pgs_account.dart';
+import 'platform/merge_relay_play_games.dart';
+
+export 'merge_relay_game.dart';
 
 final mergeRelayIdentity = appIdentityFor(
   'merge_relay',
-  subtitle: 'Merge tiles. Challenge friends',
+  subtitle: 'Merge tiles. Light the board',
 );
 
 final class MergeRelayApp extends StatefulWidget {
-  const MergeRelayApp({this.saveStore, super.key});
+  const MergeRelayApp({
+    this.content,
+    this.contentError,
+    this.saveStore,
+    this.relayController,
+    this.challengeLinks,
+    this.pgsAccount,
+    this.playGames,
+    super.key,
+  });
 
+  final MergeRelayContentCatalog? content;
+  final String? contentError;
   final SaveStore? saveStore;
+  final MergeRelayRelayController? relayController;
+  final MergeRelayChallengeLinkSource? challengeLinks;
+  final MergeRelayPgsAccountController? pgsAccount;
+  final MergeRelayPlayGamesProvider? playGames;
 
   @override
   State<MergeRelayApp> createState() => _MergeRelayAppState();
 }
 
-final class _MergeRelayAppState extends State<MergeRelayApp> {
+final class _MergeRelayAppState extends State<MergeRelayApp>
+    with WidgetsBindingObserver {
   late final MergeRelayGame game;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     game = MergeRelayGame(
       context: runtimeAppContext(identity: mergeRelayIdentity),
       saveStore: widget.saveStore ?? MemorySaveStore(),
+      content: widget.content,
+      relayController: widget.relayController,
+      pgsAccount: widget.pgsAccount,
+      playGames: widget.playGames,
     );
-    unawaited(game.restore());
+    if (widget.contentError != null) return;
+    game.hydrated.addListener(_onRestoreStateChanged);
+    game.restoreFailed.addListener(_onRestoreStateChanged);
+    final restore = game.restore();
+    _restoreReady = restore;
+    if (widget.relayController == null) {
+      unawaited(restore);
+    } else {
+      _challengeLinks =
+          widget.challengeLinks ?? MethodChannelMergeRelayChallengeLinkSource();
+      _linkSubscription = _challengeLinks!.links.listen(
+        (link) => unawaited(_enqueueIncomingLink(link)),
+      );
+      unawaited(_initializeIncomingLinks(restore));
+    }
+  }
+
+  MergeRelayChallengeLinkSource? _challengeLinks;
+  StreamSubscription<String>? _linkSubscription;
+  late Future<void> _restoreReady;
+  Future<void> _incomingTail = Future<void>.value();
+  final List<String> _pendingIncomingLinks = [];
+  bool _disposed = false;
+
+  Future<void> _initializeIncomingLinks(Future<void> restore) async {
+    List<String> pending;
+    try {
+      pending = await _challengeLinks!.initialize();
+    } on Object {
+      return;
+    }
+    _pendingIncomingLinks.addAll(pending);
+    await restore;
+    await _drainIncomingLinks();
+  }
+
+  Future<void> _enqueueIncomingLink(String link) {
+    _pendingIncomingLinks.add(link);
+    return _drainIncomingLinks();
+  }
+
+  Future<void> _drainIncomingLinks() {
+    final prior = _incomingTail.catchError((_) {});
+    _incomingTail = prior.then<void>((_) async {
+      await _restoreReady;
+      while (_pendingIncomingLinks.isNotEmpty &&
+          !_disposed &&
+          game.hydrated.value &&
+          !game.restoreFailed.value) {
+        final link = _pendingIncomingLinks.first;
+        await _openIncomingLink(link);
+        if (_disposed || !game.hydrated.value || game.restoreFailed.value) {
+          return;
+        }
+        _pendingIncomingLinks.removeAt(0);
+      }
+    });
+    return _incomingTail;
+  }
+
+  void _onRestoreStateChanged() {
+    if (game.hydrated.value && !game.restoreFailed.value) {
+      unawaited(_drainIncomingLinks());
+    }
+  }
+
+  Future<void> _openIncomingLink(String link) async {
+    if (_disposed || widget.relayController == null) return;
+    if (!game.hydrated.value || game.restoreFailed.value) return;
+    game.openRelay();
+    await widget.relayController!.bootstrap();
+    if (!_disposed) await widget.relayController!.openLink(link);
   }
 
   @override
   void dispose() {
+    _disposed = true;
+    game.hydrated.removeListener(_onRestoreStateChanged);
+    game.restoreFailed.removeListener(_onRestoreStateChanged);
+    _linkSubscription?.cancel();
+    _challengeLinks?.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     game.dispose();
+    widget.relayController?.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    game.handleLifecycleState(state);
+    if (state != AppLifecycleState.resumed) {
+      widget.relayController?.pauseReplay();
+    }
+    if (state == AppLifecycleState.resumed &&
+        widget.relayController != null &&
+        game.hydrated.value &&
+        !game.restoreFailed.value) {
+      unawaited(widget.relayController!.retry());
+    }
+    if (state == AppLifecycleState.resumed) {
+      unawaited(game.refreshPgsAccount());
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: mergeRelayIdentity.publicTitle,
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true),
-      home: MergeRelayScreen(game: game),
+    if (widget.contentError != null) {
+      return MaterialApp(
+        title: mergeRelayIdentity.publicTitle,
+        debugShowCheckedModeBanner: false,
+        theme: materialThemeFor(signalRelayTheme),
+        home: _MergeRelayContentFailure(message: widget.contentError!),
+      );
+    }
+    return ListenableBuilder(
+      listenable: game.preferences,
+      builder: (context, _) {
+        final relayTheme = relayThemeFor(game.preferences.value.themeId);
+        return MaterialApp(
+          title: mergeRelayIdentity.publicTitle,
+          debugShowCheckedModeBanner: false,
+          theme: materialThemeFor(relayTheme),
+          home: MergeRelayScreen(game: game),
+        );
+      },
     );
   }
 }
 
-final class MergeRelayGame extends FlameGame {
-  MergeRelayGame({required this.context, required this.saveStore})
-    : state = ValueNotifier(MergeGameState.newGame(seed: 0x4d52)),
-      clock = const SystemClock(),
-      feedback = ValueNotifier(null);
+final class _MergeRelayContentFailure extends StatelessWidget {
+  const _MergeRelayContentFailure({required this.message});
 
-  final AppContext context;
-  final ValueNotifier<MergeGameState> state;
-  final MergeRules rules = const MergeRules();
-  final SaveStore saveStore;
-  final Clock clock;
-  final MemoryTelemetrySink telemetrySink = MemoryTelemetrySink();
-  final ValueNotifier<bool> hydrated = ValueNotifier(false);
-  final ValueNotifier<String?> persistenceMessage = ValueNotifier(null);
-  final ValueNotifier<String?> feedback;
-  Timer? _feedbackTimer;
-  bool _disposed = false;
-
-  Future<void> restore() async {
-    try {
-      final envelope = await saveStore.read(context);
-      if (_disposed) return;
-      if (envelope != null) {
-        if (envelope.schemaVersion != 1) {
-          throw const FormatException('Unsupported merge save schema');
-        }
-        final restored = MergeGameState.fromJson(envelope.payload);
-        if (restored.ruleVersion != mergeRuleVersion) {
-          throw const FormatException('Unsupported merge rule version');
-        }
-        state.value = restored;
-      }
-    } catch (_) {
-      if (!_disposed) {
-        persistenceMessage.value = 'This relay needs a fresh start.';
-      }
-    } finally {
-      if (!_disposed) hydrated.value = true;
-    }
-  }
-
-  void move(MergeDirection direction) {
-    if (_disposed || !hydrated.value) return;
-    final result = rules.apply(state.value, direction);
-    if (!result.changed) {
-      telemetry.record('merge_move_ignored', fields: {'reason': result.reason});
-      _announce(
-        result.reason == 'terminal'
-            ? 'No moves left. Start a new relay.'
-            : 'That lane is blocked.',
-      );
-      return;
-    }
-    state.value = result.state;
-    _announce(
-      result.scoreDelta > 0
-          ? 'Merged for ${result.scoreDelta} points.'
-          : 'Relay moved.',
-    );
-    telemetry.record(
-      'merge_move_completed',
-      fields: {
-        'move_count': result.state.moveCount,
-        'score_delta': result.scoreDelta,
-        'rng_draws': result.rngDraws,
-      },
-    );
-    final envelope = SaveEnvelope.create(
-      context: context,
-      schemaVersion: 1,
-      savedAt: clock.now(),
-      payload: result.state.toJson(),
-    );
-    unawaited(_write(envelope));
-  }
-
-  void newRound() {
-    if (_disposed || !hydrated.value) return;
-    final nextSeed = state.value.seed == 0x4d52 ? 0x4d53 : 0x4d52;
-    state.value = MergeGameState.newGame(seed: nextSeed);
-    _announce('Fresh board ready.');
-    final envelope = SaveEnvelope.create(
-      context: context,
-      schemaVersion: 1,
-      savedAt: clock.now(),
-      payload: state.value.toJson(),
-    );
-    unawaited(_write(envelope));
-  }
-
-  Future<void> _write(SaveEnvelope envelope) async {
-    try {
-      await saveStore.write(context, envelope);
-    } catch (_) {
-      if (!_disposed) persistenceMessage.value = "Couldn't save the board.";
-    }
-  }
-
-  void _announce(String message) {
-    if (_disposed) return;
-    _feedbackTimer?.cancel();
-    feedback.value = message;
-    _feedbackTimer = Timer(const Duration(milliseconds: 1600), () {
-      if (!_disposed) feedback.value = null;
-    });
-  }
-
-  TelemetryRecorder get telemetry =>
-      TelemetryRecorder(context: context, clock: clock, sink: telemetrySink);
+  final String message;
 
   @override
-  void dispose() {
-    _disposeResources();
-    super.dispose();
-  }
-
-  @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-    MergeRelayBoardArt.paint(canvas, state.value.board, size: size.toSize());
-  }
-
-  @override
-  void onRemove() {
-    _disposeResources();
-    super.onRemove();
-  }
-
-  void _disposeResources() {
-    if (_disposed) return;
-    _disposed = true;
-    _feedbackTimer?.cancel();
-    state.dispose();
-    hydrated.dispose();
-    persistenceMessage.dispose();
-    feedback.dispose();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(28),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.cloud_off_rounded, size: 48),
+                const SizedBox(height: 18),
+                Text(
+                  'Merge Relay needs a fresh start.',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  'Game content could not be loaded. Close and reopen the app to try again.',
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 18),
+                SelectableText(
+                  'Diagnostic: content_load_failed\n$message',
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
