@@ -67,6 +67,10 @@ checkpoints so both runtimes replay the same rules.
 | `GET /:environment/platform/google-play-games/identity` | player | none | app/environment-scoped link status; no provider ID or token |
 | `POST /:environment/platform/google-play-games/identity` | player | `server_auth_code` | verified provider mapping when external configuration exists |
 | `POST /:environment/platform/google-play-games/outbox/dispatch` | service | optional `limit` | bounded server-authorized provider delivery |
+| `GET /:environment/commerce/catalog` | player | none | fixed cosmetic catalog when the scoped runtime and feature gate are enabled |
+| `GET /:environment/commerce/entitlements` | player | none | signed-subject entitlements only |
+| `POST /:environment/commerce/google-play/purchases` | player | `product_id`, `purchase_token`, optional `client_request_id` | verified and idempotently settled purchase |
+| `POST /:environment/commerce/google-play/restore` | player | `product_id`, `purchase_token`, optional `client_request_id` | reverified entitlement restore, including authorized revocation |
 | `POST /:environment/social/report` | player | `target_subject` or `target_alias`, `reason` | moderation report record |
 | `POST /:environment/social/block` | player | `target_subject` or `target_alias`, `reason` | block record used by challenge reservation |
 | `PUT /:environment/config` | game admin | revision, weights, feature flags | new active config revision |
@@ -128,7 +132,11 @@ configured `MERGE_RELAY_PUBLIC_ORIGIN` or the trusted Vercel deployment origin.
 It does not construct a backend URL from request `Host` headers. Share links
 must carry `environment=debug` or `environment=staging` explicitly for local
 and pre-production previews; an unknown environment is rejected rather than
-silently selecting debug.
+silently selecting debug. The server-side cosmetic purchase boundary, fixed
+product ID, ProductPurchaseV2 verifier, restore semantics, and disabled live
+configuration are recorded in [the commerce boundary](merge-relay-commerce).
+The native Billing client, live product registration, RTDN requery, and
+rewarded-ad SSV remain disabled.
 
 ## Error envelope
 

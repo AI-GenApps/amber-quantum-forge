@@ -7,6 +7,7 @@ import {
   signGameToken,
 } from "../tokens";
 import { isGameEnvironment } from "../validation";
+import { createCommerceRuntimeFromEnvironment } from "./commerce-runtime";
 import {
   MERGE_RELAY_APP_ID,
   MERGE_RELAY_CONTRACT_VERSION,
@@ -19,6 +20,7 @@ import { asMergeError } from "./errors";
 import { effectiveSubject } from "./identity-service";
 import { InMemoryMergeRelayStore } from "./memory-store";
 import { createPgsRuntimeFromEnvironment } from "./pgs-runtime";
+import { registerCommerceRoutes } from "./route-commerce";
 import {
   fail,
   isPublicPath,
@@ -96,6 +98,7 @@ export function createMergeRelayRoutes(dependencies: MergeRelayRouteDependencies
   registerPublicRoutes(routes, dependencies);
   registerRelayRoutes(routes, dependencies);
   registerDataRoutes(routes, dependencies);
+  registerCommerceRoutes(routes, dependencies);
   registerPlatformRoutes(routes, dependencies);
   routes.onError((error, c) => {
     const mapped = asMergeError(error);
@@ -115,6 +118,7 @@ export function createConfiguredMergeRelayRoutes(): MergeRoutes {
     clock: systemMergeRelayClock,
     rewardProvider: null,
     pgsRuntimeForEnvironment: createPgsRuntimeFromEnvironment,
+    commerceRuntimeForEnvironment: createCommerceRuntimeFromEnvironment,
     tokenVerifier: new EnvironmentGameTokenVerifier(),
     issueGuestToken: issueConfiguredGuestToken,
   });
