@@ -80,16 +80,45 @@ later task to fill in.
   listed above, each initially pointing at a `TODO(task-12)`/
   `TODO(task-13)` placeholder implementation that still compiles (e.g. a
   solid-color `CustomPainter` stub for visuals, a silent no-op for audio).
-- [ ] Create `assets/` and `content/` directories with a `.gitkeep` or a
-  minimal manifest file, matching `merge_relay/assets/branding`'s presence
-  pattern.
+- [ ] Create `apps-native/games/ludo/content/manifest.json` (the default
+  manifest path/shape from `scripts/games/content.ts`'s `manifestSpec()` —
+  `ludo` is not `meme_court`/`snapquest`, so `relativePath` is
+  `content/manifest.json` and `appIdRequired` is `true`) with `app_id:
+  "ludo"`, `public_title` matching the registry's `publicTitle`, and a valid
+  version field (one of `content_version`/`rule_version`/`version`/
+  `schema_version`, matching `^[a-z0-9][a-z0-9._-]*$` if a string). Ensure no
+  JSON file under `content/` or `assets/content/` contains any of the
+  blocked keys in `scripts/games/content.ts`'s `forbiddenKeys`
+  (`raw_photo`, `photo_bytes`, `image_bytes`, `caption_text`,
+  `customer_export`, `exif`, `ocr`, matched case/underscore-insensitively) —
+  `validateContent()` also requires at least one JSON file under
+  `content/`/`assets/content/`, which the manifest itself satisfies.
 - [ ] Generate `android/` (and `ios/`) native projects via the documented
   `games:native`/`games:xcodegen` bootstrap, with application id
-  `app.w3dev.ludo` / debug suffix `.debug`.
+  `app.w3dev.ludo` / debug suffix `.debug`. This must satisfy
+  `scripts/games/config.ts`'s `validateNativeIds()`: `android/app/
+  build.gradle.kts` declares `applicationId = "app.w3dev.ludo"` and exactly
+  two literal `applicationIdSuffix = ".debug"` assignments guarded by `if
+  (gameEnvironment == "debug")` (mirror `pocket_biome`'s
+  `build.gradle.kts`, not `merge_relay`'s customized one); `android/app/
+  src/main/kotlin/app/w3dev/ludo/MainActivity.kt` exists and declares
+  `package app.w3dev.ludo`; `ios/Flutter/Debug.xcconfig` contains
+  `PRODUCT_BUNDLE_IDENTIFIER = app.w3dev.ludo.debug` and `ios/Flutter/
+  Release.xcconfig` contains `PRODUCT_BUNDLE_IDENTIFIER = app.w3dev.ludo`.
+  Do not bundle any optional dependency
+  (`camera`/`google_ml_kit`/`image_picker`/`permission_handler`/
+  `purchases_flutter`/`in_app_purchase`/`google_mobile_ads`/
+  `firebase_messaging`/`flutter_local_notifications`/`share_plus`) or
+  declare any permission (e.g. `android.permission.CAMERA`/
+  `NSCameraUsageDescription`) that isn't in the registry's enabled
+  capabilities/permissions for `ludo` — see
+  `scripts/games/config.ts`'s `validateOptionalNativeAccess()`.
 - [ ] Add `test/widget_test.dart` asserting the app boots and renders the
   placeholder home screen with no Firebase/network dependency.
-- [ ] Update `apps-native/games/ludo/game.config.json` generation inputs if
-  `games:codegen` needs re-running after any registry tweak from this task.
+- [ ] Re-run `games:codegen` after any registry tweak from this task so
+  `apps-native/games/ludo/game.config.json` is not stale (`scripts/games/
+  config.ts`'s `validateGameConfigs()` byte-compares it against
+  `configForGame()`'s current output).
 - [ ] Confirm `bun run games:list` and `bun run games:doctor` recognize the
   new app's toolchain requirements with no missing-file errors.
 
@@ -116,6 +145,9 @@ later task to fill in.
   references elsewhere in `lib/` (nothing references an asset string not
   present in the manifest).
 - No emulator/simulator was booted to produce this evidence.
+- `bun run games:validate -- --strict` passes with zero `ludo`-related
+  errors (content manifest, native Android/iOS identity, and generated
+  config checks all satisfied per the Implementation Checklist above).
 
 ## Verification Commands
 

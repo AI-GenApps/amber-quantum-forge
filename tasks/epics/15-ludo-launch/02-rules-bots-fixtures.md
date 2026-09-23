@@ -103,7 +103,15 @@ The `apps-native/games/ludo` client app is not scaffolded yet (that's task
   against every existing package directory including `ludo_rules`)
 - `cd apps-native/games/packages/ludo_rules && dart test` (equivalently,
   `bun run games:test` with no `--app` flag)
-- `bun run games:validate -- --strict`
+
+`bun run games:validate` (strict or not) fails for `ludo` until task 03 lands the
+client's native scaffold and content manifest — `scripts/games/content.ts`'s
+`validateContent()` checks every registered game's content manifest
+unconditionally, and `scripts/games/config.ts`'s `validateGameConfigs()` calls
+`validateNativeIds()` unconditionally for every game with a generated
+`game.config.json` (which `ludo` already has, from task 00), checking its
+`android/`/`ios/` native projects. Neither is scoped to this task; full
+`games:validate -- --strict` coverage starts at task 03.
 
 ## Out of Scope
 
