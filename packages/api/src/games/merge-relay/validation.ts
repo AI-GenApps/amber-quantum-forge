@@ -15,6 +15,7 @@ import {
   MERGE_RELAY_RULE_VERSION,
   MERGE_RELAY_SAVE_SCHEMA_VERSION,
 } from "./contracts";
+import { isCanonicalJsonValue } from "./fingerprint";
 
 const MERGE_MAX_ALIAS_LENGTH = 40;
 export const MERGE_MAX_PAYLOAD_BYTES = 32 * 1024;
@@ -217,12 +218,19 @@ export function parseSave(value: unknown): SaveRequest | null {
     expectedVersion < 0 ||
     schemaVersion === null ||
     schemaVersion !== MERGE_RELAY_SAVE_SCHEMA_VERSION ||
-    !isObject(value.payload)
+    !isObject(value.payload) ||
+    !isCanonicalJsonValue(value.payload)
   )
     return null;
+  if (value.client_write_id !== undefined && !isIdempotencyKey(value.client_write_id)) return null;
   if (Buffer.byteLength(JSON.stringify(value.payload), "utf8") > MERGE_MAX_PAYLOAD_BYTES)
     return null;
-  return { expectedVersion, schemaVersion, payload: value.payload };
+  return {
+    expectedVersion,
+    schemaVersion,
+    payload: value.payload,
+    clientWriteId: value.client_write_id,
+  };
 }
 
 export function parseGuestRecovery(value: unknown): GuestRecoveryRequest | null {

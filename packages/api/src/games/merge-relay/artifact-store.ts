@@ -18,6 +18,9 @@ export const mergeRelayPlatformRecordTypes = [
   "pgs_identity",
   "pgs_credential",
   "pgs_outbox",
+  "save_write_receipt",
+  "commerce_purchase",
+  "commerce_entitlement",
 ] as const;
 
 export type MergeRelayRecordType =

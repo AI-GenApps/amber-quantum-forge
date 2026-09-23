@@ -112,6 +112,12 @@ export async function upgradeGuest(
       );
     if (matches.length > 1)
       throw new MergeRelayError(503, "guest_recovery_ambiguous", "Guest recovery is ambiguous");
+    if (!guest.upgradedSubject && guest.subject === session.subject)
+      throw new MergeRelayError(
+        409,
+        "guest_self_upgrade",
+        "A guest identity cannot be upgraded to itself",
+      );
     if (guest.upgradedSubject && guest.upgradedSubject !== session.subject)
       throw new MergeRelayError(
         409,

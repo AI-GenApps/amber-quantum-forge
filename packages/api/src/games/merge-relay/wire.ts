@@ -11,6 +11,7 @@ import type {
   MergeSocialRecord,
   PublicChallenge,
 } from "./contracts";
+import type { MergeSaveWriteReceipt } from "./save-contracts";
 
 export interface WireCheckpoint {
   board: number[];
@@ -106,8 +107,31 @@ export function saveToWire(value: MergeSave) {
     schema_version: value.schemaVersion,
     version: value.version,
     payload: value.payload,
+    ...(value.payloadFingerprint === undefined
+      ? {}
+      : { payload_fingerprint: value.payloadFingerprint }),
     updated_at: value.updatedAt,
   };
+}
+
+export function saveReceiptToWire(value: MergeSaveWriteReceipt | null, replayed: boolean) {
+  return value === null
+    ? {
+        client_write_id: null,
+        save_id: null,
+        payload_fingerprint: null,
+        saved_version: null,
+        event_id: null,
+        replayed,
+      }
+    : {
+        client_write_id: value.clientWriteId,
+        save_id: value.saveId,
+        payload_fingerprint: value.payloadFingerprint,
+        saved_version: value.savedVersion,
+        event_id: value.eventId,
+        replayed,
+      };
 }
 
 export function dailyToWire(value: MergeDailyChallenge) {

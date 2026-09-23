@@ -3,6 +3,7 @@ import {
   type MergeRelayArtifactFilter,
   type MergeRelayArtifactPage,
   type MergeRelayArtifactTransaction,
+  mergeRelayRecordTypes,
   validateArtifactPageLimit,
 } from "./artifact-store";
 import type { MergeEnvironment, MergeRelayState } from "./contracts";
@@ -123,7 +124,10 @@ export class DrizzleMergeRelayStore implements MergeRelayStore {
   ): Promise<void> {
     const afterRows = rowsForState(environment, state);
     const afterKeys = new Set(afterRows.map((row) => rowKey(row.recordType, row.recordId)));
-    for (const row of beforeRows) {
+    const managedRows = beforeRows.filter((row) =>
+      (mergeRelayRecordTypes as readonly string[]).includes(row.recordType),
+    );
+    for (const row of managedRows) {
       if (!afterKeys.has(rowKey(row.recordType, row.recordId)))
         await transaction
           .delete(mergeRelayRecords)

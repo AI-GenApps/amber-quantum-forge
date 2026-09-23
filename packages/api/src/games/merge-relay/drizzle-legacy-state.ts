@@ -1,3 +1,4 @@
+import { mergeRelayPlatformRecordTypes } from "./artifact-store";
 import type {
   MergeAlias,
   MergeAttempt,
@@ -32,7 +33,13 @@ const recordTypes = [
 type RecordType = (typeof recordTypes)[number];
 
 export function fromRows(rows: Array<{ recordType: string; payload: unknown }>): MergeRelayState {
-  if (rows.some((candidate) => !recordTypes.includes(candidate.recordType as RecordType)))
+  if (
+    rows.some(
+      (candidate) =>
+        !recordTypes.includes(candidate.recordType as RecordType) &&
+        !(mergeRelayPlatformRecordTypes as readonly string[]).includes(candidate.recordType),
+    )
+  )
     throw new MergeRelayStorageError("Merge Relay contains an unknown record type");
   const state = emptyMergeRelayState();
   state.challenges = rows

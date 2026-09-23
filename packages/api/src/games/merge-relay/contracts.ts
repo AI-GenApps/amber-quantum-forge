@@ -109,9 +109,9 @@ export interface MergeSave {
   schemaVersion: number;
   version: number;
   payload: JsonObject;
+  payloadFingerprint?: string;
   updatedAt: string;
 }
-
 export interface MergeGuest {
   guestId: string;
   subject: string;
@@ -232,8 +232,8 @@ export interface SaveRequest {
   expectedVersion: number;
   schemaVersion: number;
   payload: JsonObject;
+  clientWriteId?: string;
 }
-
 export interface GuestRecoveryRequest {
   recoveryToken: string;
 }

@@ -20,6 +20,7 @@ import {
   parsePgsIdentityArtifact,
   parsePgsOutboxArtifact,
 } from "./pgs-parsers";
+import { migrateSaveWriteReceipts } from "./save-receipt-migration";
 
 export async function saveIdsForSubject(
   transaction: MergeRelayArtifactTransaction,
@@ -101,6 +102,7 @@ export async function migrateGuestArtifacts(
       { ownerSubject: accountSubject },
     );
   }
+  await migrateSaveWriteReceipts(transaction, guestSubject, accountSubject);
 
   const events = await listAll(
     transaction,

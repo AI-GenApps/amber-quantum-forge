@@ -46,7 +46,6 @@ export const parseRewardArtifact = (value: unknown): MergeReward =>
   parse(value, validateReward, "reward");
 export const parseAliasArtifact = (value: unknown): MergeAlias =>
   parse(value, validateAlias, "alias");
-
 function parse<T>(value: unknown, validate: (value: T) => void, kind: string): T {
   if (!asRecord(value)) throw new Error(`Merge Relay ${kind} artifact is invalid`);
   const cloned = JSON.parse(JSON.stringify(value)) as T;

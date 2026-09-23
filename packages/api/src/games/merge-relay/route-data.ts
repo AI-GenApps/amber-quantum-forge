@@ -1,7 +1,7 @@
 import {
   getSave,
   provisionInitialConfig,
-  putSave,
+  putSaveWithReceipt,
   recordEvent,
   recordSocial,
   rollbackConfig,
@@ -19,7 +19,14 @@ import {
   parseSave,
   parseSocial,
 } from "./validation";
-import { configToWire, eventToWire, rewardToWire, saveToWire, socialToWire } from "./wire";
+import {
+  configToWire,
+  eventToWire,
+  rewardToWire,
+  saveReceiptToWire,
+  saveToWire,
+  socialToWire,
+} from "./wire";
 
 export function registerDataRoutes(
   routes: MergeRoutes,
@@ -37,10 +44,16 @@ export function registerDataRoutes(
     const saveId = c.req.param("saveId");
     const input = parseSave(await readBody(c));
     if (!isSafeId(saveId) || !input) return fail(c, 422, "invalid_save", "Save payload is invalid");
+    const result = await putSaveWithReceipt(
+      dependencies,
+      c.get("environment"),
+      c.get("session"),
+      saveId,
+      input,
+    );
     return respond(c, {
-      save: saveToWire(
-        await putSave(dependencies, c.get("environment"), c.get("session"), saveId, input),
-      ),
+      save: saveToWire(result.save),
+      write_receipt: saveReceiptToWire(result.receipt, result.replayed),
     });
   });
 

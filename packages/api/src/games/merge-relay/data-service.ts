@@ -1,6 +1,5 @@
 import { createHash } from "node:crypto";
-import { parseConfigArtifact, parseEventArtifact, parseSaveArtifact } from "./artifact-parsers";
-import { artifactRecordId } from "./artifact-store";
+import { parseConfigArtifact, parseEventArtifact } from "./artifact-parsers";
 import { requirePlayer, requireRole } from "./authorization";
 import type {
   ConfigRollbackRequest,
@@ -8,9 +7,7 @@ import type {
   EventRequest,
   MergeConfigRevision,
   MergeEnvironment,
-  MergeSave,
   MergeSession,
-  SaveRequest,
 } from "./contracts";
 import { MERGE_RELAY_CONTENT_VERSION, MERGE_RELAY_RULE_VERSION } from "./contracts";
 import type { MergeRelayServiceDependencies } from "./dependencies";
@@ -18,68 +15,9 @@ import { MergeRelayError } from "./errors";
 import { requestFingerprint } from "./fingerprint";
 
 export { getDaily, provisionDaily } from "./daily-service";
-
 export { grantReward } from "./reward-service";
+export { getSave, putSave, putSaveWithReceipt } from "./save-service";
 export { recordSocial } from "./social-service";
-
-export async function getSave(
-  dependencies: MergeRelayServiceDependencies,
-  environment: MergeEnvironment,
-  session: MergeSession,
-  saveId: string,
-): Promise<MergeSave | null> {
-  requirePlayer(session);
-  const page = await dependencies.store.readArtifacts(
-    environment,
-    { recordType: "save", recordId: artifactRecordId(session.subject, saveId), limit: 1 },
-    parseSaveArtifact,
-  );
-  return page.items[0] ?? null;
-}
-
-export async function putSave(
-  dependencies: MergeRelayServiceDependencies,
-  environment: MergeEnvironment,
-  session: MergeSession,
-  saveId: string,
-  input: SaveRequest,
-): Promise<MergeSave> {
-  requirePlayer(session);
-  return dependencies.store.transactArtifacts(environment, async (transaction) => {
-    const existing = await transaction.read(
-      { recordType: "save", recordId: artifactRecordId(session.subject, saveId) },
-      parseSaveArtifact,
-    );
-    const currentVersion = existing?.version ?? 0;
-    if (input.expectedVersion !== currentVersion)
-      throw new MergeRelayError(409, "save_version_conflict", "Save changed on another device");
-    const record: MergeSave = {
-      saveId,
-      subject: session.subject,
-      schemaVersion: input.schemaVersion,
-      version: currentVersion + 1,
-      payload: clone(input.payload),
-      updatedAt: dependencies.clock.now().toISOString(),
-    };
-    await transaction.put("save", artifactRecordId(session.subject, saveId), record, {
-      ownerSubject: session.subject,
-    });
-    const event = {
-      eventId: eventIdFor(environment, session.subject, `save:${saveId}:${record.version}`),
-      idempotencyKey: `save:${session.subject}:${saveId}:${record.version}`,
-      subject: session.subject,
-      type: "checkpoint_saved",
-      artifactId: saveId,
-      payload: { version: record.version },
-      createdAt: record.updatedAt,
-    } satisfies MergeEventRecord;
-    await transaction.put("event", event.eventId, event, {
-      ownerSubject: session.subject,
-      idempotencyKey: event.idempotencyKey,
-    });
-    return record;
-  });
-}
 
 export async function getConfig(
   dependencies: MergeRelayServiceDependencies,

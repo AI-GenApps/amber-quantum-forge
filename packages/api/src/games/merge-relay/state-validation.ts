@@ -20,6 +20,7 @@ import {
   MERGE_RELAY_SCHEMA_VERSION,
 } from "./contracts";
 import { challengePayloadHash, checkpointHash, validateCheckpoint } from "./engine";
+import { requestFingerprint } from "./fingerprint";
 import { validateStateRelations } from "./state-relations";
 import {
   asRecord,
@@ -194,6 +195,10 @@ export function validateSave(value: MergeSave): void {
     value.version < 1 ||
     !asRecord(value.payload) ||
     Buffer.byteLength(JSON.stringify(value.payload), "utf8") > MERGE_MAX_PAYLOAD_BYTES ||
+    (value.payloadFingerprint !== undefined &&
+      (value.payloadFingerprint !==
+        requestFingerprint({ schemaVersion: value.schemaVersion, payload: value.payload }) ||
+        !/^[a-f0-9]{64}$/.test(value.payloadFingerprint))) ||
     !isTimestamp(value.updatedAt)
   )
     throw new Error("Merge Relay save is invalid");
