@@ -146,7 +146,10 @@ android {
             if (gameEnvironment == "staging") {
                 applicationIdSuffix = ".staging"
             } else {
-                applicationIdSuffix = ".debug${if (mergeRelayDebugPackageSuffix.isEmpty()) "" else ".$mergeRelayDebugPackageSuffix"}"
+                applicationIdSuffix = ".debug"
+                if (mergeRelayDebugPackageSuffix.isNotEmpty()) {
+                    applicationIdSuffix = ".debug.$mergeRelayDebugPackageSuffix"
+                }
             }
         }
         release {
