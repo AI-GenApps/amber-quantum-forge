@@ -129,7 +129,7 @@ function validateRuntimeFiles(root: string): string[] {
   const source = readFileSync(resolve(root, "lib/main.dart"), "utf8");
   if (!/rootBundle\.loadString\(['"]game\.config\.json['"]\)/.test(source))
     errors.push("runtime shell does not load game.config.json");
-  if (/merge_relay|pocket_biome|sixty_second_heist|meme_court|snapquest/.test(source)) {
+  if (/merge_relay|pocket_biome|sixty_second_heist|meme_court|snapquest|ludo/.test(source)) {
     errors.push("generated shell imports a registered game");
   }
   return errors;

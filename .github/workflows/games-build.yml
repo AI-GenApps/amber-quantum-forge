@@ -54,7 +54,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          case "$GAME_APP" in merge_relay|pocket_biome|sixty_second_heist|meme_court|snapquest) ;; *) echo "Invalid game app: $GAME_APP" >&2; exit 1 ;; esac
+          case "$GAME_APP" in merge_relay|pocket_biome|sixty_second_heist|meme_court|snapquest|ludo) ;; *) echo "Invalid game app: $GAME_APP" >&2; exit 1 ;; esac
           case "$GAME_PLATFORM" in android|ios) ;; *) echo "Invalid game platform: $GAME_PLATFORM" >&2; exit 1 ;; esac
           case "$GAME_ENVIRONMENT" in debug|staging|production) ;; *) echo "Invalid game environment: $GAME_ENVIRONMENT" >&2; exit 1 ;; esac
           case "$GAME_PLATFORM:$GAME_MODE" in android:debug|android:release|android:aab|ios:unsigned|ios:profile|ios:archive|ios:ipa) ;; *) echo "Invalid game build mode: $GAME_PLATFORM:$GAME_MODE" >&2; exit 1 ;; esac
@@ -118,7 +118,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          case "$GAME_APP" in merge_relay|pocket_biome|sixty_second_heist|meme_court|snapquest) ;; *) echo "Invalid game app: $GAME_APP" >&2; exit 1 ;; esac
+          case "$GAME_APP" in merge_relay|pocket_biome|sixty_second_heist|meme_court|snapquest|ludo) ;; *) echo "Invalid game app: $GAME_APP" >&2; exit 1 ;; esac
           case "$GAME_PLATFORM" in android|ios) ;; *) echo "Invalid game platform: $GAME_PLATFORM" >&2; exit 1 ;; esac
           case "$GAME_ENVIRONMENT" in debug|staging|production) ;; *) echo "Invalid game environment: $GAME_ENVIRONMENT" >&2; exit 1 ;; esac
           case "$GAME_PLATFORM:$GAME_MODE" in android:debug|android:release|android:aab|ios:unsigned|ios:profile|ios:archive|ios:ipa) ;; *) echo "Invalid game build mode: $GAME_PLATFORM:$GAME_MODE" >&2; exit 1 ;; esac

@@ -5,6 +5,11 @@ description: Phased plan for the first Unity full 3D client and sixth monorepo g
 
 # Ludo implementation plan
 
+**Superseded.** `apps-native/games/ludo` (Flutter + Flame) is the active v1
+target per `tasks/epics/15-ludo-launch/`. This Unity plan is retained as
+historical record and frozen; blockades and Rush Mode as described here are
+explicitly not carried over to the Flutter effort.
+
 Status: **Implementation in progress; Phase 1 physical visual acceptance pending.** This document adds no task status, deployment, store registration, provider selection, database migration, or production claim.
 
 Ludo is the sixth game in the monorepo and its first Unity client at `apps-native/unity/ludo/`, separate from the five-app Flutter workspace. The active Phase 1 gate is the mobile-first local flow on Samsung SM-A525F (`RZ8R32EAB7T`), Android 14, native 1080x2400; the flow scaffolding, local tutorial states, and provenance-backed visual assets are implemented, but physical build/install/capture acceptance remains open.

@@ -4,6 +4,7 @@ export const GAME_APP_IDS = [
   "sixty_second_heist",
   "meme_court",
   "snapquest",
+  "ludo",
 ] as const;
 
 export type GameAppId = (typeof GAME_APP_IDS)[number];

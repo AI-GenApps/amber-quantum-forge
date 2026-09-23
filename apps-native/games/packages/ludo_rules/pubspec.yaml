@@ -1,0 +1,6 @@
+name: ludo_rules
+description: Pure Dart Ludo board, movement, turn and dice rules engine.
+publish_to: none
+resolution: workspace
+environment:
+  sdk: ">=3.11.0 <4.0.0"

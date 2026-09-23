@@ -1,0 +1,30 @@
+{
+  "id": "ludo",
+  "canonicalName": "Ludo",
+  "publicTitle": "Ludo",
+  "environment": "debug",
+  "productionId": "app.w3dev.ludo",
+  "debugId": "app.w3dev.ludo.debug",
+  "activeId": "app.w3dev.ludo.debug",
+  "saveNamespace": "games.ludo.debug",
+  "saveSchemaVersion": 1,
+  "analyticsNamespace": "game.ludo.debug",
+  "entitlementsNamespace": "games.ludo.entitlements",
+  "rulesPackage": "apps-native/games/packages/ludo_rules",
+  "capabilities": {
+    "specified": [
+      "game_loop",
+      "guest_identity",
+      "save_sync",
+      "sharing"
+    ],
+    "implemented": [],
+    "enabled": []
+  },
+  "permissions": {
+    "specified": [],
+    "enabled": []
+  },
+  "version": "0.1.0",
+  "buildNumber": 1
+}

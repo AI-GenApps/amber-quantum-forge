@@ -125,7 +125,7 @@ jobs:
       - run: bun run games:icons:check
       - run: bun run games:test:tooling
       - run: bun run games:codegen
-      - run: git diff --exit-code -- apps-native/games/merge_relay/game.config.json apps-native/games/pocket_biome/game.config.json apps-native/games/sixty_second_heist/game.config.json apps-native/games/meme_court/game.config.json apps-native/games/snapquest/game.config.json apps-native/games/packages/platform_core/lib/src/generated/game_app_registry.dart
+      - run: git diff --exit-code -- apps-native/games/merge_relay/game.config.json apps-native/games/pocket_biome/game.config.json apps-native/games/sixty_second_heist/game.config.json apps-native/games/meme_court/game.config.json apps-native/games/snapquest/game.config.json apps-native/games/ludo/game.config.json apps-native/games/packages/platform_core/lib/src/generated/game_app_registry.dart
 
   merge_relay_backend:
     name: Merge Relay API and Next smoke

@@ -3,7 +3,8 @@ export type GameId =
   | "pocket_biome"
   | "sixty_second_heist"
   | "meme_court"
-  | "snapquest";
+  | "snapquest"
+  | "ludo";
 
 export type GameCapability =
   | "game_loop"
@@ -103,6 +104,33 @@ export function source(
       index: driveFile(indexId),
       prd: driveFile(prdId),
       validation: driveFile(validationId),
+    },
+  };
+}
+
+/**
+ * Same shape as `source()`, for games whose source material lives in this
+ * repo (docs-internal) rather than on Google Drive. `links` point at
+ * repo-relative doc paths instead of Drive URLs.
+ */
+export function internalSource(
+  folderId: string,
+  indexId: string,
+  prdId: string,
+  validationId: string,
+  links: { readonly index: string; readonly prd: string; readonly validation: string },
+) {
+  return {
+    folderId,
+    indexId,
+    prdId,
+    validationId,
+    canonicalDrivePath: null,
+    links: {
+      folder: folderId,
+      index: links.index,
+      prd: links.prd,
+      validation: links.validation,
     },
   };
 }

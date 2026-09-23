@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "app": "ludo",
+  "production_id": "app.w3dev.ludo",
+  "public_title": "Ludo",
+  "internal_slug": "ludo",
+  "retrieved_at": "2026-09-24T00:00:00Z",
+  "canonical_folder": "docs-internal/gaming",
+  "record_policy": "Ludo has no Drive-hosted PRD. Its source material is the in-repo Ludo docs listed below; the app-index and PRD keys point at existing repo documents, and the validation key points at the architecture doc written by task 28 of tasks/epics/15-ludo-launch.",
+  "records": [
+    {
+      "key": "canonical-app-folder",
+      "source_type": "folder",
+      "id": "docs-internal/gaming",
+      "canonical_url": "docs-internal/gaming",
+      "status": "canonical-container",
+      "retrieved_at": "2026-09-24T00:00:00Z",
+      "sha256": null
+    },
+    {
+      "key": "index",
+      "source_type": "app-index",
+      "id": "ludo-implementation-plan",
+      "canonical_url": "docs-internal/gaming/ludo-implementation-plan.md",
+      "version": "unity-v1-superseded",
+      "status": "superseded-reference",
+      "local_cache": null,
+      "sha256": null
+    },
+    {
+      "key": "prd",
+      "source_type": "prd",
+      "id": "ludo-mobile-ui-plan",
+      "canonical_url": "docs-internal/gaming/ludo-mobile-ui-plan.md",
+      "version": "unity-v1-superseded",
+      "status": "superseded-reference",
+      "local_cache": null,
+      "sha256": null
+    },
+    {
+      "key": "validation",
+      "source_type": "validation",
+      "id": "ludo-flutter-plan",
+      "canonical_url": "docs-internal/gaming/ludo-flutter-plan.md",
+      "version": "pending",
+      "status": "planned",
+      "local_cache": null,
+      "sha256": null
+    }
+  ],
+  "revision_check": {
+    "checked_at": "2026-09-24T00:00:00Z",
+    "authority_records": [],
+    "later_approved_revision": false,
+    "evidence": "In-repo docs only; no Drive revision to check. docs-internal/gaming/ludo-flutter-plan.md is written by tasks/epics/15-ludo-launch/28 and does not exist yet."
+  }
+}

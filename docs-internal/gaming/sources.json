@@ -43,6 +43,11 @@
         "public_title": "Peeklings",
         "internal_name": "SnapQuest",
         "internal_slug": "snapquest"
+      },
+      "ludo": {
+        "app_id": "app.w3dev.ludo",
+        "public_title": "Ludo",
+        "internal_slug": "ludo"
       }
     }
   },
@@ -51,7 +56,8 @@
     "docs-internal/gaming/sources/pocket-biome.json",
     "docs-internal/gaming/sources/sixty-second-heist.json",
     "docs-internal/gaming/sources/meme-court.json",
-    "docs-internal/gaming/sources/snapquest.json"
+    "docs-internal/gaming/sources/snapquest.json",
+    "docs-internal/gaming/sources/ludo.json"
   ],
   "records": [
     {

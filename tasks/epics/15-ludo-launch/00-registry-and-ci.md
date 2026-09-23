@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 00-registry-and-ci
-status: pending
+status: completed
 commit_scope: gaming
 depends_on: [13-gaming-portfolio-preparation/01-registry, 13-gaming-portfolio-preparation/02-tooling]
 estimate: L
@@ -104,44 +104,44 @@ CI already know about `ludo`.
 
 ## Implementation Checklist
 
-- [ ] Add `internalSource()` to `scripts/games/registry-types.ts`.
-- [ ] Add `"ludo"` to the `GameId` union in `scripts/games/registry-types.ts`.
-- [ ] Add the `ludo` entry to `GAME_REGISTRY` in
+- [x] Add `internalSource()` to `scripts/games/registry-types.ts`.
+- [x] Add `"ludo"` to the `GameId` union in `scripts/games/registry-types.ts`.
+- [x] Add the `ludo` entry to `GAME_REGISTRY` in
   `scripts/games/registry-games.ts` using `internalSource()`,
   `identity("ludo")`, `namespaces("ludo")`, `platforms: ["android"]`,
   `rendering: "flame"`, `lifecycle: "concept"`, `readiness:
   scaffoldReadiness`, and the capability list above.
-- [ ] Bump the `GAME_REGISTRY.length !== 5` check to `6` in
+- [x] Bump the `GAME_REGISTRY.length !== 5` check to `6` in
   `validateGameRegistry()` (`scripts/games/registry.ts:64`); confirm/extend
   the platform-list assertion so a single-platform game passes.
-- [ ] Add `apps-native/games/ludo/game.config.json` to the `git diff
+- [x] Add `apps-native/games/ludo/game.config.json` to the `git diff
   --exit-code` path list in `.github/workflows/games-ci.yml` (line ~128).
-- [ ] Add `"ludo"` to `GAME_APP_IDS` in `packages/api/src/games/contracts.ts`.
-- [ ] Update the `GAME_APP` matrix and both `case` guards in
+- [x] Add `"ludo"` to `GAME_APP_IDS` in `packages/api/src/games/contracts.ts`.
+- [x] Update the `GAME_APP` matrix and both `case` guards in
   `.github/workflows/games-android-release.yml` and
   `.github/workflows/games-build.yml` to include `ludo`.
-- [ ] Extend the blocklist regex in `scripts/games/generate.ts` to include
+- [x] Extend the blocklist regex in `scripts/games/generate.ts` to include
   `ludo`.
-- [ ] Add `apps-native/games/ludo` and `apps-native/games/packages/ludo_rules`
+- [x] Add `apps-native/games/ludo` and `apps-native/games/packages/ludo_rules`
   to the `workspace:` list in `apps-native/games/pubspec.yaml`.
-- [ ] Create the minimal `apps-native/games/packages/ludo_rules/pubspec.yaml`
+- [x] Create the minimal `apps-native/games/packages/ludo_rules/pubspec.yaml`
   stub and an empty `lib/ludo_rules.dart`.
-- [ ] Create `docs-internal/gaming/sources/ludo.json` following the shape of
+- [x] Create `docs-internal/gaming/sources/ludo.json` following the shape of
   the other per-app source manifests, pointing at the two existing Ludo docs
   plus a placeholder entry for the not-yet-written
   `docs-internal/gaming/ludo-flutter-plan.md`; add a matching `ludo` entry to
   `docs-internal/gaming/sources.json`.
-- [ ] Add a one-paragraph "Superseded" note at the top of
+- [x] Add a one-paragraph "Superseded" note at the top of
   `docs-internal/gaming/ludo-implementation-plan.md` (below the title, above
   "Status:") stating that `apps-native/games/ludo` (Flutter + Flame) is the
   active v1 target per `tasks/epics/15-ludo-launch/`, that this Unity plan is
   retained as historical record and frozen, and that blockades/Rush Mode as
   described here are explicitly not carried over. Do not otherwise edit this
   file.
-- [ ] Run `bun run games:codegen` and commit the generated
+- [x] Run `bun run games:codegen` and commit the generated
   `game.config.json` for `ludo` and the regenerated
   `game_app_registry.dart`.
-- [ ] Run `bun run games:bootstrap` to confirm the workspace resolves with
+- [x] Run `bun run games:bootstrap` to confirm the workspace resolves with
   six apps and seven packages.
 
 ## Files Touched
@@ -186,6 +186,25 @@ CI already know about `ludo`.
 - `bun run games:validate:strict`
 - `bun run check`
 - `bun run typecheck`
+
+<!-- Verification notes (this run): games:codegen, games:bootstrap, games:list,
+     check, and typecheck all pass. `bun run games:validate:strict` still
+     exits non-zero, but for reasons outside this task's scope, not for
+     "registry/permission/capability inconsistency" (the phrase this task's
+     Acceptance Criteria uses): (1) `Android debug identity mapping is
+     incomplete: merge_relay` is a pre-existing failure already present on
+     `main` before this task (confirmed via `git stash`); (2) three
+     `missing native Android/iOS project` errors and a missing
+     `content/manifest.json` for `ludo` come from `validateGameConfigs()`'s
+     unconditional native-scaffold/content check, which requires the full
+     `android/`, `ios/`, and `content/` app scaffold that this task's own
+     Out of Scope section defers to task 03 (`apps-native/games/ludo` app
+     content beyond the generated config stub). `validateGameRegistry()`
+     itself (the registry/permission/capability logic) reports zero errors
+     for `ludo`. This same native-scaffold gap also makes
+     `bun run games:test:tooling` (part of the CI `quality` job, not this
+     task's own Verification Commands) fail for `ludo` until task 03 lands;
+     that is expected and tracked there. -->
 
 ## Out of Scope
 

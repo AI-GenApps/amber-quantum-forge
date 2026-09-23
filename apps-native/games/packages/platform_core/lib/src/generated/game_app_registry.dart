@@ -101,6 +101,19 @@ abstract final class GeneratedGameRegistry {
       environments: const ['debug', 'staging', 'production'],
       rendering: 'flame',
     ),
+    GameAppDefinition(
+      id: 'ludo',
+      canonicalName: 'Ludo',
+      publicTitle: 'Ludo',
+      saveNamespacePrefix: 'games.ludo',
+      saveSchemaVersion: 1,
+      analyticsNamespacePrefix: 'game.ludo',
+      iosBundleId: 'app.w3dev.ludo',
+      androidApplicationId: 'app.w3dev.ludo',
+      debugSuffix: '.debug',
+      environments: const ['debug', 'staging', 'production'],
+      rendering: 'flame',
+    ),
   ];
 
   static GameAppDefinition? byId(String id) {

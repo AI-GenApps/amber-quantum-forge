@@ -61,6 +61,6 @@ export function validateGameRegistry(): string[] {
     if (game.id === "meme_court" && game.rendering !== "flutter_widgets")
       errors.push("Meme Court must use Flutter widgets");
   }
-  if (GAME_REGISTRY.length !== 5) errors.push(`expected five games, found ${GAME_REGISTRY.length}`);
+  if (GAME_REGISTRY.length !== 6) errors.push(`expected six games, found ${GAME_REGISTRY.length}`);
   return errors;
 }

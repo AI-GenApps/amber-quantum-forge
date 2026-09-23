@@ -42,7 +42,7 @@ next task.
 
 | Task | Owner | Scope | Status |
 |---|---|---|---|
-| 00 | Registry/tooling owner | Registry, CI allowlists, workspace wiring, Unity superseded note | [ ] |
+| 00 | Registry/tooling owner | Registry, CI allowlists, workspace wiring, Unity superseded note | [x] |
 | 01 | Domain owner | `ludo_rules` core engine (board, movement, turns, dice, capture, Classic/Quick config) | [ ] |
 | 02 | Domain owner | `ludo_rules` bot strategies and cross-runtime replay fixtures | [ ] |
 | 03 | Client owner | Flutter app scaffold, asset manifest slots, `lib/src/{screens,state,game,assets}` convention | [ ] |
