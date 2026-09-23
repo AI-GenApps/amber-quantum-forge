@@ -18,6 +18,7 @@ Last updated: manually — update when each epic is fully completed.
 - [x] 11 — Optional KMP shared logic example (Service Status)
 - [x] 12 — Repository Hygiene (NativeTabs review and local artifact exclusions)
 - [x] 13 — Gaming Portfolio Preparation (five independent Flutter game targets)
+- [ ] 14 — Merge Relay selected-MVP implementation
 
 ## How to read this file
 

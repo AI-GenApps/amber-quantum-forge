@@ -18,6 +18,8 @@ Status: in-progress
 | 09 | Android/client owner | Strict HTTP gateway, links, recovery, sync and service error states | [~] gateway/fixture path present; full two-device gate open |
 | 10 | Merge service owner | Bounded backend corrective foundation and PostgreSQL/provider regression gates | [x] 35 focused tests, 6 isolated PostgreSQL tests; full-MVP gates remain open |
 | 11 | Integration/tooling owner | Pinned backend/Next maintenance CI and local share-preview smoke | [x] actionlint, root gates, docs, and local smoke pass; release gates remain open |
+| 12 | Merge service owner | Idempotent cloud-save receipts, atomic save events, and guest-upgrade migration | [~] focused service/HTTP tests pass; PostgreSQL and independent review open |
+| 13 | Merge service owner | Server-side Google Play cosmetic purchase verification, restore, and entitlement settlement | [~] provider/service foundation tested; native Billing, live config, and dedicated commerce PostgreSQL coverage open |
 
 The v0.3 source scope is the active target. P0 local play remains an early
 checkpoint; these tasks do not mark the product published or market validated.

@@ -14,6 +14,10 @@ Copy `.env.example` to `.env` and fill in all required values. Never commit `.en
 | `OPENAI_API_KEY` | yes | OpenAI API key | [platform.openai.com](https://platform.openai.com) |
 | `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID` | yes | Google OAuth web client ID | Google Cloud Console → Credentials |
 | `EXPO_PUBLIC_API_URL` | yes | Base URL for the Hono API | e.g. `https://your-app.vercel.app/api` |
+| `GAME_TOKEN_ISSUER` | for game routes | Issuer claim accepted by scoped game tokens | Auth service configuration |
+| `GAME_TOKEN_AUDIENCE` | for game routes | Audience claim accepted by scoped game tokens | Auth service configuration |
+| `GAME_TOKEN_SECRET_MERGE_RELAY_<ENV>` | for Merge Relay routes | Per-environment HS256 secret, at least 32 characters | Secret manager; one value per environment |
+| `MERGE_RELAY_LOCAL_STORE` | local only | Set to `memory` with non-production `NODE_ENV` for ephemeral device HTTP checks | Local shell only; never production |
 | `REVENUECAT_WEBHOOK_SECRET` | no | RevenueCat server-to-server notification secret | RevenueCat dashboard → Integrations |
 
 ## Generating `API_JWT_SECRET`
