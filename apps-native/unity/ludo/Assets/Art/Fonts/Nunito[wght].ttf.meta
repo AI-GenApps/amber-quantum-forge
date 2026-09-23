@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 419f3a21a5e74072b4cb0e324be6e259
+TrueTypeFontImporter:
+  serializedVersion: 5
+  fontSize: 16
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames: []
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBounds: 0

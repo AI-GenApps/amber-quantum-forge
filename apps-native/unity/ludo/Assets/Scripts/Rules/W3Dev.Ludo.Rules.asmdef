@@ -1,0 +1,14 @@
+{
+  "name": "W3Dev.Ludo.Rules",
+  "rootNamespace": "W3Dev.Ludo",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": true
+}

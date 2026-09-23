@@ -1,0 +1,117 @@
+{
+  "contractVersion": "ludo.v1",
+  "rulesRevision": "rules_v1",
+  "identity": {
+    "game": "ludo",
+    "productionAppId": "app.w3dev.ludo",
+    "developmentAppId": "app.w3dev.ludo.debug",
+    "namespace": "games.ludo"
+  },
+  "players": {
+    "minimum": 2,
+    "maximum": 4,
+    "seatOrder": ["ruby", "jade", "sun", "azure"]
+  },
+  "board": {
+    "trackLength": 52,
+    "homeLength": 6,
+    "tokensPerPlayer": 4,
+    "startIndices": [0, 13, 26, 39],
+    "safeIndices": [0, 4, 12, 13, 21, 26, 30, 38, 39, 47],
+    "coordinateSystem": "clockwise track index 0 is ruby start"
+  },
+  "movement": {
+    "yardExitRoll": 6,
+    "trackDistanceZeroIsStart": true,
+    "homeEntryAfterTrackDistance": 51,
+    "homeIndices": [0, 1, 2, 3, 4, 5],
+    "finishedAfterPathDistance": 58,
+    "finishRequiresExactRoll": true,
+    "yardExitConsumesRollWithoutTrackAdvance": true
+  },
+  "turns": {
+    "diceFaces": 6,
+    "sixGrantsExtraRoll": true,
+    "thirdConsecutiveSix": "forfeit_turn_without_applying_roll",
+    "noLegalMove": "auto_pass",
+    "rollTimeoutSeconds": 30,
+    "moveTimeoutSeconds": 30,
+    "missesBeforeForfeit": 3
+  },
+  "captures": {
+    "singleOpponentOnUnsafeCell": "return_to_yard",
+    "safeCellsPreventCapture": true,
+    "blockadeSize": 2,
+    "opponentCannotCrossOrLandOnBlockade": true,
+    "sameColorMayCrossBlockade": true,
+    "maximumTrackOccupancy": 2
+  },
+  "authority": {
+    "dice": "server_csprng",
+    "clientCommands": ["roll", "move", "surrender", "rematch"],
+    "clientCannotSubmit": ["die", "winner", "score", "state"],
+    "idempotency": "command_id_and_fingerprint",
+    "replay": "append_only_event_sequence"
+  },
+  "transport": {
+    "http": "rest_commands_and_cursor_reads",
+    "realtime": "optional_vercel_fluid_websocket_notification",
+    "pubsub": "optional_ioredis_native_redis_pubsub",
+    "recovery": "postgres_snapshot_and_event_cursor",
+    "scheduler": "vercel_workflow_with_postgres_timer_jobs",
+    "repair": "vercel_cron_safety_sweep",
+    "failClosedWithoutSchedulerHealth": true
+  },
+  "visualSlice": {
+    "mode": "simulated_authority",
+    "platform": "android_physical_device",
+    "orientation": "portrait",
+    "targetFps": 60,
+    "maximumResolution": "1080x2400",
+    "requiredBehaviors": [
+      "controlled_six_face_die",
+      "legal_token_highlight",
+      "touch_token_selection",
+      "token_move_animation",
+      "capture_feedback",
+      "turn_presentation",
+      "audio_hook",
+      "haptic_hook",
+      "reduced_motion_toggle"
+    ],
+    "demoDiceSequence": [6, 6, 3, 4, 5, 2, 1],
+    "demoCapture": {
+      "attacker": {"player": 0, "token": 0},
+      "defender": {"player": 3, "token": 0},
+      "trackIndex": 6,
+      "trigger": "second_six_after_yard_exit"
+    }
+  },
+  "wire": {
+    "command": {
+      "id": "string",
+      "expectedMatchVersion": "integer",
+      "expectedTurnVersion": "integer",
+      "type": "roll|move|surrender|rematch",
+      "payload": "object"
+    },
+    "event": {
+      "sequence": "integer",
+      "type": "string",
+      "commandId": "string|null",
+      "actorSubject": "opaque_uid",
+      "occurredAt": "iso8601",
+      "payload": "object"
+    },
+    "snapshot": {
+      "matchId": "string",
+      "status": "waiting|active|finished|abandoned",
+      "version": "integer",
+      "turnId": "string",
+      "phase": "roll|move",
+      "deadlineAt": "iso8601",
+      "eventCursor": "integer",
+      "state": "rules_v1_state"
+    }
+  }
+}

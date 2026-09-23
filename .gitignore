@@ -67,3 +67,18 @@ apps-native/kmp/**/build/
 apps-native/kmp/local.properties
 apps-native/ios-kmp-sample/*.xcodeproj
 apps-native/ios-kmp-sample/*.xcworkspace
+
+# Unity generated project files
+apps-native/unity/**/Library/
+apps-native/unity/**/Logs/
+apps-native/unity/**/Temp/
+apps-native/unity/**/UserSettings/
+apps-native/unity/**/obj/
+apps-native/unity/**/Build/
+apps-native/unity/**/build/
+apps-native/unity/**/.utmp/
+apps-native/unity/**/.vscode/
+apps-native/unity/**/*.csproj
+apps-native/unity/**/*.sln
+apps-native/unity/**/*.slnx
+apps-native/unity/**/Assets/Resources/PerformanceTestRun*.json

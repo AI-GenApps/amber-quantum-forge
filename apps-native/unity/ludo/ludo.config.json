@@ -1,0 +1,19 @@
+{
+  "game": "ludo",
+  "appId": "app.w3dev.ludo",
+  "developmentAppId": "app.w3dev.ludo.debug",
+  "editorVersion": "6000.6.2f1",
+  "template": "com.unity.template.urp-blank-17.2.1",
+  "renderPipeline": "urp",
+  "defaultEnvironment": "debug",
+  "apiBaseUrl": "",
+  "rulesRevision": "rules_v1",
+  "contentPath": "Assets/Content/ludo_v1.json",
+  "scenePath": "Assets/Scenes/LudoBoard.unity",
+  "visualSlice": true,
+  "android": {
+    "applicationId": "app.w3dev.ludo.debug",
+    "orientation": "portrait",
+    "physicalDeviceOnly": true
+  }
+}
