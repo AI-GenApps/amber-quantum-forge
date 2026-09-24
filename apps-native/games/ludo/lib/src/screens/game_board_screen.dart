@@ -143,6 +143,27 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
   /// already in flight (e.g. a stray extra tap during a bot sequence).
   bool _turnAdvanceInFlight = false;
 
+  /// `true` while a roll/move's board animation (`_game.applyEvents`,
+  /// e.g. the dice tumble or a token hop) is still resolving.
+  ///
+  /// Root cause of the stuck-turn bug this task fixes: `_state` (and thus
+  /// `_canRoll`/`_canMove`, both phase-gate checks) was updated via
+  /// `setState` *before* `_game.applyEvents` finished animating, so the
+  /// board/dice zone looked interactive again — and genuinely accepted a
+  /// human tap — while the previous action's animation was still
+  /// in-flight. A second concurrent `_rollDice`/`_handleTokenTap` call
+  /// then re-entered `LudoGame.applyEvents` while the first call was still
+  /// awaiting it, and because `LudoDiceComponent`/`LudoTokenComponent`
+  /// silently drop an in-flight animation's completer when a new one
+  /// starts (see the fixes in those files), the *first* call's `await`
+  /// never resolved — permanently stranding the turn-advance logic
+  /// (`_handleTurnAdvanced`, which starts the bot-turn runner) that was
+  /// chained after it, even though `_state` already showed the next
+  /// seat's turn. Gating `_canRoll`/`_canMove` on this flag closes the
+  /// window entirely: no second `applyEvents` call can start before the
+  /// first one's animation has actually finished.
+  bool _boardBusy = false;
+
   @override
   void initState() {
     super.initState();
@@ -227,11 +248,13 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
   /// vs-Computer match, or whichever seat is active in a Pass N Play
   /// match sharing this device.
   bool get _canRoll =>
+      !_boardBusy &&
       _state.phase == LudoMatchPhase.awaitingRoll &&
       !widget.config.seats[_state.currentPlayerIndex].isBot;
 
   /// Whether it's a local human seat's turn to move a legal token.
   bool get _canMove =>
+      !_boardBusy &&
       _state.phase == LudoMatchPhase.awaitingMove &&
       !widget.config.seats[_state.currentPlayerIndex].isBot;
 
@@ -244,9 +267,14 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
     );
     setState(() {
       _state = result.state;
+      _boardBusy = true;
       _armDeadlineForCurrentTurn();
     });
-    await _game.applyEvents(result.events, result.state);
+    try {
+      await _game.applyEvents(result.events, result.state);
+    } finally {
+      if (mounted) setState(() => _boardBusy = false);
+    }
     await _persistLocalSave();
     if (_maybeNavigateToResults()) return;
     await _handleTurnAdvanced(previousSeat);
@@ -261,9 +289,14 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
     final result = applyMove(_state, tokenId);
     setState(() {
       _state = result.state;
+      _boardBusy = true;
       _armDeadlineForCurrentTurn();
     });
-    await _game.applyEvents(result.events, result.state);
+    try {
+      await _game.applyEvents(result.events, result.state);
+    } finally {
+      if (mounted) setState(() => _boardBusy = false);
+    }
     await _persistLocalSave();
     if (_maybeNavigateToResults()) return;
     await _handleTurnAdvanced(previousSeat);
@@ -312,9 +345,14 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
         if (!mounted) return;
         setState(() {
           _state = step.state;
+          _boardBusy = true;
           _armDeadlineForCurrentTurn();
         });
-        await _game.applyEvents(step.events, step.state);
+        try {
+          await _game.applyEvents(step.events, step.state);
+        } finally {
+          if (mounted) setState(() => _boardBusy = false);
+        }
         await _persistLocalSave();
       },
     );
@@ -419,7 +457,22 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(12),
-                child: GameWidget(game: _game),
+                // The Flame `GameWidget` fills whatever box it's given,
+                // and `LudoGame` sizes its board to the *smaller* of that
+                // box's two dimensions (see `LudoGame._boardSize`) — so
+                // without this `AspectRatio`, the `Expanded` region here
+                // is taller (or wider) than it is square, and the leftover
+                // strip the board doesn't paint into renders as a solid
+                // black rectangle (Flame's default canvas background).
+                // Constraining the widget itself to a 1:1 box before Flame
+                // ever sees it means the canvas *is* the board, with no
+                // unpainted area left over.
+                child: Center(
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: GameWidget(game: _game),
+                  ),
+                ),
               ),
             ),
             Padding(

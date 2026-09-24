@@ -157,6 +157,18 @@ class LudoDiceComponent extends PositionComponent {
       _distinctFacesFlickered.clear();
       return Future.value();
     }
+    // If a previous roll is still mid-tumble/settle when this one is
+    // requested, complete its completer now instead of silently
+    // overwriting `_rollCompleter` below — otherwise the earlier caller
+    // (e.g. `LudoGame.applyEvents`, awaited by `GameBoardScreen`'s turn
+    // machinery) would await a `Future` whose completer was orphaned and
+    // never resolves, permanently stalling everything chained after it
+    // (see `ludo_full_match_controller_test.dart` and this task's
+    // Context/Decisions on the stuck-turn bug).
+    final previousCompleter = _rollCompleter;
+    if (previousCompleter != null && !previousCompleter.isCompleted) {
+      previousCompleter.complete();
+    }
     _target = face;
     _settling = false;
     _tumbleElapsed = 0;

@@ -222,6 +222,7 @@ class LudoTokenComponent extends PositionComponent with TapCallbacks {
       snapTo(path.last);
       return Future.value();
     }
+    _completeStalePendingMove();
     _isFlight = false;
     _hopDuration = ludoTokenHopDuration;
     _hopArcHeight = ludoTokenHopArcHeight;
@@ -234,6 +235,17 @@ class LudoTokenComponent extends PositionComponent with TapCallbacks {
     return completer.future;
   }
 
+  /// Completes any outstanding [_moveCompleter] left over from a previous
+  /// [hopTo]/[flyTo] call that hadn't finished animating before this one
+  /// started, so its awaiter never hangs forever — see the analogous fix
+  /// in `LudoDiceComponent.rollTo`.
+  void _completeStalePendingMove() {
+    final previousCompleter = _moveCompleter;
+    if (previousCompleter != null && !previousCompleter.isCompleted) {
+      previousCompleter.complete();
+    }
+  }
+
   /// Animates a captured token's flight back to [cell] (its yard slot): a
   /// single, longer, higher-arcing tween — see [ludoTokenFlightDuration]
   /// and [ludoTokenFlightArcHeight] — used instead of [hopTo] so a capture
@@ -244,6 +256,7 @@ class LudoTokenComponent extends PositionComponent with TapCallbacks {
       snapTo(cell);
       return Future.value();
     }
+    _completeStalePendingMove();
     _isFlight = true;
     _hopDuration = ludoTokenFlightDuration;
     _hopArcHeight = ludoTokenFlightArcHeight;

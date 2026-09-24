@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 12a-gameplay-bugfix
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/12-local-modes-and-quality]
 estimate: L
@@ -75,31 +75,31 @@ clock, across enough seeded games to be confident the fix holds.
 
 ## Implementation Checklist
 
-- [ ] Investigate and fix the stuck-turn bug in
+- [x] Investigate and fix the stuck-turn bug in
   `apps-native/games/ludo/lib/src/game/ludo_bot_turn_runner.dart` and
   `apps-native/games/ludo/lib/src/screens/game_board_screen.dart` (or
   wherever the real root cause lives); document the root cause in the
   commit body.
-- [ ] Fix the black-canvas/board-sizing bug in
+- [x] Fix the black-canvas/board-sizing bug in
   `apps-native/games/ludo/lib/src/game/ludo_game.dart` and
   `apps-native/games/ludo/lib/src/screens/game_board_screen.dart` so the
   Flame `GameWidget` renders as a perfect square with no unpainted/black
   area.
-- [ ] Fix dice placement in
+- [x] Fix dice placement in
   `apps-native/games/ludo/lib/src/widgets/dice_zone.dart` (and/or
   `ludo_game.dart`) so the dice renders in its intended dice-zone location,
   never inside the yard.
-- [ ] Add a debug-build-only "all bots" demo match entry point (e.g. a
+- [x] Add a debug-build-only "all bots" demo match entry point (e.g. a
   hidden dev menu item or a `kDebugMode`-guarded button on the mode setup
   sheet or lobby), verified absent from release builds.
-- [ ] Add
+- [x] Add
   `apps-native/games/ludo/test/game/ludo_full_match_controller_test.dart`:
   >=50 seeded full matches through the real controller/bot scheduler with a
   fake clock, spanning Classic/Quick x 2p/4p x human-seat-auto-play,
   asserting every game reaches results.
-- [ ] Add a regression test in the same file (or a sibling test file) for
+- [x] Add a regression test in the same file (or a sibling test file) for
   "human rolls a non-6 with no legal move then turn passes."
-- [ ] Re-run the full existing Ludo test suite to confirm no regression.
+- [x] Re-run the full existing Ludo test suite to confirm no regression.
 
 ## Files Touched
 

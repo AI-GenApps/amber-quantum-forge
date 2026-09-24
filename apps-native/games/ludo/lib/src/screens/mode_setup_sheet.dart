@@ -6,6 +6,7 @@
 /// this sheet returns.
 library;
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:ludo_rules/ludo_rules.dart';
 
@@ -149,6 +150,30 @@ class _ModeSetupSheetState extends State<ModeSetupSheet> {
     );
   }
 
+  /// Debug-only entry point (this task's Context/Decisions): starts a
+  /// match where *every* seat, including seat 0, is bot-controlled, so a
+  /// full game can be watched to completion unattended — for physical-
+  /// device QA and as the manual-repro path for this task's controller
+  /// tests. Compiled out of release builds by [kDebugMode]; see [build]
+  /// below, where the button is only ever added to the widget tree under
+  /// the same guard, so it is neither present nor reachable in a release
+  /// build.
+  void _startAllBotsDemo() {
+    Navigator.of(context).pop(
+      LudoLocalMatchConfig(
+        ruleset: _ruleset,
+        seats: [
+          for (var i = 0; i < _seats.length; i++)
+            _seats[i].copyWith(
+              isBot: true,
+              botDifficulty: _seats[i].botDifficulty ?? 'medium',
+            ),
+        ],
+        isComputerMatch: true,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -159,70 +184,96 @@ class _ModeSetupSheetState extends State<ModeSetupSheet> {
           top: 20,
           bottom: 20 + MediaQuery.of(context).viewInsets.bottom,
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.isComputerMatch ? 'Play vs Computer' : 'Pass N Play',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: 16),
-            Text('Ruleset', style: Theme.of(context).textTheme.labelLarge),
-            const SizedBox(height: 8),
-            SegmentedButton<LudoRuleset>(
-              segments: const [
-                ButtonSegment(
-                  value: LudoRuleset.classic,
-                  label: Text('Classic'),
-                ),
-                ButtonSegment(value: LudoRuleset.quick, label: Text('Quick')),
-              ],
-              selected: {_ruleset},
-              onSelectionChanged: (selection) =>
-                  setState(() => _ruleset = selection.first),
-            ),
-            const SizedBox(height: 16),
-            Text('Players', style: Theme.of(context).textTheme.labelLarge),
-            const SizedBox(height: 8),
-            SegmentedButton<int>(
-              segments: const [
-                ButtonSegment(value: 2, label: Text('2')),
-                ButtonSegment(value: 4, label: Text('4')),
-              ],
-              selected: {_playerCount},
-              onSelectionChanged: (selection) =>
-                  _setPlayerCount(selection.first),
-            ),
-            const SizedBox(height: 16),
-            Text('Seats', style: Theme.of(context).textTheme.labelLarge),
-            const SizedBox(height: 8),
-            for (var i = 0; i < _seats.length; i++)
-              _SeatRow(
-                key: ValueKey('seat-$i'),
-                seatIndex: i,
-                seat: _seats[i],
-                onDifficultyChanged: (difficulty) =>
-                    _setBotDifficulty(i, difficulty),
+        // Scrollable: this task's debug-only "all bots demo" button (below)
+        // pushes the sheet's natural content height past a short viewport
+        // (a small phone in landscape, or this suite's own constrained test
+        // harness) — a fixed-height `Column` would silently overflow
+        // instead of just letting the sheet scroll.
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.isComputerMatch ? 'Play vs Computer' : 'Pass N Play',
+                style: Theme.of(context).textTheme.titleLarge,
               ),
-            const SizedBox(height: 20),
-            Semantics(
-              button: true,
-              label: 'Start',
-              excludeSemantics: true,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(minHeight: _minTapTarget),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    key: const Key('mode-setup-start-button'),
-                    onPressed: _start,
-                    child: const Text('Start'),
+              const SizedBox(height: 16),
+              Text('Ruleset', style: Theme.of(context).textTheme.labelLarge),
+              const SizedBox(height: 8),
+              SegmentedButton<LudoRuleset>(
+                segments: const [
+                  ButtonSegment(
+                    value: LudoRuleset.classic,
+                    label: Text('Classic'),
+                  ),
+                  ButtonSegment(value: LudoRuleset.quick, label: Text('Quick')),
+                ],
+                selected: {_ruleset},
+                onSelectionChanged: (selection) =>
+                    setState(() => _ruleset = selection.first),
+              ),
+              const SizedBox(height: 16),
+              Text('Players', style: Theme.of(context).textTheme.labelLarge),
+              const SizedBox(height: 8),
+              SegmentedButton<int>(
+                segments: const [
+                  ButtonSegment(value: 2, label: Text('2')),
+                  ButtonSegment(value: 4, label: Text('4')),
+                ],
+                selected: {_playerCount},
+                onSelectionChanged: (selection) =>
+                    _setPlayerCount(selection.first),
+              ),
+              const SizedBox(height: 16),
+              Text('Seats', style: Theme.of(context).textTheme.labelLarge),
+              const SizedBox(height: 8),
+              for (var i = 0; i < _seats.length; i++)
+                _SeatRow(
+                  key: ValueKey('seat-$i'),
+                  seatIndex: i,
+                  seat: _seats[i],
+                  onDifficultyChanged: (difficulty) =>
+                      _setBotDifficulty(i, difficulty),
+                ),
+              const SizedBox(height: 20),
+              Semantics(
+                button: true,
+                label: 'Start',
+                excludeSemantics: true,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(minHeight: _minTapTarget),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: FilledButton(
+                      key: const Key('mode-setup-start-button'),
+                      onPressed: _start,
+                      child: const Text('Start'),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+              if (kDebugMode) ...[
+                const SizedBox(height: 12),
+                Semantics(
+                  button: true,
+                  label: 'Debug: all bots demo',
+                  excludeSemantics: true,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: _minTapTarget),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        key: const Key('mode-setup-all-bots-demo-button'),
+                        onPressed: _startAllBotsDemo,
+                        child: const Text('Debug: All Bots Demo'),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
         ),
       ),
     );

@@ -68,11 +68,31 @@ class LudoGame extends FlameGame {
     return Vector2.all(side <= 0 ? 300 : side);
   }
 
-  /// The dice's on-board size, as a fraction of the board's side.
-  static const _diceSizeFraction = 0.14;
+  /// The dice's on-board size, as a fraction of the board's side. Sized to
+  /// fit inside the unoccupied center square (see [_dicePosition]) without
+  /// overlapping any color's home-stretch lane.
+  static const _diceSizeFraction = 0.12;
 
+  /// The dice's on-board position: dead center of the board.
+  ///
+  /// Previously `(0.92, 0.08)` of the board's side — the top-right
+  /// corner — which is squarely inside green's 6x6 yard region
+  /// (`ludoYardCorner[LudoColor.green] == (0, 9)`, spanning grid rows
+  /// `0..5`, cols `9..14`; see `ludo_board_geometry.dart`). Every color's
+  /// yard occupies one of the board's four corners, so any position near
+  /// an edge risks landing inside one; the board's center square (grid
+  /// rows/cols `6..8`) is the one region no yard or home-stretch lane
+  /// claims, which is why the dice renders there instead.
   Vector2 _dicePosition(Vector2 boardSize) =>
-      Vector2(boardSize.x * 0.92, boardSize.y * 0.08);
+      Vector2(boardSize.x * 0.5, boardSize.y * 0.5);
+
+  /// Non-black so any transient unpainted edge (e.g. mid-resize, before
+  /// `onGameResize` has re-laid the board out to the new square) never
+  /// reads as the black-rectangle bug this task fixes — the board itself
+  /// should always cover the canvas via `GameBoardScreen`'s `AspectRatio`
+  /// wrapper, but this is a cheap second line of defense.
+  @override
+  Color backgroundColor() => const Color(0xFF2E7D32);
 
   @override
   Future<void> onLoad() async {
@@ -132,15 +152,29 @@ class LudoGame extends FlameGame {
     List<LudoReplayEvent> events,
     LudoMatchState newState,
   ) async {
+    // `dice` (and every other layer) is only assigned once `onLoad` has
+    // run — a `late final` field, so touching it any earlier throws a
+    // `LateInitializationError`. That's reachable: `GameBoardScreen`
+    // starts driving a bot's turn via `scheduleMicrotask` in `initState`
+    // whenever the active seat is already a bot at construction time
+    // (a resumed match, or this task's debug-only all-bots demo, which
+    // always starts on a bot seat) — a microtask runs before the first
+    // frame, i.e. before `onLoad`'s `addAll(...)` has necessarily
+    // finished. Left unguarded, that throw aborts the bot-turn runner's
+    // loop mid-sequence with `_layersReady` still false and nothing left
+    // to drive the next turn, which looks identical to a stuck turn (see
+    // this task's Context/Decisions). Buffering the state exactly like
+    // `setMatchState` already does for a state applied before `onLoad`
+    // finishes fixes this the same way: `onLoad` will apply it once ready.
+    if (!_layersReady) {
+      await setMatchState(newState);
+      return;
+    }
+
     for (final event in events) {
       if (event is LudoDiceRolledEvent) {
         await dice.rollTo(event.roll);
       }
-    }
-
-    if (!_layersReady) {
-      await setMatchState(newState);
-      return;
     }
 
     final capturedKeys = <String>{};
