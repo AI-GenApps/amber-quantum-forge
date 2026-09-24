@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 08-home-lobby
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/07-onboarding]
 estimate: M
@@ -42,19 +42,19 @@ disabled state until task 26 wires real online flows.
 
 ## Implementation Checklist
 
-- [ ] Create `lib/src/screens/home_lobby_screen.dart` with the four entry
+- [x] Create `lib/src/screens/home_lobby_screen.dart` with the four entry
   cards (Computer, Pass N Play enabled; Play with Friends, Online disabled
   with a "coming soon" badge and `Semantics` state) and a resume-affordance
   slot.
-- [ ] Wire `lib/src/app.dart`'s post-onboarding route (task 07's
+- [x] Wire `lib/src/app.dart`'s post-onboarding route (task 07's
   placeholder) to `home_lobby_screen.dart`.
-- [ ] Add `test/screens/home_lobby_screen_test.dart` covering: all four
+- [x] Add `test/screens/home_lobby_screen_test.dart` covering: all four
   entry cards render, Computer/Pass N Play are tappable, Play with
   Friends/Online are visibly disabled and not tappable (no navigation
   triggered on tap), the resume affordance renders only when a non-null
   resumable-match summary is supplied, and every card exposes a
   `Semantics` label with the correct enabled/disabled state.
-- [ ] Add a golden test under `test/goldens/` for the lobby screen showing
+- [x] Add a golden test under `test/goldens/` for the lobby screen showing
   all four cards including the disabled-state styling of the online tiles.
 
 ## Files Touched

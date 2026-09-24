@@ -5,6 +5,8 @@ import 'screens/splash_screen.dart';
 import 'state/ludo_profile_settings.dart';
 import 'state/reduced_motion_setting.dart';
 
+export 'screens/home_lobby_screen.dart' show HomeLobbyScreen;
+
 /// The generated identity for this app (public title, save/telemetry
 /// namespaces, environment). Backed by the `games:codegen`-generated Dart
 /// registry, never hardcoded.
@@ -17,9 +19,9 @@ final ludoIdentity = appIdentityFor(
 ///
 /// Boots straight to [SplashScreen] (no Firebase or network dependency
 /// anywhere in this app), which then routes to onboarding (task 07) on
-/// first run, or past it once `onboardingComplete` is persisted. Real
-/// board rendering and game state arrive in later Ludo tasks; task 08
-/// replaces [LudoPlaceholderHomeScreen] with the real home lobby.
+/// first run, or past it once `onboardingComplete` is persisted, and from
+/// there to [HomeLobbyScreen] (task 08). Real board rendering and game
+/// state arrive in later Ludo tasks.
 final class LudoApp extends StatelessWidget {
   const LudoApp({
     super.key,
@@ -53,34 +55,6 @@ final class LudoApp extends StatelessWidget {
         settings: profileSettings ?? LudoProfileSettings(),
         profileStore: profileStore,
         reducedMotion: reducedMotion,
-      ),
-    );
-  }
-}
-
-/// Placeholder home screen shown until the real home lobby (later Ludo
-/// tasks) replaces it. Renders no network/Firebase calls.
-final class LudoPlaceholderHomeScreen extends StatelessWidget {
-  const LudoPlaceholderHomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              ludoIdentity.publicTitle,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              ludoIdentity.subtitle,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ],
-        ),
       ),
     );
   }
