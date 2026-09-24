@@ -105,6 +105,22 @@ physical device/serial).
 - [ ] Record device model, serial, Android version, and a pass/fail per
   scenario above in this file and in the handoff's ledger.
 
+### Economy provisioning (from task 26i)
+
+- [ ] Create the real RevenueCat project, Play service account link, products, and
+  offerings per `docs-internal/gaming/ludo-revenuecat-admob-runbook.md`.
+- [ ] Create the real AdMob app, rewarded ad units, and SSV key per the same runbook.
+- [ ] Host the updated privacy policy at a public URL and record it in
+  `.agents/games/ludo-vortex/store-listing.md`.
+- [ ] Complete the Play Data Safety form and content rating questionnaire using 26i's
+  purchase / advertising-ID / simulated-gambling disclosures (answer bank:
+  `.agents/games/ludo-vortex/store-listing.md`).
+- [ ] Set the RevenueCat webhook secret and AdMob SSV key material in the real
+  deployment environment.
+- [ ] Verify one real sandbox/license-tester purchase (plus restore) and one real test
+  rewarded-ad watch on the physical device (serial `RZ8R32EAB7T`) before marking economy
+  provisioning complete; save captures under `.agents/resources/<date>/ludo-vortex-economy/device/`.
+
 ## Files Touched
 
 - `tasks/epics/15-ludo-launch/29-human-acceptance-provisioning.md` (record

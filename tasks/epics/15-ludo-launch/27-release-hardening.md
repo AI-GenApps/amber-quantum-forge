@@ -3,7 +3,7 @@ epic: 15-ludo-launch
 task: 27-release-hardening
 status: pending
 commit_scope: ludo
-depends_on: [15-ludo-launch/26-online-lobby-ui]
+depends_on: [15-ludo-launch/26i-economy-compliance-and-provisioning-docs]
 estimate: M
 ---
 
