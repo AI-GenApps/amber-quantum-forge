@@ -20,9 +20,16 @@ import '../assets/ludo_art_manifest.dart';
 import '../state/reduced_motion_setting.dart';
 import 'ludo_board_geometry.dart';
 
-/// Fraction of a board cell a token's circle occupies, leaving a small gap
-/// so adjacent tokens and the cell grid stay visible.
-const ludoTokenCellFraction = 0.78;
+/// Fraction of a board cell a token pin's width spans (task 12d2: ~0.9-1.0
+/// cell, up from the previous 0.78 uniform square, leaving a small gap so
+/// adjacent tokens and the cell grid stay visible).
+const ludoTokenCellWidthFraction = 0.95;
+
+/// Fraction of a board cell a token pin's height spans — taller than
+/// [ludoTokenCellWidthFraction] so the pin/map-marker silhouette reads as
+/// a marker standing on the cell rather than a squat circle (task 12d2:
+/// ~1.3 cells tall).
+const ludoTokenCellHeightFraction = 1.3;
 
 /// Duration of a single-cell hop.
 const ludoTokenHopDuration = Duration(milliseconds: 120);
@@ -57,6 +64,27 @@ abstract final class LudoTokenPainter {
     final pin = pinPath(rect);
     final headCenter = headCenterOf(rect);
     final headRadius = headRadiusOf(rect);
+
+    // A colored base ring at the pin's tip — its anchor point on the cell
+    // — matching the target look's "ring under the pin" (task 12d2).
+    // Drawn before the pin body so the pin visually stands on top of it.
+    final tip = Offset(rect.center.dx, rect.bottom);
+    final baseRingRect = Rect.fromCenter(
+      center: tip,
+      width: rect.width * 0.9,
+      height: rect.width * 0.36,
+    );
+    canvas.drawOval(
+      baseRingRect,
+      Paint()..color = baseColor.withValues(alpha: 0.3),
+    );
+    canvas.drawOval(
+      baseRingRect,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = rect.width * 0.06
+        ..color = baseColor,
+    );
 
     canvas.drawPath(
       pin.shift(Offset(rect.width * 0.09, rect.height * 0.1)),
@@ -272,7 +300,10 @@ class LudoTokenComponent extends PositionComponent with TapCallbacks {
   }
 
   void _layoutForBoardSize() {
-    size = Vector2.all(_cellSize * ludoTokenCellFraction);
+    size = Vector2(
+      _cellSize * ludoTokenCellWidthFraction,
+      _cellSize * ludoTokenCellHeightFraction,
+    );
   }
 
   /// Called whenever the board is resized/laid out, so this token's pixel

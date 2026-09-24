@@ -129,15 +129,28 @@ abstract final class LudoDicePainter {
 /// motion is enabled) only after a tumble that flickers through several
 /// other faces first and settles with a small bounce.
 class LudoDiceComponent extends PositionComponent {
-  LudoDiceComponent({ReducedMotionSetting? reducedMotion, int initialFace = 1})
-    : assert(initialFace >= 1 && initialFace <= 6),
-      reducedMotion = reducedMotion ?? ReducedMotionSetting(),
-      _displayFace = initialFace,
-      super(anchor: Anchor.center);
+  LudoDiceComponent({
+    ReducedMotionSetting? reducedMotion,
+    int initialFace = 1,
+    this.paintsOnCanvas = true,
+  }) : assert(initialFace >= 1 && initialFace <= 6),
+       reducedMotion = reducedMotion ?? ReducedMotionSetting(),
+       _displayFace = initialFace,
+       super(anchor: Anchor.center);
 
   /// Consulted by [rollTo]: when `true`, the final face is revealed
   /// immediately with no tumble/flicker/bounce.
   final ReducedMotionSetting reducedMotion;
+
+  /// Whether [render] paints anything at all. `true` by default (every
+  /// existing standalone/golden use of this component still renders); task
+  /// 12d2 sets this `false` for `LudoGame`'s internal dice instance, which
+  /// exists purely to drive the tumble/settle timing behind
+  /// `GameBoardScreen`'s awaited `applyEvents` call (unchanged from task
+  /// 05) — the *visible* glossy die now lives in the active player's
+  /// corner-card dice slot (`DiceZone`), never floating on the board
+  /// itself, per the user feedback this task addresses.
+  final bool paintsOnCanvas;
 
   int _displayFace;
   int? _target;
@@ -240,6 +253,7 @@ class LudoDiceComponent extends PositionComponent {
 
   @override
   void render(Canvas canvas) {
+    if (!paintsOnCanvas) return;
     final rect = Rect.fromLTWH(0, 0, size.x, size.y);
     final center = rect.center;
     canvas.save();

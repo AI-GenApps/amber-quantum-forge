@@ -68,21 +68,17 @@ class LudoGame extends FlameGame {
     return Vector2.all(side <= 0 ? 300 : side);
   }
 
-  /// The dice's on-board size, as a fraction of the board's side. Sized to
-  /// fit inside the unoccupied center square (see [_dicePosition]) without
-  /// overlapping any color's home-stretch lane.
+  /// The dice's size/position never render anything on the board canvas
+  /// (task 12d2: [dice] is constructed with `paintsOnCanvas: false` below)
+  /// — this is only the layout its internal tumble/flicker/bounce timing
+  /// runs against, kept a stable non-zero size purely so nothing about
+  /// [LudoDiceComponent]'s own update logic depends on a degenerate
+  /// zero-size component. The *visible* glossy die the player sees lives
+  /// in the active seat's corner-card dice slot (`DiceZone`), never on the
+  /// board itself — see this task's Context/Decisions on the "grey
+  /// dice-glyph square" user feedback this replaces.
   static const _diceSizeFraction = 0.12;
 
-  /// The dice's on-board position: dead center of the board.
-  ///
-  /// Previously `(0.92, 0.08)` of the board's side — the top-right
-  /// corner — which is squarely inside green's 6x6 yard region
-  /// (`ludoYardCorner[LudoColor.green] == (0, 9)`, spanning grid rows
-  /// `0..5`, cols `9..14`; see `ludo_board_geometry.dart`). Every color's
-  /// yard occupies one of the board's four corners, so any position near
-  /// an edge risks landing inside one; the board's center square (grid
-  /// rows/cols `6..8`) is the one region no yard or home-stretch lane
-  /// claims, which is why the dice renders there instead.
   Vector2 _dicePosition(Vector2 boardSize) =>
       Vector2(boardSize.x * 0.5, boardSize.y * 0.5);
 
@@ -100,9 +96,10 @@ class LudoGame extends FlameGame {
     board = LudoBoardComponent(boardSize: boardSize);
     legalMoveHighlight = LudoLegalMoveHighlightComponent(boardSize: boardSize);
     turnHighlight = LudoTurnHighlightComponent(boardSize: boardSize);
-    dice = LudoDiceComponent(reducedMotion: reducedMotion)
-      ..size = Vector2.all(boardSize.x * _diceSizeFraction)
-      ..position = _dicePosition(boardSize);
+    dice =
+        LudoDiceComponent(reducedMotion: reducedMotion, paintsOnCanvas: false)
+          ..size = Vector2.all(boardSize.x * _diceSizeFraction)
+          ..position = _dicePosition(boardSize);
     await addAll([board, turnHighlight, legalMoveHighlight, dice]);
     _layersReady = true;
     final pending = _pendingState;

@@ -120,5 +120,26 @@ void main() {
       expect(token.isAnimating, isFalse);
       expect(token.currentCell, (7, 8));
     });
+
+    testWithFlameGame(
+      'is sized as a pin taller than it is wide, per task 12d2\'s enlarged '
+      'token spec (~0.9-1.0 cell wide, ~1.3 cells tall)',
+      (game) async {
+        const boardSize = 300.0;
+        final cellSize = boardSize / 15;
+        final token = LudoTokenComponent(
+          color: LudoColor.red,
+          tokenId: 0,
+          boardSize: Vector2.all(boardSize),
+          initialCell: (6, 1),
+        );
+        await game.ensureAdd(token);
+
+        expect(token.size.x, closeTo(cellSize * 0.95, 0.01));
+        expect(token.size.y, closeTo(cellSize * 1.3, 0.01));
+        // Taller than wide — a pin/marker silhouette, not a square/circle.
+        expect(token.size.y, greaterThan(token.size.x));
+      },
+    );
   });
 }

@@ -22,12 +22,16 @@ const _homeStretchCellsPerColor = 6;
 /// A star-marker component: rendered as its own child so a component test
 /// can assert its existence at every safe-cell index (per this task's
 /// acceptance criteria — "not merely a fill-color change").
+///
+/// Task 12d2: outlined only — a stroked star on the plain cell background,
+/// not a filled gold disc, matching the reference's thin star outline
+/// rather than a solid marker.
 class LudoSafeCellStarComponent extends PositionComponent {
   LudoSafeCellStarComponent() : super(anchor: Anchor.center);
 
-  @override
-  void render(Canvas canvas) {
-    final rect = Rect.fromLTWH(0, 0, size.x, size.y);
+  /// Builds the 5-point star path centered in [rect], shared by [render]
+  /// and tests that need to assert on the outline's geometry directly.
+  static Path starPath(Rect rect) {
     final center = rect.center;
     final outerRadius = rect.shortestSide * 0.34;
     final innerRadius = outerRadius * 0.45;
@@ -46,18 +50,18 @@ class LudoSafeCellStarComponent extends PositionComponent {
       }
     }
     path.close();
+    return path;
+  }
+
+  @override
+  void render(Canvas canvas) {
+    final rect = Rect.fromLTWH(0, 0, size.x, size.y);
     canvas.drawPath(
-      path,
+      starPath(rect),
       Paint()
-        ..color = LudoThemeTokens.gold
-        ..style = PaintingStyle.fill,
-    );
-    canvas.drawPath(
-      path,
-      Paint()
-        ..color = LudoThemeTokens.goldDeep
         ..style = PaintingStyle.stroke
-        ..strokeWidth = rect.shortestSide * 0.03,
+        ..strokeWidth = rect.shortestSide * 0.07
+        ..color = LudoThemeTokens.goldDeep,
     );
   }
 }
@@ -168,9 +172,26 @@ class LudoHomeStretchCellComponent extends PositionComponent {
   }
 }
 
+/// The fraction of a yard's side a single yard-slot circle spans in
+/// diameter (task 12d2: ~1.1 board cells, up from the previous ~0.68-cell
+/// diameter) — exposed so a geometry test can assert on the exact radius
+/// without duplicating the constant.
+const ludoYardSlotDiameterFraction = 1.1;
+
+/// The pixel radius of one yard-slot circle, given the board's per-cell
+/// pixel size (a yard's side is always 6 cells).
+double ludoYardSlotCircleRadius(double cellSize) =>
+    cellSize * ludoYardSlotDiameterFraction / 2;
+
 /// One color's yard region (a 6x6 corner holding that color's tokens
 /// before they enter play), drawn as a single component per task 04's
 /// acceptance criteria ("4 yards").
+///
+/// Task 12d2: a flush, solid-saturated 6x6 fill (square corners, no
+/// rounding, no drop shadow/glow around the yard itself) with a white
+/// ~4x4-cell inner square (one cell of inset per side) holding four
+/// enlarged token-slot circles, matching the reference's crisp corner
+/// quadrants rather than the previous rounded/blurred panel.
 class LudoYardComponent extends PositionComponent {
   LudoYardComponent({required this.color}) : super(anchor: Anchor.topLeft);
 
@@ -181,31 +202,24 @@ class LudoYardComponent extends PositionComponent {
     final rect = Rect.fromLTWH(0, 0, size.x, size.y);
     final base = ludoColorPalette[color]!;
 
-    // Saturated quadrant fill behind the white inner yard panel, matching
-    // the target's "saturated quadrants, white inner yards" look.
-    final outerRRect = RRect.fromRectAndRadius(
-      rect,
-      Radius.circular(size.x * 0.08),
-    );
-    canvas.drawRRect(outerRRect, Paint()..color = base);
+    // Flush, solid-saturated quadrant fill — square corners, no rounding.
+    canvas.drawRect(rect, Paint()..color = base);
 
-    // White inner yard panel, inset from the quadrant edge, holding the
-    // waiting-token slots.
-    final inset = size.x * 0.1;
+    // White inner yard panel: a ~4x4-cell square (one cell inset on every
+    // side of the 6x6 yard), holding the waiting-token slots. A small
+    // corner radius (<=2% of the yard width) softens the corners without
+    // reading as "rounded" the way the previous ~10%-radius panel did, and
+    // carries no drop shadow/blur.
+    final inset = size.x / 6;
     final innerRect = rect.deflate(inset);
     final innerRRect = RRect.fromRectAndRadius(
       innerRect,
-      Radius.circular(size.x * 0.06),
-    );
-    canvas.drawRRect(
-      innerRRect,
-      Paint()
-        ..color = const Color(0x66000000)
-        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3),
+      Radius.circular(size.x * 0.02),
     );
     canvas.drawRRect(innerRRect, Paint()..color = Colors.white);
 
     final cellSize = size.x / 6;
+    final slotRadius = ludoYardSlotCircleRadius(cellSize);
     for (var slot = 0; slot < 4; slot++) {
       final (row, col) = ludoYardSlotGrid(color, slot);
       final corner = ludoYardCorner[color]!;
@@ -213,55 +227,41 @@ class LudoYardComponent extends PositionComponent {
         (col - corner.$2 + 0.5) * cellSize,
         (row - corner.$1 + 0.5) * cellSize,
       );
-      final slotRadius = cellSize * 0.34;
-      canvas.drawCircle(
-        localCenter,
-        slotRadius,
-        Paint()
-          ..color = const Color(0x33000000)
-          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2),
-      );
       canvas.drawCircle(localCenter, slotRadius, Paint()..color = base);
       canvas.drawCircle(
         localCenter,
         slotRadius,
         Paint()
           ..style = PaintingStyle.stroke
-          ..strokeWidth = slotRadius * 0.16
+          ..strokeWidth = slotRadius * 0.14
           ..color = Colors.white,
       );
     }
   }
 }
 
-/// A decorative gold-bevel border drawn around the whole board, on top of
-/// every cell/yard child (added last in `LudoBoardComponent._layout`), so
-/// the board reads as a distinct framed object against the background
-/// painter rather than a flush rectangle (task 12c).
+/// A thin, subtle edge drawn around the whole board, on top of every
+/// cell/yard child (added last in `LudoBoardComponent._layout`), so the
+/// board reads as a crisp, square, flat object against the background
+/// painter.
+///
+/// Task 12d2: the previous thick gold/orange double-stroke bevel with a
+/// glow read as an over-styled frame the user feedback called out by name
+/// (`.agents/resources/2026-09-24/ludo-visual-qa/user-feedback-board-1902.png`)
+/// — replaced with a single hairline stroke and no blur/glow, matching the
+/// reference board's flush, unframed edge.
 class LudoBoardFrameComponent extends PositionComponent {
   LudoBoardFrameComponent() : super(anchor: Anchor.topLeft);
 
   @override
   void render(Canvas canvas) {
     final outerRect = Rect.fromLTWH(0, 0, size.x, size.y);
-    final frameWidth = size.x * 0.018;
-    // Deep-gold outer stroke, drawn straddling the board's own edge so it
-    // reads as a bevelled frame without adding to the board's footprint.
     canvas.drawRect(
       outerRect,
       Paint()
         ..style = PaintingStyle.stroke
-        ..strokeWidth = frameWidth
-        ..color = LudoThemeTokens.goldDeep,
-    );
-    // Brighter gold inner stroke, inset by roughly the outer stroke's
-    // width, giving the frame a beveled, two-tone edge.
-    canvas.drawRect(
-      outerRect.deflate(frameWidth),
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = frameWidth * 0.6
-        ..color = LudoThemeTokens.gold,
+        ..strokeWidth = size.x * 0.003
+        ..color = const Color(0x33000000),
     );
   }
 }
@@ -348,22 +348,58 @@ class LudoBoardComponent extends PositionComponent {
       cellSize * 3,
       cellSize * 3,
     );
-    final center = centerRect.center;
     for (final color in LudoColor.values) {
-      final corner = ludoYardCorner[color]!;
-      final towardCenter = Offset(
-        corner.$2 < 7 ? centerRect.left : centerRect.right,
-        corner.$1 < 7 ? centerRect.top : centerRect.bottom,
-      );
-      final path = Path()
-        ..moveTo(center.dx, center.dy)
-        ..lineTo(towardCenter.dx, center.dy)
-        ..lineTo(center.dx, towardCenter.dy)
-        ..close();
       canvas.drawPath(
-        path,
-        Paint()..color = ludoColorPalette[color]!.withValues(alpha: 0.85),
+        ludoCenterTrianglePath(color, centerRect),
+        Paint()..color = ludoColorPalette[color]!,
       );
     }
   }
+}
+
+/// The side of the center 3x3 finish square [color]'s triangle occupies —
+/// the same side that color's home-stretch lane enters the center from
+/// (see `ludo_board_geometry.dart`'s `_homeStretchByColor`): red's lane
+/// runs along row 7 from the left, so red's triangle is the left wedge;
+/// green's runs down column 7 from the top, so green's is the top wedge;
+/// yellow enters from the right, blue from the bottom.
+const _centerTriangleSideByColor = {
+  LudoColor.red: _CenterTriangleSide.left,
+  LudoColor.green: _CenterTriangleSide.top,
+  LudoColor.yellow: _CenterTriangleSide.right,
+  LudoColor.blue: _CenterTriangleSide.bottom,
+};
+
+enum _CenterTriangleSide { left, top, right, bottom }
+
+/// Builds [color]'s finish triangle within [centerRect] (the board's
+/// center 3x3 square): a wedge spanning the full width of one side of the
+/// square and tapering to the exact center point, per task 12d2's
+/// acceptance criteria ("four solid triangles meeting at the exact center
+/// point, each spanning its quadrant"). Exposed (not private to
+/// [LudoBoardComponent._paintCenter]) so a geometry/placement test can
+/// assert directly on each color's wedge without rendering a frame.
+Path ludoCenterTrianglePath(LudoColor color, Rect centerRect) {
+  final center = centerRect.center;
+  final path = Path()..moveTo(center.dx, center.dy);
+  switch (_centerTriangleSideByColor[color]!) {
+    case _CenterTriangleSide.left:
+      path
+        ..lineTo(centerRect.left, centerRect.top)
+        ..lineTo(centerRect.left, centerRect.bottom);
+    case _CenterTriangleSide.top:
+      path
+        ..lineTo(centerRect.left, centerRect.top)
+        ..lineTo(centerRect.right, centerRect.top);
+    case _CenterTriangleSide.right:
+      path
+        ..lineTo(centerRect.right, centerRect.top)
+        ..lineTo(centerRect.right, centerRect.bottom);
+    case _CenterTriangleSide.bottom:
+      path
+        ..lineTo(centerRect.left, centerRect.bottom)
+        ..lineTo(centerRect.right, centerRect.bottom);
+  }
+  path.close();
+  return path;
 }

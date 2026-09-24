@@ -1,10 +1,12 @@
-/// The game board screen (task 09, restyled by task 12d): composes task
-/// 05's `ludo_game.dart` Flame widget with surrounding chrome — one
-/// [PlayerCornerCard] per occupied board corner (the active seat's card
-/// also hosts the [DiceZone] roll control), and a themed top bar with a
-/// menu button opening [PauseQuitDialog]. Driven by local `ludo_rules`
-/// state; server/online wiring is tasks 24-26 and bot move automation is
-/// task 12 — this screen only renders the bot-difficulty choice made in
+/// The game board screen (task 09, restyled by task 12d, board/layout
+/// fidelity by task 12d2): composes task 05's `ludo_game.dart` Flame
+/// widget with surrounding chrome — one [PlayerCornerCard] per occupied
+/// board corner (the active seat's card also hosts its `DiceZone` roll
+/// control), the [LudoBackground] painter as the screen's base layer, and
+/// a small corner pause/menu icon button opening [PauseQuitDialog] (no
+/// full-width title bar). Driven by local `ludo_rules` state;
+/// server/online wiring is tasks 24-26 and bot move automation is task 12
+/// — this screen only renders the bot-difficulty choice made in
 /// [ModeSetupSheet], it never plays a bot's turn itself.
 library;
 
@@ -22,11 +24,9 @@ import '../state/ludo_settings_store.dart';
 import '../state/ludo_sound_settings.dart';
 import '../state/reduced_motion_setting.dart';
 import '../telemetry/ludo_telemetry.dart';
-import '../theme/ludo_text_styles.dart';
+import '../theme/ludo_background_painter.dart';
 import '../theme/ludo_theme_tokens.dart';
-import '../widgets/dice_zone.dart';
 import '../widgets/ludo_3d_button.dart';
-import '../widgets/ludo_panel.dart';
 import '../widgets/player_corner_card.dart';
 import 'mode_setup_sheet.dart';
 import 'pass_and_play_interstitial.dart';
@@ -431,56 +431,89 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final sideMargin = MediaQuery.sizeOf(context).width * 0.025;
     return Scaffold(
       backgroundColor: LudoThemeTokens.backgroundDeepBlue,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: LudoThemeTokens.spaceSm,
-            vertical: LudoThemeTokens.spaceXs,
-          ),
-          child: Column(
+      body: LudoBackground(
+        child: SafeArea(
+          child: Stack(
             children: [
-              _GameTopBar(onPause: _openPauseDialog),
-              _PlayerCornerRow(
-                corners: const [_Corner.topLeft, _Corner.topRight],
-                config: widget.config,
-                identities: widget.seatIdentities,
-                state: _state,
-                turnDeadline: _turnDeadline,
-                canRoll: _canRoll,
-                onRoll: _rollDice,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  // The Flame `GameWidget` fills whatever box it's given,
-                  // and `LudoGame` sizes its board to the *smaller* of
-                  // that box's two dimensions (see
-                  // `LudoGame._boardSize`) — so without this
-                  // `AspectRatio`, the `Expanded` region here is taller
-                  // (or wider) than it is square, and the leftover strip
-                  // the board doesn't paint into renders as a solid
-                  // black rectangle (Flame's default canvas background).
-                  // Constraining the widget itself to a 1:1 box before
-                  // Flame ever sees it means the canvas *is* the board,
-                  // with no unpainted area left over.
-                  child: Center(
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: GameWidget(game: _game),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: LudoThemeTokens.spaceXs,
+                  vertical: LudoThemeTokens.spaceXs,
+                ),
+                child: Column(
+                  children: [
+                    // A small top-left pause/menu icon button occupies
+                    // this space instead (see the `Positioned` button
+                    // below), so the top corner cards sit right under
+                    // the safe-area edge with no full-width title bar
+                    // pushing them down (task 12d2 removes the "Ludo"
+                    // title bar the user feedback called out).
+                    const SizedBox(height: LudoThemeTokens.spaceXl),
+                    _PlayerCornerRow(
+                      corners: const [_Corner.topLeft, _Corner.topRight],
+                      config: widget.config,
+                      identities: widget.seatIdentities,
+                      state: _state,
+                      turnDeadline: _turnDeadline,
+                      canRoll: _canRoll,
+                      onRoll: _rollDice,
                     ),
-                  ),
+                    Expanded(
+                      // The Flame `GameWidget` fills whatever box it's
+                      // given, and `LudoGame` sizes its board to the
+                      // *smaller* of that box's two dimensions (see
+                      // `LudoGame._boardSize`) — so without this
+                      // `AspectRatio`, the `Expanded` region here is
+                      // taller (or wider) than it is square, and the
+                      // leftover strip the board doesn't paint into
+                      // renders as a solid black rectangle (Flame's
+                      // default canvas background). Constraining the
+                      // widget itself to a 1:1 box before Flame ever
+                      // sees it means the canvas *is* the board, with
+                      // no unpainted area left over. Only a small
+                      // (~2-3% of screen width) side margin separates
+                      // the board from the screen edge, per task
+                      // 12d2's "board fills the screen width" spec.
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: sideMargin),
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: GameWidget(game: _game),
+                          ),
+                        ),
+                      ),
+                    ),
+                    _PlayerCornerRow(
+                      corners: const [_Corner.bottomLeft, _Corner.bottomRight],
+                      config: widget.config,
+                      identities: widget.seatIdentities,
+                      state: _state,
+                      turnDeadline: _turnDeadline,
+                      canRoll: _canRoll,
+                      onRoll: _rollDice,
+                    ),
+                  ],
                 ),
               ),
-              _PlayerCornerRow(
-                corners: const [_Corner.bottomLeft, _Corner.bottomRight],
-                config: widget.config,
-                identities: widget.seatIdentities,
-                state: _state,
-                turnDeadline: _turnDeadline,
-                canRoll: _canRoll,
-                onRoll: _rollDice,
+              Positioned(
+                top: LudoThemeTokens.spaceXs,
+                left: LudoThemeTokens.spaceXs,
+                child: Ludo3dButton(
+                  key: const Key('game-board-menu-button'),
+                  semanticLabel: 'Pause',
+                  onPressed: _openPauseDialog,
+                  padding: const EdgeInsets.all(LudoThemeTokens.spaceSm),
+                  borderRadius: LudoThemeTokens.radiusSm,
+                  child: const Icon(
+                    Icons.pause,
+                    color: LudoThemeTokens.textOutline,
+                    size: 20,
+                  ),
+                ),
               ),
             ],
           ),
@@ -511,51 +544,6 @@ const _cornerForColor = {
   LudoColor.yellow: _Corner.bottomRight,
   LudoColor.blue: _Corner.bottomLeft,
 };
-
-/// The themed top bar: a gold-framed [LudoPanel] with the screen title and
-/// a [Ludo3dButton] pause control, replacing task 09's stock `AppBar`.
-class _GameTopBar extends StatelessWidget {
-  const _GameTopBar({required this.onPause});
-
-  final VoidCallback onPause;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: LudoThemeTokens.spaceXs),
-      child: LudoPanel(
-        padding: const EdgeInsets.symmetric(
-          horizontal: LudoThemeTokens.spaceMd,
-          vertical: LudoThemeTokens.spaceXs,
-        ),
-        borderRadius: BorderRadius.circular(LudoThemeTokens.radiusMd),
-        child: Row(
-          children: [
-            Expanded(
-              child: LudoOutlinedTitle(
-                'Ludo',
-                style: LudoTextStyles.displaySmall,
-                strokeWidth: 3,
-              ),
-            ),
-            Ludo3dButton(
-              key: const Key('game-board-menu-button'),
-              semanticLabel: 'Pause',
-              onPressed: onPause,
-              padding: const EdgeInsets.all(LudoThemeTokens.spaceSm),
-              borderRadius: LudoThemeTokens.radiusSm,
-              child: const Icon(
-                Icons.pause,
-                color: LudoThemeTokens.textOutline,
-                size: 22,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 /// One row of up to two [PlayerCornerCard]s (the top pair or the bottom
 /// pair). A corner with no seat assigned renders as an empty flexible

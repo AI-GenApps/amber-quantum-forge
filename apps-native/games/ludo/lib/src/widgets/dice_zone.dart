@@ -7,12 +7,20 @@
 /// Task 09 placed this in a shared bottom zone below the board; task 12d
 /// relocates it into whichever seat's [PlayerCornerCard][pcc] is
 /// currently active, using [compact] so it fits that card's tight
-/// footprint instead of the original full-width row.
+/// footprint instead of the original full-width row. Task 12d2 replaces
+/// the placeholder dice icon with the same glossy 3D die art
+/// [LudoDicePainter] draws on the board's animated die (task 05), inside
+/// a gold-framed box — matching the target's "single active dice in a
+/// gold-framed box beside the corner card" look and confirming the die
+/// never floats on the board itself.
 ///
 /// [pcc]: player_corner_card.dart
 library;
 
 import 'package:flutter/material.dart';
+
+import '../game/ludo_dice_component.dart' show LudoDicePainter;
+import '../theme/ludo_theme_tokens.dart';
 
 /// A tap-to-roll button showing the last-rolled value (if any) and an
 /// explicit enabled/disabled visual + semantic state.
@@ -44,11 +52,10 @@ class DiceZone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final label = lastRoll == null ? 'Tap to roll' : 'Rolled $lastRoll';
-    final foreground = enabled
-        ? colorScheme.onPrimaryContainer
-        : colorScheme.onSurfaceVariant;
+    final dieSize = compact ? 32.0 : 44.0;
+    final die = _GlossyDie(face: lastRoll ?? 1, size: dieSize);
+
     return Semantics(
       button: enabled,
       enabled: enabled,
@@ -59,12 +66,7 @@ class DiceZone extends StatelessWidget {
         child: Opacity(
           opacity: enabled ? 1.0 : 0.4,
           child: Material(
-            color: enabled
-                ? colorScheme.primaryContainer
-                : colorScheme.surfaceContainerHighest,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(compact ? 12 : 16),
-            ),
+            type: MaterialType.transparency,
             child: InkWell(
               // Disabled dice zones get no tap handler at all (not merely
               // dimmed) so no roll can ever be triggered out of turn.
@@ -72,21 +74,17 @@ class DiceZone extends StatelessWidget {
               borderRadius: BorderRadius.circular(compact ? 12 : 16),
               child: compact
                   ? Padding(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(4),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
-                            Icons.casino_outlined,
-                            size: 20,
-                            color: foreground,
-                          ),
+                          die,
                           if (lastRoll != null)
                             Text(
                               '$lastRoll',
                               style: Theme.of(context).textTheme.labelSmall
                                   ?.copyWith(
-                                    color: foreground,
+                                    color: LudoThemeTokens.textOnDark,
                                     fontWeight: FontWeight.w800,
                                   ),
                             ),
@@ -95,18 +93,18 @@ class DiceZone extends StatelessWidget {
                     )
                   : Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 14,
+                        horizontal: 12,
+                        vertical: 8,
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.casino_outlined, color: foreground),
-                          const SizedBox(width: 8),
+                          die,
+                          const SizedBox(width: 12),
                           Text(
                             label,
                             style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(color: foreground),
+                                ?.copyWith(color: LudoThemeTokens.textOnDark),
                           ),
                         ],
                       ),
@@ -117,4 +115,42 @@ class DiceZone extends StatelessWidget {
       ),
     );
   }
+}
+
+/// The same glossy 3D die art the board's animated die (task 05) paints,
+/// shown statically at [face] inside a gold-framed box — the HUD's single
+/// visible die, never floating on the board itself.
+class _GlossyDie extends StatelessWidget {
+  const _GlossyDie({required this.face, required this.size});
+
+  final int face;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(size * 0.22),
+        border: Border.all(color: LudoThemeTokens.gold, width: size * 0.09),
+      ),
+      child: CustomPaint(painter: _DieFacePainter(face)),
+    );
+  }
+}
+
+class _DieFacePainter extends CustomPainter {
+  const _DieFacePainter(this.face);
+
+  final int face;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    LudoDicePainter.paintFace(canvas, Offset.zero & size, face);
+  }
+
+  @override
+  bool shouldRepaint(covariant _DieFacePainter oldDelegate) =>
+      oldDelegate.face != face;
 }

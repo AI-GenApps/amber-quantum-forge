@@ -3,7 +3,7 @@ epic: 15-ludo-launch
 task: 12e-menus-restyle
 status: pending
 commit_scope: ludo
-depends_on: [15-ludo-launch/12d-game-hud]
+depends_on: [15-ludo-launch/12d2-board-and-layout-fidelity]
 estimate: L
 ---
 

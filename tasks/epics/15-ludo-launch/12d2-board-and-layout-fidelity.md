@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 12d2-board-and-layout-fidelity
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/12d-game-hud]
 estimate: L
@@ -50,7 +50,7 @@ without changing gameplay logic, still with original code-drawn art only
 
 ## Implementation Checklist
 
-- [ ] **Center 3x3 finish triangles** (`LudoBoardComponent._paintCenter` in
+- [x] **Center 3x3 finish triangles** (`LudoBoardComponent._paintCenter` in
   `ludo_board_component.dart`): remove any grey/dice glyph or non-color
   fill in the 3x3 center rect (cells `6,6` to `9,9`); render exactly four
   solid triangles meeting at the exact center point, each spanning its
@@ -59,7 +59,7 @@ without changing gameplay logic, still with original code-drawn art only
   bottom — i.e. each color's triangle sits on the same side as that
   color's home-stretch lane entry). No dice face, icon, or grey square may
   render in this rect at any time (idle, mid-roll, or settled).
-- [ ] **Yards (6x6 corners)** (`LudoYardComponent.render`): fill the full
+- [x] **Yards (6x6 corners)** (`LudoYardComponent.render`): fill the full
   6x6 corner with a *flush, solid-saturated* color rect (square corners,
   no rounding, no drop shadow/glow around the yard itself — the existing
   `RRect.fromRectAndRadius(rect, Radius.circular(size.x * 0.08))` outer
@@ -69,7 +69,7 @@ without changing gameplay logic, still with original code-drawn art only
   solid colored circles at the token spots, each circle ~1.1 cell in
   diameter (up from the current `cellSize * 0.34` radius, i.e. ~0.68 cell
   diameter — roughly 60% larger). Tokens stand on top of these circles.
-- [ ] **Tokens** (`ludo_token_component.dart` — `LudoTokenPainter`/
+- [x] **Tokens** (`ludo_token_component.dart` — `LudoTokenPainter`/
   `pinPath`): scale the pin/map-marker silhouette to ~0.9-1.0 cell width
   and ~1.3 cells tall (check current sizing against `ludoTokenCellFraction
   = 0.78` and the pin's height-to-width ratio; both likely need to grow).
@@ -77,7 +77,7 @@ without changing gameplay logic, still with original code-drawn art only
   base ring at the token's anchor point on the cell (matching the target's
   ring-under-the-pin look). Must stay clearly readable at 1080x2400 —
   verify via device screenshot, not just simulator scale.
-- [ ] **Board frame and cell styling** (`ludo_board_component.dart`):
+- [x] **Board frame and cell styling** (`ludo_board_component.dart`):
   remove `LudoBoardFrameComponent`'s thick gold/orange bevel and any glow
   around the board or around the active-yard highlight; the board must
   read as perfectly square, flat, and crisp with at most a thin, subtle
@@ -92,7 +92,7 @@ without changing gameplay logic, still with original code-drawn art only
   colored cells (stretch indices 1-5; index 0 is the entry arrow cell) and
   the directional entry arrow, confirm arrow rendering is unaffected by
   other changes.
-- [ ] **Geometry tiling test**: add a test (e.g.
+- [x] **Geometry tiling test**: add a test (e.g.
   `test/game/ludo_board_geometry_tiling_test.dart`) that computes every
   yard rect, every track-cell rect, and the center 3x3 rect from
   `ludo_board_geometry.dart`'s grid math for a fixed board size, and
@@ -100,7 +100,7 @@ without changing gameplay logic, still with original code-drawn art only
   unused grid cells accounts for the full 15x15 board with no gap, and
   every rect stays within the board's outer bounds (`0,0` to
   `boardSize,boardSize`).
-- [ ] **Background** (`lib/src/theme/ludo_background_painter.dart` and its
+- [x] **Background** (`lib/src/theme/ludo_background_painter.dart` and its
   call site): confirm `LudoBackground`/`LudoBackgroundPainter` from 12b is
   actually wired into `game_board_screen.dart`'s `Scaffold` (grep for
   `LudoBackground` usage — if it is not wired in, wire it in as the
@@ -111,7 +111,7 @@ without changing gameplay logic, still with original code-drawn art only
   pip dots) so the background reads as a large tilted repeating dice/board
   motif in blue tones with a vignette, filling the entire screen — not a
   flat navy fill. Compare against `16-roll-settled.png`'s background.
-- [ ] **Screen layout** (`lib/src/screens/game_board_screen.dart`): remove
+- [x] **Screen layout** (`lib/src/screens/game_board_screen.dart`): remove
   the "Ludo" title-bar `LudoPanel` (lines ~515-560, the themed top bar
   described in its own doc comment) entirely; replace it with a small
   menu/pause icon button in a corner (e.g. top-left, like Ludo King's list
@@ -120,7 +120,7 @@ without changing gameplay logic, still with original code-drawn art only
   vertically centered in the remaining vertical space after accounting for
   the corner player cards (12d) above/below it. Remove any large empty
   vertical bands between the board and the corner cards/screen edges.
-- [ ] **Player HUD alignment** (`lib/src/widgets/player_corner_card.dart`,
+- [x] **Player HUD alignment** (`lib/src/widgets/player_corner_card.dart`,
   `game_board_screen.dart`): confirm/adjust corner cards to be compact
   (not full-width bars), positioned directly above the top board corners
   and directly below the bottom board corners (per the Play Store
@@ -130,23 +130,23 @@ without changing gameplay logic, still with original code-drawn art only
   12d's corner-card layout already satisfies this, this checklist item is
   a verification pass, not a rewrite — record which in the PR/commit
   notes.
-- [ ] **Dice styling** (`lib/src/game/ludo_dice_component.dart`,
+- [x] **Dice styling** (`lib/src/game/ludo_dice_component.dart`,
   `lib/src/widgets/dice_zone.dart`): confirm the glossy rounded 3D die
   with white/ivory body and pips renders inside the HUD's gold-framed dice
   box (not floating on the board), and that the roll animation from task
   05 is unchanged.
-- [ ] Regenerate every golden under `apps-native/games/ludo/test/goldens/`
+- [x] Regenerate every golden under `apps-native/games/ludo/test/goldens/`
   affected by the center/yard/token/frame/star/background changes above
   (empty board, populated board, token, safe-cell star, board-with-
   background composite). Diff old vs. new PNGs before committing — a
   stale golden re-saved unchanged is a bug in this task, not a pass.
-- [ ] Update `test/game/ludo_board_component_test.dart` and
+- [x] Update `test/game/ludo_board_component_test.dart` and
   `ludo_token_component_test.dart` for: center-triangle color/placement
   assertions, enlarged yard-slot circle radius, outlined (not filled)
   star rendering, enlarged token dimensions.
-- [ ] Add a 12d2 row to `tasks/epics/15-ludo-launch/STATUS.md` for this
+- [x] Add a 12d2 row to `tasks/epics/15-ludo-launch/STATUS.md` for this
   task (do not otherwise edit that file as part of any other task).
-- [ ] Update task `12e`'s frontmatter `depends_on` to point at
+- [x] Update task `12e`'s frontmatter `depends_on` to point at
   `15-ludo-launch/12d2-board-and-layout-fidelity` instead of its current
   dependency.
 
