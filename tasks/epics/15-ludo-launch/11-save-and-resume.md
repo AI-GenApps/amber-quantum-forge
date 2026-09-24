@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 11-save-and-resume
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/10-results-and-settings]
 estimate: M
@@ -33,19 +33,19 @@ survives an app restart, and wire the home lobby's "Resume" affordance
 
 ## Implementation Checklist
 
-- [ ] Create `lib/src/state/ludo_local_save.dart`: save/load/clear for an
+- [x] Create `lib/src/state/ludo_local_save.dart`: save/load/clear for an
   in-progress local `LudoMatchState` plus its originating
   `LudoLocalMatchConfig` (task 09), following `merge_relay`'s established
   local-save pattern.
-- [ ] Wire `game_board_screen.dart` (task 09) to call
+- [x] Wire `game_board_screen.dart` (task 09) to call
   `ludo_local_save.dart` after every applied move, and clear it on match
   finish before navigating to `results_screen.dart` (task 10).
-- [ ] Wire `home_lobby_screen.dart`'s resume affordance (task 08's
+- [x] Wire `home_lobby_screen.dart`'s resume affordance (task 08's
   integration point) to `ludo_local_save.dart`'s loaded state.
-- [ ] Add `test/state/ludo_local_save_test.dart` covering: save-then-load
+- [x] Add `test/state/ludo_local_save_test.dart` covering: save-then-load
   round-trips a match state and its config exactly, a finished match is
   cleared, and loading with no saved state returns `null` cleanly.
-- [ ] Add a full-app integration test (`test/app_resume_test.dart`)
+- [x] Add a full-app integration test (`test/app_resume_test.dart`)
   simulating: start a local match, apply a move, "restart" the app (rebuild
   the widget tree fresh), and assert the home lobby offers Resume and
   resuming lands back on the board at the saved state.

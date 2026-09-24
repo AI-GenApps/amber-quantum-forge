@@ -17,6 +17,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:ludo_rules/ludo_rules.dart' show LudoColor;
 
+import '../state/ludo_local_save.dart';
 import '../state/ludo_sound_settings.dart';
 import '../widgets/ludo_avatar.dart' show LudoAvatarMotif, ludoAvatars;
 import 'game_board_screen.dart';
@@ -103,24 +104,27 @@ final class LudoResumableMatchSummary {
   final String description;
 }
 
-/// The four home lobby entry cards.
-class HomeLobbyScreen extends StatelessWidget {
+/// The four home lobby entry cards, plus (task 11) a resume affordance for
+/// an in-progress local match.
+class HomeLobbyScreen extends StatefulWidget {
   const HomeLobbyScreen({
     super.key,
     this.resumableMatch,
     this.onResume,
     this.onPlayComputer,
     this.onPlayPassAndPlay,
+    this.localSave,
   });
 
-  /// A non-null summary shows the resume affordance above the entry cards;
-  /// `null` (the default) renders only the four cards, matching a
-  /// fresh-install lobby with no match in progress.
+  /// Test seam: a summary to show the resume affordance for, bypassing this
+  /// screen's own load from [localSave] entirely. `null` (the default) in
+  /// production, where the screen loads whatever `ludo_local_save.dart` has
+  /// saved (if anything) on init instead.
   final LudoResumableMatchSummary? resumableMatch;
 
-  /// Invoked when the resume affordance is tapped. Left `null` in
-  /// production until task 11 wires real resume; a tap then does nothing
-  /// observable beyond what the affordance already announces.
+  /// Test seam: overrides tapping the resume affordance. `null` (the
+  /// default) in production, where a tap instead pushes [GameBoardScreen]
+  /// with the loaded save's state/config/identities.
   final VoidCallback? onResume;
 
   /// Invoked when the Computer card is tapped. Defaults to a no-op
@@ -131,16 +135,86 @@ class HomeLobbyScreen extends StatelessWidget {
   /// placeholder push until task 09's mode/setup sheet exists.
   final VoidCallback? onPlayPassAndPlay;
 
+  /// Test seam: the save this screen loads a resumable match from when
+  /// [resumableMatch] is not explicitly supplied. `null` (the default)
+  /// resolves the production save (`LudoLocalSave.production`) lazily.
+  final LudoLocalSave? localSave;
+
+  @override
+  State<HomeLobbyScreen> createState() => _HomeLobbyScreenState();
+}
+
+class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
+  LudoLocalSave? _resolvedSave;
+  LudoLocalMatchSave? _loadedMatch;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.resumableMatch == null) {
+      _loadSavedMatch();
+    }
+  }
+
+  Future<void> _loadSavedMatch() async {
+    final save = widget.localSave ?? await LudoLocalSave.production();
+    final loaded = await save.load();
+    if (!mounted) return;
+    setState(() {
+      _resolvedSave = save;
+      _loadedMatch = loaded;
+    });
+  }
+
+  /// The summary to show, if any: [widget.resumableMatch] when explicitly
+  /// supplied (test seam), otherwise derived from whatever
+  /// [_loadSavedMatch] loaded.
+  LudoResumableMatchSummary? get _summary {
+    if (widget.resumableMatch != null) return widget.resumableMatch;
+    final loaded = _loadedMatch;
+    if (loaded == null) return null;
+    return LudoResumableMatchSummary(
+      mode: loaded.config.isComputerMatch
+          ? LudoResumableMatchMode.computer
+          : LudoResumableMatchMode.passAndPlay,
+      description:
+          '${loaded.config.ruleset.id} - '
+          '${loaded.config.playerCount} players',
+    );
+  }
+
+  void _handleResume() {
+    if (widget.onResume != null) {
+      widget.onResume!();
+      return;
+    }
+    final loaded = _loadedMatch;
+    final save = _resolvedSave;
+    if (loaded == null || save == null) return;
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => GameBoardScreen(
+          config: loaded.config,
+          seatIdentities: loaded.seatIdentities,
+          soundSettings: LudoSoundSettings(),
+          initialState: loaded.state,
+          localSave: save,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final summary = _summary;
     return Scaffold(
       appBar: AppBar(title: const Text('Ludo')),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            if (resumableMatch != null) ...[
-              _ResumeCard(summary: resumableMatch!, onTap: onResume),
+            if (summary != null) ...[
+              _ResumeCard(summary: summary, onTap: _handleResume),
               const SizedBox(height: 16),
             ],
             GridView.count(
@@ -157,7 +231,7 @@ class HomeLobbyScreen extends StatelessWidget {
                   icon: Icons.smart_toy_outlined,
                   enabled: true,
                   onTap:
-                      onPlayComputer ??
+                      widget.onPlayComputer ??
                       () => startLudoLocalMatch(context, isComputerMatch: true),
                 ),
                 _LobbyCard(
@@ -166,7 +240,7 @@ class HomeLobbyScreen extends StatelessWidget {
                   icon: Icons.people_alt_outlined,
                   enabled: true,
                   onTap:
-                      onPlayPassAndPlay ??
+                      widget.onPlayPassAndPlay ??
                       () =>
                           startLudoLocalMatch(context, isComputerMatch: false),
                 ),

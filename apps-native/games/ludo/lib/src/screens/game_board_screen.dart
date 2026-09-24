@@ -12,6 +12,7 @@ import 'package:ludo_rules/ludo_rules.dart';
 import 'package:platform_core/platform_core.dart' show DeterministicRng;
 
 import '../game/ludo_game.dart';
+import '../state/ludo_local_save.dart';
 import '../state/ludo_settings_store.dart';
 import '../state/ludo_sound_settings.dart';
 import '../state/reduced_motion_setting.dart';
@@ -50,6 +51,8 @@ class GameBoardScreen extends StatefulWidget {
     this.onQuit,
     this.reducedMotion,
     this.settingsStore,
+    this.initialState,
+    this.localSave,
   });
 
   /// The match configuration returned by [ModeSetupSheet].
@@ -60,6 +63,18 @@ class GameBoardScreen extends StatefulWidget {
   final List<LudoSeatIdentity> seatIdentities;
 
   final LudoSoundSettings soundSettings;
+
+  /// A previously-saved engine state to resume onto this board instead of
+  /// starting a fresh match (task 11's resume flow, populated from
+  /// `ludo_local_save.dart`). `null` (the default) starts a fresh match via
+  /// `LudoMatchState.initial`, as before this task.
+  final LudoMatchState? initialState;
+
+  /// Test seam: the save this screen persists the running match to after
+  /// every applied move, and clears once the match finishes. `null` (the
+  /// default) resolves the production save (`LudoLocalSave.production`)
+  /// lazily, so callers never need to wire it explicitly.
+  final LudoLocalSave? localSave;
 
   /// Test seam: seeds the dice source deterministically. Production uses a
   /// fresh time-based seed.
@@ -96,6 +111,7 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
   late LudoMatchState _state;
   late DeterministicRng _rng;
   late ReducedMotionSetting _reducedMotion;
+  late Future<LudoLocalSave> _localSaveFuture;
   DateTime? _turnDeadline;
 
   @override
@@ -106,16 +122,39 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
       widget.diceSeed ?? DateTime.now().millisecondsSinceEpoch,
     );
     _reducedMotion = widget.reducedMotion ?? ReducedMotionSetting();
-    _state = LudoMatchState.initial(
-      ruleset: widget.config.ruleset,
-      subjects: [
-        for (var i = 0; i < widget.config.seats.length; i++)
-          widget.config.seats[i].isBot ? 'bot-$i' : 'local-$i',
-      ],
-    );
+    _localSaveFuture = widget.localSave != null
+        ? Future.value(widget.localSave)
+        : LudoLocalSave.production();
+    _state =
+        widget.initialState ??
+        LudoMatchState.initial(
+          ruleset: widget.config.ruleset,
+          subjects: [
+            for (var i = 0; i < widget.config.seats.length; i++)
+              widget.config.seats[i].isBot ? 'bot-$i' : 'local-$i',
+          ],
+        );
     _game = LudoGame(initialState: _state, reducedMotion: _reducedMotion)
       ..onTokenTap = _handleTokenTap;
     _armDeadlineForCurrentTurn();
+  }
+
+  /// Persists [_state] to [_localSaveFuture]'s save after every applied
+  /// move (task 11), or clears it once the match reaches
+  /// [LudoMatchPhase.finished] so no stale resumable save is left behind.
+  Future<void> _persistLocalSave() async {
+    final save = await _localSaveFuture;
+    if (_state.phase == LudoMatchPhase.finished) {
+      await save.clear();
+      return;
+    }
+    await save.save(
+      LudoLocalMatchSave(
+        state: _state,
+        config: widget.config,
+        seatIdentities: widget.seatIdentities,
+      ),
+    );
   }
 
   void _armDeadlineForCurrentTurn() {
@@ -145,6 +184,7 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
       _armDeadlineForCurrentTurn();
     });
     await _game.applyEvents(result.events, result.state);
+    await _persistLocalSave();
     _maybeNavigateToResults();
   }
 
@@ -159,6 +199,7 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
       _armDeadlineForCurrentTurn();
     });
     await _game.applyEvents(result.events, result.state);
+    await _persistLocalSave();
     _maybeNavigateToResults();
   }
 
