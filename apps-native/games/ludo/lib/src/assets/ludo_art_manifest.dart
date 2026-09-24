@@ -19,6 +19,10 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:ludo_rules/ludo_rules.dart' show LudoColor;
+
+import '../game/ludo_board_geometry.dart';
+import '../game/ludo_token_component.dart';
 
 /// Signature for a visual asset slot: paints the slot's art into [rect] on
 /// [canvas]. Until a later task fills it in, every slot paints a solid
@@ -31,7 +35,16 @@ typedef LudoAudioSlot = Future<void> Function();
 
 /// The four Ludo player colors, used to key the per-color slots
 /// ([LudoArtManifest.token], [LudoArtManifest.homeStretch]).
+///
+/// Same names and order as `ludo_rules`' [LudoColor] (task 01's frozen seat
+/// constants) — this enum exists only because the manifest predates this
+/// task's dependency on the rules package; [ludoColorOf] converts between
+/// the two by that shared order.
 enum LudoTokenColor { red, green, yellow, blue }
+
+/// Converts a manifest [LudoTokenColor] to the `ludo_rules` [LudoColor] it
+/// names, by their shared declaration order.
+LudoColor ludoColorOf(LudoTokenColor color) => LudoColor.values[color.index];
 
 void _placeholderVisual(Canvas canvas, Rect rect) {
   canvas.drawRect(rect, Paint()..color = const Color(0xFFB0BEC5));
@@ -39,24 +52,42 @@ void _placeholderVisual(Canvas canvas, Rect rect) {
 
 Future<void> _placeholderAudio() async {}
 
+/// Paints the board's background using the same fill the real
+/// [LudoBoardComponent] uses, so this manifest slot and the on-screen
+/// board never drift apart.
+void _boardBackgroundVisual(Canvas canvas, Rect rect) {
+  canvas.drawRect(rect, Paint()..color = const Color(0xFFF5F5F0));
+}
+
+/// Paints one color's glossy token, delegating to [LudoTokenPainter] — the
+/// same code path `LudoTokenComponent` renders with — so this slot and the
+/// on-board token always draw identical art.
+LudoVisualSlot _tokenVisual(LudoTokenColor color) => (canvas, rect) {
+  LudoTokenPainter.paint(canvas, rect, ludoColorPalette[ludoColorOf(color)]!);
+};
+
+/// Paints one color's home-stretch lane fill, matching
+/// `LudoHomeStretchCellComponent`'s tint.
+LudoVisualSlot _homeStretchVisual(LudoTokenColor color) => (canvas, rect) {
+  final base = ludoColorPalette[ludoColorOf(color)]!;
+  canvas.drawRect(rect, Paint()..color = base.withValues(alpha: 0.55));
+};
+
 /// Named-slot registry for every Ludo visual/audio asset.
 ///
 /// See the doc comment at the top of this file for the contract every slot
 /// follows.
 abstract final class LudoArtManifest {
-  // Visual slots — code-drawn placeholders. TODO(task-04): board, tokens,
-  // home stretch; TODO(task-05): dice faces, capture particle, confetti.
+  // Visual slots. Board/token/home-stretch slots (task 04) resolve to the
+  // real code-drawn components in `lib/src/game/`; dice/particle/confetti
+  // slots (task 05) remain placeholders.
 
   /// The board's background/track art.
-  static const LudoVisualSlot boardBackground =
-      _placeholderVisual; // TODO(task-04)
+  static const LudoVisualSlot boardBackground = _boardBackgroundVisual;
 
   /// One token slot per player color.
-  static const Map<LudoTokenColor, LudoVisualSlot> token = {
-    LudoTokenColor.red: _placeholderVisual, // TODO(task-04)
-    LudoTokenColor.green: _placeholderVisual, // TODO(task-04)
-    LudoTokenColor.yellow: _placeholderVisual, // TODO(task-04)
-    LudoTokenColor.blue: _placeholderVisual, // TODO(task-04)
+  static final Map<LudoTokenColor, LudoVisualSlot> token = {
+    for (final color in LudoTokenColor.values) color: _tokenVisual(color),
   };
 
   /// Dice face art, indexed `0`..`5` for pips `1`..`6`.
@@ -70,11 +101,8 @@ abstract final class LudoArtManifest {
   ];
 
   /// One home-stretch lane slot per player color.
-  static const Map<LudoTokenColor, LudoVisualSlot> homeStretch = {
-    LudoTokenColor.red: _placeholderVisual, // TODO(task-04)
-    LudoTokenColor.green: _placeholderVisual, // TODO(task-04)
-    LudoTokenColor.yellow: _placeholderVisual, // TODO(task-04)
-    LudoTokenColor.blue: _placeholderVisual, // TODO(task-04)
+  static final Map<LudoTokenColor, LudoVisualSlot> homeStretch = {
+    for (final color in LudoTokenColor.values) color: _homeStretchVisual(color),
   };
 
   /// Capture particle burst, played when a token sends an opponent home.

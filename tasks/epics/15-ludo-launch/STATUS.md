@@ -46,7 +46,7 @@ next task.
 | 01 | Domain owner | `ludo_rules` core engine (board, movement, turns, dice, capture, Classic/Quick config) | [x] |
 | 02 | Domain owner | `ludo_rules` bot strategies and cross-runtime replay fixtures | [x] |
 | 03 | Client owner | Flutter app scaffold, asset manifest slots, `lib/src/{screens,state,game,assets}` convention | [x] |
-| 04 | Client/art owner | Board, track, safe stars, glossy tokens, hop animation, legal-move/turn highlight | [ ] |
+| 04 | Client/art owner | Board, track, safe stars, glossy tokens, hop animation, legal-move/turn highlight | [x] |
 | 05 | Client/art owner | Animated dice tumble, capture particles, home-arrival burst, win confetti, reduced motion | [ ] |
 | 06 | Client/audio owner | Audio service, CC0 SFX/music, haptics, sound settings | [ ] |
 | 07 | Client/UX owner | Splash, welcome, name+avatar picker (8+ avatars), interactive tutorial | [ ] |

@@ -19,6 +19,7 @@ dependencies:
     path: ../packages/platform_core
 
 dev_dependencies:
+  flame_test: ^2.3.1
   flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter

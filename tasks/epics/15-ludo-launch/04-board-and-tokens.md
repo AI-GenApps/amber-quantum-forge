@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 04-board-and-tokens
-status: pending
+status: done
 commit_scope: ludo
 depends_on: [15-ludo-launch/03-client-scaffold]
 estimate: L
@@ -79,34 +79,34 @@ and confetti are task 05.
 
 ## Implementation Checklist
 
-- [ ] Create `lib/src/game/ludo_board_component.dart`: draws the track,
+- [x] Create `lib/src/game/ludo_board_component.dart`: draws the track,
   home stretches, yards, and safe-cell markers from `ludo_rules`' geometry
   constants.
-- [ ] Create `lib/src/game/ludo_token_component.dart`: glossy code-drawn
+- [x] Create `lib/src/game/ludo_token_component.dart`: glossy code-drawn
   token per color (gradient + drop shadow + glossy highlight, per the
   concrete requirements above), with a hop-by-hop movement animation
   (~120ms/cell, `Curves.easeOut`, small arc) and a reduced-motion instant-
   move fallback.
-- [ ] Create `lib/src/game/ludo_legal_move_highlight.dart` and
+- [x] Create `lib/src/game/ludo_legal_move_highlight.dart` and
   `lib/src/game/ludo_turn_highlight.dart` implementing the highlight
   treatments described above, driven by `legalMoves(state)` and the active
   seat.
-- [ ] Create `lib/src/state/reduced_motion_setting.dart`: a minimal
+- [x] Create `lib/src/state/reduced_motion_setting.dart`: a minimal
   provider/notifier the components above read (real persistence lands in
   task 10; this task can use an in-memory default of `false`).
-- [ ] Create `lib/src/game/ludo_game.dart`: the `FlameGame` subclass
+- [x] Create `lib/src/game/ludo_game.dart`: the `FlameGame` subclass
   composing board + tokens + highlight layers, driven by a
   `LudoMatchState`-shaped input (from `ludo_rules`, local for now — task 12
   wires a real match state source, task 05 adds dice/particles/confetti on
   top of this same class).
-- [ ] Update `lib/src/assets/ludo_art_manifest.dart` (task 03) to resolve
+- [x] Update `lib/src/assets/ludo_art_manifest.dart` (task 03) to resolve
   the board/token visual slots to the real components built here instead of
   the placeholder stubs.
-- [ ] Add `test/game/ludo_board_component_test.dart`,
+- [x] Add `test/game/ludo_board_component_test.dart`,
   `ludo_token_component_test.dart` covering: correct cell count rendered,
   correct safe-cell markers, token hop animation completes and lands on the
   expected cell, and reduced-motion mode skips multi-frame animation.
-- [ ] Add golden tests under `test/goldens/` (empty board, populated board,
+- [x] Add golden tests under `test/goldens/` (empty board, populated board,
   legal-move highlight, turn highlight) using `matchesGoldenFile`, with the
   golden `.png` files committed under `apps-native/games/ludo/test/
   goldens/`.
