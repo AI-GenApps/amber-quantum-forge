@@ -97,5 +97,48 @@ ThemeData buildLudoTheme() {
         side: const BorderSide(color: LudoThemeTokens.gold, width: 1.5),
       ),
     ),
+    // Task 12f device QA: the stock Material 3 `SegmentedButton` (used by
+    // the mode setup sheet's Ruleset/Players toggles) otherwise renders
+    // with the default `ColorScheme.secondaryContainer`/checkmark look —
+    // a plain grey selected segment that reads as unstyled Material next
+    // to this screen's gold-trimmed 3D buttons. This gives selected
+    // segments the same gold fill + dark ink used everywhere else.
+    segmentedButtonTheme: SegmentedButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? LudoThemeTokens.gold
+              : LudoThemeTokens.backgroundMidBlue,
+        ),
+        foregroundColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? LudoThemeTokens.textOutline
+              : LudoThemeTokens.textOnDark,
+        ),
+        iconColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? LudoThemeTokens.textOutline
+              : LudoThemeTokens.textOnDark,
+        ),
+        side: const WidgetStatePropertyAll(
+          BorderSide(color: LudoThemeTokens.gold, width: 1.5),
+        ),
+        textStyle: WidgetStatePropertyAll(textTheme.labelLarge),
+      ),
+    ),
+    // Task 12f device QA: the stock `Checkbox`/`CheckboxListTile` (used by
+    // the pass-and-play interstitial's "don't show again" row) otherwise
+    // renders as a plain grey/white Material default outline. This ties
+    // it to the same gold-fill/dark-ink language as the pause dialog's
+    // toggle switches.
+    checkboxTheme: CheckboxThemeData(
+      fillColor: WidgetStateProperty.resolveWith(
+        (states) => states.contains(WidgetState.selected)
+            ? LudoThemeTokens.gold
+            : Colors.transparent,
+      ),
+      checkColor: const WidgetStatePropertyAll(LudoThemeTokens.textOutline),
+      side: const BorderSide(color: LudoThemeTokens.gold, width: 2),
+    ),
   );
 }

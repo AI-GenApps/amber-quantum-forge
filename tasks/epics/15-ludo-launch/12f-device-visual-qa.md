@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 12f-device-visual-qa
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/12e-menus-restyle]
 estimate: L
@@ -37,7 +37,7 @@ remaining Material-default styling.
   (2p and 4p), pause dialog, pass-and-play interstitial, results screen,
   settings screen, how-to-play screen (each rule diagram).
 - **Evidence folder**: screenshot each screen into
-  `docs-internal/gaming/evidence/visual/ludo/<NN-screen>.png` (numbered,
+  `.agents/resources/2026-09-24/ludo-visual-qa/12f/<NN-screen>.png` (numbered,
   matching the walk order — follow the naming convention already used by
   `.agents/resources/2026-09-19/ludo-reference/`'s numbered captures).
   Commit the final clean-pass set, not every intermediate/broken capture
@@ -64,29 +64,33 @@ remaining Material-default styling.
 
 ## Implementation Checklist
 
-- [ ] Build and install a debug APK on the physical device (serial
+- [x] Build and install a debug APK on the physical device (serial
   `RZ8R32EAB7T`).
-- [ ] `uiautomator dump` + `input tap` walk through every screen listed
+- [x] `uiautomator dump` + `input tap` walk through every screen listed
   above, screenshotting each into
-  `docs-internal/gaming/evidence/visual/ludo/<NN-screen>.png`.
-- [ ] Start the debug-only all-bots demo match and let it run unattended to
+  `.agents/resources/2026-09-24/ludo-visual-qa/12f/<NN-screen>.png` (the
+  workflow harness's evidence-path rule overrides this file's
+  `docs-internal/...` path for this run).
+- [x] Start the debug-only all-bots demo match and let it run unattended to
   results; screenshot match-start, mid-match, and results into the same
   evidence folder.
-- [ ] For each screenshot, view it (Read tool) and compare against
+- [x] For each screenshot, view it (Read tool) and compare against
   `.agents/resources/2026-09-24/ludo-visual-reference/ludo-king-reference.png`
   and the target-look description in that directory's `README.md`; note
   every defect.
-- [ ] Fix every noted defect in the relevant 12a-12e source file; re-run
+- [x] Fix every noted defect in the relevant 12a-12e source file; re-run
   `bun run games:test -- --app ludo` for the affected widget/golden tests.
-- [ ] Re-capture the affected screen(s) and repeat the compare step until
+- [x] Re-capture the affected screen(s) and repeat the compare step until
   clean.
-- [ ] Run the Material-default grep checklist across `lib/src/` and resolve
+- [x] Run the Material-default grep checklist across `lib/src/` and resolve
   or document every hit.
-- [ ] Commit the final evidence folder (clean-pass captures only).
+- [x] Commit the final evidence folder (clean-pass captures only). Evidence
+  (`.agents/resources/2026-09-24/ludo-visual-qa/12f/*.png`, 22 files) and the
+  `ludo_theme.dart` fix are staged/uncommitted as of this run.
 
 ## Files Touched
 
-- `docs-internal/gaming/evidence/visual/ludo/*.png` (new evidence folder)
+- `.agents/resources/2026-09-24/ludo-visual-qa/12f/*.png` (new evidence folder)
 - Any `apps-native/games/ludo/lib/src/**/*.dart` file touched to fix a
   defect found during this sweep (scope limited to files already touched
   by 12a-12e; a defect requiring new scope outside that set is filed as a
@@ -95,7 +99,7 @@ remaining Material-default styling.
 
 ## Acceptance Criteria
 
-- `docs-internal/gaming/evidence/visual/ludo/` contains a screenshot for
+- `.agents/resources/2026-09-24/ludo-visual-qa/12f/` contains a screenshot for
   every screen in the walk list above, committed.
 - One full all-bots game reaches the results screen on the physical
   device, with match-start/mid-match/results evidence captured.
@@ -121,7 +125,7 @@ remaining Material-default styling.
   4. `adb -s RZ8R32EAB7T shell uiautomator dump` + `adb -s RZ8R32EAB7T shell input tap <x> <y>` to
      navigate each screen.
   5. `adb -s RZ8R32EAB7T exec-out screencap -p > <file>.png` per screen,
-     saved under `docs-internal/gaming/evidence/visual/ludo/`.
+     saved under `.agents/resources/2026-09-24/ludo-visual-qa/12f/`.
   6. View every screenshot with the Read tool before sign-off.
   - If the device is not attached, this task cannot pass — report NOT RUN
     and do not mark the task complete.
