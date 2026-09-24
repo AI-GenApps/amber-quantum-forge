@@ -1,0 +1,33 @@
+[
+  {
+    "created_at": "2026-09-24T19:56:47.553591Z",
+    "display_name": "GPT Image 2.5",
+    "id": "702f5baf-040e-4f40-869f-5509eb6a7e00",
+    "job_type": "gpt_image_2_5",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260924_195647_702f5baf-040e-4f40-869f-5509eb6a7e00_min.webp",
+    "params": {
+      "aspect_ratio": "1:1",
+      "background": "transparent",
+      "height": 2048,
+      "medias": [
+        {
+          "data": {
+            "id": "d4effd29-b8be-4a62-a542-8600b9dc9982",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/d4effd29-b8be-4a62-a542-8600b9dc9982.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "flare",
+      "prompt": "Premium casual mobile game UI tile illustration, like top-grossing Ludo and board game apps. Glossy, saturated, 3D-rendered casual-game render, chunky rounded friendly shapes, soft studio lighting with a rim light, subtle drop shadow only (no background shape, no ground plane). Candy-bright red, green, yellow, blue accents (classic Ludo colors) plus gold metallic accents. Crisp clean edges, no photorealism, no grain. ORIGINAL design, do not imitate Ludo King or any existing game's icon, no crowns, never the word King, no Chrome-browser-like four-color pinwheel/swirl shapes. Single clear hero object, centered, readable at small size (300px), absolutely no text, no letters, no watermark, square 1:1 composition, transparent background, nothing but the object and its soft shadow. Hero object: A chunky round medallion badge emblem: a thick gold metallic ring border (use the reference image ONLY to copy the gold ring's bevel and rim-light style, nothing else from the reference), enclosing a solid gradient-color circular face. The face is a purple-to-blue gradient. Embossed in bold 3D glossy relief at the center of the face: a simple glossy globe with latitude and longitude lines, wrapped by one thin orbit ring. Do NOT include any map-pin tokens, do NOT include a star — only the ring and the globe symbol.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2048
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260924_195647_702f5baf-040e-4f40-869f-5509eb6a7e00.png",
+    "status": "completed"
+  }
+]

@@ -1,0 +1,33 @@
+[
+  {
+    "created_at": "2026-09-24T19:48:01.055045Z",
+    "display_name": "GPT Image 2.5",
+    "id": "e17b1ade-fe84-4ce5-bb91-2e086d93d4ce",
+    "job_type": "gpt_image_2_5",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260924_194801_e17b1ade-fe84-4ce5-bb91-2e086d93d4ce_min.webp",
+    "params": {
+      "aspect_ratio": "1:1",
+      "background": "transparent",
+      "height": 2048,
+      "medias": [
+        {
+          "data": {
+            "id": "b45866cb-ed2b-4863-b158-acc2e4e3ff47",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/b45866cb-ed2b-4863-b158-acc2e4e3ff47.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "flare",
+      "prompt": "Premium casual mobile game UI tile illustration, like top-grossing Ludo and board game apps. Glossy, saturated, 3D-rendered casual-game render, chunky rounded friendly shapes, soft studio lighting with a rim light, subtle drop shadow only (no background shape, no ground plane). Candy-bright red, green, yellow, blue accents (classic Ludo colors) plus gold metallic accents, matching the reference icon's gold-rimmed glossy token style. Crisp clean edges, no photorealism, no grain. ORIGINAL design, do not imitate Ludo King or any existing game's icon, no crowns, never the word King, no Chrome-browser-like four-color pinwheel/swirl shapes. Single clear hero object, centered, readable at small size (300px), absolutely no text, no letters, no watermark, square 1:1 composition, transparent background, nothing but the object and its soft shadow. Hero object: a chunky round gold-rimmed medallion badge emblem, matching the reference icon's ring style exactly, with a blue-to-navy gradient face and a bold 3D glossy robot-head-with-dice-eyes symbol embossed at its center.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2048
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260924_194801_e17b1ade-fe84-4ce5-bb91-2e086d93d4ce.png",
+    "status": "completed"
+  }
+]

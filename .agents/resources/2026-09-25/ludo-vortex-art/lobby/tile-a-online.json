@@ -1,0 +1,33 @@
+[
+  {
+    "created_at": "2026-09-24T19:46:30.191032Z",
+    "display_name": "GPT Image 2.5",
+    "id": "ac8b1295-241e-46f1-9cd9-73e46ce6907d",
+    "job_type": "gpt_image_2_5",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260924_194630_ac8b1295-241e-46f1-9cd9-73e46ce6907d_min.webp",
+    "params": {
+      "aspect_ratio": "1:1",
+      "background": "transparent",
+      "height": 2048,
+      "medias": [
+        {
+          "data": {
+            "id": "b7e1799f-8ed2-41cd-8d22-6e4bca629ec8",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/b7e1799f-8ed2-41cd-8d22-6e4bca629ec8.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "flare",
+      "prompt": "Premium casual mobile game UI tile illustration, like top-grossing Ludo and board game apps. Glossy, saturated, 3D-rendered casual-game render, chunky rounded friendly shapes, soft studio lighting with a rim light, subtle drop shadow only (no background shape, no ground plane). Candy-bright red, green, yellow, blue accents (classic Ludo colors) plus gold metallic accents, matching the reference icon's gold-rimmed glossy token style. Crisp clean edges, no photorealism, no grain. ORIGINAL design, do not imitate Ludo King or any existing game's icon, no crowns, never the word King, no Chrome-browser-like four-color pinwheel/swirl shapes. Single clear hero object, centered, readable at small size (300px), absolutely no text, no letters, no watermark, square 1:1 composition, transparent background, nothing but the object and its soft shadow. Hero object: a glossy 3D globe with soft blue continents, wrapped by a thin glowing orbit ring carrying four small colored map-pin tokens (red, green, yellow, blue) evenly spaced around the orbit.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2048
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260924_194630_ac8b1295-241e-46f1-9cd9-73e46ce6907d.png",
+    "status": "completed"
+  }
+]

@@ -1,0 +1,33 @@
+[
+  {
+    "created_at": "2026-09-24T19:40:52.166304Z",
+    "display_name": "GPT Image 2.5",
+    "id": "d7ace1ce-2f83-4fea-aa3e-0cb2cce83ae9",
+    "job_type": "gpt_image_2_5",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260924_194052_d7ace1ce-2f83-4fea-aa3e-0cb2cce83ae9_min.webp",
+    "params": {
+      "aspect_ratio": "9:16",
+      "background": "opaque",
+      "height": 2688,
+      "medias": [
+        {
+          "data": {
+            "id": "bfbbd829-7aee-42cb-b663-e5e96850c70e",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/bfbbd829-7aee-42cb-b663-e5e96850c70e.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "flare",
+      "prompt": "Premium casual mobile game lobby background art, like top-grossing Ludo and board game apps. Glossy, saturated, 3D-lit atmosphere. Deep royal-blue to navy color palette with warm gold light accents, matching the reference icon's gold-rimmed token style. Crisp clean edges, no photorealism, no grain, no banding. ORIGINAL design, do not imitate Ludo King or any existing game's background, no crowns, never the word King, no Chrome-browser-like four-color pinwheel/swirl shapes. Portrait 9:16 orientation. Absolutely no text, no letters, no logos, no UI elements, no watermark. Keep the center third of the frame visually calm and low-detail (no strong focal shapes) so UI cards can be placed over it. Concept: night carnival. A deep royal-blue to navy gradient background, darker at the bottom, with a soft golden spotlight glow radiating down from the top edge. A faint, tilted dice-and-board-grid pattern is embossed subtly into the navy in the background, barely visible. Floating soft-focus golden bokeh sparkles drift through the scene at varying sizes. A subtle dark vignette frames the edges.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 1520
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260924_194052_d7ace1ce-2f83-4fea-aa3e-0cb2cce83ae9.png",
+    "status": "completed"
+  }
+]

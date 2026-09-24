@@ -1,0 +1,33 @@
+[
+  {
+    "created_at": "2026-09-24T19:44:04.346874Z",
+    "display_name": "GPT Image 2.5",
+    "id": "5ee1acaa-1292-46c1-8e3a-36f105bf6800",
+    "job_type": "gpt_image_2_5",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260924_194404_5ee1acaa-1292-46c1-8e3a-36f105bf6800_min.webp",
+    "params": {
+      "aspect_ratio": "1:1",
+      "background": "transparent",
+      "height": 2048,
+      "medias": [
+        {
+          "data": {
+            "id": "8d4fdd67-e64b-4a92-b139-ba697dd9430e",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/8d4fdd67-e64b-4a92-b139-ba697dd9430e.png"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "flare",
+      "prompt": "Premium casual mobile game UI tile illustration, like top-grossing Ludo and board game apps. Glossy, saturated, 3D-rendered casual-game render, chunky rounded friendly shapes, soft studio lighting with a rim light, subtle drop shadow only (no background shape, no ground plane). Candy-bright red, green, yellow, blue accents (classic Ludo colors) plus gold metallic accents, matching the reference icon's gold-rimmed glossy token style. Crisp clean edges, no photorealism, no grain. ORIGINAL design, do not imitate Ludo King or any existing game's icon, no crowns, never the word King, no Chrome-browser-like four-color pinwheel/swirl shapes. Single clear hero object, centered, readable at small size (300px), absolutely no text, no letters, no watermark, square 1:1 composition, transparent background, nothing but the object and its soft shadow. Hero object: two glossy stylized 3D hands passing a glossy smartphone between them, the phone screen displaying a small glowing mini ludo board icon, warm gold highlight on the phone edge.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2048
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260924_194404_5ee1acaa-1292-46c1-8e3a-36f105bf6800.png",
+    "status": "completed"
+  }
+]
