@@ -52,6 +52,16 @@ LudoGame _gameOf(WidgetTester tester) => tester
     .widget<GameWidget<LudoGame>>(find.byType(GameWidget<LudoGame>))
     .game!;
 
+/// Pumps enough frames for a modal route push/pop (dialog, page transition)
+/// to fully finish, without ever calling `pumpAndSettle` — which would hang
+/// forever while a live `FlameGame` is anywhere in the tree, since it
+/// reschedules a frame every tick.
+Future<void> _pumpUntilSettled(WidgetTester tester) async {
+  for (var i = 0; i < 20; i++) {
+    await tester.pump(const Duration(milliseconds: 100));
+  }
+}
+
 void main() {
   testWidgets('dice zone is disabled outside the local player\'s roll phase', (
     tester,
@@ -163,4 +173,92 @@ void main() {
       expect(indicator.value, closeTo(0.5, 0.001));
     },
   );
+
+  testWidgets('toggling reduced motion in Settings (reached through the pause '
+      'dialog) makes the very next roll resolve instantly, with no '
+      'multi-frame tumble observed — task 10\'s follow-up to task 04/05\'s '
+      'reduced-motion seam', (tester) async {
+    final reducedMotion = ReducedMotionSetting();
+    await tester.pumpWidget(
+      _wrap(
+        GameBoardScreen(
+          config: _twoPlayerComputerConfig(),
+          seatIdentities: _identities,
+          soundSettings: LudoSoundSettings(),
+          diceSeed: _seedRollingFour,
+          reducedMotion: reducedMotion,
+        ),
+      ),
+    );
+    await _pumpGame(tester);
+
+    // Baseline: motion is enabled by default, so a roll does not resolve
+    // within a single frame — the tumble is still mid-flight.
+    await tester.tap(find.byType(DiceZone));
+    await tester.pump();
+    expect(
+      _gameOf(tester).dice.isRolling,
+      isTrue,
+      reason:
+          'a motion-enabled roll must still be mid-tumble after one '
+          'frame',
+    );
+    // Let the in-flight animated roll run its course (well past the dice
+    // component's own >=600ms tumble) before discarding this tree, so no
+    // pending animation future is left dangling across the rebuild below.
+    for (var i = 0; i < 20; i++) {
+      await tester.pump(const Duration(milliseconds: 100));
+    }
+
+    // Force a full teardown (an un-keyed rebuild would otherwise just
+    // update the existing `State`, leaving the first roll's now-disabled
+    // `DiceZone` — awaiting a move, not a fresh roll — in place) before
+    // rebuilding a fresh board with the same seed/instance so the next
+    // roll below is directly comparable — the seed always rolls 4 first,
+    // deterministically.
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump();
+    await tester.pumpWidget(
+      _wrap(
+        GameBoardScreen(
+          config: _twoPlayerComputerConfig(),
+          seatIdentities: _identities,
+          soundSettings: LudoSoundSettings(),
+          diceSeed: _seedRollingFour,
+          reducedMotion: reducedMotion,
+        ),
+      ),
+    );
+    await _pumpGame(tester);
+
+    // Reach Settings through the pause dialog and flip reduced motion on
+    // — the *same* [reducedMotion] instance this running board's
+    // `LudoGame` was constructed with (see `GameBoardScreen`'s
+    // `_reducedMotion` field), not a throwaway copy.
+    await tester.tap(find.byKey(const Key('game-board-menu-button')));
+    await _pumpUntilSettled(tester);
+    await tester.tap(find.byKey(const Key('pause-dialog-settings-button')));
+    await _pumpUntilSettled(tester);
+
+    expect(reducedMotion.value, isFalse);
+    await tester.tap(find.byKey(const Key('settings-reduced-motion-switch')));
+    await tester.pump();
+    expect(reducedMotion.value, isTrue);
+
+    await tester.tap(find.byIcon(Icons.arrow_back));
+    await _pumpUntilSettled(tester);
+    await tester.tap(find.text('Resume'));
+    await _pumpUntilSettled(tester);
+
+    // The very next roll on this same board must now resolve within a
+    // single frame — no multi-frame tumble observed.
+    await tester.tap(find.byType(DiceZone));
+    await tester.pump();
+
+    final game = _gameOf(tester);
+    expect(game.dice.isRolling, isFalse);
+    expect(game.dice.isSettling, isFalse);
+    expect(game.dice.distinctFacesFlickered, 0);
+    expect(game.dice.displayFace, 4);
+  });
 }

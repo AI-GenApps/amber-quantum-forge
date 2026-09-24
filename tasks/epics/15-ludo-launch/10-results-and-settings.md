@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 10-results-and-settings
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/09-setup-and-board-screen]
 estimate: M
@@ -47,23 +47,23 @@ plumbing.
 
 ## Implementation Checklist
 
-- [ ] Create `lib/src/screens/results_screen.dart` with final ranks,
+- [x] Create `lib/src/screens/results_screen.dart` with final ranks,
   Rematch, and Home actions.
-- [ ] Create `lib/src/screens/settings_screen.dart` binding to the shared
+- [x] Create `lib/src/screens/settings_screen.dart` binding to the shared
   `ludo_sound_settings.dart` instance and `reduced_motion_setting.dart`,
   with local persistence.
-- [ ] Create `lib/src/screens/how_to_play_screen.dart` with the Classic and
+- [x] Create `lib/src/screens/how_to_play_screen.dart` with the Classic and
   Quick rules explainer text.
-- [ ] Wire `pause_quit_dialog.dart` (task 09) and `settings_screen.dart` to
+- [x] Wire `pause_quit_dialog.dart` (task 09) and `settings_screen.dart` to
   the same `ludo_sound_settings` instance (verify via a shared
   provider/singleton, not two constructions).
-- [ ] Wire `game_board_screen.dart` (task 09) to navigate to
+- [x] Wire `game_board_screen.dart` (task 09) to navigate to
   `results_screen.dart` on match finish.
-- [ ] Add `test/screens/results_screen_test.dart`,
+- [x] Add `test/screens/results_screen_test.dart`,
   `settings_screen_test.dart`, `how_to_play_screen_test.dart`, each
   asserting `Semantics` labels and 48dp+ tap targets on every interactive
   control.
-- [ ] Add a follow-up assertion in a board-screen test proving toggling
+- [x] Add a follow-up assertion in a board-screen test proving toggling
   reduced motion in Settings measurably changes tasks 04/05's component
   behavior (no multi-frame animation observed).
 

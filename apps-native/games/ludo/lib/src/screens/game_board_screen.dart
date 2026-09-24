@@ -12,12 +12,14 @@ import 'package:ludo_rules/ludo_rules.dart';
 import 'package:platform_core/platform_core.dart' show DeterministicRng;
 
 import '../game/ludo_game.dart';
+import '../state/ludo_settings_store.dart';
 import '../state/ludo_sound_settings.dart';
 import '../state/reduced_motion_setting.dart';
 import '../widgets/dice_zone.dart';
 import '../widgets/player_panel.dart';
 import 'mode_setup_sheet.dart';
 import 'pause_quit_dialog.dart';
+import 'results_screen.dart';
 
 /// The turn-phase duration the timer ring counts down. Purely
 /// presentational in this task; task 25 swaps in a server-provided
@@ -47,6 +49,7 @@ class GameBoardScreen extends StatefulWidget {
     this.diceSeed,
     this.onQuit,
     this.reducedMotion,
+    this.settingsStore,
   });
 
   /// The match configuration returned by [ModeSetupSheet].
@@ -67,12 +70,22 @@ class GameBoardScreen extends StatefulWidget {
   /// task's Context/Decisions).
   final VoidCallback? onQuit;
 
-  /// Test seam threaded down to the `LudoGame`, exactly like the
-  /// onboarding tutorial screen's `reducedMotion` doc: enabling it makes
+  /// Test seam threaded down to the `LudoGame` (and, via [SettingsScreen],
+  /// to whatever settings link the pause dialog offers): enabling it makes
   /// hop/flight/tumble animations resolve on the next microtask instead of
   /// over several real-duration frames, so tests never have to wait on a
-  /// live game loop to go idle. Defaults to motion-enabled in production.
+  /// live game loop to go idle. `null` (the default) still leaves motion
+  /// enabled in production, but this screen always allocates one concrete
+  /// [ReducedMotionSetting] instance either way (see [_reducedMotion]) so
+  /// toggling it from the settings screen reached through the pause dialog
+  /// measurably affects *this* running match's components, not a
+  /// throwaway instance.
   final ReducedMotionSetting? reducedMotion;
+
+  /// Test seam: persists sound/reduced-motion toggles changed from the
+  /// settings screen reached through the pause dialog. `null` (the
+  /// default) disables persistence.
+  final LudoSettingsStore? settingsStore;
 
   @override
   State<GameBoardScreen> createState() => _GameBoardScreenState();
@@ -82,6 +95,7 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
   late LudoGame _game;
   late LudoMatchState _state;
   late DeterministicRng _rng;
+  late ReducedMotionSetting _reducedMotion;
   DateTime? _turnDeadline;
 
   @override
@@ -91,6 +105,7 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
     _rng = DeterministicRng(
       widget.diceSeed ?? DateTime.now().millisecondsSinceEpoch,
     );
+    _reducedMotion = widget.reducedMotion ?? ReducedMotionSetting();
     _state = LudoMatchState.initial(
       ruleset: widget.config.ruleset,
       subjects: [
@@ -98,7 +113,7 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
           widget.config.seats[i].isBot ? 'bot-$i' : 'local-$i',
       ],
     );
-    _game = LudoGame(initialState: _state, reducedMotion: widget.reducedMotion)
+    _game = LudoGame(initialState: _state, reducedMotion: _reducedMotion)
       ..onTokenTap = _handleTokenTap;
     _armDeadlineForCurrentTurn();
   }
@@ -130,6 +145,7 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
       _armDeadlineForCurrentTurn();
     });
     await _game.applyEvents(result.events, result.state);
+    _maybeNavigateToResults();
   }
 
   Future<void> _handleTokenTap(LudoColor color, int tokenId) async {
@@ -143,12 +159,34 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
       _armDeadlineForCurrentTurn();
     });
     await _game.applyEvents(result.events, result.state);
+    _maybeNavigateToResults();
+  }
+
+  /// Pushes [ResultsScreen], replacing this screen, once [_state] reaches
+  /// [LudoMatchPhase.finished]. A no-op otherwise.
+  void _maybeNavigateToResults() {
+    if (_state.phase != LudoMatchPhase.finished) return;
+    if (!mounted) return;
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(
+        builder: (_) => ResultsScreen(
+          state: _state,
+          config: widget.config,
+          seatIdentities: widget.seatIdentities,
+          soundSettings: widget.soundSettings,
+          reducedMotion: _reducedMotion,
+          onQuit: widget.onQuit,
+        ),
+      ),
+    );
   }
 
   void _openPauseDialog() {
     showPauseQuitDialog(
       context,
       soundSettings: widget.soundSettings,
+      reducedMotion: _reducedMotion,
+      settingsStore: widget.settingsStore,
       onQuit: widget.onQuit ?? () => Navigator.of(context).maybePop(),
     );
   }

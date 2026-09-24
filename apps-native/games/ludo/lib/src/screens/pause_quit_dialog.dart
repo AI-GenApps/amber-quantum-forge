@@ -1,5 +1,9 @@
 /// The pause/quit dialog (task 09): sound/music/vibration toggles bound to
-/// task 06's [LudoSoundSettings], a Resume action, and a Quit action.
+/// task 06's [LudoSoundSettings], a Resume action, and a Quit action. Task
+/// 10 adds a Settings action opening [SettingsScreen] on the *same*
+/// [soundSettings]/[reducedMotion] instances this dialog itself reads, so a
+/// toggle changed from either place is reflected in the other within the
+/// same session.
 ///
 /// Quitting a local match ends it immediately with no penalty; quitting an
 /// online match's forfeit semantics are task 25's concern. This dialog
@@ -9,7 +13,10 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../state/ludo_settings_store.dart';
 import '../state/ludo_sound_settings.dart';
+import '../state/reduced_motion_setting.dart';
+import 'settings_screen.dart';
 
 /// Shows the pause/quit dialog. Returns once the dialog is dismissed
 /// (Resume, Quit, or barrier tap).
@@ -17,11 +24,17 @@ Future<void> showPauseQuitDialog(
   BuildContext context, {
   required LudoSoundSettings soundSettings,
   required VoidCallback onQuit,
+  ReducedMotionSetting? reducedMotion,
+  LudoSettingsStore? settingsStore,
 }) {
   return showDialog<void>(
     context: context,
-    builder: (_) =>
-        PauseQuitDialog(soundSettings: soundSettings, onQuit: onQuit),
+    builder: (_) => PauseQuitDialog(
+      soundSettings: soundSettings,
+      reducedMotion: reducedMotion,
+      settingsStore: settingsStore,
+      onQuit: onQuit,
+    ),
   );
 }
 
@@ -31,9 +44,19 @@ class PauseQuitDialog extends StatelessWidget {
     super.key,
     required this.soundSettings,
     required this.onQuit,
+    this.reducedMotion,
+    this.settingsStore,
   });
 
   final LudoSoundSettings soundSettings;
+
+  /// The shared reduced-motion instance opened onto [SettingsScreen]. A
+  /// dialog with no Settings action available (e.g. a caller not yet
+  /// wired for it) leaves this `null`.
+  final ReducedMotionSetting? reducedMotion;
+
+  /// Forwarded to [SettingsScreen]'s persistence.
+  final LudoSettingsStore? settingsStore;
 
   /// Invoked exactly once when Quit is tapped, after the dialog closes
   /// itself. The caller decides what quitting actually does (end a local
@@ -70,6 +93,20 @@ class PauseQuitDialog extends StatelessWidget {
         },
       ),
       actions: [
+        if (reducedMotion != null)
+          TextButton(
+            key: const Key('pause-dialog-settings-button'),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => SettingsScreen(
+                  soundSettings: soundSettings,
+                  reducedMotion: reducedMotion!,
+                  store: settingsStore,
+                ),
+              ),
+            ),
+            child: const Text('Settings'),
+          ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Resume'),
