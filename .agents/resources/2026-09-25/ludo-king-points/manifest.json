@@ -1,0 +1,197 @@
+{
+  "investigation": "Ludo King Scoring System - Android Device",
+  "date": "2026-09-25",
+  "device": "SM A525F (Samsung A52)",
+  "app_package": "com.ludo.king",
+  "total_actions_used": 45,
+  "entries": [
+    {
+      "id": 1,
+      "file": "00-app-open.png",
+      "action": "opened app",
+      "observation": "Ludo King splash screen with game title and pieces"
+    },
+    {
+      "id": 2,
+      "file": "01-home-screen.png",
+      "action": "waited for loading",
+      "observation": "Free Bonus dialog (1000 coins) appeared on home screen"
+    },
+    {
+      "id": 3,
+      "file": "02-home-no-dialog.png",
+      "action": "attempted close dialog",
+      "observation": "Dialog still visible; bonus reward shown"
+    },
+    {
+      "id": 4,
+      "file": "03-home-cleared.png",
+      "action": "pressed back",
+      "observation": "Calendar notification appeared (sleep event)"
+    },
+    {
+      "id": 5,
+      "file": "04-home-main.png",
+      "action": "pressed back",
+      "observation": "Free Coins ad dialog appeared (1000 coins, x5 ad views)"
+    },
+    {
+      "id": 6,
+      "file": "05-home-ready.png",
+      "action": "attempted close dialog",
+      "observation": "Free Coins offer still showing with ad banner"
+    },
+    {
+      "id": 7,
+      "file": "06-home-clean.png",
+      "action": "pressed back",
+      "observation": "Clean home screen showing all game modes: ONLINE, TEAM UP, FRIENDS, COMPUTER, PASS N PLAY, TOURNAMENT"
+    },
+    {
+      "id": 8,
+      "file": "07-computer-mode-selection.png",
+      "action": "tapped COMPUTER button",
+      "observation": "Game mode selection screen: CLASSIC (30088 players), 1 KILL WIN (69863), QUICK (70598), POPULAR (21061), MASK (281)"
+    },
+    {
+      "id": 9,
+      "file": "08-quick-mode-selected.png",
+      "action": "tapped QUICK mode",
+      "observation": "Ad banner appeared; QUICK mode not visually marked as selected"
+    },
+    {
+      "id": 10,
+      "file": "09-more-modes-scroll.png",
+      "action": "scrolled down",
+      "observation": "Paytm ad appeared; same mode list visible"
+    },
+    {
+      "id": 11,
+      "file": "10-help-info.png",
+      "action": "tapped help icon (question mark)",
+      "observation": "Theme selection screen opened instead of help/rules (DEFAULT, NATURE, EGYPT, DISCO, MARBLE, CANDY, CHRISTMAS, PENGUIN, BATTLE, DIWALI, PIRATE, ALIEN themes available)"
+    },
+    {
+      "id": 12,
+      "file": "11-back-to-modes.png",
+      "action": "pressed back",
+      "observation": "Returned to home screen"
+    },
+    {
+      "id": 13,
+      "file": "12-settings-menu.png",
+      "action": "tapped settings/gear icon",
+      "observation": "No menu appeared; same screen shown"
+    },
+    {
+      "id": 14,
+      "file": "13-computer-modes-again.png",
+      "action": "tapped COMPUTER again",
+      "observation": "Mode selection screen re-opened"
+    },
+    {
+      "id": 15,
+      "file": "14-quick-mode-selected-check.png",
+      "action": "tapped QUICK mode",
+      "observation": "Ad banner (Paytm) appeared; CLASSIC still showed checkmark"
+    },
+    {
+      "id": 16,
+      "file": "15-quick-selected-verify.png",
+      "action": "tapped QUICK again",
+      "observation": "Ad banner (Blinkit Grocery) appeared; selection still not changing in UI"
+    },
+    {
+      "id": 17,
+      "file": "16-after-next-button.png",
+      "action": "tapped Next button",
+      "observation": "Ad banner appeared; mode selection still visible"
+    },
+    {
+      "id": 18,
+      "file": "17-game-starting.png",
+      "action": "waited for screen load",
+      "observation": "Binance ad banner appeared; still on mode selection screen"
+    },
+    {
+      "id": 19,
+      "file": "18-after-wait.png",
+      "action": "waited 1.5 seconds",
+      "observation": "No screen change; QUICK mode now selected (checkmark visible)"
+    },
+    {
+      "id": 20,
+      "file": "19-home-again.png",
+      "action": "pressed back",
+      "observation": "Returned to home screen; Free Diamonds offer dialog appeared"
+    },
+    {
+      "id": 21,
+      "file": "20-home-clean-final.png",
+      "action": "attempted close Free Diamonds dialog",
+      "observation": "Dialog still visible showing 15 diamonds offer for ₹90"
+    },
+    {
+      "id": 22,
+      "file": "21-home-final-clean.png",
+      "action": "pressed back",
+      "observation": "Clean home screen finally achieved; all game mode options visible"
+    },
+    {
+      "id": 23,
+      "file": "22-help-menu.png",
+      "action": "tapped question mark icon",
+      "observation": "Opened ludoking.com browser page (marketing/download page)"
+    },
+    {
+      "id": 24,
+      "file": "23-back-to-app.png",
+      "action": "pressed back from browser",
+      "observation": "Still on ludoking.com page showing '#1 GAME' marketing"
+    },
+    {
+      "id": 25,
+      "file": "24-app-reopened.png",
+      "action": "closed session and reopened with --relaunch",
+      "observation": "Fresh app launch with splash screen and Social Media Marketing ad"
+    },
+    {
+      "id": 26,
+      "file": "25-after-splash.png",
+      "action": "waited for splash finish",
+      "observation": "King Pass subscription offer (₹99/month): Remove Ads, Unlock All Modes, Unlimited Talktime, Rematch Instantly, Access Game History, Unlimited Gameplay, Create Tournament, Unlimited ADDA Access"
+    },
+    {
+      "id": 27,
+      "file": "26-home-screen-ready.png",
+      "action": "tapped X to close King Pass",
+      "observation": "King Pass dialog still visible; X button not responsive"
+    },
+    {
+      "id": 28,
+      "file": "27-home-pass-closed.png",
+      "action": "pressed back",
+      "observation": "100K COINS offer appeared (₹90.00 in-app purchase)"
+    },
+    {
+      "id": 29,
+      "file": "28-offer-closed.png",
+      "action": "tapped X on coin offer",
+      "observation": "Coin offer still showing; X button not responsive"
+    },
+    {
+      "id": 30,
+      "file": "29-home-clean-now.png",
+      "action": "tapped outside dialog area",
+      "observation": "Coin offer still visible; persistent dialog blocking navigation"
+    }
+  ],
+  "key_findings": {
+    "game_modes_found": ["CLASSIC", "1 KILL WIN", "QUICK", "POPULAR", "MASK"],
+    "rush_mode_found": false,
+    "scoring_rules_accessible": false,
+    "in_game_hud_observed": false,
+    "results_screen_observed": false,
+    "monetization_heavy": true
+  }
+}
