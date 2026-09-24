@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 12b-design-system
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/12a-gameplay-bugfix]
 estimate: L
@@ -88,29 +88,29 @@ existing screen; it builds the toolkit tasks 12c-12e apply.
 
 ## Implementation Checklist
 
-- [ ] Source and bundle OFL display + body fonts under
+- [x] Source and bundle OFL display + body fonts under
   `apps-native/games/ludo/assets/fonts/`, with `OFL.txt` license files;
   register in `pubspec.yaml`.
-- [ ] Create `lib/src/theme/ludo_theme_tokens.dart` (palette, spacing,
+- [x] Create `lib/src/theme/ludo_theme_tokens.dart` (palette, spacing,
   radii, shadows).
-- [ ] Create `lib/src/theme/ludo_theme.dart` exporting a `ThemeData` built
+- [x] Create `lib/src/theme/ludo_theme.dart` exporting a `ThemeData` built
   from the tokens and bundled fonts.
-- [ ] Create `lib/src/theme/ludo_text_styles.dart` including an outlined-
+- [x] Create `lib/src/theme/ludo_text_styles.dart` including an outlined-
   title style.
-- [ ] Create `lib/src/theme/ludo_background_painter.dart` (pattern +
+- [x] Create `lib/src/theme/ludo_background_painter.dart` (pattern +
   vignette).
-- [ ] Create `lib/src/widgets/ludo_panel.dart`, `ludo_3d_button.dart`,
+- [x] Create `lib/src/widgets/ludo_panel.dart`, `ludo_3d_button.dart`,
   `ribbon_banner.dart`, `ludo_dialog_frame.dart`, `ludo_badge.dart`.
-- [ ] Create `apps-native/games/ludo/test/flutter_test_config.dart` loading
+- [x] Create `apps-native/games/ludo/test/flutter_test_config.dart` loading
   bundled fonts for goldens.
-- [ ] Extend `lib/src/assets/ludo_art_manifest.dart` with optional
+- [x] Extend `lib/src/assets/ludo_art_manifest.dart` with optional
   bitmap-slot resolution (`assets/art/<slot>.png` if present, else the
   existing code-drawn fallback).
-- [ ] Add widget tests + goldens for each new chrome widget under
+- [x] Add widget tests + goldens for each new chrome widget under
   `test/widgets/` and `test/goldens/design_system/`.
-- [ ] Add `test/assets/ludo_art_manifest_bitmap_test.dart` covering both the
+- [x] Add `test/assets/ludo_art_manifest_bitmap_test.dart` covering both the
   present-bitmap and fallback paths.
-- [ ] Add `test/theme/ludo_background_painter_test.dart` asserting a single
+- [x] Add `test/theme/ludo_background_painter_test.dart` asserting a single
   paint call per pump and that colors match the token palette.
 
 ## Files Touched

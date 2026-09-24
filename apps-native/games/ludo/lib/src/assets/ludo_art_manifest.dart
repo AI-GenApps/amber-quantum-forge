@@ -21,6 +21,7 @@ library;
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show AssetBundle, rootBundle;
 import 'package:ludo_rules/ludo_rules.dart' show LudoColor;
 
 import '../audio/ludo_audio_service.dart' show LudoFeedbackService;
@@ -251,4 +252,117 @@ abstract final class LudoArtManifest {
   static void attachFeedback(LudoFeedbackService? feedback) {
     _feedback = feedback;
   }
+
+  /// The bitmap asset path a given [slot] name resolves to, if a human art
+  /// session ever fills it in: `assets/art/<slot>.png`. This task adds no
+  /// files at this path — [hasBitmap] resolves `false` for every slot
+  /// until a later art session does.
+  static String bitmapAssetPath(String slot) => 'assets/art/$slot.png';
+
+  /// Whether a bitmap override exists for [slot], checked by attempting to
+  /// load `assets/art/<slot>.png` from [bundle] (default: [rootBundle]).
+  /// Tests may pass a fake [AssetBundle] to exercise the present-bitmap
+  /// path without adding a real asset file to this package.
+  ///
+  /// A present-but-empty/corrupt asset still counts as "present" here —
+  /// this only answers "does the slot resolve to bytes", not "are the
+  /// bytes valid image data"; [LudoArtSlot] surfaces a decode failure the
+  /// normal way `Image.asset` would.
+  static Future<bool> hasBitmap(String slot, {AssetBundle? bundle}) async {
+    final assetBundle = bundle ?? rootBundle;
+    try {
+      await assetBundle.load(bitmapAssetPath(slot));
+      return true;
+    } on Object {
+      return false;
+    }
+  }
+}
+
+/// Renders a named art-manifest [slot]: a bitmap at `assets/art/<slot>.png`
+/// when [LudoArtManifest.hasBitmap] finds one, otherwise the slot's
+/// existing code-drawn [LudoVisualSlot] fallback painter — so a slot can
+/// be upgraded to real bitmap art later without any gameplay code change.
+class LudoArtSlot extends StatefulWidget {
+  const LudoArtSlot({
+    super.key,
+    required this.slot,
+    required this.fallbackPainter,
+    this.size = const Size.square(64),
+    this.bundle,
+  });
+
+  /// Slot name; resolves to `assets/art/<slot>.png`.
+  final String slot;
+
+  /// Existing code-drawn painter used when no bitmap is present.
+  final LudoVisualSlot fallbackPainter;
+
+  final Size size;
+
+  /// Overrides [rootBundle] — tests use this to exercise the
+  /// present-bitmap path without a real asset file.
+  final AssetBundle? bundle;
+
+  @override
+  State<LudoArtSlot> createState() => _LudoArtSlotState();
+}
+
+class _LudoArtSlotState extends State<LudoArtSlot> {
+  late Future<bool> _hasBitmap;
+
+  @override
+  void initState() {
+    super.initState();
+    _hasBitmap = LudoArtManifest.hasBitmap(widget.slot, bundle: widget.bundle);
+  }
+
+  @override
+  void didUpdateWidget(covariant LudoArtSlot oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.slot != widget.slot || oldWidget.bundle != widget.bundle) {
+      _hasBitmap = LudoArtManifest.hasBitmap(
+        widget.slot,
+        bundle: widget.bundle,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: _hasBitmap,
+      builder: (context, snapshot) {
+        final usesBitmap = snapshot.data ?? false;
+        if (usesBitmap) {
+          return Image.asset(
+            LudoArtManifest.bitmapAssetPath(widget.slot),
+            bundle: widget.bundle,
+            width: widget.size.width,
+            height: widget.size.height,
+            fit: BoxFit.contain,
+          );
+        }
+        return CustomPaint(
+          size: widget.size,
+          painter: _FallbackPainter(widget.fallbackPainter),
+        );
+      },
+    );
+  }
+}
+
+class _FallbackPainter extends CustomPainter {
+  const _FallbackPainter(this.paintSlot);
+
+  final LudoVisualSlot paintSlot;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    paintSlot(canvas, Offset.zero & size);
+  }
+
+  @override
+  bool shouldRepaint(covariant _FallbackPainter oldDelegate) =>
+      oldDelegate.paintSlot != paintSlot;
 }

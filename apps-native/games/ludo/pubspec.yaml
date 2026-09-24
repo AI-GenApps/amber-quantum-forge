@@ -31,3 +31,10 @@ flutter:
     - assets/
     - assets/audio/
     - content/
+  fonts:
+    - family: LilitaOne
+      fonts:
+        - asset: assets/fonts/LilitaOne/LilitaOne-Regular.ttf
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito/Nunito-VariableFont_wght.ttf
