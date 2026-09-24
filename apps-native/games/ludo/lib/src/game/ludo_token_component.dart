@@ -28,6 +28,16 @@ const ludoTokenHopDuration = Duration(milliseconds: 120);
 /// cell size.
 const ludoTokenHopArcHeight = 0.35;
 
+/// Duration of a captured token's flight-back to its yard (task 05): one
+/// longer, higher arc rather than a sequence of small board-step hops, so
+/// a capture reads as visually distinct from a normal move.
+const ludoTokenFlightDuration = Duration(milliseconds: 380);
+
+/// How far a captured token's y-position bulges upward mid-flight, as a
+/// fraction of the cell size — taller than [ludoTokenHopArcHeight] so the
+/// flight-back arcs clearly over the board rather than hopping along it.
+const ludoTokenFlightArcHeight = 1.4;
+
 /// Draws one Ludo token's art into [rect] on [canvas].
 ///
 /// Concrete requirements (checked by golden test, not opinion — see task
@@ -138,6 +148,8 @@ class LudoTokenComponent extends PositionComponent {
   final List<(int, int)> _pendingHops = [];
   double _hopProgress = 0;
   Completer<void>? _moveCompleter;
+  Duration _hopDuration = ludoTokenHopDuration;
+  double _hopArcHeight = ludoTokenHopArcHeight;
 
   /// The grid cell this token currently occupies, or is animating away
   /// from mid-hop.
@@ -190,9 +202,32 @@ class LudoTokenComponent extends PositionComponent {
       snapTo(path.last);
       return Future.value();
     }
+    _hopDuration = ludoTokenHopDuration;
+    _hopArcHeight = ludoTokenHopArcHeight;
     _pendingHops
       ..clear()
       ..addAll(path);
+    _hopProgress = 0;
+    final completer = Completer<void>();
+    _moveCompleter = completer;
+    return completer.future;
+  }
+
+  /// Animates a captured token's flight back to [cell] (its yard slot): a
+  /// single, longer, higher-arcing tween — see [ludoTokenFlightDuration]
+  /// and [ludoTokenFlightArcHeight] — used instead of [hopTo] so a capture
+  /// never teleports and reads as visually distinct from a normal move
+  /// (task 05). Reduced motion snaps instantly, like [hopTo].
+  Future<void> flyTo((int, int) cell) {
+    if (reducedMotion.value) {
+      snapTo(cell);
+      return Future.value();
+    }
+    _hopDuration = ludoTokenFlightDuration;
+    _hopArcHeight = ludoTokenFlightArcHeight;
+    _pendingHops
+      ..clear()
+      ..add(cell);
     _hopProgress = 0;
     final completer = Completer<void>();
     _moveCompleter = completer;
@@ -204,14 +239,14 @@ class LudoTokenComponent extends PositionComponent {
     super.update(dt);
     if (_pendingHops.isEmpty) return;
 
-    final hopSeconds = ludoTokenHopDuration.inMilliseconds / 1000;
+    final hopSeconds = _hopDuration.inMilliseconds / 1000;
     _hopProgress += dt / hopSeconds;
     final rawT = _hopProgress.clamp(0.0, 1.0);
     final easedT = Curves.easeOut.transform(rawT);
 
     final from = _centerOf(_cell);
     final to = _centerOf(_pendingHops.first);
-    final arcBulge = 4 * rawT * (1 - rawT) * ludoTokenHopArcHeight * _cellSize;
+    final arcBulge = 4 * rawT * (1 - rawT) * _hopArcHeight * _cellSize;
     position = Vector2(
       from.x + (to.x - from.x) * easedT,
       from.y + (to.y - from.y) * easedT - arcBulge,

@@ -54,31 +54,31 @@ a reduced-motion variant, completing the manifest slots from task 03.
 
 ## Implementation Checklist
 
-- [ ] Create `lib/src/game/ludo_dice_component.dart`: the animated
+- [x] Create `lib/src/game/ludo_dice_component.dart`: the animated
   code-drawn die with a face-swap/skew rotation illusion (≥600ms, ≥3 face
   flickers, settle bounce), landing on a given face value, plus a
   reduced-motion instant-reveal fallback.
-- [ ] Create `lib/src/game/ludo_capture_particles.dart`: particle burst at
+- [x] Create `lib/src/game/ludo_capture_particles.dart`: particle burst at
   the captured cell plus a flight-back tween for the knocked token, gated by
   reduced motion (skip entirely, or render a static flash, when enabled).
-- [ ] Create `lib/src/game/ludo_home_arrival_burst.dart`: a visually
+- [x] Create `lib/src/game/ludo_home_arrival_burst.dart`: a visually
   distinct burst from capture (different color palette/shape), gated the
   same way.
-- [ ] Create `lib/src/game/ludo_confetti.dart` using Flame's particle
+- [x] Create `lib/src/game/ludo_confetti.dart` using Flame's particle
   system for match-end celebration, gated the same way.
-- [ ] Wire all four components into `lib/src/game/ludo_game.dart` (task
+- [x] Wire all four components into `lib/src/game/ludo_game.dart` (task
   04), triggered from the corresponding `ludo_rules` events (`diceRolled`,
   `tokenCaptured`, `tokenFinished` reaching home, `matchFinished`).
-- [ ] Update `lib/src/assets/ludo_art_manifest.dart` (task 03) to resolve
+- [x] Update `lib/src/assets/ludo_art_manifest.dart` (task 03) to resolve
   the dice/particle/confetti visual slots to the real components built here.
-- [ ] Add `test/game/ludo_dice_component_test.dart` covering: dice
+- [x] Add `test/game/ludo_dice_component_test.dart` covering: dice
   animation lands on the requested face, runs for the minimum duration with
   at least 3 face changes before settling, and reduced-motion mode skips
   the tumble entirely.
-- [ ] Add `test/game/ludo_capture_particles_test.dart`,
+- [x] Add `test/game/ludo_capture_particles_test.dart`,
   `ludo_home_arrival_burst_test.dart`, `ludo_confetti_test.dart` covering
   bounded particle lifetime and reduced-motion gating.
-- [ ] Add golden tests under `test/goldens/` (dice at each of 6 faces,
+- [x] Add golden tests under `test/goldens/` (dice at each of 6 faces,
   capture-particle frame, win-confetti frame) using `matchesGoldenFile`,
   golden `.png` files committed under `apps-native/games/ludo/test/
   goldens/`.

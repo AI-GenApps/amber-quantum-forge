@@ -1,12 +1,14 @@
-/// The `FlameGame` that composes the board, tokens, and highlight layers
-/// built by this task into one renderable game.
+/// The `FlameGame` that composes the board, tokens, highlight layers
+/// (task 04), and the animated dice / capture / home-arrival / confetti
+/// effects (task 05) into one renderable game.
 ///
 /// Driven by a `LudoMatchState`-shaped input (from `ludo_rules`), supplied
-/// locally for now via [setMatchState] — task 12 wires a real match-state
-/// source (local play controller / server sync) on top of this same
-/// class, and task 05 adds dice, capture particles and confetti on top of
-/// it too.
+/// locally for now via [setMatchState] / [applyEvents] — task 12 wires a
+/// real match-state source (local play controller / server sync) on top of
+/// this same class.
 library;
+
+import 'dart:ui';
 
 import 'package:flame/game.dart';
 import 'package:ludo_rules/ludo_rules.dart';
@@ -14,6 +16,10 @@ import 'package:ludo_rules/ludo_rules.dart';
 import '../state/reduced_motion_setting.dart';
 import 'ludo_board_component.dart';
 import 'ludo_board_geometry.dart';
+import 'ludo_capture_particles.dart';
+import 'ludo_confetti.dart';
+import 'ludo_dice_component.dart';
+import 'ludo_home_arrival_burst.dart';
 import 'ludo_legal_move_highlight.dart';
 import 'ludo_token_component.dart';
 import 'ludo_turn_highlight.dart';
@@ -21,15 +27,18 @@ import 'ludo_turn_highlight.dart';
 const _board = LudoBoard();
 
 /// Composes [LudoBoardComponent], one [LudoTokenComponent] per token,
-/// [LudoLegalMoveHighlightComponent] and [LudoTurnHighlightComponent] into
-/// a single `FlameGame`.
+/// [LudoLegalMoveHighlightComponent], [LudoTurnHighlightComponent] and
+/// [LudoDiceComponent] into a single `FlameGame`, and spawns the
+/// [LudoCaptureBurstComponent] / [LudoHomeArrivalBurstComponent] /
+/// [LudoConfettiComponent] effects as [applyEvents] observes the
+/// corresponding `ludo_rules` events.
 class LudoGame extends FlameGame {
   LudoGame({LudoMatchState? initialState, ReducedMotionSetting? reducedMotion})
     : reducedMotion = reducedMotion ?? ReducedMotionSetting(),
       _pendingState = initialState;
 
-  /// Consulted by every token this game creates: see
-  /// [LudoTokenComponent.hopTo].
+  /// Consulted by every token/dice this game creates: see
+  /// [LudoTokenComponent.hopTo] and [LudoDiceComponent.rollTo].
   final ReducedMotionSetting reducedMotion;
 
   LudoMatchState? _pendingState;
@@ -39,6 +48,7 @@ class LudoGame extends FlameGame {
   late final LudoBoardComponent board;
   late final LudoLegalMoveHighlightComponent legalMoveHighlight;
   late final LudoTurnHighlightComponent turnHighlight;
+  late final LudoDiceComponent dice;
   final Map<String, LudoTokenComponent> _tokensByKey = {};
 
   /// The match state this game last rendered, or `null` before any state
@@ -53,13 +63,22 @@ class LudoGame extends FlameGame {
     return Vector2.all(side <= 0 ? 300 : side);
   }
 
+  /// The dice's on-board size, as a fraction of the board's side.
+  static const _diceSizeFraction = 0.14;
+
+  Vector2 _dicePosition(Vector2 boardSize) =>
+      Vector2(boardSize.x * 0.92, boardSize.y * 0.08);
+
   @override
   Future<void> onLoad() async {
     final boardSize = _boardSize;
     board = LudoBoardComponent(boardSize: boardSize);
     legalMoveHighlight = LudoLegalMoveHighlightComponent(boardSize: boardSize);
     turnHighlight = LudoTurnHighlightComponent(boardSize: boardSize);
-    await addAll([board, turnHighlight, legalMoveHighlight]);
+    dice = LudoDiceComponent(reducedMotion: reducedMotion)
+      ..size = Vector2.all(boardSize.x * _diceSizeFraction)
+      ..position = _dicePosition(boardSize);
+    await addAll([board, turnHighlight, legalMoveHighlight, dice]);
     _layersReady = true;
     final pending = _pendingState;
     if (pending != null) {
@@ -75,8 +94,87 @@ class LudoGame extends FlameGame {
     board.relayout(boardSize);
     legalMoveHighlight.size = boardSize;
     turnHighlight.size = boardSize;
+    dice.size = Vector2.all(boardSize.x * _diceSizeFraction);
+    dice.position = _dicePosition(boardSize);
     for (final token in _tokensByKey.values) {
       token.updateBoardSize(boardSize);
+    }
+  }
+
+  Vector2 _pixelCenterOf((int, int) cell) {
+    final rect = Rect.fromLTWH(0, 0, board.size.x, board.size.y);
+    final offset = ludoCellCenterAt(cell, rect);
+    return Vector2(offset.dx, offset.dy);
+  }
+
+  LudoColor _colorForSeat(LudoMatchState state, int seat) =>
+      state.players.firstWhere((player) => player.seat == seat).color;
+
+  /// Applies the effects of [events] (dice roll, capture, home arrival,
+  /// match end) and then [newState]'s token/highlight layout, wiring task
+  /// 05's animated components to the `ludo_rules` events that trigger them:
+  ///
+  /// - `diceRolled` tumbles [dice] to the rolled face before anything else
+  ///   moves.
+  /// - `tokenCaptured` bursts a [LudoCaptureBurstComponent] at the
+  ///   captured token's current cell and flies it back to its yard via
+  ///   [LudoTokenComponent.flyTo] (instead of the teleporting `snapTo`
+  ///   [setMatchState] would otherwise use for a backward position change).
+  /// - `tokenFinished` bursts a [LudoHomeArrivalBurstComponent] at the
+  ///   token's home cell once [setMatchState] has moved it there.
+  /// - `matchFinished` spawns [LudoConfettiComponent] across the board.
+  Future<void> applyEvents(
+    List<LudoReplayEvent> events,
+    LudoMatchState newState,
+  ) async {
+    for (final event in events) {
+      if (event is LudoDiceRolledEvent) {
+        await dice.rollTo(event.roll);
+      }
+    }
+
+    if (!_layersReady) {
+      await setMatchState(newState);
+      return;
+    }
+
+    final capturedKeys = <String>{};
+    final flights = <Future<void>>[];
+    for (final event in events) {
+      if (event is! LudoTokenCapturedEvent) continue;
+      final color = _colorForSeat(newState, event.seat);
+      final key = _keyFor(color, event.tokenId);
+      final token = _tokensByKey[key];
+      if (token == null) continue;
+      capturedKeys.add(key);
+      final burst = LudoCaptureBurstComponent(
+        position: _pixelCenterOf(token.currentCell),
+        reducedMotion: reducedMotion,
+      );
+      add(burst);
+      flights.add(token.flyTo(ludoYardSlotGrid(color, event.tokenId)));
+    }
+    await Future.wait(flights);
+
+    await setMatchState(newState, skipTokenKeys: capturedKeys);
+
+    for (final event in events) {
+      if (event is LudoTokenFinishedEvent) {
+        final color = _colorForSeat(newState, event.seat);
+        add(
+          LudoHomeArrivalBurstComponent(
+            position: _pixelCenterOf(ludoHomeStretchCellGrid(color, 5)),
+            reducedMotion: reducedMotion,
+          ),
+        );
+      } else if (event is LudoMatchFinishedEvent) {
+        add(
+          LudoConfettiComponent(
+            boardSize: board.size,
+            reducedMotion: reducedMotion,
+          ),
+        );
+      }
     }
   }
 
@@ -86,10 +184,14 @@ class LudoGame extends FlameGame {
   /// Applies [state], creating any token components that don't exist yet
   /// and animating (or, with [animate] `false` / reduced motion enabled,
   /// snapping) every token whose cell changed since the last applied
-  /// state.
+  /// state. Any key in [skipTokenKeys] is left untouched — used by
+  /// [applyEvents], which has already driven that token's cell to [state]
+  /// via a capture flight-back tween ([LudoTokenComponent.flyTo]) rather
+  /// than letting this method snap it there.
   Future<void> setMatchState(
     LudoMatchState state, {
     bool animate = true,
+    Set<String> skipTokenKeys = const {},
   }) async {
     if (!_layersReady) {
       // Board/highlight layers haven't been created yet (onLoad hasn't run
@@ -99,7 +201,12 @@ class LudoGame extends FlameGame {
     }
     final previous = _state;
     _state = state;
-    await _syncTokens(state, previous: previous, animate: animate);
+    await _syncTokens(
+      state,
+      previous: previous,
+      animate: animate,
+      skipTokenKeys: skipTokenKeys,
+    );
     legalMoveHighlight.updateFromState(state);
     turnHighlight.updateActiveColor(
       state.phase == LudoMatchPhase.finished ? null : state.currentPlayer.color,
@@ -110,6 +217,7 @@ class LudoGame extends FlameGame {
     LudoMatchState state, {
     required LudoMatchState? previous,
     required bool animate,
+    Set<String> skipTokenKeys = const {},
   }) async {
     final boardSize = board.size;
     final moves = <Future<void>>[];
@@ -134,6 +242,7 @@ class LudoGame extends FlameGame {
           add(_tokensByKey[key]!);
           continue;
         }
+        if (skipTokenKeys.contains(key)) continue;
         final previousPosition = _previousPositionOf(
           previous,
           player.color,

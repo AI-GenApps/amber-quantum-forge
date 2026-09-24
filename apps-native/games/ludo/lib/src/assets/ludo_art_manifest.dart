@@ -18,10 +18,16 @@
 /// file — gameplay code that references the slot by name does not change.
 library;
 
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:ludo_rules/ludo_rules.dart' show LudoColor;
 
 import '../game/ludo_board_geometry.dart';
+import '../game/ludo_capture_particles.dart';
+import '../game/ludo_confetti.dart';
+import '../game/ludo_dice_component.dart';
+import '../game/ludo_home_arrival_burst.dart';
 import '../game/ludo_token_component.dart';
 
 /// Signature for a visual asset slot: paints the slot's art into [rect] on
@@ -46,9 +52,10 @@ enum LudoTokenColor { red, green, yellow, blue }
 /// names, by their shared declaration order.
 LudoColor ludoColorOf(LudoTokenColor color) => LudoColor.values[color.index];
 
-void _placeholderVisual(Canvas canvas, Rect rect) {
-  canvas.drawRect(rect, Paint()..color = const Color(0xFFB0BEC5));
-}
+// Every visual slot now resolves to a real code-drawn component (task 04's
+// board/token/home-stretch slots and this task's dice/particle/confetti
+// slots), so no placeholder visual painter remains — only the audio slots
+// (task 06) are still placeholders.
 
 Future<void> _placeholderAudio() async {}
 
@@ -73,14 +80,82 @@ LudoVisualSlot _homeStretchVisual(LudoTokenColor color) => (canvas, rect) {
   canvas.drawRect(rect, Paint()..color = base.withValues(alpha: 0.55));
 };
 
+/// Paints one pip face (`1`..`6`), delegating to [LudoDicePainter] — the
+/// same code path `LudoDiceComponent` renders with — so this slot and the
+/// on-board die always draw identical art.
+LudoVisualSlot _diceFaceVisual(int face) => (canvas, rect) {
+  LudoDicePainter.paintFace(canvas, rect, face);
+};
+
+/// A single static frame representing the capture particle burst, drawn
+/// with the same [ludoCaptureParticlePalette] the live
+/// `LudoCaptureBurstComponent` uses, so this slot never drifts from the
+/// real effect's color scheme.
+void _captureParticleVisual(Canvas canvas, Rect rect) {
+  final center = rect.center;
+  final reach = rect.shortestSide * 0.4;
+  for (var i = 0; i < 8; i++) {
+    final angle = (2 * math.pi * i) / 8;
+    final offset = center.translate(
+      reach * (i.isEven ? 1 : 0.6) * math.cos(angle),
+      reach * (i.isEven ? 1 : 0.6) * math.sin(angle),
+    );
+    canvas.drawCircle(
+      offset,
+      rect.shortestSide * 0.05,
+      Paint()
+        ..color =
+            ludoCaptureParticlePalette[i % ludoCaptureParticlePalette.length],
+    );
+  }
+}
+
+/// A single static frame representing the home-arrival particle burst,
+/// drawn with the same [ludoHomeArrivalPalette] the live
+/// `LudoHomeArrivalBurstComponent` uses — an upward fan rather than the
+/// capture slot's flat radial ring, so the two slots stay visually
+/// distinct too.
+void _homeArrivalParticleVisual(Canvas canvas, Rect rect) {
+  final origin = rect.bottomCenter;
+  final reach = rect.shortestSide * 0.45;
+  for (var i = 0; i < 8; i++) {
+    final spread = (i / 8 - 0.5) * math.pi * 0.9;
+    final offset = origin.translate(
+      reach * math.sin(spread),
+      -reach * math.cos(spread),
+    );
+    canvas.drawCircle(
+      offset,
+      rect.shortestSide * 0.05,
+      Paint()
+        ..color = ludoHomeArrivalPalette[i % ludoHomeArrivalPalette.length],
+    );
+  }
+}
+
+/// A single static frame representing the win-confetti celebration, drawn
+/// with the same [ludoConfettiPalette] the live `LudoConfettiComponent`
+/// uses.
+void _confettiVisual(Canvas canvas, Rect rect) {
+  for (var i = 0; i < ludoConfettiPalette.length; i++) {
+    final x = rect.left + rect.width * (i + 0.5) / ludoConfettiPalette.length;
+    final y = rect.top + rect.height * (0.25 + 0.1 * (i.isEven ? 0 : 1));
+    canvas.drawCircle(
+      Offset(x, y),
+      rect.shortestSide * 0.045,
+      Paint()..color = ludoConfettiPalette[i],
+    );
+  }
+}
+
 /// Named-slot registry for every Ludo visual/audio asset.
 ///
 /// See the doc comment at the top of this file for the contract every slot
 /// follows.
 abstract final class LudoArtManifest {
-  // Visual slots. Board/token/home-stretch slots (task 04) resolve to the
-  // real code-drawn components in `lib/src/game/`; dice/particle/confetti
-  // slots (task 05) remain placeholders.
+  // Visual slots. Board/token/home-stretch slots (task 04) and
+  // dice/particle/confetti slots (task 05) all resolve to the real
+  // code-drawn components in `lib/src/game/`.
 
   /// The board's background/track art.
   static const LudoVisualSlot boardBackground = _boardBackgroundVisual;
@@ -91,13 +166,8 @@ abstract final class LudoArtManifest {
   };
 
   /// Dice face art, indexed `0`..`5` for pips `1`..`6`.
-  static const List<LudoVisualSlot> diceFace = [
-    _placeholderVisual, // TODO(task-05): dice_face_1
-    _placeholderVisual, // TODO(task-05): dice_face_2
-    _placeholderVisual, // TODO(task-05): dice_face_3
-    _placeholderVisual, // TODO(task-05): dice_face_4
-    _placeholderVisual, // TODO(task-05): dice_face_5
-    _placeholderVisual, // TODO(task-05): dice_face_6
+  static final List<LudoVisualSlot> diceFace = [
+    for (var face = 1; face <= 6; face++) _diceFaceVisual(face),
   ];
 
   /// One home-stretch lane slot per player color.
@@ -106,11 +176,19 @@ abstract final class LudoArtManifest {
   };
 
   /// Capture particle burst, played when a token sends an opponent home.
-  static const LudoVisualSlot captureParticle =
-      _placeholderVisual; // TODO(task-05)
+  /// The live effect is [LudoCaptureBurstComponent]; this slot is a single
+  /// representative frame in the same palette.
+  static const LudoVisualSlot captureParticle = _captureParticleVisual;
 
-  /// Win confetti, played when a match ends.
-  static const LudoVisualSlot confetti = _placeholderVisual; // TODO(task-05)
+  /// Home-arrival particle burst, played when a token reaches home. The
+  /// live effect is [LudoHomeArrivalBurstComponent]; this slot is a single
+  /// representative frame in the same (warmer) palette.
+  static const LudoVisualSlot homeArrivalParticle = _homeArrivalParticleVisual;
+
+  /// Win confetti, played when a match ends. The live effect is
+  /// [LudoConfettiComponent]; this slot is a single representative frame
+  /// in the same palette.
+  static const LudoVisualSlot confetti = _confettiVisual;
 
   // Audio slots — silent no-ops. TODO(task-06): wire a real audio service,
   // CC0 SFX/music, haptics, and sound settings.
