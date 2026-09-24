@@ -14,6 +14,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:ludo_rules/ludo_rules.dart' show LudoColor;
 
+import '../assets/ludo_art_manifest.dart';
 import '../state/reduced_motion_setting.dart';
 import 'ludo_board_geometry.dart';
 
@@ -150,6 +151,12 @@ class LudoTokenComponent extends PositionComponent {
   Completer<void>? _moveCompleter;
   Duration _hopDuration = ludoTokenHopDuration;
   double _hopArcHeight = ludoTokenHopArcHeight;
+  // Whether the in-flight `_pendingHops` animation is a capture flight-back
+  // ([flyTo]) rather than an ordinary hop-by-hop move ([hopTo]) — gates
+  // whether landing on a cell plays the per-step SFX/haptic ([hopTo] does,
+  // [flyTo] doesn't; a capture has its own distinct feedback, fired by
+  // `LudoCaptureBurstComponent`).
+  bool _isFlight = false;
 
   /// The grid cell this token currently occupies, or is animating away
   /// from mid-hop.
@@ -199,9 +206,11 @@ class LudoTokenComponent extends PositionComponent {
   Future<void> hopTo(List<(int, int)> path) {
     if (path.isEmpty) return Future.value();
     if (reducedMotion.value) {
+      unawaited(LudoArtManifest.sfxTokenStep());
       snapTo(path.last);
       return Future.value();
     }
+    _isFlight = false;
     _hopDuration = ludoTokenHopDuration;
     _hopArcHeight = ludoTokenHopArcHeight;
     _pendingHops
@@ -223,6 +232,7 @@ class LudoTokenComponent extends PositionComponent {
       snapTo(cell);
       return Future.value();
     }
+    _isFlight = true;
     _hopDuration = ludoTokenFlightDuration;
     _hopArcHeight = ludoTokenFlightArcHeight;
     _pendingHops
@@ -256,6 +266,9 @@ class LudoTokenComponent extends PositionComponent {
       _cell = _pendingHops.removeAt(0);
       _hopProgress = 0;
       position = _centerOf(_cell);
+      if (!_isFlight) {
+        unawaited(LudoArtManifest.sfxTokenStep());
+      }
       if (_pendingHops.isEmpty) {
         final completer = _moveCompleter;
         _moveCompleter = null;

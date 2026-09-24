@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 06-audio-haptics
-status: pending
+status: complete
 commit_scope: ludo
 depends_on: [15-ludo-launch/05-dice-and-effects]
 estimate: M
@@ -66,23 +66,23 @@ and settings screen (tasks 09-10) will bind to.
 
 ## Implementation Checklist
 
-- [ ] Add the chosen audio package to `pubspec.yaml`.
-- [ ] Source and add CC0 audio files under `assets/audio/`, with
+- [x] Add the chosen audio package to `pubspec.yaml`.
+- [x] Source and add CC0 audio files under `assets/audio/`, with
   `assets/audio/LICENSES.md` documenting provenance for every file.
-- [ ] Register `assets/audio/` in `pubspec.yaml`'s `flutter.assets`.
-- [ ] Create `lib/src/audio/ludo_audio_service.dart` implementing
+- [x] Register `assets/audio/` in `pubspec.yaml`'s `flutter.assets`.
+- [x] Create `lib/src/audio/ludo_audio_service.dart` implementing
   `playSfx`/`startMusicLoop`/`stopMusicLoop` gated by settings.
-- [ ] Create `lib/src/audio/ludo_haptics.dart` and (if chosen) a unified
+- [x] Create `lib/src/audio/ludo_haptics.dart` and (if chosen) a unified
   `LudoFeedbackEvent` enum shared by both audio and haptics call sites.
-- [ ] Create `lib/src/state/ludo_sound_settings.dart` with the three
+- [x] Create `lib/src/state/ludo_sound_settings.dart` with the three
   toggles.
-- [ ] Wire `ludo_dice_component.dart`, `ludo_token_component.dart`,
+- [x] Wire `ludo_dice_component.dart`, `ludo_token_component.dart`,
   `ludo_capture_particles.dart`, `ludo_confetti.dart` (task 05) to call the
   audio/haptics service at the appropriate moments (dice roll start/land,
   token step, capture, home arrival, win).
-- [ ] Update `lib/src/assets/ludo_art_manifest.dart` audio slots to resolve
+- [x] Update `lib/src/assets/ludo_art_manifest.dart` audio slots to resolve
   to the real service calls.
-- [ ] Add `test/audio/ludo_audio_service_test.dart` and
+- [x] Add `test/audio/ludo_audio_service_test.dart` and
   `ludo_sound_settings_test.dart` using a fake/mock player to assert:
   toggling `soundEnabled` off suppresses `playSfx` calls, toggling
   `musicEnabled` off stops/prevents the loop, concurrent SFX calls don't

@@ -23,6 +23,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:ludo_rules/ludo_rules.dart' show LudoColor;
 
+import '../audio/ludo_audio_service.dart' show LudoFeedbackService;
+import '../audio/ludo_haptics.dart' show LudoFeedbackEvent;
 import '../game/ludo_board_geometry.dart';
 import '../game/ludo_capture_particles.dart';
 import '../game/ludo_confetti.dart';
@@ -57,7 +59,28 @@ LudoColor ludoColorOf(LudoTokenColor color) => LudoColor.values[color.index];
 // slots), so no placeholder visual painter remains — only the audio slots
 // (task 06) are still placeholders.
 
-Future<void> _placeholderAudio() async {}
+/// The real feedback service (task 06), attached once at app startup via
+/// [LudoArtManifest.attachFeedback]. `null` until then, so every slot below
+/// stays a silent no-op (matching this file's pre-task-06 contract) when
+/// nothing has attached a service yet — e.g. in a unit test that renders
+/// visuals without an audio service.
+LudoFeedbackService? _feedback;
+
+Future<void> _trigger(LudoFeedbackEvent event) async {
+  await _feedback?.trigger(event);
+}
+
+Future<void> _sfxDiceRoll() => _trigger(LudoFeedbackEvent.diceRoll);
+Future<void> _sfxTokenStep() => _trigger(LudoFeedbackEvent.tokenStep);
+Future<void> _sfxCapture() => _trigger(LudoFeedbackEvent.capture);
+Future<void> _sfxHome() => _trigger(LudoFeedbackEvent.homeArrival);
+Future<void> _sfxWin() => _trigger(LudoFeedbackEvent.win);
+Future<void> _sfxButton() => _trigger(LudoFeedbackEvent.buttonTap);
+Future<void> _sfxTurnAlert() => _trigger(LudoFeedbackEvent.turnAlert);
+
+Future<void> _musicLoop() async {
+  await _feedback?.startMusic();
+}
 
 /// Paints the board's background using the same fill the real
 /// [LudoBoardComponent] uses, so this manifest slot and the on-screen
@@ -190,30 +213,42 @@ abstract final class LudoArtManifest {
   /// in the same palette.
   static const LudoVisualSlot confetti = _confettiVisual;
 
-  // Audio slots — silent no-ops. TODO(task-06): wire a real audio service,
-  // CC0 SFX/music, haptics, and sound settings.
+  // Audio slots — each resolves to the real `LudoFeedbackService` (SFX +
+  // haptics together, see `ludo_audio_service.dart`) once
+  // [attachFeedback] has been called; until then (e.g. in a visuals-only
+  // test) every slot stays a silent no-op, matching this file's original
+  // contract.
 
   /// Plays when the dice is rolled.
-  static const LudoAudioSlot sfxDiceRoll = _placeholderAudio; // TODO(task-06)
+  static const LudoAudioSlot sfxDiceRoll = _sfxDiceRoll;
 
   /// Plays for each board step a token hops.
-  static const LudoAudioSlot sfxTokenStep = _placeholderAudio; // TODO(task-06)
+  static const LudoAudioSlot sfxTokenStep = _sfxTokenStep;
 
   /// Plays when a token captures an opponent.
-  static const LudoAudioSlot sfxCapture = _placeholderAudio; // TODO(task-06)
+  static const LudoAudioSlot sfxCapture = _sfxCapture;
 
   /// Plays when a token reaches home.
-  static const LudoAudioSlot sfxHome = _placeholderAudio; // TODO(task-06)
+  static const LudoAudioSlot sfxHome = _sfxHome;
 
   /// Plays when a match is won.
-  static const LudoAudioSlot sfxWin = _placeholderAudio; // TODO(task-06)
+  static const LudoAudioSlot sfxWin = _sfxWin;
 
   /// Plays on a generic UI button press.
-  static const LudoAudioSlot sfxButton = _placeholderAudio; // TODO(task-06)
+  static const LudoAudioSlot sfxButton = _sfxButton;
 
   /// Plays to alert the current player it is their turn.
-  static const LudoAudioSlot sfxTurnAlert = _placeholderAudio; // TODO(task-06)
+  static const LudoAudioSlot sfxTurnAlert = _sfxTurnAlert;
 
   /// Looping background music.
-  static const LudoAudioSlot musicLoop = _placeholderAudio; // TODO(task-06)
+  static const LudoAudioSlot musicLoop = _musicLoop;
+
+  /// Attaches (or, with `null`, detaches) the real feedback service every
+  /// audio slot above delegates to. Call once at app startup (a later
+  /// screens task wires this into `lib/src/app.dart`); tests may attach a
+  /// fake [LudoFeedbackService] built from fakes, or leave it detached to
+  /// keep audio slots as silent no-ops.
+  static void attachFeedback(LudoFeedbackService? feedback) {
+    _feedback = feedback;
+  }
 }

@@ -15,6 +15,7 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 
+import '../assets/ludo_art_manifest.dart';
 import '../state/reduced_motion_setting.dart';
 
 /// Minimum time [LudoDiceComponent.rollTo]'s tumble phase runs before it is
@@ -149,6 +150,7 @@ class LudoDiceComponent extends PositionComponent {
   /// immediately with no intermediate frame.
   Future<void> rollTo(int face) {
     assert(face >= 1 && face <= 6, 'die face must be 1..6, got $face');
+    unawaited(LudoArtManifest.sfxDiceRoll());
     if (reducedMotion.value) {
       _displayFace = face;
       _scale = 1.0;
