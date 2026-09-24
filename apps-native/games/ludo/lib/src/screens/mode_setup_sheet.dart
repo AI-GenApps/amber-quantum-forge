@@ -9,6 +9,8 @@ library;
 import 'package:flutter/material.dart';
 import 'package:ludo_rules/ludo_rules.dart';
 
+const _minTapTarget = 48.0;
+
 /// One local (non-networked) match's fully-specified starting
 /// configuration, as returned by [ModeSetupSheet.show].
 final class LudoLocalMatchConfig {
@@ -204,11 +206,20 @@ class _ModeSetupSheetState extends State<ModeSetupSheet> {
                     _setBotDifficulty(i, difficulty),
               ),
             const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: _start,
-                child: const Text('Start'),
+            Semantics(
+              button: true,
+              label: 'Start',
+              excludeSemantics: true,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: _minTapTarget),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    key: const Key('mode-setup-start-button'),
+                    onPressed: _start,
+                    child: const Text('Start'),
+                  ),
+                ),
               ),
             ),
           ],
@@ -250,15 +261,24 @@ class _SeatRow extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(child: Text('$colorLabel · $roleLabel')),
           if (seat.isBot)
-            DropdownButton<String>(
-              value: seat.botDifficulty,
-              items: [
-                for (final tier in ludoBotDifficulties)
-                  DropdownMenuItem(value: tier, child: Text(tier)),
-              ],
-              onChanged: (value) {
-                if (value != null) onDifficultyChanged(value);
-              },
+            Semantics(
+              label: '$colorLabel bot difficulty: ${seat.botDifficulty}',
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minWidth: _minTapTarget,
+                  minHeight: _minTapTarget,
+                ),
+                child: DropdownButton<String>(
+                  value: seat.botDifficulty,
+                  items: [
+                    for (final tier in ludoBotDifficulties)
+                      DropdownMenuItem(value: tier, child: Text(tier)),
+                  ],
+                  onChanged: (value) {
+                    if (value != null) onDifficultyChanged(value);
+                  },
+                ),
+              ),
             ),
         ],
       ),

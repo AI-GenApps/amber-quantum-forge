@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'home_lobby_screen.dart' show HomeLobbyScreen;
 import '../state/ludo_profile_settings.dart';
 import '../state/reduced_motion_setting.dart';
+import '../telemetry/ludo_telemetry.dart';
 import '../widgets/ludo_avatar.dart';
 import '../widgets/ludo_onboarding_controls.dart';
 import 'onboarding_tutorial_screen.dart';
@@ -23,6 +24,8 @@ class OnboardingProfileScreen extends StatefulWidget {
     required this.settings,
     required this.profileStore,
     this.reducedMotion,
+    this.telemetry,
+    this.diceSeed,
   });
 
   final LudoProfileSettings settings;
@@ -31,6 +34,15 @@ class OnboardingProfileScreen extends StatefulWidget {
   /// Test seam threaded down to [OnboardingTutorialScreen]'s
   /// `reducedMotion`; see that screen's own doc.
   final ReducedMotionSetting? reducedMotion;
+
+  /// Test seam: forwarded to [OnboardingTutorialScreen] and used directly
+  /// by this screen's own Skip action. `null` (the default) resolves a
+  /// fresh production [LudoTelemetry].
+  final LudoTelemetry? telemetry;
+
+  /// Test seam: forwarded all the way to `HomeLobbyScreen`'s started
+  /// match. `null` (the default) in production.
+  final int? diceSeed;
 
   @override
   State<OnboardingProfileScreen> createState() =>
@@ -57,9 +69,15 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
   Future<void> _skip(BuildContext context) async {
     widget.settings.onboardingComplete = true;
     await widget.profileStore.save(widget.settings);
+    (widget.telemetry ?? LudoTelemetry()).onboardingSkipped();
     if (!context.mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute<void>(builder: (_) => const HomeLobbyScreen()),
+      MaterialPageRoute<void>(
+        builder: (_) => HomeLobbyScreen(
+          telemetry: widget.telemetry,
+          diceSeed: widget.diceSeed,
+        ),
+      ),
       (route) => false,
     );
   }
@@ -73,6 +91,8 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
           settings: widget.settings,
           profileStore: widget.profileStore,
           reducedMotion: widget.reducedMotion,
+          telemetry: widget.telemetry,
+          diceSeed: widget.diceSeed,
         ),
       ),
     );

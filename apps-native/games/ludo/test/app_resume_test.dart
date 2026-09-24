@@ -44,6 +44,25 @@ const _identities = [
   LudoSeatIdentity(name: 'Bot', avatarId: 'green-face'),
 ];
 
+/// Task 12's bot-turn runner automatically continues a bot seat's turn the
+/// instant it becomes active — including immediately resuming a pending
+/// roll/move on a *resumed* mid-bot-turn state (see
+/// `ludo_bot_turn_runner_test.dart` and `game_board_screen.dart`'s own
+/// `initState` doc) — so a save/resume test that wants to assert the
+/// resumed state matches the saved state byte-for-byte, with nothing else
+/// having happened in between, uses a Pass N Play config instead: handing
+/// the turn to another *human* seat never triggers any automatic
+/// continuation (only the dismissible pass-and-play interstitial, which
+/// this test never needs to interact with).
+const _passAndPlayConfig = LudoLocalMatchConfig(
+  ruleset: LudoRuleset.quick,
+  isComputerMatch: false,
+  seats: [
+    LudoSeatConfig(color: LudoColor.red, isBot: false),
+    LudoSeatConfig(color: LudoColor.green, isBot: false),
+  ],
+);
+
 Widget _wrap(Widget child) =>
     MaterialApp(theme: ThemeData(useMaterial3: true), home: child);
 
@@ -92,7 +111,7 @@ void main() {
       await tester.pumpWidget(
         _wrap(
           GameBoardScreen(
-            config: _config,
+            config: _passAndPlayConfig,
             seatIdentities: _identities,
             soundSettings: LudoSoundSettings(),
             diceSeed: _seedRollingFour,

@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import '../state/ludo_settings_store.dart';
 import '../state/ludo_sound_settings.dart';
 import '../state/reduced_motion_setting.dart';
+import '../telemetry/ludo_telemetry.dart';
 import 'how_to_play_screen.dart';
 
 const _minTapTarget = 48.0;
@@ -25,6 +26,7 @@ class SettingsScreen extends StatefulWidget {
     required this.soundSettings,
     required this.reducedMotion,
     this.store,
+    this.telemetry,
   });
 
   /// The shared sound/music/vibration toggle state — must be the same
@@ -40,13 +42,21 @@ class SettingsScreen extends StatefulWidget {
   /// persistence, e.g. in widget tests that don't supply a store.
   final LudoSettingsStore? store;
 
+  /// Test seam: the telemetry sink `ludo_settings_changed` records
+  /// through. `null` (the default) resolves a fresh production
+  /// [LudoTelemetry].
+  final LudoTelemetry? telemetry;
+
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  void _persist() {
+  late final LudoTelemetry _telemetry = widget.telemetry ?? LudoTelemetry();
+
+  void _persist(String toggle) {
     widget.store?.save(widget.soundSettings, widget.reducedMotion);
+    _telemetry.settingsChanged(toggle: toggle);
   }
 
   @override
@@ -68,7 +78,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   value: widget.soundSettings.soundEnabled,
                   onChanged: (value) {
                     widget.soundSettings.soundEnabled = value;
-                    _persist();
+                    _persist('sound');
                   },
                 ),
                 _SettingsSwitch(
@@ -77,7 +87,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   value: widget.soundSettings.musicEnabled,
                   onChanged: (value) {
                     widget.soundSettings.musicEnabled = value;
-                    _persist();
+                    _persist('music');
                   },
                 ),
                 _SettingsSwitch(
@@ -86,7 +96,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   value: widget.soundSettings.vibrationEnabled,
                   onChanged: (value) {
                     widget.soundSettings.vibrationEnabled = value;
-                    _persist();
+                    _persist('vibration');
                   },
                 ),
                 _SettingsSwitch(
@@ -96,7 +106,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   value: widget.reducedMotion.value,
                   onChanged: (value) {
                     widget.reducedMotion.value = value;
-                    _persist();
+                    _persist('reduced_motion');
                   },
                 ),
                 const Divider(),

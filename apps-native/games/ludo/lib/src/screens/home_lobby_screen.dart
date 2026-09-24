@@ -19,6 +19,7 @@ import 'package:ludo_rules/ludo_rules.dart' show LudoColor;
 
 import '../state/ludo_local_save.dart';
 import '../state/ludo_sound_settings.dart';
+import '../telemetry/ludo_telemetry.dart';
 import '../widgets/ludo_avatar.dart' show LudoAvatarMotif, ludoAvatars;
 import 'game_board_screen.dart';
 import 'mode_setup_sheet.dart';
@@ -56,18 +57,29 @@ String _avatarIdForColor(LudoColor color) => ludoAvatars
 Future<void> startLudoLocalMatch(
   BuildContext context, {
   required bool isComputerMatch,
+  LudoTelemetry? telemetry,
+  int? diceSeed,
 }) async {
   final config = await ModeSetupSheet.show(
     context,
     isComputerMatch: isComputerMatch,
   );
   if (config == null || !context.mounted) return;
+  (telemetry ?? LudoTelemetry()).matchStarted(
+    variant: config.isComputerMatch
+        ? LudoMatchVariant.vsComputer
+        : LudoMatchVariant.passAndPlay,
+    ruleset: config.ruleset.id,
+    seatCount: config.playerCount,
+  );
   await Navigator.of(context).push(
     MaterialPageRoute<void>(
       builder: (_) => GameBoardScreen(
         config: config,
         seatIdentities: _defaultSeatIdentities(config),
         soundSettings: LudoSoundSettings(),
+        telemetry: telemetry,
+        diceSeed: diceSeed,
       ),
     ),
   );
@@ -114,6 +126,8 @@ class HomeLobbyScreen extends StatefulWidget {
     this.onPlayComputer,
     this.onPlayPassAndPlay,
     this.localSave,
+    this.telemetry,
+    this.diceSeed,
   });
 
   /// Test seam: a summary to show the resume affordance for, bypassing this
@@ -139,6 +153,17 @@ class HomeLobbyScreen extends StatefulWidget {
   /// [resumableMatch] is not explicitly supplied. `null` (the default)
   /// resolves the production save (`LudoLocalSave.production`) lazily.
   final LudoLocalSave? localSave;
+
+  /// Test seam: the telemetry sink `ludo_match_started` records through
+  /// (and forwards to the pushed `GameBoardScreen`). `null` (the default)
+  /// resolves a fresh production [LudoTelemetry].
+  final LudoTelemetry? telemetry;
+
+  /// Test seam: forwarded to `startLudoLocalMatch`'s pushed
+  /// `GameBoardScreen` when the Computer/Pass N Play tiles use their
+  /// default (non-overridden) navigation. `null` (the default) in
+  /// production, where the dice source seeds itself from the current time.
+  final int? diceSeed;
 
   @override
   State<HomeLobbyScreen> createState() => _HomeLobbyScreenState();
@@ -199,6 +224,7 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
           soundSettings: LudoSoundSettings(),
           initialState: loaded.state,
           localSave: save,
+          telemetry: widget.telemetry,
         ),
       ),
     );
@@ -232,7 +258,12 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
                   enabled: true,
                   onTap:
                       widget.onPlayComputer ??
-                      () => startLudoLocalMatch(context, isComputerMatch: true),
+                      () => startLudoLocalMatch(
+                        context,
+                        isComputerMatch: true,
+                        telemetry: widget.telemetry,
+                        diceSeed: widget.diceSeed,
+                      ),
                 ),
                 _LobbyCard(
                   title: 'Pass N Play',
@@ -241,8 +272,12 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
                   enabled: true,
                   onTap:
                       widget.onPlayPassAndPlay ??
-                      () =>
-                          startLudoLocalMatch(context, isComputerMatch: false),
+                      () => startLudoLocalMatch(
+                        context,
+                        isComputerMatch: false,
+                        telemetry: widget.telemetry,
+                        diceSeed: widget.diceSeed,
+                      ),
                 ),
                 const _LobbyCard(
                   title: 'Play with Friends',

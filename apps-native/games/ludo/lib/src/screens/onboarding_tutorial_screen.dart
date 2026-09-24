@@ -19,6 +19,7 @@ import 'home_lobby_screen.dart' show HomeLobbyScreen;
 import '../game/ludo_game.dart';
 import '../state/ludo_profile_settings.dart';
 import '../state/reduced_motion_setting.dart';
+import '../telemetry/ludo_telemetry.dart';
 import '../widgets/ludo_onboarding_controls.dart';
 
 /// One token per player, otherwise identical numeric rules to Classic — a
@@ -54,10 +55,21 @@ class OnboardingTutorialScreen extends StatefulWidget {
     required this.settings,
     required this.profileStore,
     this.reducedMotion,
+    this.telemetry,
+    this.diceSeed,
   });
 
   final LudoProfileSettings settings;
   final LudoProfileStore profileStore;
+
+  /// Test seam: the telemetry sink `ludo_onboarding_completed`/
+  /// `ludo_onboarding_skipped` record through. `null` (the default)
+  /// resolves a fresh production [LudoTelemetry].
+  final LudoTelemetry? telemetry;
+
+  /// Test seam: forwarded all the way to `HomeLobbyScreen`'s started
+  /// match. `null` (the default) in production.
+  final int? diceSeed;
 
   /// Test seam: the [ReducedMotionSetting] this screen's [LudoGame] reads.
   /// Defaults to a fresh (motion-enabled) setting in production. Widget
@@ -128,7 +140,7 @@ class _OnboardingTutorialScreenState extends State<OnboardingTutorialScreen> {
       case _TutorialStep.moveToCapture:
         await _move();
       case _TutorialStep.done:
-        await _finish();
+        await _finish(skipped: false);
     }
   }
 
@@ -158,12 +170,23 @@ class _OnboardingTutorialScreenState extends State<OnboardingTutorialScreen> {
     });
   }
 
-  Future<void> _finish() async {
+  Future<void> _finish({required bool skipped}) async {
     widget.settings.onboardingComplete = true;
     await widget.profileStore.save(widget.settings);
+    final telemetry = widget.telemetry ?? LudoTelemetry();
+    if (skipped) {
+      telemetry.onboardingSkipped();
+    } else {
+      telemetry.onboardingCompleted();
+    }
     if (!mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute<void>(builder: (_) => const HomeLobbyScreen()),
+      MaterialPageRoute<void>(
+        builder: (_) => HomeLobbyScreen(
+          telemetry: widget.telemetry,
+          diceSeed: widget.diceSeed,
+        ),
+      ),
       (route) => false,
     );
   }
@@ -173,7 +196,7 @@ class _OnboardingTutorialScreenState extends State<OnboardingTutorialScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('How to play'),
-        actions: [LudoSkipButton(onPressed: () => _finish())],
+        actions: [LudoSkipButton(onPressed: () => _finish(skipped: true))],
       ),
       body: SafeArea(
         child: Padding(

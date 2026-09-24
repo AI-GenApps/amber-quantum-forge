@@ -16,7 +16,10 @@ import 'package:flutter/material.dart';
 import '../state/ludo_settings_store.dart';
 import '../state/ludo_sound_settings.dart';
 import '../state/reduced_motion_setting.dart';
+import '../telemetry/ludo_telemetry.dart';
 import 'settings_screen.dart';
+
+const _minTapTarget = 48.0;
 
 /// Shows the pause/quit dialog. Returns once the dialog is dismissed
 /// (Resume, Quit, or barrier tap).
@@ -26,6 +29,7 @@ Future<void> showPauseQuitDialog(
   required VoidCallback onQuit,
   ReducedMotionSetting? reducedMotion,
   LudoSettingsStore? settingsStore,
+  LudoTelemetry? telemetry,
 }) {
   return showDialog<void>(
     context: context,
@@ -33,6 +37,7 @@ Future<void> showPauseQuitDialog(
       soundSettings: soundSettings,
       reducedMotion: reducedMotion,
       settingsStore: settingsStore,
+      telemetry: telemetry,
       onQuit: onQuit,
     ),
   );
@@ -46,6 +51,7 @@ class PauseQuitDialog extends StatelessWidget {
     required this.onQuit,
     this.reducedMotion,
     this.settingsStore,
+    this.telemetry,
   });
 
   final LudoSoundSettings soundSettings;
@@ -58,6 +64,12 @@ class PauseQuitDialog extends StatelessWidget {
   /// Forwarded to [SettingsScreen]'s persistence.
   final LudoSettingsStore? settingsStore;
 
+  /// Test seam: the telemetry sink `ludo_settings_changed` records
+  /// through, both for this dialog's own toggles and (forwarded) for
+  /// [SettingsScreen]'s. `null` (the default) resolves a fresh production
+  /// [LudoTelemetry].
+  final LudoTelemetry? telemetry;
+
   /// Invoked exactly once when Quit is tapped, after the dialog closes
   /// itself. The caller decides what quitting actually does (end a local
   /// match with no penalty, forfeit an online one, etc.).
@@ -65,6 +77,7 @@ class PauseQuitDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final telemetryRecorder = telemetry ?? LudoTelemetry();
     return AlertDialog(
       title: const Text('Paused'),
       content: AnimatedBuilder(
@@ -73,20 +86,32 @@ class PauseQuitDialog extends StatelessWidget {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SwitchListTile(
-                title: const Text('Sound'),
+              _PauseDialogSwitch(
+                keyValue: 'pause-dialog-sound-switch',
+                label: 'Sound',
                 value: soundSettings.soundEnabled,
-                onChanged: (value) => soundSettings.soundEnabled = value,
+                onChanged: (value) {
+                  soundSettings.soundEnabled = value;
+                  telemetryRecorder.settingsChanged(toggle: 'sound');
+                },
               ),
-              SwitchListTile(
-                title: const Text('Music'),
+              _PauseDialogSwitch(
+                keyValue: 'pause-dialog-music-switch',
+                label: 'Music',
                 value: soundSettings.musicEnabled,
-                onChanged: (value) => soundSettings.musicEnabled = value,
+                onChanged: (value) {
+                  soundSettings.musicEnabled = value;
+                  telemetryRecorder.settingsChanged(toggle: 'music');
+                },
               ),
-              SwitchListTile(
-                title: const Text('Vibration'),
+              _PauseDialogSwitch(
+                keyValue: 'pause-dialog-vibration-switch',
+                label: 'Vibration',
                 value: soundSettings.vibrationEnabled,
-                onChanged: (value) => soundSettings.vibrationEnabled = value,
+                onChanged: (value) {
+                  soundSettings.vibrationEnabled = value;
+                  telemetryRecorder.settingsChanged(toggle: 'vibration');
+                },
               ),
             ],
           );
@@ -94,31 +119,91 @@ class PauseQuitDialog extends StatelessWidget {
       ),
       actions: [
         if (reducedMotion != null)
-          TextButton(
-            key: const Key('pause-dialog-settings-button'),
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) => SettingsScreen(
-                  soundSettings: soundSettings,
-                  reducedMotion: reducedMotion!,
-                  store: settingsStore,
+          Semantics(
+            button: true,
+            label: 'Settings',
+            excludeSemantics: true,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: _minTapTarget),
+              child: TextButton(
+                key: const Key('pause-dialog-settings-button'),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => SettingsScreen(
+                      soundSettings: soundSettings,
+                      reducedMotion: reducedMotion!,
+                      store: settingsStore,
+                      telemetry: telemetry,
+                    ),
+                  ),
                 ),
+                child: const Text('Settings'),
               ),
             ),
-            child: const Text('Settings'),
           ),
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Resume'),
+        Semantics(
+          button: true,
+          label: 'Resume',
+          excludeSemantics: true,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: _minTapTarget),
+            child: TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Resume'),
+            ),
+          ),
         ),
-        FilledButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-            onQuit();
-          },
-          child: const Text('Quit'),
+        Semantics(
+          button: true,
+          label: 'Quit',
+          excludeSemantics: true,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: _minTapTarget),
+            child: FilledButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                onQuit();
+              },
+              child: const Text('Quit'),
+            ),
+          ),
         ),
       ],
+    );
+  }
+}
+
+/// One toggle row in [PauseQuitDialog], carrying its own [Semantics] label
+/// and a 48dp+ minimum tap target — task 09 shipped this dialog's
+/// `SwitchListTile`s without either (see this task's Context/Decisions).
+class _PauseDialogSwitch extends StatelessWidget {
+  const _PauseDialogSwitch({
+    required this.keyValue,
+    required this.label,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final String keyValue;
+  final String label;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      toggled: value,
+      label: label,
+      excludeSemantics: true,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: _minTapTarget),
+        child: SwitchListTile(
+          key: Key(keyValue),
+          title: Text(label),
+          value: value,
+          onChanged: onChanged,
+        ),
+      ),
     );
   }
 }

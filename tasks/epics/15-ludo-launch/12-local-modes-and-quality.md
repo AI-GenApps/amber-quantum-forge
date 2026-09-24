@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 12-local-modes-and-quality
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/11-save-and-resume]
 estimate: L
@@ -73,41 +73,41 @@ interactive control built in tasks 03-11.
 
 ## Implementation Checklist
 
-- [ ] Create `lib/src/game/ludo_bot_turn_runner.dart`: drives sequential bot
+- [x] Create `lib/src/game/ludo_bot_turn_runner.dart`: drives sequential bot
   turns after each human action, using task 02's bot strategies, with a
   configurable inter-action delay.
-- [ ] Wire `game_board_screen.dart` to invoke the bot-turn runner whenever
+- [x] Wire `game_board_screen.dart` to invoke the bot-turn runner whenever
   the active seat is a bot seat (vs-Computer and any bot-filled online seat
   — reuse the same runner for both, do not duplicate bot-turn logic between
   local and online paths; task 26 wires the online call site).
-- [ ] Create `lib/src/screens/pass_and_play_interstitial.dart` with a
+- [x] Create `lib/src/screens/pass_and_play_interstitial.dart` with a
   dismissible "Pass to <player>" screen and a "don't show again this
   session" toggle.
-- [ ] Wire `mode_setup_sheet.dart` -> `game_board_screen.dart` navigation to
+- [x] Wire `mode_setup_sheet.dart` -> `game_board_screen.dart` navigation to
   show the interstitial between turns for Pass N Play sessions only.
-- [ ] Create `lib/src/telemetry/ludo_telemetry.dart` wrapping
+- [x] Create `lib/src/telemetry/ludo_telemetry.dart` wrapping
   `platform_core`'s telemetry API with the LOCAL events above.
-- [ ] Call the telemetry events from their respective call sites across
+- [x] Call the telemetry events from their respective call sites across
   onboarding (task 07), setup/board/pause (task 09), and results/settings
   (task 10).
-- [ ] Add `test/game/ludo_bot_turn_runner_test.dart` covering: bot turns
+- [x] Add `test/game/ludo_bot_turn_runner_test.dart` covering: bot turns
   execute automatically including extra rolls on six, and control returns
   to a human seat correctly after the bot sequence ends.
-- [ ] Add `test/screens/pass_and_play_interstitial_test.dart` covering the
+- [x] Add `test/screens/pass_and_play_interstitial_test.dart` covering the
   dismiss/don't-show-again behavior.
-- [ ] Add `test/telemetry/ludo_telemetry_test.dart` (using
+- [x] Add `test/telemetry/ludo_telemetry_test.dart` (using
   `platform_core`'s existing test double/fake telemetry sink, matching how
   another game's telemetry tests are structured) asserting each LOCAL event
   fires with the expected name/payload for a representative scenario per
   event.
-- [ ] Add `test/app_flow_test.dart`: a full widget test driving
+- [x] Add `test/app_flow_test.dart`: a full widget test driving
   splash -> onboarding (both skip and complete variants) -> home lobby ->
   mode/setup sheet -> game board -> results, asserting no crash and correct
   navigation.
-- [ ] Add `test/goldens/results_screen_full_flow.png` (or equivalently
+- [x] Add `test/goldens/results_screen_full_flow.png` (or equivalently
   named) captured from `test/app_flow_test.dart`'s completed run, committed
   under `apps-native/games/ludo/test/goldens/`.
-- [ ] Add `test/accessibility/ludo_tap_targets_test.dart` asserting every
+- [x] Add `test/accessibility/ludo_tap_targets_test.dart` asserting every
   interactive control reachable from the full flow (including
   `mode_setup_sheet.dart`'s and `pause_quit_dialog.dart`'s controls from
   task 09, which task 09 did not independently test for this) has a

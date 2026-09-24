@@ -4,6 +4,7 @@ import 'package:platform_core/platform_core.dart';
 import 'screens/splash_screen.dart';
 import 'state/ludo_profile_settings.dart';
 import 'state/reduced_motion_setting.dart';
+import 'telemetry/ludo_telemetry.dart';
 
 export 'screens/home_lobby_screen.dart' show HomeLobbyScreen;
 
@@ -28,6 +29,8 @@ final class LudoApp extends StatelessWidget {
     this.profileSettings,
     this.profileStore,
     this.reducedMotion,
+    this.telemetry,
+    this.diceSeed,
   });
 
   /// Test seam: the profile settings [SplashScreen] loads onto. Defaults to
@@ -45,6 +48,17 @@ final class LudoApp extends StatelessWidget {
   /// production.
   final ReducedMotionSetting? reducedMotion;
 
+  /// Test seam: forwarded to [SplashScreen] and every screen beyond it.
+  /// `null` (the default) resolves a fresh production [LudoTelemetry] at
+  /// each screen that needs one.
+  final LudoTelemetry? telemetry;
+
+  /// Test seam: forwarded all the way to `HomeLobbyScreen`'s Computer/Pass
+  /// N Play tiles, seeding the dice source of the match they start. `null`
+  /// (the default) in production, where the dice source seeds itself from
+  /// the current time.
+  final int? diceSeed;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -55,6 +69,8 @@ final class LudoApp extends StatelessWidget {
         settings: profileSettings ?? LudoProfileSettings(),
         profileStore: profileStore,
         reducedMotion: reducedMotion,
+        telemetry: telemetry,
+        diceSeed: diceSeed,
       ),
     );
   }

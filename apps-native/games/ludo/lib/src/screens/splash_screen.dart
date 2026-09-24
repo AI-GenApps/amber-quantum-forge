@@ -14,6 +14,7 @@ import '../app.dart' show ludoIdentity;
 import 'home_lobby_screen.dart' show HomeLobbyScreen;
 import '../state/ludo_profile_settings.dart';
 import '../state/reduced_motion_setting.dart';
+import '../telemetry/ludo_telemetry.dart';
 import 'onboarding_welcome_screen.dart';
 
 /// Minimum time the splash screen stays visible, so it reads as a
@@ -30,6 +31,8 @@ class SplashScreen extends StatefulWidget {
     this.profileStore,
     this.minDisplay = ludoSplashMinDisplay,
     this.reducedMotion,
+    this.telemetry,
+    this.diceSeed,
   });
 
   /// The (already-constructed, not-yet-loaded) profile settings this
@@ -49,6 +52,17 @@ class SplashScreen extends StatefulWidget {
   /// Test seam threaded down to the tutorial screen's `LudoGame`; see
   /// `onboarding_tutorial_screen.dart`'s `reducedMotion` doc.
   final ReducedMotionSetting? reducedMotion;
+
+  /// Test seam: forwarded to [HomeLobbyScreen]/[OnboardingWelcomeScreen].
+  /// `null` (the default) resolves a fresh production [LudoTelemetry] at
+  /// each of those screens.
+  final LudoTelemetry? telemetry;
+
+  /// Test seam: forwarded to [HomeLobbyScreen]/[OnboardingWelcomeScreen],
+  /// all the way to `HomeLobbyScreen`'s started match. `null` (the
+  /// default) in production, where the dice source seeds itself from the
+  /// current time.
+  final int? diceSeed;
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -75,11 +89,16 @@ class _SplashScreenState extends State<SplashScreen> {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
         builder: (_) => widget.settings.onboardingComplete
-            ? const HomeLobbyScreen()
+            ? HomeLobbyScreen(
+                telemetry: widget.telemetry,
+                diceSeed: widget.diceSeed,
+              )
             : OnboardingWelcomeScreen(
                 settings: widget.settings,
                 profileStore: store,
                 reducedMotion: widget.reducedMotion,
+                telemetry: widget.telemetry,
+                diceSeed: widget.diceSeed,
               ),
       ),
     );

@@ -13,6 +13,7 @@ import '../app.dart' show ludoIdentity;
 import 'home_lobby_screen.dart' show HomeLobbyScreen;
 import '../state/ludo_profile_settings.dart';
 import '../state/reduced_motion_setting.dart';
+import '../telemetry/ludo_telemetry.dart';
 import '../widgets/ludo_onboarding_controls.dart';
 import 'onboarding_profile_screen.dart';
 
@@ -22,6 +23,8 @@ class OnboardingWelcomeScreen extends StatelessWidget {
     required this.settings,
     required this.profileStore,
     this.reducedMotion,
+    this.telemetry,
+    this.diceSeed,
   });
 
   final LudoProfileSettings settings;
@@ -31,12 +34,25 @@ class OnboardingWelcomeScreen extends StatelessWidget {
   /// `onboarding_tutorial_screen.dart`'s `reducedMotion` doc.
   final ReducedMotionSetting? reducedMotion;
 
+  /// Test seam: the telemetry sink `ludo_onboarding_skipped` records
+  /// through. `null` (the default) resolves a fresh production
+  /// [LudoTelemetry].
+  final LudoTelemetry? telemetry;
+
+  /// Test seam: forwarded all the way to `HomeLobbyScreen`'s started
+  /// match. `null` (the default) in production.
+  final int? diceSeed;
+
   Future<void> _skip(BuildContext context) async {
     settings.onboardingComplete = true;
     await profileStore.save(settings);
+    (telemetry ?? LudoTelemetry()).onboardingSkipped();
     if (!context.mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute<void>(builder: (_) => const HomeLobbyScreen()),
+      MaterialPageRoute<void>(
+        builder: (_) =>
+            HomeLobbyScreen(telemetry: telemetry, diceSeed: diceSeed),
+      ),
       (route) => false,
     );
   }
@@ -76,6 +92,8 @@ class OnboardingWelcomeScreen extends StatelessWidget {
                         settings: settings,
                         profileStore: profileStore,
                         reducedMotion: reducedMotion,
+                        telemetry: telemetry,
+                        diceSeed: diceSeed,
                       ),
                     ),
                   );
