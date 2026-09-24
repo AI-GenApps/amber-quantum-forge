@@ -1,16 +1,37 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:platform_core/platform_core.dart';
 
 import 'package:ludo/src/app.dart';
+import 'package:ludo/src/state/ludo_profile_settings.dart';
+
+AppContext _context() => AppContext(
+  identity: ludoIdentity,
+  environment: AppEnvironment.debug,
+  appVersion: '0.1.0',
+  sessionId: 'test-session',
+);
 
 void main() {
-  testWidgets('boots offline and renders the placeholder home screen', (
+  testWidgets('boots offline and, once onboarded, reaches the home screen', (
     tester,
   ) async {
-    await tester.pumpWidget(const LudoApp());
+    final store = LudoProfileStore(
+      saveStore: MemorySaveStore(),
+      appContext: _context(),
+    );
+    await tester.pumpWidget(
+      LudoApp(
+        profileSettings: LudoProfileSettings(onboardingComplete: true),
+        profileStore: store,
+      ),
+    );
     await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
+    await tester.pumpAndSettle();
 
-    // The app boots straight to the placeholder home screen with zero
-    // Firebase/network dependency anywhere in the widget tree.
+    // The app boots straight to the placeholder home screen (after the
+    // splash's local-only profile load) with zero Firebase/network
+    // dependency anywhere in the widget tree.
     expect(find.byType(LudoPlaceholderHomeScreen), findsOneWidget);
     expect(find.text('Ludo'), findsOneWidget);
     expect(find.text('Roll, race, and capture'), findsOneWidget);

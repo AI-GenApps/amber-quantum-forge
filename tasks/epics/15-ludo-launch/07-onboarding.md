@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 07-onboarding
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/06-audio-haptics]
 estimate: M
@@ -53,28 +53,28 @@ gating** anywhere in this flow.
 
 ## Implementation Checklist
 
-- [ ] Create `lib/src/screens/splash_screen.dart`.
-- [ ] Create `lib/src/screens/onboarding_welcome_screen.dart`,
+- [x] Create `lib/src/screens/splash_screen.dart`.
+- [x] Create `lib/src/screens/onboarding_welcome_screen.dart`,
   `onboarding_profile_screen.dart` (name field + ≥8-avatar picker grid),
   `onboarding_tutorial_screen.dart`, each with a visible, `Semantics`-labeled
   Skip action and 48dp+ tap targets throughout.
-- [ ] Create `lib/src/widgets/ludo_avatar.dart`: the code-drawn avatar
+- [x] Create `lib/src/widgets/ludo_avatar.dart`: the code-drawn avatar
   `CustomPainter` set (≥8 distinct avatars).
-- [ ] Create `lib/src/state/ludo_profile_settings.dart` (name, avatar id,
+- [x] Create `lib/src/state/ludo_profile_settings.dart` (name, avatar id,
   onboarding-complete flag) with local persistence, reusing task 06's
   persistence mechanism.
-- [ ] Wire `lib/src/app.dart`'s routing: splash -> (onboarding if
+- [x] Wire `lib/src/app.dart`'s routing: splash -> (onboarding if
   incomplete, else home lobby placeholder — task 08 fills in the real
   destination).
-- [ ] Add `test/screens/onboarding_flow_test.dart` covering: skip at each
+- [x] Add `test/screens/onboarding_flow_test.dart` covering: skip at each
   step reaches the post-onboarding destination, completing all steps
   persists the chosen name/avatar, and re-launching after completion skips
   onboarding entirely.
-- [ ] Add `test/widgets/ludo_avatar_test.dart` covering: at least 8 avatars
+- [x] Add `test/widgets/ludo_avatar_test.dart` covering: at least 8 avatars
   render distinctly (different colors/motifs, asserted via widget
   tree/paint comparison, not just count).
-- [ ] Add golden tests under `test/goldens/` for the avatar picker grid.
-- [ ] Add accessibility assertions (`tester.getSemantics`, min tap-target
+- [x] Add golden tests under `test/goldens/` for the avatar picker grid.
+- [x] Add accessibility assertions (`tester.getSemantics`, min tap-target
   size) to the screen tests above for every interactive control.
 
 ## Files Touched
