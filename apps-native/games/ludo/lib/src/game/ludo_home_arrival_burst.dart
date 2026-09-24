@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 
 import '../assets/ludo_art_manifest.dart';
 import '../state/reduced_motion_setting.dart';
+import '../theme/ludo_theme_tokens.dart';
 
 /// How long a (non-reduced-motion) home-arrival burst lives.
 const ludoHomeArrivalParticleLifespan = Duration(milliseconds: 600);
@@ -26,12 +27,14 @@ const ludoHomeArrivalFlashLifespan = Duration(milliseconds: 60);
 /// Number of particles in a full-motion home-arrival burst.
 const ludoHomeArrivalParticleCount = 12;
 
-/// Warmer palette than [ludoCaptureParticlePalette], so a home arrival and
-/// a capture never share a color scheme.
+/// Warm gold palette, sourced from [LudoThemeTokens]'s gold-accent trio
+/// rather than ad hoc colors — distinct from [ludoCaptureParticlePalette]'s
+/// cool red/blue so a home arrival and a capture never share a color
+/// scheme.
 const ludoHomeArrivalPalette = [
-  Color(0xFFFFC107),
-  Color(0xFFFF8F00),
-  Color(0xFFFFF8E1),
+  LudoThemeTokens.gold,
+  LudoThemeTokens.goldDeep,
+  LudoThemeTokens.textOnDark,
 ];
 
 /// Builds the home-arrival particle: an upward, outward-fanning spray of

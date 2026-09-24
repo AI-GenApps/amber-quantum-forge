@@ -54,25 +54,25 @@ palette from task 12b, and regenerate every affected golden.
 
 ## Implementation Checklist
 
-- [ ] Restyle `lib/src/game/ludo_board_component.dart`: quadrant fills,
+- [x] Restyle `lib/src/game/ludo_board_component.dart`: quadrant fills,
   white yards, white track cells, home-stretch entry arrows, star safe
   cells, board frame.
-- [ ] Restyle `lib/src/game/ludo_token_component.dart`: pin/map-marker
+- [x] Restyle `lib/src/game/ludo_token_component.dart`: pin/map-marker
   token silhouette with gradient/shadow/glossy highlight, per-seat palette
   from `ludo_theme_tokens.dart`.
-- [ ] Restyle `lib/src/game/ludo_dice_component.dart`: polished pip/body
+- [x] Restyle `lib/src/game/ludo_dice_component.dart`: polished pip/body
   rendering matching the new palette.
-- [ ] Restyle `lib/src/game/ludo_capture_particles.dart`,
+- [x] Restyle `lib/src/game/ludo_capture_particles.dart`,
   `ludo_home_arrival_burst.dart`, `ludo_confetti.dart` to use the new
   palette (`ludo_theme_tokens.dart`) instead of any leftover ad hoc colors.
-- [ ] Update `lib/src/assets/ludo_art_manifest.dart`'s visual-slot painters
+- [x] Update `lib/src/assets/ludo_art_manifest.dart`'s visual-slot painters
   that delegate to the components above (no manifest contract change, just
   confirm delegation still matches the restyled paint code).
-- [ ] Regenerate every board/token/dice/particle/confetti golden under
+- [x] Regenerate every board/token/dice/particle/confetti golden under
   `apps-native/games/ludo/test/goldens/` (empty board, populated board,
   legal-move/turn highlight, token, dice faces, capture, home-arrival,
   confetti).
-- [ ] Update/extend `test/game/ludo_board_component_test.dart` and
+- [x] Update/extend `test/game/ludo_board_component_test.dart` and
   `ludo_token_component_test.dart` for the new star-icon and pin-shape
   assertions (e.g. safe cells render a star child component, tokens render
   a teardrop path rather than a plain circle).

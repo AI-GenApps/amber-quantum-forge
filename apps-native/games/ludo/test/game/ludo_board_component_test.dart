@@ -14,7 +14,10 @@ void main() {
       expect(board.trackCells.length, 52);
       expect(board.homeStretchCells.length, 24);
       expect(board.yards.length, 4);
-      expect(board.children.length, 52 + 24 + 4);
+      expect(board.frame, isNotNull);
+      // One extra top-level child for the board-frame decoration (task
+      // 12c) on top of every track/home-stretch/yard cell.
+      expect(board.children.length, 52 + 24 + 4 + 1);
     });
 
     testWithFlameGame('marks exactly the safe cells ludo_rules defines', (
@@ -30,6 +33,32 @@ void main() {
 
       expect(safeIndices, LudoBoard.safeCells.toSet());
       expect(safeIndices.length, 8);
+    });
+
+    testWithFlameGame('every safe cell renders a distinct star marker child, '
+        'no non-safe cell does', (game) async {
+      final board = LudoBoardComponent(boardSize: Vector2.all(300));
+      await game.ensureAdd(board);
+      await game.ready();
+
+      for (final cell in board.trackCells) {
+        if (LudoBoard.safeCells.contains(cell.cellIndex)) {
+          expect(
+            cell.star,
+            isNotNull,
+            reason: 'safe cell ${cell.cellIndex} should have a star marker',
+          );
+          expect(cell.children, contains(cell.star));
+        } else {
+          expect(
+            cell.star,
+            isNull,
+            reason:
+                'non-safe cell ${cell.cellIndex} should not have a star '
+                'marker',
+          );
+        }
+      }
     });
 
     testWithFlameGame('every home-stretch color has exactly 6 cells', (

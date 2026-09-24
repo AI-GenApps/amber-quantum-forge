@@ -9,6 +9,7 @@
 library;
 
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -40,52 +41,136 @@ const ludoTokenFlightDuration = Duration(milliseconds: 380);
 /// flight-back arcs clearly over the board rather than hopping along it.
 const ludoTokenFlightArcHeight = 1.4;
 
-/// Draws one Ludo token's art into [rect] on [canvas].
+/// Draws one Ludo token's art into [rect] on [canvas] as a glossy 3D
+/// pin/map-marker silhouette — a rounded teardrop shape with a circular
+/// head — rather than a flat disc, per task 12c's Context/Decisions.
 ///
 /// Concrete requirements (checked by golden test, not opinion — see task
-/// 04's acceptance criteria): (1) a radial gradient from a lighter
-/// highlight at the top-left to the base color, (2) a drop shadow offset
-/// down-right, and (3) a small glossy ellipse highlight near the top. A
-/// flat single-color circle with none of these fails the golden.
+/// 04 and 12c's acceptance criteria): (1) a non-circular teardrop
+/// silhouette (see [LudoTokenPainter.pinPath]), (2) a radial gradient from
+/// a lighter highlight at the top-left of the head to the base color, (3)
+/// a drop shadow offset down-right, and (4) a small glossy ellipse
+/// highlight near the top of the head. A flat single-color circle with
+/// none of these fails the golden.
 abstract final class LudoTokenPainter {
   static void paint(Canvas canvas, Rect rect, Color baseColor) {
-    final center = rect.center;
-    final radius = rect.shortestSide / 2;
+    final pin = pinPath(rect);
+    final headCenter = headCenterOf(rect);
+    final headRadius = headRadiusOf(rect);
 
-    final shadowCenter = center.translate(radius * 0.18, radius * 0.22);
-    canvas.drawCircle(
-      shadowCenter,
-      radius * 0.96,
+    canvas.drawPath(
+      pin.shift(Offset(rect.width * 0.09, rect.height * 0.1)),
       Paint()
         ..color = const Color(0x66000000)
         ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4),
     );
 
-    final fillRect = Rect.fromCircle(center: center, radius: radius);
     final fillPaint = Paint()
       ..shader = RadialGradient(
-        center: const Alignment(-0.35, -0.35),
-        radius: 0.85,
-        colors: [_lighten(baseColor, 0.5), baseColor, _darken(baseColor, 0.2)],
+        center: const Alignment(-0.35, -0.55),
+        radius: 1.1,
+        colors: [_lighten(baseColor, 0.5), baseColor, _darken(baseColor, 0.25)],
         stops: const [0.0, 0.55, 1.0],
-      ).createShader(fillRect);
-    canvas.drawCircle(center, radius, fillPaint);
+      ).createShader(rect);
+    canvas.drawPath(pin, fillPaint);
 
-    canvas.drawCircle(
-      center,
-      radius,
+    canvas.drawPath(
+      pin,
       Paint()
         ..style = PaintingStyle.stroke
-        ..strokeWidth = radius * 0.06
+        ..strokeWidth = rect.shortestSide * 0.05
         ..color = _darken(baseColor, 0.35),
     );
 
+    // A small dark "eye" hole near the head's center sells the map-marker
+    // read (a pin with a hollow center) rather than a plain droplet.
+    canvas.drawCircle(
+      headCenter,
+      headRadius * 0.34,
+      Paint()..color = _darken(baseColor, 0.4).withValues(alpha: 0.55),
+    );
+    canvas.drawCircle(
+      headCenter,
+      headRadius * 0.34,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = headRadius * 0.08
+        ..color = _lighten(baseColor, 0.35),
+    );
+
     final highlightRect = Rect.fromCenter(
-      center: center.translate(-radius * 0.22, -radius * 0.45),
-      width: radius * 0.9,
-      height: radius * 0.5,
+      center: headCenter.translate(-headRadius * 0.32, -headRadius * 0.5),
+      width: headRadius * 0.9,
+      height: headRadius * 0.5,
     );
     canvas.drawOval(highlightRect, Paint()..color = const Color(0x99FFFFFF));
+  }
+
+  /// The circular head's center within [rect] — the rounded top of the
+  /// teardrop silhouette [pinPath] traces.
+  static Offset headCenterOf(Rect rect) =>
+      Offset(rect.center.dx, rect.top + rect.height * 0.38);
+
+  /// The circular head's radius within [rect].
+  static double headRadiusOf(Rect rect) => rect.width * 0.36;
+
+  /// Traces a rounded teardrop / map-marker silhouette inscribed in
+  /// [rect]: a circular head (see [headCenterOf]/[headRadiusOf]) tapering
+  /// to a point at the bottom-center, per this task's "pin/map-marker"
+  /// requirement. Exposed (rather than inlined in [paint]) so tests can
+  /// assert the token's silhouette is not a plain circle — e.g. the path's
+  /// bounds are taller than wide, and it contains the bottom-center tip
+  /// point a circle inscribed in [rect] would not.
+  static Path pinPath(Rect rect) {
+    final headCenter = headCenterOf(rect);
+    final headRadius = headRadiusOf(rect);
+    final tip = Offset(rect.center.dx, rect.bottom);
+
+    // The rounded head: a ~300 degree arc of the circle, starting and
+    // ending 30 degrees either side of straight-down (90 degrees in this
+    // arcTo's screen-space angle convention), leaving a 60 degree gap at
+    // the bottom for the two tangent curves down to the tip.
+    const startAngle = 2 * math.pi / 3; // 120 degrees.
+    const sweepAngle = 5 * math.pi / 3; // 300 degrees, clockwise.
+    final leftGapPoint =
+        headCenter +
+        Offset(
+          headRadius * math.cos(startAngle),
+          headRadius * math.sin(startAngle),
+        );
+    final rightGapPoint =
+        headCenter +
+        Offset(
+          headRadius * math.cos(startAngle + sweepAngle),
+          headRadius * math.sin(startAngle + sweepAngle),
+        );
+
+    final path = Path()..moveTo(leftGapPoint.dx, leftGapPoint.dy);
+    path.arcTo(
+      Rect.fromCircle(center: headCenter, radius: headRadius),
+      startAngle,
+      sweepAngle,
+      false,
+    );
+    // Tangent curves from the arc's end points down to the tip, each
+    // gently curved (quadratic) so the taper reads as smooth rather than
+    // a hard triangular point.
+    path
+      ..lineTo(rightGapPoint.dx, rightGapPoint.dy)
+      ..quadraticBezierTo(
+        headCenter.dx + headRadius * 0.45,
+        tip.dy - rect.height * 0.08,
+        tip.dx,
+        tip.dy,
+      )
+      ..quadraticBezierTo(
+        headCenter.dx - headRadius * 0.45,
+        tip.dy - rect.height * 0.08,
+        leftGapPoint.dx,
+        leftGapPoint.dy,
+      )
+      ..close();
+    return path;
   }
 
   static Color _lighten(Color color, double amount) {

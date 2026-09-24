@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 
 import '../assets/ludo_art_manifest.dart';
 import '../state/reduced_motion_setting.dart';
+import '../theme/ludo_theme_tokens.dart';
 
 /// How long a (non-reduced-motion) capture particle burst lives.
 const ludoCaptureParticleLifespan = Duration(milliseconds: 480);
@@ -29,13 +30,14 @@ const ludoCaptureParticleCount = 10;
 /// How far (in local px) a capture particle travels from the burst origin.
 const ludoCaptureParticleReach = 70.0;
 
-/// Cooler palette for the capture burst, kept visually distinct from
-/// [ludoHomeArrivalPalette]'s warmer one so a golden/screenshot can tell
-/// the two effects apart.
+/// Cool red/blue palette for the capture burst, sourced from
+/// [LudoThemeTokens]'s per-seat palette rather than ad hoc colors, kept
+/// visually distinct from [ludoHomeArrivalPalette]'s warm gold one so a
+/// golden/screenshot can tell the two effects apart.
 const ludoCaptureParticlePalette = [
-  Color(0xFFE53935),
-  Color(0xFFFF7043),
-  Color(0xFFFFFFFF),
+  LudoThemeTokens.seatRed,
+  LudoThemeTokens.seatBlue,
+  Colors.white,
 ];
 
 /// Builds the capture particle: a ring of small circles flying outward and

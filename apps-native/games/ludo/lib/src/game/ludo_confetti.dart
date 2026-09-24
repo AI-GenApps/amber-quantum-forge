@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 
 import '../assets/ludo_art_manifest.dart';
 import '../state/reduced_motion_setting.dart';
+import '../theme/ludo_theme_tokens.dart';
 
 /// How long (non-reduced-motion) confetti falls before the effect ends.
 const ludoConfettiLifespan = Duration(milliseconds: 1400);
@@ -22,14 +23,15 @@ const ludoConfettiFlashLifespan = Duration(milliseconds: 60);
 /// Number of confetti pieces in a full-motion celebration.
 const ludoConfettiCount = 40;
 
-/// The four player colors plus white, so every seat is represented in the
-/// celebration regardless of who won.
+/// The four seat colors plus gold, sourced from [LudoThemeTokens] rather
+/// than ad hoc colors, so every seat is represented in the celebration
+/// regardless of who won.
 const ludoConfettiPalette = [
-  Color(0xFFE53935),
-  Color(0xFF43A047),
-  Color(0xFFFDD835),
-  Color(0xFF1E88E5),
-  Color(0xFFFFFFFF),
+  LudoThemeTokens.seatRed,
+  LudoThemeTokens.seatGreen,
+  LudoThemeTokens.seatYellow,
+  LudoThemeTokens.seatBlue,
+  LudoThemeTokens.gold,
 ];
 
 /// Builds the win-confetti particle: pieces spawn across the top of

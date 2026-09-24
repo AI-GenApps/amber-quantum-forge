@@ -14,36 +14,20 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:ludo_rules/ludo_rules.dart' show LudoColor, ludoTrackLength;
 
+import '../theme/ludo_theme_tokens.dart';
 import 'ludo_board_geometry.dart';
 
 const _homeStretchCellsPerColor = 6;
 
-/// One shared-track square, index `0..51`.
-class LudoTrackCellComponent extends PositionComponent {
-  LudoTrackCellComponent({required this.cellIndex, required this.isSafe})
-    : super(anchor: Anchor.center);
-
-  final int cellIndex;
-  final bool isSafe;
+/// A star-marker component: rendered as its own child so a component test
+/// can assert its existence at every safe-cell index (per this task's
+/// acceptance criteria — "not merely a fill-color change").
+class LudoSafeCellStarComponent extends PositionComponent {
+  LudoSafeCellStarComponent() : super(anchor: Anchor.center);
 
   @override
   void render(Canvas canvas) {
     final rect = Rect.fromLTWH(0, 0, size.x, size.y);
-    canvas.drawRect(
-      rect,
-      Paint()..color = isSafe ? const Color(0xFFFFF3C4) : Colors.white,
-    );
-    canvas.drawRect(
-      rect,
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1
-        ..color = const Color(0xFFBDBDBD),
-    );
-    if (isSafe) _paintStar(canvas, rect);
-  }
-
-  void _paintStar(Canvas canvas, Rect rect) {
     final center = rect.center;
     final outerRadius = rect.shortestSide * 0.34;
     final innerRadius = outerRadius * 0.45;
@@ -62,7 +46,65 @@ class LudoTrackCellComponent extends PositionComponent {
       }
     }
     path.close();
-    canvas.drawPath(path, Paint()..color = const Color(0xFFFFC107));
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = LudoThemeTokens.gold
+        ..style = PaintingStyle.fill,
+    );
+    canvas.drawPath(
+      path,
+      Paint()
+        ..color = LudoThemeTokens.goldDeep
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = rect.shortestSide * 0.03,
+    );
+  }
+}
+
+/// One shared-track square, index `0..51`. Safe cells get a child
+/// [LudoSafeCellStarComponent] so their marker is testable/inspectable as
+/// its own component, not merely a fill-color difference.
+class LudoTrackCellComponent extends PositionComponent {
+  LudoTrackCellComponent({required this.cellIndex, required this.isSafe})
+    : super(anchor: Anchor.center) {
+    if (isSafe) {
+      star = LudoSafeCellStarComponent();
+      add(star!);
+    }
+  }
+
+  final int cellIndex;
+  final bool isSafe;
+
+  /// The star marker child for a safe cell, `null` for a plain track cell.
+  LudoSafeCellStarComponent? star;
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+    // `size`/`position` are cascaded onto this component by the caller
+    // right after construction (see `LudoBoardComponent._layout`), so by
+    // the time this component loads, `size` reflects its final cell size.
+    star
+      ?..size = size * 0.9
+      ..position = size / 2;
+  }
+
+  @override
+  void render(Canvas canvas) {
+    final rect = Rect.fromLTWH(0, 0, size.x, size.y);
+    canvas.drawRect(
+      rect,
+      Paint()..color = isSafe ? const Color(0xFFFFF3C4) : Colors.white,
+    );
+    canvas.drawRect(
+      rect,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1
+        ..color = const Color(0xFFCFCFCF),
+    );
   }
 }
 
@@ -81,13 +123,47 @@ class LudoHomeStretchCellComponent extends PositionComponent {
   void render(Canvas canvas) {
     final rect = Rect.fromLTWH(0, 0, size.x, size.y);
     final base = ludoColorPalette[color]!;
-    canvas.drawRect(rect, Paint()..color = base.withValues(alpha: 0.55));
+    canvas.drawRect(rect, Paint()..color = base.withValues(alpha: 0.82));
     canvas.drawRect(
       rect,
       Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1
-        ..color = base,
+        ..color = Colors.white.withValues(alpha: 0.5),
+    );
+    // Only the lane's entry cell (nearest the shared track) carries the
+    // directional arrow, pointing toward the center along the lane.
+    if (stretchIndex == 0) _paintEntryArrow(canvas, rect);
+  }
+
+  void _paintEntryArrow(Canvas canvas, Rect rect) {
+    final direction = ludoHomeStretchEntryDirection(color);
+    final center = rect.center;
+    final forward = Offset(direction.dx, direction.dy);
+    // A perpendicular unit vector, for the arrowhead's two back corners.
+    final perpendicular = Offset(-forward.dy, forward.dx);
+    final reach = rect.shortestSide * 0.32;
+    final spread = rect.shortestSide * 0.24;
+    final tip = center + forward * reach;
+    final backCenter = center - forward * (reach * 0.4);
+    final path = Path()
+      ..moveTo(tip.dx, tip.dy)
+      ..lineTo(
+        backCenter.dx + perpendicular.dx * spread,
+        backCenter.dy + perpendicular.dy * spread,
+      )
+      ..lineTo(
+        backCenter.dx - perpendicular.dx * spread,
+        backCenter.dy - perpendicular.dy * spread,
+      )
+      ..close();
+    canvas.drawPath(path, Paint()..color = Colors.white.withValues(alpha: 0.9));
+    canvas.drawPath(
+      path,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = rect.shortestSide * 0.04
+        ..color = LudoThemeTokens.textOutline.withValues(alpha: 0.35),
     );
   }
 }
@@ -104,15 +180,30 @@ class LudoYardComponent extends PositionComponent {
   void render(Canvas canvas) {
     final rect = Rect.fromLTWH(0, 0, size.x, size.y);
     final base = ludoColorPalette[color]!;
-    final rrect = RRect.fromRectAndRadius(rect, Radius.circular(size.x * 0.1));
-    canvas.drawRRect(rrect, Paint()..color = base.withValues(alpha: 0.16));
-    canvas.drawRRect(
-      rrect,
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = size.x * 0.015
-        ..color = base,
+
+    // Saturated quadrant fill behind the white inner yard panel, matching
+    // the target's "saturated quadrants, white inner yards" look.
+    final outerRRect = RRect.fromRectAndRadius(
+      rect,
+      Radius.circular(size.x * 0.08),
     );
+    canvas.drawRRect(outerRRect, Paint()..color = base);
+
+    // White inner yard panel, inset from the quadrant edge, holding the
+    // waiting-token slots.
+    final inset = size.x * 0.1;
+    final innerRect = rect.deflate(inset);
+    final innerRRect = RRect.fromRectAndRadius(
+      innerRect,
+      Radius.circular(size.x * 0.06),
+    );
+    canvas.drawRRect(
+      innerRRect,
+      Paint()
+        ..color = const Color(0x66000000)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3),
+    );
+    canvas.drawRRect(innerRRect, Paint()..color = Colors.white);
 
     final cellSize = size.x / 6;
     for (var slot = 0; slot < 4; slot++) {
@@ -122,12 +213,56 @@ class LudoYardComponent extends PositionComponent {
         (col - corner.$2 + 0.5) * cellSize,
         (row - corner.$1 + 0.5) * cellSize,
       );
+      final slotRadius = cellSize * 0.34;
       canvas.drawCircle(
         localCenter,
-        cellSize * 0.32,
-        Paint()..color = base.withValues(alpha: 0.28),
+        slotRadius,
+        Paint()
+          ..color = const Color(0x33000000)
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2),
+      );
+      canvas.drawCircle(localCenter, slotRadius, Paint()..color = base);
+      canvas.drawCircle(
+        localCenter,
+        slotRadius,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = slotRadius * 0.16
+          ..color = Colors.white,
       );
     }
+  }
+}
+
+/// A decorative gold-bevel border drawn around the whole board, on top of
+/// every cell/yard child (added last in `LudoBoardComponent._layout`), so
+/// the board reads as a distinct framed object against the background
+/// painter rather than a flush rectangle (task 12c).
+class LudoBoardFrameComponent extends PositionComponent {
+  LudoBoardFrameComponent() : super(anchor: Anchor.topLeft);
+
+  @override
+  void render(Canvas canvas) {
+    final outerRect = Rect.fromLTWH(0, 0, size.x, size.y);
+    final frameWidth = size.x * 0.018;
+    // Deep-gold outer stroke, drawn straddling the board's own edge so it
+    // reads as a bevelled frame without adding to the board's footprint.
+    canvas.drawRect(
+      outerRect,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = frameWidth
+        ..color = LudoThemeTokens.goldDeep,
+    );
+    // Brighter gold inner stroke, inset by roughly the outer stroke's
+    // width, giving the frame a beveled, two-tone edge.
+    canvas.drawRect(
+      outerRect.deflate(frameWidth),
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = frameWidth * 0.6
+        ..color = LudoThemeTokens.gold,
+    );
   }
 }
 
@@ -145,6 +280,7 @@ class LudoBoardComponent extends PositionComponent {
   final List<LudoTrackCellComponent> trackCells = [];
   final List<LudoHomeStretchCellComponent> homeStretchCells = [];
   final List<LudoYardComponent> yards = [];
+  LudoBoardFrameComponent? frame;
 
   /// Recomputes every child cell's position/size for the current [size].
   /// Call after changing [size] (e.g. on a game resize).
@@ -158,6 +294,7 @@ class LudoBoardComponent extends PositionComponent {
     trackCells.clear();
     homeStretchCells.clear();
     yards.clear();
+    frame = null;
 
     final cellSize = size.x / ludoGridSize;
     final boardRect = Rect.fromLTWH(0, 0, size.x, size.y);
@@ -189,7 +326,9 @@ class LudoBoardComponent extends PositionComponent {
       );
     }
 
-    addAll([...trackCells, ...homeStretchCells, ...yards]);
+    frame = LudoBoardFrameComponent()..size = size.clone();
+
+    addAll([...trackCells, ...homeStretchCells, ...yards, frame!]);
   }
 
   @override

@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 
 import '../assets/ludo_art_manifest.dart';
 import '../state/reduced_motion_setting.dart';
+import '../theme/ludo_theme_tokens.dart';
 
 /// Minimum time [LudoDiceComponent.rollTo]'s tumble phase runs before it is
 /// allowed to settle (task 05 spec: at least 600ms).
@@ -77,30 +78,47 @@ abstract final class LudoDicePainter {
         ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3),
     );
 
+    // Glossy white body with a subtle top-left highlight, per the target
+    // look's "white die body ... subtle bevel/shadow".
     canvas.drawRRect(
       rrect,
       Paint()
         ..shader = const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFFFFFDF7), Color(0xFFE3D9C2)],
+          colors: [Colors.white, Color(0xFFEDEDED)],
         ).createShader(rect),
     );
+    // Gold bevel border, matching the design system's gold-accent
+    // language (task 12b) rather than a plain neutral tan border.
     canvas.drawRRect(
       rrect,
       Paint()
         ..style = PaintingStyle.stroke
-        ..strokeWidth = rect.shortestSide * 0.035
-        ..color = const Color(0xFFB8A98A),
+        ..strokeWidth = rect.shortestSide * 0.045
+        ..color = LudoThemeTokens.goldDeep,
+    );
+    canvas.drawRRect(
+      rrect.deflate(rect.shortestSide * 0.045),
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = rect.shortestSide * 0.02
+        ..color = LudoThemeTokens.gold,
     );
 
     final pipRadius = rect.shortestSide * 0.09;
-    final pipArea = rect.deflate(rect.shortestSide * 0.22);
+    final pipArea = rect.deflate(rect.shortestSide * 0.24);
     for (final alignment in _pipLayouts[face]!) {
+      final pipCenter = alignment.withinRect(pipArea);
       canvas.drawCircle(
-        alignment.withinRect(pipArea),
+        pipCenter,
         pipRadius,
-        Paint()..color = const Color(0xFF2B1B0E),
+        Paint()..color = LudoThemeTokens.textOutline,
+      );
+      canvas.drawCircle(
+        pipCenter.translate(-pipRadius * 0.25, -pipRadius * 0.25),
+        pipRadius * 0.3,
+        Paint()..color = const Color(0x66FFFFFF),
       );
     }
   }

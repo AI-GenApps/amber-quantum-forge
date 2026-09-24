@@ -19,14 +19,18 @@ import 'dart:ui';
 
 import 'package:ludo_rules/ludo_rules.dart';
 
+import '../theme/ludo_theme_tokens.dart';
+
 /// The single source of truth for each color's base paint color, reused by
 /// the board (yard/home-stretch tinting), the token painter, and the art
-/// manifest so every slot agrees on one palette.
+/// manifest so every slot agrees on one palette. Sourced from
+/// [LudoThemeTokens]'s per-seat palette (task 12b/12c) rather than ad hoc
+/// hex values, so the board and every seat-colored widget stay in sync.
 const Map<LudoColor, Color> ludoColorPalette = {
-  LudoColor.red: Color(0xFFE53935),
-  LudoColor.green: Color(0xFF43A047),
-  LudoColor.yellow: Color(0xFFFDD835),
-  LudoColor.blue: Color(0xFF1E88E5),
+  LudoColor.red: LudoThemeTokens.seatRed,
+  LudoColor.green: LudoThemeTokens.seatGreen,
+  LudoColor.yellow: LudoThemeTokens.seatYellow,
+  LudoColor.blue: LudoThemeTokens.seatBlue,
 };
 
 /// Number of grid cells per side of the square board.
@@ -120,6 +124,20 @@ List<(int, int)> _buildTrackCellGrid() {
 /// The `(row, col)` of a color's home-stretch cell `stretchIndex` (`0..5`).
 (int, int) ludoHomeStretchCellGrid(LudoColor color, int stretchIndex) =>
     _homeStretchByColor[color]![stretchIndex];
+
+/// The unit direction (`dx`, `dy` each `-1`, `0`, or `1`) a color's
+/// home-stretch lane travels from its entry cell (index `0`, nearest the
+/// shared track) toward the center, derived from the first two entries of
+/// that color's lane so it can never drift out of sync with the lane
+/// itself. Used to draw the entry-arrow marker at the lane's first cell.
+Offset ludoHomeStretchEntryDirection(LudoColor color) {
+  final entry = _homeStretchByColor[color]![0];
+  final next = _homeStretchByColor[color]![1];
+  return Offset(
+    (next.$2 - entry.$2).toDouble(),
+    (next.$1 - entry.$1).toDouble(),
+  );
+}
 
 /// The `(row, col)` of yard slot `slotIndex` (`0..3`) for [color].
 (int, int) ludoYardSlotGrid(LudoColor color, int slotIndex) =>
