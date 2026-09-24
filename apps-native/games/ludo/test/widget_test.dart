@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:platform_core/platform_core.dart';
 
 import 'package:ludo/src/app.dart';
+import 'package:ludo/src/assets/ludo_art_manifest.dart';
 import 'package:ludo/src/state/ludo_profile_settings.dart';
 
 AppContext _context() => AppContext(
@@ -33,9 +34,17 @@ void main() {
     // local-only profile load) with zero Firebase/network dependency
     // anywhere in the widget tree.
     expect(find.byType(HomeLobbyScreen), findsOneWidget);
-    // The design system's `LudoOutlinedTitle` (task 12e) stacks an outline
-    // and fill layer, each an independent `Text` with the same string.
-    expect(find.text('Ludo'), findsNWidgets(2));
+    // The lobby header now shows the Ludo Vortex wordmark art (task 12g)
+    // instead of a text title.
+    expect(find.bySemanticsLabel('Ludo Vortex'), findsOneWidget);
+    expect(
+      find.byWidgetPredicate(
+        (widget) =>
+            widget is LudoArtSlot &&
+            widget.slot == LudoArtManifest.logoWideSlot,
+      ),
+      findsOneWidget,
+    );
     expect(find.text('Computer'), findsOneWidget);
   });
 }

@@ -1,7 +1,7 @@
 {
   "app_id": "ludo",
   "content_version": "LUDO-CONTENT-1",
-  "public_title": "Ludo",
+  "public_title": "Ludo Vortex",
   "subtitle": "Roll, race, and capture with friends",
   "stage": "Client scaffold milestone; board/token art, screens, and online play remain pending"
 }

@@ -189,8 +189,8 @@ export const GAME_REGISTRY: readonly GameRegistration[] = [
   },
   {
     id: "ludo",
-    canonicalName: "Ludo",
-    publicTitle: "Ludo",
+    canonicalName: "Ludo Vortex",
+    publicTitle: "Ludo Vortex",
     subtitle: "Roll, race, and capture with friends",
     lifecycle: "concept",
     paths: {

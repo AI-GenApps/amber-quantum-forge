@@ -103,8 +103,8 @@ abstract final class GeneratedGameRegistry {
     ),
     GameAppDefinition(
       id: 'ludo',
-      canonicalName: 'Ludo',
-      publicTitle: 'Ludo',
+      canonicalName: 'Ludo Vortex',
+      publicTitle: 'Ludo Vortex',
       saveNamespacePrefix: 'games.ludo',
       saveSchemaVersion: 1,
       analyticsNamespacePrefix: 'game.ludo',

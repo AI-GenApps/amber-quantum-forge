@@ -22,19 +22,33 @@ void main() {
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.reset);
 
-    await tester.pumpWidget(
-      MaterialApp(
-        theme: buildLudoTheme(),
-        home: HomeLobbyScreen(
-          resumableMatch: const LudoResumableMatchSummary(
-            mode: LudoResumableMatchMode.computer,
-            description: 'Classic - 2 players - Turn 5',
+    // Wrapped in `runAsync` (with a short real delay) so the real
+    // `assets/art/logo_wide.png` bitmap the header now renders (task 12g)
+    // actually finishes decoding before the golden is captured — the
+    // fake-async zone `pumpAndSettle` normally runs in never resolves a
+    // real `instantiateImageCodec` future on its own.
+    await tester.runAsync(() async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: buildLudoTheme(),
+          home: HomeLobbyScreen(
+            resumableMatch: const LudoResumableMatchSummary(
+              mode: LudoResumableMatchMode.computer,
+              description: 'Classic - 2 players - Turn 5',
+            ),
+            profile: LudoProfileSettings(name: 'Rae', avatarId: 'red-face'),
           ),
-          profile: LudoProfileSettings(name: 'Rae', avatarId: 'red-face'),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
+      );
+      await tester.pumpAndSettle();
+      // The header's `LudoArtSlot` resolves its bitmap check
+      // (`LudoArtManifest.hasBitmap`, a real `rootBundle.load` future) and
+      // only then starts decoding `assets/art/logo_wide.png` on the next
+      // rebuild — two sequential real-async hops, so settle again after a
+      // short real delay to let both finish before capture.
+      await Future<void>.delayed(const Duration(milliseconds: 150));
+      await tester.pumpAndSettle();
+    });
 
     await expectLater(
       find.byType(HomeLobbyScreen),

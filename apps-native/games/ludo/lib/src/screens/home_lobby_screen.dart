@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:ludo_rules/ludo_rules.dart' show LudoColor;
 
 import '../app.dart' show ludoIdentity;
+import '../assets/ludo_art_manifest.dart' show LudoArtManifest, LudoArtSlot;
 import '../state/ludo_local_save.dart';
 import '../state/ludo_profile_settings.dart';
 import '../state/ludo_sound_settings.dart';
@@ -292,9 +293,16 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
                   padding: const EdgeInsets.only(
                     bottom: LudoThemeTokens.spaceSm,
                   ),
-                  child: LudoOutlinedTitle(
-                    ludoIdentity.publicTitle,
-                    style: LudoTextStyles.displayMedium,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Semantics(
+                      label: ludoIdentity.publicTitle,
+                      child: const LudoArtSlot(
+                        slot: LudoArtManifest.logoWideSlot,
+                        fallbackPainter: LudoArtManifest.logoWide,
+                        size: Size(200, 54),
+                      ),
+                    ),
                   ),
                 ),
                 _ProfileHeader(profile: _profile),

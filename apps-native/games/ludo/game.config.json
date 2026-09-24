@@ -1,7 +1,7 @@
 {
   "id": "ludo",
-  "canonicalName": "Ludo",
-  "publicTitle": "Ludo",
+  "canonicalName": "Ludo Vortex",
+  "publicTitle": "Ludo Vortex",
   "environment": "debug",
   "productionId": "app.w3dev.ludo",
   "debugId": "app.w3dev.ludo.debug",

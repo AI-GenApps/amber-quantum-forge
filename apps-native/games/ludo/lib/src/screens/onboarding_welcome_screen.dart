@@ -10,6 +10,7 @@ library;
 import 'package:flutter/material.dart';
 
 import '../app.dart' show ludoIdentity;
+import '../assets/ludo_art_manifest.dart' show LudoArtManifest, LudoArtSlot;
 import 'home_lobby_screen.dart' show HomeLobbyScreen;
 import '../state/ludo_profile_settings.dart';
 import '../state/reduced_motion_setting.dart';
@@ -74,6 +75,12 @@ class OnboardingWelcomeScreen extends StatelessWidget {
                   child: LudoSkipButton(onPressed: () => _skip(context)),
                 ),
                 const Spacer(),
+                const LudoArtSlot(
+                  slot: LudoArtManifest.logoStackedSlot,
+                  fallbackPainter: LudoArtManifest.logoStacked,
+                  size: Size(240, 180),
+                ),
+                const SizedBox(height: LudoThemeTokens.spaceMd),
                 LudoOutlinedTitle(
                   'Welcome to ${ludoIdentity.publicTitle}',
                   style: LudoTextStyles.displayMedium,

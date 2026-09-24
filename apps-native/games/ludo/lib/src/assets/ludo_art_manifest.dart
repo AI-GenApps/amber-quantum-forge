@@ -157,6 +157,45 @@ void _homeArrivalParticleVisual(Canvas canvas, Rect rect) {
   }
 }
 
+/// Fallback painter for the stacked brand logo slot (emblem-over-wordmark):
+/// a simple gold ring on the deep-blue design-system fill, used only when
+/// no `assets/art/logo_stacked.png` bitmap is bundled.
+void _logoStackedVisual(Canvas canvas, Rect rect) {
+  final center = rect.center;
+  final radius = rect.shortestSide * 0.32;
+  canvas.drawCircle(
+    center,
+    radius,
+    Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = rect.shortestSide * 0.05
+      ..color = const Color(0xFFE2B93B),
+  );
+  canvas.drawCircle(
+    center,
+    radius * 0.28,
+    Paint()..color = const Color(0xFFE2B93B),
+  );
+}
+
+/// Fallback painter for the wide brand logo slot (orbit wordmark): a thin
+/// gold ellipse standing in for the wordmark, used only when no
+/// `assets/art/logo_wide.png` bitmap is bundled.
+void _logoWideVisual(Canvas canvas, Rect rect) {
+  final oval = Rect.fromCenter(
+    center: rect.center,
+    width: rect.width * 0.9,
+    height: rect.height * 0.5,
+  );
+  canvas.drawOval(
+    oval,
+    Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = rect.shortestSide * 0.12
+      ..color = const Color(0xFFE2B93B),
+  );
+}
+
 /// A single static frame representing the win-confetti celebration, drawn
 /// with the same [ludoConfettiPalette] the live `LudoConfettiComponent`
 /// uses.
@@ -183,6 +222,16 @@ abstract final class LudoArtManifest {
 
   /// The board's background/track art.
   static const LudoVisualSlot boardBackground = _boardBackgroundVisual;
+
+  /// The stacked brand mark (emblem over wordmark) — splash screen and
+  /// onboarding welcome hero. Bitmap: `assets/art/logo_stacked.png`.
+  static const String logoStackedSlot = 'logo_stacked';
+  static const LudoVisualSlot logoStacked = _logoStackedVisual;
+
+  /// The wide orbit wordmark — home lobby header. Bitmap:
+  /// `assets/art/logo_wide.png`.
+  static const String logoWideSlot = 'logo_wide';
+  static const LudoVisualSlot logoWide = _logoWideVisual;
 
   /// One token slot per player color.
   static final Map<LudoTokenColor, LudoVisualSlot> token = {
