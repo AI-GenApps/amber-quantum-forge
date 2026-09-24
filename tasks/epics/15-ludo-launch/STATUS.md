@@ -55,6 +55,13 @@ next task.
 | 10 | Client/UX owner | Results/rematch, settings, how-to-play, reduced motion | [x] |
 | 11 | Client owner | Durable local match persistence and resume after restart | [x] |
 | 12 | Client owner | Local (vs Computer / Pass N Play) wiring, LOCAL telemetry, full quality pass (goldens, a11y, flow test) | [x] |
+| 12a | Client owner | Gameplay bugfix: root-cause stuck-turn and black-canvas/dice-placement bugs, debug-only all-bots demo match, real-controller full-match tests | [ ] |
+| 12b | Client/art owner | Design system: bundled fonts + licenses, theme tokens/`ThemeData`, background painter, reusable chrome widgets, golden font loading, manifest bitmap-slot support | [ ] |
+| 12c | Client/art owner | Board/token/dice/effects restyle to target look, regenerated goldens | [ ] |
+| 12d | Client/UX owner | Game HUD restyle: corner player cards, per-player dice slot, timer ring, restyled top bar | [ ] |
+| 12e | Client/UX owner | Restyle every remaining screen (splash, onboarding, lobby, setup sheet, dialogs, results, settings, how-to-play) | [ ] |
+| 12f | Client owner | Physical-device visual QA sweep: per-screen evidence capture, full all-bots game, fix-and-recapture, zero Material-default styling | [ ] |
+| | | Art session (human + Claude, interactive): generate original bitmap art for manifest slots — runs between 12f and 13 | |
 | 13 | Release owner (human) | Local-play checkpoint: build, install, play, visual review, sign-off | [ ] |
 | 14 | Auth owner | Fix API JWT refresh identity bug + tests | [ ] |
 | 15 | Backend owner | Ludo HTTP contracts, wire codecs, validation, game token issuance | [ ] |

@@ -4,7 +4,7 @@ task: 13-human-local-checkpoint
 status: pending
 commit_scope: ludo
 owner: human
-depends_on: [15-ludo-launch/12-local-modes-and-quality]
+depends_on: [15-ludo-launch/12f-device-visual-qa]
 estimate: S
 ---
 
@@ -47,6 +47,11 @@ the linear execution order) — this checkpoint is scoped to local play only.
 
 ## Implementation Checklist (human-executed)
 
+- [ ] Confirm an art session (human + Claude, interactive) has run between
+  task 12f and this task, generating original bitmap art for the manifest
+  slots task 12b's bitmap-slot support added, and that a rebuilt debug APK
+  reflects that art — this checkpoint's visual review is on the final,
+  art-complete build, not the code-drawn-only state from 12f.
 - [ ] Build a debug APK: `bun run games:build -- --app ludo --platform
   android --mode debug --environment debug`.
 - [ ] Install and run it on a physical Android device (not an emulator):
