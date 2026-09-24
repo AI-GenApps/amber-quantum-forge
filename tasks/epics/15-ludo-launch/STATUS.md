@@ -64,6 +64,7 @@ next task.
 | 12f | Client owner | Physical-device visual QA sweep: per-screen evidence capture, full all-bots game, fix-and-recapture, zero Material-default styling | [x] |
 | | | Art session (human + Claude, interactive): generate original bitmap art for manifest slots — runs between 12f and 13 | |
 | 12g | Domain/client owner | Align Quick mode with Ludo King's official Quick Mode (pre-released tokens, one-home-plus-one-capture win) | [x] |
+| 12h | Client/art owner | Device polish: root-cause device-only bot-turn stall, stacked-token rendering, lobby art integration, knowledge-base update | [ ] |
 | 13 | Release owner (human) | Local-play checkpoint: build, install, play, visual review, sign-off | [ ] |
 | 14 | Auth owner | Fix API JWT refresh identity bug + tests | [ ] |
 | 15 | Backend owner | Ludo HTTP contracts, wire codecs, validation, game token issuance | [ ] |
@@ -78,6 +79,15 @@ next task.
 | 24 | Client owner | Guarded Firebase init, typed gateway client, guest/Google auth controller | [ ] |
 | 25 | Client owner | Firestore match listener, polling fallback, reconnect, online board wiring | [ ] |
 | 26 | Client owner | Rooms/matchmaking UI, enable online lobby tiles, ONLINE telemetry | [ ] |
+| 26a | Backend/domain owner | Economy design doc, versioned economy config, wallet/ledger/inventory/progression Drizzle schema | [ ] |
+| 26b | Backend owner | Wallet, profile, progression, and inventory HTTP routes | [ ] |
+| 26c | Backend owner | Coin-stake tables, match-start escrow, and payout/refund | [ ] |
+| 26d | Backend owner | RevenueCat webhook, product grants, and Vortex Pass entitlement | [ ] |
+| 26e | Client owner | Client wallet/level state, HUD chips, XP gain, and level-up celebration | [ ] |
+| 26f | Art owner (human) | Economy art session: theme sets, currency icons, store banners | [ ] |
+| 26g | Client owner | Store and inventory UI, `purchases_flutter` integration | [ ] |
+| 26h | Client/backend owner | Rewarded ads (AdMob SSV), UMP consent, and daily reward calendar UI | [ ] |
+| 26i | Docs/release owner | Economy compliance docs, store product IDs, and RevenueCat/AdMob runbook | [ ] |
 | 27 | Release owner | Crash reporting, perf/size budgets, privacy policy + data safety + store listing drafts | [ ] |
 | 28 | Docs owner | Architecture doc, handoff, release checklist | [ ] |
 | 29 | Release owner (human) | Physical-device acceptance, Firebase console provisioning, privacy/data-safety/store-listing execution | [ ] |

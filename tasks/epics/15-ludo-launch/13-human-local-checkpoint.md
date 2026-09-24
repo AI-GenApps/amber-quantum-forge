@@ -4,7 +4,7 @@ task: 13-human-local-checkpoint
 status: pending
 commit_scope: ludo
 owner: human
-depends_on: [15-ludo-launch/12g-quick-mode-alignment]
+depends_on: [15-ludo-launch/12h-device-polish-and-lobby-art]
 estimate: S
 ---
 
