@@ -58,7 +58,7 @@ next task.
 | 12a | Client owner | Gameplay bugfix: root-cause stuck-turn and black-canvas/dice-placement bugs, debug-only all-bots demo match, real-controller full-match tests | [x] |
 | 12b | Client/art owner | Design system: bundled fonts + licenses, theme tokens/`ThemeData`, background painter, reusable chrome widgets, golden font loading, manifest bitmap-slot support | [x] |
 | 12c | Client/art owner | Board/token/dice/effects restyle to target look, regenerated goldens | [x] |
-| 12d | Client/UX owner | Game HUD restyle: corner player cards, per-player dice slot, timer ring, restyled top bar | [ ] |
+| 12d | Client/UX owner | Game HUD restyle: corner player cards, per-player dice slot, timer ring, restyled top bar | [x] |
 | 12e | Client/UX owner | Restyle every remaining screen (splash, onboarding, lobby, setup sheet, dialogs, results, settings, how-to-play) | [ ] |
 | 12f | Client owner | Physical-device visual QA sweep: per-screen evidence capture, full all-bots game, fix-and-recapture, zero Material-default styling | [ ] |
 | | | Art session (human + Claude, interactive): generate original bitmap art for manifest slots — runs between 12f and 13 | |

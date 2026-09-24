@@ -9,7 +9,7 @@ import 'package:ludo/src/screens/mode_setup_sheet.dart';
 import 'package:ludo/src/state/ludo_sound_settings.dart';
 import 'package:ludo/src/state/reduced_motion_setting.dart';
 import 'package:ludo/src/widgets/dice_zone.dart';
-import 'package:ludo/src/widgets/player_panel.dart';
+import 'package:ludo/src/widgets/player_corner_card.dart';
 
 /// A dice seed whose first roll (via `DeterministicRng(1).nextInt(6) + 1`)
 /// is deterministically 4 (verified out-of-band), i.e. never a 6 — so a
@@ -153,7 +153,7 @@ void main() {
         _wrap(
           Scaffold(
             body: Center(
-              child: PlayerPanel(
+              child: PlayerCornerCard(
                 name: 'You',
                 avatarId: 'red-face',
                 color: LudoColor.red,

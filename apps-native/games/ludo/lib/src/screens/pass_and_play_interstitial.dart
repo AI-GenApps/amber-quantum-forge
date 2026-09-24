@@ -5,9 +5,9 @@
 /// at all times) — this screen is a UX courtesy ("look away while the
 /// device changes hands"), never an information-hiding mechanism, so it is
 /// always dismissible and offers a "don't show again this session" toggle.
-/// Reuses the same avatar/name identity `player_panel.dart` (task 09)
-/// already renders for a seat, rather than inventing a second identity
-/// presentation.
+/// Reuses the same avatar/name identity `player_corner_card.dart` (task
+/// 12d, superseding task 09's `player_panel.dart`) already renders for a
+/// seat, rather than inventing a second identity presentation.
 library;
 
 import 'package:flutter/material.dart';

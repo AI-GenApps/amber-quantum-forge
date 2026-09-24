@@ -51,26 +51,26 @@ device (1080x2400).
 
 ## Implementation Checklist
 
-- [ ] Create `lib/src/widgets/player_corner_card.dart`: avatar, name, dice
+- [x] Create `lib/src/widgets/player_corner_card.dart`: avatar, name, dice
   slot, timer ring, built from `LudoPanel`/`Badge` (12b).
-- [ ] Rework `lib/src/screens/game_board_screen.dart`'s layout: four corner
+- [x] Rework `lib/src/screens/game_board_screen.dart`'s layout: four corner
   slots (two above, two below the board), 2p vs 4p slot selection, board
   centered between them.
-- [ ] Remove the old top player list from `lib/src/widgets/player_panel.dart`
+- [x] Remove the old top player list from `lib/src/widgets/player_panel.dart`
   (or delete the file if fully superseded — check for other call sites
   first) and its call site in `game_board_screen.dart`.
-- [ ] Wire the active seat's dice (12c's `ludo_dice_component.dart`/
+- [x] Wire the active seat's dice (12c's `ludo_dice_component.dart`/
   `dice_zone.dart`) to render inside that seat's `player_corner_card.dart`
   instead of a separate shared bottom zone.
-- [ ] Restyle the top bar and pause button in `game_board_screen.dart`
+- [x] Restyle the top bar and pause button in `game_board_screen.dart`
   using `Ludo3dButton`/`LudoPanel` (12b).
-- [ ] Add `test/widgets/player_corner_card_test.dart` covering: dice slot
+- [x] Add `test/widgets/player_corner_card_test.dart` covering: dice slot
   shows only for the active seat, timer ring reflects the given deadline
   fraction, avatar/name render correctly.
-- [ ] Update `test/screens/game_board_screen_test.dart` for the new
+- [x] Update `test/screens/game_board_screen_test.dart` for the new
   corner-card layout (dice-zone-disabled-out-of-turn assertion moves to
   the active card's dice slot; legal-move highlight assertions unchanged).
-- [ ] Add a parameterized overflow test (e.g.
+- [x] Add a parameterized overflow test (e.g.
   `test/screens/game_board_screen_responsive_test.dart`) asserting no
   `RenderFlex` overflow/clipping at physical sizes from 360x640 to
   1080x2400.
