@@ -33,7 +33,16 @@ they carry the detail, the gotchas, and the templates.
    user approves. See `references/08-art-audio-pipeline.md`.
 6. **Ask about branch strategy** at kickoff (the Ludo user chose "commit directly to main,
    never push"). Never push unless asked. One commit per task, repo commit format.
-7. **Honesty over momentum.** Report failing commands with output, state what was NOT
+7. **Game knowledge base.** Create and maintain `.agents/games/<game-slug>/` from the first
+   decision onward: `README.md` (quick facts + index), `product.md` (modes, exact rules,
+   bots, screens, tech), `economy.md` (currencies, numbers, IAP, ads), `store-listing.md`
+   (answer bank for every Play Console / App Store Connect field: copy, content rating,
+   data safety, ads/IAP declarations, permissions, review notes, support FAQ),
+   `assets-index.md` (links to every dated evidence/art folder), `decisions-log.md` (dated
+   decisions + rationale), `open-questions.md` (owners, blockers). Update it in the same
+   commit as any decision or number change; mark unknowns **TBD** / needs-verification.
+   Template: `.agents/games/ludo-vortex/`.
+8. **Honesty over momentum.** Report failing commands with output, state what was NOT
    verified, and give your own candid visual judgment ("the lobby still looks generic")
    instead of relaying a verifier's pass.
 
