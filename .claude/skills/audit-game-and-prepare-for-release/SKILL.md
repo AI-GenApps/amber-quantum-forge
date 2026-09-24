@@ -52,10 +52,12 @@ they carry the detail, the gotchas, and the templates.
 | 8 | Art & audio pipeline | art sets integrated via manifest slots | **yes (each set)** | `08-art-audio-pipeline.md` |
 | 9 | Backend / multiplayer | server-authoritative services, parity | provisioning | `09-backend-multiplayer.md` |
 | 10 | Store listing + submission | listing copy, edited screenshots, forms, tracks | **yes** | `10-store-submission.md` |
+| 11 | Economy + monetization | levels/XP, currencies, inventory/store, IAP (RevenueCat → Play Billing/StoreKit), rewarded ads, server ledger | **yes (scope + numbers)** | `11-economy-monetization.md` |
 
 Phases 7–8 can start as soon as the local game is playable (they don't need the backend).
 Recommended order: 0 → 1 → 2 → 3 → 4 → 5 (local-playable tasks) → 6 → 7 → 8 → human
-checkpoint → 5 (backend tasks) → 9 → 10.
+checkpoint → 5 (backend tasks) → 9 → 11 → 10. Audit and decide the economy in Phases 1–3
+(never let "no monetization in v1" silently drop it); build it after backend identity.
 
 ## Phase 0 — Kickoff checklist
 
@@ -124,6 +126,9 @@ resume. Details: `references/06-visual-qa.md`.
 - Backend: `references/09-backend-multiplayer.md`.
 - Store submission (Play + App Store), including edited/captioned screenshots and every
   form: `references/10-store-submission.md`.
+- Economy/monetization (levels, coins, diamonds, inventory, store, IAP via Play Billing +
+  StoreKit — never Apple Pay for digital goods — rewarded ads, server-authoritative
+  ledger): `references/11-economy-monetization.md`.
 
 ## Repo map
 
@@ -140,6 +145,8 @@ All must be true, with evidence committed under `.agents/`:
 - Onboarding + tutorial, settings (sound/music/vibration/reduced motion), how-to-play,
   results + rematch, save/resume.
 - Online modes (if in scope) verified on two real devices.
+- Economy (if in scope): server ledger with invariants, IAP sandbox purchase + restore
+  verified on device, rewarded ad SSV grant, store/inventory/level-up screens reviewed.
 - Crash reporting, analytics events, privacy policy, data-safety/nutrition labels, content
   rating, store listing with edited screenshots, release build signed, testing track live.
 - The human checkpoint tasks are signed off by the user.

@@ -47,6 +47,7 @@ Return a concise markdown report with paths.
 | Flow | Splash, onboarding, tutorial, lobby, setup, game, pause, results/rematch, settings, how-to-play, resume |
 | Multiplayer | Local + online modes in scope work on real devices; server authoritative |
 | Brand | Unique name, icon, wordmark, store art |
+| Economy | Levels/XP, currencies, inventory/store, IAP + ads decided and (if in scope) server-authoritative |
 | Ops | Crash reporting, analytics, privacy policy, data safety, release signing, CI |
 | Tracking | Work lives in a tasks/ epic with statuses and evidence |
 

@@ -32,7 +32,10 @@ tests; keep old project frozen if the user wants.
 ## Platforms & monetization
 
 - Android first (Recommended) · both · iOS first.
-- Monetization in v1: none (Recommended for first launch) · ads · IAP · economy.
+- Monetization/economy: ask explicitly with the competitor's economy in view — full
+  economy in v1 · progression only · free v1. Then IAP layer (RevenueCat recommended here),
+  ads (rewarded only recommended), currencies. See `11-economy-monetization.md`. The Ludo
+  user first chose "none", then reversed to "full economy in v1" — surface it early.
 
 ## Assets
 
