@@ -10,7 +10,8 @@ library;
 import 'package:flutter/material.dart';
 import 'package:platform_core/platform_core.dart';
 
-import '../app.dart' show LudoPlaceholderHomeScreen, ludoIdentity;
+import '../app.dart' show ludoIdentity;
+import 'home_lobby_screen.dart' show HomeLobbyScreen;
 import '../state/ludo_profile_settings.dart';
 import '../state/reduced_motion_setting.dart';
 import 'onboarding_welcome_screen.dart';
@@ -74,7 +75,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
         builder: (_) => widget.settings.onboardingComplete
-            ? const LudoPlaceholderHomeScreen()
+            ? const HomeLobbyScreen()
             : OnboardingWelcomeScreen(
                 settings: widget.settings,
                 profileStore: store,

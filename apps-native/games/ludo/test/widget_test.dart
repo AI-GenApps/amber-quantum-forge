@@ -29,11 +29,11 @@ void main() {
     await tester.pump(const Duration(milliseconds: 600));
     await tester.pumpAndSettle();
 
-    // The app boots straight to the placeholder home screen (after the
-    // splash's local-only profile load) with zero Firebase/network
-    // dependency anywhere in the widget tree.
-    expect(find.byType(LudoPlaceholderHomeScreen), findsOneWidget);
+    // The app boots straight to the home lobby (after the splash's
+    // local-only profile load) with zero Firebase/network dependency
+    // anywhere in the widget tree.
+    expect(find.byType(HomeLobbyScreen), findsOneWidget);
     expect(find.text('Ludo'), findsOneWidget);
-    expect(find.text('Roll, race, and capture'), findsOneWidget);
+    expect(find.text('Computer'), findsOneWidget);
   });
 }

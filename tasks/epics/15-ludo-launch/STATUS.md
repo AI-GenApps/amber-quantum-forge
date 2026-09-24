@@ -51,7 +51,7 @@ next task.
 | 06 | Client/audio owner | Audio service, CC0 SFX/music, haptics, sound settings | [x] |
 | 07 | Client/UX owner | Splash, welcome, name+avatar picker (8+ avatars), interactive tutorial | [x] |
 | 08 | Client/UX owner | Home lobby (Computer/Pass N Play/Friends/Online tiles, online disabled) | [x] |
-| 09 | Client/UX owner | Mode/setup sheet, game board screen chrome, pause/quit dialog | [ ] |
+| 09 | Client/UX owner | Mode/setup sheet, game board screen chrome, pause/quit dialog | [x] |
 | 10 | Client/UX owner | Results/rematch, settings, how-to-play, reduced motion | [ ] |
 | 11 | Client owner | Durable local match persistence and resume after restart | [ ] |
 | 12 | Client owner | Local (vs Computer / Pass N Play) wiring, LOCAL telemetry, full quality pass (goldens, a11y, flow test) | [ ] |

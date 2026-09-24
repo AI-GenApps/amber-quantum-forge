@@ -11,6 +11,7 @@ library;
 import 'dart:async';
 
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:ludo_rules/ludo_rules.dart' show LudoColor;
 
@@ -105,7 +106,7 @@ abstract final class LudoTokenPainter {
 /// A single Ludo token on the board, driven by grid cells rather than raw
 /// pixels: callers move it with [hopTo], never by setting [position]
 /// directly.
-class LudoTokenComponent extends PositionComponent {
+class LudoTokenComponent extends PositionComponent with TapCallbacks {
   LudoTokenComponent({
     required LudoColor color,
     required int tokenId,
@@ -161,6 +162,17 @@ class LudoTokenComponent extends PositionComponent {
   /// The grid cell this token currently occupies, or is animating away
   /// from mid-hop.
   (int, int) get currentCell => _cell;
+
+  /// Invoked (with this token's [color] and [tokenId]) when this token is
+  /// tapped. Set by `ludo_game.dart` on behalf of `GameBoardScreen` (task
+  /// 09); left `null` wires no tap handling at all, matching every other
+  /// tappable widget's "no handler while it shouldn't respond" convention.
+  void Function(LudoColor color, int tokenId)? onTap;
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    onTap?.call(color, tokenId);
+  }
 
   /// Whether a hop animation is in progress.
   bool get isAnimating => _pendingHops.isNotEmpty;

@@ -65,7 +65,7 @@ void main() {
     await tester.tap(find.text('Skip'));
     await tester.pumpAndSettle();
 
-    expect(find.byType(LudoPlaceholderHomeScreen), findsOneWidget);
+    expect(find.byType(HomeLobbyScreen), findsOneWidget);
   });
 
   testWidgets('skip on the profile screen reaches the home screen', (
@@ -83,7 +83,7 @@ void main() {
     await tester.tap(find.text('Skip'));
     await tester.pumpAndSettle();
 
-    expect(find.byType(LudoPlaceholderHomeScreen), findsOneWidget);
+    expect(find.byType(HomeLobbyScreen), findsOneWidget);
   });
 
   testWidgets('skip on the tutorial screen reaches the home screen', (
@@ -116,7 +116,7 @@ void main() {
     );
     await _pumpTutorial(tester);
 
-    expect(find.byType(LudoPlaceholderHomeScreen), findsOneWidget);
+    expect(find.byType(HomeLobbyScreen), findsOneWidget);
   });
 
   testWidgets('completing every step persists the chosen name and avatar', (
@@ -157,7 +157,7 @@ void main() {
     await tester.tap(find.text('Finish'));
     await _pumpTutorial(tester);
 
-    expect(find.byType(LudoPlaceholderHomeScreen), findsOneWidget);
+    expect(find.byType(HomeLobbyScreen), findsOneWidget);
 
     final reloaded = LudoProfileSettings();
     await store.load(reloaded);
@@ -182,7 +182,7 @@ void main() {
     );
     await _passSplash(tester);
 
-    expect(find.byType(LudoPlaceholderHomeScreen), findsOneWidget);
+    expect(find.byType(HomeLobbyScreen), findsOneWidget);
     expect(find.byType(OnboardingWelcomeScreen), findsNothing);
   });
 

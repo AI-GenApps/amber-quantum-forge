@@ -3,8 +3,8 @@
 /// `.agents/resources/2026-09-19/ludo-reference/study.md` — Computer, Pass N
 /// Play, Play with Friends, Online.
 ///
-/// Computer and Pass N Play are enabled and route toward task 09's
-/// mode/setup sheet (a placeholder destination until that task lands). Play
+/// Computer and Pass N Play are enabled and route to task 09's mode/setup
+/// sheet, then to the game board screen with the chosen local config. Play
 /// with Friends and Online are visibly and semantically disabled with a
 /// "coming soon" badge and no tap action, since real online play is not
 /// wired until task 26 — this screen must never let a tap on those two
@@ -15,8 +15,62 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:ludo_rules/ludo_rules.dart' show LudoColor;
+
+import '../state/ludo_sound_settings.dart';
+import '../widgets/ludo_avatar.dart' show LudoAvatarMotif, ludoAvatars;
+import 'game_board_screen.dart';
+import 'mode_setup_sheet.dart';
 
 const _minTapTarget = 48.0;
+
+/// Builds the seat identities a freshly-started local match shows on its
+/// player panels: seat 0 is always "You" (the local human), a bot seat is
+/// labeled "Bot N", and any other human seat (Pass N Play) is labeled
+/// "Player N". Real onboarding-profile name/avatar wiring for seat 0 is a
+/// later task's concern (this screen has no profile dependency).
+List<LudoSeatIdentity> _defaultSeatIdentities(LudoLocalMatchConfig config) {
+  return [
+    for (var seat = 0; seat < config.seats.length; seat++)
+      LudoSeatIdentity(
+        name: seat == 0
+            ? 'You'
+            : (config.seats[seat].isBot ? 'Bot $seat' : 'Player ${seat + 1}'),
+        avatarId: _avatarIdForColor(config.seats[seat].color),
+      ),
+  ];
+}
+
+/// The stable "-face" avatar id for [color] (always present — every
+/// [LudoColor] has both a face and spark motif in [ludoAvatars]).
+String _avatarIdForColor(LudoColor color) => ludoAvatars
+    .firstWhere(
+      (avatar) => avatar.color == color && avatar.motif == LudoAvatarMotif.face,
+    )
+    .id;
+
+/// Opens [ModeSetupSheet] for [isComputerMatch] and, once a config is
+/// chosen, pushes [GameBoardScreen] with it. A cancelled sheet (`null`
+/// result) navigates nowhere.
+Future<void> startLudoLocalMatch(
+  BuildContext context, {
+  required bool isComputerMatch,
+}) async {
+  final config = await ModeSetupSheet.show(
+    context,
+    isComputerMatch: isComputerMatch,
+  );
+  if (config == null || !context.mounted) return;
+  await Navigator.of(context).push(
+    MaterialPageRoute<void>(
+      builder: (_) => GameBoardScreen(
+        config: config,
+        seatIdentities: _defaultSeatIdentities(config),
+        soundSettings: LudoSoundSettings(),
+      ),
+    ),
+  );
+}
 
 /// The kind of local match a [LudoResumableMatchSummary] describes.
 enum LudoResumableMatchMode {
@@ -102,14 +156,19 @@ class HomeLobbyScreen extends StatelessWidget {
                   subtitle: 'Play locally vs. the bot',
                   icon: Icons.smart_toy_outlined,
                   enabled: true,
-                  onTap: onPlayComputer ?? () {},
+                  onTap:
+                      onPlayComputer ??
+                      () => startLudoLocalMatch(context, isComputerMatch: true),
                 ),
                 _LobbyCard(
                   title: 'Pass N Play',
                   subtitle: 'Share this device, take turns',
                   icon: Icons.people_alt_outlined,
                   enabled: true,
-                  onTap: onPlayPassAndPlay ?? () {},
+                  onTap:
+                      onPlayPassAndPlay ??
+                      () =>
+                          startLudoLocalMatch(context, isComputerMatch: false),
                 ),
                 const _LobbyCard(
                   title: 'Play with Friends',

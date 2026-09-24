@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 09-setup-and-board-screen
-status: pending
+status: complete
 commit_scope: ludo
 depends_on: [15-ludo-launch/08-home-lobby]
 estimate: L
@@ -51,28 +51,28 @@ automation against this screen is task 12).
 
 ## Implementation Checklist
 
-- [ ] Create `lib/src/screens/mode_setup_sheet.dart` with ruleset,
+- [x] Create `lib/src/screens/mode_setup_sheet.dart` with ruleset,
   player-count, color, and (conditional) bot-difficulty controls, returning
   a `LudoLocalMatchConfig` value object.
-- [ ] Create `lib/src/screens/game_board_screen.dart` composing
+- [x] Create `lib/src/screens/game_board_screen.dart` composing
   `ludo_game.dart` with player panels, timer ring, dice zone, and menu
   button.
-- [ ] Create `lib/src/widgets/player_panel.dart` (avatar/name/timer ring)
+- [x] Create `lib/src/widgets/player_panel.dart` (avatar/name/timer ring)
   and `lib/src/widgets/dice_zone.dart` (tap-to-roll, disabled states).
-- [ ] Create `lib/src/screens/pause_quit_dialog.dart` bound to
+- [x] Create `lib/src/screens/pause_quit_dialog.dart` bound to
   `ludo_sound_settings.dart`.
-- [ ] Wire `home_lobby_screen.dart` (task 08) to open `mode_setup_sheet.dart`
+- [x] Wire `home_lobby_screen.dart` (task 08) to open `mode_setup_sheet.dart`
   from each entry card and, on completion, navigate to
   `game_board_screen.dart` with the resulting local config.
-- [ ] Add `test/screens/mode_setup_sheet_test.dart` covering: 2 vs 4 player
+- [x] Add `test/screens/mode_setup_sheet_test.dart` covering: 2 vs 4 player
   toggling changes available color slots, bot-difficulty picker only shows
   for non-human seats, and the returned config matches the selected
   options.
-- [ ] Add `test/screens/game_board_screen_test.dart` covering: dice zone is
+- [x] Add `test/screens/game_board_screen_test.dart` covering: dice zone is
   disabled outside the local player's roll phase, tappable-token highlight
   matches `legalMoves(state)` for a constructed state, and the timer ring
   renders the correct remaining-time fraction for a given deadline.
-- [ ] Add `test/screens/pause_quit_dialog_test.dart` covering: toggles
+- [x] Add `test/screens/pause_quit_dialog_test.dart` covering: toggles
   mutate `ludo_sound_settings`, Resume closes the dialog without side
   effects, Quit invokes the supplied callback exactly once.
 

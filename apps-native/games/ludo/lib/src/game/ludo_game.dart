@@ -41,6 +41,11 @@ class LudoGame extends FlameGame {
   /// [LudoTokenComponent.hopTo] and [LudoDiceComponent.rollTo].
   final ReducedMotionSetting reducedMotion;
 
+  /// Invoked when any token on the board is tapped, with that token's
+  /// color and id. Set by `GameBoardScreen` (task 09) to wire taps to
+  /// `applyMove`; this game never decides move legality itself.
+  void Function(LudoColor color, int tokenId)? onTokenTap;
+
   LudoMatchState? _pendingState;
   LudoMatchState? _state;
   bool _layersReady = false;
@@ -232,14 +237,15 @@ class LudoGame extends FlameGame {
         );
         final existing = _tokensByKey[key];
         if (existing == null) {
-          _tokensByKey[key] = LudoTokenComponent(
+          final created = LudoTokenComponent(
             color: player.color,
             tokenId: token.id,
             boardSize: boardSize,
             initialCell: grid,
             reducedMotion: reducedMotion,
-          );
-          add(_tokensByKey[key]!);
+          )..onTap = (color, tokenId) => onTokenTap?.call(color, tokenId);
+          _tokensByKey[key] = created;
+          add(created);
           continue;
         }
         if (skipTokenKeys.contains(key)) continue;

@@ -15,7 +15,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:ludo_rules/ludo_rules.dart';
 
-import '../app.dart' show LudoPlaceholderHomeScreen;
+import 'home_lobby_screen.dart' show HomeLobbyScreen;
 import '../game/ludo_game.dart';
 import '../state/ludo_profile_settings.dart';
 import '../state/reduced_motion_setting.dart';
@@ -163,9 +163,7 @@ class _OnboardingTutorialScreenState extends State<OnboardingTutorialScreen> {
     await widget.profileStore.save(widget.settings);
     if (!mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute<void>(
-        builder: (_) => const LudoPlaceholderHomeScreen(),
-      ),
+      MaterialPageRoute<void>(builder: (_) => const HomeLobbyScreen()),
       (route) => false,
     );
   }

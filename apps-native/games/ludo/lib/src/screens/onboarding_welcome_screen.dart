@@ -9,7 +9,8 @@ library;
 
 import 'package:flutter/material.dart';
 
-import '../app.dart' show LudoPlaceholderHomeScreen, ludoIdentity;
+import '../app.dart' show ludoIdentity;
+import 'home_lobby_screen.dart' show HomeLobbyScreen;
 import '../state/ludo_profile_settings.dart';
 import '../state/reduced_motion_setting.dart';
 import '../widgets/ludo_onboarding_controls.dart';
@@ -35,9 +36,7 @@ class OnboardingWelcomeScreen extends StatelessWidget {
     await profileStore.save(settings);
     if (!context.mounted) return;
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute<void>(
-        builder: (_) => const LudoPlaceholderHomeScreen(),
-      ),
+      MaterialPageRoute<void>(builder: (_) => const HomeLobbyScreen()),
       (route) => false,
     );
   }
