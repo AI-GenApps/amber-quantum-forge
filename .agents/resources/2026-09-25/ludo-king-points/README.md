@@ -100,3 +100,8 @@ Scope: web-only pass (WebSearch/WebFetch), no phone/app access, following the ph
 
 ## Addendum: earlier secondary-source claims (SUPERSEDED)
 A first quick web search returned generic-Ludo explainers claiming Quick = timed, +1/step, +20 capture, +50 per token home, and Rush = +1/step, 3 missed turns = disqualified. These conflict with the official Gametion blog (Quick = first token home plus at least one capture, no points; see "Web research (2026-09-25)" above) and are treated as UNRELIABLE / likely other apps. Rush mode rules remain unconfirmed.
+
+## Phone pass 2 (Rush mode attempt, Haiku subagent, ~48 actions) — files 30-48
+Screens 30-48.png (manifest.json entries 30-48) cover: app open, home, Computer mode list (34, 48), ad/offer dismissals (35, 41-44, 46), Exit dialog (36), relaunch (39-40). Result: NOT reached gameplay; no score HUD, rules text or results screen. Ads/offers blocked navigation.
+- Rush Mode: the subagent saw only CLASSIC/1 KILL WIN/QUICK/POPULAR/MASK and concluded Rush is absent, but 2026-09-19/ludo-reference/08-computer-mode.png shows Classic + Rush Mode under Computer. UNRESOLVED (different app state/version or entry point). Rush rules remain unconfirmed.
+- The "?" on Select Game opened theme selection, not rules (as in pass 1).

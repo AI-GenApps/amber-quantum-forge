@@ -181,17 +181,127 @@
     },
     {
       "id": 30,
-      "file": "29-home-clean-now.png",
-      "action": "tapped outside dialog area",
-      "observation": "Coin offer still visible; persistent dialog blocking navigation"
+      "file": "30-app-open.png",
+      "action": "opened app fresh session",
+      "observation": "Inventory/Dice shop screen showing dice customization options"
+    },
+    {
+      "id": 31,
+      "file": "31-home-screen.png",
+      "action": "tapped HOME button",
+      "observation": "Still on Dice inventory screen showing various dice themes with prices"
+    },
+    {
+      "id": 32,
+      "file": "32-scroll-up.png",
+      "action": "scrolled up",
+      "observation": "Dice inventory screen; no game modes revealed"
+    },
+    {
+      "id": 33,
+      "file": "33-after-back.png",
+      "action": "pressed back",
+      "observation": "Returned to main home screen with game mode buttons visible"
+    },
+    {
+      "id": 34,
+      "file": "34-computer-mode.png",
+      "action": "tapped COMPUTER button",
+      "observation": "Ad popup appeared; main screen partially visible"
+    },
+    {
+      "id": 35,
+      "file": "35-ad-closed.png",
+      "action": "pressed back to close ad",
+      "observation": "Exit dialog appeared with Yes/No buttons"
+    },
+    {
+      "id": 36,
+      "file": "36-exit-no.png",
+      "action": "tapped No on exit dialog",
+      "observation": "Different app (akriiity) opened"
+    },
+    {
+      "id": 37,
+      "file": "37-back-to-ludo.png",
+      "action": "pressed back",
+      "observation": "Still in external app; not returned to Ludo King"
+    },
+    {
+      "id": 38,
+      "file": "38-system-back.png",
+      "action": "pressed system back",
+      "observation": "Different app home screen with navigation tabs"
+    },
+    {
+      "id": 39,
+      "file": "39-relaunch.png",
+      "action": "reopened Ludo King with --relaunch",
+      "observation": "Ludo King splash screen displayed"
+    },
+    {
+      "id": 40,
+      "file": "40-loaded.png",
+      "action": "waited for app load",
+      "observation": "Special Offer popup showing Super Sale offers (coins and gems bundles)"
+    },
+    {
+      "id": 41,
+      "file": "41-popup-closed.png",
+      "action": "attempted close Special Offer with X",
+      "observation": "Special Offer still visible; X button not responsive"
+    },
+    {
+      "id": 42,
+      "file": "42-close-attempt2.png",
+      "action": "attempted close again",
+      "observation": "Special Offer remains with countdown timers"
+    },
+    {
+      "id": 43,
+      "file": "43-back-close.png",
+      "action": "pressed back",
+      "observation": "Teen Patti King game ad appeared"
+    },
+    {
+      "id": 44,
+      "file": "44-ad-closed.png",
+      "action": "attempted close Teen Patti ad",
+      "observation": "Teen Patti ad still showing; X button not responsive"
+    },
+    {
+      "id": 45,
+      "file": "45-main-menu.png",
+      "action": "pressed back",
+      "observation": "Returned to main home screen showing all game modes"
+    },
+    {
+      "id": 46,
+      "file": "46-deals-closed.png",
+      "action": "attempted close Deals & Offers",
+      "observation": "Deals & Offers popup still visible with purchasable items"
+    },
+    {
+      "id": 47,
+      "file": "47-back2.png",
+      "action": "pressed back",
+      "observation": "Returned to main game mode selection menu"
+    },
+    {
+      "id": 48,
+      "file": "48-computer-modes.png",
+      "action": "tapped COMPUTER button",
+      "observation": "Ad banner visible; main menu still showing; no transition to Rush mode selection occurred"
     }
   ],
   "key_findings": {
-    "game_modes_found": ["CLASSIC", "1 KILL WIN", "QUICK", "POPULAR", "MASK"],
+    "game_modes_found": ["CLASSIC", "1 KILL WIN", "QUICK", "POPULAR", "MASK", "ONLINE", "TEAM UP", "FRIENDS", "PASS N PLAY", "TOURNAMENT"],
     "rush_mode_found": false,
+    "scoring_ui_visible_inferred": "INFERRED from prior session (IDs 1-29): Standard UI with player sections; no dedicated score/points display reported",
     "scoring_rules_accessible": false,
     "in_game_hud_observed": false,
     "results_screen_observed": false,
-    "monetization_heavy": true
+    "monetization_heavy": true,
+    "navigation_blockers": "Persistent ads and popups (Special Offers, Teen Patti ads, Deals & Offers) severely blocked navigation to in-game screens and mode selection"
   }
 }
