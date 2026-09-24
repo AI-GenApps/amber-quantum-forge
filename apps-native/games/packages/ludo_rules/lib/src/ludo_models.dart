@@ -93,6 +93,7 @@ final class LudoPlayerState {
     required this.subject,
     required this.color,
     required Iterable<LudoToken> tokens,
+    this.captureCount = 0,
   }) : tokens = List.unmodifiable(tokens);
 
   /// Turn-order seat index, `0..playerCount-1`.
@@ -105,6 +106,12 @@ final class LudoPlayerState {
   final LudoColor color;
   final List<LudoToken> tokens;
 
+  /// Number of opponent tokens this player has captured during the match
+  /// so far (never decreases). Tracked for every ruleset, but only
+  /// consumed by [LudoWinCondition.oneHomeAndOneCapture] (Quick) and by
+  /// `rankRemainingPlayers`'s tie-break; Classic ignores it.
+  final int captureCount;
+
   bool allFinished(LudoRuleset ruleset) =>
       tokens.every((token) => token.state(ruleset) == LudoTokenState.finished);
 
@@ -112,18 +119,51 @@ final class LudoPlayerState {
       .where((token) => token.state(ruleset) == LudoTokenState.finished)
       .length;
 
-  LudoPlayerState copyWith({Iterable<LudoToken>? tokens}) => LudoPlayerState(
-    seat: seat,
-    subject: subject,
-    color: color,
-    tokens: tokens ?? this.tokens,
+  /// Whether at least one of this player's tokens has reached the finished
+  /// path position. Half of [LudoWinCondition.oneHomeAndOneCapture]'s
+  /// condition (the other half is [hasCaptured]).
+  bool hasHomeToken(LudoRuleset ruleset) => finishedCount(ruleset) > 0;
+
+  /// Whether this player has captured at least one opponent token at any
+  /// point during the match. Half of
+  /// [LudoWinCondition.oneHomeAndOneCapture]'s condition (the other half is
+  /// [hasHomeToken]).
+  bool get hasCaptured => captureCount > 0;
+
+  /// Total path-distance progress across all 4 tokens (a token in the yard
+  /// contributes `0`; a finished token contributes `ruleset.pathLength`,
+  /// since its `pathPosition` already equals that). Used by
+  /// `rankRemainingPlayers`'s progress tie-break; not a points/score
+  /// system.
+  int totalProgress() => tokens.fold(
+    0,
+    (sum, token) =>
+        sum +
+        (token.pathPosition == ludoYardPathPosition ? 0 : token.pathPosition),
   );
 
-  Map<String, Object?> toJson() => {
+  LudoPlayerState copyWith({Iterable<LudoToken>? tokens, int? captureCount}) =>
+      LudoPlayerState(
+        seat: seat,
+        subject: subject,
+        color: color,
+        tokens: tokens ?? this.tokens,
+        captureCount: captureCount ?? this.captureCount,
+      );
+
+  /// `capture_count` is only serialized when [includeCaptureCount] is
+  /// true. It defaults to true for callers that don't care, but
+  /// [LudoMatchState.toJson] passes false for rulesets shaped like
+  /// Classic's defaults (win condition doesn't consume captures) so that
+  /// Classic's fixture output stays byte-identical to what was committed
+  /// before task 12g added capture tracking for Quick — see
+  /// `LudoRuleset.toJson`'s doc comment for the same constraint.
+  Map<String, Object?> toJson({bool includeCaptureCount = true}) => {
     'seat': seat,
     'subject': subject,
     'color': color.name,
     'tokens': tokens.map((t) => t.toJson()).toList(),
+    if (includeCaptureCount) 'capture_count': captureCount,
   };
 
   static LudoPlayerState fromJson(Map<String, Object?> json) {
@@ -131,10 +171,12 @@ final class LudoPlayerState {
     final subject = json['subject'];
     final color = json['color'];
     final tokens = json['tokens'];
+    final captureCount = json['capture_count'];
     if (seat is! int ||
         subject is! String ||
         color is! String ||
-        tokens is! List) {
+        tokens is! List ||
+        (captureCount != null && captureCount is! int)) {
       throw const FormatException('Invalid ludo player state');
     }
     return LudoPlayerState(
@@ -144,6 +186,7 @@ final class LudoPlayerState {
       tokens: tokens
           .map((t) => LudoToken.fromJson((t as Map).cast<String, Object?>()))
           .toList(),
+      captureCount: (captureCount as int?) ?? 0,
     );
   }
 }
@@ -174,10 +217,14 @@ final class LudoMatchState {
   }
 
   /// Builds the starting state for a fresh match: every player's tokens
-  /// begin in the yard (Classic) or pre-placed on the track (Quick), per
-  /// `ruleset.requiresYardExitRoll`. Colors are assigned to seats in
-  /// [LudoColor] enum order (red, green, yellow, blue), truncated to the
-  /// number of players — a fixed, documented seat/color assignment.
+  /// begin in the yard, except the first `ruleset.preReleasedTokensPerPlayer`
+  /// (token ids `0..preReleasedTokensPerPlayer - 1`), which start already
+  /// placed on the player's own start square — `0` for Classic (everyone
+  /// starts fully in the yard) and `2` for Quick. When
+  /// `ruleset.requiresYardExitRoll` is false there is no yard state at all
+  /// and every token starts on the track regardless. Colors are assigned to
+  /// seats in [LudoColor] enum order (red, green, yellow, blue), truncated
+  /// to the number of players — a fixed, documented seat/color assignment.
   factory LudoMatchState.initial({
     required LudoRuleset ruleset,
     required List<String> subjects,
@@ -187,12 +234,12 @@ final class LudoMatchState {
     }
     final players = <LudoPlayerState>[];
     for (var seat = 0; seat < subjects.length; seat++) {
-      final tokens = List.generate(
-        ruleset.tokensPerPlayer,
-        (id) => ruleset.requiresYardExitRoll
-            ? LudoToken.inYard(id)
-            : LudoToken.onTrack(id),
-      );
+      final tokens = List.generate(ruleset.tokensPerPlayer, (id) {
+        if (!ruleset.requiresYardExitRoll) return LudoToken.onTrack(id);
+        return id < ruleset.preReleasedTokensPerPlayer
+            ? LudoToken.onTrack(id)
+            : LudoToken.inYard(id);
+      });
       players.add(
         LudoPlayerState(
           seat: seat,
@@ -253,7 +300,14 @@ final class LudoMatchState {
 
   Map<String, Object?> toJson() => {
     'ruleset': ruleset.toJson(),
-    'players': players.map((p) => p.toJson()).toList(),
+    'players': players
+        .map(
+          (p) => p.toJson(
+            includeCaptureCount:
+                ruleset.winCondition != LudoWinCondition.allTokensHome,
+          ),
+        )
+        .toList(),
     'current_player_index': currentPlayerIndex,
     'phase': phase.name,
     'current_roll': currentRoll,

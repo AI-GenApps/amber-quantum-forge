@@ -40,10 +40,13 @@ void main() {
   });
 
   test('isOnSharedTrack respects the ruleset entry distance', () {
+    // Since task 12g, Quick shares Classic's full-length track (see
+    // `ludo_config.dart`'s `LudoRuleset.quick`), so both rulesets agree on
+    // where the shared track ends and the private home stretch begins.
     expect(board.isOnSharedTrack(LudoRuleset.classic, 0), isTrue);
     expect(board.isOnSharedTrack(LudoRuleset.classic, 50), isTrue);
     expect(board.isOnSharedTrack(LudoRuleset.classic, 51), isFalse);
-    expect(board.isOnSharedTrack(LudoRuleset.quick, 24), isTrue);
-    expect(board.isOnSharedTrack(LudoRuleset.quick, 25), isFalse);
+    expect(board.isOnSharedTrack(LudoRuleset.quick, 50), isTrue);
+    expect(board.isOnSharedTrack(LudoRuleset.quick, 51), isFalse);
   });
 }

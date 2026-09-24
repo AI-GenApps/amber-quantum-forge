@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 12g-quick-mode-alignment
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/12f-device-visual-qa]
 estimate: L
@@ -154,37 +154,37 @@ every client surface that shows Quick copy or state.
 
 ## Implementation Checklist
 
-- [ ] `ludo_config.dart`: replace `LudoRuleset.quick`'s
+- [x] `ludo_config.dart`: replace `LudoRuleset.quick`'s
   `stepsToHomeEntry`/`requiresYardExitRoll` values, add
   `preReleasedTokensPerPlayer` and a `LudoWinCondition` field (or
   equivalent named config), update the class doc comment to cite this
   task and the Gametion source instead of the old invented rationale, bump
   `ludoRulesVersion` (e.g. to `LUDO-2`) since replay semantics change.
-- [ ] `ludo_models.dart`: add whatever per-player state is needed to
+- [x] `ludo_models.dart`: add whatever per-player state is needed to
   evaluate `LudoWinCondition.oneHomeAndOneCapture` incrementally (capture
   count and/or `hasCaptured`/`hasHomeToken` booleans), and match-setup
   logic (or a new factory) that pre-releases `preReleasedTokensPerPlayer`
   tokens per player for Quick.
-- [ ] `ludo_engine.dart`: generalize win detection in `applyMove` (and
+- [x] `ludo_engine.dart`: generalize win detection in `applyMove` (and
   `_advanceTurn`/`rollDice` as needed) to branch on `ruleset` win
   condition; restore yard-based capture reset for Quick (remove the
   Quick-specific "reset to path position 0" branch now that Quick has a
   real yard again); implement the deterministic non-winner ranking
   function and expose it (e.g. `rankRemainingPlayers(state)`) for the
   client results screen to consume.
-- [ ] `ludo_replay.dart`: confirm `replay()` reproduces the new win/ranking
+- [x] `ludo_replay.dart`: confirm `replay()` reproduces the new win/ranking
   logic exactly from the event log (no new event type should be strictly
   required if `tokenFinished`/`tokenCaptured` already carry enough
   information, but add one if the win-moment needs to be explicit in the
   log for replay fidelity — decide and document).
-- [ ] `ludo_bot.dart`: adjust medium/hard strategy capture weighting for
+- [x] `ludo_bot.dart`: adjust medium/hard strategy capture weighting for
   Quick when the acting player lacks `hasCaptured`.
-- [ ] Regenerate `test/fixtures/quick_2p_dice.json`,
+- [x] Regenerate `test/fixtures/quick_2p_dice.json`,
   `quick_2p_hardbot.json`, `quick_4p_dice.json`, `quick_4p_easybot.json`
   via `bin/replay_fixture.dart`; add a test/script step that re-runs every
   Classic fixture and asserts byte-identical output against the committed
   file (fails the task if Classic drifted).
-- [ ] `test/ludo_engine_test.dart` (and/or a new
+- [x] `test/ludo_engine_test.dart` (and/or a new
   `test/ludo_quick_mode_test.dart`): cover — home without any capture does
   not win; a capture followed later by a home-token arrival wins at the
   home-arrival moment; a token already home followed later by a capture
@@ -192,30 +192,30 @@ every client surface that shows Quick copy or state.
   tokens pre-released on their start square and 2 in the yard; a yard
   token in Quick still requires rolling a 6 to release; Classic's own win
   condition and starting placement are unaffected by any of this.
-- [ ] `test/ludo_fixture_replay_test.dart`: extend/adjust for the
+- [x] `test/ludo_fixture_replay_test.dart`: extend/adjust for the
   regenerated Quick fixtures and the Classic-byte-identical check above.
-- [ ] Client: `mode_setup_sheet.dart` and `how_to_play_screen.dart` copy
+- [x] Client: `mode_setup_sheet.dart` and `how_to_play_screen.dart` copy
   updated to describe the real rule (2 tokens start released, win by
   getting one token home *and* capturing at least one opponent) instead
   of any shortened-track/no-yard description; grep the rest of
   `apps-native/games/ludo/lib` for stale Quick copy (`stepsToHomeEntry`,
   "shortened", "half the board", or similar) and fix any hit.
-- [ ] `player_corner_card.dart`: add the per-player capture-status
+- [x] `player_corner_card.dart`: add the per-player capture-status
   indicator, shown only when `LudoRuleset.quick` is active.
   `game_board_screen.dart`: wire the live `hasCaptured`/`hasHomeToken`
   state through to the HUD and results screen.
-- [ ] `results_screen.dart`: render Quick's winner + deterministic
+- [x] `results_screen.dart`: render Quick's winner + deterministic
   remaining-player ranking; leave Classic's rendering path unchanged.
-- [ ] Full-match controller tests (`apps-native/games/ludo/test/state/` or
+- [x] Full-match controller tests (`apps-native/games/ludo/test/state/` or
   wherever the local match controller is tested) covering: a Quick match
   driven by bots always terminates and reaches the results screen; the
   displayed ranking matches the engine's `rankRemainingPlayers` output.
-- [ ] Regenerate any golden(s) under `apps-native/games/ludo/test/
+- [x] Regenerate any golden(s) under `apps-native/games/ludo/test/
   goldens/` that render Quick-specific copy, the HUD capture indicator, or
   the results screen in a Quick match; diff old vs. new before committing.
-- [ ] Update task `13-human-local-checkpoint.md`'s frontmatter
+- [x] Update task `13-human-local-checkpoint.md`'s frontmatter
   `depends_on` to `[15-ludo-launch/12g-quick-mode-alignment]`.
-- [ ] Add a `12g` row to `tasks/epics/15-ludo-launch/STATUS.md`.
+- [x] Add a `12g` row to `tasks/epics/15-ludo-launch/STATUS.md`.
 
 ## Files Touched
 

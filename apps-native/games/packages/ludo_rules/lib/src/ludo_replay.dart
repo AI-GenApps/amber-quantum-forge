@@ -170,6 +170,19 @@ final class LudoMatchFinishedEvent extends LudoReplayEvent {
 /// log was originally produced from — the event log itself only records
 /// what happened during play (rolls, moves, captures), not the starting
 /// roster, since that is match setup rather than a rules-engine concern.
+/// For Quick, [initialPlayers] must already reflect the pre-released
+/// starting placement (see `LudoMatchState.initial`); this function does
+/// not apply it itself.
+///
+/// Task 12g decision: no new event type was needed to replay
+/// [LudoWinCondition.oneHomeAndOneCapture] (Quick's win condition)
+/// faithfully. Re-driving the real [rollDice]/[applyMove] functions (as
+/// this function already does, rather than re-deriving state from the
+/// event log directly) naturally reconstructs each player's
+/// `captureCount`/`finishedCount` move-by-move, so the win check inside
+/// `applyMove` fires at the exact same moment on replay as it did live —
+/// the existing `tokenFinished`/`tokenCaptured`/`matchFinished` events
+/// already carry everything needed.
 LudoMatchState replay(
   Iterable<LudoReplayEvent> events, {
   required LudoRuleset ruleset,

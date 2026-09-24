@@ -16,7 +16,7 @@
     {
       "type": "tokenMoved",
       "seat": 0,
-      "token_id": 2,
+      "token_id": 0,
       "from": 0,
       "to": 1
     },
@@ -28,7 +28,7 @@
     {
       "type": "tokenMoved",
       "seat": 1,
-      "token_id": 2,
+      "token_id": 0,
       "from": 0,
       "to": 3
     },
@@ -40,7 +40,7 @@
     {
       "type": "tokenMoved",
       "seat": 0,
-      "token_id": 2,
+      "token_id": 0,
       "from": 1,
       "to": 4
     },
@@ -52,7 +52,7 @@
     {
       "type": "tokenMoved",
       "seat": 1,
-      "token_id": 2,
+      "token_id": 0,
       "from": 3,
       "to": 6
     },
@@ -64,7 +64,7 @@
     {
       "type": "tokenMoved",
       "seat": 0,
-      "token_id": 2,
+      "token_id": 0,
       "from": 4,
       "to": 5
     },
@@ -76,7 +76,7 @@
     {
       "type": "tokenMoved",
       "seat": 1,
-      "token_id": 2,
+      "token_id": 0,
       "from": 6,
       "to": 10
     },
@@ -88,7 +88,7 @@
     {
       "type": "tokenMoved",
       "seat": 0,
-      "token_id": 2,
+      "token_id": 0,
       "from": 5,
       "to": 6
     },
@@ -100,7 +100,7 @@
     {
       "type": "tokenMoved",
       "seat": 1,
-      "token_id": 2,
+      "token_id": 0,
       "from": 10,
       "to": 11
     },
@@ -112,7 +112,7 @@
     {
       "type": "tokenMoved",
       "seat": 0,
-      "token_id": 2,
+      "token_id": 0,
       "from": 6,
       "to": 11
     },
@@ -125,20 +125,20 @@
       "type": "tokenMoved",
       "seat": 1,
       "token_id": 2,
+      "from": -1,
+      "to": 0
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 3
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 0,
       "from": 11,
-      "to": 17
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 3
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 2,
-      "from": 17,
-      "to": 20
+      "to": 14
     },
     {
       "type": "diceRolled",
@@ -148,7 +148,7 @@
     {
       "type": "tokenMoved",
       "seat": 0,
-      "token_id": 3,
+      "token_id": 1,
       "from": 0,
       "to": 3
     },
@@ -160,9 +160,9 @@
     {
       "type": "tokenMoved",
       "seat": 1,
-      "token_id": 2,
-      "from": 20,
-      "to": 25
+      "token_id": 0,
+      "from": 14,
+      "to": 19
     },
     {
       "type": "diceRolled",
@@ -172,7 +172,7 @@
     {
       "type": "tokenMoved",
       "seat": 0,
-      "token_id": 2,
+      "token_id": 0,
       "from": 11,
       "to": 13
     },
@@ -184,9 +184,9 @@
     {
       "type": "tokenMoved",
       "seat": 1,
-      "token_id": 2,
-      "from": 25,
-      "to": 30
+      "token_id": 0,
+      "from": 19,
+      "to": 24
     },
     {
       "type": "diceRolled",
@@ -196,7 +196,7 @@
     {
       "type": "tokenMoved",
       "seat": 0,
-      "token_id": 3,
+      "token_id": 1,
       "from": 3,
       "to": 5
     },
@@ -208,38 +208,105 @@
     {
       "type": "tokenMoved",
       "seat": 1,
-      "token_id": 2,
-      "from": 30,
-      "to": 31
-    },
-    {
-      "type": "tokenFinished",
-      "seat": 1,
-      "token_id": 2
+      "token_id": 0,
+      "from": 24,
+      "to": 25
     },
     {
       "type": "diceRolled",
-      "seat": 1,
+      "seat": 0,
       "roll": 6
     },
     {
       "type": "tokenMoved",
-      "seat": 1,
+      "seat": 0,
+      "token_id": 3,
+      "from": -1,
+      "to": 0
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 1
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
       "token_id": 1,
-      "from": 0,
+      "from": 5,
       "to": 6
     },
     {
       "type": "diceRolled",
       "seat": 1,
-      "roll": 1
+      "roll": 2
     },
     {
       "type": "tokenMoved",
       "seat": 1,
+      "token_id": 0,
+      "from": 25,
+      "to": 27
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 1
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
       "token_id": 1,
       "from": 6,
       "to": 7
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 5
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 0,
+      "from": 27,
+      "to": 32
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 6
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 2,
+      "from": -1,
+      "to": 0
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 4
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 1,
+      "from": 7,
+      "to": 11
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 4
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 0,
+      "from": 32,
+      "to": 36
     },
     {
       "type": "diceRolled",
@@ -249,9 +316,75 @@
     {
       "type": "tokenMoved",
       "seat": 0,
-      "token_id": 3,
-      "from": 5,
-      "to": 7
+      "token_id": 1,
+      "from": 11,
+      "to": 13
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 3
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 0,
+      "from": 36,
+      "to": 39
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 2
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 1,
+      "from": 13,
+      "to": 15
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 4
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 0,
+      "from": 39,
+      "to": 43
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 4
+    },
+    {
+      "type": "tokenCaptured",
+      "seat": 1,
+      "token_id": 0,
+      "by_seat": 0
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 2,
+      "from": 0,
+      "to": 4
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 4
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 2,
+      "from": 4,
+      "to": 8
     },
     {
       "type": "diceRolled",
@@ -261,7 +394,115 @@
     {
       "type": "tokenMoved",
       "seat": 1,
+      "token_id": 2,
+      "from": 0,
+      "to": 1
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 3
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 2,
+      "from": 8,
+      "to": 11
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 4
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 2,
+      "from": 1,
+      "to": 5
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 1
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 2,
+      "from": 11,
+      "to": 12
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 2
+    },
+    {
+      "type": "tokenCaptured",
+      "seat": 0,
       "token_id": 1,
+      "by_seat": 1
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 1,
+      "from": 0,
+      "to": 2
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 2
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 2,
+      "from": 5,
+      "to": 7
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 3
+    },
+    {
+      "type": "tokenCaptured",
+      "seat": 1,
+      "token_id": 1,
+      "by_seat": 0
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 2,
+      "from": 12,
+      "to": 15
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 1
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 2,
+      "from": 15,
+      "to": 16
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 1
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 2,
       "from": 7,
       "to": 8
     },
@@ -273,9 +514,9 @@
     {
       "type": "tokenMoved",
       "seat": 0,
-      "token_id": 3,
-      "from": 7,
-      "to": 12
+      "token_id": 2,
+      "from": 16,
+      "to": 21
     },
     {
       "type": "diceRolled",
@@ -285,68 +526,152 @@
     {
       "type": "tokenMoved",
       "seat": 1,
-      "token_id": 1,
-      "from": 8,
-      "to": 14
+      "token_id": 0,
+      "from": -1,
+      "to": 0
     },
     {
       "type": "diceRolled",
       "seat": 1,
-      "roll": 4
+      "roll": 5
     },
     {
       "type": "tokenMoved",
       "seat": 1,
-      "token_id": 1,
-      "from": 14,
+      "token_id": 2,
+      "from": 8,
+      "to": 13
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 3
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 2,
+      "from": 21,
+      "to": 24
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 5
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 2,
+      "from": 13,
       "to": 18
     },
     {
       "type": "diceRolled",
       "seat": 0,
-      "roll": 4
+      "roll": 1
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 2,
+      "from": 24,
+      "to": 25
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 1
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 2,
+      "from": 18,
+      "to": 19
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 6
     },
     {
       "type": "tokenMoved",
       "seat": 0,
       "token_id": 1,
-      "from": 0,
-      "to": 4
+      "from": -1,
+      "to": 0
     },
     {
       "type": "diceRolled",
-      "seat": 1,
+      "seat": 0,
       "roll": 3
     },
     {
       "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 2,
+      "from": 25,
+      "to": 28
+    },
+    {
+      "type": "diceRolled",
       "seat": 1,
-      "token_id": 1,
-      "from": 18,
+      "roll": 2
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 2,
+      "from": 19,
       "to": 21
     },
     {
       "type": "diceRolled",
       "seat": 0,
-      "roll": 2
+      "roll": 3
     },
     {
       "type": "tokenMoved",
       "seat": 0,
-      "token_id": 1,
-      "from": 4,
-      "to": 6
+      "token_id": 2,
+      "from": 28,
+      "to": 31
     },
     {
       "type": "diceRolled",
       "seat": 1,
-      "roll": 4
+      "roll": 2
     },
     {
       "type": "tokenMoved",
       "seat": 1,
-      "token_id": 1,
+      "token_id": 2,
       "from": 21,
+      "to": 23
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 1
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 2,
+      "from": 31,
+      "to": 32
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 2
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 2,
+      "from": 23,
       "to": 25
     },
     {
@@ -357,21 +682,57 @@
     {
       "type": "tokenMoved",
       "seat": 0,
-      "token_id": 1,
-      "from": 6,
-      "to": 10
+      "token_id": 2,
+      "from": 32,
+      "to": 36
     },
     {
       "type": "diceRolled",
       "seat": 1,
-      "roll": 4
+      "roll": 1
     },
     {
       "type": "tokenMoved",
       "seat": 1,
-      "token_id": 1,
+      "token_id": 2,
       "from": 25,
-      "to": 29
+      "to": 26
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 6
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 3,
+      "from": 0,
+      "to": 6
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 3
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 2,
+      "from": 36,
+      "to": 39
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 5
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 2,
+      "from": 26,
+      "to": 31
     },
     {
       "type": "diceRolled",
@@ -379,23 +740,41 @@
       "roll": 5
     },
     {
+      "type": "tokenCaptured",
+      "seat": 1,
+      "token_id": 2,
+      "by_seat": 0
+    },
+    {
       "type": "tokenMoved",
       "seat": 0,
-      "token_id": 0,
-      "from": 0,
-      "to": 5
+      "token_id": 2,
+      "from": 39,
+      "to": 44
     },
     {
       "type": "diceRolled",
-      "seat": 1,
+      "seat": 0,
       "roll": 4
     },
     {
       "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 2,
+      "from": 44,
+      "to": 48
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 1
+    },
+    {
+      "type": "tokenMoved",
       "seat": 1,
       "token_id": 0,
       "from": 0,
-      "to": 4
+      "to": 1
     },
     {
       "type": "diceRolled",
@@ -405,110 +784,45 @@
     {
       "type": "tokenMoved",
       "seat": 0,
-      "token_id": 1,
-      "from": 10,
-      "to": 12
+      "token_id": 2,
+      "from": 48,
+      "to": 50
     },
     {
       "type": "diceRolled",
       "seat": 1,
       "roll": 3
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 0,
+      "from": 1,
+      "to": 4
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 1
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 2,
+      "from": 50,
+      "to": 51
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 5
     },
     {
       "type": "tokenMoved",
       "seat": 1,
       "token_id": 0,
       "from": 4,
-      "to": 7
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 4
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 0,
-      "from": 5,
       "to": 9
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 1
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 1,
-      "from": 29,
-      "to": 30
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 2
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 0,
-      "from": 9,
-      "to": 11
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 2
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 0,
-      "from": 7,
-      "to": 9
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 3
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 2,
-      "from": 13,
-      "to": 16
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 1
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 1,
-      "from": 30,
-      "to": 31
-    },
-    {
-      "type": "tokenFinished",
-      "seat": 1,
-      "token_id": 1
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 1
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 0,
-      "from": 9,
-      "to": 10
     },
     {
       "type": "diceRolled",
@@ -519,7 +833,55 @@
       "type": "tokenMoved",
       "seat": 0,
       "token_id": 2,
-      "from": 16,
+      "from": 51,
+      "to": 56
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 2
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 0,
+      "from": 9,
+      "to": 11
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 5
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 0,
+      "from": 13,
+      "to": 18
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 1
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 0,
+      "from": 11,
+      "to": 12
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 3
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 0,
+      "from": 18,
       "to": 21
     },
     {
@@ -530,9 +892,177 @@
     {
       "type": "tokenMoved",
       "seat": 1,
+      "token_id": 1,
+      "from": -1,
+      "to": 0
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 6
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 2,
+      "from": -1,
+      "to": 0
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 2
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 2,
+      "from": 0,
+      "to": 2
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 5
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
       "token_id": 0,
+      "from": 21,
+      "to": 26
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 2
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 2,
+      "from": 2,
+      "to": 4
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 3
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 3,
+      "from": 6,
+      "to": 9
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 6
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 3,
+      "from": -1,
+      "to": 0
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 3
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 2,
+      "from": 4,
+      "to": 7
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 3
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 3,
+      "from": 9,
+      "to": 12
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 3
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 2,
+      "from": 7,
+      "to": 10
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 3
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 1,
+      "from": 0,
+      "to": 3
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 2
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 2,
       "from": 10,
-      "to": 16
+      "to": 12
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 5
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 1,
+      "from": 3,
+      "to": 8
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 5
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 0,
+      "from": 12,
+      "to": 17
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 3
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 1,
+      "from": 8,
+      "to": 11
     },
     {
       "type": "diceRolled",
@@ -543,20 +1073,20 @@
       "type": "tokenMoved",
       "seat": 1,
       "token_id": 0,
-      "from": 16,
-      "to": 20
+      "from": 17,
+      "to": 21
     },
     {
       "type": "diceRolled",
       "seat": 0,
-      "roll": 5
+      "roll": 3
     },
     {
       "type": "tokenMoved",
       "seat": 0,
-      "token_id": 2,
-      "from": 21,
-      "to": 26
+      "token_id": 0,
+      "from": 26,
+      "to": 29
     },
     {
       "type": "diceRolled",
@@ -567,20 +1097,44 @@
       "type": "tokenMoved",
       "seat": 1,
       "token_id": 0,
-      "from": 20,
-      "to": 23
+      "from": 21,
+      "to": 24
     },
     {
       "type": "diceRolled",
       "seat": 0,
-      "roll": 5
+      "roll": 2
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 0,
+      "token_id": 1,
+      "from": 11,
+      "to": 13
+    },
+    {
+      "type": "diceRolled",
+      "seat": 1,
+      "roll": 1
+    },
+    {
+      "type": "tokenMoved",
+      "seat": 1,
+      "token_id": 0,
+      "from": 24,
+      "to": 25
+    },
+    {
+      "type": "diceRolled",
+      "seat": 0,
+      "roll": 1
     },
     {
       "type": "tokenMoved",
       "seat": 0,
       "token_id": 2,
-      "from": 26,
-      "to": 31
+      "from": 56,
+      "to": 57
     },
     {
       "type": "tokenFinished",
@@ -588,402 +1142,9 @@
       "token_id": 2
     },
     {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 1
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 1,
-      "from": 12,
-      "to": 13
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 6
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 0,
-      "from": 23,
-      "to": 29
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 3
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 3,
-      "from": 0,
-      "to": 3
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 2
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 1,
-      "from": 13,
-      "to": 15
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 3
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 3,
-      "from": 3,
-      "to": 6
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 2
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 1,
-      "from": 15,
-      "to": 17
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 1
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 0,
-      "from": 29,
-      "to": 30
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 2
-    },
-    {
-      "type": "tokenCaptured",
-      "seat": 1,
-      "token_id": 3,
-      "by_seat": 0
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 1,
-      "from": 17,
-      "to": 19
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 4
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 1,
-      "from": 19,
-      "to": 23
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 1
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 0,
-      "from": 30,
-      "to": 31
-    },
-    {
-      "type": "tokenFinished",
-      "seat": 1,
-      "token_id": 0
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 6
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 3,
-      "from": 0,
-      "to": 6
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 6
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 3,
-      "from": 6,
-      "to": 12
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 3
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 3,
-      "from": 12,
-      "to": 15
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 5
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 1,
-      "from": 23,
-      "to": 28
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 5
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 3,
-      "from": 15,
-      "to": 20
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 4
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 3,
-      "from": 12,
-      "to": 16
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 1
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 3,
-      "from": 20,
-      "to": 21
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 2
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 1,
-      "from": 28,
-      "to": 30
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 3
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 3,
-      "from": 21,
-      "to": 24
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 1
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 1,
-      "from": 30,
-      "to": 31
-    },
-    {
-      "type": "tokenFinished",
-      "seat": 0,
-      "token_id": 1
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 5
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 3,
-      "from": 16,
-      "to": 21
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 5
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 3,
-      "from": 24,
-      "to": 29
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 2
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 3,
-      "from": 21,
-      "to": 23
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 5
-    },
-    {
-      "type": "turnForfeited",
-      "seat": 1,
-      "reason": "no-legal-move"
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 1
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 3,
-      "from": 23,
-      "to": 24
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 3
-    },
-    {
-      "type": "turnForfeited",
-      "seat": 1,
-      "reason": "no-legal-move"
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 6
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 3,
-      "from": 24,
-      "to": 30
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 1
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 3,
-      "from": 30,
-      "to": 31
-    },
-    {
-      "type": "tokenFinished",
-      "seat": 0,
-      "token_id": 3
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 6
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 0,
-      "from": 11,
-      "to": 17
-    },
-    {
-      "type": "diceRolled",
-      "seat": 0,
-      "roll": 5
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 0,
-      "token_id": 0,
-      "from": 17,
-      "to": 22
-    },
-    {
-      "type": "diceRolled",
-      "seat": 1,
-      "roll": 2
-    },
-    {
-      "type": "tokenMoved",
-      "seat": 1,
-      "token_id": 3,
-      "from": 29,
-      "to": 31
-    },
-    {
-      "type": "tokenFinished",
-      "seat": 1,
-      "token_id": 3
-    },
-    {
       "type": "matchFinished",
       "winner_order": [
+        0,
         1
       ]
     }
@@ -992,10 +1153,12 @@
     "ruleset": {
       "id": "quick",
       "tokens_per_player": 4,
-      "steps_to_home_entry": 25,
+      "steps_to_home_entry": 51,
       "home_length": 6,
-      "requires_yard_exit_roll": false,
-      "rules_version": "LUDO-1",
+      "requires_yard_exit_roll": true,
+      "pre_released_tokens_per_player": 2,
+      "win_condition": "oneHomeAndOneCapture",
+      "rules_version": "LUDO-2",
       "schema_version": 1
     },
     "players": [
@@ -1006,21 +1169,22 @@
         "tokens": [
           {
             "id": 0,
-            "path_position": 22
+            "path_position": 29
           },
           {
             "id": 1,
-            "path_position": 31
+            "path_position": 13
           },
           {
             "id": 2,
-            "path_position": 31
+            "path_position": 57
           },
           {
             "id": 3,
-            "path_position": 31
+            "path_position": 12
           }
-        ]
+        ],
+        "capture_count": 3
       },
       {
         "seat": 1,
@@ -1029,28 +1193,30 @@
         "tokens": [
           {
             "id": 0,
-            "path_position": 31
+            "path_position": 25
           },
           {
             "id": 1,
-            "path_position": 31
+            "path_position": 0
           },
           {
             "id": 2,
-            "path_position": 31
+            "path_position": 12
           },
           {
             "id": 3,
-            "path_position": 31
+            "path_position": 0
           }
-        ]
+        ],
+        "capture_count": 1
       }
     ],
-    "current_player_index": 1,
+    "current_player_index": 0,
     "phase": "finished",
     "current_roll": null,
     "consecutive_sixes": 0,
     "winner_order": [
+      0,
       1
     ]
   }

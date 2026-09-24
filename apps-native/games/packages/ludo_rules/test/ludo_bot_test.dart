@@ -7,6 +7,7 @@ LudoMatchState _state({
   required List<List<LudoToken>> tokensByPlayer,
   int currentPlayerIndex = 0,
   int currentRoll = 3,
+  List<int> captureCounts = const [],
 }) {
   final players = [
     for (var i = 0; i < tokensByPlayer.length; i++)
@@ -15,6 +16,7 @@ LudoMatchState _state({
         subject: 'seat-$i',
         color: LudoColor.values[i],
         tokens: tokensByPlayer[i],
+        captureCount: i < captureCounts.length ? captureCounts[i] : 0,
       ),
   ];
   return LudoMatchState(
@@ -175,6 +177,88 @@ void main() {
         for (var seed = 1; seed <= 50; seed++) {
           final chosen = strategy.selectMove(state, DeterministicRng(seed));
           expect(legal, contains(chosen));
+        }
+      });
+    });
+  }
+
+  for (final strategy in [const MediumBotStrategy(), const HardBotStrategy()]) {
+    group('${strategy.runtimeType} quick-aware capture weighting', () {
+      test('favors an available capture over finishing a token when the '
+          'acting player does not yet have a capture (quick)', () {
+        // Same shape as the classic "finish outranks capture" fixture
+        // above, but under Quick with the acting player still lacking a
+        // capture: capturing should now outrank finishing, since a
+        // capture is the only thing standing between this player and an
+        // instant win.
+        final state = _state(
+          ruleset: LudoRuleset.quick,
+          tokensByPlayer: [
+            [
+              LudoToken(
+                id: 0,
+                pathPosition: LudoRuleset.quick.pathLength - 3,
+              ), // -> finish
+              LudoToken(id: 1, pathPosition: 15), // -> 18, captures
+              LudoToken.inYard(2),
+              LudoToken.inYard(3),
+            ],
+            [
+              LudoToken(id: 0, pathPosition: 5), // green start(13)+5=18
+              LudoToken.inYard(1),
+              LudoToken.inYard(2),
+              LudoToken.inYard(3),
+            ],
+          ],
+          currentRoll: 3,
+        );
+        final legal = legalMoves(state);
+        expect(legal, containsAll([0, 1]));
+        for (var seed = 1; seed <= 20; seed++) {
+          final chosen = strategy.selectMove(state, DeterministicRng(seed));
+          expect(
+            chosen,
+            1,
+            reason:
+                'capturing outranks finishing when this player has no '
+                'capture yet in quick mode',
+          );
+        }
+      });
+
+      test('finishing outranks capturing once the acting player already has '
+          'a capture (quick), matching classic priority', () {
+        final state = _state(
+          ruleset: LudoRuleset.quick,
+          tokensByPlayer: [
+            [
+              LudoToken(
+                id: 0,
+                pathPosition: LudoRuleset.quick.pathLength - 3,
+              ), // -> finish
+              LudoToken(id: 1, pathPosition: 15), // -> 18, captures
+              LudoToken.inYard(2),
+              LudoToken.inYard(3),
+            ],
+            [
+              LudoToken(id: 0, pathPosition: 5), // green start(13)+5=18
+              LudoToken.inYard(1),
+              LudoToken.inYard(2),
+              LudoToken.inYard(3),
+            ],
+          ],
+          currentRoll: 3,
+          captureCounts: [1, 0],
+        );
+        final legal = legalMoves(state);
+        expect(legal, containsAll([0, 1]));
+        for (var seed = 1; seed <= 20; seed++) {
+          final chosen = strategy.selectMove(state, DeterministicRng(seed));
+          expect(
+            chosen,
+            0,
+            reason: 'finishing outranks capturing once already captured',
+          );
         }
       });
     });

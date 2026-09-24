@@ -13,6 +13,7 @@ library;
 import 'package:platform_core/platform_core.dart';
 
 import 'ludo_board.dart';
+import 'ludo_config.dart';
 import 'ludo_engine.dart';
 import 'ludo_models.dart';
 
@@ -194,6 +195,22 @@ int _mediumOrHardChoice(
     throw StateError('selectMove called with no legal moves');
   }
   final outlooks = [for (final id in moves) _outlookFor(state, id)];
+
+  // Quick-aware capture weighting: when playing
+  // `LudoWinCondition.oneHomeAndOneCapture` and the acting player does not
+  // yet have `hasCaptured`, a capture is the only thing standing between
+  // them and an instant win (once they have a home token) or sets up the
+  // win the moment they next get a token home — so it outranks even
+  // finishing a token this turn.
+  final needsFirstCapture =
+      state.ruleset.winCondition == LudoWinCondition.oneHomeAndOneCapture &&
+      !state.currentPlayer.hasCaptured;
+  if (needsFirstCapture) {
+    final urgentCapturers = outlooks.where((o) => o.captures).toList();
+    if (urgentCapturers.isNotEmpty) {
+      return _pickRandom(urgentCapturers, random).tokenId;
+    }
+  }
 
   final finishers = outlooks.where((o) => o.finishes).toList();
   if (finishers.isNotEmpty) return _pickRandom(finishers, random).tokenId;

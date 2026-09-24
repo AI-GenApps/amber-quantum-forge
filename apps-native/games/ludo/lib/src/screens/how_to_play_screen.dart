@@ -63,12 +63,20 @@ const _classicRules = [
 
 const _quickRules = [
   _RuleEntry(
-    'Quick mode',
-    'Every token starts already on the board, so there\'s no six needed '
-        'to get going, and the home stretch arrives after about half the '
-        'usual lap — a much shorter race to the finish. Capturing, safe '
-        'squares, bonus rolls and the exact-finish rule all work exactly '
-        'the same as Classic.',
+    'Getting started',
+    'Two of your four tokens start already released on your start square '
+        '— the other two still wait in your yard and still need a six to '
+        'come out, exactly like Classic. The lap itself is the same full '
+        'length as Classic, too; Quick isn\'t a shorter track.',
+  ),
+  _RuleEntry(
+    'Winning in Quick',
+    'The first player to get one token all the way home AND capture at '
+        'least one opponent token — in either order, during the same match '
+        '— wins immediately. A token reaching home with no capture yet '
+        'doesn\'t win by itself; keep playing until you either capture '
+        'something or get there. Capturing, safe squares, bonus rolls and '
+        'the exact-finish rule all work exactly the same as Classic.',
   ),
 ];
 

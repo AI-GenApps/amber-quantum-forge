@@ -617,6 +617,10 @@ class _PlayerCornerRow extends StatelessWidget {
       diceEnabled: canRoll,
       lastRoll: state.currentRoll,
       onRoll: onRoll,
+      showCaptureIndicator:
+          config.ruleset.winCondition ==
+              LudoWinCondition.oneHomeAndOneCapture &&
+          state.players[seat].hasCaptured,
     );
   }
 }

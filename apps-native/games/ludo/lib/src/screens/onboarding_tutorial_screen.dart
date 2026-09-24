@@ -35,6 +35,9 @@ const ludoTutorialRuleset = LudoRuleset(
   stepsToHomeEntry: 51,
   homeLength: 6,
   requiresYardExitRoll: true,
+  preReleasedTokensPerPlayer: 0,
+  winCondition: LudoWinCondition.allTokensHome,
+  rulesVersion: ludoRulesVersion,
 );
 
 /// Absolute track cell the opponent's token is pre-placed on, chosen so the

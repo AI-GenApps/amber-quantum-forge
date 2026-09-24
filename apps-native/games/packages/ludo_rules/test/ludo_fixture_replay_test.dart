@@ -54,18 +54,22 @@ void main() {
         }
 
         final subjects = subjectsJson.cast<String>();
+        // Mirrors `LudoMatchState.initial`'s starting placement (yard vs.
+        // pre-released token count varies by ruleset — see
+        // `ludo_config.dart`'s `preReleasedTokensPerPlayer`), since a
+        // fixture's recorded event log assumes the match began that way.
         final initialPlayers = [
           for (var seat = 0; seat < subjects.length; seat++)
             LudoPlayerState(
               seat: seat,
               subject: subjects[seat],
               color: LudoColor.values[seat],
-              tokens: List.generate(
-                ruleset.tokensPerPlayer,
-                (id) => ruleset.requiresYardExitRoll
-                    ? LudoToken.inYard(id)
-                    : LudoToken.onTrack(id),
-              ),
+              tokens: List.generate(ruleset.tokensPerPlayer, (id) {
+                if (!ruleset.requiresYardExitRoll) return LudoToken.onTrack(id);
+                return id < ruleset.preReleasedTokensPerPlayer
+                    ? LudoToken.onTrack(id)
+                    : LudoToken.inYard(id);
+              }),
             ),
         ];
 

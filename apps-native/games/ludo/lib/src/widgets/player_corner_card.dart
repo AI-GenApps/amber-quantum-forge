@@ -44,6 +44,7 @@ class PlayerCornerCard extends StatelessWidget {
     this.diceEnabled = false,
     this.lastRoll,
     this.onRoll,
+    this.showCaptureIndicator = false,
   }) : assert(
          !showDice || onRoll != null,
          'a corner card with showDice must supply onRoll',
@@ -86,6 +87,14 @@ class PlayerCornerCard extends StatelessWidget {
   /// Required whenever [showDice] is `true`.
   final VoidCallback? onRoll;
 
+  /// Whether to show the small "capture ✓" badge on this seat's avatar
+  /// frame (task 12g). Callers should only pass `true` in a Quick match,
+  /// once this seat's `LudoPlayerState.hasCaptured` is true — it lets a
+  /// human watching the board see who is one home token away from an
+  /// instant win. `false` (the default) renders nothing extra, so Classic
+  /// matches are unaffected.
+  final bool showCaptureIndicator;
+
   /// The fraction of [turnDuration] remaining until [deadline], clamped to
   /// `0..1`. `1.0` when [deadline] or [isActive] is unset (nothing to
   /// count down).
@@ -105,7 +114,9 @@ class PlayerCornerCard extends StatelessWidget {
     final showDiceSlot = showDice && isActive;
 
     return Semantics(
-      label: isActive ? '$name, your move' : name,
+      label: showCaptureIndicator
+          ? '${isActive ? '$name, your move' : name}, has captured'
+          : (isActive ? '$name, your move' : name),
       child: LudoPanel(
         borderWidth: isActive ? 3 : 1.5,
         padding: const EdgeInsets.symmetric(
@@ -121,6 +132,7 @@ class PlayerCornerCard extends StatelessWidget {
               accent: accent,
               showTimer: showTimer,
               remainingFraction: remainingFraction,
+              showCaptureIndicator: showCaptureIndicator,
             ),
             const SizedBox(width: LudoThemeTokens.spaceSm),
             Flexible(
@@ -173,41 +185,79 @@ class _FramedAvatar extends StatelessWidget {
     required this.accent,
     required this.showTimer,
     required this.remainingFraction,
+    this.showCaptureIndicator = false,
   });
 
   final String avatarId;
   final Color accent;
   final bool showTimer;
   final double remainingFraction;
+  final bool showCaptureIndicator;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          width: ludoCornerCardAvatarSize,
+          height: ludoCornerCardAvatarSize,
+          padding: const EdgeInsets.all(2),
+          decoration: BoxDecoration(
+            border: Border.all(color: LudoThemeTokens.gold, width: 2),
+            borderRadius: BorderRadius.circular(LudoThemeTokens.radiusSm),
+            color: LudoThemeTokens.backgroundDeepBlue,
+          ),
+          child: showTimer
+              ? Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      value: remainingFraction,
+                      strokeWidth: 3,
+                      color: accent,
+                      backgroundColor: accent.withValues(alpha: 0.25),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(6),
+                      child: _AvatarArt(avatarId: avatarId),
+                    ),
+                  ],
+                )
+              : _AvatarArt(avatarId: avatarId),
+        ),
+        if (showCaptureIndicator)
+          Positioned(
+            right: -4,
+            bottom: -4,
+            child: _CaptureBadge(key: const Key('capture-indicator-badge')),
+          ),
+      ],
+    );
+  }
+}
+
+/// The small "capture ✓" badge painted on a seat's avatar frame once that
+/// seat has made its first capture in a Quick match (task 12g). A green
+/// filled circle so it reads clearly against every avatar color and the
+/// dark board background.
+class _CaptureBadge extends StatelessWidget {
+  const _CaptureBadge({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: ludoCornerCardAvatarSize,
-      height: ludoCornerCardAvatarSize,
-      padding: const EdgeInsets.all(2),
+      width: 16,
+      height: 16,
       decoration: BoxDecoration(
-        border: Border.all(color: LudoThemeTokens.gold, width: 2),
-        borderRadius: BorderRadius.circular(LudoThemeTokens.radiusSm),
-        color: LudoThemeTokens.backgroundDeepBlue,
+        shape: BoxShape.circle,
+        color: LudoThemeTokens.seatGreen,
+        border: Border.all(
+          color: LudoThemeTokens.backgroundDeepBlue,
+          width: 1.5,
+        ),
       ),
-      child: showTimer
-          ? Stack(
-              alignment: Alignment.center,
-              children: [
-                CircularProgressIndicator(
-                  value: remainingFraction,
-                  strokeWidth: 3,
-                  color: accent,
-                  backgroundColor: accent.withValues(alpha: 0.25),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(6),
-                  child: _AvatarArt(avatarId: avatarId),
-                ),
-              ],
-            )
-          : _AvatarArt(avatarId: avatarId),
+      child: const Icon(Icons.check, size: 11, color: Colors.white),
     );
   }
 }

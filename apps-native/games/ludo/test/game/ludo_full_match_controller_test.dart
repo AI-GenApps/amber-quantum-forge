@@ -167,11 +167,13 @@ void main() {
     (LudoRuleset.quick, 4),
   ];
 
-  // >=50 all-bots-demo games (including seat 0), weighted toward the
-  // shorter Quick ruleset to keep the suite's runtime reasonable — Quick's
-  // much shorter `pathLength` and no yard-exit-roll requirement
-  // (`ludo_config.dart`) means noticeably fewer turns per game than
-  // Classic, without narrowing rule/seat-count coverage.
+  // >=50 all-bots-demo games (including seat 0), weighted toward Quick to
+  // keep the suite's runtime reasonable. Since task 12g, Quick shares
+  // Classic's full-length track and still requires a 6 to leave the yard
+  // (`ludo_config.dart`) — it is no longer a shorter race — but its
+  // `oneHomeAndOneCapture` win condition (`ludo_engine.dart`) still tends
+  // to end a match sooner than Classic's "all 4 tokens home" requirement
+  // in practice, so the extra Quick coverage stays cheap.
   final seedCountByCombo = {
     (LudoRuleset.classic, 2): 6,
     (LudoRuleset.classic, 4): 4,

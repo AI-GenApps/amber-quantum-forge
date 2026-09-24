@@ -133,10 +133,9 @@ Future<void> _playVsComputerMatchToResults(
 
 /// Starts a Quick, 2-player vs-Computer match from the (already-shown)
 /// home lobby, through the real `ModeSetupSheet`, and plays it to
-/// `ResultsScreen`. Quick (pathLength 31, tokens pre-placed rather than
-/// yard-gated) and 2 players (a single bot seat, no captures needed to
-/// finish) keep the match short enough for a widget test while every step
-/// still goes through the real engine via real taps.
+/// `ResultsScreen`. Quick's `oneHomeAndOneCapture` win condition (task
+/// 12g) plus 2 players keeps the match short enough for a widget test
+/// while every step still goes through the real engine via real taps.
 Future<void> _startAndFinishVsComputerMatch(WidgetTester tester) async {
   expect(find.byType(HomeLobbyScreen), findsOneWidget);
 

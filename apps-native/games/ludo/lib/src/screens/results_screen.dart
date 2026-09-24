@@ -28,10 +28,16 @@ import 'mode_setup_sheet.dart' show LudoLocalMatchConfig;
 const _minTapTarget = 48.0;
 
 /// The final 1-based finish rank of every seat in [state], seat 0..n-1 in
-/// rank order (winners first). [state.winnerOrder] only records seats up to
+/// rank order (winners first).
+///
+/// Classic's [LudoMatchState.winnerOrder] only records seats up to
 /// `players.length - 1` (the match ends the moment only one seat remains
 /// unfinished, per `ludo_rules`' own doc), so the single seat missing from
-/// it is appended last.
+/// it is appended last here. Quick's `winnerOrder` (task 12g) is already
+/// the full ranking — the winner followed by every other seat ordered by
+/// `rankRemainingPlayers` (`ludo_engine.dart`) at the moment the match
+/// ended — so the loop below is a no-op for Quick; this function renders
+/// both the same way without needing to branch on ruleset.
 List<int> ludoFinalSeatOrder(LudoMatchState state) {
   final order = [...state.winnerOrder];
   for (var seat = 0; seat < state.players.length; seat++) {
@@ -118,6 +124,17 @@ class ResultsScreen extends StatelessWidget {
               const _TrophyGraphic(),
               const SizedBox(height: LudoThemeTokens.spaceSm),
               RibbonBanner(label: '${winnerIdentity.name} wins!'),
+              if (config.ruleset.winCondition ==
+                  LudoWinCondition.oneHomeAndOneCapture) ...[
+                const SizedBox(height: LudoThemeTokens.spaceXs),
+                Text(
+                  'Home token + capture',
+                  key: const Key('results-quick-win-reason'),
+                  style: LudoTextStyles.bodyStrong.copyWith(
+                    color: LudoThemeTokens.textOnDark.withValues(alpha: 0.8),
+                  ),
+                ),
+              ],
               Expanded(
                 child: ListView.builder(
                   key: const Key('results-rank-list'),

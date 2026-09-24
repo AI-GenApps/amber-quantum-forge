@@ -274,37 +274,82 @@ void main() {
     );
   });
 
-  test(
-    'classic requires a 6 to exit the yard; quick starts pre-placed on the track',
-    () {
-      final classicState = LudoMatchState.initial(
-        ruleset: LudoRuleset.classic,
-        subjects: ['a', 'b'],
-      );
-      final quickState = LudoMatchState.initial(
+  test('classic starts every token in the yard; quick starts 2 of 4 tokens '
+      'pre-released on the start square', () {
+    final classicState = LudoMatchState.initial(
+      ruleset: LudoRuleset.classic,
+      subjects: ['a', 'b'],
+    );
+    final quickState = LudoMatchState.initial(
+      ruleset: LudoRuleset.quick,
+      subjects: ['a', 'b'],
+    );
+
+    // Classic: all tokens are in the yard, so a roll of 3 has no legal move.
+    final classicRolled = rollDice(classicState, ScriptedDiceSource([3]));
+    expect(classicRolled.state.phase, LudoMatchPhase.awaitingRoll);
+    expect(classicRolled.state.currentPlayerIndex, 1);
+
+    // Quick: tokens 0 and 1 are pre-released on the start square, so a
+    // roll of 3 is immediately playable by the same player, moving one of
+    // them forward.
+    final quickTokenStates = quickState.players[0].tokens
+        .map((t) => t.state(LudoRuleset.quick))
+        .toList();
+    expect(
+      quickTokenStates,
+      containsAllInOrder([
+        LudoTokenState.active,
+        LudoTokenState.active,
+        LudoTokenState.yard,
+        LudoTokenState.yard,
+      ]),
+    );
+    final quickRolled = rollDice(quickState, ScriptedDiceSource([3]));
+    expect(quickRolled.state.phase, LudoMatchPhase.awaitingMove);
+    expect(quickRolled.state.currentPlayerIndex, 0);
+    expect(legalMoves(quickRolled.state), [0, 1]);
+
+    // A yard token in Quick still requires a 6 to release, same as
+    // Classic.
+    final quickYardOnly = rollDice(
+      LudoMatchState(
         ruleset: LudoRuleset.quick,
-        subjects: ['a', 'b'],
-      );
+        players: [
+          quickState.players[0].copyWith(
+            tokens: [
+              LudoToken(id: 0, pathPosition: LudoRuleset.quick.pathLength),
+              LudoToken(id: 1, pathPosition: LudoRuleset.quick.pathLength),
+              LudoToken.inYard(2),
+              LudoToken.inYard(3),
+            ],
+          ),
+          quickState.players[1],
+        ],
+        currentPlayerIndex: 0,
+        phase: LudoMatchPhase.awaitingRoll,
+      ),
+      ScriptedDiceSource([4]),
+    );
+    expect(quickYardOnly.state.phase, LudoMatchPhase.awaitingRoll);
+    expect(
+      (quickYardOnly.events.last as LudoTurnForfeitedEvent).reason,
+      'no-legal-move',
+    );
+  });
 
-      final classicRolled = rollDice(classicState, ScriptedDiceSource([3]));
-      final quickRolled = rollDice(quickState, ScriptedDiceSource([3]));
-
-      // Classic: all tokens are in the yard, so a roll of 3 has no legal move.
-      expect(classicRolled.state.phase, LudoMatchPhase.awaitingRoll);
-      expect(classicRolled.state.currentPlayerIndex, 1);
-
-      // Quick: tokens are already active on the track, so a roll of 3 is
-      // immediately playable by the same player.
-      expect(quickRolled.state.phase, LudoMatchPhase.awaitingMove);
-      expect(quickRolled.state.currentPlayerIndex, 0);
-      expect(legalMoves(quickRolled.state), isNotEmpty);
-    },
-  );
-
-  test('classic and quick have different home-stretch entry distances', () {
+  test('classic and quick share the same full-length track; only starting '
+      'placement and win condition differ', () {
     expect(LudoRuleset.classic.stepsToHomeEntry, 51);
-    expect(LudoRuleset.quick.stepsToHomeEntry, 25);
-    expect(LudoRuleset.classic.pathLength, isNot(LudoRuleset.quick.pathLength));
+    expect(LudoRuleset.quick.stepsToHomeEntry, 51);
+    expect(LudoRuleset.classic.pathLength, LudoRuleset.quick.pathLength);
+    expect(LudoRuleset.classic.preReleasedTokensPerPlayer, 0);
+    expect(LudoRuleset.quick.preReleasedTokensPerPlayer, 2);
+    expect(LudoRuleset.classic.winCondition, LudoWinCondition.allTokensHome);
+    expect(
+      LudoRuleset.quick.winCondition,
+      LudoWinCondition.oneHomeAndOneCapture,
+    );
   });
 
   group('full match simulation', () {
@@ -351,17 +396,19 @@ void main() {
       },
     );
 
-    test(
-      'a 4-player quick match always terminates with a full winner order',
-      () {
-        final finalState = playToCompletion(LudoRuleset.quick, 4, 99);
-        expect(finalState.phase, LudoMatchPhase.finished);
-        expect(finalState.winnerOrder, hasLength(3));
-        expect(
-          finalState.winnerOrder.toSet().length,
-          finalState.winnerOrder.length,
-        );
-      },
-    );
+    test('a 4-player quick match always terminates with a full ranked order '
+        '(winner plus every other player, unlike classic which leaves the '
+        'sole last-place player implicit)', () {
+      final finalState = playToCompletion(LudoRuleset.quick, 4, 99);
+      expect(finalState.phase, LudoMatchPhase.finished);
+      expect(finalState.winnerOrder, hasLength(4));
+      expect(
+        finalState.winnerOrder.toSet().length,
+        finalState.winnerOrder.length,
+      );
+      final winner = finalState.players[finalState.winnerOrder.first];
+      expect(winner.hasHomeToken(LudoRuleset.quick), isTrue);
+      expect(winner.hasCaptured, isTrue);
+    });
   });
 }

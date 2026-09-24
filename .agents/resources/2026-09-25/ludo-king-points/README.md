@@ -97,3 +97,6 @@ Scope: web-only pass (WebSearch/WebFetch), no phone/app access, following the ph
 - `27-home-pass-closed.png` — 100K COINS offer appeared (₹90.00 in-app purchase) (path/action: pressed back)
 - `28-offer-closed.png` — Coin offer still showing; X button not responsive (path/action: tapped X on coin offer)
 - `29-home-clean-now.png` — Coin offer still visible; persistent dialog blocking navigation (path/action: tapped outside dialog area)
+
+## Addendum: earlier secondary-source claims (SUPERSEDED)
+A first quick web search returned generic-Ludo explainers claiming Quick = timed, +1/step, +20 capture, +50 per token home, and Rush = +1/step, 3 missed turns = disqualified. These conflict with the official Gametion blog (Quick = first token home plus at least one capture, no points; see "Web research (2026-09-25)" above) and are treated as UNRELIABLE / likely other apps. Rush mode rules remain unconfirmed.

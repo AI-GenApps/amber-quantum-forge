@@ -180,7 +180,25 @@ void main() {
     // the match, exercising `GameBoardScreen._persistLocalSave`'s
     // finished branch rather than asserting on `LudoLocalSave` in
     // isolation (already covered in `ludo_local_save_test.dart`).
-    const ruleset = LudoRuleset.quick;
+    //
+    // Classic (not `_config`'s Quick), since task 12g: Quick's
+    // `oneHomeAndOneCapture` win condition wouldn't end the match on a
+    // 4th-token finish alone without also having captured — Classic's
+    // `allTokensHome` condition is what this scenario (3 tokens already
+    // home, 1 one roll away) actually exercises.
+    const ruleset = LudoRuleset.classic;
+    const finishConfig = LudoLocalMatchConfig(
+      ruleset: ruleset,
+      isComputerMatch: true,
+      seats: [
+        LudoSeatConfig(color: LudoColor.red, isBot: false),
+        LudoSeatConfig(
+          color: LudoColor.green,
+          isBot: true,
+          botDifficulty: 'easy',
+        ),
+      ],
+    );
     final almostDone = LudoMatchState(
       ruleset: ruleset,
       players: [
@@ -189,7 +207,7 @@ void main() {
           subject: 'local-0',
           color: LudoColor.red,
           tokens: [
-            const LudoToken(id: 0, pathPosition: 27),
+            LudoToken(id: 0, pathPosition: ruleset.pathLength - 4),
             LudoToken(id: 1, pathPosition: ruleset.pathLength),
             LudoToken(id: 2, pathPosition: ruleset.pathLength),
             LudoToken(id: 3, pathPosition: ruleset.pathLength),
@@ -201,7 +219,7 @@ void main() {
           color: LudoColor.green,
           tokens: List.generate(
             ruleset.tokensPerPlayer,
-            (id) => LudoToken(id: id, pathPosition: 0),
+            (id) => LudoToken.inYard(id),
           ),
         ),
       ],
@@ -212,7 +230,7 @@ void main() {
     await tester.pumpWidget(
       _wrap(
         GameBoardScreen(
-          config: _config,
+          config: finishConfig,
           seatIdentities: _identities,
           soundSettings: LudoSoundSettings(),
           diceSeed: _seedRollingFour,

@@ -27,7 +27,9 @@ void main() {
 
     await _scrollTo(tester, find.text('Quick'));
     expect(find.text('Quick'), findsOneWidget);
-    expect(find.text('Quick mode'), findsOneWidget);
+    expect(find.text('Getting started'), findsOneWidget);
+    await _scrollTo(tester, find.text('Winning in Quick'));
+    expect(find.text('Winning in Quick'), findsOneWidget);
   });
 
   testWidgets(
@@ -46,7 +48,8 @@ void main() {
         'Getting home',
         'Bringing a token home',
         'Winning',
-        'Quick mode',
+        'Getting started',
+        'Winning in Quick',
       ]) {
         await _scrollTo(tester, find.text(anchor));
         seen.addAll(
@@ -75,7 +78,8 @@ void main() {
       'Getting a token out',
       'Getting home',
       'Winning',
-      'Quick mode',
+      'Getting started',
+      'Winning in Quick',
     ]) {
       final labelled = find.bySemanticsLabel(RegExp('^$label:'));
       await _scrollTo(tester, labelled);

@@ -63,7 +63,7 @@ next task.
 | 12e | Client/UX owner | Restyle every remaining screen (splash, onboarding, lobby, setup sheet, dialogs, results, settings, how-to-play) | [x] |
 | 12f | Client owner | Physical-device visual QA sweep: per-screen evidence capture, full all-bots game, fix-and-recapture, zero Material-default styling | [x] |
 | | | Art session (human + Claude, interactive): generate original bitmap art for manifest slots — runs between 12f and 13 | |
-| 12g | Domain/client owner | Align Quick mode with Ludo King's official Quick Mode (pre-released tokens, one-home-plus-one-capture win) | [ ] |
+| 12g | Domain/client owner | Align Quick mode with Ludo King's official Quick Mode (pre-released tokens, one-home-plus-one-capture win) | [x] |
 | 13 | Release owner (human) | Local-play checkpoint: build, install, play, visual review, sign-off | [ ] |
 | 14 | Auth owner | Fix API JWT refresh identity bug + tests | [ ] |
 | 15 | Backend owner | Ludo HTTP contracts, wire codecs, validation, game token issuance | [ ] |
