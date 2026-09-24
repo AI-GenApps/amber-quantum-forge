@@ -14,8 +14,12 @@ import 'home_lobby_screen.dart' show HomeLobbyScreen;
 import '../state/ludo_profile_settings.dart';
 import '../state/reduced_motion_setting.dart';
 import '../telemetry/ludo_telemetry.dart';
+import '../theme/ludo_background_painter.dart';
+import '../theme/ludo_text_styles.dart';
+import '../theme/ludo_theme_tokens.dart';
 import '../widgets/ludo_avatar.dart';
 import '../widgets/ludo_onboarding_controls.dart';
+import '../widgets/ludo_panel.dart';
 import 'onboarding_tutorial_screen.dart';
 
 class OnboardingProfileScreen extends StatefulWidget {
@@ -105,46 +109,55 @@ class _OnboardingProfileScreenState extends State<OnboardingProfileScreen> {
         title: const Text('Set up your profile'),
         actions: [LudoSkipButton(onPressed: () => _skip(context))],
       ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(24),
-          children: [
-            Semantics(
-              textField: true,
-              label: 'Player name',
-              child: TextField(
-                controller: _nameController,
-                maxLength: 24,
-                decoration: const InputDecoration(
-                  labelText: 'Player name',
-                  border: OutlineInputBorder(),
+      body: LudoBackground(
+        child: SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.all(24),
+            children: [
+              LudoPanel(
+                child: Semantics(
+                  textField: true,
+                  label: 'Player name',
+                  child: TextField(
+                    controller: _nameController,
+                    maxLength: 24,
+                    style: LudoTextStyles.body,
+                    decoration: const InputDecoration(
+                      labelText: 'Player name',
+                      labelStyle: TextStyle(color: LudoThemeTokens.textOnDark),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Choose an avatar',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 12),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              children: [
-                for (final avatarId in ludoAvatarIds)
-                  LudoAvatarView(
-                    avatarId: avatarId,
-                    selected: avatarId == _selectedAvatarId,
-                    onTap: () => setState(() => _selectedAvatarId = avatarId),
-                  ),
-              ],
-            ),
-            const SizedBox(height: 32),
-            LudoPrimaryButton(
-              label: 'Continue',
-              onPressed: () => _continue(context),
-            ),
-          ],
+              const SizedBox(height: LudoThemeTokens.spaceLg),
+              LudoOutlinedTitle(
+                'Choose an avatar',
+                style: LudoTextStyles.displaySmall,
+              ),
+              const SizedBox(height: LudoThemeTokens.spaceMd),
+              LudoPanel(
+                child: Wrap(
+                  spacing: 12,
+                  runSpacing: 12,
+                  children: [
+                    for (final avatarId in ludoAvatarIds)
+                      LudoAvatarView(
+                        avatarId: avatarId,
+                        selected: avatarId == _selectedAvatarId,
+                        onTap: () =>
+                            setState(() => _selectedAvatarId = avatarId),
+                      ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: LudoThemeTokens.spaceXl),
+              LudoPrimaryButton(
+                label: 'Continue',
+                onPressed: () => _continue(context),
+              ),
+            ],
+          ),
         ),
       ),
     );

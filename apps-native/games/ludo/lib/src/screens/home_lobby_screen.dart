@@ -17,10 +17,17 @@ library;
 import 'package:flutter/material.dart';
 import 'package:ludo_rules/ludo_rules.dart' show LudoColor;
 
+import '../app.dart' show ludoIdentity;
 import '../state/ludo_local_save.dart';
+import '../state/ludo_profile_settings.dart';
 import '../state/ludo_sound_settings.dart';
 import '../telemetry/ludo_telemetry.dart';
-import '../widgets/ludo_avatar.dart' show LudoAvatarMotif, ludoAvatars;
+import '../theme/ludo_background_painter.dart';
+import '../theme/ludo_text_styles.dart';
+import '../theme/ludo_theme_tokens.dart';
+import '../widgets/ludo_avatar.dart'
+    show LudoAvatarMotif, LudoAvatarView, ludoAvatars;
+import '../widgets/ludo_panel.dart';
 import 'game_board_screen.dart';
 import 'mode_setup_sheet.dart';
 
@@ -128,6 +135,8 @@ class HomeLobbyScreen extends StatefulWidget {
     this.localSave,
     this.telemetry,
     this.diceSeed,
+    this.profile,
+    this.profileStore,
   });
 
   /// Test seam: a summary to show the resume affordance for, bypassing this
@@ -165,6 +174,19 @@ class HomeLobbyScreen extends StatefulWidget {
   /// production, where the dice source seeds itself from the current time.
   final int? diceSeed;
 
+  /// Test seam: the profile identity (avatar + name) the lobby header
+  /// shows, bypassing this screen's own load from [profileStore] entirely.
+  /// `null` (the default) in production, where the screen loads whatever
+  /// `ludo_profile_settings.dart` has saved (falling back to the generated
+  /// default name/avatar if onboarding was skipped) on init instead.
+  final LudoProfileSettings? profile;
+
+  /// Test seam: the store this screen loads [profile] from when it is not
+  /// explicitly supplied. `null` (the default) resolves the production
+  /// store (`LudoProfileStore.production`) lazily, the same pattern
+  /// `splash_screen.dart` uses.
+  final LudoProfileStore? profileStore;
+
   @override
   State<HomeLobbyScreen> createState() => _HomeLobbyScreenState();
 }
@@ -172,6 +194,7 @@ class HomeLobbyScreen extends StatefulWidget {
 class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
   LudoLocalSave? _resolvedSave;
   LudoLocalMatchSave? _loadedMatch;
+  LudoProfileSettings? _loadedProfile;
 
   @override
   void initState() {
@@ -179,7 +202,22 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
     if (widget.resumableMatch == null) {
       _loadSavedMatch();
     }
+    if (widget.profile == null) {
+      _loadProfile();
+    }
   }
+
+  Future<void> _loadProfile() async {
+    final store =
+        widget.profileStore ?? await LudoProfileStore.production(ludoIdentity);
+    final settings = LudoProfileSettings();
+    await store.load(settings);
+    if (!mounted) return;
+    setState(() => _loadedProfile = settings);
+  }
+
+  /// The profile identity to show in the header, if any is available yet.
+  LudoProfileSettings? get _profile => widget.profile ?? _loadedProfile;
 
   Future<void> _loadSavedMatch() async {
     final save = widget.localSave ?? await LudoLocalSave.production();
@@ -234,67 +272,154 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
   Widget build(BuildContext context) {
     final summary = _summary;
     return Scaffold(
-      appBar: AppBar(title: const Text('Ludo')),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            if (summary != null) ...[
-              _ResumeCard(summary: summary, onTap: _handleResume),
-              const SizedBox(height: 16),
-            ],
-            GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              childAspectRatio: 1.1,
+      body: LudoBackground(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            // A plain (non-scrolling) fill layout rather than a ListView:
+            // the four mode tiles below are wrapped in `Expanded` so they
+            // grow to occupy all remaining vertical space down to the
+            // bottom of the viewport, instead of sizing to a fixed aspect
+            // ratio and leaving the rest of a tall phone screen as bare
+            // background. On very small viewports the fixed-height header
+            // content above may not leave the tiles their full comfortable
+            // size, but every element stays visible and reachable, and
+            // typical phone/tablet heights are unaffected.
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _LobbyCard(
-                  title: 'Computer',
-                  subtitle: 'Play locally vs. the bot',
-                  icon: Icons.smart_toy_outlined,
-                  enabled: true,
-                  onTap:
-                      widget.onPlayComputer ??
-                      () => startLudoLocalMatch(
-                        context,
-                        isComputerMatch: true,
-                        telemetry: widget.telemetry,
-                        diceSeed: widget.diceSeed,
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: LudoThemeTokens.spaceSm,
+                  ),
+                  child: LudoOutlinedTitle(
+                    ludoIdentity.publicTitle,
+                    style: LudoTextStyles.displayMedium,
+                  ),
+                ),
+                _ProfileHeader(profile: _profile),
+                const SizedBox(height: LudoThemeTokens.spaceMd),
+                if (summary != null) ...[
+                  _ResumeCard(summary: summary, onTap: _handleResume),
+                  const SizedBox(height: 16),
+                ],
+                // The four mode tiles fill all remaining vertical
+                // space down to the bottom of the viewport (rather
+                // than sizing themselves to a fixed aspect ratio and
+                // leaving the rest of a tall phone screen as bare
+                // background), so the lobby never shows a single
+                // dominant empty region below its content.
+                Expanded(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              child: _LobbyCard(
+                                title: 'Computer',
+                                subtitle: 'Play locally vs. the bot',
+                                glyph: _LobbyGlyph.computer,
+                                enabled: true,
+                                onTap:
+                                    widget.onPlayComputer ??
+                                    () => startLudoLocalMatch(
+                                      context,
+                                      isComputerMatch: true,
+                                      telemetry: widget.telemetry,
+                                      diceSeed: widget.diceSeed,
+                                    ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: _LobbyCard(
+                                title: 'Pass N Play',
+                                subtitle: 'Share this device, take turns',
+                                glyph: _LobbyGlyph.passAndPlay,
+                                enabled: true,
+                                onTap:
+                                    widget.onPlayPassAndPlay ??
+                                    () => startLudoLocalMatch(
+                                      context,
+                                      isComputerMatch: false,
+                                      telemetry: widget.telemetry,
+                                      diceSeed: widget.diceSeed,
+                                    ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                ),
-                _LobbyCard(
-                  title: 'Pass N Play',
-                  subtitle: 'Share this device, take turns',
-                  icon: Icons.people_alt_outlined,
-                  enabled: true,
-                  onTap:
-                      widget.onPlayPassAndPlay ??
-                      () => startLudoLocalMatch(
-                        context,
-                        isComputerMatch: false,
-                        telemetry: widget.telemetry,
-                        diceSeed: widget.diceSeed,
+                      const SizedBox(height: 12),
+                      const Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              child: _LobbyCard(
+                                title: 'Play with Friends',
+                                subtitle: 'Not available yet',
+                                glyph: _LobbyGlyph.friends,
+                                enabled: false,
+                              ),
+                            ),
+                            SizedBox(width: 12),
+                            Expanded(
+                              child: _LobbyCard(
+                                title: 'Online',
+                                subtitle: 'Not available yet',
+                                glyph: _LobbyGlyph.online,
+                                enabled: false,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                ),
-                const _LobbyCard(
-                  title: 'Play with Friends',
-                  subtitle: 'Not available yet',
-                  icon: Icons.group_add_outlined,
-                  enabled: false,
-                ),
-                const _LobbyCard(
-                  title: 'Online',
-                  subtitle: 'Not available yet',
-                  icon: Icons.public_outlined,
-                  enabled: false,
+                    ],
+                  ),
                 ),
               ],
             ),
-          ],
+          ),
         ),
+      ),
+    );
+  }
+}
+
+/// The lobby header: the player's avatar and display name, using the same
+/// [LudoAvatarView] the onboarding/results screens already render identity
+/// with — no second avatar presentation invented here. Shows nothing
+/// (renders as an empty box) until a profile has loaded, so the lobby
+/// never flashes a placeholder identity.
+class _ProfileHeader extends StatelessWidget {
+  const _ProfileHeader({required this.profile});
+
+  final LudoProfileSettings? profile;
+
+  @override
+  Widget build(BuildContext context) {
+    final profile = this.profile;
+    if (profile == null) return const SizedBox.shrink();
+    return LudoPanel(
+      padding: const EdgeInsets.symmetric(
+        horizontal: LudoThemeTokens.spaceMd,
+        vertical: LudoThemeTokens.spaceSm,
+      ),
+      child: Row(
+        children: [
+          LudoAvatarView(avatarId: profile.avatarId, size: 48),
+          const SizedBox(width: LudoThemeTokens.spaceMd),
+          Expanded(
+            child: Text(
+              profile.name,
+              style: LudoTextStyles.displaySmall,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -320,31 +445,38 @@ class _ResumeCard extends StatelessWidget {
       excludeSemantics: true,
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: _minTapTarget),
-        child: Card(
-          child: InkWell(
-            onTap: onTap,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  const Icon(Icons.play_circle_outline, size: 32),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Resume $modeLabel',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        Text(
-                          summary.description,
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(LudoThemeTokens.radiusMd),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onTap,
+              child: LudoPanel(
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.play_circle_outline,
+                      size: 32,
+                      color: LudoThemeTokens.gold,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Resume $modeLabel',
+                            style: LudoTextStyles.bodyStrong,
+                          ),
+                          Text(
+                            summary.description,
+                            style: LudoTextStyles.caption,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -354,25 +486,29 @@ class _ResumeCard extends StatelessWidget {
   }
 }
 
+/// Which code-drawn glyph a [_LobbyCard] paints — a distinct, simple
+/// geometric mark per mode (never a photographic icon), matching this
+/// task's Context/Decisions.
+enum _LobbyGlyph { computer, passAndPlay, friends, online }
+
 /// One of the four home lobby entry cards, enabled or disabled.
 class _LobbyCard extends StatelessWidget {
   const _LobbyCard({
     required this.title,
     required this.subtitle,
-    required this.icon,
+    required this.glyph,
     required this.enabled,
     this.onTap,
   });
 
   final String title;
   final String subtitle;
-  final IconData icon;
+  final _LobbyGlyph glyph;
   final bool enabled;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final semanticsLabel = enabled ? title : '$title, coming soon, unavailable';
 
     return Semantics(
@@ -387,62 +523,53 @@ class _LobbyCard extends StatelessWidget {
         ),
         child: Opacity(
           opacity: enabled ? 1.0 : 0.5,
-          child: Card(
-            clipBehavior: Clip.antiAlias,
-            child: InkWell(
-              // Disabled tiles get no tap handler at all (not merely a
-              // dimmed color) so no navigation can ever be triggered.
-              onTap: enabled ? onTap : null,
-              child: Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          icon,
-                          size: 32,
-                          color: enabled
-                              ? colorScheme.primary
-                              : colorScheme.onSurfaceVariant,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          title,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          subtitle,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (!enabled)
-                    Positioned(
-                      top: 8,
-                      right: 8,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: colorScheme.surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          'Coming soon',
-                          style: Theme.of(context).textTheme.labelSmall,
-                        ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(LudoThemeTokens.radiusMd),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                // Disabled tiles get no tap handler at all (not merely a
+                // dimmed color) so no navigation can ever be triggered.
+                onTap: enabled ? onTap : null,
+                child: LudoPanel(
+                  padding: const EdgeInsets.all(12),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            width: 40,
+                            height: 40,
+                            child: CustomPaint(
+                              painter: _LobbyGlyphPainter(glyph),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            title,
+                            textAlign: TextAlign.center,
+                            style: LudoTextStyles.displaySmall,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            subtitle,
+                            textAlign: TextAlign.center,
+                            style: LudoTextStyles.caption,
+                          ),
+                        ],
                       ),
-                    ),
-                ],
+                      if (!enabled)
+                        const Positioned(
+                          top: 0,
+                          right: 0,
+                          child: _ComingSoonBadge(),
+                        ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
@@ -450,4 +577,113 @@ class _LobbyCard extends StatelessWidget {
       ),
     );
   }
+}
+
+/// The "Coming soon" pill shown on a disabled lobby tile.
+class _ComingSoonBadge extends StatelessWidget {
+  const _ComingSoonBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: LudoThemeTokens.gold,
+        borderRadius: BorderRadius.circular(LudoThemeTokens.radiusPill),
+        border: Border.all(color: LudoThemeTokens.goldDeep, width: 1.5),
+      ),
+      child: Text('Coming soon', style: LudoTextStyles.caption),
+    );
+  }
+}
+
+/// Paints a small, simple, code-drawn geometric glyph for each
+/// [_LobbyGlyph] — a monitor+die for Computer, two dice for Pass N Play,
+/// two overlapping avatar circles for Friends, and a globe grid for
+/// Online. Every mark is plain `Canvas` drawing, never a bitmap/photo.
+class _LobbyGlyphPainter extends CustomPainter {
+  const _LobbyGlyphPainter(this.glyph);
+
+  final _LobbyGlyph glyph;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final stroke = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = size.shortestSide * 0.08
+      ..strokeCap = StrokeCap.round
+      ..color = LudoThemeTokens.gold;
+    final fill = Paint()..color = LudoThemeTokens.gold;
+    final rect = Offset.zero & size;
+
+    switch (glyph) {
+      case _LobbyGlyph.computer:
+        final screen = Rect.fromLTWH(
+          rect.width * 0.1,
+          rect.height * 0.08,
+          rect.width * 0.8,
+          rect.height * 0.55,
+        );
+        canvas.drawRRect(
+          RRect.fromRectAndRadius(screen, const Radius.circular(4)),
+          stroke,
+        );
+        canvas.drawLine(
+          Offset(rect.width * 0.5, screen.bottom),
+          Offset(rect.width * 0.5, rect.height * 0.82),
+          stroke,
+        );
+        canvas.drawLine(
+          Offset(rect.width * 0.3, rect.height * 0.9),
+          Offset(rect.width * 0.7, rect.height * 0.9),
+          stroke,
+        );
+        canvas.drawCircle(screen.center, size.shortestSide * 0.08, fill);
+      case _LobbyGlyph.passAndPlay:
+        for (final dx in [-1.0, 1.0]) {
+          final center = rect.center.translate(dx * size.width * 0.2, 0);
+          final die = Rect.fromCenter(
+            center: center,
+            width: size.width * 0.42,
+            height: size.width * 0.42,
+          );
+          canvas.drawRRect(
+            RRect.fromRectAndRadius(die, const Radius.circular(6)),
+            stroke,
+          );
+          canvas.drawCircle(center, size.shortestSide * 0.06, fill);
+        }
+      case _LobbyGlyph.friends:
+        for (final dx in [-1.0, 1.0]) {
+          final center = rect.center.translate(dx * size.width * 0.16, 0);
+          canvas.drawCircle(
+            center,
+            size.shortestSide * 0.28,
+            Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = size.shortestSide * 0.07
+              ..color = LudoThemeTokens.gold.withValues(
+                alpha: dx < 0 ? 1 : 0.7,
+              ),
+          );
+        }
+      case _LobbyGlyph.online:
+        final center = rect.center;
+        final radius = size.shortestSide * 0.38;
+        canvas.drawCircle(center, radius, stroke);
+        canvas.drawOval(
+          Rect.fromCenter(center: center, width: radius * 2, height: radius),
+          stroke,
+        );
+        canvas.drawLine(
+          center.translate(0, -radius),
+          center.translate(0, radius),
+          stroke,
+        );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _LobbyGlyphPainter oldDelegate) =>
+      oldDelegate.glyph != glyph;
 }

@@ -33,7 +33,9 @@ void main() {
     // local-only profile load) with zero Firebase/network dependency
     // anywhere in the widget tree.
     expect(find.byType(HomeLobbyScreen), findsOneWidget);
-    expect(find.text('Ludo'), findsOneWidget);
+    // The design system's `LudoOutlinedTitle` (task 12e) stacks an outline
+    // and fill layer, each an independent `Text` with the same string.
+    expect(find.text('Ludo'), findsNWidgets(2));
     expect(find.text('Computer'), findsOneWidget);
   });
 }

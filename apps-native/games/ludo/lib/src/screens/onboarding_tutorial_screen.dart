@@ -20,7 +20,11 @@ import '../game/ludo_game.dart';
 import '../state/ludo_profile_settings.dart';
 import '../state/reduced_motion_setting.dart';
 import '../telemetry/ludo_telemetry.dart';
+import '../theme/ludo_background_painter.dart';
+import '../theme/ludo_text_styles.dart';
+import '../theme/ludo_theme_tokens.dart';
 import '../widgets/ludo_onboarding_controls.dart';
+import '../widgets/ludo_panel.dart';
 
 /// One token per player, otherwise identical numeric rules to Classic — a
 /// genuinely mini board (task 07: "a mini board, 1-2 tokens"), not a fake
@@ -198,42 +202,47 @@ class _OnboardingTutorialScreenState extends State<OnboardingTutorialScreen> {
         title: const Text('How to play'),
         actions: [LudoSkipButton(onPressed: () => _finish(skipped: true))],
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Expanded(
-                child: Center(
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: Semantics(
-                      label: 'Tutorial board',
-                      child: GameWidget(game: _game),
+      body: LudoBackground(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Center(
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: LudoPanel(
+                        padding: const EdgeInsets.all(LudoThemeTokens.spaceSm),
+                        child: Semantics(
+                          label: 'Tutorial board',
+                          child: GameWidget(game: _game),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                _instruction,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(height: 16),
-              LudoPrimaryButton(
-                label: _actionLabel,
-                semanticsLabel: switch (_step) {
-                  _TutorialStep.rollToExit ||
-                  _TutorialStep.rollToCapture => 'Roll dice',
-                  _TutorialStep.moveToExit ||
-                  _TutorialStep.moveToCapture => 'Move token',
-                  _TutorialStep.done => 'Finish tutorial',
-                },
-                onPressed: _busy ? null : _handleAction,
-              ),
-              const SizedBox(height: 16),
-            ],
+                const SizedBox(height: 16),
+                Text(
+                  _instruction,
+                  textAlign: TextAlign.center,
+                  style: LudoTextStyles.body,
+                ),
+                const SizedBox(height: 16),
+                LudoPrimaryButton(
+                  label: _actionLabel,
+                  semanticsLabel: switch (_step) {
+                    _TutorialStep.rollToExit ||
+                    _TutorialStep.rollToCapture => 'Roll dice',
+                    _TutorialStep.moveToExit ||
+                    _TutorialStep.moveToCapture => 'Move token',
+                    _TutorialStep.done => 'Finish tutorial',
+                  },
+                  onPressed: _busy ? null : _handleAction,
+                ),
+                const SizedBox(height: 16),
+              ],
+            ),
           ),
         ),
       ),

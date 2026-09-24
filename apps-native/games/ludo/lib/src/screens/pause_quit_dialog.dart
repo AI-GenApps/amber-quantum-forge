@@ -17,6 +17,8 @@ import '../state/ludo_settings_store.dart';
 import '../state/ludo_sound_settings.dart';
 import '../state/reduced_motion_setting.dart';
 import '../telemetry/ludo_telemetry.dart';
+import '../theme/ludo_theme_tokens.dart';
+import '../widgets/ludo_dialog_frame.dart';
 import 'settings_screen.dart';
 
 const _minTapTarget = 48.0;
@@ -78,97 +80,119 @@ class PauseQuitDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final telemetryRecorder = telemetry ?? LudoTelemetry();
-    return AlertDialog(
-      title: const Text('Paused'),
-      content: AnimatedBuilder(
-        animation: soundSettings,
-        builder: (context, _) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _PauseDialogSwitch(
-                keyValue: 'pause-dialog-sound-switch',
-                label: 'Sound',
-                value: soundSettings.soundEnabled,
-                onChanged: (value) {
-                  soundSettings.soundEnabled = value;
-                  telemetryRecorder.settingsChanged(toggle: 'sound');
-                },
-              ),
-              _PauseDialogSwitch(
-                keyValue: 'pause-dialog-music-switch',
-                label: 'Music',
-                value: soundSettings.musicEnabled,
-                onChanged: (value) {
-                  soundSettings.musicEnabled = value;
-                  telemetryRecorder.settingsChanged(toggle: 'music');
-                },
-              ),
-              _PauseDialogSwitch(
-                keyValue: 'pause-dialog-vibration-switch',
-                label: 'Vibration',
-                value: soundSettings.vibrationEnabled,
-                onChanged: (value) {
-                  soundSettings.vibrationEnabled = value;
-                  telemetryRecorder.settingsChanged(toggle: 'vibration');
-                },
-              ),
-            ],
-          );
-        },
-      ),
-      actions: [
-        if (reducedMotion != null)
-          Semantics(
-            button: true,
-            label: 'Settings',
-            excludeSemantics: true,
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: _minTapTarget),
-              child: TextButton(
-                key: const Key('pause-dialog-settings-button'),
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => SettingsScreen(
-                      soundSettings: soundSettings,
-                      reducedMotion: reducedMotion!,
-                      store: settingsStore,
-                      telemetry: telemetry,
+    // `Dialog` (not `AlertDialog`) supplies the `Material` ancestor
+    // `SwitchListTile`/`TextButton`/`FilledButton` below need —
+    // `showDialog`'s route itself provides none — while leaving all visual
+    // styling to `LudoDialogFrame`'s own `LudoPanel`.
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      // Overrides `buildLudoTheme()`'s `DialogThemeData.shape` (a gold-bordered
+      // rect meant as a fallback for any *unstyled* `Dialog`/`AlertDialog`),
+      // which `Dialog` otherwise applies by default — doubling up with
+      // `LudoDialogFrame`'s own `LudoPanel` border as a second, larger gold
+      // outline behind it.
+      shape: const RoundedRectangleBorder(),
+      child: LudoDialogFrame(
+        title: 'Paused',
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            AnimatedBuilder(
+              animation: soundSettings,
+              builder: (context, _) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _PauseDialogSwitch(
+                      keyValue: 'pause-dialog-sound-switch',
+                      label: 'Sound',
+                      value: soundSettings.soundEnabled,
+                      onChanged: (value) {
+                        soundSettings.soundEnabled = value;
+                        telemetryRecorder.settingsChanged(toggle: 'sound');
+                      },
                     ),
+                    _PauseDialogSwitch(
+                      keyValue: 'pause-dialog-music-switch',
+                      label: 'Music',
+                      value: soundSettings.musicEnabled,
+                      onChanged: (value) {
+                        soundSettings.musicEnabled = value;
+                        telemetryRecorder.settingsChanged(toggle: 'music');
+                      },
+                    ),
+                    _PauseDialogSwitch(
+                      keyValue: 'pause-dialog-vibration-switch',
+                      label: 'Vibration',
+                      value: soundSettings.vibrationEnabled,
+                      onChanged: (value) {
+                        soundSettings.vibrationEnabled = value;
+                        telemetryRecorder.settingsChanged(toggle: 'vibration');
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
+            const SizedBox(height: LudoThemeTokens.spaceMd),
+            if (reducedMotion != null) ...[
+              Semantics(
+                button: true,
+                label: 'Settings',
+                excludeSemantics: true,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(minHeight: _minTapTarget),
+                  child: TextButton(
+                    key: const Key('pause-dialog-settings-button'),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => SettingsScreen(
+                          soundSettings: soundSettings,
+                          reducedMotion: reducedMotion!,
+                          store: settingsStore,
+                          telemetry: telemetry,
+                        ),
+                      ),
+                    ),
+                    child: const Text('Settings'),
                   ),
                 ),
-                child: const Text('Settings'),
+              ),
+              const SizedBox(height: LudoThemeTokens.spaceSm),
+            ],
+            Semantics(
+              button: true,
+              label: 'Resume',
+              excludeSemantics: true,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: _minTapTarget),
+                child: FilledButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('Resume'),
+                ),
               ),
             ),
-          ),
-        Semantics(
-          button: true,
-          label: 'Resume',
-          excludeSemantics: true,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: _minTapTarget),
-            child: TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Resume'),
+            const SizedBox(height: LudoThemeTokens.spaceSm),
+            Semantics(
+              button: true,
+              label: 'Quit',
+              excludeSemantics: true,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: _minTapTarget),
+                child: OutlinedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    onQuit();
+                  },
+                  child: const Text('Quit'),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
-        Semantics(
-          button: true,
-          label: 'Quit',
-          excludeSemantics: true,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: _minTapTarget),
-            child: FilledButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                onQuit();
-              },
-              child: const Text('Quit'),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

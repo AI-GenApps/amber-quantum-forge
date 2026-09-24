@@ -15,6 +15,9 @@ import 'home_lobby_screen.dart' show HomeLobbyScreen;
 import '../state/ludo_profile_settings.dart';
 import '../state/reduced_motion_setting.dart';
 import '../telemetry/ludo_telemetry.dart';
+import '../theme/ludo_background_painter.dart';
+import '../theme/ludo_text_styles.dart';
+import '../theme/ludo_theme_tokens.dart';
 import 'onboarding_welcome_screen.dart';
 
 /// Minimum time the splash screen stays visible, so it reads as a
@@ -107,22 +110,116 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Semantics(
-          label: '${ludoIdentity.publicTitle} is loading',
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                ludoIdentity.publicTitle,
-                style: Theme.of(context).textTheme.displaySmall,
-              ),
-              const SizedBox(height: 16),
-              const CircularProgressIndicator(),
-            ],
+      body: LudoBackground(
+        child: Center(
+          child: Semantics(
+            label: '${ludoIdentity.publicTitle} is loading',
+            excludeSemantics: true,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const _SplashMark(),
+                const SizedBox(height: LudoThemeTokens.spaceLg),
+                LudoOutlinedTitle(
+                  ludoIdentity.publicTitle,
+                  style: LudoTextStyles.displayLarge,
+                ),
+                const SizedBox(height: LudoThemeTokens.spaceXl),
+                const SizedBox(
+                  width: 32,
+                  height: 32,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 3,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      LudoThemeTokens.gold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+}
+
+/// A simple, entirely code-drawn original mark: a chunky rounded die face
+/// showing five pips, gold on a deep-blue tile with a gloss highlight —
+/// distinct from any Ludo King logo (this task's Context/Decisions
+/// explicitly forbids copying one), reusing the same glossy-token look the
+/// rest of the design system already establishes.
+class _SplashMark extends StatelessWidget {
+  const _SplashMark();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 88,
+      height: 88,
+      child: CustomPaint(painter: _SplashMarkPainter()),
+    );
+  }
+}
+
+class _SplashMarkPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final rect = Offset.zero & size;
+    final rrect = RRect.fromRectAndRadius(
+      rect.deflate(2),
+      const Radius.circular(20),
+    );
+
+    canvas.drawRRect(
+      rrect.shift(const Offset(0, 4)),
+      Paint()..color = LudoThemeTokens.goldDeep,
+    );
+    canvas.drawRRect(
+      rrect,
+      Paint()
+        ..shader = const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [LudoThemeTokens.gold, LudoThemeTokens.goldDeep],
+        ).createShader(rect),
+    );
+    canvas.drawRRect(
+      rrect,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3
+        ..color = LudoThemeTokens.textOutline,
+    );
+
+    final pipPaint = Paint()..color = LudoThemeTokens.textOutline;
+    final center = rect.center;
+    final offset = size.shortestSide * 0.24;
+    final pipRadius = size.shortestSide * 0.08;
+    final pips = <Offset>[
+      center,
+      center.translate(-offset, -offset),
+      center.translate(offset, -offset),
+      center.translate(-offset, offset),
+      center.translate(offset, offset),
+    ];
+    for (final pip in pips) {
+      canvas.drawCircle(pip, pipRadius, pipPaint);
+    }
+
+    // A faint diagonal gloss highlight, matching the token/button glossy
+    // treatment used throughout the design system.
+    final glossPath = Path()
+      ..moveTo(rect.left + 6, rect.top + 6)
+      ..lineTo(rect.right * 0.55, rect.top + 6)
+      ..lineTo(rect.left + 6, rect.bottom * 0.55)
+      ..close();
+    canvas.drawPath(
+      glossPath,
+      Paint()..color = Colors.white.withValues(alpha: 0.28),
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _SplashMarkPainter oldDelegate) => false;
 }

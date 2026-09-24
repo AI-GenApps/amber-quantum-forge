@@ -10,6 +10,11 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:ludo_rules/ludo_rules.dart';
 
+import '../theme/ludo_text_styles.dart';
+import '../theme/ludo_theme_tokens.dart';
+import '../widgets/ludo_3d_button.dart';
+import '../widgets/ludo_panel.dart';
+
 const _minTapTarget = 48.0;
 
 /// One local (non-networked) match's fully-specified starting
@@ -95,6 +100,7 @@ class ModeSetupSheet extends StatefulWidget {
     return showModalBottomSheet<LudoLocalMatchConfig>(
       context: context,
       isScrollControlled: true,
+      backgroundColor: Colors.transparent,
       builder: (_) => ModeSetupSheet(isComputerMatch: isComputerMatch),
     );
   }
@@ -179,100 +185,101 @@ class _ModeSetupSheetState extends State<ModeSetupSheet> {
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.only(
-          left: 20,
-          right: 20,
-          top: 20,
-          bottom: 20 + MediaQuery.of(context).viewInsets.bottom,
+          left: 16,
+          right: 16,
+          bottom: 16 + MediaQuery.of(context).viewInsets.bottom,
         ),
-        // Scrollable: this task's debug-only "all bots demo" button (below)
-        // pushes the sheet's natural content height past a short viewport
-        // (a small phone in landscape, or this suite's own constrained test
-        // harness) — a fixed-height `Column` would silently overflow
-        // instead of just letting the sheet scroll.
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.isComputerMatch ? 'Play vs Computer' : 'Pass N Play',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 16),
-              Text('Ruleset', style: Theme.of(context).textTheme.labelLarge),
-              const SizedBox(height: 8),
-              SegmentedButton<LudoRuleset>(
-                segments: const [
-                  ButtonSegment(
-                    value: LudoRuleset.classic,
-                    label: Text('Classic'),
-                  ),
-                  ButtonSegment(value: LudoRuleset.quick, label: Text('Quick')),
-                ],
-                selected: {_ruleset},
-                onSelectionChanged: (selection) =>
-                    setState(() => _ruleset = selection.first),
-              ),
-              const SizedBox(height: 16),
-              Text('Players', style: Theme.of(context).textTheme.labelLarge),
-              const SizedBox(height: 8),
-              SegmentedButton<int>(
-                segments: const [
-                  ButtonSegment(value: 2, label: Text('2')),
-                  ButtonSegment(value: 4, label: Text('4')),
-                ],
-                selected: {_playerCount},
-                onSelectionChanged: (selection) =>
-                    _setPlayerCount(selection.first),
-              ),
-              const SizedBox(height: 16),
-              Text('Seats', style: Theme.of(context).textTheme.labelLarge),
-              const SizedBox(height: 8),
-              for (var i = 0; i < _seats.length; i++)
-                _SeatRow(
-                  key: ValueKey('seat-$i'),
-                  seatIndex: i,
-                  seat: _seats[i],
-                  onDifficultyChanged: (difficulty) =>
-                      _setBotDifficulty(i, difficulty),
+        child: LudoPanel(
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(LudoThemeTokens.radiusLg),
+          ),
+          padding: const EdgeInsets.all(20),
+          // Scrollable: this task's debug-only "all bots demo" button
+          // (below) pushes the sheet's natural content height past a short
+          // viewport (a small phone in landscape, or this suite's own
+          // constrained test harness) — a fixed-height `Column` would
+          // silently overflow instead of just letting the sheet scroll.
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LudoOutlinedTitle(
+                  widget.isComputerMatch ? 'Play vs Computer' : 'Pass N Play',
+                  style: LudoTextStyles.displaySmall,
                 ),
-              const SizedBox(height: 20),
-              Semantics(
-                button: true,
-                label: 'Start',
-                excludeSemantics: true,
-                child: ConstrainedBox(
+                const SizedBox(height: 16),
+                Text('Ruleset', style: LudoTextStyles.bodyStrong),
+                const SizedBox(height: 8),
+                SegmentedButton<LudoRuleset>(
+                  segments: const [
+                    ButtonSegment(
+                      value: LudoRuleset.classic,
+                      label: Text('Classic'),
+                    ),
+                    ButtonSegment(
+                      value: LudoRuleset.quick,
+                      label: Text('Quick'),
+                    ),
+                  ],
+                  selected: {_ruleset},
+                  onSelectionChanged: (selection) =>
+                      setState(() => _ruleset = selection.first),
+                ),
+                const SizedBox(height: 16),
+                Text('Players', style: LudoTextStyles.bodyStrong),
+                const SizedBox(height: 8),
+                SegmentedButton<int>(
+                  segments: const [
+                    ButtonSegment(value: 2, label: Text('2')),
+                    ButtonSegment(value: 4, label: Text('4')),
+                  ],
+                  selected: {_playerCount},
+                  onSelectionChanged: (selection) =>
+                      _setPlayerCount(selection.first),
+                ),
+                const SizedBox(height: 16),
+                Text('Seats', style: LudoTextStyles.bodyStrong),
+                const SizedBox(height: 8),
+                for (var i = 0; i < _seats.length; i++)
+                  _SeatRow(
+                    key: ValueKey('seat-$i'),
+                    seatIndex: i,
+                    seat: _seats[i],
+                    onDifficultyChanged: (difficulty) =>
+                        _setBotDifficulty(i, difficulty),
+                  ),
+                const SizedBox(height: 20),
+                ConstrainedBox(
                   constraints: const BoxConstraints(minHeight: _minTapTarget),
                   child: SizedBox(
                     width: double.infinity,
-                    child: FilledButton(
+                    child: Ludo3dButton(
                       key: const Key('mode-setup-start-button'),
+                      semanticLabel: 'Start',
                       onPressed: _start,
                       child: const Text('Start'),
                     ),
                   ),
                 ),
-              ),
-              if (kDebugMode) ...[
-                const SizedBox(height: 12),
-                Semantics(
-                  button: true,
-                  label: 'Debug: all bots demo',
-                  excludeSemantics: true,
-                  child: ConstrainedBox(
+                if (kDebugMode) ...[
+                  const SizedBox(height: 12),
+                  ConstrainedBox(
                     constraints: const BoxConstraints(minHeight: _minTapTarget),
                     child: SizedBox(
                       width: double.infinity,
-                      child: OutlinedButton(
+                      child: Ludo3dButton(
                         key: const Key('mode-setup-all-bots-demo-button'),
+                        semanticLabel: 'Debug: all bots demo',
+                        color: LudoThemeTokens.seatBlue,
                         onPressed: _startAllBotsDemo,
                         child: const Text('Debug: All Bots Demo'),
                       ),
                     ),
                   ),
-                ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),
@@ -310,7 +317,9 @@ class _SeatRow extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          Expanded(child: Text('$colorLabel · $roleLabel')),
+          Expanded(
+            child: Text('$colorLabel · $roleLabel', style: LudoTextStyles.body),
+          ),
           if (seat.isBot)
             Semantics(
               label: '$colorLabel bot difficulty: ${seat.botDifficulty}',

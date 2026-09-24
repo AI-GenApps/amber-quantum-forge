@@ -19,7 +19,9 @@ void main() {
       ),
     );
 
-    expect(find.text('Pass to Priya'), findsOneWidget);
+    // The design system's `LudoOutlinedTitle` (task 12e) stacks an outline
+    // and fill layer, each an independent `Text` with the same string.
+    expect(find.text('Pass to Priya'), findsNWidgets(2));
     expect(find.bySemanticsLabel('Pass the device to Priya'), findsOneWidget);
     handle.dispose();
   });

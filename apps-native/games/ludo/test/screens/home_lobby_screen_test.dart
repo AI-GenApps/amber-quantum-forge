@@ -4,13 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:ludo/src/screens/home_lobby_screen.dart';
+import 'package:ludo/src/state/ludo_profile_settings.dart';
+import 'package:ludo/src/widgets/ludo_panel.dart';
 
 Widget _wrap(Widget child) =>
     MaterialApp(theme: ThemeData(useMaterial3: true), home: child);
 
+/// A profile test seam so every test below renders the lobby header
+/// synchronously instead of racing this screen's own async production
+/// load.
+LudoProfileSettings _testProfile() =>
+    LudoProfileSettings(name: 'Rae', avatarId: 'red-face');
+
 void main() {
   testWidgets('renders all four entry cards', (tester) async {
-    await tester.pumpWidget(_wrap(const HomeLobbyScreen()));
+    await tester.pumpWidget(_wrap(HomeLobbyScreen(profile: _testProfile())));
 
     expect(find.text('Computer'), findsOneWidget);
     expect(find.text('Pass N Play'), findsOneWidget);
@@ -23,7 +31,12 @@ void main() {
   testWidgets('tapping Computer invokes onPlayComputer', (tester) async {
     var tapped = false;
     await tester.pumpWidget(
-      _wrap(HomeLobbyScreen(onPlayComputer: () => tapped = true)),
+      _wrap(
+        HomeLobbyScreen(
+          onPlayComputer: () => tapped = true,
+          profile: _testProfile(),
+        ),
+      ),
     );
 
     await tester.tap(find.text('Computer'));
@@ -35,7 +48,12 @@ void main() {
   testWidgets('tapping Pass N Play invokes onPlayPassAndPlay', (tester) async {
     var tapped = false;
     await tester.pumpWidget(
-      _wrap(HomeLobbyScreen(onPlayPassAndPlay: () => tapped = true)),
+      _wrap(
+        HomeLobbyScreen(
+          onPlayPassAndPlay: () => tapped = true,
+          profile: _testProfile(),
+        ),
+      ),
     );
 
     await tester.tap(find.text('Pass N Play'));
@@ -47,7 +65,7 @@ void main() {
   testWidgets('Play with Friends is visibly disabled and not tappable', (
     tester,
   ) async {
-    await tester.pumpWidget(_wrap(const HomeLobbyScreen()));
+    await tester.pumpWidget(_wrap(HomeLobbyScreen(profile: _testProfile())));
 
     final cardFinder = find.ancestor(
       of: find.text('Play with Friends'),
@@ -74,7 +92,7 @@ void main() {
   });
 
   testWidgets('Online is visibly disabled and not tappable', (tester) async {
-    await tester.pumpWidget(_wrap(const HomeLobbyScreen()));
+    await tester.pumpWidget(_wrap(HomeLobbyScreen(profile: _testProfile())));
 
     final cardFinder = find.ancestor(
       of: find.text('Online'),
@@ -94,16 +112,17 @@ void main() {
   testWidgets('resume affordance renders only when summary is non-null', (
     tester,
   ) async {
-    await tester.pumpWidget(_wrap(const HomeLobbyScreen()));
+    await tester.pumpWidget(_wrap(HomeLobbyScreen(profile: _testProfile())));
     expect(find.textContaining('Resume'), findsNothing);
 
     await tester.pumpWidget(
       _wrap(
-        const HomeLobbyScreen(
-          resumableMatch: LudoResumableMatchSummary(
+        HomeLobbyScreen(
+          resumableMatch: const LudoResumableMatchSummary(
             mode: LudoResumableMatchMode.computer,
             description: 'Classic - 2 players - Turn 5',
           ),
+          profile: _testProfile(),
         ),
       ),
     );
@@ -121,6 +140,7 @@ void main() {
             description: 'Quick - 4 players - Turn 2',
           ),
           onResume: () => tapped = true,
+          profile: _testProfile(),
         ),
       ),
     );
@@ -135,7 +155,7 @@ void main() {
     tester,
   ) async {
     final handle = tester.ensureSemantics();
-    await tester.pumpWidget(_wrap(const HomeLobbyScreen()));
+    await tester.pumpWidget(_wrap(HomeLobbyScreen(profile: _testProfile())));
 
     expect(find.bySemanticsLabel('Computer'), findsOneWidget);
     expect(find.bySemanticsLabel('Pass N Play'), findsOneWidget);
@@ -164,7 +184,7 @@ void main() {
   testWidgets('every entry card meets the 48dp minimum tap target', (
     tester,
   ) async {
-    await tester.pumpWidget(_wrap(const HomeLobbyScreen()));
+    await tester.pumpWidget(_wrap(HomeLobbyScreen(profile: _testProfile())));
 
     for (final title in [
       'Computer',
@@ -172,9 +192,55 @@ void main() {
       'Play with Friends',
       'Online',
     ]) {
-      final size = tester.getSize(find.widgetWithText(Card, title).first);
+      final size = tester.getSize(find.widgetWithText(LudoPanel, title).first);
       expect(size.width, greaterThanOrEqualTo(48.0));
       expect(size.height, greaterThanOrEqualTo(48.0));
     }
   });
+
+  testWidgets(
+    'lobby content fills a tall viewport without a dominant empty region '
+    'below the mode tiles',
+    (tester) async {
+      // A tall phone aspect ratio close to the reference physical device
+      // (1080x2400), where the empty-area regression was found: the
+      // Material-default `ListView` used to size its children to their
+      // intrinsic (aspect-ratio-based) height and leave roughly the bottom
+      // half of a screen this tall as bare, contentless background.
+      tester.view.physicalSize = const Size(1080, 2400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.reset);
+
+      await tester.pumpWidget(_wrap(HomeLobbyScreen(profile: _testProfile())));
+      await tester.pumpAndSettle();
+
+      final screenHeight = tester.view.physicalSize.height;
+
+      // The bottom-most edge of the four-tile grid (found via the lowest
+      // `LudoPanel` on screen — the mode tiles are the only panels this
+      // deep once no resume card is shown) must land within a small
+      // fraction of the viewport's actual bottom edge. A large gap here
+      // means the grid stopped short and left a dominant empty region,
+      // which is exactly what this test guards against.
+      final panelFinder = find.byType(LudoPanel);
+      var maxBottom = 0.0;
+      for (var i = 0; i < tester.widgetList(panelFinder).length; i++) {
+        final bottom = tester.getBottomLeft(panelFinder.at(i)).dy;
+        if (bottom > maxBottom) maxBottom = bottom;
+      }
+
+      // Allow for the outer 16px page padding plus safe-area insets; a
+      // "large empty area" regression leaves hundreds of logical pixels
+      // of bare background below the content, far more than this margin.
+      const allowedGapFromBottom = 32.0;
+      expect(
+        maxBottom,
+        greaterThan(screenHeight - allowedGapFromBottom),
+        reason:
+            'The lowest LudoPanel (the mode tile grid) ends at $maxBottom '
+            'but the viewport is $screenHeight tall — the lobby content '
+            'does not fill the viewport and leaves a large empty region.',
+      );
+    },
+  );
 }

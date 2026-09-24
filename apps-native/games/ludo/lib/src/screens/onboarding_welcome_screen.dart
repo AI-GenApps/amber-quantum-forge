@@ -14,6 +14,9 @@ import 'home_lobby_screen.dart' show HomeLobbyScreen;
 import '../state/ludo_profile_settings.dart';
 import '../state/reduced_motion_setting.dart';
 import '../telemetry/ludo_telemetry.dart';
+import '../theme/ludo_background_painter.dart';
+import '../theme/ludo_text_styles.dart';
+import '../theme/ludo_theme_tokens.dart';
 import '../widgets/ludo_onboarding_controls.dart';
 import 'onboarding_profile_screen.dart';
 
@@ -60,47 +63,49 @@ class OnboardingWelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: LudoSkipButton(onPressed: () => _skip(context)),
-              ),
-              const Spacer(),
-              Text(
-                'Welcome to ${ludoIdentity.publicTitle}',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'Roll the dice, race your tokens home, and capture your '
-                'opponents along the way.',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const Spacer(),
-              LudoPrimaryButton(
-                label: 'Get Started',
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) => OnboardingProfileScreen(
-                        settings: settings,
-                        profileStore: profileStore,
-                        reducedMotion: reducedMotion,
-                        telemetry: telemetry,
-                        diceSeed: diceSeed,
+      body: LudoBackground(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: LudoSkipButton(onPressed: () => _skip(context)),
+                ),
+                const Spacer(),
+                LudoOutlinedTitle(
+                  'Welcome to ${ludoIdentity.publicTitle}',
+                  style: LudoTextStyles.displayMedium,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: LudoThemeTokens.spaceMd),
+                Text(
+                  'Roll the dice, race your tokens home, and capture your '
+                  'opponents along the way.',
+                  textAlign: TextAlign.center,
+                  style: LudoTextStyles.body,
+                ),
+                const Spacer(),
+                LudoPrimaryButton(
+                  label: 'Get Started',
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => OnboardingProfileScreen(
+                          settings: settings,
+                          profileStore: profileStore,
+                          reducedMotion: reducedMotion,
+                          telemetry: telemetry,
+                          diceSeed: diceSeed,
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 24),
-            ],
+                    );
+                  },
+                ),
+                const SizedBox(height: 24),
+              ],
+            ),
           ),
         ),
       ),

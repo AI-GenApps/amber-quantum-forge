@@ -6,13 +6,22 @@
 /// this task's Context/Decisions.
 library;
 
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:ludo_rules/ludo_rules.dart';
 
 import '../game/ludo_board_geometry.dart' show ludoColorPalette;
 import '../state/ludo_sound_settings.dart';
 import '../state/reduced_motion_setting.dart';
+import '../theme/ludo_background_painter.dart';
+import '../theme/ludo_text_styles.dart';
+import '../theme/ludo_theme_tokens.dart';
+import '../widgets/ludo_3d_button.dart';
 import '../widgets/ludo_avatar.dart' show LudoAvatarView;
+import '../widgets/ludo_badge.dart';
+import '../widgets/ludo_panel.dart';
+import '../widgets/ribbon_banner.dart';
 import 'game_board_screen.dart';
 import 'mode_setup_sheet.dart' show LudoLocalMatchConfig;
 
@@ -99,78 +108,174 @@ class ResultsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final order = ludoFinalSeatOrder(state);
+    final winnerIdentity = seatIdentities[order.first];
     return Scaffold(
-      appBar: AppBar(title: const Text('Results')),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                key: const Key('results-rank-list'),
-                padding: const EdgeInsets.all(16),
-                itemCount: order.length,
-                itemBuilder: (context, index) {
-                  final seat = order[index];
-                  final identity = seatIdentities[seat];
-                  final color = config.seats[seat].color;
-                  final rank = index + 1;
-                  return _RankRow(
-                    key: ValueKey('results-rank-$seat'),
-                    rank: rank,
-                    identity: identity,
-                    color: color,
-                  );
-                },
+      body: LudoBackground(
+        child: SafeArea(
+          child: Column(
+            children: [
+              const SizedBox(height: LudoThemeTokens.spaceMd),
+              const _TrophyGraphic(),
+              const SizedBox(height: LudoThemeTokens.spaceSm),
+              RibbonBanner(label: '${winnerIdentity.name} wins!'),
+              Expanded(
+                child: ListView.builder(
+                  key: const Key('results-rank-list'),
+                  padding: const EdgeInsets.all(16),
+                  itemCount: order.length,
+                  itemBuilder: (context, index) {
+                    final seat = order[index];
+                    final identity = seatIdentities[seat];
+                    final color = config.seats[seat].color;
+                    final rank = index + 1;
+                    return _RankRow(
+                      key: ValueKey('results-rank-$seat'),
+                      rank: rank,
+                      identity: identity,
+                      color: color,
+                    );
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Semantics(
-                      button: true,
-                      label: 'Home',
-                      excludeSemantics: true,
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Expanded(
                       child: ConstrainedBox(
                         constraints: const BoxConstraints(
                           minHeight: _minTapTarget,
                         ),
-                        child: OutlinedButton(
-                          key: const Key('results-home-button'),
-                          onPressed: onHome ?? () => _defaultHome(context),
-                          child: const Text('Home'),
+                        child: Semantics(
+                          button: true,
+                          label: 'Home',
+                          excludeSemantics: true,
+                          child: OutlinedButton(
+                            key: const Key('results-home-button'),
+                            onPressed: onHome ?? () => _defaultHome(context),
+                            child: const Text('Home'),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Semantics(
-                      button: true,
-                      label: 'Rematch',
-                      excludeSemantics: true,
+                    const SizedBox(width: 16),
+                    Expanded(
                       child: ConstrainedBox(
                         constraints: const BoxConstraints(
                           minHeight: _minTapTarget,
                         ),
-                        child: FilledButton(
+                        child: Ludo3dButton(
                           key: const Key('results-rematch-button'),
+                          semanticLabel: 'Rematch',
                           onPressed:
                               onRematch ?? () => _defaultRematch(context),
-                          child: const Text('Rematch'),
+                          child: const Text(
+                            'Rematch',
+                            style: TextStyle(fontSize: 16),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+/// A simple, entirely code-drawn gold trophy cup — never a photo/bitmap
+/// asset — shown above the finish-order list.
+class _TrophyGraphic extends StatelessWidget {
+  const _TrophyGraphic();
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      width: 72,
+      height: 72,
+      child: CustomPaint(painter: _TrophyPainter()),
+    );
+  }
+}
+
+class _TrophyPainter extends CustomPainter {
+  const _TrophyPainter();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final goldPaint = Paint()
+      ..shader = const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [LudoThemeTokens.gold, LudoThemeTokens.goldDeep],
+      ).createShader(Offset.zero & size);
+    final outline = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.5
+      ..strokeJoin = StrokeJoin.round
+      ..color = LudoThemeTokens.textOutline;
+
+    final cupRect = Rect.fromLTWH(
+      size.width * 0.22,
+      size.height * 0.08,
+      size.width * 0.56,
+      size.height * 0.42,
+    );
+    final cupPath = Path()
+      ..moveTo(cupRect.left, cupRect.top)
+      ..lineTo(cupRect.right, cupRect.top)
+      ..lineTo(cupRect.right * 0.92, cupRect.bottom)
+      ..lineTo(cupRect.left * 1.1, cupRect.bottom)
+      ..close();
+    canvas.drawPath(cupPath, goldPaint);
+    canvas.drawPath(cupPath, outline);
+
+    // Handles.
+    for (final sign in [-1.0, 1.0]) {
+      final handleCenter = Offset(
+        size.width / 2 + sign * cupRect.width * 0.62,
+        cupRect.top + cupRect.height * 0.32,
+      );
+      canvas.drawArc(
+        Rect.fromCenter(
+          center: handleCenter,
+          width: size.width * 0.22,
+          height: size.height * 0.24,
+        ),
+        sign < 0 ? math.pi * 0.2 : -math.pi * 1.2,
+        math.pi,
+        false,
+        outline,
+      );
+    }
+
+    // Stem + base.
+    final stem = Rect.fromLTWH(
+      size.width * 0.44,
+      cupRect.bottom,
+      size.width * 0.12,
+      size.height * 0.18,
+    );
+    canvas.drawRect(stem, goldPaint);
+    canvas.drawRect(stem, outline);
+
+    final base = Rect.fromLTWH(
+      size.width * 0.28,
+      stem.bottom,
+      size.width * 0.44,
+      size.height * 0.12,
+    );
+    final baseRRect = RRect.fromRectAndRadius(base, const Radius.circular(4));
+    canvas.drawRRect(baseRRect, goldPaint);
+    canvas.drawRRect(baseRRect, outline);
+  }
+
+  @override
+  bool shouldRepaint(covariant _TrophyPainter oldDelegate) => false;
 }
 
 class _RankRow extends StatelessWidget {
@@ -206,28 +311,19 @@ class _RankRow extends StatelessWidget {
       excludeSemantics: true,
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: _minTapTarget),
-        child: Card(
-          margin: const EdgeInsets.only(bottom: 8),
-          child: Padding(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: LudoPanel(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            borderWidth: rank == 1 ? 3 : 2,
             child: Row(
               children: [
-                SizedBox(
-                  width: 36,
-                  child: Text(
-                    _ordinal,
-                    style: Theme.of(context).textTheme.titleMedium
-                        ?.copyWith(color: accent),
-                  ),
-                ),
-                const SizedBox(width: 8),
+                LudoBadge(label: _ordinal, color: accent, diameter: 32),
+                const SizedBox(width: 12),
                 LudoAvatarView(avatarId: identity.avatarId, size: 40),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text(
-                    identity.name,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
+                  child: Text(identity.name, style: LudoTextStyles.bodyStrong),
                 ),
               ],
             ),

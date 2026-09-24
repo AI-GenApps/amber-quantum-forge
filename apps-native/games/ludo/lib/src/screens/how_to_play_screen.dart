@@ -5,6 +5,10 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../theme/ludo_background_painter.dart';
+import '../theme/ludo_text_styles.dart';
+import '../widgets/ludo_panel.dart';
+
 const _minTapTarget = 48.0;
 
 /// One rule explainer entry: a short title plus its body text.
@@ -76,18 +80,34 @@ class HowToPlayScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('How to play')),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            Text('Classic', style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 8),
-            for (final rule in _classicRules) _RuleTile(rule: rule),
-            const SizedBox(height: 24),
-            Text('Quick', style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 8),
-            for (final rule in _quickRules) _RuleTile(rule: rule),
-          ],
+      body: LudoBackground(
+        child: SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              Text('Classic', style: LudoTextStyles.displaySmall),
+              const SizedBox(height: 8),
+              LudoPanel(
+                padding: EdgeInsets.zero,
+                child: Column(
+                  children: [
+                    for (final rule in _classicRules) _RuleTile(rule: rule),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text('Quick', style: LudoTextStyles.displaySmall),
+              const SizedBox(height: 8),
+              LudoPanel(
+                padding: EdgeInsets.zero,
+                child: Column(
+                  children: [
+                    for (final rule in _quickRules) _RuleTile(rule: rule),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -102,18 +122,23 @@ class _RuleTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      // `container: true` forces its own semantics node so, now that these
+      // tiles sit inside a `LudoPanel`'s plain `Column` (task 12e) rather
+      // than as direct `ListView` children, adjacent tiles' labels don't
+      // get merged into one combined accessibility label.
+      container: true,
       label: '${rule.title}: ${rule.body}',
       excludeSemantics: true,
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: _minTapTarget),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(rule.title, style: Theme.of(context).textTheme.titleSmall),
+              Text(rule.title, style: LudoTextStyles.bodyStrong),
               const SizedBox(height: 4),
-              Text(rule.body, style: Theme.of(context).textTheme.bodyMedium),
+              Text(rule.body, style: LudoTextStyles.body),
             ],
           ),
         ),

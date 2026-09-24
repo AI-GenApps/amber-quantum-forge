@@ -5,6 +5,7 @@ import 'screens/splash_screen.dart';
 import 'state/ludo_profile_settings.dart';
 import 'state/reduced_motion_setting.dart';
 import 'telemetry/ludo_telemetry.dart';
+import 'theme/ludo_theme.dart';
 
 export 'screens/home_lobby_screen.dart' show HomeLobbyScreen;
 
@@ -64,7 +65,7 @@ final class LudoApp extends StatelessWidget {
     return MaterialApp(
       title: ludoIdentity.publicTitle,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true),
+      theme: buildLudoTheme(),
       home: SplashScreen(
         settings: profileSettings ?? LudoProfileSettings(),
         profileStore: profileStore,

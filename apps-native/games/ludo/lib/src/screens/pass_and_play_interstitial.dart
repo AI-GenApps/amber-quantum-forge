@@ -12,7 +12,12 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../theme/ludo_background_painter.dart';
+import '../theme/ludo_text_styles.dart';
+import '../theme/ludo_theme_tokens.dart';
+import '../widgets/ludo_3d_button.dart';
 import '../widgets/ludo_avatar.dart' show LudoAvatarView;
+import '../widgets/ludo_panel.dart';
 
 const _minTapTarget = 48.0;
 
@@ -52,71 +57,80 @@ class _PassAndPlayInterstitialState extends State<PassAndPlayInterstitial> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Spacer(),
-              Semantics(
-                label: 'Pass the device to ${widget.playerName}',
-                excludeSemantics: true,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    LudoAvatarView(avatarId: widget.avatarId, size: 96),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Pass to ${widget.playerName}',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineSmall,
+      body: LudoBackground(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Spacer(),
+                Semantics(
+                  label: 'Pass the device to ${widget.playerName}',
+                  excludeSemantics: true,
+                  child: LudoPanel(
+                    padding: const EdgeInsets.all(LudoThemeTokens.spaceLg),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        LudoAvatarView(avatarId: widget.avatarId, size: 96),
+                        const SizedBox(height: 16),
+                        LudoOutlinedTitle(
+                          'Pass to ${widget.playerName}',
+                          style: LudoTextStyles.displaySmall,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Hand the device to ${widget.playerName} and tap '
+                          'Ready when they have it.',
+                          textAlign: TextAlign.center,
+                          style: LudoTextStyles.body,
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Hand the device to ${widget.playerName} and tap '
-                      'Ready when they have it.',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ],
-                ),
-              ),
-              const Spacer(),
-              Semantics(
-                toggled: _dontShowAgain,
-                label: "Don't show this again this session",
-                excludeSemantics: true,
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(minHeight: _minTapTarget),
-                  child: CheckboxListTile(
-                    key: const Key('pass-and-play-dont-show-again'),
-                    value: _dontShowAgain,
-                    title: const Text("Don't show this again this session"),
-                    controlAffinity: ListTileControlAffinity.leading,
-                    onChanged: (value) =>
-                        setState(() => _dontShowAgain = value ?? false),
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              Semantics(
-                button: true,
-                label: 'Ready',
-                excludeSemantics: true,
-                child: ConstrainedBox(
+                const Spacer(),
+                Semantics(
+                  toggled: _dontShowAgain,
+                  label: "Don't show this again this session",
+                  excludeSemantics: true,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: _minTapTarget),
+                    child: CheckboxListTile(
+                      key: const Key('pass-and-play-dont-show-again'),
+                      value: _dontShowAgain,
+                      title: Text(
+                        "Don't show this again this session",
+                        style: LudoTextStyles.body,
+                      ),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      checkColor: LudoThemeTokens.textOutline,
+                      activeColor: LudoThemeTokens.gold,
+                      onChanged: (value) =>
+                          setState(() => _dontShowAgain = value ?? false),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ConstrainedBox(
                   constraints: const BoxConstraints(minHeight: _minTapTarget),
                   child: SizedBox(
                     width: double.infinity,
-                    child: FilledButton(
+                    child: Ludo3dButton(
                       key: const Key('pass-and-play-ready-button'),
+                      semanticLabel: 'Ready',
                       onPressed: _continue,
-                      child: const Text('Ready'),
+                      child: const Text(
+                        'Ready',
+                        style: TextStyle(fontSize: 16),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

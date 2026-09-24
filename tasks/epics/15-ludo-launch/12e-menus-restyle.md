@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 12e-menus-restyle
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/12d2-board-and-layout-fidelity]
 estimate: L
@@ -67,28 +67,28 @@ every affected golden.
 
 ## Implementation Checklist
 
-- [ ] Restyle `lib/src/screens/splash_screen.dart` with a code-drawn logo
+- [x] Restyle `lib/src/screens/splash_screen.dart` with a code-drawn logo
   lockup over the background painter.
-- [ ] Restyle `lib/src/screens/onboarding_welcome_screen.dart`,
+- [x] Restyle `lib/src/screens/onboarding_welcome_screen.dart`,
   `onboarding_profile_screen.dart`, `onboarding_tutorial_screen.dart`
   (paint only).
-- [ ] Restyle `lib/src/screens/home_lobby_screen.dart`: illustrated mode
+- [x] Restyle `lib/src/screens/home_lobby_screen.dart`: illustrated mode
   tiles, profile header, no large empty areas.
-- [ ] Restyle `lib/src/screens/mode_setup_sheet.dart` (paint only).
-- [ ] Restyle `lib/src/screens/pass_and_play_interstitial.dart` (paint
+- [x] Restyle `lib/src/screens/mode_setup_sheet.dart` (paint only).
+- [x] Restyle `lib/src/screens/pass_and_play_interstitial.dart` (paint
   only).
-- [ ] Rebuild `lib/src/screens/pause_quit_dialog.dart` on
+- [x] Rebuild `lib/src/screens/pause_quit_dialog.dart` on
   `LudoDialogFrame`.
-- [ ] Restyle `lib/src/screens/results_screen.dart`: trophy graphic, rank
+- [x] Restyle `lib/src/screens/results_screen.dart`: trophy graphic, rank
   rows, `RibbonBanner`, rematch button.
-- [ ] Restyle `lib/src/screens/settings_screen.dart` and
+- [x] Restyle `lib/src/screens/settings_screen.dart` and
   `lib/src/screens/how_to_play_screen.dart`.
-- [ ] Regenerate every golden under `test/goldens/` for the screens above.
-- [ ] Update the relevant existing test files (`test/screens/*_test.dart`)
+- [x] Regenerate every golden under `test/goldens/` for the screens above.
+- [x] Update the relevant existing test files (`test/screens/*_test.dart`)
   only where widget-finder lookups change due to the new widget tree (e.g.
   `find.byType(AlertDialog)` -> `find.byType(LudoDialogFrame)`); logic
   assertions themselves stay unchanged.
-- [ ] Grep the `lib/src/` tree for remaining raw `AlertDialog`,
+- [x] Grep the `lib/src/` tree for remaining raw `AlertDialog`,
   `ElevatedButton`, `colorSchemeSeed`, and default `Scaffold(color: ...)`
   Material usage outside of task 12b's own widget internals; resolve or
   document any deliberate exception.
