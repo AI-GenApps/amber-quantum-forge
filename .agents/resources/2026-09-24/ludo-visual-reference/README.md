@@ -56,3 +56,13 @@ task's "Context/Decisions" for the explicit no-copy constraint.
   (not committed to this reference directory — see
   `docs-internal/gaming/evidence/visual/ludo/` for the committed
   after-state evidence tasks 12a-12f produce).
+
+## More references
+
+- Real device captures of Ludo King on the same Samsung A52: `../../2026-09-19/ludo-reference/`
+  (91 screenshots + `study.md`). Best style anchors: `16-roll-settled.png` (board screen:
+  dice-pattern blue background, flat crisp board, pin tokens, gold-framed bottom player bar
+  with center dice) and `06-home-clear.png` (lobby: dark navy, glowing gold, ribbon banners,
+  glossy green buttons).
+- Before-overhaul Flutter screens: `../ludo-baseline-before-overhaul/`.
+- After-overhaul evidence per task: `../ludo-visual-qa/<task-id>/`.
