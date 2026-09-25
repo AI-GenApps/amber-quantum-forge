@@ -21,7 +21,7 @@ composited into full screens, so the user can approve one direction in task
 - Slots: `tileFace_<tier>` (show 4 sample tiers: 2, 16, 128, 2048),
   `homeScene`, `boardFrame`, and one chapter-card illustration (chapter 1
   theme).
-- **Image tool:** the session's configured image generator. Run a smoke
+- **Image tool:** the `image-gen` command (usage in STATUS.md, "Image generation"). Run a smoke
   test first; if the tool is missing, the task is **blocked**.
 - Directions: **A** matches the code-drawn faces from task 08 (for
   continuity); **B** is a bolder painted/3D-toy take. Both are original;

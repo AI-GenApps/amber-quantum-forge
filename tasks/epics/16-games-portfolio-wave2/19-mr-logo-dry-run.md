@@ -21,7 +21,7 @@ splash, and the home header) so the user can pick one in task 21.
 - Rules: skill reference `references/07-brand-name-logo.md` (dry run →
   rounds → lookalike check) and `references/08-art-audio-pipeline.md`
   (image tool, brief template).
-- **Image tool:** the session's configured image generator. Step 1 is a
+- **Image tool:** the `image-gen` command (usage in STATUS.md, "Image generation"). Step 1 is a
   smoke test; if the tool is missing, the task is **blocked**. Never
   hand-draw an image and present it as generated.
 - Brief basis: a premium casual mobile game with a warm, friendly

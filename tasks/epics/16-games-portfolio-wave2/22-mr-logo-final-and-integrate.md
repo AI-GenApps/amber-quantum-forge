@@ -21,9 +21,9 @@ icons, splash, and home header.
 - Picks: `tasks/epics/16-games-portfolio-wave2/decisions.md`
   (`mr_icon`, `mr_wordmark`).
 - Process: skill reference `07-brand-name-logo.md` (steps 2, 4, and 5).
-  Render finals at high quality and 2k with the configured image tool,
-  using the dry-run images as style references, plus
-  `--background transparent` (or the tool's equivalent) variants. Verify
+  Render the finals with the `image-gen` command (STATUS.md),
+  naming the dry-run images by path in the prompt as style references,
+  plus transparent-background variants (or chroma key, per STATUS.md). Verify
   the alpha with Pillow.
 - Launcher icons: `bun run games:icons` renders them from
   `apps-native/games/merge_relay/assets/branding/icon.svg`. Embed the final

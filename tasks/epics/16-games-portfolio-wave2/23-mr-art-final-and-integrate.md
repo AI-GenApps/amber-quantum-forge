@@ -20,8 +20,8 @@ then show a finished, illustrated game.
 
 - Pick: `decisions.md` → `mr_art_direction` and `mr_art_notes`. Dry-run
   references are in `.agents/resources/2026-09-25/merge-relay-art/set-1/`.
-- Process: skill reference `08-art-audio-pipeline.md`. Use the configured
-  image tool at final quality, with the approved samples as style
+- Process: skill reference `08-art-audio-pipeline.md`. Use the `image-gen` command (STATUS.md)
+  at final quality, with the approved samples as style
   references. Verify transparency, and VIEW every output (regenerate once
   if it's off-brief). Keep tiles consistent in lighting, outline weight,
   and face scale.

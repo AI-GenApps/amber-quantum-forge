@@ -24,13 +24,12 @@ asset-count and cost estimate for the full 30-species target.
   Frogs (breeding), Viridi (growth). Their store screenshots are in
   `.agents/resources/2026-09-25/*-store-reference/` (task 01). Take the
   quality bar only; all art is original.
-- **Image tool:** use the image-generation tool configured for this session
-  (the user is adding one; the skill's default is the Higgsfield CLI
-  `gpt_image_2_5`, see `references/08-art-audio-pipeline.md`). Step 1 is
-  a one-image smoke test. If no image tool works, return **blocked**, and
+- **Image tool:** use the `image-gen` command (usage in STATUS.md, "Image
+  generation"; the brief template is in `references/08-art-audio-pipeline.md`).
+  Step 1 is a one-image smoke test. If no image tool works, return **blocked**, and
   never substitute code-drawn or downloaded images.
-- This is a dry run: use cheap/fast settings (a low-quality model or low
-  resolution). The finals come after the user's pick, in a later epic.
+- This is a dry run: keep to the listed sample count (no
+  extra variations). The finals come after the user's pick, in a later epic.
 - Directions (a starting point; refine them): **A "Glass terrarium"**
   (soft 3D, glossy glass, warm light); **B "Storybook watercolor"** (paper
   texture, hand-painted); **C "Chunky toy"** (vinyl-toy plants with faces,

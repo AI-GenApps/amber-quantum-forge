@@ -78,17 +78,43 @@ PNGs and compare them to the Threes! references from task 01. Device
 steps are always reported **NOT RUN**, never faked. Task 25 is the human
 device pass.
 
-**Image generation:** tasks 15, 19, 20, 22, and 23 need the image-generation
-tool the user adds to the session. Each task's first step is a one-image
-smoke test. If no image tool works, the task returns **blocked**; it must
-never substitute code-drawn or downloaded art and label it as generated.
+**Image generation:** tasks 15, 19, 20, 22, and 23 use the `image-gen` shell
+function (a wrapper around `codex exec`, defined in `~/.zshrc`):
+
+```bash
+source ~/.zshrc   # if image-gen is not found
+image-gen --prompt "<prompt; reference images can be named by absolute file path inside the prompt>"
+image-gen --prompt "<prompt>" --model gpt-6-astra   # alternate model if the result is poor
+```
+
+It prints the absolute path of the generated PNG (under
+`/root/.codex/generated_images/...`); copy that file into the task's
+`.agents/resources/...` folder. One image takes about 1–3 minutes, so run it
+in the background with a timeout of at least 600 s. The smoke test on
+2026-09-25 returned an on-brief 1254×1254 **RGB** image in 68 s
+(`.agents/resources/2026-09-25/image-gen-dry-run/`). For sprites, ask for a
+transparent background and verify the alpha with Pillow. If the output has
+no alpha, request a flat chroma background and key it out with Pillow,
+documenting that step. Each task's first step is a one-image smoke test. If
+`image-gen` fails, the task returns **blocked**; it must never substitute
+code-drawn or downloaded art and label it as generated. The orchestrator
+runs image tasks in a parallel lane with at most one image agent at a time,
+so code tasks don't wait on generation.
 
 ## Execution order
 
 Filename order is execution order. The workflow
 (`.claude/workflows/games-wave2-sequential.js`) implements, independently
 verifies (≤2 fixes), and commits each task in sequence. **It stops at every
-`owner: human` task (17, 21, 25).** The human completes that task, marks it
+`owner: human` task (17, 21, 25).**
+
+**Parallel lane (orchestrator-run):** tasks that only write under
+`.agents/` and need no app code can run beside the sequential code lane,
+with at most one extra agent: task 15 (Pocket Biome image dry run) and
+task 16 (Heist names) after task 01, and task 20 (Merge Relay art dry run)
+after task 08. A parallel agent never commits and never touches
+`.agents/games/`; the orchestrator commits its folder between code-lane
+commits and applies the small `.agents/games/*` index edits itself. The human completes that task, marks it
 `[x]` here, and resumes the workflow from the next task.
 
 ## Tasks
