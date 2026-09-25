@@ -20,6 +20,7 @@ Last updated: manually — update when each epic is fully completed.
 - [x] 13 — Gaming Portfolio Preparation (five independent Flutter game targets)
 - [ ] 14 — Merge Relay selected-MVP implementation
 - [ ] 15 — Ludo Launch (Flutter + Flame rebuild, sixth game)
+- [ ] 16 — Games portfolio wave 2 (Merge Relay solo launch + custom fonts in every game)
 
 ## How to read this file
 

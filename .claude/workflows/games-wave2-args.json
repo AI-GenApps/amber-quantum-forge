@@ -1,0 +1,115 @@
+{
+  "repo": "/root/code/w3dev-mobile/amber-quantum-forge",
+  "branch": "main",
+  "epicDir": "tasks/epics/16-games-portfolio-wave2",
+  "epicTag": "16-games-portfolio-wave2",
+  "tasks": [
+    {
+      "id": "00",
+      "file": "00-knowledge-base-and-decisions.md"
+    },
+    {
+      "id": "01",
+      "file": "01-competitor-store-references.md"
+    },
+    {
+      "id": "02",
+      "file": "02-server-toolchain-verification.md"
+    },
+    {
+      "id": "03",
+      "file": "03-fonts-pocket-biome-and-heist.md"
+    },
+    {
+      "id": "04",
+      "file": "04-fonts-meme-court-and-peeklings.md"
+    },
+    {
+      "id": "05",
+      "file": "05-mr-solo-v1-scope.md"
+    },
+    {
+      "id": "06",
+      "file": "06-mr-rescue-campaign-60.md"
+    },
+    {
+      "id": "07",
+      "file": "07-mr-design-system-and-fonts.md"
+    },
+    {
+      "id": "08",
+      "file": "08-mr-tiles-and-board.md"
+    },
+    {
+      "id": "09",
+      "file": "09-mr-motion-and-haptics.md"
+    },
+    {
+      "id": "10",
+      "file": "10-mr-audio.md"
+    },
+    {
+      "id": "11",
+      "file": "11-mr-screens-restyle.md"
+    },
+    {
+      "id": "12",
+      "file": "12-mr-onboarding-and-how-to-play.md"
+    },
+    {
+      "id": "13",
+      "file": "13-mr-local-quality.md"
+    },
+    {
+      "id": "14",
+      "file": "14-mr-name-candidates.md"
+    },
+    {
+      "id": "15",
+      "file": "15-pb-art-direction-dry-run.md"
+    },
+    {
+      "id": "16",
+      "file": "16-heist-name-candidates.md"
+    },
+    {
+      "id": "17",
+      "file": "17-human-name-and-direction-pick.md",
+      "human": true
+    },
+    {
+      "id": "18",
+      "file": "18-mr-apply-name.md"
+    },
+    {
+      "id": "19",
+      "file": "19-mr-logo-dry-run.md"
+    },
+    {
+      "id": "20",
+      "file": "20-mr-art-set-dry-run.md"
+    },
+    {
+      "id": "21",
+      "file": "21-human-logo-and-art-pick.md",
+      "human": true
+    },
+    {
+      "id": "22",
+      "file": "22-mr-logo-final-and-integrate.md"
+    },
+    {
+      "id": "23",
+      "file": "23-mr-art-final-and-integrate.md"
+    },
+    {
+      "id": "24",
+      "file": "24-mr-release-readiness.md"
+    },
+    {
+      "id": "25",
+      "file": "25-human-device-checkpoint.md",
+      "human": true
+    }
+  ]
+}
