@@ -7,6 +7,7 @@ import 'package:platform_core/platform_core.dart';
 
 import 'biome_content.dart';
 import 'pocket_biome_art.dart';
+import 'pocket_biome_typography.dart';
 import 'pocket_biome_ui.dart';
 
 part 'pocket_biome_persistence.dart';
@@ -77,7 +78,7 @@ final class _PocketBiomeAppState extends State<PocketBiomeApp>
     return MaterialApp(
       title: pocketBiomeIdentity.publicTitle,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(colorSchemeSeed: Colors.teal, useMaterial3: true),
+      theme: PocketBiomeTypography.theme(seedColor: Colors.teal),
       home: PocketBiomeScreen(game: game),
     );
   }

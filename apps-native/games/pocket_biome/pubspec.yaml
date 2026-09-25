@@ -28,3 +28,10 @@ flutter:
   assets:
     - assets/
     - content/
+  fonts:
+    - family: Fraunces
+      fonts:
+        - asset: assets/fonts/Fraunces/Fraunces-Variable.ttf
+    - family: Quicksand
+      fonts:
+        - asset: assets/fonts/Quicksand/Quicksand-Variable.ttf

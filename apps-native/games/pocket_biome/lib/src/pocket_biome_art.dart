@@ -1,6 +1,8 @@
 import 'package:biome_rules/biome_rules.dart';
 import 'package:flutter/material.dart';
 
+import 'pocket_biome_typography.dart';
+
 final class PocketBiomeArt {
   const PocketBiomeArt._();
 
@@ -169,10 +171,12 @@ final class PocketBiomeArt {
     final text = TextPainter(
       text: TextSpan(
         text: name,
-        style: const TextStyle(
-          color: Color(0xff355347),
-          fontSize: 12,
-          fontWeight: FontWeight.w800,
+        style: PocketBiomeTypography.body(
+          const TextStyle(
+            color: Color(0xff355347),
+            fontSize: 12,
+            fontWeight: FontWeight.w800,
+          ),
         ),
       ),
       textDirection: TextDirection.ltr,

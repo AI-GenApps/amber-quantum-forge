@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 03-fonts-pocket-biome-and-heist
-status: pending
+status: completed
 commit_scope: games
 depends_on: [16-games-portfolio-wave2/02-server-toolchain-verification]
 estimate: M
@@ -44,22 +44,22 @@ labels. Prove it with goldens that load the real fonts.
 
 ## Implementation Checklist
 
-- [ ] Add the font files and `OFL.txt` files; register the families in each
+- [x] Add the font files and `OFL.txt` files; register the families in each
       app's `pubspec.yaml`.
-- [ ] Add a theme typography file per app (e.g.
+- [x] Add a theme typography file per app (e.g.
       `lib/src/pocket_biome_typography.dart`,
       `lib/src/heist_typography.dart`) and wire it into the `MaterialApp`
       theme.
-- [ ] Update Flame/canvas text to use the bundled families.
-- [ ] Add `test/flutter_test_config.dart` per app that loads the bundled
+- [x] Update Flame/canvas text to use the bundled families.
+- [x] Add `test/flutter_test_config.dart` per app that loads the bundled
       fonts, plus Roboto from Flutter's `material_fonts` cache as a
       fallback only if a test needs it.
-- [ ] Add `test/goldens/screens/home.png` and one in-play golden per app
+- [x] Add `test/goldens/screens/home.png` and one in-play golden per app
       (1080×2400 via `tester.view.physicalSize = Size(1080, 2400)` and
       `devicePixelRatio = 3`), plus `test/typography_test.dart`, which
       walks the widget tree and asserts that every `Text`/`RichText` resolves
       to a bundled family.
-- [ ] Copy the new goldens to
+- [x] Copy the new goldens to
       `.agents/resources/2026-09-25/games-wave2-qa/03/` and VIEW them.
 
 ## Files Touched

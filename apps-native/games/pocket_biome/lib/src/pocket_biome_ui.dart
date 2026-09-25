@@ -6,6 +6,7 @@ import 'pocket_biome_app.dart';
 import 'pocket_biome_album.dart';
 import 'pocket_biome_painter.dart';
 import 'pocket_biome_controls.dart';
+import 'pocket_biome_typography.dart';
 
 const _biomeInk = Color(0xff29483b);
 const _biomePaper = Color(0xfff4f0df);
@@ -88,33 +89,39 @@ final class _BiomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'TINY HABITAT',
-          style: TextStyle(
-            color: _biomeApricot,
-            fontSize: 12,
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1.5,
+          style: PocketBiomeTypography.body(
+            const TextStyle(
+              color: _biomeApricot,
+              fontSize: 12,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1.5,
+            ),
           ),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Text(
           'Pocket Biome',
-          style: TextStyle(
-            color: _biomeInk,
-            fontSize: 36,
-            fontWeight: FontWeight.w900,
-            height: 1,
-            letterSpacing: -1.2,
+          style: PocketBiomeTypography.heading(
+            const TextStyle(
+              color: _biomeInk,
+              fontSize: 36,
+              fontWeight: FontWeight.w900,
+              height: 1,
+              letterSpacing: -1.2,
+            ),
           ),
         ),
-        SizedBox(height: 7),
+        const SizedBox(height: 7),
         Text(
           'Grow a tiny world, one careful harvest at a time.',
-          style: TextStyle(color: Color(0xff61705d), fontSize: 16),
+          style: PocketBiomeTypography.body(
+            const TextStyle(color: Color(0xff61705d), fontSize: 16),
+          ),
         ),
       ],
     );
@@ -166,20 +173,24 @@ final class _Stat extends StatelessWidget {
           children: [
             Text(
               label,
-              style: TextStyle(
-                color: color,
-                fontSize: 10,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 1.1,
+              style: PocketBiomeTypography.body(
+                TextStyle(
+                  color: color,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 1.1,
+                ),
               ),
             ),
             const SizedBox(height: 3),
             Text(
               value,
-              style: const TextStyle(
-                color: _biomeInk,
-                fontSize: 22,
-                fontWeight: FontWeight.w900,
+              style: PocketBiomeTypography.body(
+                const TextStyle(
+                  color: _biomeInk,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w900,
+                ),
               ),
             ),
           ],
@@ -282,9 +293,8 @@ final class _BiomeFeedback extends StatelessWidget {
         Expanded(
           child: Text(
             message,
-            style: const TextStyle(
-              color: _biomeInk,
-              fontWeight: FontWeight.w700,
+            style: PocketBiomeTypography.body(
+              const TextStyle(color: _biomeInk, fontWeight: FontWeight.w700),
             ),
           ),
         ),

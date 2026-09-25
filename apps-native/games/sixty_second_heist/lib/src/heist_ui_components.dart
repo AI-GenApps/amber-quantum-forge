@@ -3,6 +3,7 @@ import 'package:heist_rules/heist_rules.dart';
 
 import 'heist_app.dart';
 import 'heist_board_painter.dart';
+import 'heist_typography.dart';
 
 const _heistInk = Color(0xff0d2238);
 const _heistCoral = Color(0xff9a3732);
@@ -57,9 +58,11 @@ final class HeistRouteStrip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (actions.isEmpty) {
-      return const Text(
+      return Text(
         'Plot a path to the loot, then the exit.',
-        style: TextStyle(color: Color(0xff5f7284), fontSize: 13),
+        style: HeistTypography.body(
+          const TextStyle(color: Color(0xff5f7284), fontSize: 13),
+        ),
       );
     }
     return SingleChildScrollView(
@@ -73,9 +76,11 @@ final class HeistRouteStrip extends StatelessWidget {
                 label: Text('${index + 1}  ${_actionLabel(actions[index])}'),
                 backgroundColor: const Color(0xffd8ecea),
                 side: BorderSide.none,
-                labelStyle: const TextStyle(
-                  color: _heistInk,
-                  fontWeight: FontWeight.w800,
+                labelStyle: HeistTypography.body(
+                  const TextStyle(
+                    color: _heistInk,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
             ),
@@ -96,7 +101,9 @@ final class HeistNotice extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: Text(
         message,
-        style: const TextStyle(color: _heistCoral, fontWeight: FontWeight.w700),
+        style: HeistTypography.body(
+          const TextStyle(color: _heistCoral, fontWeight: FontWeight.w700),
+        ),
       ),
     );
   }
@@ -126,7 +133,9 @@ final class HeistHint extends StatelessWidget {
     return Text(
       text,
       textAlign: TextAlign.center,
-      style: const TextStyle(color: Color(0xff5f7284), fontSize: 13),
+      style: HeistTypography.body(
+        const TextStyle(color: Color(0xff5f7284), fontSize: 13),
+      ),
     );
   }
 }

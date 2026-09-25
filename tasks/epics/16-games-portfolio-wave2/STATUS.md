@@ -126,7 +126,7 @@ commits and applies the small `.agents/games/*` index edits itself. The human co
 | 00 | Game knowledge bases + decision records | agent | [x] |
 | 01 | Competitor store-listing references + Merge Relay visual reference | agent | [x] |
 | 02 | Server toolchain verification (build, icons, doctor) | agent | [x] |
-| 03 | Custom fonts: Pocket Biome + Sixty-Second Heist | agent | [ ] |
+| 03 | Custom fonts: Pocket Biome + Sixty-Second Heist | agent | [x] |
 | 04 | Custom fonts: Meme Court + Peeklings | agent | [ ] |
 | 05 | Merge Relay: solo v1 scope gate | agent | [ ] |
 | 06 | Merge Relay: solver + 60-board rescue campaign | agent | [ ] |
@@ -138,7 +138,7 @@ commits and applies the small `.agents/games/*` index edits itself. The human co
 | 12 | Merge Relay: onboarding + how-to-play | agent | [ ] |
 | 13 | Merge Relay: local quality, seeded runs, budgets | agent | [ ] |
 | 14 | Merge Relay: name candidates (strict uniqueness) | agent | [ ] |
-| 15 | Pocket Biome: art-direction dry run | agent | [ ] |
+| 15 | Pocket Biome: art-direction dry run | agent | [x] |
 | 16 | Sixty-Second Heist: name candidates (strict uniqueness) | agent | [x] |
 | 17 | HUMAN: pick Merge Relay name + Pocket Biome direction | human | [ ] |
 | 18 | Merge Relay: apply the chosen name | agent | [ ] |
