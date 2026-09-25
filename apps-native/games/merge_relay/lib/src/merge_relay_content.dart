@@ -19,6 +19,8 @@ final class MergeRelayContentLoadException implements Exception {
   String toString() => cause == null ? message : '$message ($cause)';
 }
 
+const mergeRelayDefaultRescueMoveBudget = 3;
+
 final class MergeRescueBoard {
   const MergeRescueBoard({
     required this.id,
@@ -30,6 +32,9 @@ final class MergeRescueBoard {
     this.objective = 'Fuse the marked pair.',
     this.targetScore = 4,
     this.goalRevision = 'MR-GOALS-1',
+    this.chapter = 1,
+    this.indexInChapter = 1,
+    this.moveBudget = mergeRelayDefaultRescueMoveBudget,
   });
 
   factory MergeRescueBoard.fromJson(Map<String, Object?> json) {
@@ -49,6 +54,24 @@ final class MergeRescueBoard {
         goalRevision != null && goalRevision is! String) {
       throw const FormatException('Invalid rescue objective');
     }
+    final chapter = json['chapter'];
+    final indexInChapter = json['index_in_chapter'];
+    final moveBudget = json['move_budget'];
+    if (chapter != null && chapter is! int ||
+        indexInChapter != null && indexInChapter is! int ||
+        moveBudget != null && moveBudget is! int) {
+      throw const FormatException('Invalid rescue campaign metadata');
+    }
+    final resolvedChapter = chapter as int? ?? 1;
+    final resolvedIndexInChapter = indexInChapter as int? ?? 1;
+    final resolvedMoveBudget =
+        moveBudget as int? ?? mergeRelayDefaultRescueMoveBudget;
+    if (resolvedChapter < 1 ||
+        resolvedIndexInChapter < 1 ||
+        resolvedMoveBudget < 1 ||
+        resolvedMoveBudget > 6) {
+      throw const FormatException('Invalid rescue campaign metadata');
+    }
     final resolvedTarget = targetScore as int? ?? 4;
     if (resolvedTarget <= 0 || resolvedTarget > maxMergeScore) {
       throw const FormatException('Invalid rescue target');
@@ -58,6 +81,7 @@ final class MergeRescueBoard {
           state: trace.state,
           targetScore: resolvedTarget,
           rules: const MergeRules(),
+          maxMoves: resolvedMoveBudget,
         ).reachable) {
       throw const FormatException('Rescue target is not reachable');
     }
@@ -71,6 +95,9 @@ final class MergeRescueBoard {
       objective: objective as String? ?? 'Fuse the marked pair.',
       targetScore: resolvedTarget,
       goalRevision: goalRevision as String? ?? 'MR-GOALS-1',
+      chapter: resolvedChapter,
+      indexInChapter: resolvedIndexInChapter,
+      moveBudget: resolvedMoveBudget,
     );
   }
 
@@ -83,6 +110,9 @@ final class MergeRescueBoard {
   final String objective;
   final int targetScore;
   final String goalRevision;
+  final int chapter;
+  final int indexInChapter;
+  final int moveBudget;
 
   static Map<String, Object?> _traceFields(Map<String, Object?> json) {
     const fields = {
@@ -126,7 +156,7 @@ final class MergeRelayContentCatalog {
       }
       return MapEntry(key, value);
     });
-    const fields = {
+    const requiredFields = {
       'content_version',
       'rule_version',
       'schema_version',
@@ -134,10 +164,14 @@ final class MergeRelayContentCatalog {
       'generator',
       'rescue_boards',
     };
-    if (json.length != fields.length ||
-        json.keys.any((key) => !fields.contains(key)) ||
-        fields.any((key) => !json.containsKey(key))) {
+    const fields = {...requiredFields, 'campaign'};
+    if (json.keys.any((key) => !fields.contains(key)) ||
+        requiredFields.any((key) => !json.containsKey(key))) {
       throw const FormatException('Unexpected relay content fields');
+    }
+    final campaign = json['campaign'];
+    if (campaign != null && campaign is! Map) {
+      throw const FormatException('Invalid rescue campaign metadata');
     }
     if (json['content_version'] != mergeRelayContentVersion ||
         json['rule_version'] != mergeRuleVersion ||

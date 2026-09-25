@@ -36,7 +36,7 @@ inspect manifest contents, so nothing forces their removal.
 
 | Mode | Status | Source |
 |---|---|---|
-| Rescue (goal-in-N-moves boards) | built; 5 authored boards today, expanding to 60 boards / 6 chapters in task 06 | `apps-native/games/merge_relay/content/rescue_boards.json`, `apps-native/games/merge_relay/content/manifest.json` (`client_milestone.rescue_boards.count: 5`) |
+| Rescue (goal-in-N-moves boards) | built; 60 boards in 6 chapters of 10 (task 06), every board solver-proven and progression-gated | `apps-native/games/merge_relay/content/rescue_boards.json`, `apps-native/games/merge_relay/content/manifest.json` (`client_milestone.rescue_boards.count: 60`) |
 | Daily | local-practice today (no server daily yet) | `apps-native/games/merge_relay/content/manifest.json` (`modes.daily: "local-practice"`) |
 | Endless | playable | `apps-native/games/merge_relay/content/manifest.json` (`modes.endless: "playable"`) |
 | Friend relay (async 2-player handoff) | **gated off for v1**, kept for v1.1 | `apps-native/games/merge_relay/lib/src/merge_relay_relay_models.dart`, `apps-native/games/merge_relay/lib/src/merge_relay_relay_actions.dart`, `apps-native/games/merge_relay/lib/src/network/merge_relay_network_operations.dart` |
@@ -55,6 +55,23 @@ inspect manifest contents, so nothing forces their removal.
   (`apps-native/games/merge_relay/content/manifest.json` → `checkpoint.max_ranked_moves`),
   2 initial tiles, spawn distribution 90% "2" / 10% "4"
   (`checkpoint.initial_tiles`, `checkpoint.spawn_distribution`).
+- Rescue's own move budget ramps by chapter: `3 + floor((chapter-1)/2)` → 3,3,4,4,5,5
+  for chapters 1-6 (task 06). This budget is tracked per rescue session
+  (`MergeRelayGame._activeMoveBudget`, persisted as `move_budget` in the save's
+  session map) and is independent of the ranked-relay path's fixed
+  `max_ranked_moves: 3`, which rescue mode does not use.
+- Rescue boards are solver-proven: `apps-native/games/packages/merge_rules/lib/src/merge_rescue_solver.dart`
+  (`MergeRescueSolver`, algorithm `merge-rescue-solver-v1`) exhaustively searches every
+  full-length (== move budget) legal-move sequence from a board's checkpoint and proves
+  reachability of its `target_score`, returning a minimal winning line and the count of
+  winning lines (a difficulty signal). The generator
+  (`apps-native/games/packages/merge_rules/tool/generate_rescue_campaign.dart`) uses it to
+  pick each board's target so difficulty rises within a chapter.
+- Chapter progression: chapter N+1 unlocks after clearing 7 of chapter N's 10 boards
+  (`apps-native/games/merge_relay/lib/src/merge_relay_campaign.dart`,
+  `mergeRelayChapterUnlockThreshold`). The save's session-map schema is versioned
+  (`_mergeRelaySessionMapVersion` = 2) so an old (pre-campaign) save without
+  `move_budget` still restores — it defaults to 3 — and keeps its cleared boards.
 - Rule/content versions: `rule_version: MR-2D-1`, `content_version: MR-CONTENT-1`
   (`apps-native/games/merge_relay/content/manifest.json`).
 
@@ -62,7 +79,7 @@ inspect manifest contents, so nothing forces their removal.
 
 | | Today | v1 target (this epic) |
 |---|---|---|
-| Rescue boards | 5 (`rescue_boards.json`) | 60, in 6 chapters, every board solver-validated (task 06) |
+| Rescue boards | 60, in 6 chapters, every board solver-validated (task 06) | carried forward; visual overhaul restyles the chapter picker (task 11) |
 | Themes | 2 (`signal`, `ember`) (`manifest.json` → `client_milestone.themes`) | carried forward; visual overhaul restyles them (task 07–08) |
 
 ## Onboarding

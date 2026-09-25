@@ -43,6 +43,7 @@ extension MergeRelayGamePersistence on MergeRelayGame {
     legacyOffer.value = restored.legacyOffer;
     hasSavedSession.value = restored.sessions.isNotEmpty;
     _rescueMovesUsed = 0;
+    _activeMoveBudget = mergeRelayDefaultRescueMoveBudget;
     final active = restored.activeSessionKey == null
         ? null
         : restored.sessions[restored.activeSessionKey];

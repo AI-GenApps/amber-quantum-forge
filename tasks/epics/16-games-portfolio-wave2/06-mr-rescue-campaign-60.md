@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 06-mr-rescue-campaign-60
-status: pending
+status: completed
 commit_scope: merge-relay
 depends_on: [16-games-portfolio-wave2/05-mr-solo-v1-scope]
 estimate: L
@@ -52,21 +52,22 @@ and chapter progression saved locally.
 
 ## Implementation Checklist
 
-- [ ] Add a solver in `merge_rules` with unit tests (known-winnable,
+- [x] Add a solver in `merge_rules` with unit tests (known-winnable,
       known-unwinnable, and node-cap cases).
-- [ ] Add the generation tool, then generate and review 60 boards, reading
+- [x] Add the generation tool, then generate and review 60 boards, reading
       titles and objectives for quality.
-- [ ] Update `content/rescue_boards.json` (60 boards, `chapter`,
+- [x] Update `content/rescue_boards.json` (60 boards, `chapter`,
       `index_in_chapter`, and solver metrics per board), and update the
       content validator and schema if `games:content:validate` needs the
-      new fields.
-- [ ] Add a campaign test: every board is solved by the solver within budget,
+      new fields. (`games:content:validate` is schema-agnostic; no change
+      to `scripts/games/content.ts` was needed.)
+- [x] Add a campaign test: every board is solved by the solver within budget,
       replaying the solver's line through the real `MergeGame`/session
       yields "cleared", IDs are unique, and metrics are non-decreasing in
       difficulty within each chapter (allowing ≤2 local inversions per chapter).
-- [ ] Add chapter progression and unlock logic, plus the save migration
+- [x] Add chapter progression and unlock logic, plus the save migration
       with tests. Keep the UI minimal (a list); task 11 restyles it.
-- [ ] Update `.agents/games/merge-relay/product.md`.
+- [x] Update `.agents/games/merge-relay/product.md`.
 
 ## Files Touched
 

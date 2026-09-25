@@ -18,8 +18,10 @@
   },
   "client_milestone": {
     "rescue_boards": {
-      "count": 5,
-      "source": "original-authored valid MR-2D-1 boards",
+      "count": 60,
+      "chapters": 6,
+      "boards_per_chapter": 10,
+      "source": "original-authored valid MR-2D-1 boards, solver-proven (merge-rescue-solver-v1)",
       "provenance": "Each checkpoint includes origin_seed and origin_moves; the client replays the trace and rejects mismatched state."
     },
     "themes": {

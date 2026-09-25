@@ -13,7 +13,9 @@ extension MergeRelayGameRestoreParsing on MergeRelayGame {
   }
 
   _MergeRelayRestoredSave _parseSessionMap(Map<String, Object?> payload) {
-    if (payload['session_map_version'] != _mergeRelaySessionMapVersion) {
+    final version = payload['session_map_version'];
+    if (version != _mergeRelaySessionMapVersion &&
+        version != _mergeRelayLegacySessionMapVersion) {
       throw const FormatException('Unsupported merge session map');
     }
     final rawSessions = payload['sessions'];
@@ -72,6 +74,7 @@ extension MergeRelayGameRestoreParsing on MergeRelayGame {
       objective: null,
       targetScore: null,
       ruleConfig: const MergeRuleConfig.legacy(),
+      moveBudget: mergeRelayDefaultRescueMoveBudget,
     );
     final key = _mergeRelaySessionKey(
       mode: mode,
@@ -110,17 +113,26 @@ extension MergeRelayGameRestoreParsing on MergeRelayGame {
     );
     if (key != expectedKey) throw const FormatException('Invalid merge key');
     final result = _parseResult(payload['result']);
+    final rawMoveBudget = payload['move_budget'];
+    if (rawMoveBudget != null &&
+        (rawMoveBudget is! int ||
+            rawMoveBudget < 1 ||
+            rawMoveBudget > mergeRelayMaxRescueMoveBudget)) {
+      throw const FormatException('Invalid rescue move budget');
+    }
+    final resolvedMoveBudget =
+        rawMoveBudget as int? ?? mergeRelayDefaultRescueMoveBudget;
     final rawRescueMovesUsed = payload['rescue_moves_used'];
     if (rawRescueMovesUsed != null &&
         (rawRescueMovesUsed is! int ||
             rawRescueMovesUsed < 0 ||
-            rawRescueMovesUsed > 3)) {
+            rawRescueMovesUsed > resolvedMoveBudget)) {
       throw const FormatException('Invalid rescue move budget');
     }
     final rescueMovesUsed =
         rawRescueMovesUsed as int? ??
         (mode == MergeRelayMode.rescue
-            ? state.moveCount.clamp(0, 3).toInt()
+            ? state.moveCount.clamp(0, resolvedMoveBudget).toInt()
             : 0);
     if (result != null &&
         (result.mode != mode || result.rescueId != rescueId)) {
@@ -167,6 +179,7 @@ extension MergeRelayGameRestoreParsing on MergeRelayGame {
             state: state,
             targetScore: resolvedTarget,
             rules: frozenRules,
+            maxMoves: resolvedMoveBudget,
           ).reachable) {
         throw const FormatException('Frozen rescue target is not reachable');
       }
@@ -191,6 +204,7 @@ extension MergeRelayGameRestoreParsing on MergeRelayGame {
       objective: objective,
       targetScore: resolvedTarget,
       ruleConfig: ruleConfig ?? const MergeRuleConfig.legacy(),
+      moveBudget: resolvedMoveBudget,
     );
   }
 

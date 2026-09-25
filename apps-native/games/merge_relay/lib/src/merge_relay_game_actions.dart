@@ -212,6 +212,7 @@ extension MergeRelayGameActions on MergeRelayGame {
     _activeGoalRevision = rescue?.goalRevision;
     _activeObjective = rescue?.objective;
     _activeTargetScore = rescue?.targetScore;
+    _activeMoveBudget = rescue?.moveBudget ?? mergeRelayDefaultRescueMoveBudget;
     state.value = next;
     mode.value = nextMode;
     rescueId.value = nextRescue;
@@ -237,7 +238,7 @@ extension MergeRelayGameActions on MergeRelayGame {
       MergeRelayMode.rescue =>
         state.value.isTerminal
             ? MergeRelayOutcome.terminal
-            : _rescueMovesUsed >= 3
+            : _rescueMovesUsed >= _activeMoveBudget
             ? (_activeTargetScore != null &&
                       state.value.score >= _activeTargetScore!
                   ? MergeRelayOutcome.completed

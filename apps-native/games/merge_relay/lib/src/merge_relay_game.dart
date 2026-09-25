@@ -87,6 +87,7 @@ final class MergeRelayGame extends FlameGame {
   final MergeRelayPlayGamesProvider playGames;
   late final MergeRelayPgsAccountController? pgsAccountController;
   MergeRuleConfig _activeRuleConfig = const MergeRuleConfig.legacy();
+  int _activeMoveBudget = mergeRelayDefaultRescueMoveBudget;
   final MemoryTelemetrySink telemetrySink = MemoryTelemetrySink();
   final ValueNotifier<MergeGameState> state;
   final ValueNotifier<bool> hydrated;
@@ -125,10 +126,11 @@ final class MergeRelayGame extends FlameGame {
 
   int? get movesRemaining {
     if (!mode.value.usesMoveBudget) return null;
+    final budget = mode.value == MergeRelayMode.rescue ? _activeMoveBudget : 3;
     final used = mode.value == MergeRelayMode.rescue
         ? _rescueMovesUsed
         : state.value.moveCount;
-    return (3 - used).clamp(0, 3).toInt();
+    return (budget - used).clamp(0, budget).toInt();
   }
 
   bool get _readyForAction =>
