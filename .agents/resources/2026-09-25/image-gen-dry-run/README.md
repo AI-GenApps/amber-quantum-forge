@@ -10,6 +10,6 @@ tasks.
 | `tile-character-transparent-ref.png` | The same style, passing `tile-character-smoke.png` **by absolute path in the prompt** as a reference; a mint sleepy variant, "fully TRANSPARENT background (PNG with alpha)" | 1254×1254 **RGBA** with real alpha (~40% of pixels fully transparent), and the style carried over from the reference. Caveat: a thin bright-green fringe on the outer edge (background-removal artifact), which needs a Pillow edge cleanup (erode the alpha 1–2 px and de-fringe). |
 
 Usage: `image-gen --prompt "<prompt>"` prints the PNG path under
-`/root/.codex/generated_images/`. The alternate model is
+`~/.codex/generated_images/`. The alternate model is
 `--model gpt-6-astra`. See `tasks/epics/16-games-portfolio-wave2/STATUS.md`
 ("Image generation").

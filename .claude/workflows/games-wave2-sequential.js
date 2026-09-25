@@ -20,7 +20,7 @@ const A = args || {}
 const BRANCH = A.branch || 'main'
 const EPIC = A.epicDir || 'tasks/epics/16-games-portfolio-wave2'
 const EPIC_TAG = A.epicTag || EPIC.split('/').pop()
-const REPO = A.repo || '/root/code/w3dev-mobile/amber-quantum-forge'
+const REPO = A.repo || '/home/ashutosh/PROJECTS/AI-GenApps/amber-quantum-forge'
 const GAME = A.game || 'Games wave 2'
 const FROZEN = Array.isArray(A.frozenDirs)
   ? A.frozenDirs
@@ -48,7 +48,7 @@ Hard rules for this run:
 - No device and no emulator exist on this server. Never boot emulators or simulators. Device steps are reported NOT RUN, never faked. Screen evidence is headless goldens rendered by flutter test at 1080x2400 (DPR 3) with the app's real fonts loaded; VIEW every golden you create or change with the Read tool. Console/provisioning steps (Play Console, Firebase, stores) are NOT RUN.
 - Visual target: ${VISUAL} Judge goldens critically: Material-default styling (Roboto, indigo/purple seed, stock buttons/list tiles), flat empty bands > 25% of screen height, black/unfilled regions, overflow stripes, clipped text, tofu boxes, misaligned elements, or unreadable contrast are failures.
 - Custom fonts are mandatory in every game: no rendered text may fall back to the platform default font.
-- Image generation: use only the image-gen shell function (run \`source ~/.zshrc\` first if it is not found): \`image-gen --prompt "<prompt, reference images by absolute path>"\` (alternate: add \`--model gpt-6-astra\`). It prints the generated PNG path under /root/.codex/generated_images/; copy it into the task folder. Each image takes 1-3 min: run it in the background with a timeout of at least 600 s. Before generating, do a one-image smoke test. If no image tool works, return blocked. Never substitute code-drawn, downloaded, or stock images and present them as generated. Log the tool, model, params and prompt for every generated file.
+- Image generation: use only the image-gen command (~/.local/bin/image-gen; run \`source ~/.zshrc\` only if it is not on PATH): \`image-gen --prompt "<prompt, reference images by absolute path>"\` (alternate: add \`--model gpt-6-astra\`). It prints the generated PNG path under ~/.codex/generated_images/; copy it into the task folder. Each image takes 1-3 min: run it in the background with a timeout of at least 600 s. Before generating, do a one-image smoke test. If no image tool works, return blocked. Never substitute code-drawn, downloaded, or stock images and present them as generated. Log the tool, model, params and prompt for every generated file.
 - Audio: CC0 only, downloaded from the source page that states CC0; never synthesize audio and label it CC0.
 - Artifacts: save EVERY screenshot, golden copy, mockup, contact sheet or research note you produce under ${EVIDENCE}/<task-id>/ (art masters under the task's named .agents/resources path), with a README.md, and include them in the task's commit. Never leave evidence only in /tmp.
 - Never fabricate verification output. If a command fails, report it failing.

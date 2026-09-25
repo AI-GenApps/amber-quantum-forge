@@ -78,17 +78,16 @@ PNGs and compare them to the Threes! references from task 01. Device
 steps are always reported **NOT RUN**, never faked. Task 25 is the human
 device pass.
 
-**Image generation:** tasks 15, 19, 20, 22, and 23 use the `image-gen` shell
-function (a wrapper around `codex exec`, defined in `~/.zshrc`):
+**Image generation:** tasks 15, 19, 20, 22, and 23 use the `image-gen`
+command (`~/.local/bin/image-gen`, a bash script wrapping `codex exec`):
 
 ```bash
-source ~/.zshrc   # if image-gen is not found
 image-gen --prompt "<prompt; reference images can be named by absolute file path inside the prompt>"
 image-gen --prompt "<prompt>" --model gpt-6-astra   # alternate model if the result is poor
 ```
 
 It prints the absolute path of the generated PNG (under
-`/root/.codex/generated_images/...`); copy that file into the task's
+`~/.codex/generated_images/...`); copy that file into the task's
 `.agents/resources/...` folder. One image takes about 1–3 minutes, so run it
 in the background with a timeout of at least 600 s. The smoke test on
 2026-09-25 returned an on-brief 1254×1254 **RGB** image in 68 s
