@@ -124,7 +124,7 @@ const pre = await agent(
 1. Ensure the current branch is ${BRANCH} (git checkout ${BRANCH} if not). Report git status --porcelain.
 2. The tree is "clean" if git status --porcelain is empty.${RESUME_FILES ? `
    EXCEPTION: uncommitted in-progress work for the first task is allowed. Treat the tree as clean if every changed/untracked path is under one of: ${RESUME_FILES.join(', ')}.` : ''}
-3. With the environment prefix below, run: flutter --version, dart --version, bun --version (expect 1.3.3), java -version, bun run games:doctor, and check that node_modules/ exists at the repo root (pre-commit hooks need it). If it is missing, run `bun install --frozen-lockfile --linker hoisted` (the default isolated linker hangs on this server) and confirm bun.lock is unchanged. Summarize. games:doctor NOT RUN lines for xcodebuild/adb are expected on this server.
+3. With the environment prefix below, run: flutter --version, dart --version, bun --version (expect 1.3.3), java -version, bun run games:doctor, and check that node_modules/ exists at the repo root (pre-commit hooks need it). If it is missing, run \`bun install --frozen-lockfile --linker hoisted\` (the default isolated linker hangs on this server) and confirm bun.lock is unchanged. Summarize. games:doctor NOT RUN lines for xcodebuild/adb are expected on this server.
 4. Confirm ${EPIC}/STATUS.md exists and list the task files. Report which tasks STATUS.md marks [x] already.
 ok=true only if on ${BRANCH}, tree clean (per the rules above), ${EPIC} exists, and node_modules/ exists. Do not modify tracked files.
 ${RULES}`,
