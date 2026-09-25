@@ -6,7 +6,8 @@
 |---|---|
 | Portfolio audit (verdict, benchmark table, recommendation) | `.agents/resources/2026-09-25/games-portfolio-audit/README.md` |
 | Competitor references (Threes! primary + 2048, X2 Blocks, X2 Puzzle) | `.agents/resources/2026-09-25/games-competitor-references/README.md` |
-| Store-listing references + Merge Relay visual reference (task 01) | `.agents/resources/2026-09-25/<topic>/` — added by task 01 |
+| Store-listing references: Threes! (primary, 6 imgs, both Play listings + App Store), X2 Blocks (game-feel only, 4 imgs), 2048 Cirulli (anti-reference, 3 imgs) (task 01) | `.agents/resources/2026-09-25/threes-store-reference/`, `.agents/resources/2026-09-25/x2-blocks-store-reference/`, `.agents/resources/2026-09-25/2048-cirulli-store-reference/` |
+| Merge Relay visual reference (anchors, do/don't checklist, contact sheet) (task 01) | `.agents/resources/2026-09-25/merge-relay-visual-reference/README.md`, `.agents/resources/2026-09-25/merge-relay-visual-reference/contact-sheet.png` |
 | Epic + task files | `tasks/epics/16-games-portfolio-wave2/` |
 | Prior backend release plan / audit (v0.3 full-scope plan, now partially deferred) | `docs-internal/gaming/merge-relay-release-plan.md`, `docs-internal/gaming/merge-relay-release-audit.md`, `docs-internal/gaming/merge-relay-api-contract.md`, `docs-internal/gaming/merge-relay-commerce.md` |
 | Requirement ledger + 2026-09-25 solo-v1 decision | `docs-internal/gaming/handoffs/merge-relay.md` |
@@ -25,7 +26,7 @@
 
 | What | Path | Status |
 |---|---|---|
-| Threes!-grade visual reference set (task 01) | `.agents/resources/2026-09-25/<topic>/` | planned |
+| Threes!-grade visual reference set (task 01) | `.agents/resources/2026-09-25/merge-relay-visual-reference/` | done |
 | Name candidates (task 14) + human pick (task 17) | `.agents/resources/2026-09-25/<topic>/`, this folder's `decisions-log.md` | planned |
 | Logo + icon dry run (task 19) / final (task 22) | `.agents/resources/2026-09-25/<game>-art/logo/` | planned |
 | Art-set dry run (task 20) / final (task 23): character tiles, home scene | `.agents/resources/2026-09-25/<game>-art/<set>/` | planned |

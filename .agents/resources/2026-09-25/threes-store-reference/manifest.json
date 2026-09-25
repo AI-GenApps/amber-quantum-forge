@@ -1,0 +1,38 @@
+[
+  {
+    "file": "01.png",
+    "screen": "Home / board mid-game (Android, 'stats' icon)",
+    "source_url": "https://play.google.com/store/apps/details?id=vo.threes.exclaim&hl=en_US&gl=US",
+    "notes": "Play paid listing, screenshot slot 0. Tagline 'A TINY PUZZLE THAT GROWS ON YOU'. Shows the warm cream board, rounded number cards, and character faces on higher tiles (96, 192)."
+  },
+  {
+    "file": "02.png",
+    "screen": "Onboarding card intro",
+    "source_url": "https://play.google.com/store/apps/details?id=vo.threes.exclaim&hl=en_US&gl=US",
+    "notes": "Play paid listing, screenshot slot 1. A single '3' card with a speech bubble 'HI' on a flat slate background. Tagline 'THREES IS A TINY GAME...'."
+  },
+  {
+    "file": "03.png",
+    "screen": "Tutorial: matching numbers",
+    "source_url": "https://play.google.com/store/apps/details?id=vo.threes.exclaim&hl=en_US&gl=US",
+    "notes": "Play paid listing, screenshot slot 2. Shows 3+3=6 merge and 6+6=12 merge explainer with an infinity heart icon. Tagline 'ABOUT MATCHING NUMBERS'."
+  },
+  {
+    "file": "04.png",
+    "screen": "Tutorial: 1+2=3 mechanic",
+    "source_url": "https://play.google.com/store/apps/details?id=vo.threes.exclaim&hl=en_US&gl=US",
+    "notes": "Play paid listing, screenshot slot 3. Empty board with a blue '1' and red '2' tile, equation '1+2=3' above. Tagline 'LEARN IT IN A MINUTE'."
+  },
+  {
+    "file": "05.png",
+    "screen": "Board mid-game, composite/scroll crop",
+    "source_url": "https://play.google.com/store/apps/details?id=vo.threes.exclaim&hl=en_US&gl=US",
+    "notes": "Play paid listing, screenshot slot 4. Tall composite showing the board plus the tagline banner 'PLAY IT FOR A LIFETIME' and the start of the next promo card ('24' board). Distinct crop from 01.png."
+  },
+  {
+    "file": "06.png",
+    "screen": "Home / board mid-game (iOS, 'challenge' icon)",
+    "source_url": "https://apps.apple.com/us/app/threes/id779157948 (fetched via itunes.apple.com/lookup?id=779157948&country=us, screenshotUrls[0])",
+    "notes": "Same board composition as 01.png but the iOS build's top-right icon reads 'challenge' instead of Android's 'stats' -- kept to document the platform UI difference."
+  }
+]

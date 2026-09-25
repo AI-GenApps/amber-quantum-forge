@@ -1,0 +1,26 @@
+[
+  {
+    "file": "01.png",
+    "screen": "Column-merge board, combo build-up",
+    "source_url": "https://play.google.com/store/apps/details?id=com.inspiredsquare.blocks&hl=en_US&gl=US",
+    "notes": "Saturated per-tier colors (purple/pink/orange/green), glossy 3D block style, finger-drag gesture callout. Tagline 'TRAIN YOUR BRAIN'."
+  },
+  {
+    "file": "02.png",
+    "screen": "Combo scoring feedback",
+    "source_url": "https://play.google.com/store/apps/details?id=com.inspiredsquare.blocks&hl=en_US&gl=US",
+    "notes": "Shows chained merge feedback (+10/+20/+30/+40 floaters) down a column. Tagline 'CREATE COMBOS'. Reference for merge-feedback juice."
+  },
+  {
+    "file": "03.png",
+    "screen": "Hammer booster in use",
+    "source_url": "https://play.google.com/store/apps/details?id=com.inspiredsquare.blocks&hl=en_US&gl=US",
+    "notes": "A paid/earned booster (hammer) smashing a block. Tagline 'POWERFUL BOOSTERS'. Monetization pattern to avoid copying (heavy booster economy), not a visual target."
+  },
+  {
+    "file": "04.png",
+    "screen": "Swap-position booster",
+    "source_url": "https://play.google.com/store/apps/details?id=com.inspiredsquare.blocks&hl=en_US&gl=US",
+    "notes": "Tile-swap booster animation on a full 5x6 board. Tagline 'SWAP THE POSITION'."
+  }
+]

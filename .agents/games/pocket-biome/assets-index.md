@@ -6,6 +6,7 @@
 |---|---|
 | Portfolio audit (verdict, art-heavy risk, rank-2 recommendation) | `.agents/resources/2026-09-25/games-portfolio-audit/README.md` |
 | Competitor references (Terrarium: Garden Idle, Pocket Frogs, Pocket Plants, Viridi) | `.agents/resources/2026-09-25/games-competitor-references/README.md` |
+| Store-listing references: Terrarium: Garden Idle (3 imgs, Play-only shortfall documented), Pocket Frogs (4 imgs) (task 01) | `.agents/resources/2026-09-25/terrarium-garden-idle-store-reference/`, `.agents/resources/2026-09-25/pocket-frogs-store-reference/` |
 | Requirement ledger (PB-01–PB-16) | `docs-internal/gaming/handoffs/pocket-biome.md` |
 | Epic + task files (fonts task 03, art dry run task 15) | `tasks/epics/16-games-portfolio-wave2/` |
 

@@ -1,0 +1,26 @@
+[
+  {
+    "file": "01.png",
+    "screen": "Pond habitat, single frog on a lily pad",
+    "source_url": "https://play.google.com/store/apps/details?id=com.nimblebit.pocketfrogs&hl=en_US",
+    "notes": "Top-down pond scene, lily pads, koi silhouettes, maturity/happiness bars, coin count. Flies-to-tame counter in the HUD."
+  },
+  {
+    "file": "02.png",
+    "screen": "Habitat select list",
+    "source_url": "https://play.google.com/store/apps/details?id=com.nimblebit.pocketfrogs&hl=en_US",
+    "notes": "Scrollable list of owned habitats, each showing its collected frog roster as a row of thumbnails -- the collection meta-screen."
+  },
+  {
+    "file": "03.png",
+    "screen": "Breeding: possible offspring picker",
+    "source_url": "https://play.google.com/store/apps/details?id=com.nimblebit.pocketfrogs&hl=en_US",
+    "notes": "Two parent frogs selected, a named possible-offspring species shown with trait-combination previews and a cost to breed."
+  },
+  {
+    "file": "04.png",
+    "screen": "FrogMart shop",
+    "source_url": "https://play.google.com/store/apps/details?id=com.nimblebit.pocketfrogs&hl=en_US",
+    "notes": "Buy-a-frog storefront with rarity tier, delivery timer, and max value per species."
+  }
+]

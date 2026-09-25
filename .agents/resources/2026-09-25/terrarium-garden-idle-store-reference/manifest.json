@@ -1,0 +1,32 @@
+[
+  {
+    "file": "01.png",
+    "screen": "Shelf of potted plants, day, idle income floaters",
+    "source_url": "https://play.google.com/store/apps/details?id=sk.phx.terrarium&hl=en_US",
+    "notes": "Multi-shelf plant collection view with coin-income floaters (+169, +233, +61...) over each pot. Warm sky-blue background, wooden shelves."
+  },
+  {
+    "file": "02.png",
+    "screen": "Shelf of potted plants, night variant",
+    "source_url": "https://play.google.com/store/apps/details?id=sk.phx.terrarium&hl=en_US",
+    "notes": "Same layout as 01 in a night palette (deep blue sky, glowing dew/currency orbs)."
+  },
+  {
+    "file": "03.png",
+    "screen": "Shelf with empty purchasable slots",
+    "source_url": "https://play.google.com/store/apps/details?id=sk.phx.terrarium&hl=en_US",
+    "notes": "Shows empty pot slots with a down-arrow 'add plant here' affordance next to filled ones -- collection/expansion loop."
+  },
+  {
+    "file": "04.png",
+    "screen": "Locked floor + growth timer with Accelerate button (night)",
+    "source_url": "https://apps.apple.com/us/app/terrarium-garden-idle/id1401837582 (via https://itunes.apple.com/lookup?id=1401837582&country=us)",
+    "notes": "App Store listing, bundleId sk.phx.terrarium. Shows the floor-unlock cost, a growth countdown and an 'Accelerate' speed-up CTA: the time-gate loop."
+  },
+  {
+    "file": "05.png",
+    "screen": "Plant collection list with per-species upgrade/plant buttons",
+    "source_url": "https://apps.apple.com/us/app/terrarium-garden-idle/id1401837582 (via https://itunes.apple.com/lookup?id=1401837582&country=us)",
+    "notes": "App Store listing. Collection panel (species, level, oxygen/s, Upgrade/Plant costs): the reference for the collection/album UI."
+  }
+]

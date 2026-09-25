@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 01-competitor-store-references
-status: pending
+status: completed
 commit_scope: games
 depends_on: [16-games-portfolio-wave2/00-knowledge-base-and-decisions]
 estimate: M
@@ -43,21 +43,21 @@ every later visual task and verifier points at (the equivalent of Ludo's
 
 ## Implementation Checklist
 
-- [ ] Create `.agents/resources/2026-09-25/<competitor>-store-reference/`
+- [x] Create `.agents/resources/2026-09-25/<competitor>-store-reference/`
       per game with numbered PNG/WebP files (convert WebP to PNG with
       `/data/tools/pyenv/bin/python` and Pillow), a `README.md` (file → what
       it shows → source URL → retrieval date) and a `manifest.json`
       (`[{file, screen, source_url, notes}]`).
-- [ ] VIEW every downloaded image. Delete promo banners that show no
+- [x] VIEW every downloaded image. Delete promo banners that show no
       gameplay, and log each deletion in the README.
-- [ ] Create `.agents/resources/2026-09-25/merge-relay-visual-reference/README.md`:
+- [x] Create `.agents/resources/2026-09-25/merge-relay-visual-reference/README.md`:
       2–3 named **style anchors** (specific Threes! files), the target
       description above, a "do / don't" list, and the audit's "before"
       captures (`docs-internal/gaming/evidence/visual/merge-relay-final-real-merge.png`,
       `.agents/resources/2026-09-25/games-portfolio-audit/renders/merge_relay-0*.png`).
-- [ ] Build `contact-sheet.png` (Threes! anchors next to the current Merge Relay
+- [x] Build `contact-sheet.png` (Threes! anchors next to the current Merge Relay
       renders) with Pillow, and view it.
-- [ ] Link the new folders from each game's `.agents/games/<slug>/assets-index.md`.
+- [x] Link the new folders from each game's `.agents/games/<slug>/assets-index.md`.
 
 ## Files Touched
 
@@ -68,7 +68,8 @@ every later visual task and verifier points at (the equivalent of Ludo's
 ## Acceptance Criteria
 
 - The minimum image counts above are met, and every file is listed in its
-  folder's manifest with a working source URL.
+  folder's manifest with a working source URL. Terrarium: Garden Idle uses 3 Play and 2 App Store
+  screenshots (the Play listing has only 3 distinct images).
 - The visual-reference README names the specific anchor files and gives
   ≥8 checkable "do/don't" items (e.g. "tile numerals ≥ 40% of tile
   height", "no screen region > 25% height left as flat empty background").

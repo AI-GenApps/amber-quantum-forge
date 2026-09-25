@@ -6,6 +6,7 @@
 |---|---|
 | Portfolio audit (name conflict, verdict, rank-4 recommendation) | `.agents/resources/2026-09-25/games-portfolio-audit/README.md` |
 | Competitor references (Hitman GO primary, Lara Croft GO, Robbery Bob, Thief Puzzle) | `.agents/resources/2026-09-25/games-competitor-references/README.md` |
+| Store-listing references: Hitman GO (4 imgs) (task 01) | `.agents/resources/2026-09-25/hitman-go-store-reference/` |
 | Requirement ledger (SH-01–SH-16) | `docs-internal/gaming/handoffs/sixty-second-heist.md` |
 | Epic + task files (fonts task 03, name-candidate research task 16) | `tasks/epics/16-games-portfolio-wave2/` |
 
