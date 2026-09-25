@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 02-server-toolchain-verification
-status: pending
+status: completed
 commit_scope: games
 depends_on: [16-games-portfolio-wave2/01-competitor-store-references]
 estimate: S
@@ -36,19 +36,19 @@ failure can be told apart from a pre-existing one.
 
 ## Implementation Checklist
 
-- [ ] Run each Verification Command with the STATUS.md environment and
+- [x] Run each Verification Command with the STATUS.md environment and
       capture its output in
       `.agents/resources/2026-09-25/games-wave2-qa/02/baseline.md`
       (command → pass/fail → key lines → duration).
-- [ ] Build debug APKs for all five non-Ludo apps and record their sizes.
-- [ ] Record per-app `flutter test` counts (expected baseline from the audit:
+- [x] Build debug APKs for all five non-Ludo apps and record their sizes.
+- [x] Record per-app `flutter test` counts (expected baseline from the audit:
       merge_relay 120, pocket_biome 8, sixty_second_heist 8, meme_court 5,
       snapquest 19).
-- [ ] If `games:icons:check` or any other command fails, find the root cause
+- [x] If `games:icons:check` or any other command fails, find the root cause
       and record it with the output. Fix it only if the fix is
       environment-only (under `/data/tools`); otherwise record it as
       pre-existing, with proof from a throwaway worktree on HEAD.
-- [ ] Add a short "Server toolchain" section to
+- [x] Add a short "Server toolchain" section to
       `docs-internal/gaming/commands.md` describing the `/data/tools` layout
       and the environment block (generic, no secrets).
 

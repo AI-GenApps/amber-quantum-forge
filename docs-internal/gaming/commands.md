@@ -54,3 +54,35 @@ The same sequence runs in [`games-ci.yml`](../../.github/workflows/games-ci.yml)
 with PostgreSQL migration/lifecycle checks. A production Next process refuses
 the in-memory store and requires configured durable storage; that fail-closed
 behavior is intentional.
+
+## Server toolchain
+
+This server has no physical Android/iOS device and no emulator or simulator,
+so `games:run` and any `xcodebuild`/`adb` step in `games:doctor` are always
+`NOT RUN`. The rest of the toolchain lives under `/data/tools` (Bun 1.3.3,
+Flutter 3.47.3, Dart 3.13.3, JDK 17, Android SDK platform 36 + build-tools
+36.0.0, a Pillow venv for image work) and every command runs with:
+
+```bash
+export PATH=/data/tools/bun/bin:/data/tools/flutter/bin:/data/tools/jdk17/bin:$PATH \
+  PUB_CACHE=/data/tools/pub-cache JAVA_HOME=/data/tools/jdk17 \
+  ANDROID_HOME=/data/tools/android-sdk ANDROID_SDK_ROOT=/data/tools/android-sdk \
+  BUN_INSTALL_CACHE_DIR=/data/tools/bun-cache GRADLE_USER_HOME=/data/tools/gradle-home
+```
+
+Notes:
+
+- If root `node_modules` is missing, install with
+  `bun install --frozen-lockfile --linker hoisted` — Bun's default isolated
+  linker hangs on this repo's lockfile on this server; the hoisted linker
+  installs cleanly in seconds and leaves `bun.lock` unchanged.
+- `games:icons:check` needs `sharp` from root `node_modules`.
+- Python with Pillow (for mockups/contact sheets, not part of this
+  toolchain's build/test path) is `/data/tools/pyenv/bin/python`.
+- Any new tool this server needs installs under `/data/tools/<name>`, never
+  system-wide or in the home directory.
+- Screen evidence without a device comes from headless `flutter test`
+  goldens (1080×2400 logical, real fonts loaded), never a simulator/emulator
+  capture.
+- A baseline run of every command in this section is recorded per task in
+  `.agents/resources/2026-09-25/games-wave2-qa/02/baseline.md`.
