@@ -1,0 +1,15 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:pocket_biome/src/pocket_biome_app.dart';
+import 'zz_audit_shot_support.dart';
+
+void main() {
+  setUpAll(loadFonts);
+  testWidgets('audit shots', (tester) async {
+    phone(tester);
+    await tester.pumpWidget(framed(const PocketBiomeApp()));
+    await shot(tester, 'pocket_biome-01-home');
+    await tapText(tester, 'Plant Mossling');
+    await shot(tester, 'pocket_biome-02-planted');
+    dumpTexts(tester, 'planted');
+  });
+}

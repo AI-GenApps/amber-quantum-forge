@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:merge_relay/src/merge_relay_app.dart';
+import 'package:merge_relay/src/merge_relay_board_widget.dart';
+import 'zz_audit_shot_support.dart';
+
+void main() {
+  setUpAll(loadFonts);
+  testWidgets('audit shots', (tester) async {
+    phone(tester);
+    await tester.pumpWidget(framed(const MergeRelayApp()));
+    await shot(tester, 'merge_relay-01-home');
+    await tapText(tester, 'Play rescue');
+    await shot(tester, 'merge_relay-02-tutorial');
+    dumpTexts(tester, 'tutorial');
+    await tapText(tester, 'Skip');
+    await shot(tester, 'merge_relay-03-play');
+    dumpTexts(tester, 'play');
+    for (final d in const [Offset(0, -180), Offset(-180, 0), Offset(-180, 0)]) {
+      await tester.fling(find.byType(MergeRelayBoard), d, 1000);
+      await settle(tester, 20);
+    }
+    await shot(tester, 'merge_relay-04-result');
+    dumpTexts(tester, 'result');
+  });
+}
