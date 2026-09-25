@@ -34,3 +34,41 @@ assets via `bun run games:icons -- --app ludo`.
 - Prompts: see `.agents/resources/2026-09-25/ludo-vortex-art/logo/README.md`
 - License: original commissioned work for this project; no external
   license terms apply.
+
+## Lobby art (task 12h)
+
+Same provenance basis as the brand art above: **original AI-generated
+art**, produced via Higgsfield (`gpt_image_2_5`, the `flare` job type) on
+2026-09-24/25, user-approved as the lobby's background and mode-tile set.
+No third-party or attribution-required asset is used.
+
+The full-resolution master files (both background concepts, both tile
+style passes, per-image job JSON with the full prompt/params, the
+mockups, and the contact sheet) live outside the app bundle at
+`.agents/resources/2026-09-25/ludo-vortex-art/lobby/` — that directory is
+the source of truth and is not modified; its `README.md` records every
+prompt. The files below are resized/palette-optimized copies of the
+user-approved subset (background concept "B" / vortex galaxy, tile style
+"A" / 3D objects) prepared for in-app bundling.
+
+| File | Derived from (master, job record) | Resized to | Used for |
+|---|---|---|---|
+| `bg-b.png` | `bg-b.png` (`bg-b.json`) — "vortex galaxy" background, 1520x2688 native | 1080px wide, 256-color palette PNG (~567 KB) | Home lobby full-bleed background (`LudoArtManifest.lobbyBackgroundSlot`) |
+| `tile-a-computer.png` | `tile-a-computer.png` (`tile-a-computer.json`) — glossy robot-head hero object, 2048x2048 native, transparent | 512px wide | Computer mode tile (`LudoArtManifest.lobbyTileComputerSlot`) |
+| `tile-a-pass.png` | `tile-a-pass.png` (`tile-a-pass.json`) — hand holding phone hero object, 2048x2048 native, transparent | 512px wide | Pass N Play mode tile (`LudoArtManifest.lobbyTilePassAndPlaySlot`) |
+| `tile-a-friends.png` | `tile-a-friends.png` (`tile-a-friends.json`) — two friend figures hero object, 2048x2048 native, transparent | 512px wide | Play with Friends mode tile (`LudoArtManifest.lobbyTileFriendsSlot`) |
+| `tile-a-online.png` | `tile-a-online.png` (`tile-a-online.json`) — globe-with-orbit hero object, 2048x2048 native, transparent | 512px wide | Online mode tile (`LudoArtManifest.lobbyTileOnlineSlot`) |
+
+### Lobby art generation details
+
+- Model: Higgsfield `gpt_image_2_5` (`flare` job type), `--quality high
+  --resolution 2k`, with `--image-references` set to the approved
+  Direction-C token-orbit icon for gold-ring/token style consistency only
+  (not literal reuse)
+- Date: 2026-09-24/25
+- Prompts: see
+  `.agents/resources/2026-09-25/ludo-vortex-art/lobby/README.md`
+  (includes the shared style block and each image's specific concept
+  prompt)
+- License: original commissioned work for this project; no external
+  license terms apply.

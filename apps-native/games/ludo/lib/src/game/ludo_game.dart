@@ -257,35 +257,63 @@ class LudoGame extends FlameGame {
   }) async {
     final boardSize = board.size;
     final moves = <Future<void>>[];
+
+    // Every token's *final* resting cell for this state, computed up front
+    // (task 12h): stacked-token offsets depend on which other tokens share
+    // that same cell, which can change even for a token that didn't itself
+    // move this turn (e.g. a third token landing on a cell that already
+    // held two others) — so every token's offset must be recomputed on
+    // every sync, not only the ones whose position changed below.
+    final finalGridByKey = <String, (int, int)>{};
     for (final player in state.players) {
       for (final token in player.tokens) {
-        final key = _keyFor(player.color, token.id);
-        final grid = _gridForPosition(
+        finalGridByKey[_keyFor(player.color, token.id)] = _gridForPosition(
           player.color,
           state.ruleset,
           token.pathPosition,
           tokenId: token.id,
         );
+      }
+    }
+    final stackOffsetByKey = _stackOffsetsFor(finalGridByKey);
+
+    for (final player in state.players) {
+      for (final token in player.tokens) {
+        final key = _keyFor(player.color, token.id);
+        final grid = finalGridByKey[key]!;
+        final stackOffset = stackOffsetByKey[key]!;
         final existing = _tokensByKey[key];
         if (existing == null) {
-          final created = LudoTokenComponent(
-            color: player.color,
-            tokenId: token.id,
-            boardSize: boardSize,
-            initialCell: grid,
-            reducedMotion: reducedMotion,
-          )..onTap = (color, tokenId) => onTokenTap?.call(color, tokenId);
+          final created =
+              LudoTokenComponent(
+                  color: player.color,
+                  tokenId: token.id,
+                  boardSize: boardSize,
+                  initialCell: grid,
+                  reducedMotion: reducedMotion,
+                )
+                ..onTap = (color, tokenId) {
+                  onTokenTap?.call(color, tokenId);
+                }
+                ..updateStackOffset(stackOffset);
           _tokensByKey[key] = created;
           add(created);
           continue;
         }
-        if (skipTokenKeys.contains(key)) continue;
+        if (skipTokenKeys.contains(key)) {
+          existing.updateStackOffset(stackOffset);
+          continue;
+        }
         final previousPosition = _previousPositionOf(
           previous,
           player.color,
           token.id,
         );
-        if (previousPosition == token.pathPosition) continue;
+        if (previousPosition == token.pathPosition) {
+          existing.updateStackOffset(stackOffset);
+          continue;
+        }
+        existing.updateStackOffset(stackOffset);
         if (!animate ||
             previousPosition == null ||
             previousPosition > token.pathPosition) {
@@ -305,6 +333,61 @@ class LudoGame extends FlameGame {
       }
     }
     await Future.wait(moves);
+  }
+
+  /// Assigns each token key a small fan-out offset (a fraction of one
+  /// board cell) so that 2+ tokens sharing the same board cell render at
+  /// visibly distinct, individually-tappable positions instead of
+  /// exactly on top of one another (task 12h) — matching Ludo King's
+  /// stacked-token convention. A cell with only one token gets the zero
+  /// offset (dead-center, unchanged from every prior task's layout).
+  /// Grouping and per-group ordering is entirely a function of
+  /// [finalGridByKey]'s iteration order (itself `state.players`' then
+  /// each player's `tokens`' fixed seat/id order), so the same match
+  /// state always assigns the same offsets — no frame-to-frame jitter.
+  Map<String, Vector2> _stackOffsetsFor(
+    Map<String, (int, int)> finalGridByKey,
+  ) {
+    final byCell = <(int, int), List<String>>{};
+    for (final entry in finalGridByKey.entries) {
+      byCell.putIfAbsent(entry.value, () => []).add(entry.key);
+    }
+    final offsets = <String, Vector2>{};
+    for (final group in byCell.values) {
+      for (var i = 0; i < group.length; i++) {
+        offsets[group[i]] = _fanOutOffset(i, group.length);
+      }
+    }
+    return offsets;
+  }
+
+  /// Fraction-of-cell-size offset (both axes in `-0.5..0.5`) for the
+  /// [index]th of [total] tokens sharing one cell. `total <= 1` is
+  /// dead-center (the pre-task-12h layout). 2 tokens split left/right; 3
+  /// form a small triangle; 4+ tile a 2x2 grid, wrapping any further
+  /// tokens (beyond the realistic 4-colors-on-one-cell case) onto the
+  /// same 4 slots rather than growing unboundedly.
+  static Vector2 _fanOutOffset(int index, int total) {
+    if (total <= 1) return Vector2.zero();
+    const spread = ludoTokenStackFanOutFraction;
+    switch (total) {
+      case 2:
+        return [Vector2(-spread, 0), Vector2(spread, 0)][index];
+      case 3:
+        return [
+          Vector2(0, -spread),
+          Vector2(-spread, spread * 0.85),
+          Vector2(spread, spread * 0.85),
+        ][index];
+      default:
+        final grid = [
+          Vector2(-spread, -spread),
+          Vector2(spread, -spread),
+          Vector2(-spread, spread),
+          Vector2(spread, spread),
+        ];
+        return grid[index % grid.length];
+    }
   }
 
   int? _previousPositionOf(

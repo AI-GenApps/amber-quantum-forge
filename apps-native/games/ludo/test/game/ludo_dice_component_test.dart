@@ -36,6 +36,36 @@ void main() {
       },
     );
 
+    testWithFlameGame(
+      'rollTo still completes if update() is never called again after the '
+      'roll starts (task 12h: the device-only stuck-turn bug) — see the '
+      'identical regression test on LudoTokenComponent.hopTo for the full '
+      'root-cause explanation. No fake clock/manual tick is used here, '
+      'only a real wall-clock wait, matching the real condition (screen '
+      'timeout / app background) a widget test\'s fake clock never hits.',
+      (game) async {
+        final dice = LudoDiceComponent();
+        await game.ensureAdd(dice);
+
+        final done = dice.rollTo(4);
+        expect(dice.isRolling, isTrue);
+
+        // No game.update() calls below — simulates the engine loop
+        // stalling mid-roll.
+        await done.timeout(
+          const Duration(seconds: 5),
+          onTimeout: () => fail(
+            'rollTo() never completed without update() ticking — the '
+            'device-only stuck-turn bug (task 12h) has regressed.',
+          ),
+        );
+
+        expect(dice.displayFace, 4);
+        expect(dice.isRolling, isFalse);
+      },
+      timeout: const Timeout(Duration(seconds: 10)),
+    );
+
     testWithFlameGame('every landed face 1..6 is reachable', (game) async {
       final dice = LudoDiceComponent();
       await game.ensureAdd(dice);

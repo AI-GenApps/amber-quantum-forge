@@ -122,6 +122,77 @@ void main() {
     });
 
     testWithFlameGame(
+      'hopTo still completes if update() is never called again after the '
+      'hop starts (task 12h: the device-only stuck-turn bug) — this is the '
+      'real-time-like regression test that reproduces the hang this task '
+      'fixes: on a real device, the screen timing out or the app '
+      'backgrounding mid-hop stops Flame\'s per-frame update() from firing '
+      'at all, which the pre-fix code relied on exclusively to ever '
+      'complete a hop\'s Future, permanently stranding whatever awaited it '
+      '(game_board_screen.dart\'s applyEvents, and thus the bot-turn '
+      'runner). No fake clock or manual update() ticking is used below — '
+      'only a real wall-clock wait — so this exercises the same "no more '
+      'frames arrive" condition a real interrupted animation hits.',
+      (game) async {
+        final token = LudoTokenComponent(
+          color: LudoColor.green,
+          tokenId: 2,
+          boardSize: Vector2.all(300),
+          initialCell: (8, 1),
+        );
+        await game.ensureAdd(token);
+
+        final done = token.hopTo([(8, 2), (8, 3)]);
+        expect(token.isAnimating, isTrue);
+
+        // Deliberately do NOT call game.update()/token.update() again —
+        // this simulates Flame's engine loop being suspended mid-hop
+        // (screen timeout / app background). Pre-fix, `done` would never
+        // complete and this test would time out; the fallback timer this
+        // task adds must resolve it within its own real-time budget
+        // regardless of any rendered frame.
+        await done.timeout(
+          const Duration(seconds: 5),
+          onTimeout: () => fail(
+            'hopTo() never completed without update() ticking — the '
+            'device-only stuck-turn bug (task 12h) has regressed.',
+          ),
+        );
+
+        expect(token.isAnimating, isFalse);
+        expect(token.currentCell, (8, 3));
+      },
+      timeout: const Timeout(Duration(seconds: 10)),
+    );
+
+    testWithFlameGame(
+      'flyTo (capture flight-back) also completes without update() ticking',
+      (game) async {
+        final token = LudoTokenComponent(
+          color: LudoColor.blue,
+          tokenId: 0,
+          boardSize: Vector2.all(300),
+          initialCell: (7, 6),
+        );
+        await game.ensureAdd(token);
+
+        final done = token.flyTo((0, 8));
+        expect(token.isAnimating, isTrue);
+
+        await done.timeout(
+          const Duration(seconds: 5),
+          onTimeout: () => fail(
+            'flyTo() never completed without update() ticking — the '
+            'device-only stuck-turn bug (task 12h) has regressed.',
+          ),
+        );
+
+        expect(token.currentCell, (0, 8));
+      },
+      timeout: const Timeout(Duration(seconds: 10)),
+    );
+
+    testWithFlameGame(
       'is sized as a pin taller than it is wide, per task 12d2\'s enlarged '
       'token spec (~0.9-1.0 cell wide, ~1.3 cells tall)',
       (game) async {

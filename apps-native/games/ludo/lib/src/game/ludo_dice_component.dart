@@ -10,7 +10,8 @@
 /// in `ludo_art_manifest.dart`.
 library;
 
-import 'dart:async';
+import 'dart:async' as async show Timer;
+import 'dart:async' show Completer, unawaited;
 
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
@@ -162,6 +163,26 @@ class LudoDiceComponent extends PositionComponent {
   final Set<int> _distinctFacesFlickered = {};
   Completer<void>? _rollCompleter;
 
+  /// Real-time backstop for [_rollCompleter] — mirrors
+  /// `LudoTokenComponent._fallbackTimer` (task 12h): [update] only
+  /// advances the tumble/settle animation (and thus only ever completes
+  /// [_rollCompleter]) while Flame is actually ticking, which stops the
+  /// moment the device's screen times out or the app backgrounds mid-roll
+  /// — a device-only condition no fake-clock widget test exercises.
+  /// Without this, an interrupted roll hangs forever and permanently
+  /// stalls whatever awaited `LudoGame.applyEvents`.
+  async.Timer? _rollFallbackTimer;
+
+  /// A generous real-time ceiling for one [rollTo] call: the minimum
+  /// tumble time plus the settle bounce, with slack for the tumble phase
+  /// occasionally running a little past its minimum while it collects
+  /// [ludoDiceMinDistinctFaces] distinct flickered faces, plus a buffer so
+  /// a normally-ticking [update] always wins the race.
+  static final _rollFallbackDuration =
+      ludoDiceTumbleMinDuration +
+      ludoDiceSettleDuration +
+      const Duration(milliseconds: 400);
+
   /// The face currently on display (`1..6`).
   int get displayFace => _displayFace;
 
@@ -200,6 +221,7 @@ class LudoDiceComponent extends PositionComponent {
     if (previousCompleter != null && !previousCompleter.isCompleted) {
       previousCompleter.complete();
     }
+    _rollFallbackTimer?.cancel();
     _target = face;
     _settling = false;
     _tumbleElapsed = 0;
@@ -208,7 +230,29 @@ class LudoDiceComponent extends PositionComponent {
     _distinctFacesFlickered.clear();
     final completer = Completer<void>();
     _rollCompleter = completer;
+    // Real-time backstop (task 12h): see [_rollFallbackTimer]'s doc
+    // comment — guarantees this future resolves even if [update] never
+    // ticks again after this call (screen timeout / app background mid
+    // roll), jumping straight to the target face.
+    _rollFallbackTimer = async.Timer(_rollFallbackDuration, () {
+      _rollFallbackTimer = null;
+      final pending = _rollCompleter;
+      if (pending == null || pending.isCompleted) return;
+      _displayFace = face;
+      _scale = 1.0;
+      _settling = false;
+      _target = null;
+      _rollCompleter = null;
+      pending.complete();
+    });
     return completer.future;
+  }
+
+  @override
+  void onRemove() {
+    _rollFallbackTimer?.cancel();
+    _rollFallbackTimer = null;
+    super.onRemove();
   }
 
   @override
@@ -245,6 +289,8 @@ class LudoDiceComponent extends PositionComponent {
       _scale = 1.0;
       _settling = false;
       _target = null;
+      _rollFallbackTimer?.cancel();
+      _rollFallbackTimer = null;
       final completer = _rollCompleter;
       _rollCompleter = null;
       completer?.complete();

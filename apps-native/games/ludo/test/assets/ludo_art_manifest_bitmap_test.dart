@@ -75,6 +75,25 @@ void main() {
       // none) — every slot must fall back to its code-drawn painter.
       expect(await LudoArtManifest.hasBitmap('board-background'), isFalse);
     });
+
+    test('resolves true against the real bundle for every lobby art slot '
+        '(task 12h) — proves the 5 bundled bitmaps are actually wired '
+        'through pubspec.yaml\'s assets/art/ declaration, not just present '
+        'as files on disk', () async {
+      for (final slot in [
+        LudoArtManifest.lobbyBackgroundSlot,
+        LudoArtManifest.lobbyTileComputerSlot,
+        LudoArtManifest.lobbyTilePassAndPlaySlot,
+        LudoArtManifest.lobbyTileFriendsSlot,
+        LudoArtManifest.lobbyTileOnlineSlot,
+      ]) {
+        expect(
+          await LudoArtManifest.hasBitmap(slot),
+          isTrue,
+          reason: 'expected a bundled bitmap for slot "$slot"',
+        );
+      }
+    });
   });
 
   group('LudoArtSlot', () {

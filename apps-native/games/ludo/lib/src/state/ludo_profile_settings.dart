@@ -116,9 +116,17 @@ class LudoProfileSettings extends ChangeNotifier {
 /// their own try/catch around it.
 Future<SaveStore> ludoDefaultSaveStore() async {
   try {
+    // ignore: avoid_print
+    print(
+      'DBG12H: ludoDefaultSaveStore awaiting getApplicationSupportDirectory',
+    );
     final supportDir = await getApplicationSupportDirectory();
+    // ignore: avoid_print
+    print('DBG12H: ludoDefaultSaveStore got supportDir $supportDir');
     return JsonFileSaveStore(root: Directory('${supportDir.path}/save'));
   } catch (_) {
+    // ignore: avoid_print
+    print('DBG12H: ludoDefaultSaveStore caught exception, falling back');
     return MemorySaveStore();
   }
 }

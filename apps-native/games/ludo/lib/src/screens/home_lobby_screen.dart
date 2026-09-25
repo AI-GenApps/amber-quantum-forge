@@ -23,7 +23,6 @@ import '../state/ludo_local_save.dart';
 import '../state/ludo_profile_settings.dart';
 import '../state/ludo_sound_settings.dart';
 import '../telemetry/ludo_telemetry.dart';
-import '../theme/ludo_background_painter.dart';
 import '../theme/ludo_text_styles.dart';
 import '../theme/ludo_theme_tokens.dart';
 import '../widgets/ludo_avatar.dart'
@@ -273,7 +272,7 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
   Widget build(BuildContext context) {
     final summary = _summary;
     return Scaffold(
-      body: LudoBackground(
+      body: _LobbyBackground(
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -294,13 +293,25 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
                     bottom: LudoThemeTokens.spaceSm,
                   ),
                   child: Align(
-                    alignment: Alignment.centerLeft,
+                    alignment: Alignment.center,
                     child: Semantics(
                       label: ludoIdentity.publicTitle,
-                      child: const LudoArtSlot(
-                        slot: LudoArtManifest.logoWideSlot,
-                        fallbackPainter: LudoArtManifest.logoWide,
-                        size: Size(200, 54),
+                      // Task 12h: ~80% of the lobby's content width,
+                      // matching `mockup-a.png`/`mockup-b.png`'s scale —
+                      // up from the previous fixed 200x54 (a small
+                      // top-left header wordmark). `LayoutBuilder` reads
+                      // the content column's actual available width so
+                      // this stays correct across device sizes rather
+                      // than hardcoding a pixel width.
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final width = constraints.maxWidth * 0.8;
+                          return LudoArtSlot(
+                            slot: LudoArtManifest.logoWideSlot,
+                            fallbackPainter: LudoArtManifest.logoWide,
+                            size: Size(width, width * 54 / 200),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -393,6 +404,41 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// The home lobby's full-bleed background (task 12h): the user-approved
+/// `bg-b.png` "vortex galaxy" art via the [LudoArtManifest] bitmap-slot
+/// mechanism, covering the whole screen behind [child], falling back to
+/// the same code-drawn deep-blue/gold look every other screen renders
+/// (via `LudoArtManifest.lobbyBackground`) when no bitmap is bundled.
+/// Sized from a [LayoutBuilder] (rather than [Size.infinite], which
+/// [LudoArtSlot]'s `Image.asset` can't cover with) so [BoxFit.cover] has
+/// real dimensions to fill.
+class _LobbyBackground extends StatelessWidget {
+  const _LobbyBackground({this.child});
+
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final size = Size(constraints.maxWidth, constraints.maxHeight);
+        return Stack(
+          fit: StackFit.expand,
+          children: [
+            LudoArtSlot(
+              slot: LudoArtManifest.lobbyBackgroundSlot,
+              fallbackPainter: LudoArtManifest.lobbyBackground,
+              size: size,
+              fit: BoxFit.cover,
+            ),
+            ?child,
+          ],
+        );
+      },
     );
   }
 }
@@ -494,10 +540,22 @@ class _ResumeCard extends StatelessWidget {
   }
 }
 
-/// Which code-drawn glyph a [_LobbyCard] paints — a distinct, simple
-/// geometric mark per mode (never a photographic icon), matching this
-/// task's Context/Decisions.
+/// Which code-drawn glyph a [_LobbyCard] paints as its fallback (never a
+/// photographic icon, matching task 08's Context/Decisions) — and, per
+/// task 12h, which [LudoArtManifest] bitmap slot the card resolves art
+/// through first via [LudoArtSlot].
 enum _LobbyGlyph { computer, passAndPlay, friends, online }
+
+/// The [LudoArtManifest] bitmap slot name for [_LobbyGlyph]'s tile art
+/// (task 12h) — the user-approved "Style A" tile set.
+extension on _LobbyGlyph {
+  String get manifestSlot => switch (this) {
+    _LobbyGlyph.computer => LudoArtManifest.lobbyTileComputerSlot,
+    _LobbyGlyph.passAndPlay => LudoArtManifest.lobbyTilePassAndPlaySlot,
+    _LobbyGlyph.friends => LudoArtManifest.lobbyTileFriendsSlot,
+    _LobbyGlyph.online => LudoArtManifest.lobbyTileOnlineSlot,
+  };
+}
 
 /// One of the four home lobby entry cards, enabled or disabled.
 class _LobbyCard extends StatelessWidget {
@@ -544,30 +602,42 @@ class _LobbyCard extends StatelessWidget {
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            width: 40,
-                            height: 40,
-                            child: CustomPaint(
-                              painter: _LobbyGlyphPainter(glyph),
+                      // Task 12h's larger lobby header logo takes more of
+                      // the column's vertical space above these tiles,
+                      // leaving less room here on a short viewport (or
+                      // whenever the resume-in-progress card is also
+                      // showing) than this content's natural size wants.
+                      // `FittedBox` scales the icon+title+subtitle stack
+                      // down together to fit rather than overflowing,
+                      // while still rendering at full natural size
+                      // whenever there's room (the common case).
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            LudoArtSlot(
+                              slot: glyph.manifestSlot,
+                              fallbackPainter: (canvas, rect) =>
+                                  _LobbyGlyphPainter(glyph)
+                                      .paint(canvas, rect.size),
+                              size: const Size.square(40),
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            title,
-                            textAlign: TextAlign.center,
-                            style: LudoTextStyles.displaySmall,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            subtitle,
-                            textAlign: TextAlign.center,
-                            style: LudoTextStyles.caption,
-                          ),
-                        ],
+                            const SizedBox(height: 8),
+                            Text(
+                              title,
+                              textAlign: TextAlign.center,
+                              style: LudoTextStyles.displaySmall,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              subtitle,
+                              textAlign: TextAlign.center,
+                              style: LudoTextStyles.caption,
+                            ),
+                          ],
+                        ),
                       ),
                       if (!enabled)
                         const Positioned(

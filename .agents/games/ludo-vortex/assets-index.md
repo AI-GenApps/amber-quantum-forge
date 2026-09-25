@@ -14,7 +14,7 @@
 
 | Set | Path | Status |
 |---|---|---|
-| Lobby backgrounds (A carnival, **B vortex ✓**), tiles (**A 3D objects ✓**, B badges), mockups | `.agents/resources/2026-09-25/ludo-vortex-art/lobby/` | approved: bg-b + tile-a-*, integration pending |
+| Lobby backgrounds (A carnival, **B vortex ✓**), tiles (**A 3D objects ✓**, B badges), mockups | `.agents/resources/2026-09-25/ludo-vortex-art/lobby/` | approved: bg-b + tile-a-*, **integrated (task 12h)** — see `apps-native/games/ludo/assets/art/` (`bg-b.png`, `tile-a-computer.png`, `tile-a-pass.png`, `tile-a-friends.png`, `tile-a-online.png`) and `LICENSES.md`'s "Lobby art" section; wired through `LudoArtManifest.lobbyBackgroundSlot`/`lobbyTileComputerSlot`/`lobbyTilePassAndPlaySlot`/`lobbyTileFriendsSlot`/`lobbyTileOnlineSlot` in `home_lobby_screen.dart` |
 | Economy themes, currency icons, store banners | `.agents/resources/<date>/ludo-vortex-art/economy/` | task 26f (planned) |
 | Audio (CC0) + licences | `apps-native/games/ludo/assets/audio/LICENSES.md` | integrated |
 

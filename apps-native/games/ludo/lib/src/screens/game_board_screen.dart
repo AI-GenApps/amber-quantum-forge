@@ -202,7 +202,13 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
     // mid-bot-sequence doesn't strand the match waiting on a seat that
     // will never act.
     if (widget.config.seats[_state.currentPlayerIndex].isBot) {
-      scheduleMicrotask(_runBotTurns);
+      // ignore: avoid_print
+      print('DBG12H: scheduling _runBotTurns microtask');
+      scheduleMicrotask(() {
+        // ignore: avoid_print
+        print('DBG12H: microtask firing, calling _runBotTurns');
+        _runBotTurns();
+      });
     }
   }
 
@@ -216,7 +222,11 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
   /// move (task 11), or clears it once the match reaches
   /// [LudoMatchPhase.finished] so no stale resumable save is left behind.
   Future<void> _persistLocalSave() async {
+    // ignore: avoid_print
+    print('DBG12H: _persistLocalSave awaiting _localSaveFuture');
     final save = await _localSaveFuture;
+    // ignore: avoid_print
+    print('DBG12H: _persistLocalSave got save, phase=${_state.phase}');
     if (_state.phase == LudoMatchPhase.finished) {
       await save.clear();
       return;
@@ -337,6 +347,8 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
   /// a time (never jumping straight to the end of the bot sequence), then
   /// navigates to results if that sequence ended the match.
   Future<void> _runBotTurns() async {
+    // ignore: avoid_print
+    print('DBG12H: _runBotTurns entered, mounted=$mounted');
     final runner = LudoBotTurnRunner(
       seats: [
         for (final seat in widget.config.seats)
@@ -348,6 +360,8 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
       _state,
       _rng,
       onStep: (step) async {
+        // ignore: avoid_print
+        print('DBG12H: onStep seat=${step.seat} ${step.runtimeType}');
         if (!mounted) return;
         setState(() {
           _state = step.state;
@@ -355,13 +369,21 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
           _armDeadlineForCurrentTurn();
         });
         try {
+          // ignore: avoid_print
+          print('DBG12H: onStep awaiting applyEvents');
           await _game.applyEvents(step.events, step.state);
+          // ignore: avoid_print
+          print('DBG12H: onStep applyEvents done');
         } finally {
           if (mounted) setState(() => _boardBusy = false);
         }
         await _persistLocalSave();
+        // ignore: avoid_print
+        print('DBG12H: onStep persistLocalSave done');
       },
     );
+    // ignore: avoid_print
+    print('DBG12H: runner.run() returned');
     _maybeNavigateToResults();
   }
 

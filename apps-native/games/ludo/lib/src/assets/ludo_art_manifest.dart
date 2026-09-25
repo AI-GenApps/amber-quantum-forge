@@ -32,6 +32,7 @@ import '../game/ludo_confetti.dart';
 import '../game/ludo_dice_component.dart';
 import '../game/ludo_home_arrival_burst.dart';
 import '../game/ludo_token_component.dart';
+import '../theme/ludo_background_painter.dart' show LudoBackgroundPainter;
 
 /// Signature for a visual asset slot: paints the slot's art into [rect] on
 /// [canvas]. Until a later task fills it in, every slot paints a solid
@@ -196,6 +197,13 @@ void _logoWideVisual(Canvas canvas, Rect rect) {
   );
 }
 
+/// Fallback painter for the lobby background slot (task 12h): delegates to
+/// the existing [LudoBackgroundPainter] every other screen already renders
+/// with, used only when no `assets/art/bg-b.png` bitmap is bundled.
+void _lobbyBackgroundFallback(Canvas canvas, Rect rect) {
+  const LudoBackgroundPainter().paint(canvas, rect.size);
+}
+
 /// A single static frame representing the win-confetti celebration, drawn
 /// with the same [ludoConfettiPalette] the live `LudoConfettiComponent`
 /// uses.
@@ -232,6 +240,27 @@ abstract final class LudoArtManifest {
   /// `assets/art/logo_wide.png`.
   static const String logoWideSlot = 'logo_wide';
   static const LudoVisualSlot logoWide = _logoWideVisual;
+
+  /// The home lobby's full-bleed background art (task 12h). Bitmap:
+  /// `assets/art/bg-b.png` — the user-approved "vortex galaxy" background
+  /// from `.agents/resources/2026-09-25/ludo-vortex-art/lobby/`, optimized
+  /// into this package. The fallback below delegates to
+  /// [LudoBackgroundPainter], the same code-drawn painter every other
+  /// screen already renders with, so the lobby never regresses to a
+  /// blank/mismatched fill on a build without this bitmap bundled.
+  static const String lobbyBackgroundSlot = 'bg-b';
+  static const LudoVisualSlot lobbyBackground = _lobbyBackgroundFallback;
+
+  /// One mode-tile art slot per home lobby card (task 12h). Bitmaps:
+  /// `assets/art/tile-a-computer.png`, `tile-a-pass.png`,
+  /// `tile-a-friends.png`, `tile-a-online.png` — the user-approved "Style
+  /// A" tile set from the same lobby art session. Each falls back to
+  /// `home_lobby_screen.dart`'s existing code-drawn glyph painter
+  /// (`_LobbyGlyphPainter`) when its bitmap isn't bundled.
+  static const String lobbyTileComputerSlot = 'tile-a-computer';
+  static const String lobbyTilePassAndPlaySlot = 'tile-a-pass';
+  static const String lobbyTileFriendsSlot = 'tile-a-friends';
+  static const String lobbyTileOnlineSlot = 'tile-a-online';
 
   /// One token slot per player color.
   static final Map<LudoTokenColor, LudoVisualSlot> token = {
@@ -339,6 +368,7 @@ class LudoArtSlot extends StatefulWidget {
     required this.fallbackPainter,
     this.size = const Size.square(64),
     this.bundle,
+    this.fit = BoxFit.contain,
   });
 
   /// Slot name; resolves to `assets/art/<slot>.png`.
@@ -348,6 +378,13 @@ class LudoArtSlot extends StatefulWidget {
   final LudoVisualSlot fallbackPainter;
 
   final Size size;
+
+  /// How the bitmap (when present) fits [size] — every pre-task-12h slot
+  /// is a logo/icon meant to fit entirely within its box
+  /// ([BoxFit.contain], the default), but a full-bleed background slot
+  /// (task 12h's lobby background) passes [BoxFit.cover] instead so it
+  /// fills its box with no letterboxing.
+  final BoxFit fit;
 
   /// Overrides [rootBundle] — tests use this to exercise the
   /// present-bitmap path without a real asset file.
@@ -389,7 +426,7 @@ class _LudoArtSlotState extends State<LudoArtSlot> {
             bundle: widget.bundle,
             width: widget.size.width,
             height: widget.size.height,
-            fit: BoxFit.contain,
+            fit: widget.fit,
           );
         }
         return CustomPaint(

@@ -8,7 +8,8 @@
 /// slots in `ludo_art_manifest.dart` so both draw identical art.
 library;
 
-import 'dart:async';
+import 'dart:async' as async show Timer;
+import 'dart:async' show Completer, unawaited;
 import 'dart:math' as math;
 
 import 'package:flame/components.dart';
@@ -30,6 +31,25 @@ const ludoTokenCellWidthFraction = 0.95;
 /// a marker standing on the cell rather than a squat circle (task 12d2:
 /// ~1.3 cells tall).
 const ludoTokenCellHeightFraction = 1.3;
+
+/// Fraction-of-cell-size fan-out offset (task 12h) `LudoGame._syncTokens`
+/// shifts each stacked token's center by, on each axis, when 2+ tokens
+/// share a board cell — matching Ludo King's stacked-token convention
+/// instead of every token rendering exactly on top of the others. Shared
+/// with [LudoTokenComponent.containsLocalPoint]'s tightened stacked hit
+/// radius ([_stackedTapHitRadiusFraction]) below so the two stay
+/// consistent: the hit radius must always be smaller than this spread, or
+/// stacked tokens' circular hit regions would themselves start
+/// overlapping.
+const ludoTokenStackFanOutFraction = 0.22;
+
+/// Circular tap hit-test radius (fraction of one cell) for a *stacked*
+/// token — see [LudoTokenComponent.containsLocalPoint]. Deliberately well
+/// under [ludoTokenStackFanOutFraction] (the minimum center-to-center
+/// distance between any two tokens in a fan-out, in every 2/3/4+ token
+/// layout `LudoGame._fanOutOffset` produces) so no two stacked tokens'
+/// hit regions can ever overlap.
+const _stackedTapHitRadiusFraction = 0.16;
 
 /// Duration of a single-cell hop.
 const ludoTokenHopDuration = Duration(milliseconds: 120);
@@ -265,6 +285,47 @@ class LudoTokenComponent extends PositionComponent with TapCallbacks {
   Completer<void>? _moveCompleter;
   Duration _hopDuration = ludoTokenHopDuration;
   double _hopArcHeight = ludoTokenHopArcHeight;
+
+  /// Real-time fallback for [_moveCompleter] — see [_armFallbackTimer]'s
+  /// doc comment (task 12h) for why this exists: [update] only advances
+  /// `_hopProgress` (and thus only ever completes [_moveCompleter]) while
+  /// Flame is actually being ticked, which stops happening the moment the
+  /// device's screen times out, the app backgrounds, or any other
+  /// lifecycle event suspends frame scheduling — a real, reproducible
+  /// device condition the existing fake-clock widget tests never hit.
+  /// Without this, a hop/flight interrupted mid-animation hangs its
+  /// `Future` forever, and since `game_board_screen.dart`'s
+  /// `_game.applyEvents` awaits exactly that future before letting the
+  /// bot-turn runner (or a human's next action) proceed, one interrupted
+  /// animation permanently stalls the whole match.
+  async.Timer? _fallbackTimer;
+
+  /// Fan-out offset from this token's cell's pure pixel center, as a
+  /// fraction of one cell's size on each axis (task 12h): `null`/zero when
+  /// this token has its cell to itself. Set by `LudoGame._syncTokens` via
+  /// [updateStackOffset] whenever 2+ tokens (any color mix) share a board
+  /// cell, so every token in the stack renders at a distinct, individually
+  /// tappable position instead of exactly on top of the others — Flame's
+  /// tap hit-test uses this component's actual [position]/[size], so
+  /// offsetting the pixel center here also offsets the tappable region,
+  /// with no separate hit-test bookkeeping needed.
+  Vector2 _stackOffset = Vector2.zero();
+
+  /// The current fan-out offset (fraction of one cell), for tests.
+  Vector2 get stackOffset => _stackOffset;
+
+  /// Sets this token's [_stackOffset] (see its doc comment) and, unless a
+  /// hop/flight is currently animating (which will land on the new offset
+  /// naturally once it reaches its target cell), immediately repositions
+  /// to reflect it.
+  void updateStackOffset(Vector2 fraction) {
+    if (_stackOffset == fraction) return;
+    _stackOffset = fraction;
+    if (!isAnimating) {
+      position = _centerOf(_cell);
+    }
+  }
+
   // Whether the in-flight `_pendingHops` animation is a capture flight-back
   // ([flyTo]) rather than an ordinary hop-by-hop move ([hopTo]) — gates
   // whether landing on a cell plays the per-step SFX/haptic ([hopTo] does,
@@ -287,6 +348,29 @@ class LudoTokenComponent extends PositionComponent with TapCallbacks {
     onTap?.call(color, tokenId);
   }
 
+  /// Tightens this token's tap hit-test region to a small circle around
+  /// its own center when it's part of a stack (task 12h) — its full
+  /// rectangular [size] bounding box (needed so the *rendered* pin, which
+  /// is larger than [ludoTokenStackFanOutFraction]'s spread between
+  /// stack-mates, always paints without being clipped) would otherwise
+  /// still overlap a stack-mate's box even after the fan-out offset, and
+  /// Flame's component dispatch always resolves an overlapping hit to
+  /// whichever component was added last — meaning, without this
+  /// override, tapping squarely on one stacked token could silently
+  /// select a *different* one. [_stackedTapHitRadiusFraction] is smaller
+  /// than [ludoTokenStackFanOutFraction], so stacked tokens' circular hit
+  /// regions never overlap each other, and a tap always resolves to the
+  /// token whose own center it's actually closest to. Un-stacked tokens
+  /// (the default, zero offset) keep the full rectangular hit box,
+  /// unchanged from every prior task.
+  @override
+  bool containsLocalPoint(Vector2 point) {
+    if (_stackOffset == Vector2.zero()) return super.containsLocalPoint(point);
+    final localCenter = Vector2(size.x / 2, size.y / 2);
+    final hitRadius = _cellSize * _stackedTapHitRadiusFraction;
+    return point.distanceTo(localCenter) <= hitRadius;
+  }
+
   /// Whether a hop animation is in progress.
   bool get isAnimating => _pendingHops.isNotEmpty;
 
@@ -296,7 +380,10 @@ class LudoTokenComponent extends PositionComponent with TapCallbacks {
 
   Vector2 _centerOf((int, int) cell) {
     final offset = ludoCellCenterAt(cell, _boardRect);
-    return Vector2(offset.dx, offset.dy);
+    return Vector2(
+      offset.dx + _stackOffset.x * _cellSize,
+      offset.dy + _stackOffset.y * _cellSize,
+    );
   }
 
   void _layoutForBoardSize() {
@@ -318,6 +405,8 @@ class LudoTokenComponent extends PositionComponent with TapCallbacks {
 
   /// Jumps instantly to [cell], cancelling any in-flight hop animation.
   void snapTo((int, int) cell) {
+    _fallbackTimer?.cancel();
+    _fallbackTimer = null;
     _cell = cell;
     _pendingHops.clear();
     _hopProgress = 0;
@@ -348,6 +437,7 @@ class LudoTokenComponent extends PositionComponent with TapCallbacks {
     _hopProgress = 0;
     final completer = Completer<void>();
     _moveCompleter = completer;
+    _armFallbackTimer(_hopDuration * path.length, path.last);
     return completer.future;
   }
 
@@ -356,10 +446,41 @@ class LudoTokenComponent extends PositionComponent with TapCallbacks {
   /// started, so its awaiter never hangs forever — see the analogous fix
   /// in `LudoDiceComponent.rollTo`.
   void _completeStalePendingMove() {
+    _fallbackTimer?.cancel();
+    _fallbackTimer = null;
     final previousCompleter = _moveCompleter;
     if (previousCompleter != null && !previousCompleter.isCompleted) {
       previousCompleter.complete();
     }
+  }
+
+  /// Arms a wall-clock backstop for the hop/flight [_moveCompleter] just
+  /// started, so it always resolves even if [update] never ticks again
+  /// (see [_fallbackTimer]'s doc comment — task 12h's device-only
+  /// stuck-turn root cause). [totalDuration] is the animation's full
+  /// nominal length (a multi-cell hop's *sum* of per-hop durations, since
+  /// [update] only removes one [_pendingHops] entry per elapsed hop); a
+  /// generous buffer is added on top so a normally-ticking [update] always
+  /// wins the race and this is only ever a last-resort unstick. When it
+  /// does fire, this jumps straight to [finalCell] — matching the
+  /// existing reduced-motion "snap" behavior — since no frames were being
+  /// rendered to animate through in the first place.
+  void _armFallbackTimer(Duration totalDuration, (int, int) finalCell) {
+    _fallbackTimer?.cancel();
+    _fallbackTimer = async.Timer(
+      totalDuration + const Duration(milliseconds: 250),
+      () {
+        _fallbackTimer = null;
+        final completer = _moveCompleter;
+        if (completer == null || completer.isCompleted) return;
+        _cell = finalCell;
+        _pendingHops.clear();
+        _hopProgress = 0;
+        position = _centerOf(finalCell);
+        _moveCompleter = null;
+        completer.complete();
+      },
+    );
   }
 
   /// Animates a captured token's flight back to [cell] (its yard slot): a
@@ -382,7 +503,15 @@ class LudoTokenComponent extends PositionComponent with TapCallbacks {
     _hopProgress = 0;
     final completer = Completer<void>();
     _moveCompleter = completer;
+    _armFallbackTimer(_hopDuration, cell);
     return completer.future;
+  }
+
+  @override
+  void onRemove() {
+    _fallbackTimer?.cancel();
+    _fallbackTimer = null;
+    super.onRemove();
   }
 
   @override
@@ -411,6 +540,8 @@ class LudoTokenComponent extends PositionComponent with TapCallbacks {
         unawaited(LudoArtManifest.sfxTokenStep());
       }
       if (_pendingHops.isEmpty) {
+        _fallbackTimer?.cancel();
+        _fallbackTimer = null;
         final completer = _moveCompleter;
         _moveCompleter = null;
         completer?.complete();
