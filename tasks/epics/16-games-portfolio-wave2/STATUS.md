@@ -140,7 +140,7 @@ commits and applies the small `.agents/games/*` index edits itself. The human co
 | 13 | Merge Relay: local quality, seeded runs, budgets | agent | [ ] |
 | 14 | Merge Relay: name candidates (strict uniqueness) | agent | [ ] |
 | 15 | Pocket Biome: art-direction dry run | agent | [ ] |
-| 16 | Sixty-Second Heist: name candidates (strict uniqueness) | agent | [ ] |
+| 16 | Sixty-Second Heist: name candidates (strict uniqueness) | agent | [x] |
 | 17 | HUMAN: pick Merge Relay name + Pocket Biome direction | human | [ ] |
 | 18 | Merge Relay: apply the chosen name | agent | [ ] |
 | 19 | Merge Relay: logo + icon dry run | agent | [ ] |

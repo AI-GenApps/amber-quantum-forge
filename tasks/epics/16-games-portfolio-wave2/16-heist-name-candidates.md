@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 16-heist-name-candidates
-status: pending
+status: completed
 commit_scope: heist
 depends_on: [16-games-portfolio-wave2/15-pb-art-direction-dry-run]
 estimate: S
@@ -30,8 +30,8 @@ game is picked up in a later epic.
 
 ## Implementation Checklist
 
-- [ ] Write `.agents/resources/2026-09-25/heist-brand/name-check.md` and `shortlist.json`.
-- [ ] Update `.agents/games/sixty-second-heist/open-questions.md`.
+- [x] Write `.agents/resources/2026-09-25/heist-brand/name-check.md` and `shortlist.json`.
+- [x] Update `.agents/games/sixty-second-heist/open-questions.md`.
 
 ## Files Touched
 

@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Heist Plotter",
+    "rationale": "Names the core loop directly (plot the heist before you commit); zero conflict signal on Play, App Store, Steam, itch.io, or the general web.",
+    "verdict": "NOT FOUND",
+    "checked_at": "2026-09-25",
+    "evidence": [
+      "https://play.google.com/store/search?q=Heist+Plotter&c=apps",
+      "https://itunes.apple.com/search?term=Heist+Plotter&entity=software&limit=50",
+      "https://store.steampowered.com/app/420330/HEIST/",
+      "https://gamerant.com/best-games-pulling-off-heists/"
+    ]
+  },
+  {
+    "name": "Vault Sketch",
+    "rationale": "Evokes drawing/plotting a route on a vault floor plan; short, two easy words, reads well as an icon wordmark.",
+    "verdict": "NOT FOUND",
+    "checked_at": "2026-09-25",
+    "evidence": [
+      "https://play.google.com/store/search?q=Vault+Sketch&c=apps",
+      "https://itunes.apple.com/search?term=Vault+Sketch&entity=software&limit=50",
+      "https://keveatscheese.itch.io/vaultsteam",
+      "https://itch.io/games/tag-vault"
+    ]
+  },
+  {
+    "name": "Loot Route",
+    "rationale": "Encodes both verbs of the loop (grab loot, plan a route) in two plain words; only turns up as a generic phrase in an unrelated extraction-shooter guide.",
+    "verdict": "NOT FOUND",
+    "checked_at": "2026-09-25",
+    "evidence": [
+      "https://play.google.com/store/search?q=Loot+Route&c=apps",
+      "https://itunes.apple.com/search?term=Loot+Route&entity=software&limit=50",
+      "https://arcraidermap.com/guides/best-loot-routes",
+      "https://store.steampowered.com/app/4892120"
+    ]
+  },
+  {
+    "name": "Grid Heist",
+    "rationale": "Names the board (a grid) and the genre (heist) with no casino connotation; closest hit is an unrelated compound word.",
+    "verdict": "NOT FOUND",
+    "checked_at": "2026-09-25",
+    "evidence": [
+      "https://play.google.com/store/search?q=Grid+Heist&c=apps",
+      "https://itunes.apple.com/search?term=Grid+Heist&entity=software&limit=50",
+      "https://itch.io/games/tag-heist",
+      "https://yeswecamp.itch.io/pixel-heist"
+    ]
+  },
+  {
+    "name": "Guard Dodge",
+    "rationale": "Plain, verb-first name that describes the core obstacle (avoid guards) without implying a timer.",
+    "verdict": "NOT FOUND",
+    "checked_at": "2026-09-25",
+    "evidence": [
+      "https://play.google.com/store/search?q=Guard+Dodge&c=apps",
+      "https://itunes.apple.com/search?term=Guard+Dodge&entity=software&limit=50",
+      "https://en.wikipedia.org/wiki/List_of_dodgeball_variations",
+      "https://play.google.com/store/apps/details?id=com.SvetlexCompanyDodgeGame&hl=en_US"
+    ]
+  },
+  {
+    "name": "Sneak Route",
+    "rationale": "Stealth plus route-planning in two words; the nearest hit (\"Sneak & Seek\") is a distinct, unrelated title.",
+    "verdict": "NOT FOUND",
+    "checked_at": "2026-09-25",
+    "evidence": [
+      "https://play.google.com/store/search?q=Sneak+Route&c=apps",
+      "https://itunes.apple.com/search?term=Sneak+Route&entity=software&limit=50",
+      "https://www.gamespot.com/gallery/best-stealth-games/2900-7268/",
+      "https://play.google.com/store/apps/details?id=com.zatg.sneak.seek.mysteries&hl=en_US"
+    ]
+  }
+]
