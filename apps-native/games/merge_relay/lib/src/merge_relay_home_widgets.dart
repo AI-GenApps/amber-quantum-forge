@@ -30,6 +30,7 @@ final class _HomeBar extends StatelessWidget {
                 style: TextStyle(
                   color: theme.muted,
                   fontSize: 11,
+                  fontFamily: 'Fredoka',
                   fontWeight: FontWeight.w900,
                   letterSpacing: 1.6,
                 ),
@@ -40,6 +41,7 @@ final class _HomeBar extends StatelessWidget {
                 style: TextStyle(
                   color: theme.ink,
                   fontSize: 28,
+                  fontFamily: 'Fredoka',
                   fontWeight: FontWeight.w900,
                   letterSpacing: -0.8,
                 ),
@@ -78,7 +80,11 @@ final class _LegacyOffer extends StatelessWidget {
           children: [
             Text(
               'Your older board is safe.',
-              style: TextStyle(color: theme.ink, fontWeight: FontWeight.w900),
+              style: TextStyle(
+                color: theme.ink,
+                fontFamily: 'Fredoka',
+                fontWeight: FontWeight.w900,
+              ),
             ),
             const SizedBox(height: 3),
             Text(
@@ -127,7 +133,11 @@ final class _RestoreFailure extends StatelessWidget {
           children: [
             Text(
               'Your saved board needs another look.',
-              style: TextStyle(color: theme.ink, fontWeight: FontWeight.w900),
+              style: TextStyle(
+                color: theme.ink,
+                fontFamily: 'Fredoka',
+                fontWeight: FontWeight.w900,
+              ),
             ),
             const SizedBox(height: 3),
             Text(
@@ -191,6 +201,7 @@ final class _HomeAction extends StatelessWidget {
                         style: TextStyle(
                           color: foreground,
                           fontSize: 17,
+                          fontFamily: 'Fredoka',
                           fontWeight: FontWeight.w900,
                         ),
                       ),
@@ -255,6 +266,7 @@ final class _SmallAction extends StatelessWidget {
                   label,
                   style: TextStyle(
                     color: theme.ink,
+                    fontFamily: 'Fredoka',
                     fontWeight: FontWeight.w900,
                   ),
                 ),

@@ -34,6 +34,7 @@ final class _HomeHero extends StatelessWidget {
                     style: TextStyle(
                       color: theme.paper,
                       fontSize: 22,
+                      fontFamily: 'Fredoka',
                       fontWeight: FontWeight.w900,
                       height: 1.06,
                     ),

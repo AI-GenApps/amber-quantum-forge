@@ -7,6 +7,7 @@ import 'merge_relay_play_screen.dart';
 import 'merge_relay_relay_screen.dart';
 import 'merge_relay_theme.dart';
 import 'merge_relay_tutorial.dart';
+import 'ui/mr_background.dart';
 
 final class MergeRelayScreen extends StatelessWidget {
   const MergeRelayScreen({required this.game, super.key});
@@ -46,10 +47,19 @@ final class MergeRelayScreen extends StatelessWidget {
           },
           child: Scaffold(
             backgroundColor: theme.paper,
-            body: SafeArea(
-              child: LayoutBuilder(
-                builder: (context, constraints) =>
-                    _body(context, constraints, theme),
+            // `MrBackground` is applied here — the single wrapper shared by
+            // every route (home, tutorial, play, result, relay) — so the
+            // new brand background reaches all of them without touching
+            // each screen's own layout (that per-screen restyle is
+            // task 11); see the task 07 Context/Decisions note on
+            // applying the theme globally.
+            body: MrBackground(
+              theme: theme,
+              child: SafeArea(
+                child: LayoutBuilder(
+                  builder: (context, constraints) =>
+                      _body(context, constraints, theme),
+                ),
               ),
             ),
           ),

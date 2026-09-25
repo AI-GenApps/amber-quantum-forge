@@ -41,6 +41,7 @@ final class MergeRelayHeader extends StatelessWidget {
                 style: TextStyle(
                   color: theme.muted,
                   fontSize: 11,
+                  fontFamily: 'Fredoka',
                   fontWeight: FontWeight.w900,
                   letterSpacing: 1.6,
                 ),
@@ -53,6 +54,7 @@ final class MergeRelayHeader extends StatelessWidget {
                 style: TextStyle(
                   color: theme.ink,
                   fontSize: 28,
+                  fontFamily: 'Fredoka',
                   fontWeight: FontWeight.w900,
                   height: 1.05,
                   letterSpacing: -0.7,
@@ -246,6 +248,7 @@ final class _Score extends StatelessWidget {
               style: TextStyle(
                 color: accent ?? theme.muted,
                 fontSize: compact ? 9 : 10,
+                fontFamily: 'Fredoka',
                 fontWeight: FontWeight.w900,
                 letterSpacing: 0.9,
               ),
@@ -256,6 +259,7 @@ final class _Score extends StatelessWidget {
               style: TextStyle(
                 color: theme.ink,
                 fontSize: compact ? 16 : 22,
+                fontFamily: 'Fredoka',
                 fontWeight: FontWeight.w900,
               ),
             ),

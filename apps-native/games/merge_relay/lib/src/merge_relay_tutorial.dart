@@ -86,6 +86,7 @@ final class _MergeRelayTutorialState extends State<MergeRelayTutorial> {
                     style: TextStyle(
                       color: palette.ink,
                       fontSize: 20,
+                      fontFamily: 'Fredoka',
                       fontWeight: FontWeight.w900,
                     ),
                   ),
@@ -144,6 +145,7 @@ final class _MergeRelayTutorialState extends State<MergeRelayTutorial> {
                         color: palette.ink,
                         fontSize: 24,
                         height: 1.06,
+                        fontFamily: 'Fredoka',
                         fontWeight: FontWeight.w900,
                       ),
                     ),

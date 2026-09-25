@@ -8,6 +8,7 @@ import 'merge_relay_models.dart';
 import 'merge_relay_overlays.dart';
 import 'merge_relay_play_widgets.dart';
 import 'merge_relay_theme.dart';
+import 'ui/mr_tokens.dart';
 
 part 'merge_relay_result_screen.dart';
 part 'merge_relay_pause_panel.dart';
@@ -132,6 +133,7 @@ final class _PlayBar extends StatelessWidget {
                   style: TextStyle(
                     color: theme.muted,
                     fontSize: 10,
+                    fontFamily: 'Fredoka',
                     fontWeight: FontWeight.w900,
                     letterSpacing: 1.4,
                   ),
@@ -143,6 +145,7 @@ final class _PlayBar extends StatelessWidget {
                 style: TextStyle(
                   color: theme.ink,
                   fontSize: compact ? 17 : 22,
+                  fontFamily: 'Fredoka',
                   fontWeight: FontWeight.w900,
                   height: 1.05,
                 ),

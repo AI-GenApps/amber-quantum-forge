@@ -9,9 +9,15 @@ final class _PausePanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
+      // Fully opaque (task 07 round 2): a translucent panel let the
+      // board's tiles show through behind the action labels, which read
+      // as low-contrast text and, on a short screen, as if "Finish here"
+      // overlapped a tile. An opaque `MrPanel`-style ink surface (plus its
+      // own drop shadow) guarantees full contrast for every label.
       decoration: BoxDecoration(
-        color: theme.ink.withValues(alpha: 0.94),
-        borderRadius: BorderRadius.circular(27),
+        color: theme.ink,
+        borderRadius: BorderRadius.circular(MrTokens.radiusLarge),
+        boxShadow: MrTokens.cardShadow(opacity: 0.3),
       ),
       child: LayoutBuilder(
         builder: (context, constraints) => SingleChildScrollView(
@@ -37,6 +43,7 @@ final class _PausePanel extends StatelessWidget {
                   style: TextStyle(
                     color: theme.paper,
                     fontSize: 23,
+                    fontFamily: 'Fredoka',
                     fontWeight: FontWeight.w900,
                   ),
                 ),
@@ -51,6 +58,15 @@ final class _PausePanel extends StatelessWidget {
                   width: double.infinity,
                   child: FilledButton(
                     onPressed: () => game.setPaused(false),
+                    // The theme's default `FilledButton` background is
+                    // `theme.ink` (task 07), which is invisible on this
+                    // panel's own ink-colored background — flip it to a
+                    // paper pill so "Resume" stays legible over the dark
+                    // pause overlay.
+                    style: FilledButton.styleFrom(
+                      backgroundColor: theme.paper,
+                      foregroundColor: theme.ink,
+                    ),
                     child: const Text('Resume'),
                   ),
                 ),

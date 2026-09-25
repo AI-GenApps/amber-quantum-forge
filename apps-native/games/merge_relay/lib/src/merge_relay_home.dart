@@ -115,6 +115,7 @@ final class MergeRelayHome extends StatelessWidget {
               style: TextStyle(
                 color: theme.ink,
                 fontSize: 22,
+                fontFamily: 'Fredoka',
                 fontWeight: FontWeight.w900,
               ),
             ),
@@ -178,6 +179,7 @@ final class _ChapterHeader extends StatelessWidget {
             style: TextStyle(
               color: unlocked ? theme.ink : theme.muted,
               fontSize: 15,
+              fontFamily: 'Fredoka',
               fontWeight: FontWeight.w900,
             ),
           ),

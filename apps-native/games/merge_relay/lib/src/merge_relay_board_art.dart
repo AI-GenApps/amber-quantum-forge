@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:merge_rules/merge_rules.dart';
 
 import 'merge_relay_theme.dart';
+import 'ui/mr_tokens.dart';
 
 final class MergeRelayBoardArt {
   const MergeRelayBoardArt._();
@@ -37,7 +38,7 @@ final class MergeRelayBoardArt {
       final top = padding + row * (cell + gap);
       final rect = Rect.fromLTWH(left, top, cell, cell);
       final value = board.cells[index];
-      paint.color = value == 0 ? theme.slot : _tileColor(theme, value);
+      paint.color = value == 0 ? theme.slot : MrTokens.tileColorFor(value);
       canvas.drawRRect(
         RRect.fromRectAndRadius(rect, const Radius.circular(18)),
         paint,
@@ -79,24 +80,36 @@ final class MergeRelayBoardArt {
         canvas.drawCircle(rect.center, cell * (0.3 + pulse * 0.06), paint);
         paint.style = PaintingStyle.fill;
       }
-      paint.color = theme.paper.withValues(alpha: 0.2);
+      final numeralColor = MrTokens.tileNumeralColorFor(value);
+      paint.color = numeralColor.withValues(alpha: 0.12);
       canvas.drawCircle(
         Offset(rect.left + cell * 0.78, rect.top + cell * 0.22),
         cell * 0.09,
         paint,
       );
+      // Fredoka numerals fill most of the tile (>= 40% of its height, per
+      // the visual-reference Threes! anchor) and shrink for longer digit
+      // strings so 4-digit tiers (1024+) still fit within the tile.
+      final digits = '$value'.length;
+      final fontScale = switch (digits) {
+        1 => 0.58,
+        2 => 0.50,
+        3 => 0.40,
+        _ => 0.32,
+      };
       final text = TextPainter(
         text: TextSpan(
           text: '$value',
           style: TextStyle(
-            color: theme.paper,
-            fontSize: cell * (value >= 100 ? 0.22 : 0.28),
-            fontWeight: FontWeight.w800,
+            fontFamily: 'Fredoka',
+            color: numeralColor,
+            fontSize: cell * fontScale,
+            fontWeight: FontWeight.w600,
             letterSpacing: -0.5,
           ),
         ),
         textDirection: TextDirection.ltr,
-      )..layout(maxWidth: cell * 0.8);
+      )..layout(maxWidth: cell * 0.86);
       text.paint(
         canvas,
         Offset(
@@ -106,16 +119,5 @@ final class MergeRelayBoardArt {
       );
     }
     canvas.restore();
-  }
-
-  static Color _tileColor(MergeRelayTheme theme, int value) {
-    return switch (value) {
-      2 => theme.blue,
-      4 => theme.sky,
-      8 => theme.coral,
-      16 => theme.warm,
-      32 => Color.alphaBlend(theme.coral, theme.board),
-      _ => Color.alphaBlend(theme.warm, theme.board),
-    };
   }
 }

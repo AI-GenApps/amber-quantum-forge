@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 07-mr-design-system-and-fonts
-status: pending
+status: completed
 commit_scope: merge-relay
 depends_on: [16-games-portfolio-wave2/06-mr-rescue-campaign-60]
 estimate: L
@@ -54,16 +54,16 @@ visual evidence that every later task and verifier looks at.
 
 ## Implementation Checklist
 
-- [ ] Add the fonts and OFL files, and register them in `pubspec.yaml`.
-- [ ] Add `lib/src/ui/{mr_tokens,mr_theme,mr_text_styles,mr_background,mr_panel,mr_button,mr_pill,mr_dialog}.dart`.
-- [ ] Add the art manifest with fallback-first slots, plus tests.
-- [ ] Replace `ThemeData` in `merge_relay_theme.dart`/`merge_relay_app.dart`
+- [x] Add the fonts and OFL files, and register them in `pubspec.yaml`.
+- [x] Add `lib/src/ui/{mr_tokens,mr_theme,mr_text_styles,mr_background,mr_panel,mr_button,mr_pill,mr_dialog}.dart`.
+- [x] Add the art manifest with fallback-first slots, plus tests.
+- [x] Replace `ThemeData` in `merge_relay_theme.dart`/`merge_relay_app.dart`
       with the new theme; remove any `colorSchemeSeed` or Material-default
       look.
-- [ ] Add `flutter_test_config.dart` (font loading), `typography_test.dart`
+- [x] Add `flutter_test_config.dart` (font loading), `typography_test.dart`
       (every text resolves to Fredoka or Nunito Sans), and the screen
       goldens.
-- [ ] Copy the goldens to `.agents/resources/2026-09-25/games-wave2-qa/07/`,
+- [x] Copy the goldens to `.agents/resources/2026-09-25/games-wave2-qa/07/`,
       build a side-by-side contact sheet against the task 01 anchors, and
       VIEW both.
 

@@ -35,6 +35,7 @@ final class MergeRelayResultScreen extends StatelessWidget {
                 style: TextStyle(
                   color: theme.ink,
                   fontSize: 22,
+                  fontFamily: 'Fredoka',
                   fontWeight: FontWeight.w900,
                 ),
               ),
@@ -56,6 +57,7 @@ final class MergeRelayResultScreen extends StatelessWidget {
                     style: TextStyle(
                       color: theme.paper,
                       fontSize: 30,
+                      fontFamily: 'Fredoka',
                       fontWeight: FontWeight.w900,
                     ),
                   ),
@@ -97,6 +99,7 @@ final class MergeRelayResultScreen extends StatelessWidget {
             style: TextStyle(
               color: theme.ink,
               fontSize: 17,
+              fontFamily: 'Fredoka',
               fontWeight: FontWeight.w900,
             ),
           ),
@@ -206,6 +209,7 @@ final class _ResultMetric extends StatelessWidget {
             style: TextStyle(
               color: theme.paper,
               fontSize: 24,
+              fontFamily: 'Fredoka',
               fontWeight: FontWeight.w900,
             ),
           ),

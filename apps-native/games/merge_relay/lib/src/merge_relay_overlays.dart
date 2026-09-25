@@ -33,6 +33,7 @@ Future<void> showMergeRelaySettings(
                 style: TextStyle(
                   color: theme.ink,
                   fontSize: 23,
+                  fontFamily: 'Fredoka',
                   fontWeight: FontWeight.w900,
                 ),
               ),
@@ -220,9 +221,28 @@ final class _ThemeChoice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Explicit colors rather than the ambient `ChipTheme` (task 07 round
+    // 2): the theme's derived `onSurfaceVariant` read as washed-out gray
+    // for the unselected label, and relying on the selected/unselected
+    // states looking different only through Material's default opacity
+    // shift wasn't a clearly distinct affordance. Selected now flips to a
+    // solid ink fill with a paper label + checkmark; unselected stays a
+    // paper chip with a full-opacity ink label and a visible ink border —
+    // both states clear WCAG AA contrast.
+    final foreground = selected ? theme.paper : theme.ink;
     return ChoiceChip(
       selected: selected,
+      showCheckmark: true,
+      checkmarkColor: foreground,
       label: Text(label),
+      labelStyle: TextStyle(
+        fontFamily: 'Fredoka',
+        color: foreground,
+        fontWeight: FontWeight.w700,
+      ),
+      backgroundColor: theme.paper,
+      selectedColor: theme.ink,
+      side: BorderSide(color: theme.ink.withValues(alpha: selected ? 0 : 0.45)),
       onSelected: (_) => onTap(),
       avatar: CircleAvatar(backgroundColor: theme.blue, radius: 8),
     );

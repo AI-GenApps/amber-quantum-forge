@@ -29,3 +29,12 @@ flutter:
   assets:
     - assets/
     - content/
+  fonts:
+    - family: Fredoka
+      fonts:
+        - asset: assets/fonts/Fredoka/Fredoka[wdth,wght].ttf
+    - family: NunitoSans
+      fonts:
+        - asset: assets/fonts/NunitoSans/NunitoSans[YTLC,opsz,wdth,wght].ttf
+        - asset: assets/fonts/NunitoSans/NunitoSans-Italic[YTLC,opsz,wdth,wght].ttf
+          style: italic
