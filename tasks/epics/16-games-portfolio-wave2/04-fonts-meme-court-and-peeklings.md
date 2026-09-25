@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 04-fonts-meme-court-and-peeklings
-status: pending
+status: completed
 commit_scope: games
 depends_on: [16-games-portfolio-wave2/03-fonts-pocket-biome-and-heist]
 estimate: M
@@ -35,13 +35,13 @@ typography test.
 
 ## Implementation Checklist
 
-- [ ] Add the fonts and `OFL.txt` files, and register them in both pubspecs.
-- [ ] Add a typography file per app and wire it into the theme.
+- [x] Add the fonts and `OFL.txt` files, and register them in both pubspecs.
+- [x] Add a typography file per app and wire it into the theme.
       Update any Flame or canvas text.
-- [ ] Add `test/flutter_test_config.dart`, `test/typography_test.dart`, and
+- [x] Add `test/flutter_test_config.dart`, `test/typography_test.dart`, and
       `test/goldens/screens/{home,in-play}.png` per app, at 1080×2400.
-- [ ] Handle the Peeklings glyph fallback as described above.
-- [ ] Copy the goldens to `.agents/resources/2026-09-25/games-wave2-qa/04/`
+- [x] Handle the Peeklings glyph fallback as described above.
+- [x] Copy the goldens to `.agents/resources/2026-09-25/games-wave2-qa/04/`
       and VIEW them.
 
 ## Files Touched

@@ -127,7 +127,7 @@ commits and applies the small `.agents/games/*` index edits itself. The human co
 | 01 | Competitor store-listing references + Merge Relay visual reference | agent | [x] |
 | 02 | Server toolchain verification (build, icons, doctor) | agent | [x] |
 | 03 | Custom fonts: Pocket Biome + Sixty-Second Heist | agent | [x] |
-| 04 | Custom fonts: Meme Court + Peeklings | agent | [ ] |
+| 04 | Custom fonts: Meme Court + Peeklings | agent | [x] |
 | 05 | Merge Relay: solo v1 scope gate | agent | [ ] |
 | 06 | Merge Relay: solver + 60-board rescue campaign | agent | [ ] |
 | 07 | Merge Relay: design system, fonts, screen-golden harness | agent | [ ] |
