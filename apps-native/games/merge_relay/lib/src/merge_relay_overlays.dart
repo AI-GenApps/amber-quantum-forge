@@ -54,6 +54,13 @@ Future<void> showMergeRelaySettings(
               ),
               SwitchListTile.adaptive(
                 contentPadding: EdgeInsets.zero,
+                title: const Text('High contrast'),
+                subtitle: const Text('Firmer tile and slot outlines.'),
+                value: game.preferences.value.highContrast,
+                onChanged: game.setHighContrast,
+              ),
+              SwitchListTile.adaptive(
+                contentPadding: EdgeInsets.zero,
                 title: const Text('Sound'),
                 value: game.preferences.value.audioEnabled,
                 onChanged: game.setAudioEnabled,

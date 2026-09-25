@@ -12,6 +12,7 @@ final class MergeRelayBoardPainter extends CustomPainter {
     this.mergedCells = const {},
     this.spawnedCell,
     this.pulse = 0,
+    this.highContrast = false,
   });
 
   final MergeBoard board;
@@ -20,6 +21,7 @@ final class MergeRelayBoardPainter extends CustomPainter {
   final Set<int> mergedCells;
   final int? spawnedCell;
   final double pulse;
+  final bool highContrast;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -32,6 +34,7 @@ final class MergeRelayBoardPainter extends CustomPainter {
       mergedCells: mergedCells,
       spawnedCell: spawnedCell,
       pulse: pulse,
+      highContrast: highContrast,
     );
   }
 
@@ -42,6 +45,7 @@ final class MergeRelayBoardPainter extends CustomPainter {
         oldDelegate.changedCells != changedCells ||
         oldDelegate.mergedCells != mergedCells ||
         oldDelegate.spawnedCell != spawnedCell ||
-        oldDelegate.pulse != pulse;
+        oldDelegate.pulse != pulse ||
+        oldDelegate.highContrast != highContrast;
   }
 }

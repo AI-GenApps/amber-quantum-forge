@@ -95,4 +95,13 @@ final class MrTokens {
 
   static Color tileNumeralColorFor(int value) =>
       tileTierNumeralColors[tileTierIndex(value)];
+
+  /// A darker shade of a tile's tier colour, used for the card's bottom
+  /// "thickness" edge (task 08) — darkened in HSL lightness so it stays in
+  /// the same hue family as the tile face instead of muddying toward grey.
+  static Color tileEdgeColorFor(int value) {
+    final hsl = HSLColor.fromColor(tileColorFor(value));
+    final lightness = (hsl.lightness - 0.16).clamp(0.0, 1.0);
+    return hsl.withLightness(lightness).toColor();
+  }
 }

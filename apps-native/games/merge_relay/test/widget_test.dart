@@ -59,8 +59,10 @@ void main() {
       await tester.tap(find.byTooltip('Settings'));
       await tester.pumpAndSettle();
       expect(find.text('Board controls'), findsOneWidget);
+      expect(find.text('High contrast'), findsOneWidget);
 
       await tester.tap(find.text('Board controls'));
+      await tester.tap(find.text('High contrast'));
       await tester.tap(find.text('Replay handoff guide'));
       await tester.pumpAndSettle();
       expect(find.text('First handoff'), findsOneWidget);

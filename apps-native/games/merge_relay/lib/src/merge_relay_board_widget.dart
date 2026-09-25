@@ -110,6 +110,7 @@ final class _MergeRelayBoardState extends State<MergeRelayBoard>
                       mergedCells: presentation?.mergedCells ?? const {},
                       spawnedCell: presentation?.spawnedCell,
                       pulse: 1 - _animation.value,
+                      highContrast: widget.game.preferences.value.highContrast,
                     ),
                   );
                 },

@@ -52,6 +52,7 @@ final class MergeRelayPreferences {
     this.audioEnabled = true,
     this.hapticsEnabled = true,
     this.accessibleControls = false,
+    this.highContrast = false,
   });
 
   final String themeId;
@@ -59,6 +60,7 @@ final class MergeRelayPreferences {
   final bool audioEnabled;
   final bool hapticsEnabled;
   final bool accessibleControls;
+  final bool highContrast;
 
   MergeRelayPreferences copyWith({
     String? themeId,
@@ -66,6 +68,7 @@ final class MergeRelayPreferences {
     bool? audioEnabled,
     bool? hapticsEnabled,
     bool? accessibleControls,
+    bool? highContrast,
   }) {
     return MergeRelayPreferences(
       themeId: themeId ?? this.themeId,
@@ -73,6 +76,7 @@ final class MergeRelayPreferences {
       audioEnabled: audioEnabled ?? this.audioEnabled,
       hapticsEnabled: hapticsEnabled ?? this.hapticsEnabled,
       accessibleControls: accessibleControls ?? this.accessibleControls,
+      highContrast: highContrast ?? this.highContrast,
     );
   }
 }

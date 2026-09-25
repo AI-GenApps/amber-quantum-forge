@@ -172,7 +172,12 @@ final class MergeRelayGame extends FlameGame {
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    MergeRelayBoardArt.paint(canvas, state.value.board, size: size.toSize());
+    MergeRelayBoardArt.paint(
+      canvas,
+      state.value.board,
+      size: size.toSize(),
+      highContrast: preferences.value.highContrast,
+    );
   }
 
   @override

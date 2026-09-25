@@ -40,6 +40,13 @@ and a polished pause screen and settings.
 - **Pause** is an `MrDialog` with Resume / Restart (confirmation) / Home /
   Settings. **Settings** has Sound, Music, Vibration, Reduced motion,
   High contrast, Replay tutorial, and a version line.
+- **Play screen composition** (added 2026-09-26 after the task 08 review):
+  the play screen currently leaves ~20% empty bands above and below the
+  board (`test/goldens/screens/play_rescue.png`). Compose it the way
+  Threes! does: a compact HUD (goal + score/best/moves), the board as the
+  vertical focal point, and a useful lower area (e.g. the next-tile/goal
+  hint and a pause/undo strip). No horizontal band over 20% may be flat
+  empty background.
 - Copy stays short, original, and game-voiced; the solo scope has no
   "relay"/"friend" wording.
 - Layout works from 360×640 to 430×932 logical px, and with text scale 1.3,
@@ -48,7 +55,7 @@ and a polished pause screen and settings.
 ## Implementation Checklist
 
 - [ ] Restyle Home, add the chapter map, and restyle Result, Pause, and
-      Settings.
+      Settings; recompose the Play screen (rescue and endless).
 - [ ] Add small-screen and large-text widget tests (no overflow
       exceptions) for every screen.
 - [ ] Update the screen goldens and add `chapter_map.png`,
@@ -65,7 +72,8 @@ and a polished pause screen and settings.
 ## Acceptance Criteria
 
 - In the Home golden, no horizontal band taller than 25% of the screen is flat
-  empty background; the verifier measures it on the image.
+  empty background; in the Play goldens no band is taller than 20%. The
+  verifier measures both on the images.
 - The chapter-map golden shows 6 chapters and the correct
   cleared/current/locked states for a seeded save.
 - The small-screen and large-text tests pass with no `RenderFlex overflow`.

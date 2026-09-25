@@ -269,11 +269,13 @@ extension MergeRelayGameRestoreParsing on MergeRelayGame {
     final audio = payload['audio_enabled'];
     final haptics = payload['haptics_enabled'];
     final accessible = payload['accessible_controls'];
+    final highContrast = payload['high_contrast'];
     if ((theme != null && theme is! String) ||
         (reduced != null && reduced is! bool) ||
         (audio != null && audio is! bool) ||
         (haptics != null && haptics is! bool) ||
-        (accessible != null && accessible is! bool)) {
+        (accessible != null && accessible is! bool) ||
+        (highContrast != null && highContrast is! bool)) {
       throw const FormatException('Invalid merge preferences');
     }
     return MergeRelayPreferences(
@@ -282,6 +284,7 @@ extension MergeRelayGameRestoreParsing on MergeRelayGame {
       audioEnabled: audio != false,
       hapticsEnabled: haptics != false,
       accessibleControls: accessible == true,
+      highContrast: highContrast == true,
     );
   }
 

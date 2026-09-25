@@ -131,6 +131,8 @@ final class _MergeRelayTutorialState extends State<MergeRelayTutorial> {
                             theme: palette,
                             board: _session.state.board,
                             presentation: _session.presentation,
+                            highContrast:
+                                widget.game.preferences.value.highContrast,
                           ),
                         ),
                       ),
@@ -220,11 +222,13 @@ final class _TutorialBoard extends StatelessWidget {
     required this.theme,
     required this.board,
     required this.presentation,
+    this.highContrast = false,
   });
 
   final MergeRelayTheme theme;
   final MergeBoard board;
   final MergeMovePresentation? presentation;
+  final bool highContrast;
 
   @override
   Widget build(BuildContext context) {
@@ -249,6 +253,7 @@ final class _TutorialBoard extends StatelessWidget {
             changedCells: presentation?.changedCells ?? const {},
             mergedCells: presentation?.mergedCells ?? const {},
             spawnedCell: presentation?.spawnedCell,
+            highContrast: highContrast,
           ),
         ),
       ),

@@ -29,13 +29,16 @@ final class MergeRelayTheme {
 
 // Both cosmetic variants below share the brand base ([MrTokens.paper] /
 // [MrTokens.ink]) — restyled for task 07 away from the old flat cool-blue
-// "signal" paper and to derive `board`/`slot` from the shared ink tone —
-// and differ only in their relay-light accent hues (blue/sky/coral/warm).
+// "signal" paper — and differ only in their relay-light accent hues
+// (blue/sky/coral/warm). Task 08 replaces `board`/`slot`: both used to be
+// dark-navy/dark-purple (a holdover from the old flat theme, at odds with
+// the Threes!-style warm paper board), so both variants now use a soft
+// cream tray and a barely-darker pale well — never a dark hole.
 const signalRelayTheme = MergeRelayTheme(
   paper: MrTokens.paper,
   ink: MrTokens.ink,
-  board: MrTokens.ink,
-  slot: Color(0xff2c3a5c),
+  board: Color(0xfff6ecd8),
+  slot: Color(0xffe9dcc0),
   blue: Color(0xff3c5c9e),
   sky: Color(0xff2a7a8c),
   coral: Color(0xffc03e4f),
@@ -46,8 +49,8 @@ const signalRelayTheme = MergeRelayTheme(
 const emberRelayTheme = MergeRelayTheme(
   paper: MrTokens.paper,
   ink: Color(0xff2b1c36),
-  board: Color(0xff2b1c36),
-  slot: Color(0xff49304f),
+  board: Color(0xfff3e2d9),
+  slot: Color(0xffe6d0c8),
   blue: Color(0xff8d4d85),
   sky: Color(0xffb76b88),
   coral: Color(0xffb34d3f),

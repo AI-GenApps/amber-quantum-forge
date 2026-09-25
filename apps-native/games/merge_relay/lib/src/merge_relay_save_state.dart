@@ -83,6 +83,7 @@ final class _MergeRelayProfile {
     'audio_enabled': preferences.audioEnabled,
     'haptics_enabled': preferences.hapticsEnabled,
     'accessible_controls': preferences.accessibleControls,
+    'high_contrast': preferences.highContrast,
     'completed_rescue_ids': completedRescueIds.toList()..sort(),
   };
 }

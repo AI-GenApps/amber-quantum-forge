@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 08-mr-tiles-and-board
-status: pending
+status: completed
 commit_scope: merge-relay
 depends_on: [16-games-portfolio-wave2/07-mr-design-system-and-fonts]
 estimate: L
@@ -39,16 +39,16 @@ behind the art-manifest slots, so final art from task 23 can drop in.
 
 ## Implementation Checklist
 
-- [ ] Add a tile-face painter per tier (≥12 tiers) plus a generic fallback
+- [x] Add a tile-face painter per tier (≥12 tiers) plus a generic fallback
       for higher tiers.
-- [ ] Draw the tile card with its thickness edge and shadow.
-- [ ] Add the board tray and wells.
-- [ ] Add a high-contrast toggle, wired through the existing preferences.
-- [ ] Add a golden `test/goldens/tiles/tier_sheet.png` showing every tier at
+- [x] Draw the tile card with its thickness edge and shadow.
+- [x] Add the board tray and wells.
+- [x] Add a high-contrast toggle, wired through the existing preferences.
+- [x] Add a golden `test/goldens/tiles/tier_sheet.png` showing every tier at
       the real tile size, and update the screen goldens.
-- [ ] Add a test asserting the numeral text size ratio and that face bounds
+- [x] Add a test asserting the numeral text size ratio and that face bounds
       don't intersect numeral bounds.
-- [ ] Copy the tier sheet and the updated play golden to
+- [x] Copy the tier sheet and the updated play golden to
       `.agents/resources/2026-09-25/games-wave2-qa/08/`, together with a side-by-side
       contact sheet against the Threes! anchors, and VIEW them.
 

@@ -16,6 +16,9 @@ extension MergeRelayGamePreferences on MergeRelayGame {
   void setAccessibleControls(bool value) =>
       _updatePreferences(preferences.value.copyWith(accessibleControls: value));
 
+  void setHighContrast(bool value) =>
+      _updatePreferences(preferences.value.copyWith(highContrast: value));
+
   void _updatePreferences(MergeRelayPreferences next) {
     if (!_readyForAction) return;
     preferences.value = next;

@@ -3,9 +3,70 @@ import 'package:merge_rules/merge_rules.dart';
 
 import 'merge_relay_theme.dart';
 import 'ui/mr_tokens.dart';
+import 'ui/tiles/mr_board_tray_painter.dart';
+import 'ui/tiles/mr_tile_card_painter.dart';
+import 'ui/tiles/mr_tile_expression.dart';
+import 'ui/tiles/mr_tile_face_painter.dart';
 
 final class MergeRelayBoardArt {
   const MergeRelayBoardArt._();
+
+  /// Font-size scale (fraction of the full tile height) per digit count,
+  /// tuned so the rendered glyph height clears the task's numeral-ratio
+  /// floor (>= 40% of tile height for 1-2 digits, >= 28% for 4+) while still
+  /// fitting inside the bottom numeral box below the face — see
+  /// `test/ui/tiles/mr_tile_numeral_test.dart`, which measures the actual
+  /// rendered ratio with the real bundled Fredoka font.
+  static double numeralFontScaleFor(int digits) => switch (digits) {
+    1 => 0.60,
+    2 => 0.52,
+    3 => 0.42,
+    _ => 0.34,
+  };
+
+  /// The face zone for a tile of [tileRect] — the top band the original
+  /// per-tier face is drawn into. Never overlaps [numeralBoxFor].
+  static Rect faceBoxFor(Rect tileRect) => Rect.fromLTWH(
+    tileRect.left + tileRect.width * 0.12,
+    tileRect.top + tileRect.height * 0.08,
+    tileRect.width * 0.76,
+    tileRect.height * 0.32,
+  );
+
+  /// The numeral zone for a tile of [tileRect] — the bottom band the value
+  /// text is centered in. Starts a deliberate gap below [faceBoxFor]'s
+  /// bottom edge so the two never touch, let alone overlap.
+  static Rect numeralBoxFor(Rect tileRect) => Rect.fromLTRB(
+    tileRect.left,
+    tileRect.top + tileRect.height * 0.46,
+    tileRect.right,
+    tileRect.bottom - tileRect.height * 0.06,
+  );
+
+  /// Builds and lays out the numeral's [TextPainter] for [value] sized
+  /// against [tileHeight] — shared by [paint] and the numeral-ratio test so
+  /// both measure the exact same glyphs.
+  static TextPainter numeralTextPainterFor(
+    int value,
+    double tileHeight, {
+    required Color color,
+    required double maxWidth,
+  }) {
+    final digits = '$value'.length;
+    return TextPainter(
+      text: TextSpan(
+        text: '$value',
+        style: TextStyle(
+          fontFamily: 'Fredoka',
+          color: color,
+          fontSize: tileHeight * numeralFontScaleFor(digits),
+          fontWeight: FontWeight.w600,
+          letterSpacing: -0.5,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout(maxWidth: maxWidth);
+  }
 
   static void paint(
     Canvas canvas,
@@ -16,21 +77,20 @@ final class MergeRelayBoardArt {
     Set<int> mergedCells = const {},
     int? spawnedCell,
     double pulse = 0,
+    bool highContrast = false,
   }) {
     final bounds = Offset.zero & size;
     canvas.save();
     canvas.clipRect(bounds);
     final side = bounds.shortestSide;
     final boardRect = Rect.fromLTWH(0, 0, side, side);
-    final paint = Paint()..style = PaintingStyle.fill;
-    paint.color = theme.board;
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(boardRect, const Radius.circular(28)),
-      paint,
-    );
+    paintBoardTray(canvas, boardRect, trayColor: theme.board);
+
     final padding = side * 0.045;
-    final gap = side * 0.024;
+    final gap = side * 0.03;
     final cell = (side - (padding * 2) - (gap * 3)) / 4;
+    final paint = Paint()..style = PaintingStyle.fill;
+
     for (var index = 0; index < board.cells.length; index += 1) {
       final row = index ~/ 4;
       final column = index % 4;
@@ -38,26 +98,26 @@ final class MergeRelayBoardArt {
       final top = padding + row * (cell + gap);
       final rect = Rect.fromLTWH(left, top, cell, cell);
       final value = board.cells[index];
-      paint.color = value == 0 ? theme.slot : MrTokens.tileColorFor(value);
-      canvas.drawRRect(
-        RRect.fromRectAndRadius(rect, const Radius.circular(18)),
-        paint,
-      );
+
       if (value == 0) {
-        paint
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 2
-          ..color = theme.blue.withValues(alpha: 0.45);
-        canvas.drawRRect(
-          RRect.fromRectAndRadius(
-            rect.deflate(cell * 0.16),
-            const Radius.circular(12),
-          ),
-          paint,
+        paintWell(
+          canvas,
+          rect,
+          wellColor: theme.slot,
+          radius: 16,
+          highContrast: highContrast,
         );
-        paint.style = PaintingStyle.fill;
         continue;
       }
+
+      paintTile(
+        canvas,
+        rect,
+        value: value,
+        theme: theme,
+        highContrast: highContrast,
+      );
+
       if (changedCells.contains(index)) {
         paint
           ..style = PaintingStyle.stroke
@@ -80,44 +140,55 @@ final class MergeRelayBoardArt {
         canvas.drawCircle(rect.center, cell * (0.3 + pulse * 0.06), paint);
         paint.style = PaintingStyle.fill;
       }
-      final numeralColor = MrTokens.tileNumeralColorFor(value);
-      paint.color = numeralColor.withValues(alpha: 0.12);
-      canvas.drawCircle(
-        Offset(rect.left + cell * 0.78, rect.top + cell * 0.22),
-        cell * 0.09,
-        paint,
-      );
-      // Fredoka numerals fill most of the tile (>= 40% of its height, per
-      // the visual-reference Threes! anchor) and shrink for longer digit
-      // strings so 4-digit tiers (1024+) still fit within the tile.
-      final digits = '$value'.length;
-      final fontScale = switch (digits) {
-        1 => 0.58,
-        2 => 0.50,
-        3 => 0.40,
-        _ => 0.32,
-      };
-      final text = TextPainter(
-        text: TextSpan(
-          text: '$value',
-          style: TextStyle(
-            fontFamily: 'Fredoka',
-            color: numeralColor,
-            fontSize: cell * fontScale,
-            fontWeight: FontWeight.w600,
-            letterSpacing: -0.5,
-          ),
-        ),
-        textDirection: TextDirection.ltr,
-      )..layout(maxWidth: cell * 0.86);
-      text.paint(
-        canvas,
-        Offset(
-          rect.center.dx - text.width / 2,
-          rect.center.dy - text.height / 2,
-        ),
-      );
     }
     canvas.restore();
+  }
+
+  /// Draws one occupied tile at [rect]: the physical card, the tier's
+  /// original face in the top zone, and the numeral in the bottom zone —
+  /// the two zones never overlap, per the task's legibility requirement.
+  /// Public so the tier-sheet golden can render every tier at tile size
+  /// without duplicating this layout.
+  static void paintTile(
+    Canvas canvas,
+    Rect rect, {
+    required int value,
+    required MergeRelayTheme theme,
+    required bool highContrast,
+  }) {
+    paintTileCard(
+      canvas,
+      rect,
+      fill: MrTokens.tileColorFor(value),
+      edgeColor: MrTokens.tileEdgeColorFor(value),
+      radius: 18,
+      outlineColor: theme.ink,
+      highContrast: highContrast,
+    );
+
+    final numeralColor = MrTokens.tileNumeralColorFor(value);
+    final faceBox = faceBoxFor(rect);
+    paintTileFace(
+      canvas,
+      faceBox,
+      expression: mrExpressionForTierIndex(MrTokens.tileTierIndex(value)),
+      color: numeralColor,
+      highContrast: highContrast,
+    );
+
+    final numeralBox = numeralBoxFor(rect);
+    final text = numeralTextPainterFor(
+      value,
+      rect.height,
+      color: numeralColor,
+      maxWidth: numeralBox.width * 0.92,
+    );
+    text.paint(
+      canvas,
+      Offset(
+        numeralBox.center.dx - text.width / 2,
+        numeralBox.center.dy - text.height / 2,
+      ),
+    );
   }
 }
