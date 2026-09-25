@@ -18,6 +18,7 @@ const EPIC = A.epicDir || 'tasks/epics/15-ludo-launch'
 const TASKS = Array.isArray(A.tasks) ? A.tasks : []
 const STOP_AFTER = A.stopAfter || null
 const RESUME_FILES = Array.isArray(A.resumeDirtyPaths) && A.resumeDirtyPaths.length ? A.resumeDirtyPaths : null
+const NOTE = A.note ? `\nOrchestrator note for this run: ${A.note}\n` : ''
 const MAX_FIX = 2
 const S = { model: 'sonnet' }
 
@@ -27,7 +28,7 @@ Hard rules for this run:
 - Do only what the task file scopes. Do not modify apps-native/unity/ludo (frozen) except a doc note if the task says so.
 - Never boot emulators/simulators. A physical Android device (adb serial RZ8R32EAB7T, Samsung A52, 1080x2400) is attached: when a task's Verification Commands include device steps, actually run them (build, adb install, launch, navigate with adb input/uiautomator, screencap) and VIEW every screenshot with the Read tool. Only if adb shows the device missing, report NOT RUN. Firebase-console steps are reported as NOT RUN, never faked.
 - Visual target (user requires Ludo King quality or better, original art only — never copy/trace Ludo King assets): read .agents/resources/2026-09-24/ludo-visual-reference/README.md and view ludo-king-reference.png there, plus real Ludo King device captures in .agents/resources/2026-09-19/ludo-reference/ (especially 16-roll-settled.png for the board screen and 06-home-clear.png for the lobby/menus; study.md indexes the rest). "Before" screens: .agents/resources/2026-09-24/ludo-baseline-before-overhaul/.
-- Artifacts: save EVERY screenshot or visual evidence file you produce (device captures, comparisons) under .agents/resources/2026-09-24/ludo-visual-qa/<task-id>/ with descriptive names (e.g. 12c/board-start.png), overriding any other evidence path a task file names, and include them in the task's commit. Never leave evidence only in /tmp.
+- Artifacts: save EVERY screenshot or visual evidence file you produce (device captures, comparisons) under .agents/resources/2026-09-25/ludo-visual-qa/<task-id>/ with descriptive names (e.g. 12c/board-start.png), overriding any other evidence path a task file names, and include them in the task's commit. Never leave evidence only in /tmp.
 - Judge on-device screenshots against it critically: Material-default styling, white/empty areas, black/unfilled regions, overflow stripes, clipped text, misaligned or off-board elements, or unreadable contrast are failures.
 - Never fabricate verification output. If a command fails, report it failing.
 - No real secrets in the repo; use fakes/in-memory adapters when credentials are absent.
@@ -125,7 +126,7 @@ for (const t of TASKS) {
   const impl = await agent(
     `You are implementing ONE task of the Ludo launch epic: ${taskPath}.
 Read tasks/START.md, ${EPIC}/STATUS.md, and ${taskPath} fully. Read earlier completed tasks in ${EPIC} only as needed for context.
-The working tree may already contain partial or complete uncommitted work for THIS task from an earlier run — inspect git status/diff first and continue from it rather than redoing it.
+${NOTE}The working tree may already contain partial or complete uncommitted work for THIS task from an earlier run — inspect git status/diff first and continue from it rather than redoing it.
 Mark the task in-progress in ${EPIC}/STATUS.md, then implement every item of its Implementation Checklist, touching the Files Touched it lists (small necessary additions are fine; explain them).
 Write/extend tests as the task requires. Then run EVERY command in the task's Verification Commands section and report each result honestly.
 Tick checklist boxes you actually completed in ${taskPath}. Do NOT commit — a later step commits.
@@ -144,7 +145,7 @@ ${RULES}`,
   let verdict = null
   for (let attempt = 0; attempt <= MAX_FIX; attempt++) {
     verdict = await agent(
-      `You are an independent, skeptical verifier for task ${taskPath} of the Ludo epic. You did not write this code; assume it may be wrong.
+      `${NOTE}You are an independent, skeptical verifier for task ${taskPath} of the Ludo epic. You did not write this code; assume it may be wrong.
 1. Read ${taskPath} (Acceptance Criteria, Verification Commands, Out of Scope).
 2. Inspect the uncommitted changes: git status, git diff, and new untracked files.
 3. Re-run EVERY Verification Command yourself and use your own results, not any claims in the task file.
@@ -184,7 +185,7 @@ ${RULES}`,
 1. In ${EPIC}/STATUS.md mark this task completed ([x]); ensure the task file's checklist is ticked. If this is the epic's last automated task, leave the epic in-progress (human acceptance remains).
 2. Run bun run check (Biome) and fix only formatting/lint issues in files this task touched; if check fails for reasons unrelated to this task's files, do not fix them — note it.
 3. Stage only files belonging to this task (git add with explicit paths; never git add -A blindly; never stage build outputs, .dart_tool, secrets).
-4. Commit on ${BRANCH} with the exact commit message given in the task file (format <type>(<scope>): <summary> [15-ludo-launch/<NN>]), followed by a blank line and the trailer line "Claude-Session: https://claude.ai/code/session_01NKwBevBWJYRuWqcRegJNh3". Include this task's evidence under .agents/resources/2026-09-24/ludo-visual-qa/ if any. Let pre-commit hooks run; if a hook fails, fix the cause within this task's files and retry once; never use --no-verify.
+4. Commit on ${BRANCH} with the exact commit message given in the task file (format <type>(<scope>): <summary> [15-ludo-launch/<NN>]). Include this task's evidence under .agents/resources/2026-09-25/ludo-visual-qa/ if any. Let pre-commit hooks run; if a hook fails, fix the cause within this task's files and retry once; never use --no-verify.
 5. Return the new commit sha. Do not push.
 ${RULES}`,
     { ...S, label: `commit ${t.id}`, phase: 'Tasks', schema: COMMIT, effort: 'low' },
