@@ -1,5 +1,6 @@
 import 'package:platform_core/platform_core.dart';
 
+import 'merge_relay_features.dart';
 import 'merge_relay_gateway.dart';
 import 'merge_relay_relay_controller.dart';
 import 'merge_relay_relay_persistence.dart';
@@ -27,10 +28,32 @@ final class MergeRelayClient {
   final MergeRelayRelayController controller;
 }
 
+/// Builds the HTTP [MergeRelayGateway]. Injectable so tests can prove the
+/// factory is never invoked while [MergeRelayFeatures.socialEnabled] is
+/// false, without touching the real network transport.
+typedef MergeRelayGatewayFactory = MergeRelayGateway Function({
+  required MergeRelayNetworkConfig config,
+  required MergeRelayHttpTransport transport,
+  required MergeRelayAuthStore authStore,
+});
+
+MergeRelayGateway _defaultMergeRelayGatewayFactory({
+  required MergeRelayNetworkConfig config,
+  required MergeRelayHttpTransport transport,
+  required MergeRelayAuthStore authStore,
+}) => MergeRelayHttpGateway(
+  config: config,
+  transport: transport,
+  authStore: authStore,
+);
+
 MergeRelayClient? createMergeRelayClient({
   required AppContext context,
   required SaveStore saveStore,
+  MergeRelayFeatures features = const MergeRelayFeatures(),
+  MergeRelayGatewayFactory gatewayFactory = _defaultMergeRelayGatewayFactory,
 }) {
+  if (!features.socialEnabled) return null;
   final clientConfig = mergeRelayClientConfig();
   if (clientConfig == null) return null;
   try {
@@ -41,7 +64,7 @@ MergeRelayClient? createMergeRelayClient({
     );
     final authStore = MethodChannelMergeRelayAuthStore();
     final composite = MergeRelayCompositeSaveStore(delegate: saveStore);
-    final gateway = MergeRelayHttpGateway(
+    final gateway = gatewayFactory(
       config: config,
       transport: DartIoMergeRelayHttpTransport(),
       authStore: authStore,

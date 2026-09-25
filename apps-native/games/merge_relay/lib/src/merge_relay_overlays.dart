@@ -63,7 +63,8 @@ Future<void> showMergeRelaySettings(
                 value: game.preferences.value.hapticsEnabled,
                 onChanged: game.setHapticsEnabled,
               ),
-              if (game.tutorialComplete.value &&
+              if (game.features.socialEnabled &&
+                  game.tutorialComplete.value &&
                   game.pgsAccountController != null)
                 _PgsSettings(game: game, theme: theme),
               const SizedBox(height: 8),

@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 05-mr-solo-v1-scope
-status: pending
+status: completed
 commit_scope: merge-relay
 depends_on: [16-games-portfolio-wave2/04-fonts-meme-court-and-peeklings]
 estimate: M
@@ -51,16 +51,16 @@ their tests, but are unreachable in v1 builds behind a single feature gate.
 
 ## Implementation Checklist
 
-- [ ] Add `merge_relay_features.dart` and thread it through `MergeRelayApp`.
-- [ ] Gate every entry point listed above.
-- [ ] Ignore links when gated (open Home).
-- [ ] Add `test/solo_v1_scope_test.dart`: with the default gate, no relay,
+- [x] Add `merge_relay_features.dart` and thread it through `MergeRelayApp`.
+- [x] Gate every entry point listed above.
+- [x] Ignore links when gated (open Home).
+- [x] Add `test/solo_v1_scope_test.dart`: with the default gate, no relay,
       share, or PGS widget exists on Home, Pause, Result, or Settings; a
       fake gateway factory is **never invoked**; and a challenge-link
       launch lands on Home.
-- [ ] Adapt the existing relay/PGS tests to force the gate on through the
+- [x] Adapt the existing relay/PGS tests to force the gate on through the
       seam, keeping every assertion.
-- [ ] Update `.agents/games/merge-relay/product.md` (v1 surface) and
+- [x] Update `.agents/games/merge-relay/product.md` (v1 surface) and
       `decisions-log.md`.
 
 ## Files Touched

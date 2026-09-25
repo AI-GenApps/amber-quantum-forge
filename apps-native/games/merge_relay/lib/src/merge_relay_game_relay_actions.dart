@@ -2,7 +2,11 @@ part of 'merge_relay_game.dart';
 
 extension MergeRelayGameRelayActions on MergeRelayGame {
   void createRelayFromCurrentBoard() {
-    if (!_readyForAction || relayController == null) return;
+    if (!_readyForAction ||
+        !features.socialEnabled ||
+        relayController == null) {
+      return;
+    }
     try {
       final checkpoint = MergeCheckpoint.fromState(
         state.value,

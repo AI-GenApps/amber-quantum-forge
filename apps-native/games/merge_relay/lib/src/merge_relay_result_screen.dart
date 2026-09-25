@@ -124,7 +124,7 @@ final class MergeRelayResultScreen extends StatelessWidget {
             ),
             child: const Text('Home'),
           ),
-          if (game.relayController != null) ...[
+          if (game.features.socialEnabled && game.relayController != null) ...[
             const SizedBox(height: 8),
             OutlinedButton.icon(
               onPressed: game.createRelayFromCurrentBoard,

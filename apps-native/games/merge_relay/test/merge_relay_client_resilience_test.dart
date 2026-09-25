@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:merge_relay/src/merge_relay_app.dart';
+import 'package:merge_relay/src/merge_relay_features.dart';
 import 'package:merge_relay/src/merge_relay_models.dart';
 import 'package:merge_relay/src/platform/merge_relay_play_games.dart';
 import 'package:merge_rules/merge_rules.dart';
@@ -101,6 +102,7 @@ void main() {
         context: context,
         saveStore: MemorySaveStore(),
         playGames: probe,
+        features: const MergeRelayFeatures(socialEnabled: true),
       );
       await game.restore();
       await Future<void>.delayed(Duration.zero);

@@ -8,6 +8,7 @@ import 'package:platform_core/platform_core.dart';
 import 'merge_relay_board_art.dart';
 import 'merge_relay_content.dart';
 import 'merge_relay_content_validation.dart';
+import 'merge_relay_features.dart';
 import 'merge_relay_models.dart';
 import 'merge_relay_relay_controller.dart';
 import 'platform/merge_relay_pgs_account.dart';
@@ -32,6 +33,7 @@ final class MergeRelayGame extends FlameGame {
     MergeRelayPgsAccountController? pgsAccount,
     MergeRelayPlayGamesProvider? playGames,
     MergeRelayContentCatalog? content,
+    this.features = const MergeRelayFeatures(),
     Clock? clock,
   }) : _providedPgsAccount = pgsAccount,
        content = content ?? MergeRelayContentCatalog.fallback,
@@ -66,7 +68,7 @@ final class MergeRelayGame extends FlameGame {
        persistenceMessage = ValueNotifier(null) {
     pgsAccountController =
         _providedPgsAccount ??
-        (relayController == null
+        (relayController == null || !features.socialEnabled
             ? null
             : MergeRelayPgsAccountController(
                 provider: this.playGames,
@@ -80,6 +82,7 @@ final class MergeRelayGame extends FlameGame {
   final MergeRelayContentCatalog content;
   final SaveStore saveStore;
   final MergeRelayRelayController? relayController;
+  final MergeRelayFeatures features;
   final Clock clock;
   final MergeRelayPlayGamesProvider playGames;
   late final MergeRelayPgsAccountController? pgsAccountController;

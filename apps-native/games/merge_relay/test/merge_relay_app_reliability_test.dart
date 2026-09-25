@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:merge_relay/src/merge_relay_app.dart';
+import 'package:merge_relay/src/merge_relay_features.dart';
 import 'package:merge_relay/src/merge_relay_gateway.dart';
 import 'package:merge_relay/src/merge_relay_relay_controller.dart';
 import 'package:merge_relay/src/merge_relay_relay_models.dart';
@@ -10,6 +11,8 @@ import 'package:merge_relay/src/merge_relay_relay_persistence.dart';
 import 'package:platform_core/platform_core.dart';
 
 import 'merge_relay_relay_test_support.dart';
+
+const _socialOn = MergeRelayFeatures(socialEnabled: true);
 
 void main() {
   testWidgets('warm challenge links wait for restore before opening', (
@@ -28,6 +31,7 @@ void main() {
         saveStore: saveStore,
         relayController: controller,
         challengeLinks: links,
+        features: _socialOn,
       ),
     );
     links.emit('mergerelay://challenge/ch_test');
@@ -54,7 +58,11 @@ void main() {
       stateStore: MemoryMergeRelayRelayStateStore(),
     );
     await tester.pumpWidget(
-      MergeRelayApp(relayController: controller, challengeLinks: links),
+      MergeRelayApp(
+        relayController: controller,
+        challengeLinks: links,
+        features: _socialOn,
+      ),
     );
     await tester.pumpAndSettle();
     await controller.bootstrap();
@@ -84,6 +92,7 @@ void main() {
           saveStore: saveStore,
           relayController: controller,
           challengeLinks: links,
+          features: _socialOn,
         ),
       );
       await tester.pumpAndSettle();

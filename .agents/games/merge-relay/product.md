@@ -14,6 +14,24 @@ dated decision section added to `docs-internal/gaming/handoffs/merge-relay.md` (
 epic, task 00) for exactly which requirement-ledger rows (MR-04–MR-08, MR-11, MR-13)
 are deferred.
 
+The gate is a single compile-time constant,
+`apps-native/games/merge_relay/lib/src/merge_relay_features.dart`
+(`mergeRelaySocialEnabled = bool.fromEnvironment('MERGE_RELAY_SOCIAL', defaultValue: false)`),
+wrapped in an injectable `MergeRelayFeatures` seam so relay/PGS tests can force it on
+without deleting or skipping assertions (task 05,
+`apps-native/games/merge_relay/test/solo_v1_scope_test.dart`). While the flag is
+false: `createMergeRelayClient` (`lib/src/merge_relay_client.dart`) returns `null`
+before building the HTTP gateway or auth store; `MergeRelayGame` never constructs the
+`MergeRelayPgsAccountController` "PGS bridge"; `openRelay`, `createRelayFromCurrentBoard`,
+and every native Play Games call (`initializePlayGames`, `linkPlayGames`,
+`refreshPgsAccount`, achievements/leaderboards) no-op; and the "Join a relay" (Home),
+"Share this board" (Pause, Result), and Play Games (Settings) controls are hidden.
+An incoming `mergerelay://challenge…` or https challenge link is never even read while
+gated — the app just opens to Home. The Android intent filters
+(`apps-native/games/merge_relay/android/app/src/main/AndroidManifest.xml`) are kept
+as-is for v1 so v1.1 needs no manifest migration; `games:validate:strict` does not
+inspect manifest contents, so nothing forces their removal.
+
 ## Modes (as implemented today)
 
 | Mode | Status | Source |

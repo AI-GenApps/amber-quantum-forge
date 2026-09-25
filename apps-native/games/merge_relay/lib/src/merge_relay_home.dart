@@ -55,7 +55,7 @@ final class MergeRelayHome extends StatelessWidget {
             foreground: Colors.white,
             onTap: () => _pickRescue(context),
           ),
-          if (game.relayController != null) ...[
+          if (game.features.socialEnabled && game.relayController != null) ...[
             const SizedBox(height: 10),
             _HomeAction(
               icon: Icons.swap_horizontal_circle_rounded,

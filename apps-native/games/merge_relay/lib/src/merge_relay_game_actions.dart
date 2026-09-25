@@ -56,7 +56,11 @@ extension MergeRelayGameActions on MergeRelayGame {
   }
 
   void openRelay() {
-    if (!_readyForAction || relayController == null) return;
+    if (!_readyForAction ||
+        !features.socialEnabled ||
+        relayController == null) {
+      return;
+    }
     route.value = MergeRelayRoute.relay;
     unawaited(relayController!.bootstrap());
   }

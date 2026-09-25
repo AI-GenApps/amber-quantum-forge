@@ -68,7 +68,7 @@ final class _PausePanel extends StatelessWidget {
                     style: TextStyle(color: theme.paper),
                   ),
                 ),
-                if (game.relayController != null)
+                if (game.features.socialEnabled && game.relayController != null)
                   TextButton.icon(
                     onPressed: game.createRelayFromCurrentBoard,
                     icon: Icon(Icons.ios_share_rounded, color: theme.paper),

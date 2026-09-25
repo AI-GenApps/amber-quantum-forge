@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:platform_core/platform_core.dart';
 
 import 'merge_relay_content.dart';
+import 'merge_relay_features.dart';
 import 'merge_relay_game.dart';
 import 'merge_relay_relay_controller.dart';
 import 'merge_relay_theme.dart';
@@ -28,6 +29,7 @@ final class MergeRelayApp extends StatefulWidget {
     this.challengeLinks,
     this.pgsAccount,
     this.playGames,
+    this.features = const MergeRelayFeatures(),
     super.key,
   });
 
@@ -38,6 +40,7 @@ final class MergeRelayApp extends StatefulWidget {
   final MergeRelayChallengeLinkSource? challengeLinks;
   final MergeRelayPgsAccountController? pgsAccount;
   final MergeRelayPlayGamesProvider? playGames;
+  final MergeRelayFeatures features;
 
   @override
   State<MergeRelayApp> createState() => _MergeRelayAppState();
@@ -58,13 +61,14 @@ final class _MergeRelayAppState extends State<MergeRelayApp>
       relayController: widget.relayController,
       pgsAccount: widget.pgsAccount,
       playGames: widget.playGames,
+      features: widget.features,
     );
     if (widget.contentError != null) return;
     game.hydrated.addListener(_onRestoreStateChanged);
     game.restoreFailed.addListener(_onRestoreStateChanged);
     final restore = game.restore();
     _restoreReady = restore;
-    if (widget.relayController == null) {
+    if (widget.relayController == null || !widget.features.socialEnabled) {
       unawaited(restore);
     } else {
       _challengeLinks =
@@ -126,7 +130,11 @@ final class _MergeRelayAppState extends State<MergeRelayApp>
   }
 
   Future<void> _openIncomingLink(String link) async {
-    if (_disposed || widget.relayController == null) return;
+    if (_disposed ||
+        widget.relayController == null ||
+        !widget.features.socialEnabled) {
+      return;
+    }
     if (!game.hydrated.value || game.restoreFailed.value) return;
     game.openRelay();
     await widget.relayController!.bootstrap();
@@ -149,10 +157,11 @@ final class _MergeRelayAppState extends State<MergeRelayApp>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     game.handleLifecycleState(state);
-    if (state != AppLifecycleState.resumed) {
+    if (state != AppLifecycleState.resumed && widget.features.socialEnabled) {
       widget.relayController?.pauseReplay();
     }
     if (state == AppLifecycleState.resumed &&
+        widget.features.socialEnabled &&
         widget.relayController != null &&
         game.hydrated.value &&
         !game.restoreFailed.value) {
