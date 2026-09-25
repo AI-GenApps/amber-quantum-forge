@@ -68,10 +68,17 @@ class LudoSafeCellStarComponent extends PositionComponent {
 
 /// One shared-track square, index `0..51`. Safe cells get a child
 /// [LudoSafeCellStarComponent] so their marker is testable/inspectable as
-/// its own component, not merely a fill-color difference.
+/// its own component, not merely a fill-color difference. A cell that is
+/// some color's start square ([startColor] non-`null`) additionally fills
+/// with that color (task 12d2/checkpoint-13: Ludo King-style colored start
+/// squares) instead of the plain gold safe-cell tint, while keeping its
+/// star marker — a start square is still a safe square.
 class LudoTrackCellComponent extends PositionComponent {
-  LudoTrackCellComponent({required this.cellIndex, required this.isSafe})
-    : super(anchor: Anchor.center) {
+  LudoTrackCellComponent({
+    required this.cellIndex,
+    required this.isSafe,
+    this.startColor,
+  }) : super(anchor: Anchor.center) {
     if (isSafe) {
       star = LudoSafeCellStarComponent();
       add(star!);
@@ -80,6 +87,10 @@ class LudoTrackCellComponent extends PositionComponent {
 
   final int cellIndex;
   final bool isSafe;
+
+  /// The color this cell is the start square of, or `null` if it's a plain
+  /// track cell or a non-start star/safe cell.
+  final LudoColor? startColor;
 
   /// The star marker child for a safe cell, `null` for a plain track cell.
   LudoSafeCellStarComponent? star;
@@ -98,9 +109,13 @@ class LudoTrackCellComponent extends PositionComponent {
   @override
   void render(Canvas canvas) {
     final rect = Rect.fromLTWH(0, 0, size.x, size.y);
+    final startColor = this.startColor;
     canvas.drawRect(
       rect,
-      Paint()..color = isSafe ? const Color(0xFFFFF3C4) : Colors.white,
+      Paint()
+        ..color = startColor != null
+            ? ludoColorPalette[startColor]!.withValues(alpha: 0.55)
+            : (isSafe ? const Color(0xFFFFF3C4) : Colors.white),
     );
     canvas.drawRect(
       rect,
@@ -303,7 +318,11 @@ class LudoBoardComponent extends PositionComponent {
     for (var i = 0; i < ludoTrackLength; i++) {
       final grid = ludoTrackCellGrid[i];
       trackCells.add(
-        LudoTrackCellComponent(cellIndex: i, isSafe: ludoIsSafeCell(i))
+        LudoTrackCellComponent(
+            cellIndex: i,
+            isSafe: ludoIsSafeCell(i),
+            startColor: ludoStartColorOfCell(i),
+          )
           ..size = Vector2.all(cellSize)
           ..position = vectorOf(ludoCellCenterAt(grid, boardRect)),
       );

@@ -62,6 +62,15 @@ void main() {
     goldenFile: 'board_stacked_tokens_mixed.png',
     size: Vector2.all(320),
   );
+
+  testGolden(
+    'one just-released token per color (pathPosition 0) sits exactly on '
+    'its own colored start cell (checkpoint 13 regression)',
+    (game, tester) async {},
+    game: LudoGame(initialState: _oneReleasedTokenPerColorState()),
+    goldenFile: 'board_released_start_tokens.png',
+    size: Vector2.all(320),
+  );
 }
 
 /// Quick mode's own initial state already places both of seat 0's
@@ -93,6 +102,25 @@ LudoMatchState _mixedColorStackState() {
       _withTokens(base.players[1], const [44, -1, 10, 53]),
       _withTokens(base.players[2], const [31, 20, 51, 57]),
       _withTokens(base.players[3], const [-1, 30, 45, 2]),
+    ],
+  );
+}
+
+/// Every color's token id 0 sitting at `pathPosition: 0`, i.e. every color
+/// has just released one token onto its own start square and no other
+/// tokens have moved — the exact "just-released token" scenario checkpoint
+/// 13's user report was about, for all 4 colors at once.
+LudoMatchState _oneReleasedTokenPerColorState() {
+  final base = LudoMatchState.initial(
+    ruleset: LudoRuleset.classic,
+    subjects: const ['red-seat', 'green-seat', 'yellow-seat', 'blue-seat'],
+  );
+  return base.copyWith(
+    players: [
+      _withTokens(base.players[0], const [0, -1, -1, -1]),
+      _withTokens(base.players[1], const [0, -1, -1, -1]),
+      _withTokens(base.players[2], const [0, -1, -1, -1]),
+      _withTokens(base.players[3], const [0, -1, -1, -1]),
     ],
   );
 }

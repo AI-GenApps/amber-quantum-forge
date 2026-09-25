@@ -146,6 +146,21 @@ Offset ludoHomeStretchEntryDirection(LudoColor color) {
 /// Whether absolute track cell [cell] is a safe cell, per `ludo_rules`.
 bool ludoIsSafeCell(int cell) => _board.isSafeCell(cell);
 
+/// Absolute track cell -> the color whose start square it is, built from
+/// `ludo_rules`' [LudoBoard.startIndexOf] so it can never drift out of sync
+/// with the rules engine about which cell each color starts on (same
+/// source of truth [ludoStartCellGrid] uses).
+final Map<int, LudoColor> _startColorByCell = {
+  for (final color in LudoColor.values) _board.startIndexOf(color): color,
+};
+
+/// The color whose start square absolute track [cell] is, or `null` if
+/// [cell] is not any color's start square. Used to tint a color's start
+/// cell on the track with that color (task 12d2/checkpoint-13: Ludo
+/// King-style colored start squares, distinct from the plain gold star
+/// tint every other safe cell gets).
+LudoColor? ludoStartColorOfCell(int cell) => _startColorByCell[cell];
+
 /// Converts a grid cell to the pixel-space square it occupies, given the
 /// board draws into [boardRect].
 Rect ludoCellRectAt((int, int) gridCell, Rect boardRect) {
