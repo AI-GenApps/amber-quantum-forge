@@ -93,9 +93,12 @@ It prints the absolute path of the generated PNG (under
 in the background with a timeout of at least 600 s. The smoke test on
 2026-09-25 returned an on-brief 1254×1254 **RGB** image in 68 s
 (`.agents/resources/2026-09-25/image-gen-dry-run/`). For sprites, ask for a
-transparent background and verify the alpha with Pillow. If the output has
-no alpha, request a flat chroma background and key it out with Pillow,
-documenting that step. Each task's first step is a one-image smoke test. If
+"fully transparent background (PNG with alpha)". The second smoke test
+returned real RGBA and carried the style over from a reference image named
+by path, but it left a thin coloured fringe on the edges. Always verify the
+alpha with Pillow, and clean the edges (erode the alpha by 1–2 px and
+de-fringe) before integrating. If the output has no alpha, request a flat
+chroma background and key it out with Pillow, documenting that step. Each task's first step is a one-image smoke test. If
 `image-gen` fails, the task returns **blocked**; it must never substitute
 code-drawn or downloaded art and label it as generated. The orchestrator
 runs image tasks in a parallel lane with at most one image agent at a time,
@@ -121,7 +124,7 @@ commits and applies the small `.agents/games/*` index edits itself. The human co
 
 | ID | Task | Owner | Status |
 |---|---|---|---|
-| 00 | Game knowledge bases + decision records | agent | [ ] |
+| 00 | Game knowledge bases + decision records | agent | [x] |
 | 01 | Competitor store-listing references + Merge Relay visual reference | agent | [ ] |
 | 02 | Server toolchain verification (build, icons, doctor) | agent | [ ] |
 | 03 | Custom fonts: Pocket Biome + Sixty-Second Heist | agent | [ ] |

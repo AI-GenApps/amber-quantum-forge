@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 00-knowledge-base-and-decisions
-status: pending
+status: completed
 commit_scope: games
 depends_on: []
 estimate: M
@@ -41,7 +41,7 @@ humans read one source of truth.
 
 ## Implementation Checklist
 
-- [ ] For each of the five slugs, create `.agents/games/<slug>/` with
+- [x] For each of the five slugs, create `.agents/games/<slug>/` with
       `README.md` (quick facts: app id, bundle ids, status, fonts, primary
       competitor reference, index), `product.md` (modes and rules **as
       implemented today**, from code, citing file paths), `economy.md`
@@ -51,14 +51,17 @@ humans read one source of truth.
       and the `docs-internal/gaming/evidence/visual/` captures),
       `decisions-log.md` (dated decisions from STATUS.md), and
       `open-questions.md` (owner and blocker per question).
-- [ ] Merge Relay `open-questions.md` includes: final name (task 17), crash
+- [x] Merge Relay `open-questions.md` includes: final name (task 17), crash
       reporting vendor, privacy-policy URL host, and Play developer account
       owner.
-- [ ] Sixty-Second Heist `open-questions.md` records the name conflict with
-      source URLs from the audit.
-- [ ] Add the dated decision section to
+- [x] Sixty-Second Heist `open-questions.md` records the name conflict with
+      source URLs from the audit. (Note: the audit itself cites no source
+      URLs for the casino-slot/itch.io conflicts — only names. This is
+      recorded explicitly, and task 16's uniqueness research is flagged as
+      owning the URL lookup.)
+- [x] Add the dated decision section to
       `docs-internal/gaming/handoffs/merge-relay.md`.
-- [ ] Mark every unknown as **TBD** / needs-verification; invent no numbers.
+- [x] Mark every unknown as **TBD** / needs-verification; invent no numbers.
 
 ## Files Touched
 
