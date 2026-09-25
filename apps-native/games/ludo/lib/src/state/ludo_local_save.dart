@@ -151,11 +151,7 @@ class LudoLocalSave {
   /// unavailable, e.g. under `flutter test`) namespaced under
   /// [ludoLocalMatchIdentity].
   static Future<LudoLocalSave> production() async {
-    // ignore: avoid_print
-    print('DBG12H: LudoLocalSave.production() awaiting ludoDefaultSaveStore');
     final store = await ludoDefaultSaveStore();
-    // ignore: avoid_print
-    print('DBG12H: LudoLocalSave.production() got store $store');
     return LudoLocalSave(
       saveStore: store,
       appContext: runtimeAppContext(identity: ludoLocalMatchIdentity),

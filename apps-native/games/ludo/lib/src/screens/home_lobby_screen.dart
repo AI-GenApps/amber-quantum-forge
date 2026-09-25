@@ -599,53 +599,76 @@ class _LobbyCard extends StatelessWidget {
                 onTap: enabled ? onTap : null,
                 child: LudoPanel(
                   padding: const EdgeInsets.all(12),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      // Task 12h's larger lobby header logo takes more of
-                      // the column's vertical space above these tiles,
-                      // leaving less room here on a short viewport (or
-                      // whenever the resume-in-progress card is also
-                      // showing) than this content's natural size wants.
-                      // `FittedBox` scales the icon+title+subtitle stack
-                      // down together to fit rather than overflowing,
-                      // while still rendering at full natural size
-                      // whenever there's room (the common case).
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            LudoArtSlot(
-                              slot: glyph.manifestSlot,
-                              fallbackPainter: (canvas, rect) =>
-                                  _LobbyGlyphPainter(glyph)
-                                      .paint(canvas, rect.size),
-                              size: const Size.square(40),
+                  child: LayoutBuilder(
+                    builder: (context, panelConstraints) {
+                      // The art sizes off this panel's *own* available
+                      // width (read here, outside the `FittedBox` below —
+                      // `FittedBox` hands its child unbounded constraints
+                      // so it can measure a natural size to then scale,
+                      // which would make a `LayoutBuilder` nested inside
+                      // it read as unbounded too), not a fixed pixel
+                      // size: the approved tile mockup (`mockup-a.png`)
+                      // shows each hero object filling roughly half the
+                      // card's width, a world away from a small corner
+                      // glyph — matching that scale here (rather than the
+                      // previous fixed 40x40, a leftover from the
+                      // pre-art code-drawn-glyph-only layout) is what
+                      // this task's device visual-QA pass calls out as a
+                      // fidelity gap against the approved art.
+                      final artSize = panelConstraints.hasBoundedWidth
+                          ? panelConstraints.maxWidth * 0.55
+                          : 88.0;
+                      return Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          // Task 12h's larger lobby header logo takes
+                          // more of the column's vertical space above
+                          // these tiles, leaving less room here on a
+                          // short viewport (or whenever the
+                          // resume-in-progress card is also showing)
+                          // than this content's natural size wants.
+                          // `FittedBox` scales the icon+title+subtitle
+                          // stack down together to fit rather than
+                          // overflowing, while still rendering at full
+                          // natural size whenever there's room (the
+                          // common case).
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                LudoArtSlot(
+                                  slot: glyph.manifestSlot,
+                                  fallbackPainter: (canvas, rect) =>
+                                      _LobbyGlyphPainter(glyph)
+                                          .paint(canvas, rect.size),
+                                  size: Size.square(artSize),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  title,
+                                  textAlign: TextAlign.center,
+                                  style: LudoTextStyles.displaySmall,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  subtitle,
+                                  textAlign: TextAlign.center,
+                                  style: LudoTextStyles.caption,
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              title,
-                              textAlign: TextAlign.center,
-                              style: LudoTextStyles.displaySmall,
+                          ),
+                          if (!enabled)
+                            const Positioned(
+                              top: 0,
+                              right: 0,
+                              child: _ComingSoonBadge(),
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              subtitle,
-                              textAlign: TextAlign.center,
-                              style: LudoTextStyles.caption,
-                            ),
-                          ],
-                        ),
-                      ),
-                      if (!enabled)
-                        const Positioned(
-                          top: 0,
-                          right: 0,
-                          child: _ComingSoonBadge(),
-                        ),
-                    ],
+                        ],
+                      );
+                    },
                   ),
                 ),
               ),

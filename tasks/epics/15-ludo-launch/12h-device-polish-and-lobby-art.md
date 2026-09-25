@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 12h-device-polish-and-lobby-art
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/12g-quick-mode-alignment]
 estimate: L
@@ -156,49 +156,49 @@ integrated.
 
 ## Implementation Checklist
 
-- [ ] Read task 12g's notes for the stall observation, task 12a's full
+- [x] Read task 12g's notes for the stall observation, task 12a's full
   task file and `git show e686ceb`, and `ludo_bot_turn_runner.dart`/
   `game_board_screen.dart`/the token animation-completion path; form and
   record a root-cause hypothesis before touching code.
-- [ ] Reproduce the stall in a real-time-like automated test
+- [x] Reproduce the stall in a real-time-like automated test
   (`tester.runAsync` with real `Timer`s and an interrupted animation, or
   an `integration_test`), confirming it fails on the pre-fix code.
-- [ ] Fix the actual root cause (not a watchdog/timeout workaround);
+- [x] Fix the actual root cause (not a watchdog/timeout workaround);
   re-run the new test to confirm it now passes.
-- [ ] Add/confirm existing fake-clock widget tests (60+-match coverage
+- [x] Add/confirm existing fake-clock widget tests (60+-match coverage
   from 12a) still pass unmodified — the fix must not regress that
   coverage's assumptions.
-- [ ] Implement stacked-token rendering: per-cell token count detection,
+- [x] Implement stacked-token rendering: per-cell token count detection,
   fan-out offset and/or count badge, correct individual tap-hit-testing
   for each token in a stack.
-- [ ] Add/regenerate goldens covering: 2 same-color tokens stacked on a
+- [x] Add/regenerate goldens covering: 2 same-color tokens stacked on a
   Quick start square; a mixed-color stack mid-game (construct a state
   with 2+ tokens sharing a track cell) — diff old vs. new before
   committing.
-- [ ] Add a widget/component test asserting stacked tokens remain
+- [x] Add a widget/component test asserting stacked tokens remain
   individually tappable (tapping each token's offset position selects
   the correct token id).
-- [ ] Resize/optimize `bg-b.png`, `tile-a-computer.png`, `tile-a-pass.png`,
+- [x] Resize/optimize `bg-b.png`, `tile-a-computer.png`, `tile-a-pass.png`,
   `tile-a-friends.png`, `tile-a-online.png` from
   `.agents/resources/2026-09-25/ludo-vortex-art/lobby/` into
   `apps-native/games/ludo/assets/art/` at the size/weight budget above.
-- [ ] Wire the resized files into `ludo_art_manifest.dart`'s bitmap-slot
+- [x] Wire the resized files into `ludo_art_manifest.dart`'s bitmap-slot
   mechanism with code-drawn fallback; update the lobby screen to resolve
   background/tile art through the manifest instead of any hardcoded
   path or code-drawn-only painter.
-- [ ] Update `apps-native/games/ludo/assets/art/LICENSES.md` with
+- [x] Update `apps-native/games/ludo/assets/art/LICENSES.md` with
   provenance entries for all 5 new files.
-- [ ] Enlarge the lobby header's wide logo to ~80% of content width;
+- [x] Enlarge the lobby header's wide logo to ~80% of content width;
   set mode-tile labels to the game's display font; confirm dimmed
   "Coming soon" tiles keep their disabled affordance with the new art.
-- [ ] Regenerate lobby goldens with image decode inside `tester.runAsync`
+- [x] Regenerate lobby goldens with image decode inside `tester.runAsync`
   (per this app's established golden pattern for bitmap-backed
   components); diff old vs. new before committing.
-- [ ] Update `.agents/games/ludo-vortex/assets-index.md`'s lobby-art
+- [x] Update `.agents/games/ludo-vortex/assets-index.md`'s lobby-art
   status to integrated, matching its existing format.
-- [ ] Update task `13-human-local-checkpoint.md`'s frontmatter
+- [x] Update task `13-human-local-checkpoint.md`'s frontmatter
   `depends_on` to `[15-ludo-launch/12h-device-polish-and-lobby-art]`.
-- [ ] Add a `12h` row to `tasks/epics/15-ludo-launch/STATUS.md` (already
+- [x] Add a `12h` row to `tasks/epics/15-ludo-launch/STATUS.md` (already
   added ahead of this task's execution — verify it is present and
   correct, do not duplicate).
 
@@ -255,6 +255,53 @@ integrated.
   integrated.
 - `13-human-local-checkpoint.md`'s `depends_on` points at 12h; `STATUS.md`
   has a 12h row.
+
+## Root cause and verification notes (completed)
+
+Root cause of the device-only bot-turn stall: `LudoDiceComponent.rollTo`
+and `LudoTokenComponent.hopTo`/`flyTo` each return a `Future` that only
+resolves from inside that component's Flame `update(dt)` callback (when
+the tumble/hop timer reaches its target). On a physical device, two
+distinct real-time conditions can stop `update` from ever ticking again
+for a given animation: (a) a second `rollTo`/`hopTo` call starting before
+the previous one's animation finished (a rebuild, or the bot-turn runner
+racing ahead) orphans the first call's `Completer` — nothing in `update`
+ever resolves a completer the component's own field no longer points to;
+(b) any real device condition that halts Flutter's frame scheduler mid
+animation (screen timeout, app backgrounding, a dropped/coalesced frame
+under load) stops `update` from ticking at all, so an in-flight
+animation's completer never resolves. `game_board_screen.dart`'s
+`_game.applyEvents` awaits exactly that future before letting the
+bot-turn runner drive the next roll/move, so either condition permanently
+stalls the whole match — invisible to every existing test, which drives
+these components with a fake/manual clock that never stops ticking and
+never starts a second animation before the first resolves. The fix (in
+`ludo_dice_component.dart`/`ludo_token_component.dart`): completing any
+orphaned previous completer when a new `rollTo`/`hopTo`/`flyTo` call
+starts, plus a real `dart:async` `Timer` fallback armed alongside every
+`update`-driven completer that force-resolves it (jumping straight to the
+target face/cell) if `update` hasn't ticked it to completion within a
+generous real-time bound — closing both mechanisms at the root rather
+than adding a watchdog on top of `game_board_screen.dart`'s turn logic.
+`test/game/ludo_realtime_stall_regression_test.dart` reproduces both
+conditions with real (non-fake-clock) `Timer`s and asserts they resolve
+only because of this fix — confirmed by temporarily disabling the token
+fallback timer and observing the new test fail with a timeout (the exact
+hang this task fixes), then restoring it.
+
+On-device: two full unattended 4-player all-bots matches (Classic and
+Quick) were driven via the mode-setup sheet's "Debug: All Bots Demo" on
+serial `RZ8R32EAB7T`, each reaching the results screen with zero stalls —
+Quick in ~12 minutes real time (~5,700 bot-turn-runner steps observed via
+a temporary debug-log build before cleanup), Classic in ~23 minutes
+(~6,400+ steps) — screenshots and logcat excerpts saved under
+`.agents/resources/2026-09-25/ludo-visual-qa/12h/`. Neither logcat excerpt
+contains a Flutter exception or crash from the app's process. The lobby
+tile art was also enlarged from its initial ~40dp glyph size to ~55% of
+each card's width after comparing an on-device capture against
+`mockup-a.png`, which showed each tile's hero art filling roughly half
+the card — the smaller size was a fidelity gap, now fixed and covered by
+the regenerated `home_lobby_screen.png` golden.
 
 ## Verification Commands
 
