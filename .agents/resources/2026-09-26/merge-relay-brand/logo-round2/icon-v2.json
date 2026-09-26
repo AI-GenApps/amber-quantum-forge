@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-26T08:18:05.358778Z",
+    "display_name": "GPT Image 2.5",
+    "id": "9da27b9f-6de1-4ffb-9ad9-5ccffd0108a8",
+    "job_type": "gpt_image_2_5",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260926_081805_9da27b9f-6de1-4ffb-9ad9-5ccffd0108a8_min.webp",
+    "params": {
+      "aspect_ratio": "1:1",
+      "background": "opaque",
+      "height": 2048,
+      "medias": [
+        {
+          "data": {
+            "id": "037edc31-ff36-4d4f-974a-5a2954bdb587",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/037edc31-ff36-4d4f-974a-5a2954bdb587.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "8be6dd5d-e14f-4033-a8a7-72a087c15f89",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/8be6dd5d-e14f-4033-a8a7-72a087c15f89_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "flare",
+      "prompt": "Premium glossy casual mobile game app icon art, matching the quality bar of a top-grossing casual puzzle game icon: chunky glossy 3D rendered, deep bevels, bright specular highlights, soft rim lighting, gold metallic accents. Deep navy background (#10243E to #0B1D4F) with a soft vignette. Crisp clean edges, no photorealism, no grain, no flat/corporate minimalism. ORIGINAL design, do not imitate any existing brand or app icon, no Wi-Fi symbol, no Venn-diagram overlap shape, not resembling 2048, Threes, Candy Crush, Chrome, or Signal messenger logos. Single bold readable silhouette, full-bleed square 1:1 canvas, nothing clipped or cropped at the edges, centered composition with safe margin so it reads clearly at 48px, absolutely no text or letters anywhere. Subject: a 2x2 grid of four chunky glossy rounded-square 3D tiles tightly and symmetrically arranged with even gaps, filling the frame with safe margin. Three tiles are in a deep muted slot-navy glossy finish (#203754) with soft top highlight. One tile (top-right) is glowing bright and lit from within in vivid sky-blue (#4E93D3) with a warm gold rim of light around its edge, showing a bold original numeral '2' embossed in white glossy 3D on its face. From the glowing tile, a radiating burst of concentric glow rings and small gold sparkle particles arcs outward toward the top-right corner, like a comet trail or energy ping heading to the next tile - this burst is made of soft round glowing rings and star-shaped sparkles only, absolutely not a Wi-Fi/broadcast arc shape, not a signal-bar shape. Deep navy background with vignette. Variation: slightly different sparkle placement and glow intensity, alternate framing of the burst toward the corner.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2048
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260926_081805_9da27b9f-6de1-4ffb-9ad9-5ccffd0108a8.png",
+    "status": "completed"
+  }
+]

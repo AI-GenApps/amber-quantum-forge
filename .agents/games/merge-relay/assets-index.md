@@ -10,8 +10,16 @@
 
 Round 1 rendered via `gpt_image_2_5` (Higgsfield CLI, `--quality high --resolution 2k`), all
 6 images passed QA on first generation. Recommended direction: Signal Grid icon, refined
-wordmark treatment (see `logo/README.md` recommendation section). Not yet integrated into
-the app — awaiting user approval before any refinement/integration round.
+wordmark treatment (see `logo/README.md` recommendation section). Round 1 was flat/corporate
+in style and had a wordmark misspelling ("REIAY", an arc replacing the "l").
+
+| Logo round 2 renders (premium glossy casual restyle of Signal Grid: 2 icon variants, 2 wordmark variants x opaque+transparent, contact sheet, letter-by-letter spelling checks, critique, lookalike notes) | `.agents/resources/2026-09-26/merge-relay-brand/logo-round2/` (see its `README.md`) |
+
+Round 2 rendered via `gpt_image_2_5` (Higgsfield CLI, `--quality high --resolution 2k`,
+`--image-references` against the Ludo Vortex brand quality bar). All 6 generations passed
+QA on first attempt; both wordmarks verified letter-by-letter ("M-E-R-G-E R-E-L-A-Y").
+Recommended combo: `icon-v1.png` + `wordmark-v2.png`. Not yet integrated into the app —
+awaiting user approval before any refinement/integration round.
 
 ## Current in-app art
 

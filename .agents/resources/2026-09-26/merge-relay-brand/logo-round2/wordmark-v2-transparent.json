@@ -1,0 +1,41 @@
+[
+  {
+    "created_at": "2026-09-26T08:21:40.83482Z",
+    "display_name": "GPT Image 2.5",
+    "id": "9be259c3-b153-44bf-a53a-cbb53904fd16",
+    "job_type": "gpt_image_2_5",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260926_082140_9be259c3-b153-44bf-a53a-cbb53904fd16_min.webp",
+    "params": {
+      "aspect_ratio": "4:3",
+      "background": "transparent",
+      "height": 1744,
+      "medias": [
+        {
+          "data": {
+            "id": "6f191051-aa0b-4119-86a5-91b478680161",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/6f191051-aa0b-4119-86a5-91b478680161.png"
+          },
+          "role": "image"
+        },
+        {
+          "data": {
+            "id": "1fa779ed-0ab1-4c1f-8303-8267baa23390",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/1fa779ed-0ab1-4c1f-8303-8267baa23390_resize.jpg"
+          },
+          "role": "image"
+        }
+      ],
+      "model": "flare",
+      "prompt": "Premium glossy casual mobile game logo wordmark art, matching the quality bar of a top-grossing casual puzzle game logo: chunky rounded bold 3D display lettering with deep bevels, dark outline, and bright glossy specular highlights. White and sky-blue letters with coral and gold metallic accents. Deep navy background (#10243E to #0B1D4F) with a soft vignette and warm glow. Crisp clean edges, no photorealism. ORIGINAL design, not resembling any existing brand logo. Every letter must be a normal, complete, standard letterform of the Latin alphabet - absolutely no letter may be replaced, altered, or merged with a symbol, icon, arc, or swoosh; any energy/sparkle/signal accents must be placed clearly AROUND or BEHIND the lettering, never touching, replacing, or dotting any letter. The text must read exactly correctly, spelled precisely as instructed, no other text, no watermark. Layout: a small circular emblem badge centered at the top (a glossy 3D gold-rimmed navy medallion containing a simplified version of the 2x2 signal-grid icon: three deep slot-navy tiles and one glowing sky-blue tile with a soft radiating glow burst, no wifi arcs), and below it two stacked lines of bold chunky glossy 3D lettering: 'MERGE' on the first line, 'RELAY' on the second line, centered, same lettering style as the icon (white/sky-blue glossy with coral and gold accents, dark outline and bevel). Small gold sparkle accents float around the emblem and text only, never touching or replacing any letter. The text must read exactly M-E-R-G-E on line one and R-E-L-A-Y on line two, all standard letters, no letter replaced by any symbol.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2336
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260926_082140_9be259c3-b153-44bf-a53a-cbb53904fd16.png",
+    "status": "completed"
+  }
+]
