@@ -3,7 +3,7 @@
   "rule_version": "MR-2D-1",
   "content_version": "MR-CONTENT-1",
   "public_title": "Merge Relay",
-  "subtitle": "Merge tiles. Challenge friends",
+  "subtitle": "Merge tiles. Light the board",
   "stage": "Rescue-first client milestone; relay service integration remains pending",
   "checkpoint": {
     "board_size": 4,

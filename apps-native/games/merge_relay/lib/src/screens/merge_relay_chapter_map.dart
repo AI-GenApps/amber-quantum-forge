@@ -66,11 +66,22 @@ final class _MergeRelayChapterMapState extends State<MergeRelayChapterMap> {
   Widget build(BuildContext context) {
     final chapters = widget.game.rescueChapters;
     final current = widget.game.suggestedRescue;
+    // The single locked chapter that's actually next in line to unlock
+    // (fix round 3): chapters unlock strictly in order, so this is just
+    // the first one in the list that isn't unlocked yet. `-1` never
+    // matches a real chapter number, for the (rare) case every chapter is
+    // already unlocked.
+    final nextLockedChapter = chapters
+        .map((chapter) => chapter.chapter)
+        .firstWhere(
+          (number) => !widget.game.isChapterUnlocked(number),
+          orElse: () => -1,
+        );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 6),
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 4),
           child: Row(
             children: [
               MrIconButton(
@@ -87,7 +98,7 @@ final class _MergeRelayChapterMapState extends State<MergeRelayChapterMap> {
                       'RESCUE',
                       style: TextStyle(
                         color: widget.theme.muted,
-                        fontSize: 11,
+                        fontSize: 10,
                         fontFamily: 'Fredoka',
                         fontWeight: FontWeight.w900,
                         letterSpacing: 1.6,
@@ -97,7 +108,7 @@ final class _MergeRelayChapterMapState extends State<MergeRelayChapterMap> {
                       'Chapter map',
                       style: TextStyle(
                         color: widget.theme.ink,
-                        fontSize: 24,
+                        fontSize: 20,
                         fontFamily: 'Fredoka',
                         fontWeight: FontWeight.w900,
                       ),
@@ -111,12 +122,12 @@ final class _MergeRelayChapterMapState extends State<MergeRelayChapterMap> {
         Expanded(
           child: ListView.builder(
             controller: _scroll,
-            padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
+            padding: const EdgeInsets.fromLTRB(20, 4, 20, 14),
             itemCount: chapters.length,
             itemBuilder: (context, index) {
               final chapter = chapters[index];
               return Padding(
-                padding: const EdgeInsets.only(bottom: 14),
+                padding: const EdgeInsets.only(bottom: 8),
                 child: MergeRelayChapterCard(
                   game: widget.game,
                   theme: widget.theme,
@@ -127,6 +138,7 @@ final class _MergeRelayChapterMapState extends State<MergeRelayChapterMap> {
                   ),
                   currentRescueId: current?.id,
                   isLastChapter: index == chapters.length - 1,
+                  showUnlockHint: chapter.chapter == nextLockedChapter,
                 ),
               );
             },

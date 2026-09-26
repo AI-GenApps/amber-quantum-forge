@@ -86,7 +86,7 @@ final class _HomeHero extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'A tiny board. A clean handoff.',
+                  'A tiny board. A clean sweep.',
                   style: TextStyle(
                     color: MrTokens.paper,
                     fontSize: 20,

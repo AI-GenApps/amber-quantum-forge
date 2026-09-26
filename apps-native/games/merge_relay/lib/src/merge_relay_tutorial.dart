@@ -82,7 +82,7 @@ final class _MergeRelayTutorialState extends State<MergeRelayTutorial> {
                 const SizedBox(width: 9),
                 Expanded(
                   child: Text(
-                    'First handoff',
+                    'First merge',
                     style: TextStyle(
                       color: palette.ink,
                       fontSize: 20,

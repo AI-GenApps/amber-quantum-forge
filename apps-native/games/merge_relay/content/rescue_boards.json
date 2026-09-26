@@ -781,8 +781,8 @@
         "filled_cells": 5,
         "max_tile": 4
       },
-      "title": "Spark Catch",
-      "subtitle": "Catch the first spark.",
+      "title": "New Lantern",
+      "subtitle": "Light the very first tile.",
       "objective": "Reach 8 points.",
       "goal_revision": "MR-GOALS-2",
       "target_score": 8,

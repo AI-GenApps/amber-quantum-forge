@@ -307,7 +307,7 @@ MergeRelayContentCatalog _generatedFallback() {
         originSeed: 505,
         originMoveCount: 7,
       ),
-      title: 'Late relay',
+      title: 'Last Light',
       subtitle: 'Choose the cleanest first move.',
       objective: 'Reach 28 points.',
       targetScore: 28,

@@ -84,4 +84,29 @@ void main() {
     expect(celebrated.isNewBestTile, isTrue);
     expect(celebrated.bestTileCell, 0);
   });
+
+  test('every outcome has a distinct title and message (fix round 1)', () {
+    // Regression: `completed` used to reuse its headline ("Path cleared")
+    // as its message ("Path cleared."), reading as a stutter on the
+    // Result screen. Every outcome must say something the title didn't
+    // already say.
+    for (final outcome in MergeRelayOutcome.values) {
+      final result = MergeRelayResult(
+        mode: MergeRelayMode.rescue,
+        outcome: outcome,
+        score: 8,
+        maxTile: 8,
+        movesUsed: 3,
+        objective: 'Reach 8 points.',
+      );
+      expect(
+        result.message,
+        isNot(equals(outcome.title)),
+        reason: '$outcome message must not repeat its title verbatim',
+      );
+      // Also guards against a message that merely repeats the title with
+      // a trailing period, which would still read as a duplicate.
+      expect(result.message, isNot(equals('${outcome.title}.')));
+    }
+  });
 }

@@ -129,7 +129,7 @@ Future<void> showMergeRelaySettings(
               ),
               const SizedBox(height: 16),
               MrButton(
-                label: 'Replay handoff guide',
+                label: 'Replay tutorial',
                 icon: Icons.school_rounded,
                 variant: MrButtonVariant.secondary,
                 onPressed: () {

@@ -71,7 +71,7 @@ final class _PausePanel extends StatelessWidget {
                   label: 'Restart run',
                   variant: MrButtonVariant.secondary,
                   color: theme.paper,
-                  onPressed: () => _confirmRestart(context),
+                  onPressed: () => confirmRestartRun(context, game),
                 ),
                 const SizedBox(height: 8),
                 MrButton(
@@ -113,21 +113,27 @@ final class _PausePanel extends StatelessWidget {
       ),
     );
   }
+}
 
-  Future<void> _confirmRestart(BuildContext context) async {
-    final restart = await showDialog<bool>(
-      context: context,
-      builder: (context) => MrDialog(
-        title: 'Restart this run?',
-        message:
-            'Your current board will stay in the saved run until you '
-            'choose restart.',
-        secondaryLabel: 'Keep board',
-        onSecondary: () => Navigator.pop(context, false),
-        primaryLabel: 'Restart',
-        onPrimary: () => Navigator.pop(context, true),
-      ),
-    );
-    if (restart == true) game.newRound();
-  }
+/// Shared restart confirmation (task 11 fix round 1: previously private to
+/// the pause panel, now also used by the Play screen's lower-tray quick
+/// action so "Restart" is reachable without opening Pause first).
+Future<void> confirmRestartRun(
+  BuildContext context,
+  MergeRelayGame game,
+) async {
+  final restart = await showDialog<bool>(
+    context: context,
+    builder: (context) => MrDialog(
+      title: 'Restart this run?',
+      message:
+          'Your current board will stay in the saved run until you '
+          'choose restart.',
+      secondaryLabel: 'Keep board',
+      onSecondary: () => Navigator.pop(context, false),
+      primaryLabel: 'Restart',
+      onPrimary: () => Navigator.pop(context, true),
+    ),
+  );
+  if (restart == true) game.newRound();
 }

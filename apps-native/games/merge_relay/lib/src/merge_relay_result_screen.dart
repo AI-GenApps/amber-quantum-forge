@@ -143,9 +143,9 @@ final class MergeRelayResultScreen extends StatelessWidget {
   }
 
   String _resultHint(MergeRelayResult result) => switch (result.outcome) {
-    MergeRelayOutcome.completed => 'Carry the spark into the next path.',
+    MergeRelayOutcome.completed => 'Keep the chain moving into the next path.',
     MergeRelayOutcome.missed =>
-      'Read the open lanes, then try a different first handoff.',
+      'Read the open lanes, then try a different first move.',
     MergeRelayOutcome.terminal =>
       'The board is full. A new run starts only when you choose it.',
     MergeRelayOutcome.earlyFinish =>

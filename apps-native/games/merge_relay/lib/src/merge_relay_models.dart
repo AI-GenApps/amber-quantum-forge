@@ -32,7 +32,7 @@ extension MergeRelayModePresentation on MergeRelayMode {
   String get goal => switch (this) {
     MergeRelayMode.rescue => 'Fuse the marked pair.',
     MergeRelayMode.daily => 'Find the best chain in three moves.',
-    MergeRelayMode.endless => 'Keep the relay alive for one more merge.',
+    MergeRelayMode.endless => 'Keep the chain going for one more merge.',
   };
 
   bool get usesMoveBudget => this != MergeRelayMode.endless;
@@ -113,7 +113,7 @@ final class MergeRelayResult {
   final String? rescueId;
 
   String get message => switch (outcome) {
-    MergeRelayOutcome.completed => 'Path cleared.',
+    MergeRelayOutcome.completed => 'Every tile found its place.',
     MergeRelayOutcome.missed => 'The pair stayed apart this time.',
     MergeRelayOutcome.terminal => 'Every lane is full. The chain ends here.',
     MergeRelayOutcome.earlyFinish => 'Your board is safe where you left it.',

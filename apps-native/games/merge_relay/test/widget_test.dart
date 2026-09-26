@@ -24,7 +24,7 @@ void main() {
 
     await tester.tap(find.text('Play rescue'));
     await tester.pumpAndSettle();
-    expect(find.text('First handoff'), findsOneWidget);
+    expect(find.text('First merge'), findsOneWidget);
     expect(find.text('Slide the pair left.'), findsOneWidget);
 
     await tester.tap(find.text('Skip'));
@@ -67,10 +67,10 @@ void main() {
       // the default 600-tall test surface; scroll the sheet's
       // `SingleChildScrollView` until it's actually hit-testable, the way
       // a real finger would need to.
-      await tester.ensureVisible(find.text('Replay handoff guide'));
-      await tester.tap(find.text('Replay handoff guide'));
+      await tester.ensureVisible(find.text('Replay tutorial'));
+      await tester.tap(find.text('Replay tutorial'));
       await tester.pumpAndSettle();
-      expect(find.text('First handoff'), findsOneWidget);
+      expect(find.text('First merge'), findsOneWidget);
     },
   );
 
