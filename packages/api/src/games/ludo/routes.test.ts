@@ -432,3 +432,143 @@ describe("Ludo matchmaking-ticket routes", () => {
     }
   });
 });
+
+describe("Ludo private-room routes (task 21)", () => {
+  it("rejects a create-room request without a valid Ludo game token", async () => {
+    const saved = saveEnv();
+    try {
+      const { app } = await testHarness();
+      const response = await app.request("/games/ludo/debug/rooms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "classic", seat_target: 2, idempotency_key: "k1" }),
+      });
+      expect(response.status).toBe(401);
+      expect((await response.json()).error.code).toBe("ludo_authentication_required");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("rejects an invalid create-room payload", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("alice");
+      const response = await app.request("/games/ludo/debug/rooms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${gameToken}` },
+        body: JSON.stringify({ mode: "classic", seat_target: 3, idempotency_key: "k1" }),
+      });
+      expect(response.status).toBe(422);
+      expect((await response.json()).error.code).toBe("ludo_invalid_command");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("creates a room and returns a shareable deep-link invite string", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("alice");
+      const response = await app.request("/games/ludo/debug/rooms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${gameToken}` },
+        body: JSON.stringify({ mode: "classic", seat_target: 2, idempotency_key: "k1" }),
+      });
+      expect(response.status).toBe(201);
+      const body = await response.json();
+      expect(body.room.status).toBe("waiting");
+      expect(body.room.owner_subject).toBe("alice");
+      expect(body.room.room_code).toMatch(/^[A-Z0-9]{6}$/);
+      expect(body.invite_link).toBe(`w3dev-ludo://room/${body.room.room_code}`);
+      expect(body.idempotent).toBe(false);
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("rejects a join-room request without a valid Ludo game token", async () => {
+    const saved = saveEnv();
+    try {
+      const { app } = await testHarness();
+      const response = await app.request("/games/ludo/debug/rooms/ABCDEF/join", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idempotency_key: "k1" }),
+      });
+      expect(response.status).toBe(401);
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("rejects an invalid room code on join", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("bob");
+      const response = await app.request("/games/ludo/debug/rooms/not-a-code/join", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${gameToken}` },
+        body: JSON.stringify({ idempotency_key: "k1" }),
+      });
+      expect(response.status).toBe(422);
+      expect((await response.json()).error.code).toBe("ludo_invalid_command");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("rejects joining a room code that does not exist", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("bob");
+      const response = await app.request("/games/ludo/debug/rooms/ABCDEF/join", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${gameToken}` },
+        body: JSON.stringify({ idempotency_key: "k1" }),
+      });
+      expect(response.status).toBe(404);
+      expect((await response.json()).error.code).toBe("ludo_room_not_found");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("joins a room by code and returns the active match once full", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("alice");
+      const createResponse = await app.request("/games/ludo/debug/rooms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${gameToken}` },
+        body: JSON.stringify({ mode: "classic", seat_target: 2, idempotency_key: "k1" }),
+      });
+      const roomCode = (await createResponse.json()).room.room_code;
+
+      const bobToken = await signGameToken(
+        {
+          appId: "ludo",
+          environment: "debug",
+          secret: TEST_GAME_TOKEN_SECRET,
+          issuer: TEST_GAME_TOKEN_ISSUER,
+          audience: TEST_GAME_TOKEN_AUDIENCE,
+        },
+        { subject: "bob", role: "player" },
+        300,
+      );
+      const response = await app.request(`/games/ludo/debug/rooms/${roomCode}/join`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${bobToken}` },
+        body: JSON.stringify({ idempotency_key: "join-1" }),
+      });
+      expect(response.status).toBe(200);
+      const body = await response.json();
+      expect(body.room.status).toBe("matched");
+      expect(body.match_state.status).toBe("active");
+      expect(body.match_state.players).toHaveLength(2);
+      expect(body.idempotent).toBe(false);
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+});

@@ -6,6 +6,7 @@ import type {
   LudoMatchSummary,
   LudoMode,
   LudoPlayerState,
+  LudoRoom,
   LudoSessionResponse,
   LudoToken,
 } from "./contracts";
@@ -272,6 +273,35 @@ export function matchmakingTicketFromWire(
     seatTarget: value.seat_target,
     status: value.status,
     matchedMatchId: value.matched_match_id,
+    createdAt: value.created_at,
+    expiresAt: value.expires_at,
+  };
+}
+
+/** Wire shape of a `ludo_rooms` row (task 21). */
+export function roomToWire(value: LudoRoom) {
+  return {
+    room_code: value.roomCode,
+    environment: value.environment,
+    owner_subject: value.ownerSubject,
+    mode: value.mode,
+    seat_target: value.seatTarget,
+    status: value.status,
+    match_id: value.matchId,
+    created_at: value.createdAt,
+    expires_at: value.expiresAt,
+  };
+}
+
+export function roomFromWire(value: ReturnType<typeof roomToWire>): LudoRoom {
+  return {
+    roomCode: value.room_code,
+    environment: value.environment,
+    ownerSubject: value.owner_subject,
+    mode: value.mode,
+    seatTarget: value.seat_target,
+    status: value.status,
+    matchId: value.match_id,
     createdAt: value.created_at,
     expiresAt: value.expires_at,
   };

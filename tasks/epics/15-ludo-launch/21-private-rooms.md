@@ -44,24 +44,24 @@ behavior task 20 adds for matchmaking.
 
 ## Implementation Checklist
 
-- [ ] Add `LudoRoom` DTOs to `packages/api/src/games/ludo/contracts.ts`
+- [x] Add `LudoRoom` DTOs to `packages/api/src/games/ludo/contracts.ts`
   (the stub from task 15), wire codecs in `wire.ts`, and validators in
   `validation.ts`.
-- [ ] Add `packages/api/src/games/ludo/room-service.ts`: `createRoom`,
+- [x] Add `packages/api/src/games/ludo/room-service.ts`: `createRoom`,
   `joinRoom`, `sweepExpiredRooms(now)`, with collision-safe room-code
   generation, calling task 18's `createMatch` with `matchOrigin: "room"`.
-- [ ] Wire `POST /:environment/rooms` and `POST
+- [x] Wire `POST /:environment/rooms` and `POST
   /:environment/rooms/:roomCode/join` into `routes.ts`, each requiring a
   verified Ludo game token.
-- [ ] Extend task 20's sweeper integration to also call
+- [x] Extend task 20's sweeper integration to also call
   `sweepExpiredRooms`, bounded per invocation.
-- [ ] Add `packages/api/src/games/ludo/room-service.test.ts` covering room
+- [x] Add `packages/api/src/games/ludo/room-service.test.ts` covering room
   creation, join-to-full triggers match creation, code collision retry, and
   expiry sweep.
-- [ ] Add a `packages/api/src/games/ludo/service.test.ts` case (extend)
+- [x] Add a `packages/api/src/games/ludo/service.test.ts` case (extend)
   proving a room-originated match's disconnecting seat is forfeited after
   three misses (task 19's existing behavior), not bot-filled.
-- [ ] Add `packages/api/src/games/ludo/routes.test.ts` cases (extend) for
+- [x] Add `packages/api/src/games/ludo/routes.test.ts` cases (extend) for
   the two new routes' auth/validation paths.
 
 ## Files Touched

@@ -14,14 +14,23 @@ import { DrizzleLudoStore } from "./drizzle-store";
 import { asLudoError, LudoError } from "./errors";
 import { cancelTicket, createTicket } from "./matchmaking-service";
 import { InMemoryLudoStore } from "./memory-store";
+import { createRoom, joinRoom } from "./room-service";
 import { createMatch, getMatchState, processCommand } from "./service";
 import { LudoStorageError, type LudoStore, UnavailableLudoStore } from "./store";
 import {
   parseCreateMatchmakingTicketRequest,
+  parseCreateRoomRequest,
+  parseJoinRoomRequest,
   parseLudoCommand,
+  parseRoomCodeParam,
   parseTicketIdParam,
 } from "./validation";
-import { matchmakingTicketToWire, sessionResponseToWire, toWireMatchState } from "./wire";
+import {
+  matchmakingTicketToWire,
+  roomToWire,
+  sessionResponseToWire,
+  toWireMatchState,
+} from "./wire";
 
 const SESSION_TOKEN_TTL_SECONDS = 300;
 
@@ -306,6 +315,94 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
         parsedTicketId.value,
       );
       return c.json({ ticket: matchmakingTicketToWire(result.ticket) }, 200);
+    } catch (cause) {
+      const error = asLudoError(cause);
+      return c.json(error.response(), error.status);
+    }
+  });
+
+  routes.post("/:environment/rooms", async (c) => {
+    const environment = c.req.param("environment");
+    if (!isGameEnvironment(environment)) {
+      const error = new LudoError(
+        400,
+        "ludo_invalid_environment",
+        "Environment must be debug, staging or production",
+      );
+      return c.json(error.response(), error.status);
+    }
+    const auth = await authenticateGameToken(c, dependencies, environment);
+    if (!auth.ok) return auth.response;
+
+    const parsed = parseCreateRoomRequest(await readJsonBody(c));
+    if (!parsed.ok) {
+      const error = new LudoError(
+        422,
+        "ludo_invalid_command",
+        "A valid room payload (mode, seat_target, idempotency_key) is required",
+      );
+      return c.json(error.response(), error.status);
+    }
+
+    try {
+      const result = await createRoom(dependencies.store, environment, {
+        subject: auth.session.subject,
+        mode: parsed.value.mode,
+        seatTarget: parsed.value.seatTarget,
+        idempotencyKey: parsed.value.idempotencyKey,
+      });
+      return c.json(
+        {
+          room: roomToWire(result.room),
+          invite_link: result.inviteLink,
+          idempotent: result.idempotent,
+        },
+        201,
+      );
+    } catch (cause) {
+      const error = asLudoError(cause);
+      return c.json(error.response(), error.status);
+    }
+  });
+
+  routes.post("/:environment/rooms/:roomCode/join", async (c) => {
+    const environment = c.req.param("environment");
+    if (!isGameEnvironment(environment)) {
+      const error = new LudoError(
+        400,
+        "ludo_invalid_environment",
+        "Environment must be debug, staging or production",
+      );
+      return c.json(error.response(), error.status);
+    }
+    const auth = await authenticateGameToken(c, dependencies, environment);
+    if (!auth.ok) return auth.response;
+
+    const parsedRoomCode = parseRoomCodeParam(c.req.param("roomCode"));
+    const parsedBody = parseJoinRoomRequest(await readJsonBody(c));
+    if (!parsedRoomCode.ok || !parsedBody.ok) {
+      const error = new LudoError(
+        422,
+        "ludo_invalid_command",
+        "A valid room code and idempotency_key are required",
+      );
+      return c.json(error.response(), error.status);
+    }
+
+    try {
+      const result = await joinRoom(dependencies.store, environment, {
+        subject: auth.session.subject,
+        roomCode: parsedRoomCode.value,
+        idempotencyKey: parsedBody.value.idempotencyKey,
+      });
+      return c.json(
+        {
+          room: roomToWire(result.room),
+          match_state: toWireMatchState(result.matchState),
+          idempotent: result.idempotent,
+        },
+        200,
+      );
     } catch (cause) {
       const error = asLudoError(cause);
       return c.json(error.response(), error.status);

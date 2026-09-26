@@ -260,7 +260,7 @@ describe("Ludo command service", () => {
 describe("Matchmaking-origin bot-fill vs direct-origin forfeit (task 20)", () => {
   async function createActiveMatchWithOrigin(
     store: InMemoryLudoStore,
-    matchOrigin: "matchmaking" | "direct",
+    matchOrigin: "matchmaking" | "direct" | "room",
   ): Promise<{ matchId: string; subjects: string[] }> {
     const subjects = ["alice", "bob"];
     const created = await createMatch(
@@ -310,6 +310,21 @@ describe("Matchmaking-origin bot-fill vs direct-origin forfeit (task 20)", () =>
   it("still forfeits seat 0 on its third consecutive miss in a direct-origin match (task 19 behavior unchanged)", async () => {
     const store = new InMemoryLudoStore();
     const { matchId, subjects } = await createActiveMatchWithOrigin(store, "direct");
+    await primeThirdMiss(store, matchId);
+
+    const result = await getMatchState(store, ENVIRONMENT, subjects[1], matchId);
+    expect(result.matchState.status).toBe("finished");
+    expect(result.matchState.winnerOrder).toEqual([1, 0]);
+
+    const seat0Row = store
+      .snapshot(ENVIRONMENT)
+      .players.find((p) => p.matchId === matchId && p.seat === 0);
+    expect(seat0Row?.isBot).toBe(false);
+  });
+
+  it("still forfeits seat 0 on its third consecutive miss in a room-originated match (task 21: task 19 behavior unchanged, not bot-filled)", async () => {
+    const store = new InMemoryLudoStore();
+    const { matchId, subjects } = await createActiveMatchWithOrigin(store, "room");
     await primeThirdMiss(store, matchId);
 
     const result = await getMatchState(store, ENVIRONMENT, subjects[1], matchId);

@@ -1,5 +1,11 @@
 import { isGameAppId, isGameEnvironment } from "../validation";
-import type { LudoCommand, LudoCreateMatchmakingTicketRequest, LudoMode } from "./contracts";
+import type {
+  LudoCommand,
+  LudoCreateMatchmakingTicketRequest,
+  LudoCreateRoomRequest,
+  LudoJoinRoomRequest,
+  LudoMode,
+} from "./contracts";
 
 export type LudoValidationResult<T> = { ok: true; value: T } | { ok: false; error: string };
 
@@ -33,6 +39,11 @@ function isSeatTarget(value: unknown): value is number {
 
 function isTicketId(value: unknown): value is string {
   return typeof value === "string" && /^[A-Za-z0-9_-]{1,64}$/.test(value);
+}
+
+/** Matches `room-service.ts`'s generated code alphabet: 6 uppercase alphanumeric characters. */
+function isRoomCode(value: unknown): value is string {
+  return typeof value === "string" && /^[A-Z0-9]{6}$/.test(value);
 }
 
 export { isGameAppId, isGameEnvironment };
@@ -89,6 +100,32 @@ export function parseCreateMatchmakingTicketRequest(
 
 export function parseTicketIdParam(value: string): LudoValidationResult<string> {
   if (!isTicketId(value)) return fail("ludo_ticket_id_invalid");
+  return ok(value);
+}
+
+/** `POST /:environment/rooms` request body. */
+export function parseCreateRoomRequest(
+  value: unknown,
+): LudoValidationResult<LudoCreateRoomRequest> {
+  if (!isObject(value)) return fail("ludo_room_request_must_be_object");
+  const { mode, idempotency_key: idempotencyKey } = value;
+  const seatTarget = value.seat_target;
+  if (!isMode(mode)) return fail("ludo_mode_invalid");
+  if (!isSeatTarget(seatTarget)) return fail("ludo_seat_target_invalid");
+  if (!isIdempotencyKey(idempotencyKey)) return fail("ludo_idempotency_key_invalid");
+  return ok({ mode, seatTarget, idempotencyKey });
+}
+
+/** `POST /:environment/rooms/:roomCode/join` request body. */
+export function parseJoinRoomRequest(value: unknown): LudoValidationResult<LudoJoinRoomRequest> {
+  if (!isObject(value)) return fail("ludo_room_request_must_be_object");
+  const { idempotency_key: idempotencyKey } = value;
+  if (!isIdempotencyKey(idempotencyKey)) return fail("ludo_idempotency_key_invalid");
+  return ok({ idempotencyKey });
+}
+
+export function parseRoomCodeParam(value: string): LudoValidationResult<string> {
+  if (!isRoomCode(value)) return fail("ludo_room_code_invalid");
   return ok(value);
 }
 

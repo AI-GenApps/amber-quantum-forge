@@ -217,12 +217,46 @@ export interface LudoCreateMatchmakingTicketRequest {
   idempotencyKey: string;
 }
 
+export type LudoRoomStatus = "waiting" | "matched" | "expired";
+
+/** Wire-facing shape of a `ludo_rooms` row (task 16's schema, task 21's private-rooms flow). */
 export interface LudoRoom {
-  roomId: string;
-  inviteCode: string;
-  hostSubject: string;
+  roomCode: string;
+  environment: LudoEnvironment;
+  ownerSubject: string;
   mode: LudoMode;
+  seatTarget: number;
+  /** Derived, not stored: `"matched"` once `matchId` is set, else `"expired"` past `expiresAt`, else `"waiting"`. */
+  status: LudoRoomStatus;
+  matchId: string | null;
   createdAt: string;
+  expiresAt: string;
+}
+
+/** `POST /:environment/rooms` request body. */
+export interface LudoCreateRoomRequest {
+  mode: LudoMode;
+  seatTarget: number;
+  idempotencyKey: string;
+}
+
+/** `POST /:environment/rooms/:roomCode/join` request body. */
+export interface LudoJoinRoomRequest {
+  idempotencyKey: string;
+}
+
+/**
+ * Deep-link scheme for Ludo, mirroring `namespaces("ludo").deepLink` from
+ * the game registry (`scripts/games/registry-games.ts`, task 00:
+ * `w3dev-${id}`). Duplicated here as a plain constant rather than imported,
+ * since `packages/api` does not depend on `scripts/games` (its `tsconfig.json`
+ * scopes `rootDir`/`include` to `src`).
+ */
+export const LUDO_DEEP_LINK_SCHEME = "w3dev-ludo" as const;
+
+/** Shareable deep-link invite string for a room's `room_code` (client-side handling is task 26). */
+export function ludoRoomInviteLink(roomCode: string): string {
+  return `${LUDO_DEEP_LINK_SCHEME}://room/${roomCode}`;
 }
 
 export interface LudoSessionResponse {

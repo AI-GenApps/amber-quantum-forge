@@ -18,7 +18,10 @@ export type LudoErrorCode =
   | "ludo_timeout_not_elapsed"
   | "ludo_ticket_not_found"
   | "ludo_ticket_forbidden"
-  | "ludo_ticket_not_cancellable";
+  | "ludo_ticket_not_cancellable"
+  | "ludo_room_not_found"
+  | "ludo_room_expired"
+  | "ludo_room_code_exhausted";
 
 export class LudoError extends Error {
   readonly diagnosticId: string;
@@ -142,5 +145,29 @@ export class LudoTicketForbiddenError extends LudoCommandError {
 export class LudoTicketNotCancellableError extends LudoCommandError {
   constructor() {
     super(409, "ludo_ticket_not_cancellable", "The ticket is no longer searching");
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Private-room rejection paths (task 21).
+// ---------------------------------------------------------------------------
+
+export class LudoRoomNotFoundError extends LudoCommandError {
+  constructor(roomCode: string) {
+    super(404, "ludo_room_not_found", `Ludo room not found: ${roomCode}`);
+  }
+}
+
+/** `POST .../rooms/:roomCode/join` on a room that expired before it filled. */
+export class LudoRoomExpiredError extends LudoCommandError {
+  constructor(roomCode: string) {
+    super(409, "ludo_room_expired", `Ludo room has expired: ${roomCode}`);
+  }
+}
+
+/** Room-code generation could not find a non-colliding code within its retry budget (practically unreachable). */
+export class LudoRoomCodeExhaustedError extends LudoCommandError {
+  constructor() {
+    super(503, "ludo_room_code_exhausted", "Could not generate a unique room code");
   }
 }
