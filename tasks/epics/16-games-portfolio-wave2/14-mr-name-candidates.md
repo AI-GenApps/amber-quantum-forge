@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 14-mr-name-candidates
-status: pending
+status: completed
 commit_scope: merge-relay
 depends_on: [16-games-portfolio-wave2/13-mr-local-quality]
 estimate: M
@@ -44,12 +44,12 @@ task 17.
 
 ## Implementation Checklist
 
-- [ ] Write `.agents/resources/2026-09-25/merge-relay-brand/name-check.md`:
+- [x] Write `.agents/resources/2026-09-25/merge-relay-brand/name-check.md`:
       every candidate checked (the table name → verdict → evidence URLs →
       notes), then the shortlist.
-- [ ] Write `.agents/resources/2026-09-25/merge-relay-brand/shortlist.json`:
+- [x] Write `.agents/resources/2026-09-25/merge-relay-brand/shortlist.json`:
       `[{name, rationale, verdict, checked_at}]`.
-- [ ] Add the shortlist to `.agents/games/merge-relay/open-questions.md`.
+- [x] Add the shortlist to `.agents/games/merge-relay/open-questions.md`.
 
 ## Files Touched
 
