@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 12-mr-onboarding-and-how-to-play
-status: pending
+status: completed
 commit_scope: merge-relay
 depends_on: [16-games-portfolio-wave2/11-mr-screens-restyle]
 estimate: M
@@ -35,16 +35,27 @@ is always reachable from Settings.
 
 ## Implementation Checklist
 
-- [ ] Add the welcome screen and splash-to-welcome routing for a fresh
-      install only.
-- [ ] Restyle the tutorial with the hand hint and reduced-motion
+- [x] Add the welcome screen and splash-to-welcome routing for a fresh
+      install only. (There is no native/in-app splash screen in this app —
+      confirmed no `flutter_native_splash` config and no existing splash
+      widget. Implemented as: `MergeRelayWelcome` shows as the first thing
+      `MergeRelayTutorial` renders whenever `game.tutorialComplete` is still
+      false, a local widget flag rather than a new top-level
+      `MergeRelayRoute` — see the evidence README's "Why
+      merge_relay_game_actions.dart/merge_relay_ui.dart weren't touched"
+      for why: dozens of existing tests use "tap Play rescue → tutorial" as
+      their idiom for reaching a playable state, several outside this
+      task's scope (typography, PGS, responsive/large-text, solo-v1-scope),
+      and this keeps all of them working unchanged. "Skip" already existed
+      on every step.)
+- [x] Restyle the tutorial with the hand hint and reduced-motion
       alternative.
-- [ ] Add a how-to-play page and an entry in Settings.
-- [ ] Add tests: a fresh install walks welcome → tutorial → chapter map;
+- [x] Add a how-to-play page and an entry in Settings.
+- [x] Add tests: a fresh install walks welcome → tutorial → chapter map;
       skip at each step; replay from Settings; an existing save doesn't mark
       the tutorial done; reduced motion hides the hand animation but keeps
       the text.
-- [ ] Add goldens `welcome.png`, `tutorial_hint.png`, and `how_to_play.png`,
+- [x] Add goldens `welcome.png`, `tutorial_hint.png`, and `how_to_play.png`,
       copy them to `.agents/resources/2026-09-25/games-wave2-qa/12/`, and
       VIEW them.
 

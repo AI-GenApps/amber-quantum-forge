@@ -24,6 +24,13 @@ void main() {
 
     await tester.tap(find.text('Play rescue'));
     await tester.pumpAndSettle();
+    expect(find.text('Slide to merge matching tiles.'), findsOneWidget);
+
+    // The first-run welcome step (task 12) precedes the interactive board;
+    // `pump()` (never `pumpAndSettle`) from here on — the hand-hint's
+    // repeating animation controller never settles.
+    await tester.tap(find.text("Let's play"));
+    await tester.pump();
     expect(find.text('First merge'), findsOneWidget);
     expect(find.text('Slide the pair left.'), findsOneWidget);
 
@@ -70,6 +77,13 @@ void main() {
       await tester.ensureVisible(find.text('Replay tutorial'));
       await tester.tap(find.text('Replay tutorial'));
       await tester.pumpAndSettle();
+      // Tutorial hasn't been completed even once yet in this run, so the
+      // welcome step (task 12) shows again ahead of the interactive board —
+      // see `merge_relay_onboarding_test.dart` for the "replay after
+      // onboarding is done skips welcome" case.
+      expect(find.text('Slide to merge matching tiles.'), findsOneWidget);
+      await tester.tap(find.text("Let's play"));
+      await tester.pump();
       expect(find.text('First merge'), findsOneWidget);
     },
   );

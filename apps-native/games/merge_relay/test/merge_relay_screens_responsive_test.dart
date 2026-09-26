@@ -26,12 +26,25 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('welcome has no overflow at 360x640 and 1.3x text', (
+    tester,
+  ) async {
+    await _pumpResponsive(tester);
+    await tester.tap(find.text('Play rescue'));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('tutorial has no overflow at 360x640 and 1.3x text', (
     tester,
   ) async {
     await _pumpResponsive(tester);
     await tester.tap(find.text('Play rescue'));
     await tester.pumpAndSettle();
+    await tester.tap(find.text("Let's play"));
+    // Never `pumpAndSettle` here: the hand-hint's animation repeats forever
+    // (task 12's `_SwipeHandHint`).
+    await tester.pump();
     expect(tester.takeException(), isNull);
   });
 
@@ -121,6 +134,18 @@ void main() {
   ) async {
     await _pumpResponsive(tester);
     await tester.tap(find.byTooltip('Settings'));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('how to play has no overflow at 360x640 and 1.3x text', (
+    tester,
+  ) async {
+    await _pumpResponsive(tester);
+    await tester.tap(find.byTooltip('Settings'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('How to play'));
+    await tester.tap(find.text('How to play'));
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
   });

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'merge_relay_app.dart';
 import 'merge_relay_theme.dart';
 import 'platform/merge_relay_pgs_account.dart';
+import 'screens/merge_relay_how_to_play.dart';
 import 'ui/mr_button.dart';
 import 'ui/mr_tokens.dart';
 
@@ -135,6 +136,19 @@ Future<void> showMergeRelaySettings(
                 onPressed: () {
                   Navigator.pop(context);
                   game.replayTutorial();
+                },
+              ),
+              const SizedBox(height: 8),
+              MrButton(
+                label: 'How to play',
+                icon: Icons.menu_book_rounded,
+                variant: MrButtonVariant.secondary,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => MergeRelayHowToPlay(theme: theme),
+                    ),
+                  );
                 },
               ),
               const SizedBox(height: 4),

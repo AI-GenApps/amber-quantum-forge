@@ -37,6 +37,13 @@ void main() {
     await tester.tap(find.text('Play rescue'));
     await tester.pumpAndSettle();
 
+    // The first-run welcome step (task 12).
+    _expectBundledFonts(tester);
+
+    // The interactive board + hand-hint step — `pump()`, never
+    // `pumpAndSettle`, since the hint's animation controller repeats.
+    await tester.tap(find.text("Let's play"));
+    await tester.pump();
     _expectBundledFonts(tester);
   });
 

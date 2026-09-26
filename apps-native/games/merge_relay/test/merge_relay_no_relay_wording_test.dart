@@ -60,6 +60,12 @@ void main() {
 
       await tester.tap(find.text('Play rescue'));
       await tester.pumpAndSettle();
+      checkScreen('welcome');
+
+      await tester.tap(find.text("Let's play"));
+      // Never `pumpAndSettle` once the hand-hint's repeating animation
+      // controller is mounted (task 12's `_SwipeHandHint`).
+      await tester.pump();
       checkScreen('tutorial');
 
       await tester.tap(find.text('Skip'));

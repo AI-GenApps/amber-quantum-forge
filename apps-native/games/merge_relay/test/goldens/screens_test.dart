@@ -97,12 +97,42 @@ void main() {
     await _capture(tester, key, 'chapter_map.png');
   });
 
-  testWidgets('tutorial renders with the design system', (tester) async {
+  testWidgets('welcome renders with the design system', (tester) async {
     final key = await _bootApp(tester);
     await tester.tap(find.text('Play rescue'));
     await tester.pumpAndSettle();
     await tester.pump(const Duration(milliseconds: 300));
+    await _capture(tester, key, 'welcome.png');
+  });
+
+  testWidgets('tutorial renders with the design system', (tester) async {
+    final key = await _bootApp(tester);
+    await tester.tap(find.text('Play rescue'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Let's play"));
+    // Never `pumpAndSettle` from here: the hand-hint's repeating animation
+    // controller never settles (see `_SwipeHandHint` in
+    // `merge_relay_tutorial.dart`).
+    await tester.pump(const Duration(milliseconds: 300));
     await _capture(tester, key, 'tutorial.png');
+  });
+
+  testWidgets('tutorial hand-hint mid-swing renders with the design system', (
+    tester,
+  ) async {
+    final key = await _bootApp(tester);
+    await tester.tap(find.text('Play rescue'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Let's play"));
+    // A `Ticker`'s elapsed time is relative to the timestamp of its own
+    // *first* frame callback, not to when `repeat()` was called — so the
+    // very first pump after this widget mounts only establishes that
+    // baseline (the hint reads as freshly at rest, still a valid capture
+    // for `tutorial.png`'s general screenshot). A second, later pump is
+    // needed to actually see progress, which is what this golden is for.
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 450));
+    await _capture(tester, key, 'tutorial_hint.png');
   });
 
   testWidgets('play (rescue) renders with the design system', (tester) async {
@@ -167,6 +197,17 @@ void main() {
     await tester.pumpAndSettle();
     await tester.pump(const Duration(milliseconds: 300));
     await _capture(tester, key, 'settings.png');
+  });
+
+  testWidgets('how to play renders with the design system', (tester) async {
+    final key = await _bootApp(tester);
+    await tester.tap(find.byTooltip('Settings'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('How to play'));
+    await tester.tap(find.text('How to play'));
+    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 300));
+    await _capture(tester, key, 'how_to_play.png');
   });
 
   testWidgets('pause overlay renders with the design system', (tester) async {
