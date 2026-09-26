@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 23-identity-exchange
-status: pending
+status: complete
 commit_scope: ludo
 depends_on: [15-ludo-launch/22-realtime-fanout]
 estimate: M
@@ -57,26 +57,26 @@ route from task 15 (now correct, thanks to task 14's fix).
 
 ## Implementation Checklist
 
-- [ ] Add `packages/api/src/routes/auth-tokens.test.ts` (extend task 14's
+- [x] Add `packages/api/src/routes/auth-tokens.test.ts` (extend task 14's
   file) case: exchanging an anonymous Firebase ID token succeeds and yields
   a stable `sub`.
-- [ ] Add a regression test asserting that exchanging, then simulating a
+- [x] Add a regression test asserting that exchanging, then simulating a
   linked-credential ID token for the *same* Firebase UID, yields the same
   `sub` on the new API JWT (use a fake/mocked `verifyIdToken` returning the
   same `uid` with a different `provider`, matching however existing tests in
   this file mock Firebase verification).
-- [ ] Add `packages/api/src/games/ludo/routes.test.ts` case (extend task 22's
+- [x] Add `packages/api/src/games/ludo/routes.test.ts` case (extend task 22's
   file): the session route accepts an API JWT whose `provider` is
   `"anonymous"` identically to any other provider.
-- [ ] If the review in Context finds a real gap (anonymous provider is
+- [x] If the review in Context finds a real gap (anonymous provider is
   rejected somewhere), fix it in `packages/api/src/routes/auth-tokens.ts` or
   `packages/api/src/games/ludo/routes.ts` and note the fix in this task's
   commit body.
-- [ ] Document the full guest-to-linked flow, with a sequence diagram in
+- [x] Document the full guest-to-linked flow, with a sequence diagram in
   prose (no image), in `docs-internal/gaming/ludo-flutter-plan.md`'s
   identity section (extend the stub from task 15; task 28 finishes the rest
   of the document).
-- [ ] Confirm and document (in the same doc section) that no server-side
+- [x] Confirm and document (in the same doc section) that no server-side
   Ludo profile table exists in v1 and that display name/avatar are
   client-local per the product decision — cross-reference
   `packages/db/src/schema.ts`'s `ludo_players.display_name_cache` column
@@ -84,11 +84,27 @@ route from task 15 (now correct, thanks to task 14's fix).
 
 ## Files Touched
 
-- `packages/api/src/routes/auth-tokens.test.ts`
+- `packages/api/src/routes/__tests__/auth.test.ts` (task 14's actual test
+  file for `auth-tokens.ts`, found at this path rather than the
+  `auth-tokens.test.ts` path guessed above — extended in place instead of
+  creating a duplicate test file)
 - `packages/api/src/games/ludo/routes.test.ts`
-- `packages/api/src/routes/auth-tokens.ts` (only if a real gap is found)
-- `packages/api/src/games/ludo/routes.ts` (only if a real gap is found)
+- `packages/api/src/routes/auth-tokens.ts`: no change needed (see
+  Implementation Note below)
+- `packages/api/src/games/ludo/routes.ts`: no change needed (see
+  Implementation Note below)
 - `docs-internal/gaming/ludo-flutter-plan.md`
+- `tasks/epics/15-ludo-launch/STATUS.md` (status marker)
+
+## Implementation Note (filled in during execution)
+
+Reviewed `auth-tokens.ts`, `firebase/admin.ts`, and `games/ludo/routes.ts`:
+none of them special-case or reject the `"anonymous"` sign-in provider.
+`/exchange` reads `decoded.uid` unconditionally and mints the API JWT's
+`sub`/`uid` from it regardless of `sign_in_provider`; the Ludo session route
+only reads `verification.payload.sub` and never inspects `provider` at all.
+No code change was needed — both checklist items above were satisfied by
+adding regression tests only, as anticipated by the task's Context section.
 
 ## Acceptance Criteria
 

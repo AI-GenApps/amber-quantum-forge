@@ -320,6 +320,76 @@ describe("refresh identity regression (task 15-ludo-launch/14)", () => {
     expect(refreshPayload.sub).not.toBe("player@example.com");
   });
 
+  it("exchanges an anonymous Firebase ID token for an API JWT with a stable sub (15-ludo-launch/23)", async () => {
+    // Firebase anonymous sign-in yields a decoded token with no email and
+    // `firebase.sign_in_provider: "anonymous"`. `/exchange` must treat this
+    // identically to any other provider: no rejection, and `sub`/`uid` come
+    // straight from the Firebase UID.
+    vi.mocked(verifyIdToken).mockResolvedValue({
+      uid: "anon-uid-789",
+      email: undefined,
+      email_verified: false,
+      name: undefined,
+      picture: undefined,
+      firebase: { sign_in_provider: "anonymous" },
+    } as never);
+
+    const res = await authTokenRoutes.request("/exchange", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ idToken: "anon-token" }),
+    });
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as { accessToken: string };
+    const payload = decodeJwtPayload(body.accessToken);
+    expect(payload.sub).toBe("anon-uid-789");
+    expect(payload.uid).toBe("anon-uid-789");
+    expect(payload.provider).toBe("anonymous");
+  });
+
+  it("keeps the same sub across a simulated Google-link of an anonymous Firebase UID (15-ludo-launch/23)", async () => {
+    // Firebase's `linkWithCredential` preserves the Firebase UID: re-running
+    // `/exchange` with the now-linked ID token (same `uid`, a different
+    // `sign_in_provider`, and a newly-attached email) must yield an API JWT
+    // with the same `sub` as the pre-link anonymous exchange.
+    vi.mocked(verifyIdToken).mockResolvedValueOnce({
+      uid: "linkable-uid-456",
+      email: undefined,
+      email_verified: false,
+      name: undefined,
+      picture: undefined,
+      firebase: { sign_in_provider: "anonymous" },
+    } as never);
+    const anonRes = await authTokenRoutes.request("/exchange", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ idToken: "anon-token" }),
+    });
+    expect(anonRes.status).toBe(200);
+    const anonPayload = decodeJwtPayload((await anonRes.json()).accessToken as string);
+
+    vi.mocked(verifyIdToken).mockResolvedValueOnce({
+      uid: "linkable-uid-456",
+      email: "linked@example.com",
+      email_verified: true,
+      name: "Linked Player",
+      picture: null,
+      firebase: { sign_in_provider: "google.com" },
+    } as never);
+    const linkedRes = await authTokenRoutes.request("/exchange", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ idToken: "linked-token" }),
+    });
+    expect(linkedRes.status).toBe(200);
+    const linkedPayload = decodeJwtPayload((await linkedRes.json()).accessToken as string);
+
+    expect(linkedPayload.sub).toBe(anonPayload.sub);
+    expect(linkedPayload.uid).toBe(anonPayload.uid);
+    expect(linkedPayload.sub).toBe("linkable-uid-456");
+    expect(linkedPayload.provider).toBe("google.com");
+  });
+
   it("fails closed with 401 when the refresh token's user has no linked auth row", async () => {
     // Seed a refresh token pointing at a user row with no corresponding
     // `auth` row (e.g. the Firebase auth link was deleted/never created).

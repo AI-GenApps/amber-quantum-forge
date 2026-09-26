@@ -65,13 +65,13 @@ function restoreEnv(saved: Record<string, string | undefined>) {
   }
 }
 
-async function apiToken(sub = "firebase-uid-123") {
+async function apiToken(sub = "firebase-uid-123", provider = "google.com") {
   return signAccessToken({
     sub,
     uid: sub,
-    email: "player@example.test",
-    emailVerified: true,
-    provider: "google.com",
+    email: provider === "anonymous" ? null : "player@example.test",
+    emailVerified: provider !== "anonymous",
+    provider,
     admin: false,
   });
 }
@@ -153,6 +153,39 @@ describe("Ludo session route", () => {
       });
       expect(response.status).toBe(503);
       expect((await response.json()).error.code).toBe("ludo_token_configuration_unavailable");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("accepts an API JWT whose provider is anonymous identically to any other provider (15-ludo-launch/23)", async () => {
+    const saved = saveEnv();
+    process.env.GAME_TOKEN_SECRET_LUDO_DEBUG = "ludo-route-test-secret-with-at-least-32-characters";
+    process.env.GAME_TOKEN_ISSUER = "https://issuer.test/games";
+    process.env.GAME_TOKEN_AUDIENCE = "ludo-api-test";
+    try {
+      const app = new Hono();
+      app.route("/games/ludo", createConfiguredLudoRoutes());
+      const token = await apiToken("firebase-anon-uid-xyz", "anonymous");
+      const response = await app.request("/games/ludo/debug/session", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      expect(response.status).toBe(200);
+      const body = await response.json();
+      expect(body.subject).toBe("firebase-anon-uid-xyz");
+      expect(body.app_id).toBe("ludo");
+      expect(body.environment).toBe("debug");
+      const session = await new EnvironmentGameTokenVerifier().verify(body.game_token, {
+        appId: "ludo",
+        environment: "debug",
+      });
+      expect(session).toEqual({
+        appId: "ludo",
+        environment: "debug",
+        subject: "firebase-anon-uid-xyz",
+        role: "player",
+      });
     } finally {
       restoreEnv(saved);
     }
