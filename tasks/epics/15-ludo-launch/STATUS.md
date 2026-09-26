@@ -67,7 +67,7 @@ next task.
 | 12h | Client/art owner | Device polish: root-cause device-only bot-turn stall, stacked-token rendering, lobby art integration, knowledge-base update | [x] |
 | 13 | Release owner (human) | Local-play checkpoint: build, install, play, visual review, sign-off | [x] |
 | 14 | Auth owner | Fix API JWT refresh identity bug + tests | [x] |
-| 15 | Backend owner | Ludo HTTP contracts, wire codecs, validation, game token issuance | [ ] |
+| 15 | Backend owner | Ludo HTTP contracts, wire codecs, validation, game token issuance | [x] |
 | 16 | Database owner | Ludo Drizzle schema (including `match_origin`, rooms), migration, memory/Drizzle store interface | [ ] |
 | 17 | Backend owner | TS authority match engine port + Dart/TS parity mechanism | [ ] |
 | 18 | Backend owner | Transactional command service, match create/join/command routes | [ ] |

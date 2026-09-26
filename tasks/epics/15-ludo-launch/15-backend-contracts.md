@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 15-backend-contracts
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/14-auth-refresh-fix]
 estimate: L
@@ -68,37 +68,37 @@ so tasks 05-09 all build against one frozen shape.
 
 ## Implementation Checklist
 
-- [ ] Create `packages/api/src/games/ludo/contracts.ts` with the DTOs and
+- [x] Create `packages/api/src/games/ludo/contracts.ts` with the DTOs and
   constants above.
-- [ ] Create `packages/api/src/games/ludo/wire.ts` with snake_case codec
+- [x] Create `packages/api/src/games/ludo/wire.ts` with snake_case codec
   functions for every DTO (`toWireMatchState`, `fromWireCommand`, etc.),
   matching `merge-relay/wire.ts`'s naming convention.
-- [ ] Create `packages/api/src/games/ludo/validation.ts` with a validator per
+- [x] Create `packages/api/src/games/ludo/validation.ts` with a validator per
   inbound DTO (command bodies, environment/appId guards) returning a
   discriminated `{ ok: true, value } | { ok: false, error }` result, matching
   `merge-relay/validation.ts`'s style.
-- [ ] Create `packages/api/src/games/ludo/errors.ts` with a small typed error
+- [x] Create `packages/api/src/games/ludo/errors.ts` with a small typed error
   set (`ludo_invalid_command`, `ludo_match_not_found`,
   `ludo_forbidden_role`, `ludo_token_configuration_unavailable`, etc.),
   matching `merge-relay/errors.ts`'s style.
-- [ ] Create `packages/api/src/games/ludo/routes.ts` exporting a
+- [x] Create `packages/api/src/games/ludo/routes.ts` exporting a
   `createConfiguredLudoRoutes()` factory (matching
   `createConfiguredMergeRelayRoutes()`'s signature in
   `packages/api/src/games/index.ts`) that currently only mounts `POST
   /:environment/session` (the game-token issuance route described above).
-- [ ] Mount it in `packages/api/src/index.ts` as `app.route("/games/ludo",
+- [x] Mount it in `packages/api/src/index.ts` as `app.route("/games/ludo",
   createConfiguredLudoRoutes())`, alongside the existing Merge Relay and
   generic games mounts.
-- [ ] Add `packages/api/src/games/ludo/contract-regressions.test.ts` covering
+- [x] Add `packages/api/src/games/ludo/contract-regressions.test.ts` covering
   wire round-trips (encode/decode identity for every DTO) and validation
   rejection of malformed payloads, matching
   `merge-relay/contract-regressions.test.ts`'s coverage shape.
-- [ ] Add `packages/api/src/games/ludo/routes.test.ts` covering: session
+- [x] Add `packages/api/src/games/ludo/routes.test.ts` covering: session
   route requires a valid API JWT, rejects a mismatched `:environment`,
   returns a token whose `subject` matches the caller's Firebase UID, and
   that the issued token verifies against `EnvironmentGameTokenVerifier` for
   `appId: "ludo"`.
-- [ ] Document the frozen endpoint matrix (so far: just the session route) in
+- [x] Document the frozen endpoint matrix (so far: just the session route) in
   `docs-internal/gaming/ludo-flutter-plan.md`'s API section — if that file
   does not exist yet, create a minimal stub here with a "Contracts" section
   only; task 28 fills in the rest of the document.

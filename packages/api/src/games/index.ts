@@ -1,5 +1,11 @@
 export * from "./contracts";
 export { FileGameStore } from "./file-store";
+export * from "./ludo/contracts";
+export {
+  createConfiguredLudoRoutes,
+  createLudoRoutes,
+  type LudoRouteDependencies,
+} from "./ludo/routes";
 export * from "./merge-relay/contracts";
 export { DrizzleMergeRelayStore } from "./merge-relay/drizzle-store";
 export { InMemoryMergeRelayStore } from "./merge-relay/memory-store";

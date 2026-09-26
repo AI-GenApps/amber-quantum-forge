@@ -1,6 +1,10 @@
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
-import { createConfiguredGameRoutes, createConfiguredMergeRelayRoutes } from "./games";
+import {
+  createConfiguredGameRoutes,
+  createConfiguredLudoRoutes,
+  createConfiguredMergeRelayRoutes,
+} from "./games";
 import aiRoutes from "./routes/ai";
 import authRoutes from "./routes/auth";
 import { authTokenRoutes } from "./routes/auth-tokens";
@@ -35,6 +39,7 @@ app.route("/chat", chatRoutes);
 app.route("/profile", profileRoutes);
 app.route("/config", configRoutes);
 app.route("/games/merge_relay", createConfiguredMergeRelayRoutes());
+app.route("/games/ludo", createConfiguredLudoRoutes());
 app.route("/games", createConfiguredGameRoutes());
 
 app.onError((err, c) => {
