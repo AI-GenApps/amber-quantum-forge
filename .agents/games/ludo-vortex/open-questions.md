@@ -13,4 +13,4 @@
 | 9 | Quick-chat / emoji in online matches (affects "user interaction" rating) | user | online polish |
 | 10 | Localization (Hindi first?) | user | listing languages |
 | 11 | iOS timing (App Store account, StoreKit products, 6.9" screenshots) | user | iOS launch |
-| 12 | Human checkpoint 13: hands-on local play sign-off on device | user | backend start |
+| 12 | ~~Human checkpoint 13~~ — signed off 2026-09-26 | user | done |

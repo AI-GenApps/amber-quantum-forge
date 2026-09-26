@@ -65,7 +65,7 @@ next task.
 | | | Art session (human + Claude, interactive): generate original bitmap art for manifest slots — runs between 12f and 13 | |
 | 12g | Domain/client owner | Align Quick mode with Ludo King's official Quick Mode (pre-released tokens, one-home-plus-one-capture win) | [x] |
 | 12h | Client/art owner | Device polish: root-cause device-only bot-turn stall, stacked-token rendering, lobby art integration, knowledge-base update | [x] |
-| 13 | Release owner (human) | Local-play checkpoint: build, install, play, visual review, sign-off | [ ] |
+| 13 | Release owner (human) | Local-play checkpoint: build, install, play, visual review, sign-off | [x] |
 | 14 | Auth owner | Fix API JWT refresh identity bug + tests | [ ] |
 | 15 | Backend owner | Ludo HTTP contracts, wire codecs, validation, game token issuance | [ ] |
 | 16 | Database owner | Ludo Drizzle schema (including `match_origin`, rooms), migration, memory/Drizzle store interface | [ ] |

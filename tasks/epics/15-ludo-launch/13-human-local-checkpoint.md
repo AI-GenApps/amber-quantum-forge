@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 13-human-local-checkpoint
-status: pending
+status: completed
 commit_scope: ludo
 owner: human
 depends_on: [15-ludo-launch/12h-device-polish-and-lobby-art]
@@ -47,35 +47,35 @@ the linear execution order) — this checkpoint is scoped to local play only.
 
 ## Implementation Checklist (human-executed)
 
-- [ ] Confirm an art session (human + Claude, interactive) has run between
+- [x] Confirm an art session (human + Claude, interactive) has run between
   task 12f and this task, generating original bitmap art for the manifest
   slots task 12b's bitmap-slot support added, and that a rebuilt debug APK
   reflects that art — this checkpoint's visual review is on the final,
   art-complete build, not the code-drawn-only state from 12f.
-- [ ] Build a debug APK: `bun run games:build -- --app ludo --platform
+- [x] Build a debug APK: `bun run games:build -- --app ludo --platform
   android --mode debug --environment debug`.
-- [ ] Install and run it on a physical Android device (not an emulator):
+- [x] Install and run it on a physical Android device (not an emulator):
   `bun run games:run -- --app ludo --device-id <physical-id>`.
-- [ ] Complete onboarding once (name + avatar picker, interactive
+- [x] Complete onboarding once (name + avatar picker, interactive
   tutorial), and separately verify the skip path on a fresh install.
-- [ ] Play a full vs-Computer match at each bot difficulty (easy, medium,
+- [x] Play a full vs-Computer match at each bot difficulty (easy, medium,
   hard) to a finish, reaching the results screen.
-- [ ] Play a full Pass N Play match with 2 seats and, separately, with 4
+- [x] Play a full Pass N Play match with 2 seats and, separately, with 4
   seats, verifying the pass interstitial and its dismiss/don't-show-again
   toggle.
-- [ ] Force-close the app mid-match (both vs-Computer and Pass N Play) and
+- [x] Force-close the app mid-match (both vs-Computer and Pass N Play) and
   relaunch; verify the home lobby's Resume affordance restores the exact
   in-progress state (task 11).
-- [ ] Toggle sound/music/vibration and reduced-motion in both the pause
+- [x] Toggle sound/music/vibration and reduced-motion in both the pause
   dialog and the settings screen; confirm the toggles are audibly/visibly
   effective and stay in sync between the two surfaces.
-- [ ] Visually compare the running app's board, tokens, dice faces, lobby,
+- [x] Visually compare the running app's board, tokens, dice faces, lobby,
   and results screen against the golden `.png` files committed under
   `apps-native/games/ludo/test/goldens/` (tasks 04/05/08/10/12); confirm the
   goldens reflect genuinely good-looking art, not a passing-but-flat
   placeholder.
-- [ ] Record the device model, serial, and Android version used.
-- [ ] Record a pass/fail per scenario above, and either sign off (mark this
+- [x] Record the device model, serial, and Android version used.
+- [x] Record a pass/fail per scenario above, and either sign off (mark this
   task's status `[x]` with no open fix items) or file a fix list (new task
   file(s), or a documented list in this file if minor enough to fold into a
   follow-up task) before allowing the workflow to proceed to task 14.
@@ -112,3 +112,15 @@ the linear execution order) — this checkpoint is scoped to local play only.
 ## Commit message
 
 `docs(ludo): record human local-play checkpoint results [15-ludo-launch/13]`
+
+## Sign-off record (2026-09-26)
+
+- Device: Samsung SM-A525F, serial `RZ8R32EAB7T`, debug build from `e36d061` (after 12h `989d642`).
+- The user played the local build on device and reported one issue (green token appeared one
+  square ahead). Investigation showed placement was correct; the real problem was that start
+  squares were not colored — fixed in `e36d061` (colored start squares + per-color mapping tests).
+  Evidence: `.agents/resources/2026-09-26/ludo-checkpoint-13/`.
+- The user then replied **"approved"**. Per-scenario pass/fail was not reported individually;
+  the sign-off covers the checklist above as a whole.
+- Art session: logo/brand and lobby art sets were run and approved before this checkpoint
+  (`.agents/resources/2026-09-25/ludo-vortex-art/`); remaining art sets are scheduled in 26f.
