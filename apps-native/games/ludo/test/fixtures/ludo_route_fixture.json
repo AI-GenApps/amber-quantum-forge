@@ -1,0 +1,197 @@
+{
+  "_source": "Field-for-field copy of the fixture data in packages/api/src/games/ludo/contract-regressions.test.ts and packages/api/src/games/ludo/routes.test.ts, wrapped in each route's actual response envelope from packages/api/src/games/ludo/routes.ts. Not fetched from a live server (none is provisioned per task 24's Context/Decisions), but shaped byte-for-byte from the server-side source of truth so a server-side field rename breaks this fixture's decode rather than only apps/web's typecheck.",
+  "match_state": {
+    "match_id": "match-1",
+    "environment": "debug",
+    "mode": "quick",
+    "status": "active",
+    "players": [
+      {
+        "seat": 0,
+        "subject": "player-a",
+        "color": "red",
+        "tokens": [
+          { "id": 0, "path_position": -1 },
+          { "id": 1, "path_position": 5 },
+          { "id": 2, "path_position": -1 },
+          { "id": 3, "path_position": -1 }
+        ],
+        "capture_count": 1
+      },
+      {
+        "seat": 1,
+        "subject": "player-b",
+        "color": "yellow",
+        "tokens": [
+          { "id": 0, "path_position": 0 },
+          { "id": 1, "path_position": 0 },
+          { "id": 2, "path_position": -1 },
+          { "id": 3, "path_position": -1 }
+        ],
+        "capture_count": 0
+      }
+    ],
+    "current_player_index": 1,
+    "phase": "awaiting_move",
+    "current_roll": 6,
+    "consecutive_sixes": 1,
+    "winner_order": [],
+    "deadline_at": "2026-01-01T00:00:30.000Z",
+    "updated_at": "2026-01-01T00:00:01.000Z"
+  },
+  "events": [
+    {
+      "type": "dice_rolled",
+      "event_id": "e1",
+      "match_id": "match-1",
+      "sequence": 1,
+      "created_at": "t",
+      "seat": 0,
+      "roll": 6
+    },
+    {
+      "type": "token_moved",
+      "event_id": "e2",
+      "match_id": "match-1",
+      "sequence": 2,
+      "created_at": "t",
+      "seat": 0,
+      "token_id": 1,
+      "from_path_position": 0,
+      "to_path_position": 6
+    },
+    {
+      "type": "token_captured",
+      "event_id": "e3",
+      "match_id": "match-1",
+      "sequence": 3,
+      "created_at": "t",
+      "seat": 0,
+      "token_id": 1,
+      "captured_seat": 1,
+      "captured_token_id": 0
+    },
+    {
+      "type": "token_finished",
+      "event_id": "e4",
+      "match_id": "match-1",
+      "sequence": 4,
+      "created_at": "t",
+      "seat": 0,
+      "token_id": 1
+    },
+    {
+      "type": "turn_forfeited",
+      "event_id": "e5",
+      "match_id": "match-1",
+      "sequence": 5,
+      "created_at": "t",
+      "seat": 1,
+      "reason": "three_consecutive_sixes"
+    },
+    {
+      "type": "match_finished",
+      "event_id": "e6",
+      "match_id": "match-1",
+      "sequence": 6,
+      "created_at": "t",
+      "winner_order": [0, 1]
+    },
+    {
+      "type": "player_joined",
+      "event_id": "e7",
+      "match_id": "match-1",
+      "sequence": 7,
+      "created_at": "t",
+      "seat": 1,
+      "subject": "player-b"
+    },
+    {
+      "type": "player_left",
+      "event_id": "e8",
+      "match_id": "match-1",
+      "sequence": 8,
+      "created_at": "t",
+      "seat": 1
+    },
+    {
+      "type": "bot_filled",
+      "event_id": "e9",
+      "match_id": "match-1",
+      "sequence": 9,
+      "created_at": "t",
+      "seat": 1
+    },
+    {
+      "type": "turn_timed_out",
+      "event_id": "e10",
+      "match_id": "match-1",
+      "sequence": 10,
+      "created_at": "t",
+      "seat": 0
+    },
+    {
+      "type": "seat_forfeited",
+      "event_id": "e11",
+      "match_id": "match-1",
+      "sequence": 11,
+      "created_at": "t",
+      "seat": 1
+    },
+    {
+      "type": "match_abandoned",
+      "event_id": "e12",
+      "match_id": "match-1",
+      "sequence": 12,
+      "created_at": "t"
+    }
+  ],
+  "session_response": {
+    "contract_version": "ludo.v1",
+    "game_token": "fixture-game-token",
+    "app_id": "ludo",
+    "environment": "debug",
+    "subject": "player-a",
+    "expires_in": 300
+  },
+  "matchmaking_ticket": {
+    "ticket_id": "ticket-1",
+    "environment": "debug",
+    "subject": "player-a",
+    "mode": "classic",
+    "seat_target": 4,
+    "status": "searching",
+    "matched_match_id": null,
+    "created_at": "2026-01-01T00:00:00.000Z",
+    "expires_at": "2026-01-01T00:05:00.000Z"
+  },
+  "room": {
+    "room_code": "ABC123",
+    "environment": "debug",
+    "owner_subject": "player-a",
+    "mode": "classic",
+    "seat_target": 4,
+    "status": "waiting",
+    "match_id": null,
+    "created_at": "2026-01-01T00:00:00.000Z",
+    "expires_at": "2026-01-02T00:00:00.000Z"
+  },
+  "auth_exchange_response": {
+    "accessToken": "fixture-access-token",
+    "refreshToken": "fixture-refresh-token",
+    "expiresIn": 21600,
+    "tokenType": "Bearer",
+    "user": {
+      "uid": "player-a",
+      "email": null,
+      "displayName": null,
+      "photoURL": null
+    }
+  },
+  "auth_refresh_response": {
+    "accessToken": "fixture-access-token-2",
+    "refreshToken": "fixture-refresh-token-2",
+    "expiresIn": 21600,
+    "tokenType": "Bearer"
+  }
+}

@@ -12,6 +12,7 @@ library;
 import 'package:flutter/material.dart';
 
 import '../app.dart' show ludoIdentity;
+import '../net/ludo_auth_controller.dart';
 import '../state/ludo_settings_store.dart';
 import '../state/ludo_sound_settings.dart';
 import '../state/reduced_motion_setting.dart';
@@ -32,6 +33,7 @@ class SettingsScreen extends StatefulWidget {
     required this.reducedMotion,
     this.store,
     this.telemetry,
+    this.authController,
   });
 
   /// The shared sound/music/vibration toggle state — must be the same
@@ -52,16 +54,50 @@ class SettingsScreen extends StatefulWidget {
   /// [LudoTelemetry].
   final LudoTelemetry? telemetry;
 
+  /// Task 24: the shared auth controller a "Link Google account" tap
+  /// drives. `null` (the default, and always in widget tests that don't
+  /// care about it) hides the Google-linking panel entirely rather than
+  /// showing a tappable action with nowhere to go — this screen never
+  /// constructs a production [LudoAuthController] itself, since doing so
+  /// would mean a fresh, unauthenticated one on every visit to Settings
+  /// instead of the one instance the online flow (tasks 25/26) actually
+  /// authenticates through.
+  final LudoAuthController? authController;
+
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
   late final LudoTelemetry _telemetry = widget.telemetry ?? LudoTelemetry();
+  bool _linkingGoogle = false;
+  String? _linkGoogleError;
 
   void _persist(String toggle) {
     widget.store?.save(widget.soundSettings, widget.reducedMotion);
     _telemetry.settingsChanged(toggle: toggle);
+  }
+
+  Future<void> _linkGoogleAccount() async {
+    final controller = widget.authController;
+    if (controller == null || _linkingGoogle) return;
+    setState(() {
+      _linkingGoogle = true;
+      _linkGoogleError = null;
+    });
+    try {
+      await controller.linkGoogleAccount();
+    } on LudoAuthFailure catch (error) {
+      _linkGoogleError = switch (error.reason) {
+        LudoAuthFailureReason.firebaseUnavailable =>
+          'Online is not available on this build.',
+        LudoAuthFailureReason.network =>
+          'Could not reach the server. Try again later.',
+        LudoAuthFailureReason.server => 'Linking failed. Try again later.',
+      };
+    } finally {
+      if (mounted) setState(() => _linkingGoogle = false);
+    }
   }
 
   @override
@@ -194,7 +230,79 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
         ),
+        if (widget.authController != null) ...[
+          const SizedBox(height: LudoThemeTokens.spaceMd),
+          _googleLinkPanel(widget.authController!),
+        ],
       ],
+    );
+  }
+
+  /// Task 24's "Link Google account" action: a Google-linked identity
+  /// shows a static confirmation row instead of a tappable one, since
+  /// linking again would be a no-op (task 23: the Firebase `uid` — and so
+  /// the Ludo game token's `subject` — never changes on linking).
+  Widget _googleLinkPanel(LudoAuthController controller) {
+    final linked = controller.state?.isLinked ?? false;
+    return LudoPanel(
+      padding: EdgeInsets.zero,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Semantics(
+            button: !linked,
+            label: linked ? 'Google account linked' : 'Link Google account',
+            excludeSemantics: true,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: _minTapTarget),
+              child: ListTile(
+                key: const Key('settings-link-google-account'),
+                leading: Icon(
+                  linked
+                      ? Icons.verified_user_outlined
+                      : Icons.account_circle_outlined,
+                  color: LudoThemeTokens.gold,
+                ),
+                title: Text(
+                  linked ? 'Google account linked' : 'Link Google account',
+                ),
+                subtitle: Text(
+                  linked
+                      ? 'Your progress carries over across devices'
+                      : 'Keep your progress if you switch devices',
+                ),
+                trailing: _linkingGoogle
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : (linked
+                          ? null
+                          : const Icon(
+                              Icons.chevron_right,
+                              color: LudoThemeTokens.gold,
+                            )),
+                onTap: linked || _linkingGoogle ? null : _linkGoogleAccount,
+              ),
+            ),
+          ),
+          if (_linkGoogleError != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                LudoThemeTokens.spaceMd,
+                0,
+                LudoThemeTokens.spaceMd,
+                LudoThemeTokens.spaceSm,
+              ),
+              child: Text(
+                _linkGoogleError!,
+                key: const Key('settings-link-google-error'),
+                style: LudoTextStyles.caption.copyWith(color: Colors.redAccent),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

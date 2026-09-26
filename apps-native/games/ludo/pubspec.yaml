@@ -10,9 +10,13 @@ environment:
 
 dependencies:
   audioplayers: ^6.8.1
+  cloud_firestore: ^5.4.4
+  firebase_auth: ^5.3.1
+  firebase_core: ^3.6.0
   flame: 1.38.2
   flutter:
     sdk: flutter
+  google_sign_in: ^6.2.1
   ludo_rules:
     path: ../packages/ludo_rules
   path_provider: ^2.1.5
