@@ -16,6 +16,7 @@
 import type { Context } from "hono";
 import { Hono } from "hono";
 import { GAME_ENVIRONMENTS } from "../contracts";
+import { sweepMatchmaking } from "./matchmaking-service";
 import { configuredLudoStore } from "./routes";
 import { sweepTimeouts } from "./service";
 import type { LudoStore } from "./store";
@@ -40,10 +41,14 @@ export function createLudoCronRoutes(dependencies: LudoCronRouteDependencies): H
       return c.json({ error: "unauthorized" }, 401);
     }
     const swept: Record<string, number> = {};
+    const matchmaking: Record<string, { matched: number; botFilled: number }> = {};
     for (const environment of GAME_ENVIRONMENTS) {
       swept[environment] = await sweepTimeouts(dependencies.store, environment);
+      // Task 20: the same Cron cadence also scans matchmaking tickets,
+      // bounded the same way as the timeout sweep above.
+      matchmaking[environment] = await sweepMatchmaking(dependencies.store, environment);
     }
-    return c.json({ swept }, 200);
+    return c.json({ swept, matchmaking }, 200);
   };
 
   routes.get("/sweep-timeouts", sweep);

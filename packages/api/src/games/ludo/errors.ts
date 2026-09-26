@@ -15,7 +15,10 @@ export type LudoErrorCode =
   | "ludo_illegal_move"
   | "ludo_idempotency_conflict"
   | "ludo_match_not_joinable"
-  | "ludo_timeout_not_elapsed";
+  | "ludo_timeout_not_elapsed"
+  | "ludo_ticket_not_found"
+  | "ludo_ticket_forbidden"
+  | "ludo_ticket_not_cancellable";
 
 export class LudoError extends Error {
   readonly diagnosticId: string;
@@ -115,5 +118,29 @@ export class LudoMatchNotJoinableError extends LudoCommandError {
 export class LudoTimeoutNotElapsedError extends LudoCommandError {
   constructor() {
     super(409, "ludo_timeout_not_elapsed", "The current turn has not yet timed out");
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Matchmaking-ticket rejection paths (task 20).
+// ---------------------------------------------------------------------------
+
+export class LudoTicketNotFoundError extends LudoCommandError {
+  constructor(ticketId: string) {
+    super(404, "ludo_ticket_not_found", `Ludo matchmaking ticket not found: ${ticketId}`);
+  }
+}
+
+/** The caller's subject does not own this ticket. */
+export class LudoTicketForbiddenError extends LudoCommandError {
+  constructor() {
+    super(403, "ludo_ticket_forbidden", "The caller does not own this matchmaking ticket");
+  }
+}
+
+/** `DELETE .../tickets/:ticketId` on a ticket that is no longer `searching`. */
+export class LudoTicketNotCancellableError extends LudoCommandError {
+  constructor() {
+    super(409, "ludo_ticket_not_cancellable", "The ticket is no longer searching");
   }
 }

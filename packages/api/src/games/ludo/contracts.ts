@@ -195,15 +195,26 @@ export type LudoEvent =
 
 export type LudoEventType = LudoEvent["type"];
 
-/**
- * Stub type names only, deferred to tasks 20/21 — exported now so those
- * tasks do not need to touch this module's export list twice.
- */
-export interface LudoDailyMatchmakingTicket {
+export type LudoMatchmakingTicketStatus = "searching" | "matched" | "cancelled" | "expired";
+
+/** Wire-facing shape of a `ludo_matchmaking_tickets` row (task 20). */
+export interface LudoMatchmakingTicket {
   ticketId: string;
+  environment: LudoEnvironment;
   subject: string;
   mode: LudoMode;
+  seatTarget: number;
+  status: LudoMatchmakingTicketStatus;
+  matchedMatchId: string | null;
   createdAt: string;
+  expiresAt: string;
+}
+
+/** `POST /:environment/matchmaking/tickets` request body. */
+export interface LudoCreateMatchmakingTicketRequest {
+  mode: LudoMode;
+  seatTarget: number;
+  idempotencyKey: string;
 }
 
 export interface LudoRoom {

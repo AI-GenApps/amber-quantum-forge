@@ -308,3 +308,127 @@ describe("Ludo match/command routes", () => {
     }
   });
 });
+
+describe("Ludo matchmaking-ticket routes", () => {
+  it("rejects a create-ticket request without a valid Ludo game token", async () => {
+    const saved = saveEnv();
+    try {
+      const { app } = await testHarness();
+      const response = await app.request("/games/ludo/debug/matchmaking/tickets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "classic", seat_target: 2, idempotency_key: "k1" }),
+      });
+      expect(response.status).toBe(401);
+      expect((await response.json()).error.code).toBe("ludo_authentication_required");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("rejects an invalid create-ticket payload", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("alice");
+      const response = await app.request("/games/ludo/debug/matchmaking/tickets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${gameToken}` },
+        body: JSON.stringify({ mode: "classic", seat_target: 3, idempotency_key: "k1" }),
+      });
+      expect(response.status).toBe(422);
+      expect((await response.json()).error.code).toBe("ludo_invalid_command");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("creates a searching ticket for an authenticated caller", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("alice");
+      const response = await app.request("/games/ludo/debug/matchmaking/tickets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${gameToken}` },
+        body: JSON.stringify({ mode: "classic", seat_target: 2, idempotency_key: "k1" }),
+      });
+      expect(response.status).toBe(201);
+      const body = await response.json();
+      expect(body.ticket.status).toBe("searching");
+      expect(body.ticket.subject).toBe("alice");
+      expect(body.idempotent).toBe(false);
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("rejects a cancel-ticket request without a valid Ludo game token", async () => {
+    const saved = saveEnv();
+    try {
+      const { app } = await testHarness();
+      const response = await app.request("/games/ludo/debug/matchmaking/tickets/some-ticket-id", {
+        method: "DELETE",
+      });
+      expect(response.status).toBe(401);
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("rejects cancelling a ticket owned by a different subject", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken, store } = await testHarness("alice");
+      const { createTicket } = await import("./matchmaking-service");
+      const created = await createTicket(store, "debug", {
+        subject: "someone-else",
+        mode: "classic",
+        seatTarget: 2,
+        idempotencyKey: "k1",
+      });
+      const response = await app.request(
+        `/games/ludo/debug/matchmaking/tickets/${created.ticket.ticketId}`,
+        { method: "DELETE", headers: { Authorization: `Bearer ${gameToken}` } },
+      );
+      expect(response.status).toBe(403);
+      expect((await response.json()).error.code).toBe("ludo_ticket_forbidden");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("cancels the caller's own searching ticket", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("alice");
+      const createResponse = await app.request("/games/ludo/debug/matchmaking/tickets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${gameToken}` },
+        body: JSON.stringify({ mode: "classic", seat_target: 2, idempotency_key: "k1" }),
+      });
+      const ticketId = (await createResponse.json()).ticket.ticket_id;
+      const response = await app.request(`/games/ludo/debug/matchmaking/tickets/${ticketId}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${gameToken}` },
+      });
+      expect(response.status).toBe(200);
+      expect((await response.json()).ticket.status).toBe("cancelled");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("rejects cancelling a ticket that does not exist", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("alice");
+      const response = await app.request("/games/ludo/debug/matchmaking/tickets/nonexistent-id", {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${gameToken}` },
+      });
+      expect(response.status).toBe(404);
+      expect((await response.json()).error.code).toBe("ludo_ticket_not_found");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+});

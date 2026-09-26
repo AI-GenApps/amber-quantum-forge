@@ -1,6 +1,7 @@
 import type {
   LudoCommand,
   LudoEvent,
+  LudoMatchmakingTicket,
   LudoMatchState,
   LudoMatchSummary,
   LudoMode,
@@ -244,6 +245,36 @@ export function eventFromWire(value: Record<string, unknown>): LudoEvent | null 
     default:
       return null;
   }
+}
+
+export function matchmakingTicketToWire(value: LudoMatchmakingTicket) {
+  return {
+    ticket_id: value.ticketId,
+    environment: value.environment,
+    subject: value.subject,
+    mode: value.mode,
+    seat_target: value.seatTarget,
+    status: value.status,
+    matched_match_id: value.matchedMatchId,
+    created_at: value.createdAt,
+    expires_at: value.expiresAt,
+  };
+}
+
+export function matchmakingTicketFromWire(
+  value: ReturnType<typeof matchmakingTicketToWire>,
+): LudoMatchmakingTicket {
+  return {
+    ticketId: value.ticket_id,
+    environment: value.environment,
+    subject: value.subject,
+    mode: value.mode,
+    seatTarget: value.seat_target,
+    status: value.status,
+    matchedMatchId: value.matched_match_id,
+    createdAt: value.created_at,
+    expiresAt: value.expires_at,
+  };
 }
 
 export function sessionResponseToWire(value: LudoSessionResponse) {

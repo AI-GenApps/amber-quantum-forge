@@ -9,7 +9,8 @@ import {
   LudoWrongTurnError,
 } from "./errors";
 import { InMemoryLudoStore } from "./memory-store";
-import { createMatch, joinMatch, processCommand } from "./service";
+import { createMatch, getMatchState, joinMatch, processCommand } from "./service";
+import { LUDO_FORFEIT_MISS_THRESHOLD } from "./timeout";
 
 const ENVIRONMENT: LudoEnvironment = "debug";
 
@@ -253,5 +254,71 @@ describe("Ludo command service", () => {
     expect(final.status).toBe("finished");
     expect(final.winnerOrder.length).toBeGreaterThanOrEqual(1);
     expect(new Set(final.winnerOrder).size).toBe(final.winnerOrder.length);
+  });
+});
+
+describe("Matchmaking-origin bot-fill vs direct-origin forfeit (task 20)", () => {
+  async function createActiveMatchWithOrigin(
+    store: InMemoryLudoStore,
+    matchOrigin: "matchmaking" | "direct",
+  ): Promise<{ matchId: string; subjects: string[] }> {
+    const subjects = ["alice", "bob"];
+    const created = await createMatch(
+      store,
+      ENVIRONMENT,
+      { subject: subjects[0], mode: "classic", seats: 2, idempotencyKey: `create-${matchOrigin}` },
+      matchOrigin,
+    );
+    const matchId = created.matchState.matchId;
+    await joinMatch(store, ENVIRONMENT, {
+      subject: subjects[1],
+      matchId,
+      idempotencyKey: `join-${matchOrigin}`,
+    });
+    return { matchId, subjects };
+  }
+
+  /** Primes seat 0 one miss away from `LUDO_FORFEIT_MISS_THRESHOLD`, with an already-elapsed deadline. */
+  async function primeThirdMiss(store: InMemoryLudoStore, matchId: string): Promise<void> {
+    await store.transact(ENVIRONMENT, async (state) => {
+      const row = state.matches.find((m) => m.matchId === matchId);
+      if (row) row.turnDeadlineAt = new Date(Date.now() - 1_000).toISOString();
+      const seat0 = state.players.find((p) => p.matchId === matchId && p.seat === 0);
+      if (seat0) seat0.missCount = LUDO_FORFEIT_MISS_THRESHOLD - 1;
+      return undefined;
+    });
+  }
+
+  it("bot-fills seat 0 on its third consecutive miss in a matchmaking-origin match, instead of forfeiting it", async () => {
+    const store = new InMemoryLudoStore();
+    const { matchId, subjects } = await createActiveMatchWithOrigin(store, "matchmaking");
+    await primeThirdMiss(store, matchId);
+
+    const result = await getMatchState(store, ENVIRONMENT, subjects[1], matchId);
+    expect(result.matchState.status).toBe("active");
+    expect(result.matchState.players).toHaveLength(2);
+
+    const seat0Row = store
+      .snapshot(ENVIRONMENT)
+      .players.find((p) => p.matchId === matchId && p.seat === 0);
+    expect(seat0Row?.isBot).toBe(true);
+    expect(seat0Row?.botDifficulty).toBe("medium");
+    // The seat's miss streak resets once it is bot-filled (task 20).
+    expect(seat0Row?.missCount).toBe(0);
+  });
+
+  it("still forfeits seat 0 on its third consecutive miss in a direct-origin match (task 19 behavior unchanged)", async () => {
+    const store = new InMemoryLudoStore();
+    const { matchId, subjects } = await createActiveMatchWithOrigin(store, "direct");
+    await primeThirdMiss(store, matchId);
+
+    const result = await getMatchState(store, ENVIRONMENT, subjects[1], matchId);
+    expect(result.matchState.status).toBe("finished");
+    expect(result.matchState.winnerOrder).toEqual([1, 0]);
+
+    const seat0Row = store
+      .snapshot(ENVIRONMENT)
+      .players.find((p) => p.matchId === matchId && p.seat === 0);
+    expect(seat0Row?.isBot).toBe(false);
   });
 });

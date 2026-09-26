@@ -1,5 +1,5 @@
 import { isGameAppId, isGameEnvironment } from "../validation";
-import type { LudoCommand, LudoMode } from "./contracts";
+import type { LudoCommand, LudoCreateMatchmakingTicketRequest, LudoMode } from "./contracts";
 
 export type LudoValidationResult<T> = { ok: true; value: T } | { ok: false; error: string };
 
@@ -25,6 +25,14 @@ function isMatchId(value: unknown): value is string {
 
 function isMode(value: unknown): value is LudoMode {
   return value === "classic" || value === "quick";
+}
+
+function isSeatTarget(value: unknown): value is number {
+  return value === 2 || value === 4;
+}
+
+function isTicketId(value: unknown): value is string {
+  return typeof value === "string" && /^[A-Za-z0-9_-]{1,64}$/.test(value);
 }
 
 export { isGameAppId, isGameEnvironment };
@@ -65,6 +73,23 @@ export function parseLudoCommand(value: unknown): LudoValidationResult<LudoComma
     default:
       return fail("ludo_command_type_unknown");
   }
+}
+
+export function parseCreateMatchmakingTicketRequest(
+  value: unknown,
+): LudoValidationResult<LudoCreateMatchmakingTicketRequest> {
+  if (!isObject(value)) return fail("ludo_ticket_request_must_be_object");
+  const { mode, idempotency_key: idempotencyKey } = value;
+  const seatTarget = value.seat_target;
+  if (!isMode(mode)) return fail("ludo_mode_invalid");
+  if (!isSeatTarget(seatTarget)) return fail("ludo_seat_target_invalid");
+  if (!isIdempotencyKey(idempotencyKey)) return fail("ludo_idempotency_key_invalid");
+  return ok({ mode, seatTarget, idempotencyKey });
+}
+
+export function parseTicketIdParam(value: string): LudoValidationResult<string> {
+  if (!isTicketId(value)) return fail("ludo_ticket_id_invalid");
+  return ok(value);
 }
 
 export function parseEnvironmentParam(

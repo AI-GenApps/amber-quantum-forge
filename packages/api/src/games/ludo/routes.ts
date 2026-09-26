@@ -12,11 +12,16 @@ import type { LudoEnvironment, LudoSession } from "./contracts";
 import { LUDO_APP_ID, LUDO_CONTRACT_VERSION } from "./contracts";
 import { DrizzleLudoStore } from "./drizzle-store";
 import { asLudoError, LudoError } from "./errors";
+import { cancelTicket, createTicket } from "./matchmaking-service";
 import { InMemoryLudoStore } from "./memory-store";
 import { createMatch, getMatchState, processCommand } from "./service";
 import { LudoStorageError, type LudoStore, UnavailableLudoStore } from "./store";
-import { parseLudoCommand } from "./validation";
-import { sessionResponseToWire, toWireMatchState } from "./wire";
+import {
+  parseCreateMatchmakingTicketRequest,
+  parseLudoCommand,
+  parseTicketIdParam,
+} from "./validation";
+import { matchmakingTicketToWire, sessionResponseToWire, toWireMatchState } from "./wire";
 
 const SESSION_TOKEN_TTL_SECONDS = 300;
 
@@ -228,6 +233,79 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
         { match_state: toWireMatchState(result.matchState), idempotent: result.idempotent },
         200,
       );
+    } catch (cause) {
+      const error = asLudoError(cause);
+      return c.json(error.response(), error.status);
+    }
+  });
+
+  routes.post("/:environment/matchmaking/tickets", async (c) => {
+    const environment = c.req.param("environment");
+    if (!isGameEnvironment(environment)) {
+      const error = new LudoError(
+        400,
+        "ludo_invalid_environment",
+        "Environment must be debug, staging or production",
+      );
+      return c.json(error.response(), error.status);
+    }
+    const auth = await authenticateGameToken(c, dependencies, environment);
+    if (!auth.ok) return auth.response;
+
+    const parsed = parseCreateMatchmakingTicketRequest(await readJsonBody(c));
+    if (!parsed.ok) {
+      const error = new LudoError(
+        422,
+        "ludo_invalid_command",
+        "A valid matchmaking ticket payload (mode, seat_target, idempotency_key) is required",
+      );
+      return c.json(error.response(), error.status);
+    }
+
+    try {
+      const result = await createTicket(dependencies.store, environment, {
+        subject: auth.session.subject,
+        mode: parsed.value.mode,
+        seatTarget: parsed.value.seatTarget,
+        idempotencyKey: parsed.value.idempotencyKey,
+      });
+      return c.json(
+        { ticket: matchmakingTicketToWire(result.ticket), idempotent: result.idempotent },
+        201,
+      );
+    } catch (cause) {
+      const error = asLudoError(cause);
+      return c.json(error.response(), error.status);
+    }
+  });
+
+  routes.delete("/:environment/matchmaking/tickets/:ticketId", async (c) => {
+    const environment = c.req.param("environment");
+    if (!isGameEnvironment(environment)) {
+      const error = new LudoError(
+        400,
+        "ludo_invalid_environment",
+        "Environment must be debug, staging or production",
+      );
+      return c.json(error.response(), error.status);
+    }
+    const auth = await authenticateGameToken(c, dependencies, environment);
+    if (!auth.ok) return auth.response;
+
+    const parsedTicketId = parseTicketIdParam(c.req.param("ticketId"));
+    if (!parsedTicketId.ok) {
+      const error = new LudoError(422, "ludo_invalid_command", "A valid ticket id is required");
+      return c.json(error.response(), error.status);
+    }
+
+    try {
+      const result = await cancelTicket(
+        dependencies.store,
+        environment,
+        auth.session.subject,
+        parsedTicketId.value,
+      );
+      return c.json({ ticket: matchmakingTicketToWire(result.ticket) }, 200);
     } catch (cause) {
       const error = asLudoError(cause);
       return c.json(error.response(), error.status);

@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 20-matchmaking-botfill
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/19-turn-timeouts]
 estimate: L
@@ -46,27 +46,27 @@ disconnecting seat mid-match.
 
 ## Implementation Checklist
 
-- [ ] Add `LudoMatchmakingTicket` DTOs to
+- [x] Add `LudoMatchmakingTicket` DTOs to
   `packages/api/src/games/ludo/contracts.ts` (the stub from task 15), wire
   codecs in `wire.ts`, and validators in `validation.ts`.
-- [ ] Add `packages/api/src/games/ludo/matchmaking-service.ts`:
+- [x] Add `packages/api/src/games/ludo/matchmaking-service.ts`:
   `createTicket`, `cancelTicket`, `sweepMatchmaking(now)` implementing the
   FIFO match + bot-fill logic above, transactionally via `LudoStore`, calling
   task 18's `createMatch` with `matchOrigin: "matchmaking"`.
-- [ ] Extend disconnect/miss-count handling in `service.ts` (tasks 18/19) to
+- [x] Extend disconnect/miss-count handling in `service.ts` (tasks 18/19) to
   bot-fill a matchmaking-origin seat instead of forfeiting it, explicitly
   branching on `match_origin`.
-- [ ] Wire `POST /:environment/matchmaking/tickets` and `DELETE
+- [x] Wire `POST /:environment/matchmaking/tickets` and `DELETE
   /:environment/matchmaking/tickets/:ticketId` into `routes.ts`, each
   requiring a verified Ludo game token.
-- [ ] Extend task 19's sweeper route to also call `sweepMatchmaking`,
+- [x] Extend task 19's sweeper route to also call `sweepMatchmaking`,
   bounded per invocation.
-- [ ] Add `packages/api/src/games/ludo/matchmaking-service.test.ts` covering
+- [x] Add `packages/api/src/games/ludo/matchmaking-service.test.ts` covering
   2p and 4p FIFO matching, bot-fill after the configured window, and no
   premature match with too few tickets.
-- [ ] Add `packages/api/src/games/ludo/routes.test.ts` cases (extend) for
+- [x] Add `packages/api/src/games/ludo/routes.test.ts` cases (extend) for
   the two new routes' auth/validation paths.
-- [ ] Add a `service.test.ts` case (extend task 18's file) proving a
+- [x] Add a `service.test.ts` case (extend task 18's file) proving a
   matchmaking-origin seat is bot-filled after three misses while a
   direct-origin match (task 18's default) is unaffected by this branch.
 
@@ -81,6 +81,24 @@ disconnecting seat mid-match.
 - `packages/api/src/games/ludo/matchmaking-service.test.ts`
 - `packages/api/src/games/ludo/service.test.ts`
 - `packages/api/src/games/ludo/routes.test.ts`
+
+Small necessary additions beyond this list:
+- `packages/api/src/games/ludo/timeout.ts` — added an optional
+  `botFillEligibleSeats` input and `botFilledSeats` output to
+  `applyTimeoutIfExpired`'s pure `LudoTimeoutContext`/`LudoTimeoutOutcome`,
+  so a seat crossing the forfeit-miss threshold can be reset/kept active
+  instead of forfeited. Kept minimal and backward-compatible (an omitted
+  field reproduces task 19's exact prior behavior, verified by the
+  existing `timeout.test.ts` suite passing unchanged).
+- `packages/api/src/games/ludo/errors.ts` — added
+  `LudoTicketNotFoundError`/`LudoTicketForbiddenError`/
+  `LudoTicketNotCancellableError` for the two new ticket routes' rejection
+  paths, following the file's existing `LudoCommandError` subclass
+  pattern.
+- `packages/api/src/games/ludo/cron-routes.ts` — the sweeper route now
+  also calls `sweepMatchmaking` per environment (this is the "extend the
+  sweeper route" checklist item above; the file just wasn't listed under
+  Files Touched).
 
 ## Acceptance Criteria
 

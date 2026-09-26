@@ -89,6 +89,13 @@ export interface JoinMatchInput {
   subject: string;
   matchId: string;
   idempotencyKey: string;
+  /**
+   * Set only by matchmaking bot-fill (task 20): seats a stalled ticket's
+   * remaining slots with a bot player instead of a human subject. `subject`
+   * is still required (a synthetic id such as `bot:<uuid>`) so the roster's
+   * seat-uniqueness/full-seat bookkeeping stays unchanged for a bot seat.
+   */
+  bot?: { difficulty: string };
 }
 
 export interface LudoCommandResult {
@@ -224,8 +231,8 @@ export async function joinMatch(
       environment,
       seat,
       subject: input.subject,
-      isBot: false,
-      botDifficulty: null,
+      isBot: input.bot !== undefined,
+      botDifficulty: input.bot?.difficulty ?? null,
       displayNameCache: null,
       connectedAt: now,
       missCount: 0,
@@ -509,11 +516,19 @@ function applyLazyTimeout(
   const missCounts: number[] = [];
   for (const p of sortedPlayerRows) missCounts[p.seat] = p.missCount;
 
+  // Matchmaking-origin matches (task 20) bot-fill a stalled seat instead
+  // of forfeiting it, for every seat — explicit branch on `matchOrigin`;
+  // room/direct-origin matches pass no eligible seats and keep task 19's
+  // existing forfeit-on-three-misses behavior unchanged.
+  const botFillEligibleSeats =
+    row.matchOrigin === "matchmaking" ? new Set(sortedPlayerRows.map((p) => p.seat)) : undefined;
+
   const outcome = applyTimeoutIfExpired({
     matchState,
     missCounts,
     deadlineAt: row.turnDeadlineAt,
     now: new Date(nowIso),
+    botFillEligibleSeats,
   });
   if (!outcome.timedOut) return false;
 
@@ -531,6 +546,13 @@ function applyLazyTimeout(
   for (const p of sortedPlayerRows) {
     const updated = outcome.missCounts[p.seat];
     if (updated !== undefined) p.missCount = updated;
+  }
+  for (const seat of outcome.botFilledSeats) {
+    const p = sortedPlayerRows.find((row_) => row_.seat === seat);
+    if (p) {
+      p.isBot = true;
+      p.botDifficulty = p.botDifficulty ?? "medium";
+    }
   }
 
   return true;
