@@ -144,10 +144,13 @@ authTokenRoutes.post("/refresh", async (c) => {
   }
   const authResults = await db.select().from(auth).where(eq(auth.userId, userRecord.id)).limit(1);
   const authRecord = authResults[0] ?? null;
-  const provider = authRecord?.provider || "unknown";
+  if (!authRecord) {
+    return c.json({ error: "No linked Firebase auth record for this user" }, 401);
+  }
+  const provider = authRecord.provider || "unknown";
   const accessToken = await signAccessToken({
-    sub: userRecord.email,
-    uid: userRecord.email,
+    sub: authRecord.firebaseUid,
+    uid: authRecord.firebaseUid,
     email: userRecord.email,
     emailVerified: true,
     provider,

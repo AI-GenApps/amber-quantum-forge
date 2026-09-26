@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 14-auth-refresh-fix
-status: pending
+status: completed
 commit_scope: auth
 depends_on: [15-ludo-launch/13-human-local-checkpoint]
 estimate: S
@@ -49,21 +49,35 @@ work (task 23) builds on top of the same token issuance path.
 
 ## Implementation Checklist
 
-- [ ] In `authTokenRoutes.post("/refresh", ...)`, replace the `sub:
+- [x] In `authTokenRoutes.post("/refresh", ...)`, replace the `sub:
   userRecord.email, uid: userRecord.email` claims with `sub:
   authRecord.firebaseUid, uid: authRecord.firebaseUid`.
-- [ ] Guard the case where `authRecord` is `null` (no linked Firebase auth
+- [x] Guard the case where `authRecord` is `null` (no linked Firebase auth
   row) — return `401` with a clear error rather than signing an
   `undefined`/`null` subject.
-- [ ] Add `packages/api/src/routes/auth-tokens.test.ts` (or extend an
+- [x] Add `packages/api/src/routes/auth-tokens.test.ts` (or extend an
   existing test file if one already covers this route) with the
   exchange-then-refresh regression test described above, plus a case
   asserting `/refresh` fails closed when no linked `auth` row exists.
-- [ ] Re-read `verifyApiToken`/`verifyAccessToken` consumers
+  Extended the existing `packages/api/src/routes/__tests__/auth.test.ts`
+  (the test harness pattern already used for this route) rather than
+  adding a new file, with a stateful in-memory fake for `@repo/db` scoped
+  to the new tests so exchange -> refresh state actually carries over.
+- [x] Re-read `verifyApiToken`/`verifyAccessToken` consumers
   (`packages/api/src/lib/jwt.ts` and any route trusting `payload.sub` as a
   user-facing identity) to confirm nothing depended on the old
   email-as-subject behavior; note any such dependency in this task's PR
   description if found (do not silently change other routes).
+  Checked `packages/api/src/middleware/auth.ts` (uses `payload.uid` to
+  populate `AuthUser.uid` for mobile requests — now correctly a stable
+  Firebase UID instead of drifting to email after a refresh, which is a
+  bug fix, not a behavior regression) and `apps/web/lib/admin-session.ts`
+  (a wholly separate cookie-based JWT system with its own secret and
+  payload shape, unaffected). `packages/api/src/games/tokens.ts` also
+  reads a `payload.sub`, but that is a distinct signed "game token" issued
+  by `SignedGameTokenVerifier`/`signGameToken` with its own secret, not the
+  API access token this task changes. No route depended on the old
+  email-as-subject behavior.
 
 ## Files Touched
 
