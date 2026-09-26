@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { describe, expect, it } from "vitest";
 import { signAccessToken } from "../../lib/jwt";
 import { EnvironmentGameTokenVerifier, signGameToken } from "../tokens";
+import { InMemoryMatchViewPublisher } from "./match-view-publisher";
 import { InMemoryLudoStore } from "./memory-store";
 import { createConfiguredLudoRoutes, createLudoRoutes } from "./routes";
 
@@ -21,6 +22,7 @@ async function testHarness(subject = "seat-owner") {
   process.env.GAME_TOKEN_ISSUER = TEST_GAME_TOKEN_ISSUER;
   process.env.GAME_TOKEN_AUDIENCE = TEST_GAME_TOKEN_AUDIENCE;
   const store = new InMemoryLudoStore();
+  const matchViewPublisher = new InMemoryMatchViewPublisher();
   const verifyGameToken = new EnvironmentGameTokenVerifier();
   const gameToken = await signGameToken(
     {
@@ -36,9 +38,14 @@ async function testHarness(subject = "seat-owner") {
   const app = new Hono();
   app.route(
     "/games/ludo",
-    createLudoRoutes({ signSessionToken: async () => "unused", verifyGameToken, store }),
+    createLudoRoutes({
+      signSessionToken: async () => "unused",
+      verifyGameToken,
+      store,
+      matchViewPublisher,
+    }),
   );
-  return { app, store, gameToken };
+  return { app, store, gameToken, matchViewPublisher };
 }
 
 const ENV_KEYS = [
@@ -303,6 +310,261 @@ describe("Ludo match/command routes", () => {
         (p: { subject: string }) => p.subject === actingSubject,
       );
       expect(movedPlayer.tokens[0].path_position).toBe(0);
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+});
+
+describe("Ludo realtime fanout and polling fallback (task 22)", () => {
+  it("publishes exactly one match view via the injected publisher on create_match", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken, matchViewPublisher } = await testHarness("owner-subject");
+      const createResponse = await app.request("/games/ludo/debug/matches", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${gameToken}` },
+        body: JSON.stringify({
+          type: "create_match",
+          mode: "classic",
+          seats: 2,
+          idempotency_key: "fanout-create-1",
+        }),
+      });
+      expect(createResponse.status).toBe(201);
+      const matchId = (await createResponse.json()).match_state.match_id;
+
+      expect(matchViewPublisher.calls).toHaveLength(1);
+      expect(matchViewPublisher.calls[0].appId).toBe("ludo");
+      expect(matchViewPublisher.calls[0].environment).toBe("debug");
+      const published = matchViewPublisher.latestFor(matchId);
+      expect(published).not.toBeNull();
+      expect(published?.matchState.status).toBe("waiting");
+      expect(published?.matchState.matchId).toBe(matchId);
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("publishes a fresh match view for every subsequent command, matching the store's post-commit state", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken: ownerToken, matchViewPublisher } = await testHarness("owner-subject");
+      const createResponse = await app.request("/games/ludo/debug/matches", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${ownerToken}` },
+        body: JSON.stringify({
+          type: "create_match",
+          mode: "classic",
+          seats: 2,
+          idempotency_key: "fanout-create-2",
+        }),
+      });
+      const matchId = (await createResponse.json()).match_state.match_id;
+      expect(matchViewPublisher.calls).toHaveLength(1);
+
+      const joinerToken = await signGameToken(
+        {
+          appId: "ludo",
+          environment: "debug",
+          secret: TEST_GAME_TOKEN_SECRET,
+          issuer: TEST_GAME_TOKEN_ISSUER,
+          audience: TEST_GAME_TOKEN_AUDIENCE,
+        },
+        { subject: "joiner-subject", role: "player" },
+        300,
+      );
+      const joinResponse = await app.request(`/games/ludo/debug/matches/${matchId}/commands`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${joinerToken}` },
+        body: JSON.stringify({
+          type: "join_match",
+          match_id: matchId,
+          idempotency_key: "fanout-join-1",
+        }),
+      });
+      expect(joinResponse.status).toBe(200);
+      const joinBody = await joinResponse.json();
+
+      expect(matchViewPublisher.calls).toHaveLength(2);
+      const latest = matchViewPublisher.latestFor(matchId);
+      expect(latest?.matchState.status).toBe("active");
+      expect(latest?.matchState.updatedAt).toBe(joinBody.match_state.updated_at);
+      expect(latest?.matchState).toEqual({
+        matchId: joinBody.match_state.match_id,
+        environment: joinBody.match_state.environment,
+        mode: joinBody.match_state.mode,
+        status: joinBody.match_state.status,
+        players: joinBody.match_state.players.map((p: Record<string, unknown>) => ({
+          seat: p.seat,
+          subject: p.subject,
+          color: p.color,
+          tokens: (p.tokens as { id: number; path_position: number }[]).map((t) => ({
+            id: t.id,
+            pathPosition: t.path_position,
+          })),
+          captureCount: p.capture_count,
+        })),
+        currentPlayerIndex: joinBody.match_state.current_player_index,
+        phase: joinBody.match_state.phase,
+        currentRoll: joinBody.match_state.current_roll,
+        consecutiveSixes: joinBody.match_state.consecutive_sixes,
+        winnerOrder: joinBody.match_state.winner_order,
+        deadlineAt: joinBody.match_state.deadline_at,
+        updatedAt: joinBody.match_state.updated_at,
+      });
+
+      // A repeated (idempotent) command must not double-publish.
+      const repeatJoin = await app.request(`/games/ludo/debug/matches/${matchId}/commands`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${joinerToken}` },
+        body: JSON.stringify({
+          type: "join_match",
+          match_id: matchId,
+          idempotency_key: "fanout-join-1",
+        }),
+      });
+      expect(repeatJoin.status).toBe(200);
+      expect((await repeatJoin.json()).idempotent).toBe(true);
+      expect(matchViewPublisher.calls).toHaveLength(3);
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("GET .../state returns the current match view for a seated caller", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("owner-subject");
+      const createResponse = await app.request("/games/ludo/debug/matches", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${gameToken}` },
+        body: JSON.stringify({
+          type: "create_match",
+          mode: "classic",
+          seats: 2,
+          idempotency_key: "fanout-create-3",
+        }),
+      });
+      const matchId = (await createResponse.json()).match_state.match_id;
+
+      const stateResponse = await app.request(`/games/ludo/debug/matches/${matchId}/state`, {
+        headers: { Authorization: `Bearer ${gameToken}` },
+      });
+      expect(stateResponse.status).toBe(200);
+      const stateBody = await stateResponse.json();
+      expect(stateBody.match_view.match_id).toBe(matchId);
+      expect(stateBody.match_view.match_state.status).toBe("waiting");
+      expect(stateBody.match_view.recent_events).toEqual([]);
+      expect(typeof stateBody.match_view.published_at).toBe("string");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("GET .../state rejects a caller who does not hold a seat in the match", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken: ownerToken } = await testHarness("owner-subject");
+      const createResponse = await app.request("/games/ludo/debug/matches", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${ownerToken}` },
+        body: JSON.stringify({
+          type: "create_match",
+          mode: "classic",
+          seats: 2,
+          idempotency_key: "fanout-create-4",
+        }),
+      });
+      const matchId = (await createResponse.json()).match_state.match_id;
+
+      const outsiderToken = await signGameToken(
+        {
+          appId: "ludo",
+          environment: "debug",
+          secret: TEST_GAME_TOKEN_SECRET,
+          issuer: TEST_GAME_TOKEN_ISSUER,
+          audience: TEST_GAME_TOKEN_AUDIENCE,
+        },
+        { subject: "outsider-subject", role: "player" },
+        300,
+      );
+      const stateResponse = await app.request(`/games/ludo/debug/matches/${matchId}/state`, {
+        headers: { Authorization: `Bearer ${outsiderToken}` },
+      });
+      expect(stateResponse.status).toBe(403);
+      const body = await stateResponse.json();
+      expect(body.error.code).toBe("ludo_forbidden_role");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("GET .../state matches the same match_state shape the create/commands routes returned", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("owner-subject");
+      const createResponse = await app.request("/games/ludo/debug/matches", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${gameToken}` },
+        body: JSON.stringify({
+          type: "create_match",
+          mode: "classic",
+          seats: 2,
+          idempotency_key: "fanout-create-5",
+        }),
+      });
+      const createBody = await createResponse.json();
+      const matchId = createBody.match_state.match_id;
+
+      const stateResponse = await app.request(`/games/ludo/debug/matches/${matchId}/state`, {
+        headers: { Authorization: `Bearer ${gameToken}` },
+      });
+      const stateBody = await stateResponse.json();
+      expect(stateBody.match_view.match_state).toEqual(createBody.match_state);
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("never throws from the command path when no publisher is configured (defaults to a no-op)", async () => {
+    const saved = saveEnv();
+    try {
+      process.env.GAME_TOKEN_SECRET_LUDO_DEBUG = TEST_GAME_TOKEN_SECRET;
+      process.env.GAME_TOKEN_ISSUER = TEST_GAME_TOKEN_ISSUER;
+      process.env.GAME_TOKEN_AUDIENCE = TEST_GAME_TOKEN_AUDIENCE;
+      const store = new InMemoryLudoStore();
+      const verifyGameToken = new EnvironmentGameTokenVerifier();
+      const gameToken = await signGameToken(
+        {
+          appId: "ludo",
+          environment: "debug",
+          secret: TEST_GAME_TOKEN_SECRET,
+          issuer: TEST_GAME_TOKEN_ISSUER,
+          audience: TEST_GAME_TOKEN_AUDIENCE,
+        },
+        { subject: "owner-subject", role: "player" },
+        300,
+      );
+      const app = new Hono();
+      // No `matchViewPublisher` passed — exercises `createLudoRoutes`'s
+      // `NullMatchViewPublisher` fallback.
+      app.route(
+        "/games/ludo",
+        createLudoRoutes({ signSessionToken: async () => "unused", verifyGameToken, store }),
+      );
+
+      const createResponse = await app.request("/games/ludo/debug/matches", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${gameToken}` },
+        body: JSON.stringify({
+          type: "create_match",
+          mode: "classic",
+          seats: 2,
+          idempotency_key: "fanout-no-publisher",
+        }),
+      });
+      expect(createResponse.status).toBe(201);
     } finally {
       restoreEnv(saved);
     }

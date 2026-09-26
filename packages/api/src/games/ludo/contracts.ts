@@ -259,6 +259,29 @@ export function ludoRoomInviteLink(roomCode: string): string {
   return `${LUDO_DEEP_LINK_SCHEME}://room/${roomCode}`;
 }
 
+/**
+ * Bounds how many trailing `ludo_events` rows a `LudoMatchView` carries
+ * (task 22) — enough for a listening client to reconcile recent activity
+ * without exposing the store's full history or internal command/
+ * idempotency bookkeeping.
+ */
+export const LUDO_MATCH_VIEW_EVENT_LIMIT = 20;
+
+/**
+ * Client-shaped read model published to Firestore after every committed
+ * command (task 22, `MatchViewPublisher`) and returned synchronously by the
+ * `GET /:environment/matches/:matchId/state` polling fallback: the current
+ * `LudoMatchState` plus its most recent `LUDO_MATCH_VIEW_EVENT_LIMIT`
+ * `LudoEvent`s, oldest first.
+ */
+export interface LudoMatchView {
+  matchId: string;
+  environment: LudoEnvironment;
+  matchState: LudoMatchState;
+  recentEvents: LudoEvent[];
+  publishedAt: string;
+}
+
 export interface LudoSessionResponse {
   contractVersion: typeof LUDO_CONTRACT_VERSION;
   gameToken: string;

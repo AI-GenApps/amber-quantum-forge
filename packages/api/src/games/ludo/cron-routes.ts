@@ -16,6 +16,9 @@
 import type { Context } from "hono";
 import { Hono } from "hono";
 import { GAME_ENVIRONMENTS } from "../contracts";
+import { resolveMatchViewPublisher } from "./dependencies";
+import type { MatchViewPublisher } from "./match-view-publisher";
+import { NullMatchViewPublisher } from "./match-view-publisher";
 import { sweepMatchmaking } from "./matchmaking-service";
 import { sweepExpiredRooms } from "./room-service";
 import { configuredLudoStore } from "./routes";
@@ -26,6 +29,8 @@ export interface LudoCronRouteDependencies {
   store: LudoStore;
   /** `process.env.CRON_SECRET`; a missing value fails every request closed. */
   cronSecret: string | undefined;
+  /** Task 22's realtime fanout; falls back to a no-op publisher when omitted. */
+  matchViewPublisher?: MatchViewPublisher;
 }
 
 function isAuthorized(c: Context, cronSecret: string | undefined): boolean {
@@ -36,6 +41,7 @@ function isAuthorized(c: Context, cronSecret: string | undefined): boolean {
 
 export function createLudoCronRoutes(dependencies: LudoCronRouteDependencies): Hono {
   const routes = new Hono();
+  const matchViewPublisher = dependencies.matchViewPublisher ?? new NullMatchViewPublisher();
 
   const sweep = async (c: Context) => {
     if (!isAuthorized(c, dependencies.cronSecret)) {
@@ -45,12 +51,22 @@ export function createLudoCronRoutes(dependencies: LudoCronRouteDependencies): H
     const matchmaking: Record<string, { matched: number; botFilled: number }> = {};
     const rooms: Record<string, { expired: number }> = {};
     for (const environment of GAME_ENVIRONMENTS) {
-      swept[environment] = await sweepTimeouts(dependencies.store, environment);
+      swept[environment] = await sweepTimeouts(dependencies.store, environment, undefined, {
+        matchViewPublisher,
+      });
       // Task 20: the same Cron cadence also scans matchmaking tickets,
       // bounded the same way as the timeout sweep above.
-      matchmaking[environment] = await sweepMatchmaking(dependencies.store, environment);
+      matchmaking[environment] = await sweepMatchmaking(
+        dependencies.store,
+        environment,
+        undefined,
+        {
+          matchViewPublisher,
+        },
+      );
       // Task 21: and expired, never-filled private rooms, also bounded per
-      // invocation the same way.
+      // invocation the same way (no fanout: a swept room's underlying match,
+      // if any, is untouched — only never-filled rooms are removed).
       rooms[environment] = await sweepExpiredRooms(dependencies.store, environment);
     }
     return c.json({ swept, matchmaking, rooms }, 200);
@@ -66,5 +82,6 @@ export function createConfiguredLudoCronRoutes(): Hono {
   return createLudoCronRoutes({
     store: configuredLudoStore(),
     cronSecret: process.env.CRON_SECRET,
+    matchViewPublisher: resolveMatchViewPublisher(),
   });
 }

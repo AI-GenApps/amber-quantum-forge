@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 22-realtime-fanout
-status: pending
+status: complete
 commit_scope: ludo
 depends_on: [15-ludo-launch/21-private-rooms]
 estimate: L
@@ -58,34 +58,34 @@ plus an HTTP polling fallback route for when Firestore is unavailable.
 
 ## Implementation Checklist
 
-- [ ] Add `LudoMatchView` to `packages/api/src/games/ludo/contracts.ts`
+- [x] Add `LudoMatchView` to `packages/api/src/games/ludo/contracts.ts`
   and its wire codec to `wire.ts`.
-- [ ] Create `packages/api/src/games/ludo/match-view-publisher.ts` with the
+- [x] Create `packages/api/src/games/ludo/match-view-publisher.ts` with the
   `MatchViewPublisher` interface, `InMemoryMatchViewPublisher`, and
   `NullMatchViewPublisher`.
-- [ ] Create `packages/api/src/games/ludo/firestore-match-view-publisher.ts`
+- [x] Create `packages/api/src/games/ludo/firestore-match-view-publisher.ts`
   with `FirestoreMatchViewPublisher`, using a Firestore accessor exported
   from `packages/api/src/firebase/admin.ts` (extend that file with a lazy
   `getFirestore()` export following its existing `getFirebaseAdmin()`
   pattern).
-- [ ] Add a factory (`resolveMatchViewPublisher()`) that picks
+- [x] Add a factory (`resolveMatchViewPublisher()`) that picks
   `FirestoreMatchViewPublisher` when Firebase Admin env vars are present and
   `NullMatchViewPublisher` otherwise, used by `packages/api/src/games/
   ludo/dependencies.ts` (create this file mirroring `merge-relay/
   dependencies.ts`'s dependency-injection style).
-- [ ] Call `publish()` from `service.ts` after every committed
+- [x] Call `publish()` from `service.ts` after every committed
   state-changing transaction (create, command, timeout, matchmaking match,
   room match) — after commit, not inside it.
-- [ ] Add `GET /:environment/matches/:matchId/state` to `routes.ts` as the
+- [x] Add `GET /:environment/matches/:matchId/state` to `routes.ts` as the
   polling fallback, requiring the game token and seat ownership.
-- [ ] Add `packages/api/src/games/ludo/match-view-publisher.test.ts`
+- [x] Add `packages/api/src/games/ludo/match-view-publisher.test.ts`
   covering `InMemoryMatchViewPublisher` recording, `NullMatchViewPublisher`
   no-op safety (never throws), and `resolveMatchViewPublisher()`'s
   config-presence branching.
-- [ ] Add `packages/api/src/games/ludo/firestore-match-view-publisher.test.ts`
+- [x] Add `packages/api/src/games/ludo/firestore-match-view-publisher.test.ts`
   using a fake Firestore client (do not require real Firestore
   credentials) to verify the write payload shape and collection path.
-- [ ] Add a `routes.test.ts` case for the polling fallback route (extend
+- [x] Add a `routes.test.ts` case for the polling fallback route (extend
   task 21's file): returns the current view, rejects a non-seated caller,
   matches the same shape a Firestore-published view would have.
 
@@ -95,6 +95,7 @@ plus an HTTP polling fallback route for when Firestore is unavailable.
 - `packages/api/src/games/ludo/wire.ts`
 - `packages/api/src/games/ludo/match-view-publisher.ts`
 - `packages/api/src/games/ludo/firestore-match-view-publisher.ts`
+- `packages/api/src/games/ludo/match-view.ts`
 - `packages/api/src/games/ludo/dependencies.ts`
 - `packages/api/src/games/ludo/service.ts`
 - `packages/api/src/games/ludo/routes.ts`
@@ -102,6 +103,26 @@ plus an HTTP polling fallback route for when Firestore is unavailable.
 - `packages/api/src/games/ludo/match-view-publisher.test.ts`
 - `packages/api/src/games/ludo/firestore-match-view-publisher.test.ts`
 - `packages/api/src/games/ludo/routes.test.ts`
+
+Additional small, mechanical touches beyond this list, needed so the
+"matchmaking match, room match" fanout named in the Context/Decisions and
+Implementation Checklist actually fires (both flows call `service.ts`'s
+`createMatch`/`joinMatch` internally): `matchmaking-service.ts` and
+`room-service.ts` gained an optional trailing `dependencies:
+LudoServiceDependencies` parameter, threaded through to those calls;
+`cron-routes.ts` gained an optional `matchViewPublisher` on
+`LudoCronRouteDependencies`, threaded into its `sweepTimeouts`/
+`sweepMatchmaking` calls (`sweepExpiredRooms` untouched — it only deletes
+never-filled rooms, no match view to publish). All new parameters are
+optional/defaulted, so no existing call site required changes.
+
+`service.ts`'s pure, storage-shape read helpers (`contractEventFromRow`,
+`loadRecentEvents`, `publicStateFor`, `reconstructEngineState`, plus the
+`WIRE_EVENT_TYPE`/`ENGINE_PHASE_TO_WIRE` lookup tables they share) were
+extracted verbatim into a new `packages/api/src/games/ludo/match-view.ts`
+and re-imported, to keep `service.ts` under the repo's 800-line
+`check:max-lines` pre-commit limit after this task's additions. No
+behavior changed.
 
 ## Acceptance Criteria
 

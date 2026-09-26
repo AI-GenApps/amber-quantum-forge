@@ -18,7 +18,7 @@ import {
   LudoTicketNotCancellableError,
   LudoTicketNotFoundError,
 } from "./errors";
-import { createMatch, joinMatch } from "./service";
+import { createMatch, joinMatch, type LudoServiceDependencies } from "./service";
 import type { LudoMatchmakingTicketRow, LudoStore } from "./store";
 
 /** Default bot-fill wait, overridable via `LUDO_MATCHMAKING_BOT_FILL_SECONDS`. */
@@ -150,6 +150,7 @@ async function formMatch(
   environment: LudoEnvironment,
   humanTickets: readonly LudoMatchmakingTicketRow[],
   botsNeeded: number,
+  dependencies: LudoServiceDependencies = {},
 ): Promise<string> {
   const [first, ...rest] = humanTickets;
   const seats = first.seatTarget;
@@ -163,23 +164,34 @@ async function formMatch(
       idempotencyKey: `matchmaking:${first.ticketId}`,
     },
     "matchmaking",
+    dependencies,
   );
   const matchId = created.matchState.matchId;
 
   for (const ticket of rest) {
-    await joinMatch(store, environment, {
-      subject: ticket.subject,
-      matchId,
-      idempotencyKey: `matchmaking:${ticket.ticketId}`,
-    });
+    await joinMatch(
+      store,
+      environment,
+      {
+        subject: ticket.subject,
+        matchId,
+        idempotencyKey: `matchmaking:${ticket.ticketId}`,
+      },
+      dependencies,
+    );
   }
   for (let i = 0; i < botsNeeded; i++) {
-    await joinMatch(store, environment, {
-      subject: `bot:${randomUUID()}`,
-      matchId,
-      idempotencyKey: `matchmaking-bot-fill:${matchId}:${i}`,
-      bot: { difficulty: DEFAULT_BOT_DIFFICULTY },
-    });
+    await joinMatch(
+      store,
+      environment,
+      {
+        subject: `bot:${randomUUID()}`,
+        matchId,
+        idempotencyKey: `matchmaking-bot-fill:${matchId}:${i}`,
+        bot: { difficulty: DEFAULT_BOT_DIFFICULTY },
+      },
+      dependencies,
+    );
   }
 
   await store.transact(environment, async (state) => {
@@ -205,6 +217,7 @@ export async function sweepMatchmaking(
   store: LudoStore,
   environment: LudoEnvironment,
   limit: number = LUDO_MATCHMAKING_SWEEP_LIMIT,
+  dependencies: LudoServiceDependencies = {},
 ): Promise<SweepMatchmakingResult> {
   const nowMs = Date.now();
   const botFillWindowMs = resolveBotFillWindowMs();
@@ -234,7 +247,7 @@ export async function sweepMatchmaking(
     while (remaining.length >= seatTarget) {
       const batch = remaining.slice(0, seatTarget);
       remaining = remaining.slice(seatTarget);
-      await formMatch(store, environment, batch, 0);
+      await formMatch(store, environment, batch, 0, dependencies);
       matched += 1;
     }
 
@@ -243,7 +256,7 @@ export async function sweepMatchmaking(
       const ageMs = nowMs - Date.parse(oldest.createdAt);
       if (ageMs >= botFillWindowMs) {
         const botsNeeded = seatTarget - remaining.length;
-        await formMatch(store, environment, remaining, botsNeeded);
+        await formMatch(store, environment, remaining, botsNeeded, dependencies);
         botFilled += 1;
       }
     }

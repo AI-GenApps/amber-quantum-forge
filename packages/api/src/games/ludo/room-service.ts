@@ -26,7 +26,7 @@ import type {
 } from "./contracts";
 import { ludoRoomInviteLink } from "./contracts";
 import { LudoRoomCodeExhaustedError, LudoRoomExpiredError, LudoRoomNotFoundError } from "./errors";
-import { createMatch, joinMatch } from "./service";
+import { createMatch, joinMatch, type LudoServiceDependencies } from "./service";
 import type { LudoRoomRow, LudoStore } from "./store";
 
 /** Default room fill window, overridable via `LUDO_ROOM_EXPIRY_HOURS`. */
@@ -185,6 +185,7 @@ export async function joinRoom(
   store: LudoStore,
   environment: LudoEnvironment,
   input: JoinRoomInput,
+  dependencies: LudoServiceDependencies = {},
 ): Promise<JoinRoomResult> {
   const roomSnapshot = await store.read(
     environment,
@@ -212,6 +213,7 @@ export async function joinRoom(
         idempotencyKey: `room:${roomSnapshot.roomCode}:create`,
       },
       "room",
+      dependencies,
     );
     matchId = created.matchState.matchId;
 
@@ -222,11 +224,16 @@ export async function joinRoom(
     });
   }
 
-  const joinResult = await joinMatch(store, environment, {
-    subject: input.subject,
-    matchId,
-    idempotencyKey: input.idempotencyKey,
-  });
+  const joinResult = await joinMatch(
+    store,
+    environment,
+    {
+      subject: input.subject,
+      matchId,
+      idempotencyKey: input.idempotencyKey,
+    },
+    dependencies,
+  );
 
   const room = await store.read(environment, async (state) => {
     const row = state.rooms.find((r) => r.roomCode === input.roomCode);

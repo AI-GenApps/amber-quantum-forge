@@ -4,6 +4,7 @@ import type {
   LudoMatchmakingTicket,
   LudoMatchState,
   LudoMatchSummary,
+  LudoMatchView,
   LudoMode,
   LudoPlayerState,
   LudoRoom,
@@ -304,6 +305,30 @@ export function roomFromWire(value: ReturnType<typeof roomToWire>): LudoRoom {
     matchId: value.match_id,
     createdAt: value.created_at,
     expiresAt: value.expires_at,
+  };
+}
+
+/** Wire shape of a `LudoMatchView` (task 22): Firestore document body and the polling route's response payload. */
+export function matchViewToWire(value: LudoMatchView) {
+  return {
+    match_id: value.matchId,
+    environment: value.environment,
+    match_state: toWireMatchState(value.matchState),
+    recent_events: value.recentEvents.map(eventToWire),
+    published_at: value.publishedAt,
+  };
+}
+
+export function matchViewFromWire(value: ReturnType<typeof matchViewToWire>): LudoMatchView {
+  const recentEvents = value.recent_events
+    .map((event) => eventFromWire(event as Record<string, unknown>))
+    .filter((event): event is LudoEvent => event !== null);
+  return {
+    matchId: value.match_id,
+    environment: value.environment,
+    matchState: fromWireMatchState(value.match_state),
+    recentEvents,
+    publishedAt: value.published_at,
   };
 }
 

@@ -74,7 +74,7 @@ next task.
 | 19 | Backend owner | Turn timeout enforcement, claim-timeout endpoint, Vercel Cron sweeper | [x] |
 | 20 | Backend owner | Random matchmaking with bot-fill | [x] |
 | 21 | Backend owner | Private rooms with shareable invite codes | [x] |
-| 22 | Backend owner | Realtime fanout (`MatchViewPublisher`, Firestore adapter, polling fallback) | [ ] |
+| 22 | Backend owner | Realtime fanout (`MatchViewPublisher`, Firestore adapter, polling fallback) | [x] |
 | 23 | Backend/auth owner | Guest-first + Google-linked identity exchange for Ludo | [ ] |
 | 24 | Client owner | Guarded Firebase init, typed gateway client, guest/Google auth controller | [ ] |
 | 25 | Client owner | Firestore match listener, polling fallback, reconnect, online board wiring | [ ] |

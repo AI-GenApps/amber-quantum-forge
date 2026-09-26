@@ -10,12 +10,15 @@ import {
 import { isGameEnvironment } from "../validation";
 import type { LudoEnvironment, LudoSession } from "./contracts";
 import { LUDO_APP_ID, LUDO_CONTRACT_VERSION } from "./contracts";
+import { resolveMatchViewPublisher } from "./dependencies";
 import { DrizzleLudoStore } from "./drizzle-store";
 import { asLudoError, LudoError } from "./errors";
+import type { MatchViewPublisher } from "./match-view-publisher";
+import { NullMatchViewPublisher } from "./match-view-publisher";
 import { cancelTicket, createTicket } from "./matchmaking-service";
 import { InMemoryLudoStore } from "./memory-store";
 import { createRoom, joinRoom } from "./room-service";
-import { createMatch, getMatchState, processCommand } from "./service";
+import { createMatch, getMatchState, getMatchView, processCommand } from "./service";
 import { LudoStorageError, type LudoStore, UnavailableLudoStore } from "./store";
 import {
   parseCreateMatchmakingTicketRequest,
@@ -27,6 +30,7 @@ import {
 } from "./validation";
 import {
   matchmakingTicketToWire,
+  matchViewToWire,
   roomToWire,
   sessionResponseToWire,
   toWireMatchState,
@@ -38,6 +42,12 @@ export interface LudoRouteDependencies {
   signSessionToken: (environment: string, subject: string) => Promise<string>;
   verifyGameToken: GameTokenVerifier;
   store: LudoStore;
+  /**
+   * Task 22's realtime fanout. Optional so existing call sites/tests that
+   * do not care about fanout keep compiling unchanged; `createLudoRoutes`
+   * falls back to a `NullMatchViewPublisher` (no-op) when omitted.
+   */
+  matchViewPublisher?: MatchViewPublisher;
 }
 
 type AuthResult = { ok: true; session: LudoSession } | { ok: false; response: Response };
@@ -83,6 +93,7 @@ async function readJsonBody(c: Context): Promise<unknown> {
 
 export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
   const routes = new Hono();
+  const matchViewPublisher = dependencies.matchViewPublisher ?? new NullMatchViewPublisher();
 
   routes.post("/:environment/session", async (c) => {
     const environment = c.req.param("environment");
@@ -165,6 +176,7 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
           idempotencyKey: parsed.value.idempotencyKey,
         },
         "direct",
+        { matchViewPublisher },
       );
       return c.json(
         { match_state: toWireMatchState(result.matchState), idempotent: result.idempotent },
@@ -207,6 +219,41 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
     }
   });
 
+  // Task 22: HTTP polling fallback for clients without Firestore
+  // connectivity. Returns the exact `LudoMatchView` shape a
+  // `MatchViewPublisher.publish()` call would carry, synchronously from
+  // `LudoStore` (the ground truth the Firestore mirror only fast-forwards
+  // from). Seat ownership is enforced the same way as the plain match-state
+  // route above: `getMatchView` -> `getMatchState` throws
+  // `ludo_forbidden_role` for a caller not seated in this match.
+  routes.get("/:environment/matches/:matchId/state", async (c) => {
+    const environment = c.req.param("environment");
+    if (!isGameEnvironment(environment)) {
+      const error = new LudoError(
+        400,
+        "ludo_invalid_environment",
+        "Environment must be debug, staging or production",
+      );
+      return c.json(error.response(), error.status);
+    }
+    const auth = await authenticateGameToken(c, dependencies, environment);
+    if (!auth.ok) return auth.response;
+
+    const matchId = c.req.param("matchId");
+    try {
+      const result = await getMatchView(
+        dependencies.store,
+        environment,
+        auth.session.subject,
+        matchId,
+      );
+      return c.json({ match_view: matchViewToWire(result.matchView) }, 200);
+    } catch (cause) {
+      const error = asLudoError(cause);
+      return c.json(error.response(), error.status);
+    }
+  });
+
   routes.post("/:environment/matches/:matchId/commands", async (c) => {
     const environment = c.req.param("environment");
     if (!isGameEnvironment(environment)) {
@@ -237,6 +284,7 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
         environment,
         auth.session.subject,
         parsed.value,
+        { matchViewPublisher },
       );
       return c.json(
         { match_state: toWireMatchState(result.matchState), idempotent: result.idempotent },
@@ -390,11 +438,16 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
     }
 
     try {
-      const result = await joinRoom(dependencies.store, environment, {
-        subject: auth.session.subject,
-        roomCode: parsedRoomCode.value,
-        idempotencyKey: parsedBody.value.idempotencyKey,
-      });
+      const result = await joinRoom(
+        dependencies.store,
+        environment,
+        {
+          subject: auth.session.subject,
+          roomCode: parsedRoomCode.value,
+          idempotencyKey: parsedBody.value.idempotencyKey,
+        },
+        { matchViewPublisher },
+      );
       return c.json(
         {
           room: roomToWire(result.room),
@@ -437,6 +490,7 @@ export function createConfiguredLudoRoutes(): Hono {
     },
     verifyGameToken: new EnvironmentGameTokenVerifier(),
     store: configuredLudoStore(),
+    matchViewPublisher: resolveMatchViewPublisher(),
   });
 }
 

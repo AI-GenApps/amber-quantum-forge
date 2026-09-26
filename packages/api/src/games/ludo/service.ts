@@ -17,22 +17,20 @@ import { randomUUID } from "node:crypto";
 import type {
   LudoCommand,
   LudoEnvironment,
+  LudoMatchView,
   LudoMode,
   LudoMatchState as WireMatchState,
 } from "./contracts";
+import { LUDO_APP_ID } from "./contracts";
 import { CsprngDiceSource, type LudoDiceSource } from "./dice";
 import {
   applyMove,
-  createMatchState,
   type LudoMatchState as EngineMatchState,
-  eventFromJson,
   eventToJson,
-  LUDO_COLOR_ORDER,
   LUDO_MAX_SEATS,
   LUDO_MIN_SEATS,
   LUDO_RULESETS_BY_ID,
   type LudoReplayEvent,
-  replay,
   rollDice,
 } from "./engine";
 import {
@@ -46,7 +44,15 @@ import {
   LudoWrongPhaseError,
   LudoWrongTurnError,
 } from "./errors";
-import type { LudoEventRow, LudoMatchRow, LudoPlayerRow, LudoState, LudoStore } from "./store";
+import {
+  ENGINE_PHASE_TO_WIRE,
+  loadRecentEvents,
+  publicStateFor,
+  reconstructEngineState,
+  WIRE_EVENT_TYPE,
+} from "./match-view";
+import type { MatchViewPublisher } from "./match-view-publisher";
+import type { LudoMatchRow, LudoPlayerRow, LudoState, LudoStore } from "./store";
 import { applyTimeoutIfExpired, computeTurnDeadline } from "./timeout";
 
 /**
@@ -58,25 +64,6 @@ import { applyTimeoutIfExpired, computeTurnDeadline } from "./timeout";
  * matches nobody is actively polling.
  */
 export const LUDO_SWEEP_BATCH_LIMIT = 25;
-
-/** Maps an engine `LudoReplayEvent`'s type to the snake_case label stored in `ludo_events.event_type`. */
-const WIRE_EVENT_TYPE: Record<LudoReplayEvent["type"], string> = {
-  diceRolled: "dice_rolled",
-  tokenMoved: "token_moved",
-  tokenCaptured: "token_captured",
-  tokenFinished: "token_finished",
-  turnForfeited: "turn_forfeited",
-  matchFinished: "match_finished",
-  turnTimedOut: "turn_timed_out",
-  seatForfeited: "seat_forfeited",
-  matchAbandoned: "match_abandoned",
-};
-
-const ENGINE_PHASE_TO_WIRE: Record<EngineMatchState["phase"], WireMatchState["phase"]> = {
-  awaitingRoll: "awaiting_roll",
-  awaitingMove: "awaiting_move",
-  finished: "finished",
-};
 
 export interface CreateMatchInput {
   subject: string;
@@ -104,13 +91,18 @@ export interface LudoCommandResult {
 }
 
 /**
- * Optional overrides for `processCommand`. Production callers (`routes.ts`)
- * omit this and get a real `CsprngDiceSource`; tests inject a
- * `ScriptedDiceSource`/`FunctionDiceSource` (see `dice.ts`) to drive a match
- * deterministically end-to-end.
+ * Optional overrides for every state-changing service function.
+ * `diceSource` is production-omitted (real `CsprngDiceSource`) and
+ * test-injected (`ScriptedDiceSource`/`FunctionDiceSource`, see `dice.ts`)
+ * to drive a match deterministically end-to-end. `matchViewPublisher` is
+ * task 22's realtime fanout: when supplied, every committed transaction
+ * below calls `publish()` with a fresh `LudoMatchView` after the commit;
+ * when omitted, nothing is published (matching `NullMatchViewPublisher`'s
+ * behavior without needing to construct one).
  */
 export interface LudoServiceDependencies {
   diceSource?: LudoDiceSource;
+  matchViewPublisher?: MatchViewPublisher;
 }
 
 /**
@@ -124,6 +116,7 @@ export async function createMatch(
   environment: LudoEnvironment,
   input: CreateMatchInput,
   matchOrigin: LudoMatchRow["matchOrigin"],
+  dependencies: LudoServiceDependencies = {},
 ): Promise<LudoCommandResult> {
   const ruleset = LUDO_RULESETS_BY_ID[input.mode];
   if (!ruleset) throw new LudoMatchNotJoinableError(`Unknown ludo mode: ${input.mode}`);
@@ -135,7 +128,7 @@ export async function createMatch(
     throw new LudoMatchNotJoinableError(`seats must be ${LUDO_MIN_SEATS}..${LUDO_MAX_SEATS}`);
   }
 
-  return store.transact(environment, async (state) => {
+  const result = await store.transact(environment, async (state) => {
     const existingCommand = state.commands.find(
       (c) => c.commandType === "create_match" && c.idempotencyKey === input.idempotencyKey,
     );
@@ -186,6 +179,8 @@ export async function createMatch(
 
     return { matchState: publicStateFor(state, row), idempotent: false };
   });
+  await publishMatchView(store, environment, result.matchState, dependencies);
+  return result;
 }
 
 /**
@@ -200,8 +195,9 @@ export async function joinMatch(
   store: LudoStore,
   environment: LudoEnvironment,
   input: JoinMatchInput,
+  dependencies: LudoServiceDependencies = {},
 ): Promise<LudoCommandResult> {
-  return store.transact(environment, async (state) => {
+  const result = await store.transact(environment, async (state) => {
     const row = state.matches.find((m) => m.matchId === input.matchId);
     if (!row) throw new LudoMatchNotFoundError(input.matchId);
 
@@ -258,6 +254,8 @@ export async function joinMatch(
 
     return { matchState: publicStateFor(state, row), idempotent: false };
   });
+  await publishMatchView(store, environment, result.matchState, dependencies);
+  return result;
 }
 
 /**
@@ -277,11 +275,16 @@ export async function processCommand(
 ): Promise<LudoCommandResult> {
   switch (command.type) {
     case "join_match":
-      return joinMatch(store, environment, {
-        subject,
-        matchId: command.matchId,
-        idempotencyKey: command.idempotencyKey,
-      });
+      return joinMatch(
+        store,
+        environment,
+        {
+          subject,
+          matchId: command.matchId,
+          idempotencyKey: command.idempotencyKey,
+        },
+        dependencies,
+      );
     case "roll_dice": {
       const diceSource = dependencies.diceSource ?? new CsprngDiceSource();
       return applyGameplayCommand(
@@ -302,6 +305,7 @@ export async function processCommand(
             resultSummary: { roll: result.roll },
           };
         },
+        dependencies,
       );
     }
     case "move_token":
@@ -327,9 +331,17 @@ export async function processCommand(
             throw new LudoIllegalMoveError(cause instanceof Error ? cause.message : undefined);
           }
         },
+        dependencies,
       );
     case "claim_timeout":
-      return claimTimeout(store, environment, subject, command.matchId, command.idempotencyKey);
+      return claimTimeout(
+        store,
+        environment,
+        subject,
+        command.matchId,
+        command.idempotencyKey,
+        dependencies,
+      );
     default:
       throw new LudoError(
         422,
@@ -360,8 +372,9 @@ async function applyGameplayCommand(
   idempotencyKey: string,
   commandType: "roll_dice" | "move_token",
   apply: (matchState: EngineMatchState) => EngineTransition,
+  dependencies: LudoServiceDependencies = {},
 ): Promise<LudoCommandResult> {
-  return store.transact(environment, async (state) => {
+  const result = await store.transact(environment, async (state) => {
     const row = state.matches.find((m) => m.matchId === matchId);
     if (!row) throw new LudoMatchNotFoundError(matchId);
 
@@ -416,6 +429,8 @@ async function applyGameplayCommand(
 
     return { matchState: publicStateFor(state, row), idempotent: false };
   });
+  await publishMatchView(store, environment, result.matchState, dependencies);
+  return result;
 }
 
 /**
@@ -434,8 +449,9 @@ async function claimTimeout(
   subject: string,
   matchId: string,
   idempotencyKey: string,
+  dependencies: LudoServiceDependencies = {},
 ): Promise<LudoCommandResult> {
-  return store.transact(environment, async (state) => {
+  const result = await store.transact(environment, async (state) => {
     const row = state.matches.find((m) => m.matchId === matchId);
     if (!row) throw new LudoMatchNotFoundError(matchId);
 
@@ -467,6 +483,8 @@ async function claimTimeout(
 
     return { matchState: publicStateFor(state, row), idempotent: false };
   });
+  await publishMatchView(store, environment, result.matchState, dependencies);
+  return result;
 }
 
 /**
@@ -493,6 +511,68 @@ export async function getMatchState(
 
     return { matchState: publicStateFor(state, row) };
   });
+}
+
+/**
+ * `GET /:environment/matches/:matchId/state` (task 22): the HTTP polling
+ * fallback for clients without Firestore connectivity. Builds the exact
+ * same `LudoMatchView` shape a `MatchViewPublisher.publish()` call would
+ * have carried, synchronously from `LudoStore` — this route (not the
+ * Firestore mirror) is the ground truth. Enforces seat ownership by
+ * delegating to `getMatchState`, which throws `LudoForbiddenSeatError` for
+ * a caller not seated in the match.
+ */
+export async function getMatchView(
+  store: LudoStore,
+  environment: LudoEnvironment,
+  subject: string,
+  matchId: string,
+): Promise<{ matchView: LudoMatchView }> {
+  const { matchState } = await getMatchState(store, environment, subject, matchId);
+  const recentEvents = await loadRecentEvents(store, environment, matchId);
+  return {
+    matchView: {
+      matchId,
+      environment,
+      matchState,
+      recentEvents,
+      publishedAt: new Date().toISOString(),
+    },
+  };
+}
+
+/**
+ * Fetches a fresh `LudoMatchView` and calls `dependencies.matchViewPublisher`
+ * (task 22) — a strict no-op when no publisher was supplied, matching
+ * `NullMatchViewPublisher` without needing to construct one. Always called
+ * *after* the triggering `store.transact()` has already resolved (returned
+ * or thrown past this point means the state change already committed), and
+ * always swallows its own errors: a fanout failure (Firestore outage,
+ * network error, ...) must never surface as a command error — the polling
+ * route (`getMatchView`) remains the ground truth regardless of whether
+ * this publish ever lands.
+ */
+async function publishMatchView(
+  store: LudoStore,
+  environment: LudoEnvironment,
+  matchState: WireMatchState,
+  dependencies: LudoServiceDependencies,
+): Promise<void> {
+  const publisher = dependencies.matchViewPublisher;
+  if (!publisher) return;
+  try {
+    const recentEvents = await loadRecentEvents(store, environment, matchState.matchId);
+    const view: LudoMatchView = {
+      matchId: matchState.matchId,
+      environment,
+      matchState,
+      recentEvents,
+      publishedAt: new Date().toISOString(),
+    };
+    await publisher.publish(LUDO_APP_ID, environment, matchState.matchId, view);
+  } catch {
+    // Best-effort fan-out only — see this function's doc comment.
+  }
 }
 
 /**
@@ -571,6 +651,7 @@ export async function sweepTimeouts(
   store: LudoStore,
   environment: LudoEnvironment,
   limit: number = LUDO_SWEEP_BATCH_LIMIT,
+  dependencies: LudoServiceDependencies = {},
 ): Promise<number> {
   const nowIso = new Date().toISOString();
   const candidateMatchIds = await store.read(environment, async (state) =>
@@ -585,13 +666,19 @@ export async function sweepTimeouts(
 
   let swept = 0;
   for (const matchId of candidateMatchIds) {
-    const applied = await store.transact(environment, async (state) => {
+    const outcome = await store.transact(environment, async (state) => {
       const row = state.matches.find((m) => m.matchId === matchId);
-      if (!row) return false;
+      if (!row) return { applied: false, matchState: null };
       const playerRows = state.players.filter((p) => p.matchId === matchId);
-      return applyLazyTimeout(state, row, playerRows, new Date().toISOString());
+      const applied = applyLazyTimeout(state, row, playerRows, new Date().toISOString());
+      return { applied, matchState: applied ? publicStateFor(state, row) : null };
     });
-    if (applied) swept += 1;
+    if (outcome.applied) {
+      swept += 1;
+      if (outcome.matchState) {
+        await publishMatchView(store, environment, outcome.matchState, dependencies);
+      }
+    }
   }
   return swept;
 }
@@ -618,90 +705,4 @@ function appendEvents(
     });
     sequence += 1;
   }
-}
-
-/**
- * Builds the wire-shaped `LudoMatchState` for a match row: while `"waiting"`
- * (roster incomplete), reports the joined seats with empty token lists;
- * once seats are full, reconstructs the full engine state by replay and
- * projects it onto the wire shape (which is a superset of the engine's:
- * `matchId`/`environment`/`mode`/`status`/`deadlineAt`/`updatedAt` come from
- * the row, everything else from the reconstructed state).
- */
-function publicStateFor(state: LudoState, row: LudoMatchRow): WireMatchState {
-  const playerRows = state.players
-    .filter((p) => p.matchId === row.matchId)
-    .sort((a, b) => a.seat - b.seat);
-
-  if (row.status === "waiting") {
-    return {
-      matchId: row.matchId,
-      environment: row.environment,
-      mode: row.mode,
-      status: row.status,
-      players: playerRows.map((p) => ({
-        seat: p.seat,
-        subject: p.subject ?? "",
-        color: LUDO_COLOR_ORDER[p.seat],
-        tokens: [],
-        captureCount: 0,
-      })),
-      currentPlayerIndex: 0,
-      phase: "awaiting_roll",
-      currentRoll: null,
-      consecutiveSixes: 0,
-      winnerOrder: [],
-      deadlineAt: row.turnDeadlineAt,
-      updatedAt: row.updatedAt,
-    };
-  }
-
-  const engineState = reconstructEngineState(row, playerRows, state.events);
-  return {
-    matchId: row.matchId,
-    environment: row.environment,
-    mode: row.mode,
-    status: row.status as WireMatchState["status"],
-    players: engineState.players.map((p) => ({
-      seat: p.seat,
-      subject: p.subject,
-      color: p.color,
-      tokens: p.tokens.map((t) => ({ id: t.id, pathPosition: t.pathPosition })),
-      captureCount: p.captureCount,
-    })),
-    currentPlayerIndex: engineState.currentPlayerIndex,
-    phase: ENGINE_PHASE_TO_WIRE[engineState.phase],
-    currentRoll: engineState.currentRoll,
-    consecutiveSixes: engineState.consecutiveSixes,
-    winnerOrder: [...engineState.winnerOrder],
-    deadlineAt: row.turnDeadlineAt,
-    updatedAt: row.updatedAt,
-  };
-}
-
-/**
- * Reconstructs the current engine `LudoMatchState` for an active/finished
- * match: the initial roster/ruleset (colors and pre-released tokens are a
- * pure function of the ruleset and seat order) replayed through every
- * `ludo_events` row recorded so far, in `sequence` order. This — not a
- * persisted state blob — is the source of truth for token positions,
- * mirroring `parity.test.ts`'s use of `replay()` against fixture event
- * logs.
- */
-function reconstructEngineState(
-  row: LudoMatchRow,
-  sortedPlayerRows: readonly LudoPlayerRow[],
-  eventRows: readonly LudoEventRow[],
-): EngineMatchState {
-  const ruleset = LUDO_RULESETS_BY_ID[row.mode];
-  const subjects = sortedPlayerRows.map((p) => p.subject);
-  if (subjects.length < LUDO_MIN_SEATS || subjects.some((s) => s === null)) {
-    throw new LudoMatchNotJoinableError("Match roster is incomplete");
-  }
-  const initial = createMatchState({ ruleset, subjects: subjects as string[] });
-  const events = eventRows
-    .filter((e) => e.matchId === row.matchId)
-    .sort((a, b) => a.sequence - b.sequence)
-    .map((e) => eventFromJson(e.payload as Record<string, unknown>));
-  return replay(events, { ruleset, initialPlayers: initial.players });
 }
