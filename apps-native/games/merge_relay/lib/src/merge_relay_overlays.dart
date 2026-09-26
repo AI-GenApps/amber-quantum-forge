@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'merge_relay_app.dart';
 import 'merge_relay_theme.dart';
 import 'platform/merge_relay_pgs_account.dart';
+import 'ui/mr_button.dart';
+import 'ui/mr_tokens.dart';
 
 Future<void> showMergeRelaySettings(
   BuildContext context,
@@ -37,58 +39,58 @@ Future<void> showMergeRelaySettings(
                   fontWeight: FontWeight.w900,
                 ),
               ),
-              const SizedBox(height: 12),
-              SwitchListTile.adaptive(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Board controls'),
-                subtitle: const Text('Tap to move instead of swiping.'),
+              const SizedBox(height: 10),
+              _MrSwitchRow(
+                theme: theme,
+                title: 'Board controls',
+                subtitle: 'Tap to move instead of swiping.',
                 value: game.preferences.value.accessibleControls,
                 onChanged: (value) {
                   game.hapticSelect();
                   game.setAccessibleControls(value);
                 },
               ),
-              SwitchListTile.adaptive(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Reduce motion'),
-                subtitle: const Text('Use calmer tile transitions.'),
+              _MrSwitchRow(
+                theme: theme,
+                title: 'Reduce motion',
+                subtitle: 'Use calmer tile transitions.',
                 value: game.preferences.value.reducedMotion,
                 onChanged: (value) {
                   game.hapticSelect();
                   game.setReducedMotion(value);
                 },
               ),
-              SwitchListTile.adaptive(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('High contrast'),
-                subtitle: const Text('Firmer tile and slot outlines.'),
+              _MrSwitchRow(
+                theme: theme,
+                title: 'High contrast',
+                subtitle: 'Firmer tile and slot outlines.',
                 value: game.preferences.value.highContrast,
                 onChanged: (value) {
                   game.hapticSelect();
                   game.setHighContrast(value);
                 },
               ),
-              SwitchListTile.adaptive(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Sound'),
+              _MrSwitchRow(
+                theme: theme,
+                title: 'Sound',
                 value: game.preferences.value.audioEnabled,
                 onChanged: (value) {
                   game.hapticSelect();
                   game.setAudioEnabled(value);
                 },
               ),
-              SwitchListTile.adaptive(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Music'),
+              _MrSwitchRow(
+                theme: theme,
+                title: 'Music',
                 value: game.preferences.value.musicEnabled,
                 onChanged: (value) {
                   game.hapticSelect();
                   game.setMusicEnabled(value);
                 },
               ),
-              SwitchListTile.adaptive(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Haptics'),
+              _MrSwitchRow(
+                theme: theme,
+                title: 'Vibration',
                 value: game.preferences.value.hapticsEnabled,
                 onChanged: (value) {
                   game.hapticSelect();
@@ -99,7 +101,7 @@ Future<void> showMergeRelaySettings(
                   game.tutorialComplete.value &&
                   game.pgsAccountController != null)
                 _PgsSettings(game: game, theme: theme),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Text(
                 'Choose a palette',
                 style: TextStyle(
@@ -125,14 +127,28 @@ Future<void> showMergeRelaySettings(
                   ),
                 ],
               ),
-              const SizedBox(height: 14),
-              OutlinedButton.icon(
+              const SizedBox(height: 16),
+              MrButton(
+                label: 'Replay handoff guide',
+                icon: Icons.school_rounded,
+                variant: MrButtonVariant.secondary,
                 onPressed: () {
                   Navigator.pop(context);
                   game.replayTutorial();
                 },
-                icon: const Icon(Icons.school_rounded),
-                label: const Text('Replay handoff guide'),
+              ),
+              const SizedBox(height: 4),
+              // The Settings version line (task 11's checklist item) reads
+              // the loaded content catalog's own version tag — there's no
+              // `package_info_plus` (or similar) dependency wired up to read
+              // the app's own build number, and adding one is out of this
+              // task's scope — so this is the most honest "version" this
+              // screen has on hand, and it does track what's actually
+              // shipped, unlike a hand-typed constant.
+              Text(
+                'Content ${game.content.contentVersion}',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: theme.muted, fontSize: 11),
               ),
             ],
           ),
@@ -140,6 +156,63 @@ Future<void> showMergeRelaySettings(
       ),
     ),
   );
+}
+
+/// Replaces the stock `SwitchListTile.adaptive` (task 11): the same title +
+/// optional subtitle + trailing switch shape, but without Material's
+/// list-tile ambient ink/ripple and dense-list padding.
+final class _MrSwitchRow extends StatelessWidget {
+  const _MrSwitchRow({
+    required this.theme,
+    required this.title,
+    required this.value,
+    required this.onChanged,
+    this.subtitle,
+  });
+
+  final MergeRelayTheme theme;
+  final String title;
+  final String? subtitle;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: theme.ink,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                if (subtitle != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2),
+                    child: Text(
+                      subtitle!,
+                      style: TextStyle(color: theme.muted, fontSize: 12),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          Switch.adaptive(
+            value: value,
+            onChanged: onChanged,
+            activeThumbColor: theme.ink,
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 final class _PgsSettings extends StatelessWidget {
@@ -203,12 +276,11 @@ final class _PgsSettings extends StatelessWidget {
           Text(linkLabel, style: TextStyle(color: theme.muted, fontSize: 12)),
           if (showLink) ...[
             const SizedBox(height: 6),
-            OutlinedButton.icon(
+            MrButton(
+              label: accountState.isBusy ? 'Connecting…' : 'Link progress',
+              icon: Icons.account_circle_outlined,
+              variant: MrButtonVariant.secondary,
               onPressed: accountState.isBusy ? null : game.linkPlayGames,
-              icon: const Icon(Icons.account_circle_outlined),
-              label: Text(
-                accountState.isBusy ? 'Connecting…' : 'Link progress',
-              ),
             ),
           ],
           if (showActions) ...[
@@ -216,16 +288,18 @@ final class _PgsSettings extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: OutlinedButton(
+                  child: MrButton(
+                    label: 'Achievements',
+                    variant: MrButtonVariant.secondary,
                     onPressed: game.showPlayGamesAchievements,
-                    child: const Text('Achievements'),
                   ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: OutlinedButton(
+                  child: MrButton(
+                    label: 'Leaderboard',
+                    variant: MrButtonVariant.secondary,
                     onPressed: game.showPlayGamesLeaderboards,
-                    child: const Text('Leaderboard'),
                   ),
                 ),
               ],
@@ -252,30 +326,45 @@ final class _ThemeChoice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Explicit colors rather than the ambient `ChipTheme` (task 07 round
-    // 2): the theme's derived `onSurfaceVariant` read as washed-out gray
-    // for the unselected label, and relying on the selected/unselected
-    // states looking different only through Material's default opacity
-    // shift wasn't a clearly distinct affordance. Selected now flips to a
-    // solid ink fill with a paper label + checkmark; unselected stays a
-    // paper chip with a full-opacity ink label and a visible ink border —
-    // both states clear WCAG AA contrast.
     final foreground = selected ? theme.paper : theme.ink;
-    return ChoiceChip(
+    return Semantics(
+      button: true,
       selected: selected,
-      showCheckmark: true,
-      checkmarkColor: foreground,
-      label: Text(label),
-      labelStyle: TextStyle(
-        fontFamily: 'Fredoka',
-        color: foreground,
-        fontWeight: FontWeight.w700,
+      label: label,
+      child: GestureDetector(
+        onTap: onTap,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: selected ? theme.ink : MrTokens.paper,
+            borderRadius: BorderRadius.circular(MrTokens.radiusPill),
+            border: Border.all(
+              color: theme.ink.withValues(alpha: selected ? 0 : 0.4),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircleAvatar(backgroundColor: theme.blue, radius: 7),
+                const SizedBox(width: 8),
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontFamily: 'Fredoka',
+                    color: foreground,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                if (selected) ...[
+                  const SizedBox(width: 6),
+                  Icon(Icons.check_rounded, size: 16, color: foreground),
+                ],
+              ],
+            ),
+          ),
+        ),
       ),
-      backgroundColor: theme.paper,
-      selectedColor: theme.ink,
-      side: BorderSide(color: theme.ink.withValues(alpha: selected ? 0 : 0.45)),
-      onSelected: (_) => onTap(),
-      avatar: CircleAvatar(backgroundColor: theme.blue, radius: 8),
     );
   }
 }

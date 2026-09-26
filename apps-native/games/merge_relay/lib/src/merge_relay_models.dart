@@ -2,7 +2,7 @@ import 'package:merge_rules/merge_rules.dart';
 
 const mergeRelayTutorialVersion = 1;
 
-enum MergeRelayRoute { home, tutorial, play, result, relay }
+enum MergeRelayRoute { home, tutorial, play, result, relay, chapterMap }
 
 enum MergeRelayOutcome { completed, missed, terminal, earlyFinish }
 

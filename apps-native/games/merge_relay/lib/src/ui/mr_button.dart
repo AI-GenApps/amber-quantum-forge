@@ -65,13 +65,22 @@ final class _MrButtonState extends State<MrButton> {
           ),
           const SizedBox(width: MrTokens.space2),
         ],
-        Text(
-          widget.label,
-          style: TextStyle(
-            fontFamily: 'Fredoka',
-            color: foreground.withValues(alpha: disabled ? 0.6 : 1),
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
+        // `Flexible` + ellipsis (task 11) rather than a bare `Text`: at a
+        // large text scale on a narrow button (e.g. the pause panel's
+        // "Restart run" at 2x on a 320px-wide compact layout), an
+        // unconstrained label previously overflowed the button's Row —
+        // this lets it truncate instead of throwing a RenderFlex overflow.
+        Flexible(
+          child: Text(
+            widget.label,
+            overflow: TextOverflow.ellipsis,
+            softWrap: false,
+            style: TextStyle(
+              fontFamily: 'Fredoka',
+              color: foreground.withValues(alpha: disabled ? 0.6 : 1),
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ],

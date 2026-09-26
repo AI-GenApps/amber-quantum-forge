@@ -54,48 +54,57 @@ final class _PausePanel extends StatelessWidget {
                   style: TextStyle(color: theme.paper.withValues(alpha: 0.7)),
                 ),
                 const SizedBox(height: 18),
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    onPressed: () => game.setPaused(false),
-                    // The theme's default `FilledButton` background is
-                    // `theme.ink` (task 07), which is invisible on this
-                    // panel's own ink-colored background — flip it to a
-                    // paper pill so "Resume" stays legible over the dark
-                    // pause overlay.
-                    style: FilledButton.styleFrom(
-                      backgroundColor: theme.paper,
-                      foregroundColor: theme.ink,
-                    ),
-                    child: const Text('Resume'),
-                  ),
+                // `MrButton`'s defaults assume a paper background, so every
+                // button here overrides `color`/`foreground` to read
+                // correctly on this panel's own ink-coloured surface (task
+                // 11): the primary action flips to a solid paper pill with
+                // ink text, and every secondary action becomes a
+                // paper-outlined, paper-labelled pill.
+                MrButton(
+                  label: 'Resume',
+                  color: theme.paper,
+                  foreground: theme.ink,
+                  onPressed: () => game.setPaused(false),
                 ),
-                TextButton(
+                const SizedBox(height: 8),
+                MrButton(
+                  label: 'Restart run',
+                  variant: MrButtonVariant.secondary,
+                  color: theme.paper,
                   onPressed: () => _confirmRestart(context),
-                  child: Text(
-                    'Restart run',
-                    style: TextStyle(color: theme.paper),
-                  ),
                 ),
-                TextButton(
+                const SizedBox(height: 8),
+                MrButton(
+                  label: 'Finish here',
+                  variant: MrButtonVariant.secondary,
+                  color: theme.paper,
                   onPressed: game.finishEarly,
-                  child: Text(
-                    'Finish here',
-                    style: TextStyle(color: theme.paper),
-                  ),
                 ),
-                if (game.features.socialEnabled && game.relayController != null)
-                  TextButton.icon(
+                const SizedBox(height: 8),
+                MrButton(
+                  label: 'Settings',
+                  icon: Icons.tune_rounded,
+                  variant: MrButtonVariant.secondary,
+                  color: theme.paper,
+                  onPressed: () => showMergeRelaySettings(context, game, theme),
+                ),
+                if (game.features.socialEnabled &&
+                    game.relayController != null) ...[
+                  const SizedBox(height: 8),
+                  MrButton(
+                    label: 'Share this board',
+                    icon: Icons.ios_share_rounded,
+                    variant: MrButtonVariant.secondary,
+                    color: theme.paper,
                     onPressed: game.createRelayFromCurrentBoard,
-                    icon: Icon(Icons.ios_share_rounded, color: theme.paper),
-                    label: Text(
-                      'Share this board',
-                      style: TextStyle(color: theme.paper),
-                    ),
                   ),
-                TextButton(
+                ],
+                const SizedBox(height: 8),
+                MrButton(
+                  label: 'Home',
+                  variant: MrButtonVariant.secondary,
+                  color: theme.paper,
                   onPressed: game.openHome,
-                  child: Text('Home', style: TextStyle(color: theme.paper)),
                 ),
               ],
             ),
@@ -108,21 +117,15 @@ final class _PausePanel extends StatelessWidget {
   Future<void> _confirmRestart(BuildContext context) async {
     final restart = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Restart this run?'),
-        content: const Text(
-          'Your current board will stay in the saved run until you choose restart.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Keep board'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Restart'),
-          ),
-        ],
+      builder: (context) => MrDialog(
+        title: 'Restart this run?',
+        message:
+            'Your current board will stay in the saved run until you '
+            'choose restart.',
+        secondaryLabel: 'Keep board',
+        onSecondary: () => Navigator.pop(context, false),
+        primaryLabel: 'Restart',
+        onPrimary: () => Navigator.pop(context, true),
       ),
     );
     if (restart == true) game.newRound();

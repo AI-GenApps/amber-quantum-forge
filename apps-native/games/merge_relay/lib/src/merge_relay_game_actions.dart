@@ -55,6 +55,25 @@ extension MergeRelayGameActions on MergeRelayGame {
     _queueWrite();
   }
 
+  /// Opens the full-screen Rescue chapter map (task 11), replacing the
+  /// earlier "Rescue paths" bottom sheet.
+  void openChapterMap() {
+    if (!_readyForAction) return;
+    route.value = MergeRelayRoute.chapterMap;
+  }
+
+  /// Picks a rescue board from the chapter map: routes through the
+  /// tutorial the first time, straight to Play afterward — the same rule
+  /// the old bottom sheet's `_RescueTile.onSelected` applied.
+  void pickRescueFromMap(int index) {
+    if (!_readyForAction) return;
+    if (!tutorialComplete.value) {
+      openRescue(index: index);
+    } else {
+      startRescue(index: index);
+    }
+  }
+
   void openRelay() {
     if (!_readyForAction ||
         !features.socialEnabled ||
@@ -335,6 +354,10 @@ extension MergeRelayGameActions on MergeRelayGame {
         ...completedRescueIds.value,
         rescueId.value!,
       });
+    }
+    if (mode.value == MergeRelayMode.endless &&
+        state.value.score > bestEndlessScore.value) {
+      bestEndlessScore.value = state.value.score;
     }
     route.value = MergeRelayRoute.result;
     _queueWrite();

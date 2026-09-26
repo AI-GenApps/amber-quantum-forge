@@ -41,6 +41,7 @@ extension MergeRelayGamePersistence on MergeRelayGame {
     completedRescueIds.value = Set.unmodifiable(
       restored.profile.completedRescueIds,
     );
+    bestEndlessScore.value = restored.profile.bestEndlessScore;
     legacyOffer.value = restored.legacyOffer;
     hasSavedSession.value = restored.sessions.isNotEmpty;
     _rescueMovesUsed = 0;
@@ -96,6 +97,7 @@ extension MergeRelayGamePersistence on MergeRelayGame {
       tutorialComplete: tutorialComplete.value,
       preferences: preferences.value,
       completedRescueIds: completedRescueIds.value,
+      bestEndlessScore: bestEndlessScore.value,
     );
     return SaveEnvelope.create(
       context: context,

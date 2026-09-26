@@ -24,6 +24,7 @@ extension MergeRelayGameLifecycle on MergeRelayGame {
       case MergeRelayRoute.tutorial:
       case MergeRelayRoute.result:
       case MergeRelayRoute.relay:
+      case MergeRelayRoute.chapterMap:
         openHome();
         return true;
       case MergeRelayRoute.play:

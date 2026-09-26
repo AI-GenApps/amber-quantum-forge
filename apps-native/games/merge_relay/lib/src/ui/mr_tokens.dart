@@ -99,8 +99,15 @@ final class MrTokens {
   /// A darker shade of a tile's tier colour, used for the card's bottom
   /// "thickness" edge (task 08) — darkened in HSL lightness so it stays in
   /// the same hue family as the tile face instead of muddying toward grey.
-  static Color tileEdgeColorFor(int value) {
-    final hsl = HSLColor.fromColor(tileColorFor(value));
+  static Color tileEdgeColorFor(int value) =>
+      tileEdgeShadeOf(tileColorFor(value));
+
+  /// The same edge-darkening step as [tileEdgeColorFor], taking a colour
+  /// directly (task 11) — the chapter map's board nodes cycle through the
+  /// tier palette by index rather than by a real tile value, so they need
+  /// the edge shade without going through [tileTierIndex]'s value mapping.
+  static Color tileEdgeShadeOf(Color color) {
+    final hsl = HSLColor.fromColor(color);
     final lightness = (hsl.lightness - 0.16).clamp(0.0, 1.0);
     return hsl.withLightness(lightness).toColor();
   }

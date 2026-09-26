@@ -7,6 +7,7 @@ import 'merge_relay_play_screen.dart';
 import 'merge_relay_relay_screen.dart';
 import 'merge_relay_theme.dart';
 import 'merge_relay_tutorial.dart';
+import 'screens/merge_relay_chapter_map.dart';
 import 'ui/mr_background.dart';
 
 final class MergeRelayScreen extends StatelessWidget {
@@ -33,6 +34,7 @@ final class MergeRelayScreen extends StatelessWidget {
         game.legacyOffer,
         game.isPaused,
         game.completedRescueIds,
+        game.bestEndlessScore,
         game.roundComplete,
         game.playGamesState,
         game.restoreFailed,
@@ -81,6 +83,10 @@ final class MergeRelayScreen extends StatelessWidget {
         height: constraints.maxHeight,
         child: switch (game.route.value) {
           MergeRelayRoute.home => MergeRelayHome(game: game, theme: theme),
+          MergeRelayRoute.chapterMap => MergeRelayChapterMap(
+            game: game,
+            theme: theme,
+          ),
           MergeRelayRoute.tutorial => MergeRelayTutorial(
             game: game,
             theme: theme,

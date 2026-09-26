@@ -70,11 +70,18 @@ final class _MergeRelayProfile {
     required this.tutorialComplete,
     required this.preferences,
     required this.completedRescueIds,
+    this.bestEndlessScore = 0,
   });
 
   final bool tutorialComplete;
   final MergeRelayPreferences preferences;
   final Set<String> completedRescueIds;
+
+  /// The player's best-ever Endless score (task 11's Home Endless card) —
+  /// tracked here rather than derived from a saved session, since an
+  /// Endless session is replaced by the next run and would otherwise lose
+  /// the record.
+  final int bestEndlessScore;
 
   Map<String, Object?> toJson() => {
     'tutorial_version': tutorialComplete ? mergeRelayTutorialVersion : 0,
@@ -86,6 +93,7 @@ final class _MergeRelayProfile {
     'accessible_controls': preferences.accessibleControls,
     'high_contrast': preferences.highContrast,
     'completed_rescue_ids': completedRescueIds.toList()..sort(),
+    'best_endless_score': bestEndlessScore,
   };
 }
 

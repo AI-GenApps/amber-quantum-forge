@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../merge_relay_board_art.dart';
+import '../merge_relay_theme.dart';
 import '../ui/mr_tokens.dart';
 
 /// Named art slots for Merge Relay's original art (tasks 08/19/20/22/23).
@@ -83,6 +85,12 @@ final class MergeRelayArtManifest {
   }
 }
 
+/// Home's hero fallback (task 11) until the real `homeScene` art ships
+/// (tasks 20/23): a gradient backdrop with a loose stack of the same
+/// character tiles the board uses (`MergeRelayBoardArt.paintTile`), plus
+/// the brand mark badge in the corner so the "no bundled art" contract this
+/// widget's own tests check (`find.byIcon(Icons.alt_route_rounded)`) still
+/// holds.
 final class _FallbackScene extends StatelessWidget {
   const _FallbackScene();
 
@@ -96,11 +104,67 @@ final class _FallbackScene extends StatelessWidget {
           colors: [MrTokens.paperMuted, MrTokens.paper],
         ),
       ),
-      child: const Center(
-        child: Icon(Icons.alt_route_rounded, size: 48, color: MrTokens.ink),
+      child: Stack(
+        children: [
+          Positioned.fill(child: CustomPaint(painter: _FallbackSceneTiles())),
+          Positioned(
+            left: 14,
+            top: 14,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: MrTokens.ink,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(8),
+                child: Icon(
+                  Icons.alt_route_rounded,
+                  size: 20,
+                  color: MrTokens.paper,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
+}
+
+final class _FallbackSceneTiles extends CustomPainter {
+  const _FallbackSceneTiles();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // Kept entirely in the scene's top-right quadrant (task 11 review): the
+    // hero's title/tagline/CTA occupy the bottom ~60% of the hero (see
+    // `_HomeHero`'s `Positioned`), and a tile drifting down into that band
+    // visibly collided with the headline text.
+    final side = size.shortestSide * 0.24;
+    final centers = [
+      Offset(size.width * 0.62, size.height * 0.16),
+      Offset(size.width * 0.84, size.height * 0.28),
+      Offset(size.width * 0.7, size.height * 0.34),
+    ];
+    const values = [4, 16, 8];
+    for (var i = 0; i < centers.length; i += 1) {
+      final rect = Rect.fromCenter(
+        center: centers[i],
+        width: side,
+        height: side,
+      );
+      MergeRelayBoardArt.paintTile(
+        canvas,
+        rect,
+        value: values[i],
+        theme: signalRelayTheme,
+        highContrast: false,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _FallbackSceneTiles oldDelegate) => false;
 }
 
 final class _FallbackWordmark extends StatelessWidget {

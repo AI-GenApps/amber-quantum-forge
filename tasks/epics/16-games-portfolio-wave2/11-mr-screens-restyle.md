@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 11-mr-screens-restyle
-status: pending
+status: completed
 commit_scope: merge-relay
 depends_on: [16-games-portfolio-wave2/10-mr-audio]
 estimate: L
@@ -54,13 +54,13 @@ and a polished pause screen and settings.
 
 ## Implementation Checklist
 
-- [ ] Restyle Home, add the chapter map, and restyle Result, Pause, and
+- [x] Restyle Home, add the chapter map, and restyle Result, Pause, and
       Settings; recompose the Play screen (rescue and endless).
-- [ ] Add small-screen and large-text widget tests (no overflow
+- [x] Add small-screen and large-text widget tests (no overflow
       exceptions) for every screen.
-- [ ] Update the screen goldens and add `chapter_map.png`,
+- [x] Update the screen goldens and add `chapter_map.png`,
       `result_win.png`, `result_loss.png`, and `home_small.png` (360×640).
-- [ ] Copy the goldens and a before/after contact sheet (audit renders vs.
+- [x] Copy the goldens and a before/after contact sheet (audit renders vs.
       new) to `.agents/resources/2026-09-25/games-wave2-qa/11/`, and VIEW them.
 
 ## Files Touched

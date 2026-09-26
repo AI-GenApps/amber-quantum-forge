@@ -235,10 +235,15 @@ extension MergeRelayGameRestoreParsing on MergeRelayGame {
     final completedIds = completed == null
         ? <String>[]
         : (completed as List).cast<String>();
+    final bestEndlessScore = payload['best_endless_score'];
+    if (bestEndlessScore != null && bestEndlessScore is! int) {
+      throw const FormatException('Invalid best endless score');
+    }
     return _MergeRelayProfile(
       tutorialComplete: version == mergeRelayTutorialVersion,
       preferences: _preferencesFrom(payload),
       completedRescueIds: Set.unmodifiable(completedIds),
+      bestEndlessScore: bestEndlessScore as int? ?? 0,
     );
   }
 

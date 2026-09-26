@@ -59,6 +59,7 @@ final class MergeRelayGame extends FlameGame {
        legacyOffer = ValueNotifier(false),
        isPaused = ValueNotifier(false),
        completedRescueIds = ValueNotifier(const {}),
+       bestEndlessScore = ValueNotifier(0),
        roundComplete = ValueNotifier(false),
        hydrated = ValueNotifier(false),
        restoreFailed = ValueNotifier(false),
@@ -114,6 +115,11 @@ final class MergeRelayGame extends FlameGame {
   final ValueNotifier<bool> legacyOffer;
   final ValueNotifier<bool> isPaused;
   final ValueNotifier<Set<String>> completedRescueIds;
+
+  /// The player's best-ever Endless score, shown on Home's Endless card
+  /// (task 11) — see `_MergeRelayProfile.bestEndlessScore` for how it's
+  /// persisted.
+  final ValueNotifier<int> bestEndlessScore;
   final ValueNotifier<bool> roundComplete;
   final ValueNotifier<bool> restoreFailed;
   final ValueNotifier<MergeRelayPlayGamesState> playGamesState;
@@ -224,6 +230,7 @@ final class MergeRelayGame extends FlameGame {
     legacyOffer.dispose();
     isPaused.dispose();
     completedRescueIds.dispose();
+    bestEndlessScore.dispose();
     roundComplete.dispose();
     restoreFailed.dispose();
     playGamesState.dispose();

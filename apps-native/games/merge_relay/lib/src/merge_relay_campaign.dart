@@ -47,6 +47,28 @@ extension MergeRelayCampaign on MergeRelayGame {
 
   bool isRescueUnlocked(MergeRescueBoard rescue) =>
       isChapterUnlocked(rescue.chapter);
+
+  /// The single "suggested next" board for the chapter map's "current"
+  /// node highlight: the first unlocked, uncleared rescue in campaign
+  /// order (chapter, then `indexInChapter`). `null` once every unlocked
+  /// board is cleared. Named distinctly from [MergeRelayGame.currentRescue]
+  /// (the board actively loaded on the Play screen) to avoid extension
+  /// shadowing — that instance getter always wins over an extension member
+  /// of the same name.
+  MergeRescueBoard? get suggestedRescue {
+    final ordered = content.rescues.toList()
+      ..sort((a, b) {
+        final chapterCompare = a.chapter.compareTo(b.chapter);
+        return chapterCompare != 0
+            ? chapterCompare
+            : a.indexInChapter.compareTo(b.indexInChapter);
+      });
+    for (final rescue in ordered) {
+      if (!isRescueUnlocked(rescue)) break;
+      if (!completedRescueIds.value.contains(rescue.id)) return rescue;
+    }
+    return null;
+  }
 }
 
 final class MergeRelayChapter {

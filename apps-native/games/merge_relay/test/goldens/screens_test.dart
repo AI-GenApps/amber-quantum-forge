@@ -3,35 +3,31 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:merge_relay/src/merge_relay_app.dart';
 import 'package:merge_relay/src/merge_relay_board_widget.dart';
 import 'package:merge_relay/src/merge_relay_content.dart';
+import 'package:merge_relay/src/merge_relay_models.dart';
 import 'package:merge_rules/merge_rules.dart';
+import 'package:platform_core/platform_core.dart';
 
 import 'screens/physical_golden.dart';
 
-/// Task 07's device-less screen-golden harness: every later Merge Relay
-/// visual task's evidence and every verifier's judgment come from these
-/// eight PNGs (Home, Chapter list, Tutorial, Play/rescue, Play/endless,
-/// Result, Settings, Pause), rendered at 1080x2400 (DPR 3) with the real
-/// bundled fonts loaded via `test/flutter_test_config.dart`. This task
-/// applies the new brand theme globally (fonts, colors, background), so
-/// these goldens already show a real visual change; per-screen layout is
-/// task 11's job.
+/// Task 07's device-less screen-golden harness, extended task 11 for the
+/// full home/chapter-map/result/pause/settings restyle and the Play screen
+/// recomposition: every visual task's evidence and every verifier's
+/// judgment come from these PNGs, rendered at 1080x2400 (DPR 3, unless
+/// noted) with the real bundled fonts loaded via
+/// `test/flutter_test_config.dart`.
 ///
-/// Round 2 (orchestrator review): every test now loads the real shipped
-/// content the same way `main.dart` does —
-/// `await MergeRelayContentCatalog.load()` reading
-/// `content/rescue_boards.json` via `rootBundle` — and passes it as
-/// `MergeRelayApp(content: ...)`. The first pass instead used
-/// `const MergeRelayApp()`, which leaves `content` null; `MergeRelayGame`
-/// then falls back to `MergeRelayContentCatalog.fallback`, a small
-/// generated 5-board dev catalog meant for fast, content-decoupled unit
-/// tests (`test/widget_test.dart` uses the same fallback deliberately, for
-/// the same reason) — not the real 60-board, 6-chapter Rescue campaign
-/// task 06 shipped. That fallback is unreachable in the actual app:
-/// `main.dart` always either has real `content` or a non-null
-/// `contentError` (which shows a dedicated failure screen, never the
-/// game), so `content` and `contentError` are never both null there. This
-/// harness now matches that real loading path so its goldens show the real
-/// content.
+/// Task 11 replaces the old "Rescue paths" bottom sheet with a full-screen
+/// chapter map (`chapter_map.png`, was `chapter_list.png`) and splits the
+/// single "result" golden into a win and a loss variant
+/// (`result_win.png`/`result_loss.png`, was `result.png`), plus adds
+/// `home_small.png` at 360x640 per the task's Implementation Checklist.
+///
+/// Round 2 (orchestrator review): every test loads the real shipped content
+/// the same way `main.dart` does — `await MergeRelayContentCatalog.load()`
+/// reading `content/rescue_boards.json` via `rootBundle` — and passes it as
+/// `MergeRelayApp(content: ...)`, so goldens show the real 60-board,
+/// 6-chapter Rescue campaign rather than the small fallback catalog
+/// `test/widget_test.dart` uses for fast, content-decoupled unit tests.
 ///
 /// Each test wraps `MergeRelayApp` in its own `RepaintBoundary` (rather
 /// than finding one further down the tree) so the capture also includes
@@ -44,16 +40,62 @@ void main() {
     await _capture(tester, key, 'home.png');
   });
 
-  testWidgets(
-    'chapter list (Rescue paths sheet) renders with the design system',
-    (tester) async {
-      final key = await _bootApp(tester);
-      await tester.tap(find.text('Rescue paths'));
-      await tester.pumpAndSettle();
-      await tester.pump(const Duration(milliseconds: 300));
-      await _capture(tester, key, 'chapter_list.png');
-    },
-  );
+  testWidgets('home (small screen) renders with no empty band', (tester) async {
+    final key = await _bootApp(
+      tester,
+      physicalSize: const Size(360, 640),
+      dpr: 1,
+    );
+    await tester.pump(const Duration(milliseconds: 300));
+    await _capture(tester, key, 'home_small.png');
+  });
+
+  testWidgets('chapter map (Rescue paths) renders with the design system', (
+    tester,
+  ) async {
+    // Seeded save (task 11's acceptance criteria): clears exactly 7 of
+    // chapter 1's boards — the unlock threshold — so the golden shows all
+    // three node states at once: cleared (chapter 1's first 7), the newly
+    // unlocked chapter 2's first board as "current" (the suggested next
+    // board), and chapters 3-6 still locked.
+    final catalog = await _loadContent(tester);
+    final clearedIds = catalog.rescues
+        .where((rescue) => rescue.chapter == 1)
+        .take(7)
+        .map((rescue) => rescue.id)
+        .toList();
+    final context = runtimeAppContext(identity: mergeRelayIdentity);
+    final store = MemorySaveStore();
+    await tester.runAsync(
+      () => store.write(
+        context,
+        SaveEnvelope.create(
+          context: context,
+          schemaVersion: 1,
+          savedAt: DateTime.utc(2026),
+          payload: {
+            'session_map_version': 1,
+            'active_session_key': null,
+            'sessions': <String, Object?>{},
+            'profile': {
+              'tutorial_version': mergeRelayTutorialVersion,
+              'theme_id': 'signal',
+              'reduced_motion': false,
+              'audio_enabled': true,
+              'haptics_enabled': true,
+              'accessible_controls': false,
+              'completed_rescue_ids': clearedIds,
+            },
+          },
+        ),
+      ),
+    );
+    final key = await _bootApp(tester, content: catalog, saveStore: store);
+    await tester.tap(find.text('Rescue paths'));
+    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 300));
+    await _capture(tester, key, 'chapter_map.png');
+  });
 
   testWidgets('tutorial renders with the design system', (tester) async {
     final key = await _bootApp(tester);
@@ -82,7 +124,7 @@ void main() {
     await _capture(tester, key, 'play_endless.png');
   });
 
-  testWidgets('result renders with the design system', (tester) async {
+  testWidgets('result (win) renders with the design system', (tester) async {
     final catalog = await _loadContent(tester);
     final key = await _bootApp(tester, content: catalog);
     await _skipToRescuePlay(tester);
@@ -95,7 +137,28 @@ void main() {
       await tester.pumpAndSettle();
     }
     await tester.pump(const Duration(milliseconds: 300));
-    await _capture(tester, key, 'result.png');
+    await _capture(tester, key, 'result_win.png');
+  });
+
+  testWidgets('result (loss) renders with the design system', (tester) async {
+    // Reaches a non-completed result deterministically via the pause
+    // panel's "Finish here" action (outcome: earlyFinish) instead of
+    // relying on a board-specific losing sequence, which would be fragile
+    // against future content changes.
+    final key = await _bootApp(tester);
+    await _skipToRescuePlay(tester);
+    await tester.fling(
+      find.byType(MergeRelayBoard),
+      const Offset(0, -180),
+      1000,
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Pause'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Finish here'));
+    await tester.pumpAndSettle();
+    await tester.pump(const Duration(milliseconds: 300));
+    await _capture(tester, key, 'result_loss.png');
   });
 
   testWidgets('settings sheet renders with the design system', (tester) async {
@@ -116,23 +179,27 @@ void main() {
   });
 }
 
-/// Sets the golden's 1080x2400 physical phone view, pumps a fresh
+/// Sets the golden's physical phone view (1080x2400 @ DPR 3 by default,
+/// overridable for the 360x640 small-screen golden), pumps a fresh
 /// [MergeRelayApp] loaded with the real shipped content (loading it first
 /// if [content] isn't already on hand) inside a keyed [RepaintBoundary],
 /// and returns that key.
 Future<Key> _bootApp(
   WidgetTester tester, {
   MergeRelayContentCatalog? content,
+  Size physicalSize = const Size(1080, 2400),
+  double dpr = 3,
+  SaveStore? saveStore,
 }) async {
-  tester.view.physicalSize = const Size(1080, 2400);
-  tester.view.devicePixelRatio = 3;
+  tester.view.physicalSize = physicalSize;
+  tester.view.devicePixelRatio = dpr;
   addTearDown(tester.view.reset);
   final resolvedContent = content ?? await _loadContent(tester);
   final key = UniqueKey();
   await tester.pumpWidget(
     RepaintBoundary(
       key: key,
-      child: MergeRelayApp(content: resolvedContent),
+      child: MergeRelayApp(content: resolvedContent, saveStore: saveStore),
     ),
   );
   await tester.pump();
@@ -151,8 +218,8 @@ Future<MergeRelayContentCatalog> _loadContent(WidgetTester tester) async {
 
 /// The winning move line for the campaign's very first rescue (chapter 1,
 /// board 1) — the same `MergeRescueSolver` task 06's own tests use to
-/// prove every board is solvable — so the "result" golden shows a real
-/// cleared run instead of a guessed swipe sequence.
+/// prove every board is solvable — so the "result (win)" golden shows a
+/// real cleared run instead of a guessed swipe sequence.
 List<MergeDirection> _solveFirstRescue(MergeRelayContentCatalog catalog) {
   final board = catalog.rescues.firstWhere(
     (rescue) => rescue.chapter == 1 && rescue.indexInChapter == 1,
