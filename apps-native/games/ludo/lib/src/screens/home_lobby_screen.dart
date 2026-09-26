@@ -5,20 +5,30 @@
 ///
 /// Computer and Pass N Play are enabled and route to task 09's mode/setup
 /// sheet, then to the game board screen with the chosen local config. Play
-/// with Friends and Online are visibly and semantically disabled with a
-/// "coming soon" badge and no tap action, since real online play is not
-/// wired until task 26 — this screen must never let a tap on those two
-/// tiles silently do nothing while looking tappable.
+/// with Friends and Online (task 26) are enabled once an online client
+/// actually resolves — Firebase init succeeded (task 24) and an API base
+/// URL is configured (`ludo_online_client.dart`) — and stay visibly and
+/// semantically disabled with a "coming soon" badge and no tap action
+/// otherwise (a config-absent build): this screen must never let a tap on
+/// a disabled tile silently do nothing while looking tappable.
 ///
 /// No King Pass/subscription offer, coin/diamond purchase prompt, or ad of
 /// any kind appears here, matching task 07's product decision.
 library;
 
 import 'package:flutter/material.dart';
-import 'package:ludo_rules/ludo_rules.dart' show LudoColor;
+import 'package:ludo_rules/ludo_rules.dart' show LudoColor, LudoRuleset;
+import 'package:share_plus/share_plus.dart' show Share;
 
 import '../app.dart' show ludoIdentity;
 import '../assets/ludo_art_manifest.dart' show LudoArtManifest, LudoArtSlot;
+import '../net/ludo_engine_state_codec.dart'
+    show ludoEngineStateFromWire, ludoSubjectIsBot;
+import '../net/ludo_match_models.dart' as ludo_wire;
+import '../net/ludo_match_state_source.dart'
+    show LudoOnlineMatchSession, createLudoMatchStateSource;
+import '../net/ludo_online_client.dart';
+import '../net/ludo_online_controller.dart';
 import '../state/ludo_local_save.dart';
 import '../state/ludo_profile_settings.dart';
 import '../state/ludo_sound_settings.dart';
@@ -29,6 +39,7 @@ import '../widgets/ludo_avatar.dart'
     show LudoAvatarMotif, LudoAvatarView, ludoAvatars;
 import '../widgets/ludo_panel.dart';
 import 'game_board_screen.dart';
+import 'matchmaking_search_screen.dart';
 import 'mode_setup_sheet.dart';
 
 const _minTapTarget = 48.0;
@@ -92,6 +103,188 @@ Future<void> startLudoLocalMatch(
   );
 }
 
+/// Builds the [LudoLocalMatchConfig]/seat-identity list [GameBoardScreen]
+/// needs from an online match's wire state — the online counterpart of
+/// [_defaultSeatIdentities], labeling [localSeat] "You", every other
+/// server-assigned bot seat (`ludoSubjectIsBot`) "Bot N", and every other
+/// human seat "Player N" (no display name is available client-side beyond
+/// what the server's `subject` — a bare Firebase UID or `bot:<uuid>` —
+/// carries, matching this task's "no PII beyond seat/subject hashes"
+/// telemetry constraint for the match itself).
+(LudoLocalMatchConfig, List<LudoSeatIdentity>) _onlineConfigAndIdentities({
+  required ludo_wire.LudoMatchState wire,
+  required int localSeat,
+}) {
+  final ruleset = LudoRuleset.byId[wire.mode.toWire()]!;
+  final seats = <LudoSeatConfig>[];
+  final identities = <LudoSeatIdentity>[];
+  for (final player in wire.players) {
+    final isBot = ludoSubjectIsBot(player.subject);
+    final color = LudoColor.values.byName(player.color.toWire());
+    seats.add(
+      LudoSeatConfig(
+        color: color,
+        isBot: isBot,
+        botDifficulty: isBot ? 'medium' : null,
+      ),
+    );
+    identities.add(
+      LudoSeatIdentity(
+        name: player.seat == localSeat
+            ? 'You'
+            : (isBot ? 'Bot ${player.seat + 1}' : 'Player ${player.seat + 1}'),
+        avatarId: _avatarIdForColor(color),
+      ),
+    );
+  }
+  return (
+    LudoLocalMatchConfig(
+      ruleset: ruleset,
+      seats: seats,
+      isComputerMatch: seats.any((seat) => seat.isBot),
+    ),
+    identities,
+  );
+}
+
+/// Pushes [GameBoardScreen] for a ready online match, recording the
+/// online-mode `ludo_match_started` variant first (task 26).
+Future<void> _launchOnlineMatch(
+  BuildContext context, {
+  required LudoOnlineClient onlineClient,
+  required LudoOnlineMatchReadyResult ready,
+  required LudoMatchVariant variant,
+  LudoTelemetry? telemetry,
+}) async {
+  if (!context.mounted) return;
+  final (config, identities) = _onlineConfigAndIdentities(
+    wire: ready.wireMatchState,
+    localSeat: ready.localSeat,
+  );
+  final effectiveTelemetry =
+      telemetry ?? onlineClient.onlineController.telemetry;
+  effectiveTelemetry.matchStarted(
+    variant: variant,
+    ruleset: config.ruleset.id,
+    seatCount: config.playerCount,
+  );
+  final stateSource = createLudoMatchStateSource(
+    gateway: onlineClient.gateway,
+    appId: ludoIdentity.stableId,
+    environment: ready.wireMatchState.environment,
+    matchId: ready.matchId,
+    gameToken: ready.gameToken,
+  );
+  final onlineMatch = LudoOnlineMatchSession(
+    gateway: onlineClient.gateway,
+    matchId: ready.matchId,
+    gameToken: ready.gameToken,
+    localSeat: ready.localSeat,
+    stateSource: stateSource,
+  );
+  await Navigator.of(context).push(
+    MaterialPageRoute<void>(
+      builder: (_) => GameBoardScreen(
+        config: config,
+        seatIdentities: identities,
+        soundSettings: LudoSoundSettings(),
+        initialState: ludoEngineStateFromWire(ready.wireMatchState),
+        telemetry: effectiveTelemetry,
+        onlineMatch: onlineMatch,
+        onlineVariant: variant,
+      ),
+    ),
+  );
+}
+
+/// Drives the "Play with Friends" tile: create-room or join-room, then
+/// (for create) waits for a friend to fill the room before launching the
+/// board, or (for join) launches immediately — a join always completes the
+/// room.
+Future<void> startLudoOnlineFriendsFlow(
+  BuildContext context, {
+  required LudoOnlineClient onlineClient,
+  LudoTelemetry? telemetry,
+
+  /// Test seam: overrides the native share-sheet call. `null` (the
+  /// default) in production, where it calls `Share.share`. Overridden in
+  /// tests (never a real platform channel, which doesn't exist in a
+  /// `flutter test` host process).
+  Future<void> Function(String inviteLink)? shareInviteLink,
+}) async {
+  final choice = await FriendsSetupSheet.show(context);
+  if (choice == null || !context.mounted) return;
+  switch (choice) {
+    case LudoFriendsCreateChoice(:final mode, :final seatTarget):
+      final created = await onlineClient.onlineController.createRoom(
+        mode: mode,
+        seatTarget: seatTarget,
+      );
+      // Best-effort native share sheet — a platform-channel failure (no
+      // mock installed, or the user simply dismisses the sheet) is not an
+      // error condition worth surfacing; the room code stays valid and
+      // shareable by other means (read aloud, copied) regardless.
+      try {
+        await (shareInviteLink ?? Share.share)(created.inviteLink);
+      } on Object {
+        // Swallowed intentionally; see comment above.
+      }
+      if (!context.mounted) return;
+      final wait = onlineClient.onlineController.awaitRoomFilled(
+        roomCode: created.roomCode,
+      );
+      final ready = await MatchmakingSearchScreen.show(
+        context,
+        wait,
+        title: 'Waiting for a friend...',
+      );
+      if (ready == null || !context.mounted) return;
+      await _launchOnlineMatch(
+        context,
+        onlineClient: onlineClient,
+        ready: ready,
+        variant: LudoMatchVariant.room,
+        telemetry: telemetry,
+      );
+    case LudoFriendsJoinChoice(:final roomCode):
+      final ready = await onlineClient.onlineController.joinRoom(
+        roomCode: roomCode,
+      );
+      if (!context.mounted) return;
+      await _launchOnlineMatch(
+        context,
+        onlineClient: onlineClient,
+        ready: ready,
+        variant: LudoMatchVariant.room,
+        telemetry: telemetry,
+      );
+  }
+}
+
+/// Drives the "Online" tile: ruleset/player-count pick, then a cancelable
+/// matchmaking search, then the board once matched or bot-filled.
+Future<void> startLudoOnlineMatchmakingFlow(
+  BuildContext context, {
+  required LudoOnlineClient onlineClient,
+  LudoTelemetry? telemetry,
+}) async {
+  final choice = await OnlineModeSetupSheet.show(context);
+  if (choice == null || !context.mounted) return;
+  final wait = onlineClient.onlineController.startMatchmaking(
+    mode: choice.mode,
+    seatTarget: choice.seatTarget,
+  );
+  final ready = await MatchmakingSearchScreen.show(context, wait);
+  if (ready == null || !context.mounted) return;
+  await _launchOnlineMatch(
+    context,
+    onlineClient: onlineClient,
+    ready: ready,
+    variant: LudoMatchVariant.online,
+    telemetry: telemetry,
+  );
+}
+
 /// The kind of local match a [LudoResumableMatchSummary] describes.
 enum LudoResumableMatchMode {
   /// A match against the local computer/bot opponent(s).
@@ -137,6 +330,11 @@ class HomeLobbyScreen extends StatefulWidget {
     this.diceSeed,
     this.profile,
     this.profileStore,
+    this.onlineClient,
+    this.loadOnlineClient,
+    this.onPlayFriends,
+    this.onPlayOnline,
+    this.shareInviteLink,
   });
 
   /// Test seam: a summary to show the resume affordance for, bypassing this
@@ -187,6 +385,34 @@ class HomeLobbyScreen extends StatefulWidget {
   /// `splash_screen.dart` uses.
   final LudoProfileStore? profileStore;
 
+  /// Test seam: the resolved online client this screen's Play-with-Friends/
+  /// Online tiles use, bypassing this screen's own async
+  /// [loadOnlineClient] resolution entirely. `null` (the default) in
+  /// production, where the screen calls [loadOnlineClient] on init and
+  /// enables the tiles only if it resolves non-null (Firebase init
+  /// succeeded and an API base URL is configured) — see
+  /// `ludo_online_client.dart`'s doc comment.
+  final LudoOnlineClient? onlineClient;
+
+  /// Test seam: the async resolver this screen calls when [onlineClient]
+  /// is not explicitly supplied. `null` (the default) resolves the
+  /// production client (`createLudoOnlineClientForApp`) lazily.
+  final Future<LudoOnlineClient?> Function()? loadOnlineClient;
+
+  /// Test seam: overrides tapping the Play-with-Friends card once online
+  /// is available. `null` (the default) in production, where a tap starts
+  /// [startLudoOnlineFriendsFlow].
+  final VoidCallback? onPlayFriends;
+
+  /// Test seam: overrides tapping the Online card once online is
+  /// available. `null` (the default) in production, where a tap starts
+  /// [startLudoOnlineMatchmakingFlow].
+  final VoidCallback? onPlayOnline;
+
+  /// Test seam forwarded to [startLudoOnlineFriendsFlow]'s own
+  /// `shareInviteLink` parameter. `null` (the default) in production.
+  final Future<void> Function(String inviteLink)? shareInviteLink;
+
   @override
   State<HomeLobbyScreen> createState() => _HomeLobbyScreenState();
 }
@@ -195,6 +421,7 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
   LudoLocalSave? _resolvedSave;
   LudoLocalMatchSave? _loadedMatch;
   LudoProfileSettings? _loadedProfile;
+  LudoOnlineClient? _loadedOnlineClient;
 
   @override
   void initState() {
@@ -205,7 +432,29 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
     if (widget.profile == null) {
       _loadProfile();
     }
+    if (widget.onlineClient == null) {
+      _loadOnlineClient();
+    }
   }
+
+  Future<void> _loadOnlineClient() async {
+    final loader = widget.loadOnlineClient ?? createLudoOnlineClientForApp;
+    final client = await loader();
+    if (!mounted) return;
+    setState(() => _loadedOnlineClient = client);
+  }
+
+  /// The resolved online client, if online play is available. `null`
+  /// (the tiles stay disabled) until [_loadOnlineClient] resolves, or
+  /// permanently `null` for a config-absent/Firebase-unavailable build.
+  LudoOnlineClient? get _onlineClient =>
+      widget.onlineClient ?? _loadedOnlineClient;
+
+  /// Whether the Play-with-Friends/Online tiles are enabled — only once an
+  /// online client actually resolved (Firebase init succeeded and an API
+  /// base URL is configured). A config-absent build's tiles stay disabled
+  /// forever, per task 08/24's original "coming soon" state.
+  bool get _onlineAvailable => _onlineClient != null;
 
   Future<void> _loadProfile() async {
     final store =
@@ -372,25 +621,47 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
                         ),
                       ),
                       const SizedBox(height: 12),
-                      const Expanded(
+                      Expanded(
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Expanded(
                               child: _LobbyCard(
                                 title: 'Play with Friends',
-                                subtitle: 'Not available yet',
+                                subtitle: _onlineAvailable
+                                    ? 'Create or join a room'
+                                    : 'Not available yet',
                                 glyph: _LobbyGlyph.friends,
-                                enabled: false,
+                                enabled: _onlineAvailable,
+                                onTap: _onlineAvailable
+                                    ? (widget.onPlayFriends ??
+                                          () => startLudoOnlineFriendsFlow(
+                                            context,
+                                            onlineClient: _onlineClient!,
+                                            telemetry: widget.telemetry,
+                                            shareInviteLink:
+                                                widget.shareInviteLink,
+                                          ))
+                                    : null,
                               ),
                             ),
-                            SizedBox(width: 12),
+                            const SizedBox(width: 12),
                             Expanded(
                               child: _LobbyCard(
                                 title: 'Online',
-                                subtitle: 'Not available yet',
+                                subtitle: _onlineAvailable
+                                    ? 'Random matchmaking'
+                                    : 'Not available yet',
                                 glyph: _LobbyGlyph.online,
-                                enabled: false,
+                                enabled: _onlineAvailable,
+                                onTap: _onlineAvailable
+                                    ? (widget.onPlayOnline ??
+                                          () => startLudoOnlineMatchmakingFlow(
+                                            context,
+                                            onlineClient: _onlineClient!,
+                                            telemetry: widget.telemetry,
+                                          ))
+                                    : null,
                               ),
                             ),
                           ],

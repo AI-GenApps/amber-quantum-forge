@@ -316,6 +316,26 @@ final class LudoGateway {
     );
   }
 
+  /// `GET /games/ludo/:environment/matchmaking/tickets/:ticketId` (task 26):
+  /// the only way the client learns a ticket transitioned to `matched`
+  /// (and which match it landed in) — the matchmaking-search screen polls
+  /// this rather than replaying `createMatchmakingTicket`, whose own
+  /// idempotent lookup only ever finds a still-`searching` ticket.
+  Future<LudoMatchmakingTicket> getMatchmakingTicket({
+    required String ticketId,
+    required String gameToken,
+  }) async {
+    final data = await _request(
+      method: 'GET',
+      uri: config.gameEndpoint('matchmaking/tickets/$ticketId'),
+      bearerToken: gameToken,
+    );
+    requireFields(data, {'ticket'}, 'ticket response');
+    return LudoMatchmakingTicket.fromWire(
+      asJsonObject(data['ticket'], 'ticket'),
+    );
+  }
+
   /// `DELETE /games/ludo/:environment/matchmaking/tickets/:ticketId` (task 20).
   Future<LudoMatchmakingTicket> cancelMatchmakingTicket({
     required String ticketId,
@@ -359,6 +379,23 @@ final class LudoGateway {
       inviteLink: readText(data, 'invite_link', 512),
       idempotent: readBoolean(data, 'idempotent'),
     );
+  }
+
+  /// `GET /games/ludo/:environment/rooms/:roomCode` (task 26): the room
+  /// creator's only way to learn another player joined and filled it — a
+  /// joining caller already gets `match_state` back synchronously from
+  /// [joinRoom] and never needs this.
+  Future<LudoRoom> getRoom({
+    required String roomCode,
+    required String gameToken,
+  }) async {
+    final data = await _request(
+      method: 'GET',
+      uri: config.gameEndpoint('rooms/$roomCode'),
+      bearerToken: gameToken,
+    );
+    requireFields(data, {'room'}, 'room response');
+    return LudoRoom.fromWire(asJsonObject(data['room'], 'room'));
   }
 
   /// `POST /games/ludo/:environment/rooms/:roomCode/join` (task 21).

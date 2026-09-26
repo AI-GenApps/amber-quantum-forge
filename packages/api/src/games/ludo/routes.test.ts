@@ -656,6 +656,79 @@ describe("Ludo matchmaking-ticket routes", () => {
     }
   });
 
+  it("rejects a get-ticket request without a valid Ludo game token", async () => {
+    const saved = saveEnv();
+    try {
+      const { app } = await testHarness();
+      const response = await app.request("/games/ludo/debug/matchmaking/tickets/some-ticket-id", {
+        method: "GET",
+      });
+      expect(response.status).toBe(401);
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("rejects reading a ticket owned by a different subject", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken, store } = await testHarness("alice");
+      const { createTicket } = await import("./matchmaking-service");
+      const created = await createTicket(store, "debug", {
+        subject: "someone-else",
+        mode: "classic",
+        seatTarget: 2,
+        idempotencyKey: "k1",
+      });
+      const response = await app.request(
+        `/games/ludo/debug/matchmaking/tickets/${created.ticket.ticketId}`,
+        { method: "GET", headers: { Authorization: `Bearer ${gameToken}` } },
+      );
+      expect(response.status).toBe(403);
+      expect((await response.json()).error.code).toBe("ludo_ticket_forbidden");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("returns the caller's own ticket status, including matchedMatchId once matched", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("alice");
+      const createResponse = await app.request("/games/ludo/debug/matchmaking/tickets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${gameToken}` },
+        body: JSON.stringify({ mode: "classic", seat_target: 2, idempotency_key: "k1" }),
+      });
+      const ticketId = (await createResponse.json()).ticket.ticket_id;
+      const response = await app.request(`/games/ludo/debug/matchmaking/tickets/${ticketId}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${gameToken}` },
+      });
+      expect(response.status).toBe(200);
+      const body = await response.json();
+      expect(body.ticket.ticket_id).toBe(ticketId);
+      expect(body.ticket.status).toBe("searching");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("rejects reading a ticket that does not exist", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("alice");
+      const response = await app.request("/games/ludo/debug/matchmaking/tickets/nonexistent-id", {
+        method: "GET",
+        headers: { Authorization: `Bearer ${gameToken}` },
+      });
+      expect(response.status).toBe(404);
+      expect((await response.json()).error.code).toBe("ludo_ticket_not_found");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
   it("rejects a cancel-ticket request without a valid Ludo game token", async () => {
     const saved = saveEnv();
     try {
@@ -777,6 +850,111 @@ describe("Ludo private-room routes (task 21)", () => {
       expect(body.room.room_code).toMatch(/^[A-Z0-9]{6}$/);
       expect(body.invite_link).toBe(`w3dev-ludo://room/${body.room.room_code}`);
       expect(body.idempotent).toBe(false);
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("rejects a get-room request without a valid Ludo game token", async () => {
+    const saved = saveEnv();
+    try {
+      const { app } = await testHarness();
+      const response = await app.request("/games/ludo/debug/rooms/ABCDEF", { method: "GET" });
+      expect(response.status).toBe(401);
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("rejects reading a room owned by a different subject", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("alice");
+      const createResponse = await app.request("/games/ludo/debug/rooms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${gameToken}` },
+        body: JSON.stringify({ mode: "classic", seat_target: 2, idempotency_key: "k1" }),
+      });
+      const roomCode = (await createResponse.json()).room.room_code;
+      const otherToken = await signGameToken(
+        {
+          appId: "ludo",
+          environment: "debug",
+          secret: TEST_GAME_TOKEN_SECRET,
+          issuer: TEST_GAME_TOKEN_ISSUER,
+          audience: TEST_GAME_TOKEN_AUDIENCE,
+        },
+        { subject: "mallory", role: "player" },
+        300,
+      );
+      const response = await app.request(`/games/ludo/debug/rooms/${roomCode}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${otherToken}` },
+      });
+      expect(response.status).toBe(403);
+      expect((await response.json()).error.code).toBe("ludo_room_forbidden");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("returns the owner's room status, reflecting matched once filled", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("alice");
+      const createResponse = await app.request("/games/ludo/debug/rooms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${gameToken}` },
+        body: JSON.stringify({ mode: "classic", seat_target: 2, idempotency_key: "k1" }),
+      });
+      const roomCode = (await createResponse.json()).room.room_code;
+
+      const waitingResponse = await app.request(`/games/ludo/debug/rooms/${roomCode}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${gameToken}` },
+      });
+      expect(waitingResponse.status).toBe(200);
+      expect((await waitingResponse.json()).room.status).toBe("waiting");
+
+      const joinerToken = await signGameToken(
+        {
+          appId: "ludo",
+          environment: "debug",
+          secret: TEST_GAME_TOKEN_SECRET,
+          issuer: TEST_GAME_TOKEN_ISSUER,
+          audience: TEST_GAME_TOKEN_AUDIENCE,
+        },
+        { subject: "bob", role: "player" },
+        300,
+      );
+      await app.request(`/games/ludo/debug/rooms/${roomCode}/join`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${joinerToken}` },
+        body: JSON.stringify({ idempotency_key: "k2" }),
+      });
+
+      const matchedResponse = await app.request(`/games/ludo/debug/rooms/${roomCode}`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${gameToken}` },
+      });
+      const matchedBody = await matchedResponse.json();
+      expect(matchedBody.room.status).toBe("matched");
+      expect(matchedBody.room.match_id).not.toBeNull();
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("rejects reading a room that does not exist", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("alice");
+      const response = await app.request("/games/ludo/debug/rooms/NOPE12", {
+        method: "GET",
+        headers: { Authorization: `Bearer ${gameToken}` },
+      });
+      expect(response.status).toBe(404);
+      expect((await response.json()).error.code).toBe("ludo_room_not_found");
     } finally {
       restoreEnv(saved);
     }

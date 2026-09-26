@@ -18,6 +18,20 @@
 	<string>ludo</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<!-- Task 26: room-invite deep links (w3dev-ludo://room/<code>), task
+	     21's LUDO_DEEP_LINK_SCHEME. Not build/run-verified on this task's
+	     physical-device pass (Android-only device attached). -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>w3dev-ludo</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>

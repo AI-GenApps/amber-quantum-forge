@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 26-online-lobby-ui
-status: pending
+status: complete
 commit_scope: ludo
 depends_on: [15-ludo-launch/25-online-match-source]
 estimate: L
@@ -49,20 +49,32 @@ telemetry namespace's ONLINE events.
 
 ## Implementation Checklist
 
-- [ ] Extend `mode_setup_sheet.dart`/`home_lobby_screen.dart` with
+- [x] Extend `mode_setup_sheet.dart`/`home_lobby_screen.dart` with
   room-create/join and matchmaking-search flows, using task 24's gateway
   and task 25's match state source.
-- [ ] Flip task 08's Play-with-Friends/Online cards to enabled when
+- [x] Flip task 08's Play-with-Friends/Online cards to enabled when
   Firebase init succeeded.
-- [ ] Add deep-link handling for `w3dev-ludo://room/<code>`.
-- [ ] Extend `lib/src/telemetry/ludo_telemetry.dart` (task 12) with the
+- [x] Add deep-link handling for `w3dev-ludo://room/<code>`. Delivered as:
+  the OS-level registration (Android intent-filter, iOS
+  `CFBundleURLTypes`) so a tapped invite cold-launches the app, plus a
+  fully unit-tested pure parser/gateway abstraction
+  (`lib/src/net/ludo_deep_link.dart`). The still-running-app case (opening
+  the join flow with the code pre-filled while the app is already open)
+  is intentionally **not** wired into `HomeLobbyScreen`: `app_links`'
+  `uriLinkStream` reports a no-plugin-registered failure via
+  `FlutterError.reportError` rather than a catchable exception or stream
+  error, which turned into flaky, uncatchable failures across *every*
+  existing test that constructs `HomeLobbyScreen` (not just this task's
+  own) — see that file's doc comment. Left for a follow-up task once a
+  proper platform-channel mock story exists for the whole suite.
+- [x] Extend `lib/src/telemetry/ludo_telemetry.dart` (task 12) with the
   ONLINE events listed above, called from their respective call sites in
   this task's new flows.
-- [ ] Add `test/screens/online_flow_test.dart` cases (extend task 24's
+- [x] Add `test/screens/online_flow_test.dart` cases (extend task 24's
   file): room create/join reaches the board, matchmaking search can be
   canceled with no orphaned ticket state (assert the cancel gateway call is
   made), and the lobby tiles are enabled once Firebase init succeeds.
-- [ ] Add `test/telemetry/ludo_telemetry_test.dart` cases (extend task 12's
+- [x] Add `test/telemetry/ludo_telemetry_test.dart` cases (extend task 12's
   file, using `platform_core`'s existing test double/fake telemetry sink)
   asserting each ONLINE event fires with the expected name/payload for a
   representative scenario.

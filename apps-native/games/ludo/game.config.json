@@ -18,8 +18,12 @@
       "save_sync",
       "sharing"
     ],
-    "implemented": [],
-    "enabled": []
+    "implemented": [
+      "sharing"
+    ],
+    "enabled": [
+      "sharing"
+    ]
   },
   "permissions": {
     "specified": [],

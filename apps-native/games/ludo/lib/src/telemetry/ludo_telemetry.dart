@@ -21,15 +21,21 @@ import 'package:platform_core/platform_core.dart';
 
 import '../app.dart' show ludoIdentity;
 
-/// Which local mode a match was started/finished in, matching
-/// `ModeSetupSheet.isComputerMatch`.
+/// Which mode a match was started/finished in. `vsComputer`/`passAndPlay`
+/// are local (task 12); `online`/`room` are the online-mode variants task
+/// 26 adds, fired from the matchmaking-search and room flows respectively
+/// once either lands on the board.
 enum LudoMatchVariant {
   vsComputer,
-  passAndPlay;
+  passAndPlay,
+  online,
+  room;
 
   String get telemetryAction => switch (this) {
     LudoMatchVariant.vsComputer => 'vs_computer',
     LudoMatchVariant.passAndPlay => 'pass_and_play',
+    LudoMatchVariant.online => 'online',
+    LudoMatchVariant.room => 'room',
   };
 }
 
@@ -121,5 +127,65 @@ final class LudoTelemetry {
   /// `vibration`, `reduced_motion`.
   void settingsChanged({required String toggle}) {
     _recorder.record('ludo_settings_changed', fields: {'action': toggle});
+  }
+
+  // ---------------------------------------------------------------------
+  // ONLINE events (task 26). No field here ever carries a room code, ticket
+  // id, match id, or display name — only the shared allow-list's
+  // rule_version/score/ticks/status, matching every LOCAL event above.
+  // ---------------------------------------------------------------------
+
+  /// A private room was created from the "Play with Friends" flow, fired
+  /// once the create-room gateway call succeeds.
+  void roomCreated({required String mode, required int seatTarget}) {
+    _recorder.record(
+      'ludo_room_created',
+      fields: {'rule_version': mode, 'score': seatTarget},
+    );
+  }
+
+  /// This device joined another player's room by code, fired once the
+  /// join-room gateway call succeeds.
+  void roomJoined({required String mode, required int seatTarget}) {
+    _recorder.record(
+      'ludo_room_joined',
+      fields: {'rule_version': mode, 'score': seatTarget},
+    );
+  }
+
+  /// A random-matchmaking ticket was submitted, fired once the
+  /// create-ticket gateway call succeeds.
+  void matchmakingStarted({required String mode, required int seatTarget}) {
+    _recorder.record(
+      'ludo_matchmaking_started',
+      fields: {'rule_version': mode, 'score': seatTarget},
+    );
+  }
+
+  /// A matchmaking search resolved to a match (human-filled or bot-filled),
+  /// fired once the search poll observes the ticket's `matched` status.
+  void matchmakingMatched({
+    required String mode,
+    required int seatCount,
+    required Duration searchDuration,
+  }) {
+    _recorder.record(
+      'ludo_matchmaking_matched',
+      fields: {
+        'rule_version': mode,
+        'score': seatCount,
+        'ticks': searchDuration.inSeconds,
+      },
+    );
+  }
+
+  /// A matchmaking search's match came back with one or more bot-filled
+  /// seats, fired alongside [matchmakingMatched] when at least one seat's
+  /// subject carries the server's `bot:` prefix.
+  void botFillTriggered({required String mode, required int botCount}) {
+    _recorder.record(
+      'ludo_bot_fill_triggered',
+      fields: {'rule_version': mode, 'score': botCount},
+    );
   }
 }

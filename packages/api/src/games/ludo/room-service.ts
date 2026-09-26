@@ -25,7 +25,12 @@ import type {
   LudoRoomStatus,
 } from "./contracts";
 import { ludoRoomInviteLink } from "./contracts";
-import { LudoRoomCodeExhaustedError, LudoRoomExpiredError, LudoRoomNotFoundError } from "./errors";
+import {
+  LudoRoomCodeExhaustedError,
+  LudoRoomExpiredError,
+  LudoRoomForbiddenError,
+  LudoRoomNotFoundError,
+} from "./errors";
 import { createMatch, joinMatch, type LudoServiceDependencies } from "./service";
 import type { LudoRoomRow, LudoStore } from "./store";
 
@@ -160,6 +165,27 @@ export async function createRoom(
       inviteLink: ludoRoomInviteLink(roomCode),
       idempotent: false,
     };
+  });
+}
+
+/**
+ * Reads a room's current status for its owner (task 26): the only way the
+ * room's *creator* learns another player joined and filled it (a joining
+ * player already gets the resulting `matchState` back synchronously from
+ * `joinRoom`, so they never need this) — mirrors `getTicket`'s identical
+ * role for matchmaking, added for the same reason.
+ */
+export async function getRoom(
+  store: LudoStore,
+  environment: LudoEnvironment,
+  subject: string,
+  roomCode: string,
+): Promise<{ room: LudoRoom }> {
+  return store.read(environment, async (state) => {
+    const row = state.rooms.find((r) => r.roomCode === roomCode);
+    if (!row) throw new LudoRoomNotFoundError(roomCode);
+    if (row.ownerSubject !== subject) throw new LudoRoomForbiddenError();
+    return { room: toContractRoom(row, Date.now()) };
   });
 }
 

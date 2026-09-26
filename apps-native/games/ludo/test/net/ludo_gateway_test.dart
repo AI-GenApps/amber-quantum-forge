@@ -225,6 +225,21 @@ void main() {
       },
     );
 
+    test('getMatchmakingTicket sends GET and decodes the ticket', () async {
+      final transport = FixtureLudoTransport({
+        'GET matchmaking/tickets/ticket-1': jsonResponse({
+          'ticket': _envelope('matchmaking_ticket'),
+        }),
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      final ticket = await gateway.getMatchmakingTicket(
+        ticketId: 'ticket-1',
+        gameToken: 'game-token',
+      );
+      expect(ticket.ticketId, 'ticket-1');
+      expect(ticket.status, LudoMatchmakingTicketStatus.searching);
+    });
+
     test('createRoom decodes room + invite_link', () async {
       final transport = FixtureLudoTransport({
         'POST rooms': jsonResponse({
@@ -242,6 +257,18 @@ void main() {
       );
       expect(result.room.roomCode, 'ABC123');
       expect(result.inviteLink, 'w3dev-ludo://room/ABC123');
+    });
+
+    test('getRoom sends GET and decodes the room', () async {
+      final transport = FixtureLudoTransport({
+        'GET rooms/ABC123': jsonResponse({'room': _envelope('room')}),
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      final room = await gateway.getRoom(
+        roomCode: 'ABC123',
+        gameToken: 'game-token',
+      );
+      expect(room.roomCode, 'ABC123');
     });
 
     test('joinRoom decodes room + match_state', () async {

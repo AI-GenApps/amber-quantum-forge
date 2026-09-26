@@ -15,9 +15,9 @@ import { DrizzleLudoStore } from "./drizzle-store";
 import { asLudoError, LudoError } from "./errors";
 import type { MatchViewPublisher } from "./match-view-publisher";
 import { NullMatchViewPublisher } from "./match-view-publisher";
-import { cancelTicket, createTicket } from "./matchmaking-service";
+import { cancelTicket, createTicket, getTicket } from "./matchmaking-service";
 import { InMemoryLudoStore } from "./memory-store";
-import { createRoom, joinRoom } from "./room-service";
+import { createRoom, getRoom, joinRoom } from "./room-service";
 import { createMatch, getMatchState, getMatchView, processCommand } from "./service";
 import { LudoStorageError, type LudoStore, UnavailableLudoStore } from "./store";
 import {
@@ -336,6 +336,43 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
     }
   });
 
+  // Task 26: the client's only way to learn a ticket transitioned to
+  // `matched` (and which match it landed in) — a searching ticket's
+  // idempotent-create replay never surfaces this (see `getTicket`'s
+  // docstring), so the matchmaking-search screen polls this route instead.
+  routes.get("/:environment/matchmaking/tickets/:ticketId", async (c) => {
+    const environment = c.req.param("environment");
+    if (!isGameEnvironment(environment)) {
+      const error = new LudoError(
+        400,
+        "ludo_invalid_environment",
+        "Environment must be debug, staging or production",
+      );
+      return c.json(error.response(), error.status);
+    }
+    const auth = await authenticateGameToken(c, dependencies, environment);
+    if (!auth.ok) return auth.response;
+
+    const parsedTicketId = parseTicketIdParam(c.req.param("ticketId"));
+    if (!parsedTicketId.ok) {
+      const error = new LudoError(422, "ludo_invalid_command", "A valid ticket id is required");
+      return c.json(error.response(), error.status);
+    }
+
+    try {
+      const result = await getTicket(
+        dependencies.store,
+        environment,
+        auth.session.subject,
+        parsedTicketId.value,
+      );
+      return c.json({ ticket: matchmakingTicketToWire(result.ticket) }, 200);
+    } catch (cause) {
+      const error = asLudoError(cause);
+      return c.json(error.response(), error.status);
+    }
+  });
+
   routes.delete("/:environment/matchmaking/tickets/:ticketId", async (c) => {
     const environment = c.req.param("environment");
     if (!isGameEnvironment(environment)) {
@@ -407,6 +444,43 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
         },
         201,
       );
+    } catch (cause) {
+      const error = asLudoError(cause);
+      return c.json(error.response(), error.status);
+    }
+  });
+
+  // Task 26: the room creator's only way to learn another player joined and
+  // filled their room (a joining caller already gets `match_state` back
+  // synchronously from the join route below) — mirrors the matchmaking
+  // ticket GET route above for the identical reason.
+  routes.get("/:environment/rooms/:roomCode", async (c) => {
+    const environment = c.req.param("environment");
+    if (!isGameEnvironment(environment)) {
+      const error = new LudoError(
+        400,
+        "ludo_invalid_environment",
+        "Environment must be debug, staging or production",
+      );
+      return c.json(error.response(), error.status);
+    }
+    const auth = await authenticateGameToken(c, dependencies, environment);
+    if (!auth.ok) return auth.response;
+
+    const parsedRoomCode = parseRoomCodeParam(c.req.param("roomCode"));
+    if (!parsedRoomCode.ok) {
+      const error = new LudoError(422, "ludo_invalid_command", "A valid room code is required");
+      return c.json(error.response(), error.status);
+    }
+
+    try {
+      const result = await getRoom(
+        dependencies.store,
+        environment,
+        auth.session.subject,
+        parsedRoomCode.value,
+      );
+      return c.json({ room: roomToWire(result.room) }, 200);
     } catch (cause) {
       const error = asLudoError(cause);
       return c.json(error.response(), error.status);

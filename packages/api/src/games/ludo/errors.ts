@@ -21,7 +21,8 @@ export type LudoErrorCode =
   | "ludo_ticket_not_cancellable"
   | "ludo_room_not_found"
   | "ludo_room_expired"
-  | "ludo_room_code_exhausted";
+  | "ludo_room_code_exhausted"
+  | "ludo_room_forbidden";
 
 export class LudoError extends Error {
   readonly diagnosticId: string;
@@ -169,5 +170,12 @@ export class LudoRoomExpiredError extends LudoCommandError {
 export class LudoRoomCodeExhaustedError extends LudoCommandError {
   constructor() {
     super(503, "ludo_room_code_exhausted", "Could not generate a unique room code");
+  }
+}
+
+/** `GET .../rooms/:roomCode` (task 26) by a caller who isn't the room's owner. */
+export class LudoRoomForbiddenError extends LudoCommandError {
+  constructor() {
+    super(403, "ludo_room_forbidden", "The caller does not own this room");
   }
 }

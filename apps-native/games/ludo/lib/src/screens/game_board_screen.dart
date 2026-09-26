@@ -23,6 +23,7 @@ import 'package:platform_core/platform_core.dart' show DeterministicRng;
 
 import '../game/ludo_bot_turn_runner.dart';
 import '../game/ludo_game.dart';
+import '../net/ludo_engine_state_codec.dart';
 import '../net/ludo_match_models.dart' as ludo_wire;
 import '../net/ludo_match_state_source.dart';
 import '../net/ludo_session_models.dart' show LudoMatchView;
@@ -74,7 +75,11 @@ class GameBoardScreen extends StatefulWidget {
     this.telemetry,
     this.botTurnDelay = const Duration(milliseconds: 700),
     this.onlineMatch,
-  });
+    this.onlineVariant,
+  }) : assert(
+         onlineMatch == null || onlineVariant != null,
+         'onlineVariant is required whenever onlineMatch is supplied',
+       );
 
   /// The match configuration returned by [ModeSetupSheet].
   final LudoLocalMatchConfig config;
@@ -142,6 +147,12 @@ class GameBoardScreen extends StatefulWidget {
   /// (Computer/Pass N Play) behavior unchanged.
   final LudoOnlineMatchSession? onlineMatch;
 
+  /// Task 26: which telemetry variant an online match's `ludo_match_finished`
+  /// event uses — `online` for a matchmaking-search match, `room` for a
+  /// private-room match. Required whenever [onlineMatch] is non-null;
+  /// ignored (and may be left `null`) for a local match.
+  final LudoMatchVariant? onlineVariant;
+
   @override
   State<GameBoardScreen> createState() => _GameBoardScreenState();
 }
@@ -188,6 +199,11 @@ class _GameBoardScreenState extends State<GameBoardScreen>
   /// window entirely: no second `applyEvents` call can start before the
   /// first one's animation has actually finished.
   bool _boardBusy = false;
+
+  /// Guards [_maybeNavigateToResults] against recording `ludo_match_finished`
+  /// (and navigating to results) more than once for the same finished match
+  /// — see that method's doc comment.
+  bool _matchFinishedRecorded = false;
 
   @override
   void initState() {
@@ -244,6 +260,12 @@ class _GameBoardScreenState extends State<GameBoardScreen>
       WidgetsBinding.instance.removeObserver(this);
     }
     unawaited(_onlineStatesSubscription?.cancel());
+    // Disposes the state source too (cancels its polling timer/Firestore
+    // subscription) — without this, an online match's background polling
+    // would keep running forever after this screen is popped/replaced.
+    // `LudoOnlineMatchSession.dispose`/`LudoMatchStateSource.dispose` are
+    // both documented safe to call more than once.
+    widget.onlineMatch?.dispose();
     super.dispose();
   }
 
@@ -287,6 +309,12 @@ class _GameBoardScreenState extends State<GameBoardScreen>
       _turnDeadline = _parseDeadline(view.matchState.deadlineAt);
     });
     unawaited(_game.setMatchState(engineState, animate: false));
+    // Task 26: a server-driven finish (the opponent's winning move, a
+    // claimed timeout, a surrender) must navigate to results the same way
+    // a local match's own finishing move does — `_maybeNavigateToResults`
+    // is idempotent (`_matchFinishedRecorded`), so a later state-source
+    // emission after this screen already navigated away is a safe no-op.
+    _maybeNavigateToResults();
   }
 
   /// Converts the server's wire `LudoMatchState` (`ludo_match_models.dart`,
@@ -296,33 +324,8 @@ class _GameBoardScreenState extends State<GameBoardScreen>
   /// `LudoMatchPhase`) by construction, so no server-side field rename can
   /// silently desync them without also failing `ludo_match_models.dart`'s
   /// own decode.
-  LudoMatchState _toEngineState(ludo_wire.LudoMatchState wire) {
-    final ruleset = LudoRuleset.byId[wire.mode.toWire()];
-    if (ruleset == null) {
-      throw StateError('Unknown Ludo mode from server: ${wire.mode}');
-    }
-    return LudoMatchState(
-      ruleset: ruleset,
-      players: [
-        for (final player in wire.players)
-          LudoPlayerState(
-            seat: player.seat,
-            subject: player.subject,
-            color: LudoColor.values.byName(player.color.toWire()),
-            tokens: [
-              for (final token in player.tokens)
-                LudoToken(id: token.id, pathPosition: token.pathPosition),
-            ],
-            captureCount: player.captureCount,
-          ),
-      ],
-      currentPlayerIndex: wire.currentPlayerIndex,
-      phase: LudoMatchPhase.values.byName(wire.phase.name),
-      currentRoll: wire.currentRoll,
-      consecutiveSixes: wire.consecutiveSixes,
-      winnerOrder: wire.winnerOrder,
-    );
-  }
+  LudoMatchState _toEngineState(ludo_wire.LudoMatchState wire) =>
+      ludoEngineStateFromWire(wire);
 
   /// Persists [_state] to [_localSaveFuture]'s save after every applied
   /// move (task 11), or clears it once the match reaches
@@ -513,10 +516,18 @@ class _GameBoardScreenState extends State<GameBoardScreen>
   /// over. A no-op (returns `false`) otherwise.
   bool _maybeNavigateToResults() {
     if (_state.phase != LudoMatchPhase.finished) return false;
+    // Guards against double-recording/double-navigating: an online match
+    // can observe more than one `finished` state-source emission (e.g. a
+    // reconnect `refresh()` re-delivering the same final state after this
+    // screen already handled the first one).
+    if (_matchFinishedRecorded) return true;
+    _matchFinishedRecorded = true;
     _telemetry.matchFinished(
-      variant: widget.config.isComputerMatch
-          ? LudoMatchVariant.vsComputer
-          : LudoMatchVariant.passAndPlay,
+      variant: widget.onlineMatch != null
+          ? widget.onlineVariant!
+          : (widget.config.isComputerMatch
+                ? LudoMatchVariant.vsComputer
+                : LudoMatchVariant.passAndPlay),
       ruleset: widget.config.ruleset.id,
       winnerSeat: _state.winnerOrder.isNotEmpty
           ? _state.winnerOrder.first

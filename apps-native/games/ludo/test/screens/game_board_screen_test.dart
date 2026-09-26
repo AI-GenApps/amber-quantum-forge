@@ -16,6 +16,7 @@ import 'package:ludo/src/screens/game_board_screen.dart';
 import 'package:ludo/src/screens/mode_setup_sheet.dart';
 import 'package:ludo/src/state/ludo_sound_settings.dart';
 import 'package:ludo/src/state/reduced_motion_setting.dart';
+import 'package:ludo/src/telemetry/ludo_telemetry.dart' show LudoMatchVariant;
 import 'package:ludo/src/widgets/dice_zone.dart';
 import 'package:ludo/src/widgets/player_corner_card.dart';
 
@@ -379,6 +380,7 @@ void main() {
               subjects: const ['local-0', 'local-1'],
             ),
             onlineMatch: session,
+            onlineVariant: LudoMatchVariant.online,
           ),
         ),
       );
@@ -440,6 +442,7 @@ void main() {
               subjects: const ['local-0', 'local-1'],
             ),
             onlineMatch: session,
+            onlineVariant: LudoMatchVariant.online,
           ),
         ),
       );

@@ -211,7 +211,11 @@ export const GAME_REGISTRY: readonly GameRegistration[] = [
     platforms: ["android"],
     environments: supportedEnvironments,
     rendering: "flame",
-    capabilities: capabilities(["game_loop", "guest_identity", "save_sync", "sharing"]),
+    capabilities: {
+      specified: ["game_loop", "guest_identity", "save_sync", "sharing"],
+      implemented: ["sharing"],
+      enabled: ["sharing"],
+    },
     permissions: noPermissions,
     readiness: scaffoldReadiness,
     identity: identity("ludo"),

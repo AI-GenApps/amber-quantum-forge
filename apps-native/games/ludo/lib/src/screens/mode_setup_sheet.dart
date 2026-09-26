@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:ludo_rules/ludo_rules.dart';
 
+import '../net/ludo_match_models.dart' show LudoMode;
 import '../theme/ludo_text_styles.dart';
 import '../theme/ludo_theme_tokens.dart';
 import '../widgets/ludo_3d_button.dart';
@@ -351,4 +352,298 @@ class _SeatRow extends StatelessWidget {
     LudoColor.yellow => const Color(0xFFFDD835),
     LudoColor.blue => const Color(0xFF1E88E5),
   };
+}
+
+/// Ruleset/player-count chosen for a random-matchmaking search (task 26's
+/// "Online" tile), returned by [OnlineModeSetupSheet.show].
+final class LudoOnlineSetupChoice {
+  const LudoOnlineSetupChoice({required this.mode, required this.seatTarget});
+
+  final LudoMode mode;
+  final int seatTarget;
+}
+
+/// The ruleset/player-count picker for the "Online" (random-matchmaking)
+/// tile — the same two choices [ModeSetupSheet] offers, minus any
+/// bot-difficulty picker (matchmaking never lets the local player choose a
+/// bot's difficulty; the server assigns a fixed difficulty on bot-fill).
+class OnlineModeSetupSheet extends StatefulWidget {
+  const OnlineModeSetupSheet({super.key});
+
+  static Future<LudoOnlineSetupChoice?> show(BuildContext context) {
+    return showModalBottomSheet<LudoOnlineSetupChoice>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const OnlineModeSetupSheet(),
+    );
+  }
+
+  @override
+  State<OnlineModeSetupSheet> createState() => _OnlineModeSetupSheetState();
+}
+
+class _OnlineModeSetupSheetState extends State<OnlineModeSetupSheet> {
+  LudoRuleset _ruleset = LudoRuleset.classic;
+  int _playerCount = 4;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          bottom: 16 + MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: LudoPanel(
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(LudoThemeTokens.radiusLg),
+          ),
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              LudoOutlinedTitle('Online', style: LudoTextStyles.displaySmall),
+              const SizedBox(height: 16),
+              Text('Ruleset', style: LudoTextStyles.bodyStrong),
+              const SizedBox(height: 8),
+              SegmentedButton<LudoRuleset>(
+                segments: const [
+                  ButtonSegment(
+                    value: LudoRuleset.classic,
+                    label: Text('Classic'),
+                  ),
+                  ButtonSegment(value: LudoRuleset.quick, label: Text('Quick')),
+                ],
+                selected: {_ruleset},
+                onSelectionChanged: (selection) =>
+                    setState(() => _ruleset = selection.first),
+              ),
+              const SizedBox(height: 16),
+              Text('Players', style: LudoTextStyles.bodyStrong),
+              const SizedBox(height: 8),
+              SegmentedButton<int>(
+                segments: const [
+                  ButtonSegment(value: 2, label: Text('2')),
+                  ButtonSegment(value: 4, label: Text('4')),
+                ],
+                selected: {_playerCount},
+                onSelectionChanged: (selection) =>
+                    setState(() => _playerCount = selection.first),
+              ),
+              const SizedBox(height: 20),
+              ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: _minTapTarget),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Ludo3dButton(
+                    key: const Key('online-setup-find-match-button'),
+                    semanticLabel: 'Find match',
+                    onPressed: () => Navigator.of(context).pop(
+                      LudoOnlineSetupChoice(
+                        mode: LudoMode.fromWire(_ruleset.id),
+                        seatTarget: _playerCount,
+                      ),
+                    ),
+                    child: const Text('Find Match'),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// What the "Play with Friends" sheet resolved to: a room to create, or a
+/// code to join. Returned by [FriendsSetupSheet.show].
+sealed class LudoFriendsChoice {
+  const LudoFriendsChoice();
+}
+
+final class LudoFriendsCreateChoice extends LudoFriendsChoice {
+  const LudoFriendsCreateChoice({required this.mode, required this.seatTarget});
+
+  final LudoMode mode;
+  final int seatTarget;
+}
+
+final class LudoFriendsJoinChoice extends LudoFriendsChoice {
+  const LudoFriendsJoinChoice({required this.roomCode});
+
+  final String roomCode;
+}
+
+enum _FriendsTab { create, join }
+
+/// The "Play with Friends" sheet: a Create/Join toggle, each with its own
+/// minimal form (ruleset/player-count for create, a room-code field for
+/// join).
+class FriendsSetupSheet extends StatefulWidget {
+  const FriendsSetupSheet({super.key});
+
+  static Future<LudoFriendsChoice?> show(BuildContext context) {
+    return showModalBottomSheet<LudoFriendsChoice>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const FriendsSetupSheet(),
+    );
+  }
+
+  @override
+  State<FriendsSetupSheet> createState() => _FriendsSetupSheetState();
+}
+
+class _FriendsSetupSheetState extends State<FriendsSetupSheet> {
+  _FriendsTab _tab = _FriendsTab.create;
+  LudoRuleset _ruleset = LudoRuleset.classic;
+  int _playerCount = 4;
+  final _codeController = TextEditingController();
+
+  @override
+  void dispose() {
+    _codeController.dispose();
+    super.dispose();
+  }
+
+  void _submitCreate() {
+    Navigator.of(context).pop(
+      LudoFriendsCreateChoice(
+        mode: LudoMode.fromWire(_ruleset.id),
+        seatTarget: _playerCount,
+      ),
+    );
+  }
+
+  void _submitJoin() {
+    final code = _codeController.text.trim().toUpperCase();
+    if (code.isEmpty) return;
+    Navigator.of(context).pop(LudoFriendsJoinChoice(roomCode: code));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 16,
+          right: 16,
+          bottom: 16 + MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: LudoPanel(
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(LudoThemeTokens.radiusLg),
+          ),
+          padding: const EdgeInsets.all(20),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LudoOutlinedTitle(
+                  'Play with Friends',
+                  style: LudoTextStyles.displaySmall,
+                ),
+                const SizedBox(height: 16),
+                SegmentedButton<_FriendsTab>(
+                  segments: const [
+                    ButtonSegment(
+                      value: _FriendsTab.create,
+                      label: Text('Create Room'),
+                    ),
+                    ButtonSegment(
+                      value: _FriendsTab.join,
+                      label: Text('Join Room'),
+                    ),
+                  ],
+                  selected: {_tab},
+                  onSelectionChanged: (selection) =>
+                      setState(() => _tab = selection.first),
+                ),
+                const SizedBox(height: 16),
+                if (_tab == _FriendsTab.create) ..._createForm(),
+                if (_tab == _FriendsTab.join) ..._joinForm(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _createForm() => [
+    Text('Ruleset', style: LudoTextStyles.bodyStrong),
+    const SizedBox(height: 8),
+    SegmentedButton<LudoRuleset>(
+      segments: const [
+        ButtonSegment(value: LudoRuleset.classic, label: Text('Classic')),
+        ButtonSegment(value: LudoRuleset.quick, label: Text('Quick')),
+      ],
+      selected: {_ruleset},
+      onSelectionChanged: (selection) =>
+          setState(() => _ruleset = selection.first),
+    ),
+    const SizedBox(height: 16),
+    Text('Players', style: LudoTextStyles.bodyStrong),
+    const SizedBox(height: 8),
+    SegmentedButton<int>(
+      segments: const [
+        ButtonSegment(value: 2, label: Text('2')),
+        ButtonSegment(value: 4, label: Text('4')),
+      ],
+      selected: {_playerCount},
+      onSelectionChanged: (selection) =>
+          setState(() => _playerCount = selection.first),
+    ),
+    const SizedBox(height: 20),
+    ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: _minTapTarget),
+      child: SizedBox(
+        width: double.infinity,
+        child: Ludo3dButton(
+          key: const Key('friends-setup-create-button'),
+          semanticLabel: 'Create room',
+          onPressed: _submitCreate,
+          child: const Text('Create Room'),
+        ),
+      ),
+    ),
+  ];
+
+  List<Widget> _joinForm() => [
+    Text('Room code', style: LudoTextStyles.bodyStrong),
+    const SizedBox(height: 8),
+    ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: _minTapTarget),
+      child: TextField(
+        key: const Key('friends-setup-code-field'),
+        controller: _codeController,
+        textCapitalization: TextCapitalization.characters,
+        style: LudoTextStyles.body,
+        decoration: const InputDecoration(
+          hintText: 'Enter code',
+          border: OutlineInputBorder(),
+        ),
+        onSubmitted: (_) => _submitJoin(),
+      ),
+    ),
+    const SizedBox(height: 20),
+    ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: _minTapTarget),
+      child: SizedBox(
+        width: double.infinity,
+        child: Ludo3dButton(
+          key: const Key('friends-setup-join-button'),
+          semanticLabel: 'Join room',
+          onPressed: _submitJoin,
+          child: const Text('Join Room'),
+        ),
+      ),
+    ),
+  ];
 }

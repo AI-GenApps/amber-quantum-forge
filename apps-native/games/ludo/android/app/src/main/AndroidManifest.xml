@@ -24,6 +24,16 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- Task 26: room-invite deep links (w3dev-ludo://room/<code>),
+                 task 21's LUDO_DEEP_LINK_SCHEME. android:autoVerify is
+                 omitted (this is a custom scheme, not an https App Link),
+                 so no assetlinks.json/domain verification is needed. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="w3dev-ludo" android:host="room"/>
+            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

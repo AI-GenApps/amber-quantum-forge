@@ -9,6 +9,7 @@ environment:
   flutter: ">=3.47.3"
 
 dependencies:
+  app_links: ^6.3.2
   audioplayers: ^6.8.1
   cloud_firestore: ^5.4.4
   firebase_auth: ^5.3.1
@@ -20,6 +21,7 @@ dependencies:
   ludo_rules:
     path: ../packages/ludo_rules
   path_provider: ^2.1.5
+  share_plus: ^10.1.4
   platform_core:
     path: ../packages/platform_core
 

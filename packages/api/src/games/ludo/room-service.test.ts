@@ -1,8 +1,14 @@
 import { describe, expect, it } from "vitest";
 import type { LudoEnvironment } from "./contracts";
-import { LudoRoomExpiredError, LudoRoomNotFoundError } from "./errors";
+import { LudoRoomExpiredError, LudoRoomForbiddenError, LudoRoomNotFoundError } from "./errors";
 import { InMemoryLudoStore } from "./memory-store";
-import { createRoom, joinRoom, LUDO_ROOM_SWEEP_LIMIT, sweepExpiredRooms } from "./room-service";
+import {
+  createRoom,
+  getRoom,
+  joinRoom,
+  LUDO_ROOM_SWEEP_LIMIT,
+  sweepExpiredRooms,
+} from "./room-service";
 
 const ENVIRONMENT: LudoEnvironment = "debug";
 
@@ -75,6 +81,60 @@ describe("createRoom", () => {
     expect(calls).toBe(2);
     expect(second.room.roomCode).toBe(freshCode);
     expect(second.room.roomCode).not.toBe(collidingCode);
+  });
+});
+
+describe("getRoom", () => {
+  it("returns the owner's own waiting room", async () => {
+    const store = new InMemoryLudoStore();
+    const created = await createRoom(store, ENVIRONMENT, {
+      subject: "alice",
+      mode: "classic",
+      seatTarget: 2,
+      idempotencyKey: "k1",
+    });
+    const result = await getRoom(store, ENVIRONMENT, "alice", created.room.roomCode);
+    expect(result.room.roomCode).toBe(created.room.roomCode);
+    expect(result.room.status).toBe("waiting");
+    expect(result.room.matchId).toBeNull();
+  });
+
+  it("reflects a matched status and matchId once another player joins", async () => {
+    const store = new InMemoryLudoStore();
+    const created = await createRoom(store, ENVIRONMENT, {
+      subject: "alice",
+      mode: "classic",
+      seatTarget: 2,
+      idempotencyKey: "k1",
+    });
+    await joinRoom(store, ENVIRONMENT, {
+      subject: "bob",
+      roomCode: created.room.roomCode,
+      idempotencyKey: "k2",
+    });
+    const result = await getRoom(store, ENVIRONMENT, "alice", created.room.roomCode);
+    expect(result.room.status).toBe("matched");
+    expect(result.room.matchId).not.toBeNull();
+  });
+
+  it("rejects reading a room that does not exist", async () => {
+    const store = new InMemoryLudoStore();
+    await expect(getRoom(store, ENVIRONMENT, "alice", "NOPE12")).rejects.toBeInstanceOf(
+      LudoRoomNotFoundError,
+    );
+  });
+
+  it("rejects reading another subject's room", async () => {
+    const store = new InMemoryLudoStore();
+    const created = await createRoom(store, ENVIRONMENT, {
+      subject: "alice",
+      mode: "classic",
+      seatTarget: 2,
+      idempotencyKey: "k1",
+    });
+    await expect(
+      getRoom(store, ENVIRONMENT, "mallory", created.room.roomCode),
+    ).rejects.toBeInstanceOf(LudoRoomForbiddenError);
   });
 });
 

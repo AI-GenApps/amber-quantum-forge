@@ -8,6 +8,7 @@ import {
 import {
   cancelTicket,
   createTicket,
+  getTicket,
   LUDO_MATCHMAKING_BOT_FILL_DEFAULT_SECONDS,
   LUDO_MATCHMAKING_SWEEP_LIMIT,
   sweepMatchmaking,
@@ -67,6 +68,61 @@ describe("createTicket", () => {
     expect(second.ticket.ticketId).toBe(first.ticket.ticketId);
     const all = store.snapshot(ENVIRONMENT).matchmakingTickets;
     expect(all).toHaveLength(1);
+  });
+});
+
+describe("getTicket", () => {
+  it("returns the caller's own ticket", async () => {
+    const store = new InMemoryLudoStore();
+    const created = await createTicket(store, ENVIRONMENT, {
+      subject: "alice",
+      mode: "classic",
+      seatTarget: 2,
+      idempotencyKey: "k1",
+    });
+    const result = await getTicket(store, ENVIRONMENT, "alice", created.ticket.ticketId);
+    expect(result.ticket.ticketId).toBe(created.ticket.ticketId);
+    expect(result.ticket.status).toBe("searching");
+  });
+
+  it("reflects a matched ticket's matchedMatchId once the sweep pairs it", async () => {
+    const store = new InMemoryLudoStore();
+    const a = await createTicket(store, ENVIRONMENT, {
+      subject: "alice",
+      mode: "classic",
+      seatTarget: 2,
+      idempotencyKey: "k1",
+    });
+    await createTicket(store, ENVIRONMENT, {
+      subject: "bob",
+      mode: "classic",
+      seatTarget: 2,
+      idempotencyKey: "k2",
+    });
+    await sweepMatchmaking(store, ENVIRONMENT);
+    const result = await getTicket(store, ENVIRONMENT, "alice", a.ticket.ticketId);
+    expect(result.ticket.status).toBe("matched");
+    expect(result.ticket.matchedMatchId).not.toBeNull();
+  });
+
+  it("rejects reading a ticket that does not exist", async () => {
+    const store = new InMemoryLudoStore();
+    await expect(getTicket(store, ENVIRONMENT, "alice", "nope")).rejects.toBeInstanceOf(
+      LudoTicketNotFoundError,
+    );
+  });
+
+  it("rejects reading another subject's ticket", async () => {
+    const store = new InMemoryLudoStore();
+    const created = await createTicket(store, ENVIRONMENT, {
+      subject: "alice",
+      mode: "classic",
+      seatTarget: 2,
+      idempotencyKey: "k1",
+    });
+    await expect(
+      getTicket(store, ENVIRONMENT, "mallory", created.ticket.ticketId),
+    ).rejects.toBeInstanceOf(LudoTicketForbiddenError);
   });
 });
 

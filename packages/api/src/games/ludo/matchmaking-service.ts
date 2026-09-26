@@ -112,6 +112,27 @@ export async function createTicket(
   });
 }
 
+/**
+ * Reads a ticket's current status for the owning subject (task 26's
+ * matchmaking-search client poll — this is the only way the client learns
+ * a ticket transitioned to `matched`, since `POST .../tickets`'s own
+ * idempotent-replay lookup only ever finds a still-`searching` ticket, per
+ * this function's docstring above).
+ */
+export async function getTicket(
+  store: LudoStore,
+  environment: LudoEnvironment,
+  subject: string,
+  ticketId: string,
+): Promise<{ ticket: LudoMatchmakingTicket }> {
+  return store.read(environment, async (state) => {
+    const row = state.matchmakingTickets.find((t) => t.ticketId === ticketId);
+    if (!row) throw new LudoTicketNotFoundError(ticketId);
+    if (row.subject !== subject) throw new LudoTicketForbiddenError();
+    return { ticket: toContractTicket(row) };
+  });
+}
+
 /** Cancels a `searching` ticket owned by `subject`. */
 export async function cancelTicket(
   store: LudoStore,
