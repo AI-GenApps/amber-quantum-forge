@@ -69,7 +69,7 @@ next task.
 | 14 | Auth owner | Fix API JWT refresh identity bug + tests | [x] |
 | 15 | Backend owner | Ludo HTTP contracts, wire codecs, validation, game token issuance | [x] |
 | 16 | Database owner | Ludo Drizzle schema (including `match_origin`, rooms), migration, memory/Drizzle store interface | [x] |
-| 17 | Backend owner | TS authority match engine port + Dart/TS parity mechanism | [ ] |
+| 17 | Backend owner | TS authority match engine port + Dart/TS parity mechanism | [x] |
 | 18 | Backend owner | Transactional command service, match create/join/command routes | [ ] |
 | 19 | Backend owner | Turn timeout enforcement, claim-timeout endpoint, Vercel Cron sweeper | [ ] |
 | 20 | Backend owner | Random matchmaking with bot-fill | [ ] |

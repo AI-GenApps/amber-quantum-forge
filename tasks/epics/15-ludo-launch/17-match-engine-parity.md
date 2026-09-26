@@ -72,28 +72,30 @@ a `scripts/games/` script comparable to `bun run games:parity`.
 
 ## Implementation Checklist
 
-- [ ] Create `packages/api/src/games/ludo/engine.ts`: TS port of
+- [x] Create `packages/api/src/games/ludo/engine.ts`: TS port of
   `ludo_board.dart`/`ludo_engine.dart` — `rollDice`, `legalMoves`,
   `applyMove`, `isTerminal`, `createMatchState`, `applyJoin`, both rulesets,
   using an injectable dice source.
-- [ ] Create `packages/api/src/games/ludo/dice.ts`: a `CsprngDiceSource`
+- [x] Create `packages/api/src/games/ludo/dice.ts`: a `CsprngDiceSource`
   using `crypto.randomInt`, plus a deterministic fixture-replay dice source
   for tests.
-- [ ] Add `packages/api/src/games/ludo/engine.test.ts` covering the same
+- [x] Add `packages/api/src/games/ludo/engine.test.ts` covering the same
   rule scenarios as `ludo_engine_test.dart` (task 01) at the TS level.
-- [ ] Add `packages/api/src/games/ludo/parity.test.ts` loading every fixture
+- [x] Add `packages/api/src/games/ludo/parity.test.ts` loading every fixture
   from `apps-native/games/packages/ludo_rules/test/fixtures/` and asserting
   TS-engine output matches the Dart-recorded output exactly.
-- [ ] Generalize `scripts/games/parity.ts` or add
+- [x] Generalize `scripts/games/parity.ts` or add
   `scripts/games/ludo-parity.ts` implementing the three-way script-level
   parity check described above.
-- [ ] Add the `"games:ludo:parity"` entry to the root `package.json`.
-- [ ] Update `docs-internal/gaming/commands.md` with the new
+- [x] Add the `"games:ludo:parity"` entry to the root `package.json`.
+- [x] Update `docs-internal/gaming/commands.md` with the new
   `games:ludo:parity` row, following the existing table format.
 
 ## Files Touched
 
 - `packages/api/src/games/ludo/engine.ts`
+- `packages/api/src/games/ludo/engine-model.ts` (split out of `engine.ts` to
+  stay under the repo's max-lines-per-file limit)
 - `packages/api/src/games/ludo/dice.ts`
 - `packages/api/src/games/ludo/engine.test.ts`
 - `packages/api/src/games/ludo/parity.test.ts`

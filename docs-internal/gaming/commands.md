@@ -22,6 +22,7 @@ Run commands from the repository root after Bun, Flutter 3.47.3, and Dart 3.13.3
 | `bun run games:codegen` | Regenerates app configs and the Dart registry from the TypeScript registry. Use `-- --environment production` only for an intentional production config build. |
 | `bun run games:test:tooling` | Runs registry, content, affected-target, generator, metadata, parity, and CLI tests. |
 | `bun run games:parity` | Runs the checked-in Merge Relay Dart VM and compiled-JS replay fixture and requires identical output. |
+| `bun run games:ludo:parity` | Runs a Ludo fixture through the Dart VM, compiled Dart->JS, and the TS authority engine (`packages/api/src/games/ludo/engine.ts`), and requires all three to agree byte-for-byte. |
 | `bun run games:qa -- --base-url http://127.0.0.1:4173/api --environment debug --date 2026-01-01` | Provisions an immutable local daily, creates a real authenticated challenge, and prints its preview/app-link codes. It requires the local token variables below. |
 | `bun run games:native` | Applies generated Android environment and identity guards after native project generation. |
 | `bun run games:xcodegen` | Regenerates each iOS project from its checked-in `ios/project.yml`; it does not sign or submit an app. |
