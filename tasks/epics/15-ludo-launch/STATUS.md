@@ -77,7 +77,7 @@ next task.
 | 22 | Backend owner | Realtime fanout (`MatchViewPublisher`, Firestore adapter, polling fallback) | [x] |
 | 23 | Backend/auth owner | Guest-first + Google-linked identity exchange for Ludo | [x] |
 | 24 | Client owner | Guarded Firebase init, typed gateway client, guest/Google auth controller | [x] |
-| 25 | Client owner | Firestore match listener, polling fallback, reconnect, online board wiring | [ ] |
+| 25 | Client owner | Firestore match listener, polling fallback, reconnect, online board wiring | [x] |
 | 26 | Client owner | Rooms/matchmaking UI, enable online lobby tiles, ONLINE telemetry | [ ] |
 | 26a | Backend/domain owner | Economy design doc, versioned economy config, wallet/ledger/inventory/progression Drizzle schema | [ ] |
 | 26b | Backend owner | Wallet, profile, progression, and inventory HTTP routes | [ ] |

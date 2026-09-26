@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 25-online-match-source
-status: pending
+status: complete
 commit_scope: ludo
 depends_on: [15-ludo-launch/24-online-gateway-auth]
 estimate: L
@@ -43,22 +43,22 @@ timer ring already built in task 09.
 
 ## Implementation Checklist
 
-- [ ] Create `lib/src/net/ludo_match_state_source.dart` (interface) with
+- [x] Create `lib/src/net/ludo_match_state_source.dart` (interface) with
   `FirestoreMatchStateSource` and `PollingMatchStateSource`
   implementations.
-- [ ] Wire `game_board_screen.dart` (task 09) to accept a
+- [x] Wire `game_board_screen.dart` (task 09) to accept a
   `LudoMatchStateSource` for online matches, including the server-provided
   turn deadline.
-- [ ] Wire `pause_quit_dialog.dart`'s `onQuit` (task 09) for online matches
+- [x] Wire `pause_quit_dialog.dart`'s `onQuit` (task 09) for online matches
   to call the gateway's surrender/claim-timeout command.
-- [ ] Add reconnect-on-resume handling (app lifecycle observer refetches
+- [x] Add reconnect-on-resume handling (app lifecycle observer refetches
   state).
-- [ ] Add `test/net/ludo_match_state_source_test.dart` covering fallback
+- [x] Add `test/net/ludo_match_state_source_test.dart` covering fallback
   from a failing Firestore stream to polling.
-- [ ] Add a `test/screens/game_board_screen_test.dart` case (extend task
+- [x] Add a `test/screens/game_board_screen_test.dart` case (extend task
   09's file) covering: the timer ring renders using the server-provided
   deadline when an online source is supplied.
-- [ ] Add a reconnect test simulating a lifecycle resume event and
+- [x] Add a reconnect test simulating a lifecycle resume event and
   asserting state is refetched rather than trusted from stale memory.
 
 ## Files Touched

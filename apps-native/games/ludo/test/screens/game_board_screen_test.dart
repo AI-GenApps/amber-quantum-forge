@@ -1,15 +1,100 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ludo_rules/ludo_rules.dart';
 
 import 'package:ludo/src/game/ludo_game.dart';
+import 'package:ludo/src/net/ludo_gateway.dart';
+import 'package:ludo/src/net/ludo_http.dart';
+import 'package:ludo/src/net/ludo_match_state_source.dart';
+import 'package:ludo/src/net/ludo_session_models.dart' show LudoMatchView;
 import 'package:ludo/src/screens/game_board_screen.dart';
 import 'package:ludo/src/screens/mode_setup_sheet.dart';
 import 'package:ludo/src/state/ludo_sound_settings.dart';
 import 'package:ludo/src/state/reduced_motion_setting.dart';
 import 'package:ludo/src/widgets/dice_zone.dart';
 import 'package:ludo/src/widgets/player_corner_card.dart';
+
+/// A [LudoMatchStateSource] test double: [emit] pushes a view directly
+/// onto [states] (standing in for either a Firestore snapshot or a
+/// polling tick), and [refresh] both records how many times it was
+/// called and, when [refreshResult] is set, emits that view too — so a
+/// reconnect test can assert the board screen actually asked for a fresh
+/// fetch rather than trusting stale in-memory state.
+final class _FakeMatchStateSource implements LudoMatchStateSource {
+  final _controller = StreamController<LudoMatchView>.broadcast();
+  int refreshCallCount = 0;
+  LudoMatchView? refreshResult;
+
+  @override
+  Stream<LudoMatchView> get states => _controller.stream;
+
+  void emit(LudoMatchView view) => _controller.add(view);
+
+  @override
+  Future<LudoMatchView> refresh() async {
+    refreshCallCount += 1;
+    final view = refreshResult;
+    if (view == null) {
+      throw StateError('_FakeMatchStateSource.refreshResult was not set');
+    }
+    _controller.add(view);
+    return view;
+  }
+
+  @override
+  void dispose() => unawaited(_controller.close());
+}
+
+Map<String, Object?> _fixture = {};
+
+/// Builds a `match_view` wire map from the shared fixture, overriding
+/// just the fields a given test cares about.
+Map<String, Object?> _matchViewWire({
+  String matchId = 'match-1',
+  required int currentPlayerIndex,
+  required String deadlineAt,
+}) => {
+  'match_id': matchId,
+  'environment': 'debug',
+  'match_state': {
+    ...(_fixture['match_state'] as Map).cast<String, Object?>(),
+    'match_id': matchId,
+    'current_player_index': currentPlayerIndex,
+    'deadline_at': deadlineAt,
+  },
+  'recent_events': const <Object?>[],
+  'published_at': '2026-01-01T00:00:02.000Z',
+};
+
+LudoGateway _unusedGateway() => LudoGateway(
+  config: LudoNetworkConfig(
+    apiBaseUri: Uri.parse('https://api.example.test/'),
+    environment: 'debug',
+  ),
+  transport: _ThrowingTransport(),
+);
+
+/// Never actually invoked by either test below — `_FakeMatchStateSource`
+/// never delegates to a real gateway — but `LudoOnlineMatchSession`
+/// requires one to construct, so this stands in for "no network calls
+/// expected here".
+final class _ThrowingTransport implements LudoHttpTransport {
+  @override
+  Future<LudoHttpResponse> send({
+    required String method,
+    required Uri uri,
+    required Map<String, String> headers,
+    required Object? body,
+    required Duration timeout,
+    required int maxRequestBytes,
+    required int maxResponseBytes,
+  }) async => throw StateError('Unexpected network call in this test');
+}
 
 /// A dice seed whose first roll (via `DeterministicRng(1).nextInt(6) + 1`)
 /// is deterministically 4 (verified out-of-band), i.e. never a 6 — so a
@@ -63,6 +148,12 @@ Future<void> _pumpUntilSettled(WidgetTester tester) async {
 }
 
 void main() {
+  setUpAll(() {
+    final raw = File('test/fixtures/ludo_route_fixture.json')
+        .readAsStringSync();
+    _fixture = jsonDecode(raw) as Map<String, Object?>;
+  });
+
   testWidgets('dice zone is disabled outside the local player\'s roll phase', (
     tester,
   ) async {
@@ -261,4 +352,146 @@ void main() {
     expect(game.dice.distinctFacesFlickered, 0);
     expect(game.dice.displayFace, 4);
   });
+
+  testWidgets(
+    'task 25: the timer ring renders using the server-provided deadline '
+    'when an online state source is supplied',
+    (tester) async {
+      final config = _twoPlayerComputerConfig();
+      final fakeSource = _FakeMatchStateSource();
+      final session = LudoOnlineMatchSession(
+        gateway: _unusedGateway(),
+        matchId: 'match-1',
+        gameToken: 'game-token',
+        localSeat: 0,
+        stateSource: fakeSource,
+      );
+
+      await tester.pumpWidget(
+        _wrap(
+          GameBoardScreen(
+            config: config,
+            seatIdentities: _identities,
+            soundSettings: LudoSoundSettings(),
+            reducedMotion: ReducedMotionSetting(enabled: true),
+            initialState: LudoMatchState.initial(
+              ruleset: config.ruleset,
+              subjects: const ['local-0', 'local-1'],
+            ),
+            onlineMatch: session,
+          ),
+        ),
+      );
+      await _pumpGame(tester);
+
+      // Seat 0 (config's red seat) is the currently-active seat, with 20
+      // of a 30s turn remaining — a server-provided deadline this screen
+      // never computed locally (no local turn timer runs at all for an
+      // online match; see `GameBoardScreen._armDeadlineForCurrentTurn`'s
+      // early return when `onlineMatch != null`).
+      final deadline = DateTime.now().add(const Duration(seconds: 20));
+      fakeSource.emit(
+        LudoMatchView.fromWire(
+          _matchViewWire(
+            currentPlayerIndex: 0,
+            deadlineAt: deadline.toIso8601String(),
+          ),
+        ),
+      );
+      await _pumpGame(tester);
+
+      final indicator = tester.widget<CircularProgressIndicator>(
+        find.byType(CircularProgressIndicator),
+      );
+      // Comfortably more than half the turn remains (20 of 30s): a stale
+      // or absent deadline would instead render `1.0` (see
+      // `PlayerCornerCard._remainingFraction`'s "nothing to track"
+      // fallback) or, if this screen wrongly still ran a fresh *local*
+      // 30s timer instead of using the server's deadline, would also read
+      // very close to `1.0` rather than this test's ~0.67.
+      expect(indicator.value, greaterThan(0.55));
+      expect(indicator.value, lessThan(0.75));
+    },
+  );
+
+  testWidgets(
+    'task 25: an app-resume lifecycle event refetches online match state '
+    'rather than trusting stale in-memory state',
+    (tester) async {
+      final config = _twoPlayerComputerConfig();
+      final fakeSource = _FakeMatchStateSource();
+      final session = LudoOnlineMatchSession(
+        gateway: _unusedGateway(),
+        matchId: 'match-1',
+        gameToken: 'game-token',
+        localSeat: 0,
+        stateSource: fakeSource,
+      );
+
+      await tester.pumpWidget(
+        _wrap(
+          GameBoardScreen(
+            config: config,
+            seatIdentities: _identities,
+            soundSettings: LudoSoundSettings(),
+            reducedMotion: ReducedMotionSetting(enabled: true),
+            initialState: LudoMatchState.initial(
+              ruleset: config.ruleset,
+              subjects: const ['local-0', 'local-1'],
+            ),
+            onlineMatch: session,
+          ),
+        ),
+      );
+      await _pumpGame(tester);
+      expect(fakeSource.refreshCallCount, 0);
+
+      // The state a stale in-memory screen would otherwise still be
+      // showing after backgrounding: seat 1's turn, deadline already
+      // passed.
+      fakeSource.emit(
+        _staleView(currentPlayerIndex: 1, secondsFromNowDeadline: -60),
+      );
+      await _pumpGame(tester);
+
+      // The genuinely fresh state the reconnect fetch returns: seat 0's
+      // turn again, a brand-new deadline.
+      fakeSource.refreshResult = _staleView(
+        currentPlayerIndex: 0,
+        secondsFromNowDeadline: 30,
+      );
+
+      // Simulate the app returning to the foreground.
+      final binding = TestWidgetsFlutterBinding.instance;
+      binding.handleAppLifecycleStateChanged(AppLifecycleState.paused);
+      binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await _pumpGame(tester);
+
+      expect(
+        fakeSource.refreshCallCount,
+        1,
+        reason:
+            'resuming must trigger exactly one refetch via the gateway, '
+            'never trust whatever was last on the stream before '
+            'backgrounding',
+      );
+    },
+  );
+}
+
+/// Builds a `LudoMatchView` wire object for the reconnect test above, so
+/// it never hand-rolls match-state JSON directly.
+LudoMatchView _staleView({
+  required int currentPlayerIndex,
+  required int secondsFromNowDeadline,
+}) {
+  final deadline = DateTime.now()
+      .add(Duration(seconds: secondsFromNowDeadline))
+      .toIso8601String();
+  return LudoMatchView.fromWire(
+    _matchViewWire(
+      currentPlayerIndex: currentPlayerIndex,
+      deadlineAt: deadline,
+    ),
+  );
 }

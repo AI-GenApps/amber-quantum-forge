@@ -4,10 +4,14 @@
 /// board corner (the active seat's card also hosts its `DiceZone` roll
 /// control), the [LudoBackground] painter as the screen's base layer, and
 /// a small corner pause/menu icon button opening [PauseQuitDialog] (no
-/// full-width title bar). Driven by local `ludo_rules` state;
-/// server/online wiring is tasks 24-26 and bot move automation is task 12
-/// — this screen only renders the bot-difficulty choice made in
-/// [ModeSetupSheet], it never plays a bot's turn itself.
+/// full-width title bar). Driven by local `ludo_rules` state for
+/// Computer/Pass N Play matches; an online match instead supplies
+/// [GameBoardScreen.onlineMatch] (task 25), whose
+/// `LudoMatchStateSource` stream drives `_state`/the timer ring and whose
+/// `quit()` sends the pause dialog's surrender/claim-timeout command —
+/// rooms/matchmaking UI wiring that constructs it is task 26. Bot move
+/// automation is task 12 — this screen only renders the bot-difficulty
+/// choice made in [ModeSetupSheet], it never plays a bot's turn itself.
 library;
 
 import 'dart:async';
@@ -19,6 +23,9 @@ import 'package:platform_core/platform_core.dart' show DeterministicRng;
 
 import '../game/ludo_bot_turn_runner.dart';
 import '../game/ludo_game.dart';
+import '../net/ludo_match_models.dart' as ludo_wire;
+import '../net/ludo_match_state_source.dart';
+import '../net/ludo_session_models.dart' show LudoMatchView;
 import '../state/ludo_local_save.dart';
 import '../state/ludo_settings_store.dart';
 import '../state/ludo_sound_settings.dart';
@@ -66,6 +73,7 @@ class GameBoardScreen extends StatefulWidget {
     this.localSave,
     this.telemetry,
     this.botTurnDelay = const Duration(milliseconds: 700),
+    this.onlineMatch,
   });
 
   /// The match configuration returned by [ModeSetupSheet].
@@ -125,11 +133,21 @@ class GameBoardScreen extends StatefulWidget {
   /// [Duration.zero] so a full bot sequence resolves without a real wait.
   final Duration botTurnDelay;
 
+  /// Task 25: when non-null, this match is online — `_state`/`_turnDeadline`
+  /// are driven entirely by [LudoOnlineMatchSession.stateSource] instead of
+  /// local `ludo_rules` calls, [initialState] supplies the first-known
+  /// state (from the create/join response), and the pause dialog's Quit
+  /// action sends a surrender/claim-timeout command through it instead of
+  /// just popping the screen. `null` (the default) preserves every local
+  /// (Computer/Pass N Play) behavior unchanged.
+  final LudoOnlineMatchSession? onlineMatch;
+
   @override
   State<GameBoardScreen> createState() => _GameBoardScreenState();
 }
 
-class _GameBoardScreenState extends State<GameBoardScreen> {
+class _GameBoardScreenState extends State<GameBoardScreen>
+    with WidgetsBindingObserver {
   late LudoGame _game;
   late LudoMatchState _state;
   late DeterministicRng _rng;
@@ -139,6 +157,7 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
   late final DateTime _matchStartedAt;
   DateTime? _turnDeadline;
   Timer? _turnTimeoutTimer;
+  StreamSubscription<LudoMatchView>? _onlineStatesSubscription;
 
   /// Set once "don't show again" is checked on a Pass N Play interstitial;
   /// suppresses every further interstitial for the rest of this running
@@ -194,6 +213,18 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
         );
     _game = LudoGame(initialState: _state, reducedMotion: _reducedMotion)
       ..onTokenTap = _handleTokenTap;
+    if (widget.onlineMatch != null) {
+      WidgetsBinding.instance.addObserver(this);
+      // No deadline is known yet until the state source delivers its
+      // first update (both implementations fetch/listen immediately on
+      // construction, so this is a very short-lived gap); the timer ring
+      // simply renders nothing until then rather than a stale local one.
+      _turnDeadline = null;
+      _onlineStatesSubscription = widget.onlineMatch!.stateSource.states.listen(
+        _applyOnlineView,
+      );
+      return;
+    }
     _armDeadlineForCurrentTurn();
     // Seat 0 is always the local human player, so a *freshly-started*
     // match never opens on a bot's turn — but a *resumed* match (task 11)
@@ -209,7 +240,88 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
   @override
   void dispose() {
     _turnTimeoutTimer?.cancel();
+    if (widget.onlineMatch != null) {
+      WidgetsBinding.instance.removeObserver(this);
+    }
+    unawaited(_onlineStatesSubscription?.cancel());
     super.dispose();
+  }
+
+  /// Task 25 reconnect handling: on returning to the foreground during an
+  /// online match, re-fetch state via the gateway (ground truth) rather
+  /// than continuing to show whatever was in memory before backgrounding —
+  /// a stale state must never be shown as current.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && widget.onlineMatch != null) {
+      unawaited(_refetchOnlineStateOnResume());
+    }
+  }
+
+  Future<void> _refetchOnlineStateOnResume() async {
+    try {
+      final view = await widget.onlineMatch!.stateSource.refresh();
+      if (mounted) _applyOnlineView(view);
+    } on Object {
+      // Swallow: a briefly-unavailable network on resume must never crash
+      // the board screen. The state source's own stream (Firestore or
+      // polling) will pick the next update up on its own.
+    }
+  }
+
+  DateTime? _parseDeadline(String? deadlineAt) =>
+      deadlineAt == null ? null : DateTime.tryParse(deadlineAt);
+
+  /// Applies a server-published [LudoMatchView] to this screen's state:
+  /// updates `_state`/`_turnDeadline` and snaps [_game]'s board straight to
+  /// the new token layout (`animate: false` — [LudoGame.setMatchState],
+  /// not [LudoGame.applyEvents]). Animating an *online* roll/move/capture
+  /// the way a local turn does is out of this task's scope (task 25 only
+  /// wires the state source itself), as is match-finish handling
+  /// (results navigation, telemetry — task 26).
+  void _applyOnlineView(LudoMatchView view) {
+    if (!mounted) return;
+    final engineState = _toEngineState(view.matchState);
+    setState(() {
+      _state = engineState;
+      _turnDeadline = _parseDeadline(view.matchState.deadlineAt);
+    });
+    unawaited(_game.setMatchState(engineState, animate: false));
+  }
+
+  /// Converts the server's wire `LudoMatchState` (`ludo_match_models.dart`,
+  /// mirroring `packages/api/src/games/ludo/contracts.ts`) into the
+  /// `ludo_rules` engine state this screen (and [LudoGame]) render — the
+  /// two types share every enum's Dart-side member names (`LudoColor`,
+  /// `LudoMatchPhase`) by construction, so no server-side field rename can
+  /// silently desync them without also failing `ludo_match_models.dart`'s
+  /// own decode.
+  LudoMatchState _toEngineState(ludo_wire.LudoMatchState wire) {
+    final ruleset = LudoRuleset.byId[wire.mode.toWire()];
+    if (ruleset == null) {
+      throw StateError('Unknown Ludo mode from server: ${wire.mode}');
+    }
+    return LudoMatchState(
+      ruleset: ruleset,
+      players: [
+        for (final player in wire.players)
+          LudoPlayerState(
+            seat: player.seat,
+            subject: player.subject,
+            color: LudoColor.values.byName(player.color.toWire()),
+            tokens: [
+              for (final token in player.tokens)
+                LudoToken(id: token.id, pathPosition: token.pathPosition),
+            ],
+            captureCount: player.captureCount,
+          ),
+      ],
+      currentPlayerIndex: wire.currentPlayerIndex,
+      phase: LudoMatchPhase.values.byName(wire.phase.name),
+      currentRoll: wire.currentRoll,
+      consecutiveSixes: wire.consecutiveSixes,
+      winnerOrder: wire.winnerOrder,
+    );
   }
 
   /// Persists [_state] to [_localSaveFuture]'s save after every applied
@@ -253,13 +365,22 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
   /// that isn't a bot may act when it's their turn — seat 0 in a
   /// vs-Computer match, or whichever seat is active in a Pass N Play
   /// match sharing this device.
+  ///
+  /// Always `false` for an online match: sending the roll/move command to
+  /// the server is out of this task's scope (task 25 only wires the state
+  /// source, timer deadline, reconnect and quit), so an online match's
+  /// board renders whatever state the server publishes without accepting
+  /// local dice/token input.
   bool get _canRoll =>
+      widget.onlineMatch == null &&
       !_boardBusy &&
       _state.phase == LudoMatchPhase.awaitingRoll &&
       !widget.config.seats[_state.currentPlayerIndex].isBot;
 
-  /// Whether it's a local human seat's turn to move a legal token.
+  /// Whether it's a local human seat's turn to move a legal token. See
+  /// [_canRoll]'s doc comment for why this is always `false` online.
   bool get _canMove =>
+      widget.onlineMatch == null &&
       !_boardBusy &&
       _state.phase == LudoMatchPhase.awaitingMove &&
       !widget.config.seats[_state.currentPlayerIndex].isBot;
@@ -425,7 +546,38 @@ class _GameBoardScreenState extends State<GameBoardScreen> {
       reducedMotion: _reducedMotion,
       settingsStore: widget.settingsStore,
       telemetry: _telemetry,
-      onQuit: widget.onQuit ?? () => Navigator.of(context).maybePop(),
+      onQuit: widget.onQuit ?? _defaultOnQuit,
+    );
+  }
+
+  /// The Quit action's default effect when the caller supplies no
+  /// [GameBoardScreen.onQuit] override: for an online match, sends
+  /// surrender/claim-timeout through [LudoOnlineMatchSession.quit] and
+  /// waits for it before popping (so a network failure there surfaces as
+  /// this screen simply staying open rather than the match silently
+  /// closing without the server ever hearing about it); for a local match,
+  /// pops immediately as before.
+  void _defaultOnQuit() {
+    final onlineMatch = widget.onlineMatch;
+    if (onlineMatch == null) {
+      Navigator.of(context).maybePop();
+      return;
+    }
+    unawaited(
+      onlineMatch
+          .quit(
+            currentPlayerIndex: _state.currentPlayerIndex,
+            turnDeadline: _turnDeadline,
+          )
+          .then((_) {
+            if (mounted) Navigator.of(context).maybePop();
+          })
+          .catchError((Object _) {
+            // A network failure sending surrender/claim-timeout leaves this
+            // screen open rather than silently closing a match the server
+            // never heard the quit for — the player can retry from the
+            // pause dialog.
+          }),
     );
   }
 

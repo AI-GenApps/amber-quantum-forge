@@ -6,9 +6,11 @@
 /// same session.
 ///
 /// Quitting a local match ends it immediately with no penalty; quitting an
-/// online match's forfeit semantics are task 25's concern. This dialog
-/// exposes a single [onQuit] callback the caller supplies — it never
-/// hardcodes forfeit logic itself.
+/// online match sends a surrender/claim-timeout command instead (task 25,
+/// `GameBoardScreen._defaultOnQuit` via `LudoOnlineMatchSession.quit` in
+/// `../net/ludo_match_state_source.dart`). This dialog exposes a single
+/// [onQuit] callback the caller supplies — it never hardcodes forfeit
+/// logic itself, local or online.
 library;
 
 import 'package:flutter/material.dart';
