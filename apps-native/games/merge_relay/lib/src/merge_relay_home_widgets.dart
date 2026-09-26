@@ -10,31 +10,21 @@ final class _HomeBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        DecoratedBox(
-          decoration: BoxDecoration(
-            color: theme.ink,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(11),
-            child: Icon(Icons.alt_route_rounded, color: theme.paper, size: 26),
-          ),
-        ),
-        const SizedBox(width: 12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'MERGE RELAY',
-                style: TextStyle(
-                  color: theme.muted,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 1.6,
+              Align(
+                alignment: Alignment.centerLeft,
+                child: MergeRelayArtSlot(
+                  key: const Key('merge-relay-logo-wide'),
+                  slot: MergeRelayArtManifest.logoWideSlot,
+                  height: 26,
+                  fit: BoxFit.fitHeight,
+                  fallback: _HomeBarBrandFallback(theme: theme),
                 ),
               ),
-              const SizedBox(height: 3),
+              const SizedBox(height: 6),
               Text(
                 'Pass the spark.',
                 style: TextStyle(
@@ -51,6 +41,43 @@ final class _HomeBar extends StatelessWidget {
           onPressed: () => showMergeRelaySettings(context, game, theme),
           tooltip: 'Settings',
           icon: Icon(Icons.tune_rounded, color: theme.ink),
+        ),
+      ],
+    );
+  }
+}
+
+/// Text/icon fallback for the wide-logo header slot, used when
+/// `assets/art/logo_wide.png` fails to load.
+final class _HomeBarBrandFallback extends StatelessWidget {
+  const _HomeBarBrandFallback({required this.theme});
+
+  final MergeRelayTheme theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: theme.ink,
+            borderRadius: BorderRadius.circular(9),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: Icon(Icons.alt_route_rounded, color: theme.paper, size: 16),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          'MERGE RELAY',
+          style: TextStyle(
+            color: theme.muted,
+            fontSize: 11,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1.6,
+          ),
         ),
       ],
     );

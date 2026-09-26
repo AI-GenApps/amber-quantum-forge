@@ -18,16 +18,22 @@ in style and had a wordmark misspelling ("REIAY", an arc replacing the "l").
 Round 2 rendered via `gpt_image_2_5` (Higgsfield CLI, `--quality high --resolution 2k`,
 `--image-references` against the Ludo Vortex brand quality bar). All 6 generations passed
 QA on first attempt; both wordmarks verified letter-by-letter ("M-E-R-G-E R-E-L-A-Y").
-Recommended combo: `icon-v1.png` + `wordmark-v2.png`. Not yet integrated into the app —
-awaiting user approval before any refinement/integration round.
+Recommended combo: `icon-v1.png` + `wordmark-v2.png`. **Approved by the user 2026-09-26 and
+integrated** — icon + splash/home logo only (see decisions log).
 
-## Current in-app art
+## Current in-app art (integrated 2026-09-26)
 
 | What | Path |
 |---|---|
-| Theme definitions (Signal + Ember palettes) | `apps-native/games/merge_relay/lib/src/merge_relay_theme.dart` |
-| Home screen composition | `apps-native/games/merge_relay/lib/src/merge_relay_home.dart`, `merge_relay_home_widgets.dart`, `merge_relay_home_art.dart` |
-| Board painter/renderer | `apps-native/games/merge_relay/lib/src/merge_relay_board_painter.dart` |
+| Launcher icon source (base64 PNG derived from `icon-v1.png`, embedded per the Ludo Vortex pattern) | `apps-native/games/merge_relay/assets/branding/icon.svg` |
+| Rasterized launcher icons (regenerated via `bun run games:icons -- --app merge_relay`) | `apps-native/games/merge_relay/android/app/src/main/res/mipmap-*/ic_launcher.png`, `.../drawable/ic_launcher_foreground.png`, `.../values/ic_launcher_colors.xml`, `apps-native/games/merge_relay/ios/Runner/Assets.xcassets/AppIcon.appiconset/` |
+| Stacked hero logo (home-screen hero; derived from `wordmark-v2-transparent.png`) | `apps-native/games/merge_relay/assets/art/logo_stacked.png` |
+| Wide header logo (derived from `wordmark-v1-transparent.png`) | `apps-native/games/merge_relay/assets/art/logo_wide.png` |
+| Brand art provenance | `apps-native/games/merge_relay/assets/art/LICENSES.md` |
+| Named-slot art manifest + bitmap/fallback widget | `apps-native/games/merge_relay/lib/src/merge_relay_art_manifest.dart` |
+| Theme definitions (Signal + Ember palettes, untouched) | `apps-native/games/merge_relay/lib/src/merge_relay_theme.dart` |
+| Home screen composition (hero + header wired to the art manifest) | `apps-native/games/merge_relay/lib/src/merge_relay_home.dart`, `merge_relay_home_widgets.dart`, `merge_relay_home_art.dart` |
+| Board painter/renderer (untouched — visual overhaul is a separate future epic) | `apps-native/games/merge_relay/lib/src/merge_relay_board_painter.dart` |
 
 ## Device / visual evidence (pre-existing, from the implementation epic)
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:merge_rules/merge_rules.dart';
 
 import 'merge_relay_app.dart';
+import 'merge_relay_art_manifest.dart';
 import 'merge_relay_models.dart';
 import 'merge_relay_overlays.dart';
 import 'merge_relay_theme.dart';
