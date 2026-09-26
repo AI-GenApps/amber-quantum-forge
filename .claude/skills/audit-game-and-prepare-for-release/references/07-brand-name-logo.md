@@ -26,6 +26,16 @@ bundle ids unless the user decides otherwise.
 
 ## Logo (dry run → rounds → integrate)
 
+**Ask the art direction BEFORE round 1** (premium glossy casual · clean minimal · playful
+cartoon). Merge Relay's round 1 inherited the app's flat in-game theme and came out looking
+like SaaS logos — wasted a round. Briefs must name the style and a quality-bar image.
+
+**Spelling is checked letter by letter** by the generating agent (write "M-E-R-G-E
+R-E-L-A-Y" in the README) AND by the orchestrator viewing the contact sheet. No symbol may
+replace a letter (round 1 turned the "l" in RELAY into a Wi-Fi arc → read "REIAY" and the
+agent still reported it "correct"). Also reject clipped elements and generic-symbol
+lookalikes (Wi-Fi, Venn diagrams).
+
 1. **Dry run**: write 3 direction briefs (icon + wordmark each), optionally render cheap
    previews, assemble a contact sheet. Directions used for Ludo: vortex swirl · dice portal ·
    token orbit.
