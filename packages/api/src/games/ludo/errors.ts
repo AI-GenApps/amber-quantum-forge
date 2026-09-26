@@ -9,7 +9,12 @@ export type LudoErrorCode =
   | "ludo_token_configuration_unavailable"
   | "ludo_invalid_environment"
   | "ludo_authentication_required"
-  | "ludo_unavailable";
+  | "ludo_unavailable"
+  | "ludo_wrong_turn"
+  | "ludo_wrong_phase"
+  | "ludo_illegal_move"
+  | "ludo_idempotency_conflict"
+  | "ludo_match_not_joinable";
 
 export class LudoError extends Error {
   readonly diagnosticId: string;
@@ -34,4 +39,69 @@ export class LudoError extends Error {
 export function asLudoError(error: unknown): LudoError {
   if (error instanceof LudoError) return error;
   return new LudoError(503, "ludo_unavailable", "Ludo service is unavailable");
+}
+
+// ---------------------------------------------------------------------------
+// Command-service rejection paths (task 18): a transactional command is
+// rejected before any engine logic runs when the match does not exist, the
+// caller does not hold a seat in it, it is not the caller's turn, the
+// command does not fit the match's current phase, the requested move is not
+// legal for the pending roll, or a repeated idempotency key is attached to a
+// mismatched command. Every subclass below fixes the status/code so call
+// sites only need to supply a message where one varies.
+// ---------------------------------------------------------------------------
+
+/** Base class for every `processCommand`/`createMatch`/`joinMatch` rejection. */
+export class LudoCommandError extends LudoError {}
+
+export class LudoMatchNotFoundError extends LudoCommandError {
+  constructor(matchId: string) {
+    super(404, "ludo_match_not_found", `Ludo match not found: ${matchId}`);
+  }
+}
+
+/** The caller's subject does not own a seat in this match. */
+export class LudoForbiddenSeatError extends LudoCommandError {
+  constructor(message = "The caller does not control a seat in this match") {
+    super(403, "ludo_forbidden_role", message);
+  }
+}
+
+/** The caller owns a seat, but it is not that seat's turn. */
+export class LudoWrongTurnError extends LudoCommandError {
+  constructor() {
+    super(409, "ludo_wrong_turn", "It is not the caller's turn");
+  }
+}
+
+/** The command does not apply to the match's current phase/status (e.g. rolling while awaiting a move). */
+export class LudoWrongPhaseError extends LudoCommandError {
+  constructor(message = "The command is not valid in the match's current phase") {
+    super(409, "ludo_wrong_phase", message);
+  }
+}
+
+/** `move_token` targeted a token id that is not among the current legal moves. */
+export class LudoIllegalMoveError extends LudoCommandError {
+  constructor(message = "The requested move is not legal for the current roll") {
+    super(422, "ludo_illegal_move", message);
+  }
+}
+
+/** A repeated idempotency key is attached to a command of a different type/payload. */
+export class LudoIdempotencyConflictError extends LudoCommandError {
+  constructor() {
+    super(
+      409,
+      "ludo_idempotency_conflict",
+      "The idempotency key is already attached to a different command",
+    );
+  }
+}
+
+/** `create_match`/`join_match` rejected: bad seat count, full match, already joined, or not waiting. */
+export class LudoMatchNotJoinableError extends LudoCommandError {
+  constructor(message: string) {
+    super(409, "ludo_match_not_joinable", message);
+  }
 }

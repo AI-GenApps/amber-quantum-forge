@@ -1,8 +1,45 @@
 import { Hono } from "hono";
 import { describe, expect, it } from "vitest";
 import { signAccessToken } from "../../lib/jwt";
-import { EnvironmentGameTokenVerifier } from "../tokens";
+import { EnvironmentGameTokenVerifier, signGameToken } from "../tokens";
+import { InMemoryLudoStore } from "./memory-store";
 import { createConfiguredLudoRoutes, createLudoRoutes } from "./routes";
+
+const TEST_GAME_TOKEN_SECRET = "ludo-route-test-secret-with-at-least-32-characters";
+const TEST_GAME_TOKEN_ISSUER = "https://issuer.test/games";
+const TEST_GAME_TOKEN_AUDIENCE = "ludo-api-test";
+
+/**
+ * A store + already-signed game token, for tests that exercise the
+ * match/command routes. Sets `GAME_TOKEN_SECRET_LUDO_DEBUG`/issuer/audience
+ * on `process.env` (matching `EnvironmentGameTokenVerifier`'s lookup) —
+ * callers must wrap their test in `saveEnv()`/`restoreEnv()` as the
+ * existing session-route tests below do.
+ */
+async function testHarness(subject = "seat-owner") {
+  process.env.GAME_TOKEN_SECRET_LUDO_DEBUG = TEST_GAME_TOKEN_SECRET;
+  process.env.GAME_TOKEN_ISSUER = TEST_GAME_TOKEN_ISSUER;
+  process.env.GAME_TOKEN_AUDIENCE = TEST_GAME_TOKEN_AUDIENCE;
+  const store = new InMemoryLudoStore();
+  const verifyGameToken = new EnvironmentGameTokenVerifier();
+  const gameToken = await signGameToken(
+    {
+      appId: "ludo",
+      environment: "debug",
+      secret: TEST_GAME_TOKEN_SECRET,
+      issuer: TEST_GAME_TOKEN_ISSUER,
+      audience: TEST_GAME_TOKEN_AUDIENCE,
+    },
+    { subject, role: "player" },
+    300,
+  );
+  const app = new Hono();
+  app.route(
+    "/games/ludo",
+    createLudoRoutes({ signSessionToken: async () => "unused", verifyGameToken, store }),
+  );
+  return { app, store, gameToken };
+}
 
 const ENV_KEYS = [
   "GAME_TOKEN_SECRET_LUDO_DEBUG",
@@ -32,10 +69,18 @@ async function apiToken(sub = "firebase-uid-123") {
   });
 }
 
+function stubDependencies() {
+  return {
+    signSessionToken: async () => "unused",
+    verifyGameToken: new EnvironmentGameTokenVerifier(),
+    store: new InMemoryLudoStore(),
+  };
+}
+
 describe("Ludo session route", () => {
   it("rejects a request without a valid API access token", async () => {
     const app = new Hono();
-    app.route("/games/ludo", createLudoRoutes({ signSessionToken: async () => "unused" }));
+    app.route("/games/ludo", createLudoRoutes(stubDependencies()));
     const response = await app.request("/games/ludo/debug/session", { method: "POST" });
     expect(response.status).toBe(401);
     expect((await response.json()).error.code).toBe("ludo_authentication_required");
@@ -43,7 +88,7 @@ describe("Ludo session route", () => {
 
   it("rejects a request whose :environment is not a recognized game environment", async () => {
     const app = new Hono();
-    app.route("/games/ludo", createLudoRoutes({ signSessionToken: async () => "unused" }));
+    app.route("/games/ludo", createLudoRoutes(stubDependencies()));
     const token = await apiToken();
     const response = await app.request("/games/ludo/production-typo/session", {
       method: "POST",
@@ -101,6 +146,163 @@ describe("Ludo session route", () => {
       });
       expect(response.status).toBe(503);
       expect((await response.json()).error.code).toBe("ludo_token_configuration_unavailable");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+});
+
+describe("Ludo match/command routes", () => {
+  it("rejects a create-match request without a valid Ludo game token", async () => {
+    const saved = saveEnv();
+    try {
+      const { app } = await testHarness();
+      const response = await app.request("/games/ludo/debug/matches", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "create_match",
+          mode: "classic",
+          seats: 2,
+          idempotency_key: "k1",
+        }),
+      });
+      expect(response.status).toBe(401);
+      expect((await response.json()).error.code).toBe("ludo_authentication_required");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("rejects a command from a subject that does not hold a seat in the match (wrong seat)", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken } = await testHarness("owner-subject");
+      const createResponse = await app.request("/games/ludo/debug/matches", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${gameToken}` },
+        body: JSON.stringify({
+          type: "create_match",
+          mode: "classic",
+          seats: 2,
+          idempotency_key: "create-1",
+        }),
+      });
+      expect(createResponse.status).toBe(201);
+      const matchId = (await createResponse.json()).match_state.match_id;
+
+      const intruderToken = await signGameToken(
+        {
+          appId: "ludo",
+          environment: "debug",
+          secret: TEST_GAME_TOKEN_SECRET,
+          issuer: TEST_GAME_TOKEN_ISSUER,
+          audience: TEST_GAME_TOKEN_AUDIENCE,
+        },
+        { subject: "intruder-subject", role: "player" },
+        300,
+      );
+      const response = await app.request(`/games/ludo/debug/matches/${matchId}/commands`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${intruderToken}` },
+        body: JSON.stringify({ type: "roll_dice", match_id: matchId, idempotency_key: "roll-1" }),
+      });
+      expect(response.status).toBe(403);
+      expect((await response.json()).error.code).toBe("ludo_forbidden_role");
+    } finally {
+      restoreEnv(saved);
+    }
+  });
+
+  it("creates a match, joins a second seat and plays a roll-then-move round trip", async () => {
+    const saved = saveEnv();
+    try {
+      const { app, gameToken: ownerToken } = await testHarness("owner-subject");
+      const createResponse = await app.request("/games/ludo/debug/matches", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${ownerToken}` },
+        body: JSON.stringify({
+          type: "create_match",
+          mode: "classic",
+          seats: 2,
+          idempotency_key: "create-1",
+        }),
+      });
+      expect(createResponse.status).toBe(201);
+      const matchId = (await createResponse.json()).match_state.match_id;
+
+      const joinerToken = await signGameToken(
+        {
+          appId: "ludo",
+          environment: "debug",
+          secret: TEST_GAME_TOKEN_SECRET,
+          issuer: TEST_GAME_TOKEN_ISSUER,
+          audience: TEST_GAME_TOKEN_AUDIENCE,
+        },
+        { subject: "joiner-subject", role: "player" },
+        300,
+      );
+      const joinResponse = await app.request(`/games/ludo/debug/matches/${matchId}/commands`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${joinerToken}` },
+        body: JSON.stringify({ type: "join_match", match_id: matchId, idempotency_key: "join-1" }),
+      });
+      expect(joinResponse.status).toBe(200);
+      const joinBody = await joinResponse.json();
+      expect(joinBody.match_state.status).toBe("active");
+
+      // The route uses the real CSPRNG dice source, so drive real rolls
+      // until one has a legal move (every token starts in the yard;
+      // Classic requires a 6 to exit) — each non-6 auto-forfeits to the
+      // other seat, so the acting token must track whichever seat's turn
+      // it now is. Bounded so a run of bad luck can never hang the test.
+      const tokenBySubject: Record<string, string> = {
+        "owner-subject": ownerToken,
+        "joiner-subject": joinerToken,
+      };
+      let matchState = joinBody.match_state;
+      let attempt = 0;
+      while (matchState.phase !== "awaiting_move" && attempt < 50) {
+        const actingSubject = matchState.players[matchState.current_player_index].subject;
+        const rollResponse = await app.request(`/games/ludo/debug/matches/${matchId}/commands`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenBySubject[actingSubject]}`,
+          },
+          body: JSON.stringify({
+            type: "roll_dice",
+            match_id: matchId,
+            idempotency_key: `roll-${attempt}`,
+          }),
+        });
+        expect(rollResponse.status).toBe(200);
+        matchState = (await rollResponse.json()).match_state;
+        attempt++;
+      }
+      expect(matchState.phase).toBe("awaiting_move");
+      expect(matchState.current_roll).toBe(6);
+
+      const actingSubject: string = matchState.players[matchState.current_player_index].subject;
+      const moveResponse = await app.request(`/games/ludo/debug/matches/${matchId}/commands`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenBySubject[actingSubject]}`,
+        },
+        body: JSON.stringify({
+          type: "move_token",
+          match_id: matchId,
+          token_id: 0,
+          idempotency_key: "move-1",
+        }),
+      });
+      expect(moveResponse.status).toBe(200);
+      const moveBody = await moveResponse.json();
+      const movedPlayer = moveBody.match_state.players.find(
+        (p: { subject: string }) => p.subject === actingSubject,
+      );
+      expect(movedPlayer.tokens[0].path_position).toBe(0);
     } finally {
       restoreEnv(saved);
     }

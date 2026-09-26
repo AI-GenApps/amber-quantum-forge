@@ -39,25 +39,25 @@ create-match / process-command HTTP routes on top of it.
 
 ## Implementation Checklist
 
-- [ ] Create `packages/api/src/games/ludo/service.ts`: `createMatch(...,
+- [x] Create `packages/api/src/games/ludo/service.ts`: `createMatch(...,
   matchOrigin)`, `joinMatch`, `processCommand(command)` implementing the
   transactional flow above against `LudoStore`, using task 17's engine.
-- [ ] Add `LudoCommandError`/`LudoMatchNotFoundError`/etc. to
+- [x] Add `LudoCommandError`/`LudoMatchNotFoundError`/etc. to
   `packages/api/src/games/ludo/errors.ts` (extend the file from task 15) for
   every rejection path (wrong turn, wrong phase, unknown match, illegal
   move, duplicate idempotency key with mismatched payload).
-- [ ] Add `packages/api/src/games/ludo/service.test.ts` covering: idempotent
+- [x] Add `packages/api/src/games/ludo/service.test.ts` covering: idempotent
   duplicate command short-circuit, transactional rollback leaves no partial
   event, wrong-turn rejection, `match_origin` is recorded correctly for a
   direct-created match, and a full match played end-to-end through
   `processCommand` reaching `finished` with a winner recorded.
-- [ ] Wire `POST /:environment/matches` (create) and `POST
+- [x] Wire `POST /:environment/matches` (create) and `POST
   /:environment/matches/:matchId/commands` (process command) into
   `packages/api/src/games/ludo/routes.ts` (extends task 15's
   `createConfiguredLudoRoutes()`), requiring a verified Ludo game token
   (task 15's session token) and enforcing seat ownership from the token's
   `subject`.
-- [ ] Add `packages/api/src/games/ludo/routes.test.ts` cases (extend task
+- [x] Add `packages/api/src/games/ludo/routes.test.ts` cases (extend task
   15's file) for the two new routes: unauthenticated rejection, wrong-seat
   rejection, and a successful roll-then-move round trip.
 

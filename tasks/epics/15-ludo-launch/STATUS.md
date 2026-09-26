@@ -70,7 +70,7 @@ next task.
 | 15 | Backend owner | Ludo HTTP contracts, wire codecs, validation, game token issuance | [x] |
 | 16 | Database owner | Ludo Drizzle schema (including `match_origin`, rooms), migration, memory/Drizzle store interface | [x] |
 | 17 | Backend owner | TS authority match engine port + Dart/TS parity mechanism | [x] |
-| 18 | Backend owner | Transactional command service, match create/join/command routes | [ ] |
+| 18 | Backend owner | Transactional command service, match create/join/command routes | [x] |
 | 19 | Backend owner | Turn timeout enforcement, claim-timeout endpoint, Vercel Cron sweeper | [ ] |
 | 20 | Backend owner | Random matchmaking with bot-fill | [ ] |
 | 21 | Backend owner | Private rooms with shareable invite codes | [ ] |

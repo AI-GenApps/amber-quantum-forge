@@ -1,15 +1,70 @@
+import type { Context } from "hono";
 import { Hono } from "hono";
 import { verifyApiToken } from "../../routes/auth-tokens";
-import { GameTokenConfigurationError, signGameToken } from "../tokens";
+import type { GameTokenVerifier } from "../tokens";
+import {
+  EnvironmentGameTokenVerifier,
+  GameTokenConfigurationError,
+  signGameToken,
+} from "../tokens";
 import { isGameEnvironment } from "../validation";
+import type { LudoEnvironment, LudoSession } from "./contracts";
 import { LUDO_APP_ID, LUDO_CONTRACT_VERSION } from "./contracts";
+import { DrizzleLudoStore } from "./drizzle-store";
 import { asLudoError, LudoError } from "./errors";
-import { sessionResponseToWire } from "./wire";
+import { InMemoryLudoStore } from "./memory-store";
+import { createMatch, processCommand } from "./service";
+import { LudoStorageError, type LudoStore, UnavailableLudoStore } from "./store";
+import { parseLudoCommand } from "./validation";
+import { sessionResponseToWire, toWireMatchState } from "./wire";
 
 const SESSION_TOKEN_TTL_SECONDS = 300;
 
 export interface LudoRouteDependencies {
   signSessionToken: (environment: string, subject: string) => Promise<string>;
+  verifyGameToken: GameTokenVerifier;
+  store: LudoStore;
+}
+
+type AuthResult = { ok: true; session: LudoSession } | { ok: false; response: Response };
+
+async function authenticateGameToken(
+  c: Context,
+  dependencies: LudoRouteDependencies,
+  environment: LudoEnvironment,
+): Promise<AuthResult> {
+  const header = c.req.header("Authorization");
+  const token = header?.startsWith("Bearer ") ? header.slice("Bearer ".length) : undefined;
+  if (!token) {
+    const error = new LudoError(
+      401,
+      "ludo_authentication_required",
+      "A valid Ludo game token is required",
+    );
+    return { ok: false, response: c.json(error.response(), error.status) };
+  }
+  try {
+    const session = await dependencies.verifyGameToken.verify(token, {
+      appId: LUDO_APP_ID,
+      environment,
+    });
+    return { ok: true, session: session as LudoSession };
+  } catch {
+    const error = new LudoError(
+      401,
+      "ludo_authentication_required",
+      "A valid Ludo game token is required",
+    );
+    return { ok: false, response: c.json(error.response(), error.status) };
+  }
+}
+
+async function readJsonBody(c: Context): Promise<unknown> {
+  try {
+    return await c.req.json();
+  } catch {
+    return {};
+  }
 }
 
 export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
@@ -62,6 +117,92 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
     }
   });
 
+  routes.post("/:environment/matches", async (c) => {
+    const environment = c.req.param("environment");
+    if (!isGameEnvironment(environment)) {
+      const error = new LudoError(
+        400,
+        "ludo_invalid_environment",
+        "Environment must be debug, staging or production",
+      );
+      return c.json(error.response(), error.status);
+    }
+    const auth = await authenticateGameToken(c, dependencies, environment);
+    if (!auth.ok) return auth.response;
+
+    const parsed = parseLudoCommand(await readJsonBody(c));
+    if (!parsed.ok || parsed.value.type !== "create_match") {
+      const error = new LudoError(
+        422,
+        "ludo_invalid_command",
+        "A valid create_match payload (mode, seats, idempotency_key) is required",
+      );
+      return c.json(error.response(), error.status);
+    }
+
+    try {
+      const result = await createMatch(
+        dependencies.store,
+        environment,
+        {
+          subject: auth.session.subject,
+          mode: parsed.value.mode,
+          seats: parsed.value.seats,
+          idempotencyKey: parsed.value.idempotencyKey,
+        },
+        "direct",
+      );
+      return c.json(
+        { match_state: toWireMatchState(result.matchState), idempotent: result.idempotent },
+        201,
+      );
+    } catch (cause) {
+      const error = asLudoError(cause);
+      return c.json(error.response(), error.status);
+    }
+  });
+
+  routes.post("/:environment/matches/:matchId/commands", async (c) => {
+    const environment = c.req.param("environment");
+    if (!isGameEnvironment(environment)) {
+      const error = new LudoError(
+        400,
+        "ludo_invalid_environment",
+        "Environment must be debug, staging or production",
+      );
+      return c.json(error.response(), error.status);
+    }
+    const auth = await authenticateGameToken(c, dependencies, environment);
+    if (!auth.ok) return auth.response;
+
+    const matchId = c.req.param("matchId");
+    const parsed = parseLudoCommand(await readJsonBody(c));
+    if (!parsed.ok || parsed.value.type === "create_match" || parsed.value.matchId !== matchId) {
+      const error = new LudoError(
+        422,
+        "ludo_invalid_command",
+        "A valid command payload whose match_id matches :matchId is required",
+      );
+      return c.json(error.response(), error.status);
+    }
+
+    try {
+      const result = await processCommand(
+        dependencies.store,
+        environment,
+        auth.session.subject,
+        parsed.value,
+      );
+      return c.json(
+        { match_state: toWireMatchState(result.matchState), idempotent: result.idempotent },
+        200,
+      );
+    } catch (cause) {
+      const error = asLudoError(cause);
+      return c.json(error.response(), error.status);
+    }
+  });
+
   return routes;
 }
 
@@ -88,5 +229,19 @@ export function createConfiguredLudoRoutes(): Hono {
         SESSION_TOKEN_TTL_SECONDS,
       );
     },
+    verifyGameToken: new EnvironmentGameTokenVerifier(),
+    store: configuredLudoStore(),
   });
 }
+
+function configuredLudoStore(): LudoStore {
+  if (process.env.NODE_ENV !== "production" && process.env.LUDO_LOCAL_STORE === "memory") {
+    return new InMemoryLudoStore();
+  }
+  if (process.env.DATABASE_URL) return new DrizzleLudoStore();
+  return new UnavailableLudoStore();
+}
+
+// Re-exported so callers that only need the storage error type (e.g. a
+// future health check) do not need to import from `./store` directly.
+export { LudoStorageError };
