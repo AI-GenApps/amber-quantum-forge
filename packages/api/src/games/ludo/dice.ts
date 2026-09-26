@@ -43,7 +43,7 @@ export class ScriptedDiceSource implements LudoDiceSource {
   private readonly rolls: readonly number[];
 
   constructor(rolls: Iterable<number>) {
-    this.rolls = [...rolls];
+    this.rolls = Array.from(rolls);
   }
 
   rollDie(): number {

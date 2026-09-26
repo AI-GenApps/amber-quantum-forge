@@ -60,7 +60,7 @@ export const LUDO_SAFE_CELLS: readonly number[] = (() => {
     cells.add(start);
     cells.add((start + STAR_OFFSET_FROM_START) % LUDO_TRACK_LENGTH);
   }
-  return [...cells].sort((a, b) => a - b);
+  return Array.from(cells).sort((a, b) => a - b);
 })();
 
 // ---------------------------------------------------------------------------

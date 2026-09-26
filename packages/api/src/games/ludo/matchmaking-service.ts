@@ -240,7 +240,7 @@ export async function sweepMatchmaking(
   let matched = 0;
   let botFilled = 0;
 
-  for (const ticketsInGroup of groups.values()) {
+  for (const ticketsInGroup of Array.from(groups.values())) {
     const seatTarget = ticketsInGroup[0].seatTarget;
     let remaining = [...ticketsInGroup].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 
