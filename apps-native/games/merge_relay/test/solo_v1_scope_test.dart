@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:merge_relay/src/merge_relay_app.dart';
 import 'package:merge_relay/src/merge_relay_board_widget.dart';
 import 'package:merge_relay/src/merge_relay_client.dart';
+import 'package:merge_relay/src/merge_relay_content.dart';
 import 'package:merge_relay/src/merge_relay_features.dart';
 import 'package:merge_relay/src/merge_relay_gateway.dart';
 import 'package:merge_relay/src/merge_relay_relay_controller.dart';
@@ -12,6 +13,7 @@ import 'package:merge_relay/src/merge_relay_relay_models.dart';
 import 'package:merge_relay/src/merge_relay_relay_persistence.dart';
 import 'package:merge_relay/src/platform/merge_relay_pgs_account.dart';
 import 'package:merge_relay/src/platform/merge_relay_play_games.dart';
+import 'package:merge_rules/merge_rules.dart';
 import 'package:platform_core/platform_core.dart';
 
 import 'merge_relay_fake_gateway.dart';
@@ -189,12 +191,20 @@ Future<_SurfaceFindings> _walkSurfaces(
   await tester.tap(find.text('Resume'));
   await tester.pumpAndSettle();
 
-  for (final delta in const [
-    Offset(0, -180),
-    Offset(-180, 0),
-    Offset(-180, 0),
-  ]) {
-    await tester.fling(find.byType(MergeRelayBoard), delta, 1000);
+  // Solved dynamically (rather than hardcoded swipes) since the fallback
+  // catalog's first rescue board is generated at runtime by
+  // `MergeRescueGenerator` — see `widget_test.dart`'s `_clearFirstRescue`.
+  final board = MergeRelayContentCatalog.fallback.firstRescue;
+  const solver = MergeRescueSolver();
+  final winningLine = solver
+      .solve(
+        state: board.state,
+        targetScore: board.targetScore,
+        moveBudget: board.moveBudget,
+      )
+      .winningLine!;
+  for (final direction in winningLine) {
+    await tester.fling(find.byType(MergeRelayBoard), _delta(direction), 1000);
     await tester.pumpAndSettle();
   }
   final shareOnResult = find.text('Share this board').evaluate().isNotEmpty;
@@ -213,6 +223,13 @@ Future<_SurfaceFindings> _walkSurfaces(
     playGamesInSettings: playGamesInSettings,
   );
 }
+
+Offset _delta(MergeDirection direction) => switch (direction) {
+  MergeDirection.up => const Offset(0, -180),
+  MergeDirection.down => const Offset(0, 180),
+  MergeDirection.left => const Offset(-180, 0),
+  MergeDirection.right => const Offset(180, 0),
+};
 
 final class _StubChallengeLinks implements MergeRelayChallengeLinkSource {
   _StubChallengeLinks({this.pending = const []});

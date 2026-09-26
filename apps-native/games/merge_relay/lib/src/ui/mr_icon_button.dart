@@ -49,7 +49,10 @@ final class MrIconButton extends StatelessWidget {
                     ),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(10),
+              // 13px of padding around a 22px icon gives a 48x48 tap
+              // target — the platform accessibility minimum (task 13's
+              // quality gate caught this at 10px: 42x42, under 48dp).
+              padding: const EdgeInsets.all(13),
               child: Icon(
                 icon,
                 size: 22,

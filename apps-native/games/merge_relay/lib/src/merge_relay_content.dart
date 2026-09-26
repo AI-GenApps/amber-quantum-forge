@@ -285,8 +285,14 @@ MergeRelayContentCatalog _generatedFallback() {
       ),
       title: 'Crossing',
       subtitle: 'Open a path through the middle.',
-      objective: 'Reach 28 points.',
-      targetScore: 28,
+      // Task 13: 24 is the highest score this checkpoint can reach within
+      // its 3-move budget now that `MergeRules` slides right/down
+      // correctly (previously right and down silently behaved like left
+      // and up — see `packages/merge_rules/lib/src/merge_rules.dart` —
+      // which the generator's direction search also relied on, so fixing
+      // it changed which board this seed/move-count produces).
+      objective: 'Reach 24 points.',
+      targetScore: 24,
       goalRevision: mergeRelayGoalRevision,
     ),
     (

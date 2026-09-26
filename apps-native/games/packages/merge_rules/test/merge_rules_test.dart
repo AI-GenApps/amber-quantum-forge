@@ -69,7 +69,7 @@ void main() {
 
     expect(first.toJson(), second.toJson());
     expect(replay.toJson(), {
-      'board': [8, 2, 0, 0, 4, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+      'board': [0, 0, 0, 0, 2, 0, 0, 2, 8, 0, 0, 0, 2, 4, 0, 0],
       'score': 12,
       'move_count': 5,
       'seed': 12345,

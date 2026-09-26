@@ -82,8 +82,8 @@ const rescueCampaignChapters = <MergeRescueChapterSpec>[
     boards: [
       MergeRescueBoardSpec(
         id: 'rescue-foundry-01',
-        title: 'Spark Catch',
-        subtitle: 'Catch the first spark.',
+        title: 'New Lantern',
+        subtitle: 'Light the very first tile.',
       ),
       MergeRescueBoardSpec(
         id: 'rescue-foundry-02',

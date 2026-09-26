@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:merge_relay/src/merge_relay_app.dart';
 import 'package:merge_relay/src/merge_relay_board_widget.dart';
+import 'package:merge_relay/src/merge_relay_content.dart';
+import 'package:merge_rules/merge_rules.dart';
 import 'package:platform_core/platform_core.dart';
 
 void main() {
@@ -51,7 +53,7 @@ void main() {
     await tester.tap(find.text('Skip'));
     await tester.pumpAndSettle();
 
-    await _playThreeLegalBoardSwipes(tester);
+    await _clearFirstRescue(tester);
 
     expect(find.text('Path cleared'), findsOneWidget);
     expect(find.text('Score'), findsOneWidget);
@@ -148,7 +150,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Skip'));
     await tester.pumpAndSettle();
-    await _playThreeLegalBoardSwipes(tester);
+    await _clearFirstRescue(tester);
 
     await tester.pumpWidget(MergeRelayApp(key: UniqueKey(), saveStore: store));
     await tester.pumpAndSettle();
@@ -159,13 +161,28 @@ void main() {
   });
 }
 
-Future<void> _playThreeLegalBoardSwipes(WidgetTester tester) async {
-  for (final delta in const [
-    Offset(0, -180),
-    Offset(-180, 0),
-    Offset(-180, 0),
-  ]) {
-    await tester.fling(find.byType(MergeRelayBoard), delta, 1000);
+/// Solves the fallback catalog's first rescue board (generated at runtime by
+/// `MergeRescueGenerator`, so its exact tiles/solution aren't hardcoded here)
+/// and plays that winning line as real board swipes — the same pattern
+/// `merge_relay_onboarding_test.dart`'s `_solveFirstRescue` uses, so this
+/// stays correct however the generator's own move choices land.
+Future<void> _clearFirstRescue(WidgetTester tester) async {
+  final board = MergeRelayContentCatalog.fallback.firstRescue;
+  const solver = MergeRescueSolver();
+  final result = solver.solve(
+    state: board.state,
+    targetScore: board.targetScore,
+    moveBudget: board.moveBudget,
+  );
+  for (final direction in result.winningLine!) {
+    await tester.fling(find.byType(MergeRelayBoard), _delta(direction), 1000);
     await tester.pumpAndSettle();
   }
 }
+
+Offset _delta(MergeDirection direction) => switch (direction) {
+  MergeDirection.up => const Offset(0, -180),
+  MergeDirection.down => const Offset(0, 180),
+  MergeDirection.left => const Offset(-180, 0),
+  MergeDirection.right => const Offset(180, 0),
+};

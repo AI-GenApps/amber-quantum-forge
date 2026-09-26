@@ -123,13 +123,22 @@ final class MergeRules {
     var scoreDelta = 0;
     final mergedPairs = <MergePairTrace>[];
     for (var line = 0; line < 4; line += 1) {
+      // `_lineIndexes` already returns each line's cell indexes in
+      // anchor-first order for the requested direction (e.g. `right`'s
+      // indexes start at the rightmost cell) — that single order is both
+      // the correct scan order for compaction/merging AND the correct
+      // placement order for the result, so it's used directly for both.
+      // (Fix, task 13: the previous code additionally reversed the scan
+      // order and then reversed the output again for `right`/`down`,
+      // which cancels out and makes both directions silently behave like
+      // `left`/`up` — a real, severe gameplay bug: swiping right or down
+      // did nothing different from swiping left or up, and a corner-bias
+      // policy exercising all 4 directions could drive the board into a
+      // permanent soft-lock, since `MergeBoard.hasLegalMove`'s `!isFull`
+      // shortcut assumes real 4-directional movement.)
       final indexes = _lineIndexes(direction, line);
-      final orientedIndexes =
-          direction == MergeDirection.right || direction == MergeDirection.down
-          ? indexes.reversed.toList()
-          : indexes;
       final compact = <_Tile>[];
-      for (final index in orientedIndexes) {
+      for (final index in indexes) {
         if (cells[index] != 0) compact.add(_Tile(index, cells[index]));
       }
       final merged = <int>[];
@@ -155,12 +164,8 @@ final class MergeRules {
         }
       }
       while (merged.length < 4) merged.add(0);
-      final output =
-          direction == MergeDirection.right || direction == MergeDirection.down
-          ? merged.reversed.toList()
-          : merged;
       for (var index = 0; index < indexes.length; index += 1) {
-        result[indexes[index]] = output[index];
+        result[indexes[index]] = merged[index];
       }
     }
     return _MovedBoard(MergeBoard(result), scoreDelta, mergedPairs);

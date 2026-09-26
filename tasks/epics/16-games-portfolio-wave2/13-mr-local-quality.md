@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 13-mr-local-quality
-status: pending
+status: completed
 commit_scope: merge-relay
 depends_on: [16-games-portfolio-wave2/12-mr-onboarding-and-how-to-play]
 estimate: M
@@ -39,14 +39,14 @@ and measured size budgets.
 
 ## Implementation Checklist
 
-- [ ] Add `test/quality/endless_seeded_runs_test.dart`,
+- [x] Add `test/quality/endless_seeded_runs_test.dart`,
       `daily_seeded_test.dart`, `rescue_campaign_replay_test.dart`,
       `app_flows_test.dart`, and `accessibility_test.dart`.
-- [ ] Build a release APK split per ABI and record its size in
+- [x] Build a release APK split per ABI and record its size in
       `.agents/resources/2026-09-25/games-wave2-qa/13/budgets.md`.
       Signing with the debug key is acceptable for measurement only; note
       that.
-- [ ] Fix every bug the tests reveal, within scope, and list the fixes in
+- [x] Fix every bug the tests reveal, within scope, and list the fixes in
       the evidence README.
 
 ## Files Touched
@@ -54,6 +54,18 @@ and measured size budgets.
 - `apps-native/games/merge_relay/test/quality/**`
 - `apps-native/games/merge_relay/lib/**` (bug fixes only)
 - `.agents/resources/2026-09-25/games-wave2-qa/13/**`
+- Deviation, explained in the evidence README: the endless-seeded-runs test
+  found a severe, pre-existing gameplay bug (swipe-right/down silently
+  behaved like left/up) whose root cause is in the shared
+  `apps-native/games/packages/merge_rules` package, not `merge_relay`'s own
+  `lib/`. Fixed there (`lib/src/merge_rules.dart`), plus the trace-derived
+  content and tests that depended on the old (buggy) behavior: the bundled
+  `content/rescue_boards.json` (regenerated with the existing task-06
+  generator tool, same ids/chapters/titles), the fallback catalog's
+  `rescue-crossing` target score, two `packages/merge_rules/test/`
+  hardcoded-checkpoint assertions, three widget tests that hardcoded a
+  fixed swipe sequence, and 10 screen goldens (all viewed and confirmed
+  correct).
 
 ## Acceptance Criteria
 
