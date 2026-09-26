@@ -307,6 +307,36 @@ function withPlayers(state: LudoMatchState, players: readonly LudoPlayerState[])
   return { ...state, players };
 }
 
+/**
+ * Rotates `currentPlayerIndex` forward to the next seat not in
+ * `inactiveSeats`, resetting per-turn state exactly as `advanceTurn` does.
+ * Shared by `timeout.ts`'s `applyTimeoutIfExpired` (task 19) and this
+ * file's own `replay()`, both of which need to skip *forfeited* seats in
+ * addition to `winnerOrder`'s finished ones — something `advanceTurn`
+ * itself has no concept of. Callers must have already confirmed at least
+ * one seat remains outside `inactiveSeats`.
+ */
+export function advanceToNextUnskippedSeat(
+  state: LudoMatchState,
+  inactiveSeats: ReadonlySet<number>,
+): LudoMatchState {
+  let index = state.currentPlayerIndex;
+  for (let i = 0; i < state.players.length; i++) {
+    index = (index + 1) % state.players.length;
+    const seat = state.players[index].seat;
+    if (!inactiveSeats.has(seat)) {
+      return {
+        ...state,
+        currentPlayerIndex: index,
+        phase: "awaitingRoll",
+        currentRoll: null,
+        consecutiveSixes: 0,
+      };
+    }
+  }
+  return state;
+}
+
 // ---------------------------------------------------------------------------
 // Match creation/joining — pure functions only. This task's engine surface
 // stops here: the transactional, store-backed createMatch/joinMatch/
@@ -364,8 +394,32 @@ export function replay(
     winnerOrder: [],
   };
   let index = 0;
+  // Seats forfeited by a `turnTimedOut`/`seatForfeited` pair (task 19) are
+  // permanent for the rest of the match, so this accumulates across the
+  // whole replay rather than being scoped to a single timeout.
+  const forfeitedSeats = new Set<number>();
   while (index < events.length) {
     const event = events[index];
+    if (event.type === "turnTimedOut") {
+      index++;
+      while (index < events.length && events[index].type === "seatForfeited") {
+        const forfeited = events[index] as Extract<LudoReplayEvent, { type: "seatForfeited" }>;
+        forfeitedSeats.add(forfeited.seat);
+        index++;
+      }
+      const next = index < events.length ? events[index] : undefined;
+      if (next?.type === "matchFinished") {
+        state = { ...state, phase: "finished", currentRoll: null, winnerOrder: next.winnerOrder };
+        index++;
+      } else if (next?.type === "matchAbandoned") {
+        state = { ...state, phase: "finished", currentRoll: null };
+        index++;
+      } else {
+        const inactive = new Set<number>([...state.winnerOrder, ...Array.from(forfeitedSeats)]);
+        state = advanceToNextUnskippedSeat(state, inactive);
+      }
+      continue;
+    }
     if (event.type !== "diceRolled") {
       index++;
       continue;

@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { handle } from "hono/vercel";
 import {
   createConfiguredGameRoutes,
+  createConfiguredLudoCronRoutes,
   createConfiguredLudoRoutes,
   createConfiguredMergeRelayRoutes,
 } from "./games";
@@ -40,6 +41,7 @@ app.route("/profile", profileRoutes);
 app.route("/config", configRoutes);
 app.route("/games/merge_relay", createConfiguredMergeRelayRoutes());
 app.route("/games/ludo", createConfiguredLudoRoutes());
+app.route("/games/ludo/cron", createConfiguredLudoCronRoutes());
 app.route("/games", createConfiguredGameRoutes());
 
 app.onError((err, c) => {

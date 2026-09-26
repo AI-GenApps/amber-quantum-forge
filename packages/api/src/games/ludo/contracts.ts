@@ -170,6 +170,15 @@ export interface LudoTurnTimedOutEvent extends LudoEventBase {
   seat: number;
 }
 
+export interface LudoSeatForfeitedEvent extends LudoEventBase {
+  type: "seat_forfeited";
+  seat: number;
+}
+
+export interface LudoMatchAbandonedEvent extends LudoEventBase {
+  type: "match_abandoned";
+}
+
 export type LudoEvent =
   | LudoDiceRolledEvent
   | LudoTokenMovedEvent
@@ -180,7 +189,9 @@ export type LudoEvent =
   | LudoPlayerJoinedEvent
   | LudoPlayerLeftEvent
   | LudoBotFilledEvent
-  | LudoTurnTimedOutEvent;
+  | LudoTurnTimedOutEvent
+  | LudoSeatForfeitedEvent
+  | LudoMatchAbandonedEvent;
 
 export type LudoEventType = LudoEvent["type"];
 

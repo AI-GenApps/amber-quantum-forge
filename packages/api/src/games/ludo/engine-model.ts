@@ -398,7 +398,13 @@ export type LudoReplayEvent =
   | { type: "tokenCaptured"; seat: number; tokenId: number; byseat: number }
   | { type: "tokenFinished"; seat: number; tokenId: number }
   | { type: "turnForfeited"; seat: number; reason: "three-consecutive-sixes" | "no-legal-move" }
-  | { type: "matchFinished"; winnerOrder: readonly number[] };
+  | { type: "matchFinished"; winnerOrder: readonly number[] }
+  // The three variants below are produced only by `timeout.ts` (task 19),
+  // never by the pure gameplay functions above — see that file's header for
+  // why they live outside the Dart-parity surface.
+  | { type: "turnTimedOut"; seat: number }
+  | { type: "seatForfeited"; seat: number }
+  | { type: "matchAbandoned" };
 
 /** Serializes an event to the exact snake_case shape used by the checked-in fixtures. */
 export function eventToJson(event: LudoReplayEvent): Record<string, unknown> {
@@ -426,6 +432,12 @@ export function eventToJson(event: LudoReplayEvent): Record<string, unknown> {
       return { type: "turnForfeited", seat: event.seat, reason: event.reason };
     case "matchFinished":
       return { type: "matchFinished", winner_order: [...event.winnerOrder] };
+    case "turnTimedOut":
+      return { type: "turnTimedOut", seat: event.seat };
+    case "seatForfeited":
+      return { type: "seatForfeited", seat: event.seat };
+    case "matchAbandoned":
+      return { type: "matchAbandoned" };
   }
 }
 
@@ -459,6 +471,12 @@ export function eventFromJson(json: Record<string, unknown>): LudoReplayEvent {
       };
     case "matchFinished":
       return { type, winnerOrder: json.winner_order as number[] };
+    case "turnTimedOut":
+      return { type, seat: json.seat as number };
+    case "seatForfeited":
+      return { type, seat: json.seat as number };
+    case "matchAbandoned":
+      return { type };
     default:
       throw new Error(`Unknown ludo replay event type: ${String(type)}`);
   }

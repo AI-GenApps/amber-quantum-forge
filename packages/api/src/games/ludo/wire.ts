@@ -236,6 +236,11 @@ export function eventFromWire(value: Record<string, unknown>): LudoEvent | null 
     case "turn_timed_out":
       if (typeof value.seat !== "number") return null;
       return { type, ...base, seat: value.seat };
+    case "seat_forfeited":
+      if (typeof value.seat !== "number") return null;
+      return { type, ...base, seat: value.seat };
+    case "match_abandoned":
+      return { type, ...base };
     default:
       return null;
   }

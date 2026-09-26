@@ -71,7 +71,7 @@ next task.
 | 16 | Database owner | Ludo Drizzle schema (including `match_origin`, rooms), migration, memory/Drizzle store interface | [x] |
 | 17 | Backend owner | TS authority match engine port + Dart/TS parity mechanism | [x] |
 | 18 | Backend owner | Transactional command service, match create/join/command routes | [x] |
-| 19 | Backend owner | Turn timeout enforcement, claim-timeout endpoint, Vercel Cron sweeper | [ ] |
+| 19 | Backend owner | Turn timeout enforcement, claim-timeout endpoint, Vercel Cron sweeper | [x] |
 | 20 | Backend owner | Random matchmaking with bot-fill | [ ] |
 | 21 | Backend owner | Private rooms with shareable invite codes | [ ] |
 | 22 | Backend owner | Realtime fanout (`MatchViewPublisher`, Firestore adapter, polling fallback) | [ ] |

@@ -13,7 +13,7 @@ import { LUDO_APP_ID, LUDO_CONTRACT_VERSION } from "./contracts";
 import { DrizzleLudoStore } from "./drizzle-store";
 import { asLudoError, LudoError } from "./errors";
 import { InMemoryLudoStore } from "./memory-store";
-import { createMatch, processCommand } from "./service";
+import { createMatch, getMatchState, processCommand } from "./service";
 import { LudoStorageError, type LudoStore, UnavailableLudoStore } from "./store";
 import { parseLudoCommand } from "./validation";
 import { sessionResponseToWire, toWireMatchState } from "./wire";
@@ -162,6 +162,37 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
     }
   });
 
+  routes.get("/:environment/matches/:matchId", async (c) => {
+    const environment = c.req.param("environment");
+    if (!isGameEnvironment(environment)) {
+      const error = new LudoError(
+        400,
+        "ludo_invalid_environment",
+        "Environment must be debug, staging or production",
+      );
+      return c.json(error.response(), error.status);
+    }
+    const auth = await authenticateGameToken(c, dependencies, environment);
+    if (!auth.ok) return auth.response;
+
+    const matchId = c.req.param("matchId");
+    try {
+      // Applies task 19's lazy timeout check before returning: a client
+      // polling a stalled opponent's match always observes the
+      // post-timeout state on its very next read.
+      const result = await getMatchState(
+        dependencies.store,
+        environment,
+        auth.session.subject,
+        matchId,
+      );
+      return c.json({ match_state: toWireMatchState(result.matchState) }, 200);
+    } catch (cause) {
+      const error = asLudoError(cause);
+      return c.json(error.response(), error.status);
+    }
+  });
+
   routes.post("/:environment/matches/:matchId/commands", async (c) => {
     const environment = c.req.param("environment");
     if (!isGameEnvironment(environment)) {
@@ -234,7 +265,7 @@ export function createConfiguredLudoRoutes(): Hono {
   });
 }
 
-function configuredLudoStore(): LudoStore {
+export function configuredLudoStore(): LudoStore {
   if (process.env.NODE_ENV !== "production" && process.env.LUDO_LOCAL_STORE === "memory") {
     return new InMemoryLudoStore();
   }

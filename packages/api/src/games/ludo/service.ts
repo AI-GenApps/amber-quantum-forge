@@ -42,10 +42,22 @@ import {
   LudoIllegalMoveError,
   LudoMatchNotFoundError,
   LudoMatchNotJoinableError,
+  LudoTimeoutNotElapsedError,
   LudoWrongPhaseError,
   LudoWrongTurnError,
 } from "./errors";
 import type { LudoEventRow, LudoMatchRow, LudoPlayerRow, LudoState, LudoStore } from "./store";
+import { applyTimeoutIfExpired, computeTurnDeadline } from "./timeout";
+
+/**
+ * Cap on how many expired matches a single cron invocation
+ * (`GET/POST /games/ludo/cron/sweep-timeouts`) will process, matching the
+ * repo's "bounded cursor" convention for maintenance sweeps (see Merge
+ * Relay's equivalent work) — the lazy per-request check is the primary
+ * enforcement mechanism, so this only needs to bound worst-case work for
+ * matches nobody is actively polling.
+ */
+export const LUDO_SWEEP_BATCH_LIMIT = 25;
 
 /** Maps an engine `LudoReplayEvent`'s type to the snake_case label stored in `ludo_events.event_type`. */
 const WIRE_EVENT_TYPE: Record<LudoReplayEvent["type"], string> = {
@@ -55,6 +67,9 @@ const WIRE_EVENT_TYPE: Record<LudoReplayEvent["type"], string> = {
   tokenFinished: "token_finished",
   turnForfeited: "turn_forfeited",
   matchFinished: "match_finished",
+  turnTimedOut: "turn_timed_out",
+  seatForfeited: "seat_forfeited",
+  matchAbandoned: "match_abandoned",
 };
 
 const ENGINE_PHASE_TO_WIRE: Record<EngineMatchState["phase"], WireMatchState["phase"]> = {
@@ -220,6 +235,7 @@ export async function joinMatch(
       row.status = "active";
       row.phase = "awaiting_roll";
       row.currentTurnSeat = 0;
+      row.turnDeadlineAt = computeTurnDeadline(now);
       row.revision += 1;
       row.updatedAt = now;
     }
@@ -240,10 +256,10 @@ export async function joinMatch(
 /**
  * Applies a gameplay/roster command to an existing match: `roll_dice` and
  * `move_token` run the engine transition; `join_match` delegates to
- * `joinMatch`. `create_match`/`claim_timeout`/`surrender`/`rematch` are out
- * of this task's scope (created matches go through `createMatch` directly;
- * timeouts are task 19; surrender/rematch are not yet specified) and are
- * rejected with `ludo_invalid_command`.
+ * `joinMatch`; `claim_timeout` delegates to `claimTimeout` (task 19).
+ * `create_match`/`surrender`/`rematch` are out of this task's scope
+ * (created matches go through `createMatch` directly; surrender/rematch are
+ * not yet specified) and are rejected with `ludo_invalid_command`.
  */
 export async function processCommand(
   store: LudoStore,
@@ -305,6 +321,8 @@ export async function processCommand(
           }
         },
       );
+    case "claim_timeout":
+      return claimTimeout(store, environment, subject, command.matchId, command.idempotencyKey);
     default:
       throw new LudoError(
         422,
@@ -340,6 +358,13 @@ async function applyGameplayCommand(
     const row = state.matches.find((m) => m.matchId === matchId);
     if (!row) throw new LudoMatchNotFoundError(matchId);
 
+    // Lazy enforcement (task 19): before anything else, resolve any turn
+    // that has already timed out — including, potentially, the very turn
+    // this command is trying to act on.
+    const now = new Date().toISOString();
+    const allPlayerRows = state.players.filter((p) => p.matchId === matchId);
+    applyLazyTimeout(state, row, allPlayerRows, now);
+
     const existingCommand = state.commands.find(
       (c) => c.matchId === matchId && c.idempotencyKey === idempotencyKey,
     );
@@ -348,23 +373,30 @@ async function applyGameplayCommand(
       return { matchState: publicStateFor(state, row), idempotent: true };
     }
 
-    const playerRows = state.players.filter((p) => p.matchId === matchId);
-    const seat = playerRows.find((p) => p.subject === subject)?.seat;
+    const seatRow = allPlayerRows.find((p) => p.subject === subject);
+    const seat = seatRow?.seat;
     if (seat === undefined) throw new LudoForbiddenSeatError();
     if (row.status !== "active") throw new LudoWrongPhaseError("The match is not active");
     if (row.currentTurnSeat !== seat) throw new LudoWrongTurnError();
 
-    const matchState = reconstructEngineState(row, playerRows, state.events);
+    const matchState = reconstructEngineState(row, allPlayerRows, state.events);
     const { next, events, resultSummary } = apply(matchState);
 
-    const now = new Date().toISOString();
     appendEvents(state, row, events, now);
     row.phase = ENGINE_PHASE_TO_WIRE[next.phase];
     row.currentTurnSeat = next.players[next.currentPlayerIndex].seat;
     row.sixStreak = next.consecutiveSixes;
-    if (next.phase === "finished") row.status = "finished";
+    if (next.phase === "finished") {
+      row.status = "finished";
+      row.turnDeadlineAt = null;
+    } else {
+      row.turnDeadlineAt = computeTurnDeadline(now);
+    }
     row.revision += 1;
     row.updatedAt = now;
+    // The acting seat just took a legal action within its deadline, so its
+    // consecutive-miss streak resets (see timeout.ts's forfeit threshold).
+    if (seatRow) seatRow.missCount = 0;
 
     state.commands.push({
       matchId,
@@ -377,6 +409,169 @@ async function applyGameplayCommand(
 
     return { matchState: publicStateFor(state, row), idempotent: false };
   });
+}
+
+/**
+ * The explicit `claim_timeout` command (task 19): any seated player may
+ * call this once they observe `now > turn_deadline_at` on their own clock.
+ * It drives the exact same `applyTimeoutIfExpired` transition as the lazy
+ * check above and is rejected with `ludo_timeout_not_elapsed` if the
+ * deadline has not actually passed, so a second call with a *new*
+ * idempotency key right after a successful one correctly fails rather than
+ * silently re-applying a timeout that already happened; a second call with
+ * the *same* idempotency key returns the identical cached result.
+ */
+async function claimTimeout(
+  store: LudoStore,
+  environment: LudoEnvironment,
+  subject: string,
+  matchId: string,
+  idempotencyKey: string,
+): Promise<LudoCommandResult> {
+  return store.transact(environment, async (state) => {
+    const row = state.matches.find((m) => m.matchId === matchId);
+    if (!row) throw new LudoMatchNotFoundError(matchId);
+
+    const existingCommand = state.commands.find(
+      (c) => c.matchId === matchId && c.idempotencyKey === idempotencyKey,
+    );
+    if (existingCommand) {
+      if (existingCommand.commandType !== "claim_timeout") throw new LudoIdempotencyConflictError();
+      return { matchState: publicStateFor(state, row), idempotent: true };
+    }
+
+    const playerRows = state.players.filter((p) => p.matchId === matchId);
+    const seat = playerRows.find((p) => p.subject === subject)?.seat;
+    if (seat === undefined) throw new LudoForbiddenSeatError();
+    if (row.status !== "active") throw new LudoWrongPhaseError("The match is not active");
+
+    const now = new Date().toISOString();
+    const applied = applyLazyTimeout(state, row, playerRows, now);
+    if (!applied) throw new LudoTimeoutNotElapsedError();
+
+    state.commands.push({
+      matchId,
+      environment,
+      idempotencyKey,
+      commandType: "claim_timeout",
+      resultSummary: { timedOutSeat: row.currentTurnSeat },
+      createdAt: now,
+    });
+
+    return { matchState: publicStateFor(state, row), idempotent: false };
+  });
+}
+
+/**
+ * Reads the current match state for a seated player (`GET
+ * /:environment/matches/:matchId`), applying the lazy timeout check first
+ * so a client polling a stalled opponent's match always observes the
+ * post-timeout state, without needing to send `claim_timeout` itself.
+ */
+export async function getMatchState(
+  store: LudoStore,
+  environment: LudoEnvironment,
+  subject: string,
+  matchId: string,
+): Promise<{ matchState: WireMatchState }> {
+  return store.transact(environment, async (state) => {
+    const row = state.matches.find((m) => m.matchId === matchId);
+    if (!row) throw new LudoMatchNotFoundError(matchId);
+    const playerRows = state.players.filter((p) => p.matchId === matchId);
+    const seat = playerRows.find((p) => p.subject === subject)?.seat;
+    if (seat === undefined) throw new LudoForbiddenSeatError();
+
+    const now = new Date().toISOString();
+    applyLazyTimeout(state, row, playerRows, now);
+
+    return { matchState: publicStateFor(state, row) };
+  });
+}
+
+/**
+ * Shared lazy-check body for the GET route, every gameplay command, and
+ * `claim_timeout`: no-ops for a match that is not `"active"` or whose
+ * deadline has not elapsed, otherwise applies `applyTimeoutIfExpired` and
+ * persists its result (events, cached scalar row fields, per-seat miss
+ * counts, a fresh deadline for whichever seat now has the turn). Returns
+ * whether a timeout was actually applied, which `claimTimeout` uses to
+ * reject a premature claim and `sweepTimeouts` uses to count real work.
+ */
+function applyLazyTimeout(
+  state: LudoState,
+  row: LudoMatchRow,
+  playerRows: readonly LudoPlayerRow[],
+  nowIso: string,
+): boolean {
+  if (row.status !== "active") return false;
+  const sortedPlayerRows = [...playerRows].sort((a, b) => a.seat - b.seat);
+  const matchState = reconstructEngineState(row, sortedPlayerRows, state.events);
+  const missCounts: number[] = [];
+  for (const p of sortedPlayerRows) missCounts[p.seat] = p.missCount;
+
+  const outcome = applyTimeoutIfExpired({
+    matchState,
+    missCounts,
+    deadlineAt: row.turnDeadlineAt,
+    now: new Date(nowIso),
+  });
+  if (!outcome.timedOut) return false;
+
+  appendEvents(state, row, outcome.events, nowIso);
+  row.phase = ENGINE_PHASE_TO_WIRE[outcome.matchState.phase];
+  row.currentTurnSeat =
+    outcome.matchState.players[outcome.matchState.currentPlayerIndex]?.seat ?? row.currentTurnSeat;
+  row.sixStreak = outcome.matchState.consecutiveSixes;
+  if (outcome.abandoned) row.status = "abandoned";
+  else if (outcome.matchState.phase === "finished") row.status = "finished";
+  row.turnDeadlineAt = outcome.matchState.phase === "finished" ? null : computeTurnDeadline(nowIso);
+  row.revision += 1;
+  row.updatedAt = nowIso;
+
+  for (const p of sortedPlayerRows) {
+    const updated = outcome.missCounts[p.seat];
+    if (updated !== undefined) p.missCount = updated;
+  }
+
+  return true;
+}
+
+/**
+ * Cron sweeper backstop (`GET/POST /games/ludo/cron/sweep-timeouts`,
+ * task 19): scans one environment's matches for ones whose deadline has
+ * already elapsed, bounded to `limit` per invocation (oldest deadline
+ * first), and applies the identical `applyLazyTimeout` transition to each.
+ * A match another request (or a previous sweep) already resolved is simply
+ * a no-op here — see `applyLazyTimeout`'s idempotency note — so repeated
+ * sweeps never double-apply a timeout.
+ */
+export async function sweepTimeouts(
+  store: LudoStore,
+  environment: LudoEnvironment,
+  limit: number = LUDO_SWEEP_BATCH_LIMIT,
+): Promise<number> {
+  const nowIso = new Date().toISOString();
+  const candidateMatchIds = await store.read(environment, async (state) =>
+    state.matches
+      .filter(
+        (m) => m.status === "active" && m.turnDeadlineAt !== null && m.turnDeadlineAt < nowIso,
+      )
+      .sort((a, b) => (a.turnDeadlineAt as string).localeCompare(b.turnDeadlineAt as string))
+      .slice(0, limit)
+      .map((m) => m.matchId),
+  );
+
+  let swept = 0;
+  for (const matchId of candidateMatchIds) {
+    const applied = await store.transact(environment, async (state) => {
+      const row = state.matches.find((m) => m.matchId === matchId);
+      if (!row) return false;
+      const playerRows = state.players.filter((p) => p.matchId === matchId);
+      return applyLazyTimeout(state, row, playerRows, new Date().toISOString());
+    });
+    if (applied) swept += 1;
+  }
+  return swept;
 }
 
 /** Appends `events` to `ludo_events` starting at the next unused `sequence` for this match. */

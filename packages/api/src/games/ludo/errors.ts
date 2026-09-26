@@ -14,7 +14,8 @@ export type LudoErrorCode =
   | "ludo_wrong_phase"
   | "ludo_illegal_move"
   | "ludo_idempotency_conflict"
-  | "ludo_match_not_joinable";
+  | "ludo_match_not_joinable"
+  | "ludo_timeout_not_elapsed";
 
 export class LudoError extends Error {
   readonly diagnosticId: string;
@@ -103,5 +104,16 @@ export class LudoIdempotencyConflictError extends LudoCommandError {
 export class LudoMatchNotJoinableError extends LudoCommandError {
   constructor(message: string) {
     super(409, "ludo_match_not_joinable", message);
+  }
+}
+
+/**
+ * `claim_timeout` rejected because `now` has not actually passed the
+ * caller's own seat's `turn_deadline_at` yet — the lazy check that runs
+ * ahead of every read/command (task 19) found nothing to apply.
+ */
+export class LudoTimeoutNotElapsedError extends LudoCommandError {
+  constructor() {
+    super(409, "ludo_timeout_not_elapsed", "The current turn has not yet timed out");
   }
 }

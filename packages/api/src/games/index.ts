@@ -2,6 +2,11 @@ export * from "./contracts";
 export { FileGameStore } from "./file-store";
 export * from "./ludo/contracts";
 export {
+  createConfiguredLudoCronRoutes,
+  createLudoCronRoutes,
+  type LudoCronRouteDependencies,
+} from "./ludo/cron-routes";
+export {
   createConfiguredLudoRoutes,
   createLudoRoutes,
   type LudoRouteDependencies,

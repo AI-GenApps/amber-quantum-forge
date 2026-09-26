@@ -60,26 +60,26 @@ repo's existing Vercel Cron conventions (`apps/web/vercel.json`,
 
 ## Implementation Checklist
 
-- [ ] Add `applyTimeoutIfExpired(state, now)` to
+- [x] Add `applyTimeoutIfExpired(state, now)` to
   `packages/api/src/games/ludo/engine.ts` (or a new `timeout.ts`) —
   pure function, testable independent of the store.
-- [ ] Call it at the top of `service.ts`'s `processCommand` and of the
+- [x] Call it at the top of `service.ts`'s `processCommand` and of the
   match-read path (extend task 18's `GET` route or add one if it does not
   yet exist) before any other logic.
-- [ ] Add the `claim_timeout` command handler in `service.ts` calling the
+- [x] Add the `claim_timeout` command handler in `service.ts` calling the
   same function and returning the updated state.
-- [ ] Add forfeit-after-three-misses and abandon-when-all-forfeited logic,
+- [x] Add forfeit-after-three-misses and abandon-when-all-forfeited logic,
   covered by `packages/api/src/games/ludo/timeout.test.ts`.
-- [ ] Create `apps/web/vercel.json` with a `crons` entry for
+- [x] Create `apps/web/vercel.json` with a `crons` entry for
   `/api/games/ludo/cron/sweep-timeouts` on `* * * * *`.
-- [ ] Add the sweeper route to `packages/api/src/games/ludo/routes.ts`
+- [x] Add the sweeper route to `packages/api/src/games/ludo/routes.ts`
   (or a dedicated `cron-routes.ts` mounted alongside it), guarded by
   `CRON_SECRET` comparison with a fail-closed `401` when unset/mismatched.
-- [ ] Add `packages/api/src/games/ludo/cron-sweep.test.ts` covering: an
+- [x] Add `packages/api/src/games/ludo/cron-sweep.test.ts` covering: an
   expired match gets swept, a non-expired match is untouched, the route
   rejects a missing/incorrect `CRON_SECRET`, and repeated sweeps of an
   already-swept match are idempotent (no duplicate `turn_timed_out` events).
-- [ ] Document `CRON_SECRET` in the repo's env var reference (check
+- [x] Document `CRON_SECRET` in the repo's env var reference (check
   `tasks/START.md`'s "Key environment variables" section or
   `docs-internal/setup/02-env-vars.md` for where new server env vars are
   recorded, and add it there).
