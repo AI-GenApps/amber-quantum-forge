@@ -1,0 +1,21 @@
+# Merge Relay — decisions log
+
+Sourced from `docs-internal/gaming/*` (repository decisions already on record, not new
+decisions made in this session unless noted). Dates are the source document's own dated
+records where given; "undated" marks decisions stated in the source without an explicit
+date.
+
+| Date | Decision | Rationale / notes | Source |
+|---|---|---|---|
+| undated (v0.3 PRD, Drive-modified 2026-09-10) | Selected-MVP scope: rescue, daily, endless, ranked relay (≤3 moves), guest identity + optional upgrade, save sync, progression/themes, telemetry/config, sandbox cosmetic/rewarded-ad paths | Corrects an earlier under-scoped plan; the 20-tile/checkpoint fixture from the older plan is an early integration milestone, not the endpoint | `docs-internal/gaming/handoffs/merge-relay.md` |
+| undated | Board is swipe-first with a fixed, legible viewport; accessibility arrow/buttons are optional, not default | UX contract agreed before implementation | `docs-internal/gaming/merge-relay-release-plan.md` |
+| undated | Ranked relay attempts capped at **at most 3 legal moves**; daily practice is a separate contract and does not inherit this budget by accident | Keeps "relay" competitive/bounded while daily stays a relaxed practice mode | `docs-internal/gaming/merge-relay-release-plan.md` |
+| undated | Home screen stays compact: Continue/Play, Daily, Relays as primary actions; settings/profile/themes/achievements behind secondary menus | Avoids clutter on first open | `docs-internal/gaming/merge-relay-release-plan.md` |
+| 2026-09-15 (release notes date rechecked) | Use official Android PGS v2 SDK directly (`com.google.android.gms:play-services-games-v2:22.1.0`); no v1 artifact, no third-party Flutter wrapper; build an app-local typed Kotlin/Pigeon bridge instead of extracting a shared package | Only Merge Relay currently consumes PGS; exact v2 lifecycle behavior needed; extract to a shared package only after a second consumer exists | `docs-internal/gaming/merge-relay-release-plan.md` |
+| undated | PGS is a platform identity, not the game account; guest subject/recovery token/app-environment JWT/local save/server account remain canonical identity; a PGS mapping conflict returns an explicit choice, never a silent merge | Prevents account/progress collisions | `docs-internal/gaming/merge-relay-release-plan.md` |
+| undated | Release sequencing: Google Play / Android first; further iOS QA paused until after Google Play publication (iOS signed/install/play baseline retained) | User steering recorded 2026-09-17 | `docs-internal/gaming/handoffs/merge-relay.md` |
+| undated | Monetization: cosmetic-only non-consumable theme pack (`merge_relay_theme_pack_v1` → `merge_relay.theme_pack.v1`) via Google Play Billing; no currency/consumable economy defined; rewarded ads planned but not built | Keeps IAP scope narrow and honest for content rating / store declarations | `docs-internal/gaming/merge-relay-commerce.md` |
+| 2026-09-17 | Physical Android smoke test on device `SM-A525F` (`RZ8R32EAB7T`, Android 14, 1080x2400): real-merge capture recorded | First physical-device evidence; single device only, no second-device relay evidence yet | `docs-internal/gaming/merge-relay-release-plan.md` |
+| 2026-09-18 | Isolated PostgreSQL 16.15 run validated migrations across receipts/purchase/provider/vault (commerce: 31 tests; separately, backend remediation: 6 db + 35 tests) | Confirms persistence layer under a real database, not just injected fakes | `docs-internal/gaming/merge-relay-commerce.md`, `docs-internal/gaming/merge-relay-release-audit.md` |
+| 2026-09-26 | Name check: "Merge Relay" kept as-is — strict Play/App Store/web/trademark check found no conflict | See `.agents/resources/2026-09-26/merge-relay-brand/name-check.md`; this session's decision | this task |
+| 2026-09-26 | Drafted 3 logo direction briefs (Baton Chain, Signal Grid, Ember Handoff) for a future dry-run render round; no images generated yet | See `.agents/resources/2026-09-26/merge-relay-brand/logo-briefs.md`; this session's decision | this task |
