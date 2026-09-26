@@ -84,34 +84,34 @@ drizzle-store.ts}` and `packages/db/src/schema.ts`'s `mergeRelayScopes`/
 
 ## Implementation Checklist
 
-- [ ] Add the six tables to `packages/db/src/schema.ts` with the columns,
+- [x] Add the six tables to `packages/db/src/schema.ts` with the columns,
   keys, and indexes above, following the existing `mergeRelayScopes`/
   `mergeRelayRecords` style (imports from `drizzle-orm/pg-core`, `check`,
   `uniqueIndex`, `index`, `foreignKey` as needed).
-- [ ] Run `cd packages/db && DATABASE_URL=postgresql://migration-generator.invalid/ludo bun run db:generate` and check in the generated migration file. Do not run `db:push` against any real database.
-- [ ] Create `packages/api/src/games/ludo/store.ts` defining `LudoStore`
+- [x] Run `cd packages/db && DATABASE_URL=postgresql://migration-generator.invalid/ludo bun run db:generate` and check in the generated migration file. Do not run `db:push` against any real database.
+- [x] Create `packages/api/src/games/ludo/store.ts` defining `LudoStore`
   (`read`/`transact`), `LudoState` (matches/players/events/commands/tickets/
   rooms arrays), `emptyLudoState()`, `cloneLudoState()`, and a
   `LudoStorageError` class, matching `merge-relay/store.ts`'s shapes.
-- [ ] Create `packages/api/src/games/ludo/memory-store.ts` implementing
+- [x] Create `packages/api/src/games/ludo/memory-store.ts` implementing
   `LudoStore` over an in-process `Map` keyed by `(appId, environment)`,
   matching `merge-relay/memory-store.ts`'s concurrency-safe
   read/transact pattern (single-flight per scope).
-- [ ] Create `packages/api/src/games/ludo/drizzle-store.ts` implementing
+- [x] Create `packages/api/src/games/ludo/drizzle-store.ts` implementing
   `LudoStore` with targeted per-row upserts/deletes inside a single Drizzle
   transaction per `transact()` call, plus a read-only path for `read()` that
   never opens a write transaction.
-- [ ] Create `packages/api/src/games/ludo/drizzle-store.test.ts` covering
+- [x] Create `packages/api/src/games/ludo/drizzle-store.test.ts` covering
   optimistic revision conflicts, transaction rollback on thrown error inside
   `transact`, and app/environment scope isolation, matching
   `merge-relay/drizzle-store.test.ts`'s coverage shape, using an injected
   fake Postgres client (do not require a real database for this test file).
-- [ ] Create `packages/api/src/games/ludo/drizzle-postgres.test.ts` mirroring
+- [x] Create `packages/api/src/games/ludo/drizzle-postgres.test.ts` mirroring
   `merge-relay/drizzle-postgres.test.ts`: skips explicitly when
   `LUDO_TEST_DATABASE_URL` is unset, otherwise runs the adapter against a
   real isolated PostgreSQL database applying all checked-in migrations
   first.
-- [ ] Add a Ludo isolation test (extend `packages/api/src/games/
+- [x] Add a Ludo isolation test (extend `packages/api/src/games/
   isolation.test.ts` or add `packages/api/src/games/ludo/isolation.test.ts`)
   proving a `debug`-scoped write is invisible to a `staging`-scoped read for
   the same `matchId`.

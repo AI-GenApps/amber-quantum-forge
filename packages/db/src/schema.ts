@@ -223,3 +223,155 @@ export const mergeRelayRecords = pgTable(
     }),
   ],
 );
+
+export const ludoMatches = pgTable(
+  "ludo_matches",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    matchId: text("match_id").notNull(),
+    mode: text("mode").notNull(),
+    status: text("status").notNull(),
+    seatCount: integer("seat_count").notNull(),
+    rulesVersion: text("rules_version").notNull(),
+    currentTurnSeat: integer("current_turn_seat").notNull(),
+    phase: text("phase").notNull(),
+    sixStreak: integer("six_streak").notNull().default(0),
+    turnDeadlineAt: timestamp("turn_deadline_at"),
+    revision: integer("revision").notNull().default(0),
+    matchOrigin: text("match_origin").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.appId, table.environment, table.matchId] }),
+    check("ludo_matches_origin_check", sql`"match_origin" IN ('matchmaking', 'room', 'direct')`),
+    check("ludo_matches_mode_check", sql`"mode" IN ('classic', 'quick')`),
+  ],
+);
+
+export const ludoPlayers = pgTable(
+  "ludo_players",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    matchId: text("match_id").notNull(),
+    seat: integer("seat").notNull(),
+    subject: text("subject"),
+    isBot: boolean("is_bot").notNull().default(false),
+    botDifficulty: text("bot_difficulty"),
+    displayNameCache: text("display_name_cache"),
+    connectedAt: timestamp("connected_at"),
+    missCount: integer("miss_count").notNull().default(0),
+  },
+  (table) => [
+    primaryKey({ columns: [table.appId, table.environment, table.matchId, table.seat] }),
+    index("ludo_players_subject_idx").on(table.appId, table.environment, table.subject),
+    foreignKey({
+      columns: [table.appId, table.environment, table.matchId],
+      foreignColumns: [ludoMatches.appId, ludoMatches.environment, ludoMatches.matchId],
+      name: "ludo_players_match_fk",
+    }).onDelete("cascade"),
+  ],
+);
+
+export const ludoEvents = pgTable(
+  "ludo_events",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    matchId: text("match_id").notNull(),
+    sequence: integer("sequence").notNull(),
+    eventType: text("event_type").notNull(),
+    payload: jsonb("payload").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.appId, table.environment, table.matchId, table.sequence] }),
+    uniqueIndex("ludo_events_sequence_unique").on(
+      table.appId,
+      table.environment,
+      table.matchId,
+      table.sequence,
+    ),
+    foreignKey({
+      columns: [table.appId, table.environment, table.matchId],
+      foreignColumns: [ludoMatches.appId, ludoMatches.environment, ludoMatches.matchId],
+      name: "ludo_events_match_fk",
+    }).onDelete("cascade"),
+  ],
+);
+
+export const ludoCommands = pgTable(
+  "ludo_commands",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    matchId: text("match_id").notNull(),
+    idempotencyKey: text("idempotency_key").notNull(),
+    commandType: text("command_type").notNull(),
+    resultSummary: jsonb("result_summary").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    primaryKey({
+      columns: [table.appId, table.environment, table.matchId, table.idempotencyKey],
+    }),
+    foreignKey({
+      columns: [table.appId, table.environment, table.matchId],
+      foreignColumns: [ludoMatches.appId, ludoMatches.environment, ludoMatches.matchId],
+      name: "ludo_commands_match_fk",
+    }).onDelete("cascade"),
+  ],
+);
+
+export const ludoMatchmakingTickets = pgTable(
+  "ludo_matchmaking_tickets",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    ticketId: text("ticket_id").notNull(),
+    subject: text("subject").notNull(),
+    mode: text("mode").notNull(),
+    seatTarget: integer("seat_target").notNull(),
+    status: text("status").notNull(),
+    matchedMatchId: text("matched_match_id"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    expiresAt: timestamp("expires_at").notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.appId, table.environment, table.ticketId] }),
+    index("ludo_matchmaking_tickets_fifo_idx").on(
+      table.appId,
+      table.environment,
+      table.status,
+      table.mode,
+      table.seatTarget,
+      table.createdAt,
+    ),
+    check("ludo_matchmaking_tickets_seat_target_check", sql`"seat_target" IN (2, 4)`),
+    check(
+      "ludo_matchmaking_tickets_status_check",
+      sql`"status" IN ('searching', 'matched', 'cancelled', 'expired')`,
+    ),
+  ],
+);
+
+export const ludoRooms = pgTable(
+  "ludo_rooms",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    roomCode: text("room_code").notNull(),
+    ownerSubject: text("owner_subject").notNull(),
+    mode: text("mode").notNull(),
+    seatTarget: integer("seat_target").notNull(),
+    matchId: text("match_id"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    expiresAt: timestamp("expires_at").notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.appId, table.environment, table.roomCode] }),
+    check("ludo_rooms_seat_target_check", sql`"seat_target" IN (2, 4)`),
+  ],
+);
