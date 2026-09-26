@@ -2,12 +2,18 @@ part of 'merge_relay_game.dart';
 
 extension MergeRelayGameLifecycle on MergeRelayGame {
   void handleLifecycleState(AppLifecycleState lifecycleState) {
-    if (_disposed || !hydrated.value || roundComplete.value) return;
-    if (lifecycleState == AppLifecycleState.inactive ||
+    if (_disposed) return;
+    final backgrounding =
+        lifecycleState == AppLifecycleState.inactive ||
         lifecycleState == AppLifecycleState.paused ||
-        lifecycleState == AppLifecycleState.hidden) {
-      setPaused(true);
+        lifecycleState == AppLifecycleState.hidden;
+    if (backgrounding) {
+      unawaited(audio.pauseMusicForLifecycle());
+    } else if (lifecycleState == AppLifecycleState.resumed) {
+      unawaited(audio.resumeMusicForLifecycle());
     }
+    if (!hydrated.value || roundComplete.value) return;
+    if (backgrounding) setPaused(true);
   }
 
   bool handleSystemBack() {

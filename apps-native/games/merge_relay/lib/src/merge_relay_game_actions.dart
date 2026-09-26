@@ -101,8 +101,25 @@ extension MergeRelayGameActions on MergeRelayGame {
     );
     presentation.value = movePresentation;
     _haptic(MergeRelayHaptics.slide);
-    if (movePresentation.hasMerge) _haptic(MergeRelayHaptics.merge);
-    if (isNewBestTile) _haptic(MergeRelayHaptics.bestTile);
+    unawaited(audio.play(MergeRelayAudioEvent.slide));
+    if (movePresentation.hasMerge) {
+      _haptic(MergeRelayHaptics.merge);
+      final mergedValue = movePresentation.mergedCells.fold<int>(0, (
+        highest,
+        cell,
+      ) {
+        final value = moveResult.state.board.cells[cell];
+        return value > highest ? value : highest;
+      });
+      unawaited(audio.playMerge(mergedValue));
+    }
+    if (movePresentation.spawnedCell != null) {
+      unawaited(audio.play(MergeRelayAudioEvent.spawn));
+    }
+    if (isNewBestTile) {
+      _haptic(MergeRelayHaptics.bestTile);
+      unawaited(audio.play(MergeRelayAudioEvent.bestTile));
+    }
     _announce(
       moveResult.scoreDelta > 0
           ? 'Chain +${moveResult.scoreDelta}'
@@ -128,10 +145,14 @@ extension MergeRelayGameActions on MergeRelayGame {
     if (preferences.value.hapticsEnabled) effect();
   }
 
-  /// A selection-click haptic for discrete button taps (Settings toggles,
-  /// the accessible on-screen movement controls) — public since those
-  /// live in sibling widgets that only hold a reference to the game.
-  void hapticSelect() => _haptic(MergeRelayHaptics.select);
+  /// A selection-click haptic (plus its matching button SFX) for discrete
+  /// button taps (Settings toggles, the accessible on-screen movement
+  /// controls) — public since those live in sibling widgets that only hold
+  /// a reference to the game.
+  void hapticSelect() {
+    _haptic(MergeRelayHaptics.select);
+    unawaited(audio.play(MergeRelayAudioEvent.button));
+  }
 
   void startRescue({int index = 0}) {
     if (!_readyForAction) return;
@@ -304,6 +325,11 @@ extension MergeRelayGameActions on MergeRelayGame {
     );
     roundComplete.value = true;
     isPaused.value = false;
+    if (outcome == MergeRelayOutcome.completed) {
+      unawaited(audio.play(MergeRelayAudioEvent.boardCleared));
+    } else if (outcome == MergeRelayOutcome.terminal) {
+      unawaited(audio.play(MergeRelayAudioEvent.outOfMoves));
+    }
     if (outcome == MergeRelayOutcome.completed && rescueId.value != null) {
       completedRescueIds.value = Set.unmodifiable({
         ...completedRescueIds.value,

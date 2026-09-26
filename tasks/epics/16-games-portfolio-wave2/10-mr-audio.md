@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 10-mr-audio
-status: pending
+status: completed
 commit_scope: merge-relay
 depends_on: [16-games-portfolio-wave2/09-mr-motion-and-haptics]
 estimate: M
@@ -41,19 +41,19 @@ must actually work.
 
 ## Implementation Checklist
 
-- [ ] Download and trim SFX and the music loop. Convert them to OGG using
+- [x] Download and trim SFX and the music loop. Convert them to OGG using
       `ffmpeg` if it's available, otherwise install it under `/data/tools`.
-- [ ] Add `assets/audio/*.ogg` and `assets/audio/LICENSES.md`
+- [x] Add `assets/audio/*.ogg` and `assets/audio/LICENSES.md`
       (file → pack/page URL → licence → date).
-- [ ] Add `lib/src/audio/merge_relay_audio.dart` (an interface plus the
+- [x] Add `lib/src/audio/merge_relay_audio.dart` (an interface plus the
       `audioplayers` implementation and a fake for tests), wired to the
       move-trace events from task 09.
-- [ ] Add Sound and Music toggles and persistence, plus a lifecycle
+- [x] Add Sound and Music toggles and persistence, plus a lifecycle
       pause/resume.
-- [ ] Add tests using the fake audio: correct cue per event, rising merge
+- [x] Add tests using the fake audio: correct cue per event, rising merge
       pitch per tier, toggles mute the right channel, lifecycle
       pause/resume, and a failing player doesn't throw.
-- [ ] Put `LICENSES.md` and a cue table in `.agents/resources/2026-09-25/games-wave2-qa/10/README.md`.
+- [x] Put `LICENSES.md` and a cue table in `.agents/resources/2026-09-25/games-wave2-qa/10/README.md`.
 
 ## Files Touched
 

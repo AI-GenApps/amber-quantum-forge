@@ -63,6 +63,11 @@ void main() {
 
       await tester.tap(find.text('Board controls'));
       await tester.tap(find.text('High contrast'));
+      // The Music toggle (task 10) pushed this action below the fold of
+      // the default 600-tall test surface; scroll the sheet's
+      // `SingleChildScrollView` until it's actually hit-testable, the way
+      // a real finger would need to.
+      await tester.ensureVisible(find.text('Replay handoff guide'));
       await tester.tap(find.text('Replay handoff guide'));
       await tester.pumpAndSettle();
       expect(find.text('First handoff'), findsOneWidget);

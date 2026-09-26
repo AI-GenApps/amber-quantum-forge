@@ -79,6 +79,15 @@ Future<void> showMergeRelaySettings(
               ),
               SwitchListTile.adaptive(
                 contentPadding: EdgeInsets.zero,
+                title: const Text('Music'),
+                value: game.preferences.value.musicEnabled,
+                onChanged: (value) {
+                  game.hapticSelect();
+                  game.setMusicEnabled(value);
+                },
+              ),
+              SwitchListTile.adaptive(
+                contentPadding: EdgeInsets.zero,
                 title: const Text('Haptics'),
                 value: game.preferences.value.hapticsEnabled,
                 onChanged: (value) {

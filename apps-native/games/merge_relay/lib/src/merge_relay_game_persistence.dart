@@ -17,6 +17,7 @@ extension MergeRelayGamePersistence on MergeRelayGame {
       if (!_disposed) {
         hydrated.value = true;
         unawaited(initializePlayGames());
+        unawaited(audio.startMusicLoop());
       }
     }
   }

@@ -81,6 +81,7 @@ final class _MergeRelayProfile {
     'theme_id': preferences.themeId,
     'reduced_motion': preferences.reducedMotion,
     'audio_enabled': preferences.audioEnabled,
+    'music_enabled': preferences.musicEnabled,
     'haptics_enabled': preferences.hapticsEnabled,
     'accessible_controls': preferences.accessibleControls,
     'high_contrast': preferences.highContrast,

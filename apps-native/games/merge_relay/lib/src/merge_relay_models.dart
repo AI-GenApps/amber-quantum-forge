@@ -50,6 +50,7 @@ final class MergeRelayPreferences {
     this.themeId = 'signal',
     this.reducedMotion = false,
     this.audioEnabled = true,
+    this.musicEnabled = true,
     this.hapticsEnabled = true,
     this.accessibleControls = false,
     this.highContrast = false,
@@ -57,7 +58,16 @@ final class MergeRelayPreferences {
 
   final String themeId;
   final bool reducedMotion;
+
+  /// Gates sound effects (the "Sound" toggle in Settings) — see
+  /// `MergeRelayAudioService.play`/`playMerge` in
+  /// `audio/merge_relay_audio_service.dart`.
   final bool audioEnabled;
+
+  /// Gates the looping background track (the "Music" toggle in Settings),
+  /// independent of [audioEnabled] — see
+  /// `MergeRelayAudioService.startMusicLoop`.
+  final bool musicEnabled;
   final bool hapticsEnabled;
   final bool accessibleControls;
   final bool highContrast;
@@ -66,6 +76,7 @@ final class MergeRelayPreferences {
     String? themeId,
     bool? reducedMotion,
     bool? audioEnabled,
+    bool? musicEnabled,
     bool? hapticsEnabled,
     bool? accessibleControls,
     bool? highContrast,
@@ -74,6 +85,7 @@ final class MergeRelayPreferences {
       themeId: themeId ?? this.themeId,
       reducedMotion: reducedMotion ?? this.reducedMotion,
       audioEnabled: audioEnabled ?? this.audioEnabled,
+      musicEnabled: musicEnabled ?? this.musicEnabled,
       hapticsEnabled: hapticsEnabled ?? this.hapticsEnabled,
       accessibleControls: accessibleControls ?? this.accessibleControls,
       highContrast: highContrast ?? this.highContrast,

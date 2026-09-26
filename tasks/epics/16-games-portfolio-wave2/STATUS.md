@@ -133,7 +133,7 @@ commits and applies the small `.agents/games/*` index edits itself. The human co
 | 07 | Merge Relay: design system, fonts, screen-golden harness | agent | [x] |
 | 08 | Merge Relay: character tiles + board skin | agent | [x] |
 | 09 | Merge Relay: motion, juice, haptics | agent | [x] |
-| 10 | Merge Relay: CC0 audio + music | agent | [ ] |
+| 10 | Merge Relay: CC0 audio + music | agent | [x] |
 | 11 | Merge Relay: home, chapter map, results, settings, pause restyle | agent | [ ] |
 | 12 | Merge Relay: onboarding + how-to-play | agent | [ ] |
 | 13 | Merge Relay: local quality, seeded runs, budgets | agent | [ ] |

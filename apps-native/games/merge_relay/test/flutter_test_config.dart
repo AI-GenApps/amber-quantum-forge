@@ -15,6 +15,13 @@
 ///
 /// Reuses the pattern established in `pocket_biome/test/flutter_test_config.dart`
 /// (task 03).
+///
+/// Also installs a fake `audioplayers` platform (task 10's
+/// `support/fake_audioplayers_platform.dart`) before any test runs, so a
+/// real, un-injected `MergeRelayAudioService`/`RealMergeRelayAudioPlayer`
+/// (wired into every `MergeRelayGame`, including in widget/golden tests
+/// that never pass a fake audio player factory) never touches a real
+/// platform audio channel.
 library;
 
 import 'dart:async';
@@ -22,6 +29,8 @@ import 'dart:io';
 
 import 'package:flutter/services.dart' show ByteData, FontLoader, rootBundle;
 import 'package:flutter_test/flutter_test.dart';
+
+import 'support/fake_audioplayers_platform.dart';
 
 /// Font family name -> asset path(s), matching `pubspec.yaml`'s `fonts:`
 /// registrations exactly.
@@ -43,6 +52,7 @@ const String _fallbackFlutterRoot = '/data/tools/flutter';
 
 Future<void> testExecutable(FutureOr<void> Function() testMain) async {
   TestWidgetsFlutterBinding.ensureInitialized();
+  installFakeAudioplayersPlatform();
   await _loadAppFonts();
   await _loadMaterialIconsFont();
   await testMain();

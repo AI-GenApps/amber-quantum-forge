@@ -267,12 +267,14 @@ extension MergeRelayGameRestoreParsing on MergeRelayGame {
     final theme = payload['theme_id'];
     final reduced = payload['reduced_motion'];
     final audio = payload['audio_enabled'];
+    final music = payload['music_enabled'];
     final haptics = payload['haptics_enabled'];
     final accessible = payload['accessible_controls'];
     final highContrast = payload['high_contrast'];
     if ((theme != null && theme is! String) ||
         (reduced != null && reduced is! bool) ||
         (audio != null && audio is! bool) ||
+        (music != null && music is! bool) ||
         (haptics != null && haptics is! bool) ||
         (accessible != null && accessible is! bool) ||
         (highContrast != null && highContrast is! bool)) {
@@ -282,6 +284,7 @@ extension MergeRelayGameRestoreParsing on MergeRelayGame {
       themeId: theme as String? ?? 'signal',
       reducedMotion: reduced == true,
       audioEnabled: audio != false,
+      musicEnabled: music != false,
       hapticsEnabled: haptics != false,
       accessibleControls: accessible == true,
       highContrast: highContrast == true,

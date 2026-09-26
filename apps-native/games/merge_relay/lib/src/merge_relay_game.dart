@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:merge_rules/merge_rules.dart';
 import 'package:platform_core/platform_core.dart';
 
+import 'audio/merge_relay_audio.dart';
+import 'audio/merge_relay_audio_service.dart';
 import 'merge_relay_board_art.dart';
 import 'merge_relay_content.dart';
 import 'merge_relay_content_validation.dart';
@@ -81,6 +83,7 @@ final class MergeRelayGame extends FlameGame {
                 gateway: relayController!.gateway,
                 ensureGuest: relayController!.bootstrap,
               ));
+    audio = MergeRelayAudioService(preferences: preferences);
   }
 
   final AppContext context;
@@ -92,6 +95,7 @@ final class MergeRelayGame extends FlameGame {
   final Clock clock;
   final MergeRelayPlayGamesProvider playGames;
   late final MergeRelayPgsAccountController? pgsAccountController;
+  late final MergeRelayAudioService audio;
   MergeRuleConfig _activeRuleConfig = const MergeRuleConfig.legacy();
   int _activeMoveBudget = mergeRelayDefaultRescueMoveBudget;
   final MemoryTelemetrySink telemetrySink = MemoryTelemetrySink();
@@ -204,6 +208,7 @@ final class MergeRelayGame extends FlameGame {
     if (_disposed) return;
     _disposed = true;
     _feedbackTimer?.cancel();
+    unawaited(audio.dispose());
     state.dispose();
     hydrated.dispose();
     persistenceMessage.dispose();
