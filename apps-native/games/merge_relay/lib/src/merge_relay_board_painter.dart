@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:merge_rules/merge_rules.dart';
 
 import 'merge_relay_board_art.dart';
+import 'merge_relay_motion.dart';
 import 'merge_relay_theme.dart';
 
 final class MergeRelayBoardPainter extends CustomPainter {
@@ -13,6 +14,12 @@ final class MergeRelayBoardPainter extends CustomPainter {
     this.spawnedCell,
     this.pulse = 0,
     this.highContrast = false,
+    this.frame = MergeRelayMoveFrame.settled,
+    this.direction,
+    this.shakeOffsetPx = 0,
+    this.celebrationCell,
+    this.celebrationProgress = 0,
+    this.highlightAlpha = 1,
   });
 
   final MergeBoard board;
@@ -22,6 +29,18 @@ final class MergeRelayBoardPainter extends CustomPainter {
   final int? spawnedCell;
   final double pulse;
   final bool highContrast;
+  final MergeRelayMoveFrame frame;
+  final MergeDirection? direction;
+  final double shakeOffsetPx;
+  final int? celebrationCell;
+  final double celebrationProgress;
+
+  /// Opacity of the changed/merged-cell ring — 1 at a move's start, fading
+  /// to 0 by the time its animation settles, so the highlight is
+  /// transient rather than sticking to the last-moved cells for the rest
+  /// of the session (`changedCells` itself is never cleared after a
+  /// move — see `MergeRelayBoardArt.paint`).
+  final double highlightAlpha;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -35,6 +54,12 @@ final class MergeRelayBoardPainter extends CustomPainter {
       spawnedCell: spawnedCell,
       pulse: pulse,
       highContrast: highContrast,
+      frame: frame,
+      direction: direction,
+      shakeOffsetPx: shakeOffsetPx,
+      celebrationCell: celebrationCell,
+      celebrationProgress: celebrationProgress,
+      highlightAlpha: highlightAlpha,
     );
   }
 
@@ -46,6 +71,12 @@ final class MergeRelayBoardPainter extends CustomPainter {
         oldDelegate.mergedCells != mergedCells ||
         oldDelegate.spawnedCell != spawnedCell ||
         oldDelegate.pulse != pulse ||
-        oldDelegate.highContrast != highContrast;
+        oldDelegate.highContrast != highContrast ||
+        oldDelegate.frame != frame ||
+        oldDelegate.direction != direction ||
+        oldDelegate.shakeOffsetPx != shakeOffsetPx ||
+        oldDelegate.celebrationCell != celebrationCell ||
+        oldDelegate.celebrationProgress != celebrationProgress ||
+        oldDelegate.highlightAlpha != highlightAlpha;
   }
 }

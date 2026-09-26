@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 09-mr-motion-and-haptics
-status: pending
+status: completed
 commit_scope: merge-relay
 depends_on: [16-games-portfolio-wave2/08-mr-tiles-and-board]
 estimate: M
@@ -36,17 +36,17 @@ respected.
 
 ## Implementation Checklist
 
-- [ ] Add an animation layer that consumes the move trace (slides, merges,
+- [x] Add an animation layer that consumes the move trace (slides, merges,
       and spawns).
-- [ ] Add the merge pop, score pop, best-tile celebration (a short burst of
+- [x] Add the merge pop, score pop, best-tile celebration (a short burst of
       code-drawn confetti), and blocked-move shake.
-- [ ] Add haptics per event and a vibration toggle.
-- [ ] Add the reduced-motion path.
-- [ ] Add tests: the trace-to-animation mapping, input queued during an
+- [x] Add haptics per event and a vibration toggle.
+- [x] Add the reduced-motion path.
+- [x] Add tests: the trace-to-animation mapping, input queued during an
       animation, pause mid-animation then restore, reduced motion makes
       durations zero, and the haptics channel is called once per event (with
       a mocked `SystemChannels.platform`).
-- [ ] Add a frame-sequence golden strip
+- [x] Add a frame-sequence golden strip
       (`test/goldens/motion/merge_strip.png`: 5 frames of one merge), copy it
       to `.agents/resources/2026-09-25/games-wave2-qa/09/`, and VIEW it.
 

@@ -43,33 +43,48 @@ Future<void> showMergeRelaySettings(
                 title: const Text('Board controls'),
                 subtitle: const Text('Tap to move instead of swiping.'),
                 value: game.preferences.value.accessibleControls,
-                onChanged: game.setAccessibleControls,
+                onChanged: (value) {
+                  game.hapticSelect();
+                  game.setAccessibleControls(value);
+                },
               ),
               SwitchListTile.adaptive(
                 contentPadding: EdgeInsets.zero,
                 title: const Text('Reduce motion'),
                 subtitle: const Text('Use calmer tile transitions.'),
                 value: game.preferences.value.reducedMotion,
-                onChanged: game.setReducedMotion,
+                onChanged: (value) {
+                  game.hapticSelect();
+                  game.setReducedMotion(value);
+                },
               ),
               SwitchListTile.adaptive(
                 contentPadding: EdgeInsets.zero,
                 title: const Text('High contrast'),
                 subtitle: const Text('Firmer tile and slot outlines.'),
                 value: game.preferences.value.highContrast,
-                onChanged: game.setHighContrast,
+                onChanged: (value) {
+                  game.hapticSelect();
+                  game.setHighContrast(value);
+                },
               ),
               SwitchListTile.adaptive(
                 contentPadding: EdgeInsets.zero,
                 title: const Text('Sound'),
                 value: game.preferences.value.audioEnabled,
-                onChanged: game.setAudioEnabled,
+                onChanged: (value) {
+                  game.hapticSelect();
+                  game.setAudioEnabled(value);
+                },
               ),
               SwitchListTile.adaptive(
                 contentPadding: EdgeInsets.zero,
                 title: const Text('Haptics'),
                 value: game.preferences.value.hapticsEnabled,
-                onChanged: game.setHapticsEnabled,
+                onChanged: (value) {
+                  game.hapticSelect();
+                  game.setHapticsEnabled(value);
+                },
               ),
               if (game.features.socialEnabled &&
                   game.tutorialComplete.value &&

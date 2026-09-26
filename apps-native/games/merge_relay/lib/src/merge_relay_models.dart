@@ -165,12 +165,15 @@ final class MergeMovePresentation {
     required this.mergedCells,
     required this.spawnedCell,
     required this.spawnedValue,
+    this.isNewBestTile = false,
+    this.bestTileCell,
   });
 
   factory MergeMovePresentation.fromResult({
     required MergeGameState before,
     required MergeMoveResult result,
     required MergeDirection direction,
+    bool isNewBestTile = false,
   }) {
     final changedCells = <int>{};
     final mergedCells = {
@@ -181,6 +184,17 @@ final class MergeMovePresentation {
         changedCells.add(index);
       }
     }
+    int? bestTileCell;
+    if (isNewBestTile && mergedCells.isNotEmpty) {
+      final maxValue = result.state.board.cells.fold<int>(
+        0,
+        (highest, value) => value > highest ? value : highest,
+      );
+      bestTileCell = mergedCells.firstWhere(
+        (cell) => result.state.board.cells[cell] == maxValue,
+        orElse: () => mergedCells.first,
+      );
+    }
     return MergeMovePresentation(
       before: before.board,
       after: result.state.board,
@@ -190,6 +204,8 @@ final class MergeMovePresentation {
       mergedCells: Set.unmodifiable(mergedCells),
       spawnedCell: result.spawnedCell,
       spawnedValue: result.spawnedValue,
+      isNewBestTile: isNewBestTile,
+      bestTileCell: bestTileCell,
     );
   }
 
@@ -201,6 +217,15 @@ final class MergeMovePresentation {
   final Set<int> mergedCells;
   final int? spawnedCell;
   final int? spawnedValue;
+
+  /// True when this move raised the board's highest tile value above any
+  /// value reached so far this run — the trigger for the best-tile
+  /// celebration and its heavy haptic.
+  final bool isNewBestTile;
+
+  /// The merged destination cell the celebration confetti radiates from,
+  /// when [isNewBestTile] is true and the new max came from a merge.
+  final int? bestTileCell;
 
   bool get hasMerge => scoreDelta > 0 && mergedCells.isNotEmpty;
 }

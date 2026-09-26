@@ -81,16 +81,28 @@ extension MergeRelayGameActions on MergeRelayGame {
             ? 'No lanes left.'
             : 'That lane is blocked.',
       );
+      blockedMoveSignal.value += 1;
       if (moveResult.reason == 'terminal') _finish(MergeRelayOutcome.terminal);
       return;
     }
     state.value = moveResult.state;
     if (mode.value == MergeRelayMode.rescue) _rescueMovesUsed += 1;
-    presentation.value = MergeMovePresentation.fromResult(
+    final maxTile = moveResult.state.board.cells.fold<int>(
+      0,
+      (highest, value) => value > highest ? value : highest,
+    );
+    final isNewBestTile = maxTile > _bestTileSeen;
+    if (isNewBestTile) _bestTileSeen = maxTile;
+    final movePresentation = MergeMovePresentation.fromResult(
       before: before,
       result: moveResult,
       direction: direction,
+      isNewBestTile: isNewBestTile,
     );
+    presentation.value = movePresentation;
+    _haptic(MergeRelayHaptics.slide);
+    if (movePresentation.hasMerge) _haptic(MergeRelayHaptics.merge);
+    if (isNewBestTile) _haptic(MergeRelayHaptics.bestTile);
     _announce(
       moveResult.scoreDelta > 0
           ? 'Chain +${moveResult.scoreDelta}'
@@ -109,6 +121,17 @@ extension MergeRelayGameActions on MergeRelayGame {
     _updateCompletion();
     _queueWrite();
   }
+
+  /// Fires [effect] only when the player has haptics enabled — the single
+  /// gate every `MergeRelayHaptics` call in this file goes through.
+  void _haptic(void Function() effect) {
+    if (preferences.value.hapticsEnabled) effect();
+  }
+
+  /// A selection-click haptic for discrete button taps (Settings toggles,
+  /// the accessible on-screen movement controls) — public since those
+  /// live in sibling widgets that only hold a reference to the game.
+  void hapticSelect() => _haptic(MergeRelayHaptics.select);
 
   void startRescue({int index = 0}) {
     if (!_readyForAction) return;
@@ -214,6 +237,10 @@ extension MergeRelayGameActions on MergeRelayGame {
     _activeTargetScore = rescue?.targetScore;
     _activeMoveBudget = rescue?.moveBudget ?? mergeRelayDefaultRescueMoveBudget;
     state.value = next;
+    _bestTileSeen = next.board.cells.fold<int>(
+      0,
+      (highest, value) => value > highest ? value : highest,
+    );
     mode.value = nextMode;
     rescueId.value = nextRescue;
     _dailyDate = dailyDate;

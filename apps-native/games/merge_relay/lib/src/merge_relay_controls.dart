@@ -60,7 +60,7 @@ final class MergeMoveControls extends StatelessWidget {
             icon: Icons.keyboard_arrow_up_rounded,
             enabled: enabled,
             theme: theme,
-            onPressed: () => game.move(MergeDirection.up),
+            onPressed: () => _pressMove(game, MergeDirection.up),
           ),
           _MergeMoveButton(
             label: 'Move left',
@@ -68,7 +68,7 @@ final class MergeMoveControls extends StatelessWidget {
             icon: Icons.keyboard_arrow_left_rounded,
             enabled: enabled,
             theme: theme,
-            onPressed: () => game.move(MergeDirection.left),
+            onPressed: () => _pressMove(game, MergeDirection.left),
           ),
           _MergeMoveButton(
             label: 'Move right',
@@ -76,7 +76,7 @@ final class MergeMoveControls extends StatelessWidget {
             icon: Icons.keyboard_arrow_right_rounded,
             enabled: enabled,
             theme: theme,
-            onPressed: () => game.move(MergeDirection.right),
+            onPressed: () => _pressMove(game, MergeDirection.right),
           ),
           _MergeMoveButton(
             label: 'Move down',
@@ -84,12 +84,20 @@ final class MergeMoveControls extends StatelessWidget {
             icon: Icons.keyboard_arrow_down_rounded,
             enabled: enabled,
             theme: theme,
-            onPressed: () => game.move(MergeDirection.down),
+            onPressed: () => _pressMove(game, MergeDirection.down),
           ),
         ],
       ),
     );
   }
+}
+
+/// A selection-click haptic before the move itself — these buttons are a
+/// discrete tap, not a swipe, so they get the "selection click on
+/// buttons" haptic rather than the swipe's "light on slide".
+void _pressMove(MergeRelayGame game, MergeDirection direction) {
+  game.hapticSelect();
+  game.move(direction);
 }
 
 final class _MergeMoveButton extends StatelessWidget {

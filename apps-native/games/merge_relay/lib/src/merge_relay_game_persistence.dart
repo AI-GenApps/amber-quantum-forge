@@ -50,6 +50,10 @@ extension MergeRelayGamePersistence on MergeRelayGame {
     if (active != null) {
       _activateSessionMetadata(active);
       state.value = active.state;
+      _bestTileSeen = active.state.board.cells.fold<int>(
+        0,
+        (highest, value) => value > highest ? value : highest,
+      );
       mode.value = active.mode;
       rescueId.value = active.rescueId;
       _dailyDate = active.dailyDate;

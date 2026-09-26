@@ -9,6 +9,7 @@ import 'merge_relay_board_art.dart';
 import 'merge_relay_content.dart';
 import 'merge_relay_content_validation.dart';
 import 'merge_relay_features.dart';
+import 'merge_relay_haptics.dart';
 import 'merge_relay_models.dart';
 import 'merge_relay_relay_controller.dart';
 import 'platform/merge_relay_pgs_account.dart';
@@ -65,7 +66,12 @@ final class MergeRelayGame extends FlameGame {
            diagnosticCode: 'not_initialized',
          ),
        ),
+       blockedMoveSignal = ValueNotifier(0),
        persistenceMessage = ValueNotifier(null) {
+    _bestTileSeen = state.value.board.cells.fold<int>(
+      0,
+      (highest, value) => value > highest ? value : highest,
+    );
     pgsAccountController =
         _providedPgsAccount ??
         (relayController == null || !features.socialEnabled
@@ -108,10 +114,18 @@ final class MergeRelayGame extends FlameGame {
   final ValueNotifier<bool> restoreFailed;
   final ValueNotifier<MergeRelayPlayGamesState> playGamesState;
 
+  /// Increments once per blocked move attempt so `MergeRelayBoard` can
+  /// detect a fresh block (even a repeat of the same direction) and play
+  /// the shake animation — a `ValueNotifier<int>` rather than the
+  /// direction itself, since two consecutive same-direction blocks would
+  /// otherwise look identical to a change listener.
+  final ValueNotifier<int> blockedMoveSignal;
+
   Timer? _feedbackTimer;
   Future<void> _writeTail = Future<void>.value();
   String? _dailyDate;
   int _rescueMovesUsed = 0;
+  int _bestTileSeen = 0;
   MergeRelayMode? _tutorialMode;
   int? _tutorialRescueIndex;
   int _writeRevision = 0;
@@ -208,6 +222,7 @@ final class MergeRelayGame extends FlameGame {
     roundComplete.dispose();
     restoreFailed.dispose();
     playGamesState.dispose();
+    blockedMoveSignal.dispose();
     pgsAccountController?.dispose();
   }
 }

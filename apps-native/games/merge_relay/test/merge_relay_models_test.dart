@@ -56,4 +56,32 @@ void main() {
       expect(presentation.mergedCells, entry.value);
     }
   });
+
+  test('isNewBestTile is off by default and locates the celebration cell', () {
+    final before = MergeGameState(
+      board: MergeBoard([2, 2, 0, ...List<int>.filled(13, 0)]),
+      score: 0,
+      moveCount: 0,
+      seed: 7,
+      rngState: 123,
+    );
+    final result = const MergeRules().apply(before, MergeDirection.left);
+
+    final plain = MergeMovePresentation.fromResult(
+      before: before,
+      result: result,
+      direction: MergeDirection.left,
+    );
+    expect(plain.isNewBestTile, isFalse);
+    expect(plain.bestTileCell, isNull);
+
+    final celebrated = MergeMovePresentation.fromResult(
+      before: before,
+      result: result,
+      direction: MergeDirection.left,
+      isNewBestTile: true,
+    );
+    expect(celebrated.isNewBestTile, isTrue);
+    expect(celebrated.bestTileCell, 0);
+  });
 }
