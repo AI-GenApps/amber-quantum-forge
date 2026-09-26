@@ -1,0 +1,24 @@
+[
+  {
+    "created_at": "2026-09-26T08:09:18.753405Z",
+    "display_name": "GPT Image 2.5",
+    "id": "f5c14718-4bfc-43e1-87e9-831a71902d2f",
+    "job_type": "gpt_image_2_5",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260926_080918_f5c14718-4bfc-43e1-87e9-831a71902d2f_min.webp",
+    "params": {
+      "aspect_ratio": "1:1",
+      "background": "opaque",
+      "height": 2048,
+      "medias": [],
+      "model": "flare",
+      "prompt": "Minimalist flat app icon, original design, no text. A centered 2x2 grid of four rounded-square tiles on a deep navy background (#10243E), three tiles in muted slot-navy (#203754), one tile (top-right) in bright sky-blue (#4E93D3) emitting a single small quarter-arc signal ping in the same sky-blue extending past the tile's corner, flat design, full-bleed background, no gradients, no drop shadow, high contrast, bold and simple enough to read at 48px, square 1:1 canvas, not resembling any existing wifi/broadcast or messaging-app logo.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2048
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260926_080918_f5c14718-4bfc-43e1-87e9-831a71902d2f.png",
+    "status": "completed"
+  }
+]

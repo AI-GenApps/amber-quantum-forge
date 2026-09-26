@@ -1,0 +1,24 @@
+[
+  {
+    "created_at": "2026-09-26T08:08:29.383762Z",
+    "display_name": "GPT Image 2.5",
+    "id": "6421855f-158a-4d53-a247-a23b3f7b20c5",
+    "job_type": "gpt_image_2_5",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260926_080829_6421855f-158a-4d53-a247-a23b3f7b20c5_min.webp",
+    "params": {
+      "aspect_ratio": "1:1",
+      "background": "opaque",
+      "height": 2048,
+      "medias": [],
+      "model": "flare",
+      "prompt": "Minimalist flat app icon, original design, no text. A tight diagonal row of 3 rounded-square tiles of increasing size, deep navy background (#10243E), tiles in a mid-blue-to-coral gradient-free flat fill (#3E75B6 to #E5534B) each showing a subtle embossed corner highlight, the largest (rightmost) tile overlapping the frame edge to suggest forward motion/hand-off. Bold geometric, rounded corners matching Material 3 radius, high contrast, crisp at small sizes, centered composition, square 1:1 canvas, full-bleed background, no gradients besides the tile fills, no shadows outside the tiles, no photorealism, not an existing brand mark.",
+      "quality": "high",
+      "reference_elements": [],
+      "remove_bg": false,
+      "resolution": "2k",
+      "width": 2048
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_36CynrNEEs3vyPB3FOOvYv0CJXw/hf_20260926_080829_6421855f-158a-4d53-a247-a23b3f7b20c5.png",
+    "status": "completed"
+  }
+]

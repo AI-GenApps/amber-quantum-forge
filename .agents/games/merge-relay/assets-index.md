@@ -5,11 +5,13 @@
 | What | Path |
 |---|---|
 | Strict name existence check + evidence URLs | `.agents/resources/2026-09-26/merge-relay-brand/name-check.md` |
-| 3 logo direction briefs (icon + wordmark prompts, no images rendered yet) | `.agents/resources/2026-09-26/merge-relay-brand/logo-briefs.md` |
+| 3 logo direction briefs (icon + wordmark prompts) | `.agents/resources/2026-09-26/merge-relay-brand/logo-briefs.md` |
+| Logo round 1 renders (3 directions x icon+wordmark, contact sheet, critique, lookalike notes, recommendation) | `.agents/resources/2026-09-26/merge-relay-brand/logo/` (see its `README.md`) |
 
-No icon, wordmark, or rendered logo exists yet — briefs only. Next step (not performed in
-this task): render round 1 with `gpt_image_2_5`, assemble a contact sheet, get user
-approval, per the skill's dry-run → rounds → integrate flow.
+Round 1 rendered via `gpt_image_2_5` (Higgsfield CLI, `--quality high --resolution 2k`), all
+6 images passed QA on first generation. Recommended direction: Signal Grid icon, refined
+wordmark treatment (see `logo/README.md` recommendation section). Not yet integrated into
+the app — awaiting user approval before any refinement/integration round.
 
 ## Current in-app art
 
