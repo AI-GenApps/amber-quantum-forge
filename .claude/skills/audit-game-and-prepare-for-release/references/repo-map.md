@@ -37,6 +37,8 @@
 - `--app <id>` commands fail until the app is scaffolded.
 - Goldens need fonts loaded in `test/flutter_test_config.dart`; Flame game loops never
   settle — avoid `pumpAndSettle` with live `GameWidget`s; decode images in `runAsync`.
+- `apps/web` type-checks `packages/api` with target es5: spreading/iterating `Set`/`Map`/iterators breaks the web build — use `Array.from`. Always run the root `bun run typecheck`, not only the package's.
+- `games:parity` / `games:ludo:parity` refuse to run unless Bun matches `apps-native/games/toolchain.json` (1.3.3 pinned; dev Mac had 1.4.2) — the vitest parity tests still run.
 - Debug APKs are large (~170 MB); measure release APK size for budgets.
 - Samsung dev phone used: SM-A525F, serial `RZ8R32EAB7T`, 1080x2400; Ludo King installed
   for comparison.
