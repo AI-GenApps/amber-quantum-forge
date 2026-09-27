@@ -6,3 +6,4 @@
 | 2026-09-25 | Custom fonts: **Bungee** display / **Chakra Petch** body | "Signage/vault energy; techy body" — matches the heist/vault setting. Source: `tasks/epics/16-games-portfolio-wave2/STATUS.md` font table; `github.com/google/fonts/tree/main/ofl/bungee`, `.../chakra-petch` (verified to exist 2026-09-25) |
 | 2026-09-25 | Primary competitor reference: **Hitman GO** | "Turn-based stealth on a grid, presented as a diorama board game. Closest to our plan-a-route, deterministic guards design." Source: `.agents/resources/2026-09-25/games-competitor-references/README.md` |
 | 2026-09-25 | Epic-wide decision applies: work stays on `main`, one commit per task, never push | Source: `tasks/epics/16-games-portfolio-wave2/STATUS.md`, "Decisions (user, 2026-09-25)" |
+| 2026-09-27 | Rename **deferred** (task 17) until the game is picked up again; the candidates are in `.agents/resources/2026-09-25/heist-brand/shortlist.json`. | user |

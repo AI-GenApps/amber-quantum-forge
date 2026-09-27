@@ -6,3 +6,4 @@
 | 2026-09-25 | Custom fonts: **Fraunces (SOFT axis)** display / **Quicksand** body | "Soft botanical serif; cozy" — matches the terrarium/breeding tone. Source: `tasks/epics/16-games-portfolio-wave2/STATUS.md` font table; `github.com/google/fonts/tree/main/ofl/fraunces`, `.../quicksand` (verified to exist 2026-09-25) |
 | 2026-09-25 | Primary competitor references: **Terrarium: Garden Idle** (visual density/pacing) and **Pocket Frogs** (three-axis breeding mechanics) | Chosen for closest genre/mechanic match. Source: `.agents/resources/2026-09-25/games-competitor-references/README.md` |
 | 2026-09-25 | Epic-wide decision applies: work stays on `main`, one commit per task, never push | Source: `tasks/epics/16-games-portfolio-wave2/STATUS.md`, "Decisions (user, 2026-09-25)" |
+| 2026-09-27 | Art direction **B: Storybook watercolor** (task 17; dry run in `.agents/resources/2026-09-25/pocket-biome-art/dry-run/`). Final art is out of scope for epic 16. | user |

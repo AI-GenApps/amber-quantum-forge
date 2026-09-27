@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 17-human-name-and-direction-pick
-status: pending
+status: completed
 commit_scope: games
 owner: human
 depends_on: [16-games-portfolio-wave2/16-heist-name-candidates]
@@ -31,19 +31,19 @@ Record the user's choices so that the workflow can resume at task 18.
 
 ## Checklist (human; an orchestrator session may record the answers)
 
-- [ ] Choose the Merge Relay name (or ask for another round of candidates).
-- [ ] Choose the Pocket Biome direction A/B/C (or "none yet"). Final Pocket
+- [x] Choose the Merge Relay name (or ask for another round of candidates).
+- [x] Choose the Pocket Biome direction A/B/C (or "none yet"). Final Pocket
       Biome art is **not** part of this epic.
-- [ ] Optionally choose the Heist name.
-- [ ] Give any visual feedback on the goldens. If there is any, the
+- [x] Optionally choose the Heist name.
+- [x] Give any visual feedback on the goldens. If there is any, the
       orchestrator turns it into a new spec task (e.g. `17a-…`) before
       resuming.
-- [ ] Record the choices, dated, in
+- [x] Record the choices, dated, in
       `.agents/games/{merge-relay,pocket-biome,sixty-second-heist}/decisions-log.md`
       and `tasks/epics/16-games-portfolio-wave2/decisions.md` (new
       file: `merge_relay_name: <name>`, `pocket_biome_direction: <A|B|C|none>`,
       `heist_name: <name|deferred>`).
-- [ ] Mark task 17 `[x]` in STATUS.md, then commit and resume the workflow at 18.
+- [x] Mark task 17 `[x]` in STATUS.md, then commit and resume the workflow at 18.
 
 ## Acceptance Criteria
 
