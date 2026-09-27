@@ -1,7 +1,7 @@
 part of 'merge_relay_home.dart';
 
 /// The wordmark header: the [MergeRelayArtManifest.logoWide] slot (falls
-/// back to plain "MERGE RELAY" text — no bitmap art ships until task 22)
+/// back to plain "GLOW RESCUE" text — no bitmap art ships until task 22)
 /// plus the Settings icon action.
 final class _HomeHeader extends StatelessWidget {
   const _HomeHeader({required this.game, required this.theme});

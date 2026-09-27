@@ -141,7 +141,7 @@ commits and applies the small `.agents/games/*` index edits itself. The human co
 | 15 | Pocket Biome: art-direction dry run | agent | [x] |
 | 16 | Sixty-Second Heist: name candidates (strict uniqueness) | agent | [x] |
 | 17 | HUMAN: pick Merge Relay name + Pocket Biome direction | human | [x] |
-| 18 | Merge Relay: apply the chosen name | agent | [ ] |
+| 18 | Merge Relay: apply the chosen name | agent | [x] |
 | 19 | Merge Relay: logo + icon dry run | agent | [ ] |
 | 20 | Merge Relay: art-set dry run (tile characters, home scene) | agent | [ ] |
 | 21 | HUMAN: pick logo + art direction | human | [ ] |

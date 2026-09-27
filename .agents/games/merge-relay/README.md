@@ -1,6 +1,6 @@
-# Merge Relay — game knowledge base
+# Glow Rescue — game knowledge base
 
-Single source of truth for what Merge Relay **is** and the answers we need for store
+Single source of truth for what Glow Rescue **is** and the answers we need for store
 listings, reviews, support, and future work. Keep it current: every product decision,
 number, or listing answer that changes must be updated here in the same commit.
 Evidence (screenshots, research, art masters) lives in dated folders under
@@ -19,7 +19,7 @@ Evidence (screenshots, research, art masters) lives in dated folders under
 
 | | |
 |---|---|
-| Name | **Merge Relay** (internal registry id `merge_relay`); a new public name is chosen at task 17 — this folder name and internal id stay `merge-relay` / `merge_relay` after the rename |
+| Name | **Glow Rescue** (internal registry id `merge_relay`); chosen at task 17 (`tasks/epics/16-games-portfolio-wave2/decisions.md`), applied task 18 — this folder name and internal id stay `merge-relay` / `merge_relay` |
 | Package / bundle | `app.w3dev.mergerelay` (production), `app.w3dev.mergerelay.debug` (debug) — registry: `docs-internal/gaming/app-source-registry.md` |
 | Code | `apps-native/games/merge_relay` (Flutter + Flame), rules `apps-native/games/packages/merge_rules`, backend `packages/api/src/games/merge-relay/` |
 | Epic | `tasks/epics/16-games-portfolio-wave2/` (this epic); prior backend-heavy work tracked in `tasks/epics/14-*` (see `docs-internal/gaming/merge-relay-release-plan.md`, `merge-relay-release-audit.md`) |
@@ -29,4 +29,4 @@ Evidence (screenshots, research, art masters) lives in dated folders under
 | Fonts | Fredoka (display) / Nunito Sans (body) — OFL, task 03/07 |
 | Primary competitor reference | **Threes!** (Sirvo) — visual/feel target; see `.agents/resources/2026-09-25/games-competitor-references/README.md` |
 | Visual bar | Threes!-grade: character tiles, warm hand-made palette, real soundtrack; original art only |
-| Status (2026-09-25) | **Active — solo v1 scope.** Friend relays, Play Games Services, and every network path are gated off for v1 (kept in code for v1.1). Full visual/motion/audio/brand overhaul in progress this epic; rescue campaign expands from 5 to 60 boards in 6 chapters (task 06) |
+| Status (2026-09-27) | **Active — solo v1 scope.** Friend relays, Play Games Services, and every network path are gated off for v1 (kept in code for v1.1). Full visual/motion/audio/brand overhaul in progress this epic; rescue campaign expands from 5 to 60 boards in 6 chapters (task 06); brand renamed **Glow Rescue** and applied across the app (task 18) |

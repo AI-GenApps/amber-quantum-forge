@@ -55,7 +55,7 @@ final class MergeRelayWelcome extends StatelessWidget {
                 child: TextButton(onPressed: onSkip, child: const Text('Skip')),
               ),
               Text(
-                'MERGE\nRELAY',
+                'GLOW\nRESCUE',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: theme.ink,

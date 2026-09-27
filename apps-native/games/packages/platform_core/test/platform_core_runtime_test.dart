@@ -11,8 +11,8 @@ void main() {
         identity: appIdentityFor('merge_relay'),
       );
 
-      expect(runtime.identity.canonicalName, 'Merge Relay');
-      expect(runtime.identity.publicTitle, 'Merge Relay');
+      expect(runtime.identity.canonicalName, 'Glow Rescue');
+      expect(runtime.identity.publicTitle, 'Glow Rescue');
       expect(runtime.environment, parseAppEnvironment(gameEnvironmentDefine));
       expect(runtime.appVersion, appVersionDefine);
       expect(() => parseAppEnvironment('qa'), throwsArgumentError);

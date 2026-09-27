@@ -118,17 +118,44 @@ function writeTextOrCheck(path: string, value: string, check: boolean, errors: s
   writeFileSync(path, value);
 }
 
+/// Resolves a Gradle `manifestPlaceholders["<name>"] = ...` assignment in
+/// `android/app/build.gradle.kts` to its production (first-quoted) string
+/// literal, e.g. `if (x.isEmpty()) "Glow Rescue" else "Glow Rescue QA"`
+/// resolves to `"Glow Rescue"`. Returns `null` if the file or the
+/// placeholder assignment isn't found.
+function resolveGradleManifestPlaceholder(root: string, placeholder: string): string | null {
+  const path = join(root, "android/app/build.gradle.kts");
+  if (!existsSync(path)) return null;
+  const source = readFileSync(path, "utf8");
+  const marker = `manifestPlaceholders["${placeholder}"] =`;
+  const start = source.indexOf(marker);
+  if (start < 0) return null;
+  const tail = source.slice(start + marker.length, start + marker.length + 400);
+  return tail.match(/"([^"]*)"/)?.[1] ?? null;
+}
+
 function updateAndroidLabel(root: string, title: string, check: boolean, errors: string[]): void {
   const path = join(root, "android/app/src/main/AndroidManifest.xml");
   const source = readFileSync(path, "utf8");
   const expected = `android:label="${escapeXml(title)}"`;
+  if (source.includes(expected)) return;
+  const placeholder = source.match(/android:label="\$\{([A-Za-z0-9_]+)\}"/)?.[1];
+  if (placeholder) {
+    const resolved = resolveGradleManifestPlaceholder(root, placeholder);
+    if (resolved === title) return;
+    errors.push(
+      `Android launcher label placeholder \${${placeholder}} in ${path} resolves to ` +
+        `${resolved === null ? "an unknown value" : `"${resolved}"`}, expected "${title}" ` +
+        `— update manifestPlaceholders["${placeholder}"] in android/app/build.gradle.kts`,
+    );
+    return;
+  }
   if (check) {
-    if (!source.includes(expected)) errors.push(`stale Android launcher label: ${path}`);
+    errors.push(`stale Android launcher label: ${path}`);
     return;
   }
   const updated = source.replace(/android:label="[^"]+"/, `android:label="${escapeXml(title)}"`);
-  if (updated === source && !source.includes(expected))
-    errors.push(`Android launcher label missing: ${path}`);
+  if (updated === source) errors.push(`Android launcher label missing: ${path}`);
   else writeFileSync(path, updated);
 }
 

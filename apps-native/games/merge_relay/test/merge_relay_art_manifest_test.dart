@@ -105,8 +105,8 @@ void main() {
         await tester.pump();
       });
 
-      expect(find.text('MERGE RELAY'), findsOneWidget);
-      expect(find.text('MERGE\nRELAY'), findsOneWidget);
+      expect(find.text('GLOW RESCUE'), findsOneWidget);
+      expect(find.text('GLOW\nRESCUE'), findsOneWidget);
     });
   });
 

@@ -11,7 +11,7 @@ void main() {
     await tester.pumpWidget(const MergeRelayApp());
     await tester.pump();
 
-    expect(find.text('MERGE RELAY'), findsOneWidget);
+    expect(find.text('GLOW RESCUE'), findsOneWidget);
     expect(find.text('Play rescue'), findsOneWidget);
     expect(find.text('Rescue paths'), findsOneWidget);
     expect(find.text('Friend relays'), findsNothing);

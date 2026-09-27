@@ -2,8 +2,8 @@
   "app_id": "merge_relay",
   "rule_version": "MR-2D-1",
   "content_version": "MR-CONTENT-1",
-  "public_title": "Merge Relay",
-  "subtitle": "Merge tiles. Light the board",
+  "public_title": "Glow Rescue",
+  "subtitle": "Merge tiles, rescue the board.",
   "stage": "Rescue-first client milestone; relay service integration remains pending",
   "checkpoint": {
     "board_size": 4,

@@ -242,7 +242,7 @@ final class MergeRelayContentCatalog {
       rethrow;
     } on Object catch (error) {
       throw MergeRelayContentLoadException(
-        'Merge Relay content could not be loaded',
+        'Glow Rescue content could not be loaded',
         cause: error,
       );
     }

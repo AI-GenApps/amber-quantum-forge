@@ -215,7 +215,7 @@ final class _MergeRelayContentFailure extends StatelessWidget {
                 const Icon(Icons.cloud_off_rounded, size: 48),
                 const SizedBox(height: 18),
                 Text(
-                  'Merge Relay needs a fresh start.',
+                  'Glow Rescue needs a fresh start.',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),

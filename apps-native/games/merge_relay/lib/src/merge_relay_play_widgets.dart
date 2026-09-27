@@ -38,7 +38,7 @@ final class MergeRelayHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'MERGE RELAY',
+                'GLOW RESCUE',
                 style: TextStyle(
                   color: theme.muted,
                   fontSize: 11,

@@ -38,8 +38,8 @@ abstract final class GeneratedGameRegistry {
   static const apps = <GameAppDefinition>[
     GameAppDefinition(
       id: 'merge_relay',
-      canonicalName: 'Merge Relay',
-      publicTitle: 'Merge Relay',
+      canonicalName: 'Glow Rescue',
+      publicTitle: 'Glow Rescue',
       saveNamespacePrefix: 'games.merge_relay',
       saveSchemaVersion: 1,
       analyticsNamespacePrefix: 'game.merge_relay',

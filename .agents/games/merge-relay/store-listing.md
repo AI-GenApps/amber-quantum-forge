@@ -1,14 +1,14 @@
-# Merge Relay — store listing answer bank
+# Glow Rescue — store listing answer bank
 
-Answers for Google Play Console (now) and App Store Connect (later). All fields are
-**TBD** pending task 17 (name pick) and task 24 (release readiness). Draft copy must
-stay truthful: v1 has no relays, no PGS, no ads, no IAP — do not advertise them.
+Answers for Google Play Console (now) and App Store Connect (later). Most fields
+remain **TBD** pending task 24 (release readiness). Draft copy must stay truthful:
+v1 has no relays, no PGS, no ads, no IAP — do not advertise them.
 
 ## Identity
 
 | Field | Answer |
 |---|---|
-| App name (≤30) | **TBD** — final name chosen at task 17 (candidates from task 14, strict uniqueness check) |
+| App name (≤30) | **Glow Rescue** — chosen at task 17 (`tasks/epics/16-games-portfolio-wave2/decisions.md`; candidates from task 14, strict uniqueness check), applied task 18 |
 | Package name | `app.w3dev.mergerelay` (production), `app.w3dev.mergerelay.debug` (debug) |
 | Developer name / account | **TBD** |
 | Default language | **TBD** (English (United States) expected) |
@@ -20,11 +20,11 @@ stay truthful: v1 has no relays, no PGS, no ads, no IAP — do not advertise the
 
 ## Listing copy (drafts)
 
-- **Short description (≤80):** **TBD** — written after the rename (task 17/18); must
-  reflect solo-only v1 (no "play with friends" claim while relays are gated off).
-- **Full description (≤4000):** **TBD** — outline once name is picked: hook (character
-  tiles, Threes!-grade feel) · modes (Rescue 60-board/6-chapter campaign, Daily,
-  Endless) · no ads, no IAP · offline play.
+- **Short description (≤80):** **TBD** — draft: "Merge tiles, rescue the board. 60
+  boards, no ads, no IAP." (no "play with friends" claim while relays are gated off).
+- **Full description (≤4000):** **TBD** — outline: hook (character tiles, Threes!-grade
+  feel) · modes (Rescue 60-board/6-chapter campaign, Daily, Endless) · no ads, no IAP ·
+  offline play.
 - **App Store (later):** subtitle, keywords — **TBD**.
 
 ## Graphics

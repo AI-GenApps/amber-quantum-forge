@@ -176,7 +176,7 @@ final class _FallbackWordmark extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        stacked ? 'MERGE\nRELAY' : 'MERGE RELAY',
+        stacked ? 'GLOW\nRESCUE' : 'GLOW RESCUE',
         textAlign: TextAlign.center,
         style: const TextStyle(
           fontFamily: 'Fredoka',

@@ -84,3 +84,17 @@ rows keep their existing `Specified`/`Implemented`/`Integrated`/`Verified` value
 table above, since the underlying code and specification are unchanged — only the v1
 release gate (`Enabled`) excludes them, same as before this decision (all rows were
 already `Enabled: no`).
+
+## 2026-09-27 user decision — brand name "Glow Rescue"
+
+The user picked **Glow Rescue** as the public name (task 17, recorded in
+`tasks/epics/16-games-portfolio-wave2/decisions.md`; rank 1 in the strictly-checked
+shortlist from task 14). Task 18 applied it to every user-visible surface: the
+registry's `canonicalName`/`publicTitle` (regenerated `game.config.json` and
+`platform_core`'s `game_app_registry.dart`), the Android launcher label and iOS
+`CFBundleDisplayName`, and the in-app wordmark and fallback-screen copy. The internal
+id `merge_relay`, the bundle ids `app.w3dev.mergerelay(.debug)`, the save/analytics
+namespaces, and the folder names are unchanged. v1.1 relay/friend copy that sits
+behind the `mergeRelaySocialEnabled` gate (the share-sheet title, the deep-link
+scheme) is untouched — see `.agents/resources/2026-09-25/games-wave2-qa/18/README.md`
+for the full before/after grep and rationale.

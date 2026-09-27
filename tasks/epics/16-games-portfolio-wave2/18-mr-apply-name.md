@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 18-mr-apply-name
-status: pending
+status: completed
 commit_scope: merge-relay
 depends_on: [16-games-portfolio-wave2/17-human-name-and-direction-pick]
 estimate: M
@@ -45,10 +45,13 @@ folder names.
 
 ## Implementation Checklist
 
-- [ ] Edit the registry, then run codegen (and native if needed).
-- [ ] Update the in-app strings, and update tests that assert the old title.
-- [ ] Update goldens that show the title, then VIEW them.
-- [ ] Record `grep -rn "Merge Relay" apps-native/games/merge_relay/lib` before
+- [x] Edit the registry, then run codegen (and native if needed). (`games:native`
+      wasn't needed — bundle ids/namespaces are unchanged; the Android label and iOS
+      display name are set by `scripts/games/icons.ts`, run as
+      `bun scripts/games/icons.ts --app merge_relay`.)
+- [x] Update the in-app strings, and update tests that assert the old title.
+- [x] Update goldens that show the title, then VIEW them.
+- [x] Record `grep -rn "Merge Relay" apps-native/games/merge_relay/lib` before
       and after in `.agents/resources/2026-09-25/games-wave2-qa/18/README.md`,
       justifying every remaining hit (internal or gated).
 
@@ -56,8 +59,13 @@ folder names.
 
 - `scripts/games/{icons.ts,icons.test.ts}` (label placeholder fix)
 - `scripts/games/registry-games.ts` and the generated config/registry files
-- `apps-native/games/merge_relay/{lib/**,test/**,android/app/src/main/**,ios/project.yml}` (label only)
-- `.agents/games/merge-relay/*.md`, `docs-internal/gaming/handoffs/merge-relay.md`
+- `apps-native/games/merge_relay/{lib/**,test/**,android/app/build.gradle.kts,ios/Runner/Info.plist,content/manifest.json}` (label/name only)
+- `.agents/games/merge-relay/{README.md,store-listing.md}`, `docs-internal/gaming/handoffs/merge-relay.md`
+- Additional small fixes required by the registry change (not originally listed, noted
+  in the evidence README): `apps-native/games/packages/platform_core/test/platform_core_runtime_test.dart`
+  (asserted the old title against the live generated registry; `games:test` failed
+  otherwise), and `apps-native/games/merge_relay/content/manifest.json`'s `public_title`
+  (`games:validate:strict` checks it against the registry's `publicTitle`).
 
 ## Acceptance Criteria
 

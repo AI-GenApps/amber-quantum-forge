@@ -1,7 +1,7 @@
 {
   "id": "merge_relay",
-  "canonicalName": "Merge Relay",
-  "publicTitle": "Merge Relay",
+  "canonicalName": "Glow Rescue",
+  "publicTitle": "Glow Rescue",
   "environment": "debug",
   "productionId": "app.w3dev.mergerelay",
   "debugId": "app.w3dev.mergerelay.debug",
