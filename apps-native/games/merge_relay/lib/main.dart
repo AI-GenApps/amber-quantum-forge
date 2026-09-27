@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:platform_core/platform_core.dart';
 
+import 'src/assets/mr_bitmap_art_cache.dart';
 import 'src/merge_relay_app.dart';
 import 'src/merge_relay_client.dart';
 import 'src/merge_relay_content.dart';
@@ -9,6 +12,11 @@ import 'src/save_adapter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Task 23: kick off the tile/board-frame bitmap decode as early as
+  // possible (in parallel with the content/save-store loads below) so it's
+  // already warm by the time the player opens Play, rather than only
+  // starting once `MergeRelayBoard` first mounts.
+  unawaited(MrBitmapArtCache.instance.ensureLoaded());
   final saveStore = await createMergeRelaySaveStore();
   MergeRelayContentCatalog? content;
   String? contentError;

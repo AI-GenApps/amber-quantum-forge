@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 23-mr-art-final-and-integrate
-status: pending
+status: completed
 commit_scope: merge-relay
 depends_on: [16-games-portfolio-wave2/22-mr-logo-final-and-integrate]
 estimate: L
@@ -35,13 +35,13 @@ then show a finished, illustrated game.
 
 ## Implementation Checklist
 
-- [ ] Run a smoke test, then render the finals, view them, and regenerate
+- [x] Run a smoke test, then render the finals, view them, and regenerate
       once if needed.
-- [ ] Optimize and integrate the art, and update `LICENSES.md`.
-- [ ] Update the tier-sheet and screen goldens. Add a manifest test per slot
+- [x] Optimize and integrate the art, and update `LICENSES.md`.
+- [x] Update the tier-sheet and screen goldens. Add a manifest test per slot
       family.
-- [ ] Re-measure the APK size in `.agents/resources/2026-09-25/games-wave2-qa/23/budgets.md`.
-- [ ] Build an after contact sheet against the Threes! anchors and the audit's
+- [x] Re-measure the APK size in `.agents/resources/2026-09-25/games-wave2-qa/23/budgets.md`.
+- [x] Build an after contact sheet against the Threes! anchors and the audit's
       "before" renders, and VIEW it.
 
 ## Files Touched

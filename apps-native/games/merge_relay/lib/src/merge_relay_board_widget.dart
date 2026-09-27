@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:merge_rules/merge_rules.dart';
 
+import 'assets/mr_bitmap_art_cache.dart';
 import 'merge_relay_app.dart';
 import 'merge_relay_board_accessibility.dart';
 import 'merge_relay_board_painter.dart';
@@ -55,6 +56,13 @@ final class _MergeRelayBoardState extends State<MergeRelayBoard>
       vsync: this,
       duration: mergeRelayCelebrationDuration,
     );
+    // Task 23: kicks off the tile/board-frame bitmap decode the first time
+    // a board mounts. `MrBitmapArtCache` is a singleton, so a later board
+    // (e.g. re-opening Play) just gets the already-completed future back —
+    // `ensureLoaded` is safe to call every time. Its own `version` notifier
+    // is what actually triggers a repaint once decoding finishes; this call
+    // doesn't need to await anything itself.
+    MrBitmapArtCache.instance.ensureLoaded();
   }
 
   @override
@@ -172,6 +180,7 @@ final class _MergeRelayBoardState extends State<MergeRelayBoard>
                   _moveAnimation,
                   _shakeAnimation,
                   _celebrationAnimation,
+                  MrBitmapArtCache.instance.version,
                 ]),
                 builder: (context, _) {
                   final presentation = _presentation;
@@ -201,6 +210,7 @@ final class _MergeRelayBoardState extends State<MergeRelayBoard>
                       celebrationCell: presentation?.bestTileCell,
                       celebrationProgress: _celebrationAnimation.value,
                       highlightAlpha: movePulse,
+                      artVersion: MrBitmapArtCache.instance.version.value,
                     ),
                   );
                 },

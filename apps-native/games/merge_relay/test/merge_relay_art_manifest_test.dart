@@ -54,7 +54,14 @@ final class _MissingAssetBundle extends CachingAssetBundle {
 
 void main() {
   group('fallback path (no bundled art)', () {
+    // homeScene/tileFace/boardFrame/chapterCard all ship real bitmaps by
+    // default as of task 23 (like logoWide/logoStacked since task 22), so
+    // each fallback test below forces its own slot's asset path to behave
+    // as "not bundled" via `_MissingAssetBundle` — proving the fallback
+    // mechanism itself still works — rather than relying on the default
+    // bundle actually missing the file.
     testWidgets('homeScene renders its fallback', (tester) async {
+      final bundle = _MissingAssetBundle('assets/art/homeScene.png');
       await tester.runAsync(() async {
         await tester.pumpWidget(
           Directionality(
@@ -62,7 +69,7 @@ void main() {
             child: SizedBox(
               width: 200,
               height: 200,
-              child: MergeRelayArtManifest.homeScene(),
+              child: MergeRelayArtManifest.homeScene(bundle: bundle),
             ),
           ),
         );
@@ -76,6 +83,7 @@ void main() {
     testWidgets('tileFace(2) renders its fallback disc with a numeral', (
       tester,
     ) async {
+      final bundle = _MissingAssetBundle('assets/art/tileFace_2.png');
       await tester.runAsync(() async {
         await tester.pumpWidget(
           Directionality(
@@ -83,7 +91,7 @@ void main() {
             child: SizedBox(
               width: 80,
               height: 80,
-              child: MergeRelayArtManifest.tileFace(2),
+              child: MergeRelayArtManifest.tileFace(2, bundle: bundle),
             ),
           ),
         );
@@ -95,6 +103,7 @@ void main() {
     });
 
     testWidgets('boardFrame renders its fallback', (tester) async {
+      final bundle = _MissingAssetBundle('assets/art/boardFrame.png');
       await tester.runAsync(() async {
         await tester.pumpWidget(
           Directionality(
@@ -102,7 +111,7 @@ void main() {
             child: SizedBox(
               width: 200,
               height: 200,
-              child: MergeRelayArtManifest.boardFrame(),
+              child: MergeRelayArtManifest.boardFrame(bundle: bundle),
             ),
           ),
         );
@@ -110,11 +119,30 @@ void main() {
         await tester.pump();
       });
 
-      // boardFrame ships no bitmap yet (task 23), so the default bundle
-      // must still resolve to its fallback DecoratedBox (no crash/error
-      // widget) — there's no on-screen text to assert on, so this mainly
-      // guards against the fallback path throwing.
+      // No on-screen text to assert on for this fallback (a plain
+      // DecoratedBox) — this mainly guards against the fallback path
+      // throwing when the bitmap fails to load.
       expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('chapterCard(1) renders its fallback', (tester) async {
+      final bundle = _MissingAssetBundle('assets/art/chapterCard_1.png');
+      await tester.runAsync(() async {
+        await tester.pumpWidget(
+          Directionality(
+            textDirection: TextDirection.ltr,
+            child: SizedBox(
+              width: 40,
+              height: 40,
+              child: MergeRelayArtManifest.chapterCard(1, bundle: bundle),
+            ),
+          ),
+        );
+        await tester.pump();
+        await tester.pump();
+      });
+
+      expect(find.byIcon(Icons.terrain_rounded), findsOneWidget);
     });
 
     testWidgets(
@@ -202,6 +230,30 @@ void main() {
       expect(find.text('4096'), findsNothing);
       expect(find.byType(Image), findsOneWidget);
     });
+
+    testWidgets(
+      'chapterCard(3) decodes the bundled bitmap, not the fallback icon',
+      (tester) async {
+        final bundle = _SingleAssetBundle('assets/art/chapterCard_3.png');
+        await tester.runAsync(() async {
+          await tester.pumpWidget(
+            Directionality(
+              textDirection: TextDirection.ltr,
+              child: SizedBox(
+                width: 40,
+                height: 40,
+                child: MergeRelayArtManifest.chapterCard(3, bundle: bundle),
+              ),
+            ),
+          );
+          await tester.pump();
+          await tester.pump();
+        });
+
+        expect(find.byIcon(Icons.terrain_rounded), findsNothing);
+        expect(find.byType(Image), findsOneWidget);
+      },
+    );
 
     testWidgets('logoWide decodes the bundled bitmap, not the fallback text', (
       tester,

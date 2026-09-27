@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:merge_relay/src/assets/mr_bitmap_art_cache.dart';
 import 'package:merge_relay/src/merge_relay_board_art.dart';
 import 'package:merge_relay/src/merge_relay_theme.dart';
 import 'package:merge_relay/src/ui/tiles/mr_board_tray_painter.dart';
@@ -11,6 +12,13 @@ import '../screens/physical_golden.dart';
 /// generic fallback (values above the last named tier reuse tier 11's
 /// colour and face rather than looking undefined), and two empty wells for
 /// a side-by-side check that slots read as pale trays, not dark holes.
+///
+/// Task 23: `MergeRelayBoardArt.paintTile`/`paintBoardTray` now draw the
+/// bundled `tileFace_<tier>.png`/`boardFrame.png` bitmaps when present,
+/// decoded ahead of time via `MrBitmapArtCache` — a raw `CustomPainter`
+/// can't await a decode mid-frame, so [_ensureArtLoaded] awaits it inside
+/// `runAsync` before the first pump, the same reason `screens_test.dart`
+/// precaches `logoWide`/`logoStacked`.
 void main() {
   testWidgets('tier sheet shows every tier with readable numerals', (
     tester,
@@ -20,6 +28,7 @@ void main() {
     addTearDown(tester.view.reset);
 
     final key = UniqueKey();
+    await tester.runAsync(() => MrBitmapArtCache.instance.ensureLoaded());
     await tester.pumpWidget(
       RepaintBoundary(
         key: key,

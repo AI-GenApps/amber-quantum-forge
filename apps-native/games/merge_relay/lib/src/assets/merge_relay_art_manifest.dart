@@ -75,6 +75,25 @@ final class MergeRelayArtManifest {
     fallback: (context) => const _FallbackBoardFrame(),
   );
 
+  /// The six Rescue chapters, matching `content/rescue_boards.json`'s
+  /// chapter numbers (1 Harbor .. 6 Observatory) — task 23's new slot
+  /// family, a small illustration per chapter shown as a thumbnail on the
+  /// chapter map's cards.
+  static const List<int> chapterNumbers = [1, 2, 3, 4, 5, 6];
+
+  static Widget chapterCard(int chapter, {AssetBundle? bundle, Key? key}) {
+    assert(
+      chapterNumbers.contains(chapter),
+      'chapterCard chapter must be one of $chapterNumbers',
+    );
+    return _slot(
+      'assets/art/chapterCard_$chapter.png',
+      bundle: bundle,
+      key: key,
+      fallback: (context) => _FallbackChapterCard(chapter: chapter),
+    );
+  }
+
   static Widget _slot(
     String assetPath, {
     required WidgetBuilder fallback,
@@ -231,6 +250,32 @@ final class _FallbackBoardFrame extends StatelessWidget {
       decoration: BoxDecoration(
         color: MrTokens.ink,
         borderRadius: BorderRadius.circular(MrTokens.radiusLarge),
+      ),
+    );
+  }
+}
+
+/// A chapter's fallback thumbnail (task 23) until its real illustration
+/// ships: a flat tinted square with a terrain glyph, cycling through the
+/// tile-tier palette by chapter number so the six placeholders still read
+/// as distinct from one another.
+final class _FallbackChapterCard extends StatelessWidget {
+  const _FallbackChapterCard({required this.chapter});
+
+  final int chapter;
+
+  @override
+  Widget build(BuildContext context) {
+    final color =
+        MrTokens.tileTierColors[(chapter * 2) % MrTokens.tileTierColors.length];
+    return DecoratedBox(
+      decoration: BoxDecoration(color: color),
+      child: Center(
+        child: Icon(
+          Icons.terrain_rounded,
+          size: 18,
+          color: MrTokens.tileEdgeShadeOf(color),
+        ),
       ),
     );
   }

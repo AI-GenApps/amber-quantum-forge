@@ -53,3 +53,134 @@ anywhere in this table. Masters, prompts, and full generation logs live at
   accidentally all-transparent image. Full script output in
   `.agents/resources/2026-09-25/merge-relay-art/logo/final/README.md`.
 - Both in-app files are well under the 600 KB budget (140 KB / 224 KB).
+
+## Task 23 — tile-tier, scene, board, and chapter art
+
+Every file below is also **original AI-generated art**, produced with the
+same `~/.local/bin/image-gen` (model `gpt-6-luna`) per
+`tasks/epics/16-games-portfolio-wave2/23-mr-art-final-and-integrate.md`,
+rendering approved art direction B (`mr_art_direction: B`, "glossy
+painted/3D-toy" — `decisions.md`). Masters (unmodified, exactly as
+generated), the full per-file prompt log, and post-processing notes live at
+`.agents/resources/2026-09-25/merge-relay-art/set-1/final/`. Every in-app
+copy here is a Pillow resize/re-encode of its master — no further AI
+generation past that resize.
+
+### Tile-tier cards (`tileFace_<tier>.png`, 12 files)
+
+Shared prompt template (`tileFace_2.png` generated first and then passed
+back in as the style-continuity reference for the other 11, so all 12 share
+one light direction, outline weight, and card proportions):
+
+> Final production-quality game tile card illustration for a mobile puzzle
+> game. Match the exact bold glossy 3D-toy rendered style, top-left
+> specular highlight, outline weight, rounded-square card silhouette, and
+> face placement/scale of the reference image at `<tileFace_2.png master>`
+> as closely as possible (this is the already-approved production
+> tile-card style; every tier must look like one consistent set). Only
+> change: the face in the upper 40 percent of the card has `<expression>`,
+> and the whole glossy card body is a solid `<color name>` color
+> (approximately hex `<hex>`). The lower 55 percent of the card is a
+> smooth plain surface in that same solid color, with absolutely no face
+> elements, no text, no shadows there (a numeral is added later by code).
+> Fully transparent background outside the rounded-square card (PNG with
+> alpha channel, no ground shadow). No text, no numerals, no watermark.
+> Centered, single object, original character design, dimensional not
+> flat, mobile game asset, crisp clean edges.
+
+| Tier | Expression | Fill (matches `MrTokens.tileTierColors`) |
+|---|---|---|
+| 2 | sleepy dot-and-line eyes, small closed smile (first render — no reference image, sets the style) | `#ffffff`/cream |
+| 4 | sleepy dot-and-line eyes, small closed smile (slightly more awake) | `#ffe9c6` |
+| 8 | open oval eyes, small closed smile | `#ffc97a` |
+| 16 | open oval eyes, medium open smile | `#f2914b` |
+| 32 | round dot eyes + highlight, medium open smile, blush | `#e86b4b` |
+| 64 | round dot eyes + highlight, open smiling mouth, blush | `#c03e4f` |
+| 128 | wide round eyes + highlight, open smiling mouth, blush | `#b84c7a` |
+| 256 | wide round eyes + highlight, wide-open excited mouth, blush, sparkles | `#8b4a9c` |
+| 512 | upward crescent happy eyes, wide-open excited mouth, blush, sparkles | `#5c4b9e` |
+| 1024 | upward crescent happy eyes, round "o" delighted mouth, blush, sparkles | `#3c5c9e` |
+| 2048 | star-shaped eyes, round "o" delighted mouth, blush, sparkles | `#2a7a8c` |
+| 4096 | star-shaped eyes, wide-open ecstatic mouth, blush, several sparkles | `#1e2a44` |
+
+Expressions loosely track `mrTileExpressions` (task 08's per-tier
+progression) so the bitmap and code-drawn-fallback faces read as the same
+character family. Each tier's fill was prompted with its exact
+`MrTokens.tileTierColors` hex so the numeral color already picked for that
+tier (`MrTokens.tileTierNumeralColorFor`) keeps its WCAG AA contrast against
+the art. Every master verified RGBA with a transparent border and an
+opaque card interior (Pillow). In-app copies were first resized to 768x768, then (orchestrator follow-up, 2026-09-28) re-encoded to 256x256, since on-screen tiles are ~160 px physical at 3x and the task guideline is <=256 px
+(Pillow LANCZOS).
+
+### `homeScene.png`
+
+> Final production-quality wide background scene illustration for a cozy
+> mobile puzzle game's home-screen hero banner, bold glossy 3D-toy
+> rendered style (like a diorama of glazed ceramic and vinyl-toy pieces).
+> Match the palette, mood, and rendering technique of the reference image
+> at `direction-b_homeScene_v1.png` (task 20's approved dry run) as closely
+> as possible, re-rendered at final production polish: a calm dawn harbor
+> at sunrise, warm saturated sky, soft dimensional clouds, a small glossy
+> lighthouse and harbor silhouette in the distance, two or three chunky
+> glossy rounded-square rescue-tile characters with simple happy faces and
+> thick specular highlights floating near the top third of the frame.
+> Leave the lower two-thirds of the frame as calm open sky/water with no
+> busy detail, since headline text and a button are overlaid there later
+> by the app. No text/letters/numbers/logos/watermark. Landscape,
+> ~1200x1000.
+
+Master is opaque RGB (no alpha needed — it fills its whole frame). In-app
+copy resized so its width is 1080px (the task's scene budget).
+
+### `boardFrame.png`
+
+> Final production-quality background texture illustration for a cozy
+> mobile puzzle game's board panel, bold glossy 3D-toy rendered style
+> (like a diorama of glazed ceramic and lacquered wood). Match the
+> palette and rendering technique of the reference image at
+> `direction-b_boardFrame_v1.png` (task 20's approved dry run) as closely
+> as possible, re-rendered at final production polish, but this time
+> render the warm cream tray filling the ENTIRE square canvas edge to
+> edge with rounded corners matching the canvas's own corners (no
+> surrounding border/background colour visible) — a large rounded-square
+> warm cream panel with soft dimensional ambient-occlusion shading along
+> its inner edge and a subtle glossy highlight along the top. No
+> characters, faces, text, numerals, or grid lines. Square, 1:1,
+> ~1080x1080.
+
+The task 20 dry-run reference sat on a visible navy background (needing a
+crop); this final prompt asks the tray to fill the frame directly, so no
+crop was needed this time. Drawn by `paintBoardTray` (via
+`MrBitmapArtCache`) behind the board's tiles/wells, `BoxFit.cover`-cropped
+into the tray's rounded rect. In-app copy resized to 1080x1080.
+
+### Chapter cards (`chapterCard_<1-6>.png`)
+
+Shared prompt template (matching `direction-b_chapterCard_1_v1.png`,
+task 20's approved chapter-1/harbor dry run, as the style/lighting
+reference for all six):
+
+> Final production-quality small illustrated vignette for a mobile puzzle
+> game's chapter-select thumbnail, bold glossy 3D-toy rendered style
+> (like a diorama of glazed ceramic and vinyl-toy pieces). Match the
+> palette, lighting, and rendering technique of the reference image at
+> `direction-b_chapterCard_1_v1.png` as closely as possible, re-rendered
+> at final production polish for a different chapter's theme. Scene:
+> `<scene>`. Include one small chunky glossy rounded-square rescue-tile
+> character with a simple happy face somewhere in the scene, thick
+> specular highlights, saturated warm cozy palette, Threes!-grade polish.
+> Square, 1:1, ~1080x1080, key subject centered and readable even cropped
+> down to a tiny thumbnail. No text/letters/numbers/watermark.
+
+| Chapter | Theme (`content/rescue_boards.json`) | Scene |
+|---|---|---|
+| 1 | Harbor | dawn harbor dock, glossy lighthouse, sunrise-lit waves |
+| 2 | Foundry | warm forge/workshop, glowing lantern, glossy anvil, orange forge-light |
+| 3 | Orchard | blossoming orchard at golden hour, glossy fruit tree, pink-white blossoms |
+| 4 | Bazaar | bustling market stall, hanging lanterns, colorful fabric awnings |
+| 5 | Glacier | icy glacier formations, aurora-tinted sky, soft sparkle highlights |
+| 6 | Observatory | nighttime domed telescope on a hill, starry indigo sky, crescent moon |
+
+Shown as a small 28x28 rounded thumbnail beside each chapter's title on the
+chapter map (`MergeRelayChapterCard`'s header row). In-app copies resized
+to 300x300 opaque RGB.

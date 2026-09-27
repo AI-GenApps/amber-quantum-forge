@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:merge_relay/src/assets/merge_relay_art_manifest.dart';
+import 'package:merge_relay/src/assets/mr_bitmap_art_cache.dart';
 import 'package:merge_relay/src/merge_relay_app.dart';
 import 'package:merge_relay/src/merge_relay_board_widget.dart';
 import 'package:merge_relay/src/merge_relay_content.dart';
@@ -258,6 +260,15 @@ Future<Key> _bootApp(
   await tester.runAsync(() async {
     await _precacheAssetImage('assets/art/logoWide.png');
     await _precacheAssetImage('assets/art/logoStacked.png');
+    await _precacheAssetImage('assets/art/homeScene.png');
+    for (final chapter in MergeRelayArtManifest.chapterNumbers) {
+      await _precacheAssetImage('assets/art/chapterCard_$chapter.png');
+    }
+    // The board/tier bitmaps (task 23) are drawn straight onto a `Canvas`
+    // by `MergeRelayBoardArt.paintTile`/`paintBoardTray`, not through an
+    // `Image` widget, so they go through `MrBitmapArtCache` instead of
+    // `_precacheAssetImage` above.
+    await MrBitmapArtCache.instance.ensureLoaded();
     await tester.pumpWidget(
       RepaintBoundary(
         key: key,

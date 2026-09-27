@@ -1,6 +1,10 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:merge_rules/merge_rules.dart';
 
+import 'assets/merge_relay_art_manifest.dart';
+import 'assets/mr_bitmap_art_cache.dart';
 import 'merge_relay_motion.dart';
 import 'merge_relay_theme.dart';
 import 'ui/mr_tokens.dart';
@@ -95,7 +99,12 @@ final class MergeRelayBoardArt {
     canvas.translate(shakeOffsetPx, 0);
     final side = bounds.shortestSide;
     final boardRect = Rect.fromLTWH(0, 0, side, side);
-    paintBoardTray(canvas, boardRect, trayColor: theme.board);
+    paintBoardTray(
+      canvas,
+      boardRect,
+      trayColor: theme.board,
+      artImage: MrBitmapArtCache.instance.imageFor('assets/art/boardFrame.png'),
+    );
 
     final padding = side * 0.045;
     final gap = side * 0.03;
@@ -240,26 +249,34 @@ final class MergeRelayBoardArt {
     required MergeRelayTheme theme,
     required bool highContrast,
   }) {
-    paintTileCard(
-      canvas,
-      rect,
-      fill: MrTokens.tileColorFor(value),
-      edgeColor: MrTokens.tileEdgeColorFor(value),
-      radius: 18,
-      outlineColor: theme.ink,
-      highContrast: highContrast,
-    );
+    // High contrast keeps the fully procedural card: its firm ink outline
+    // around the whole tile (drawn by `paintTileCard`) is the mode's whole
+    // point — tier colour must never be the only boundary cue between two
+    // tiles — and the bundled art has no such outline baked in.
+    final artImage = highContrast ? null : _tileArtImageFor(value);
+
+    if (artImage != null) {
+      _paintBitmapTileCard(canvas, rect, image: artImage);
+    } else {
+      paintTileCard(
+        canvas,
+        rect,
+        fill: MrTokens.tileColorFor(value),
+        edgeColor: MrTokens.tileEdgeColorFor(value),
+        radius: 18,
+        outlineColor: theme.ink,
+        highContrast: highContrast,
+      );
+      paintTileFace(
+        canvas,
+        faceBoxFor(rect),
+        expression: mrExpressionForTierIndex(MrTokens.tileTierIndex(value)),
+        color: MrTokens.tileNumeralColorFor(value),
+        highContrast: highContrast,
+      );
+    }
 
     final numeralColor = MrTokens.tileNumeralColorFor(value);
-    final faceBox = faceBoxFor(rect);
-    paintTileFace(
-      canvas,
-      faceBox,
-      expression: mrExpressionForTierIndex(MrTokens.tileTierIndex(value)),
-      color: numeralColor,
-      highContrast: highContrast,
-    );
-
     final numeralBox = numeralBoxFor(rect);
     final text = numeralTextPainterFor(
       value,
@@ -274,5 +291,44 @@ final class MergeRelayBoardArt {
         numeralBox.center.dy - text.height / 2,
       ),
     );
+  }
+
+  /// The decoded bitmap for [value]'s tier (task 23), or null when that
+  /// tier's `assets/art/tileFace_<n>.png` isn't bundled yet — a value
+  /// above the last named tier (e.g. 8192) reuses the top tier's art, the
+  /// same clamping [MrTokens.tileTierIndex] already does for colour.
+  static ui.Image? _tileArtImageFor(int value) {
+    final tier =
+        MergeRelayArtManifest.tileFaceTiers[MrTokens.tileTierIndex(value)];
+    return MrBitmapArtCache.instance.imageFor('assets/art/tileFace_$tier.png');
+  }
+
+  /// Draws the bundled tile-tier bitmap covering the whole card: the art
+  /// itself is a full "card + face" render (glossy body, an original face
+  /// in the upper ~45%, and a plain surface in the lower ~50-55% left for
+  /// the numeral), so — unlike the procedural path — no separate card/face
+  /// draw is needed here. A soft drop shadow (matching `paintTileCard`'s)
+  /// still goes down first so a bitmap tile reads with the same depth as
+  /// any code-drawn neighbour (e.g. a tier above the rendered set).
+  static void _paintBitmapTileCard(
+    Canvas canvas,
+    Rect rect, {
+    required ui.Image image,
+  }) {
+    final shadowRRect = RRect.fromRectAndRadius(
+      rect.shift(Offset(0, rect.height * 0.035)),
+      const Radius.circular(18),
+    );
+    canvas.drawRRect(
+      shadowRRect,
+      Paint()
+        ..style = PaintingStyle.fill
+        ..color = Colors.black.withValues(alpha: 0.14)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3),
+    );
+    canvas.save();
+    canvas.clipRRect(RRect.fromRectAndRadius(rect, const Radius.circular(18)));
+    paintImage(canvas: canvas, rect: rect, image: image, fit: BoxFit.cover);
+    canvas.restore();
   }
 }

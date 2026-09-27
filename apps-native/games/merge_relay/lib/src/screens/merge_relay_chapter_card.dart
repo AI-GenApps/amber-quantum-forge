@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../assets/merge_relay_art_manifest.dart';
 import '../merge_relay_app.dart';
 import '../merge_relay_campaign.dart';
 import '../merge_relay_content.dart';
@@ -174,6 +175,20 @@ final class _Header extends StatelessWidget {
               'Chapter ${chapter - 1} to unlock.';
     final titleRow = Row(
       children: [
+        // Task 23: a small thumbnail of the chapter's own illustration
+        // (harbor/foundry/orchard/bazaar/glacier/observatory) — a fixed
+        // 28x28 avatar rather than a full banner keeps every card's
+        // height exactly what it was before (task 11 fought hard for six
+        // chapters to fit the 1080x2400 golden; a banner would undo that).
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: SizedBox(
+            width: 28,
+            height: 28,
+            child: MergeRelayArtManifest.chapterCard(chapter),
+          ),
+        ),
+        const SizedBox(width: 8),
         if (!unlocked) ...[
           Icon(Icons.lock_rounded, size: 15, color: theme.muted),
           const SizedBox(width: 5),

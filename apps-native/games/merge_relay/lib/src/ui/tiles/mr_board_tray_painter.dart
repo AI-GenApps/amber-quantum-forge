@@ -1,16 +1,35 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 
 /// Paints the board's soft cream tray: a rounded panel with a faint inner
 /// shadow along its top edge (so it reads as a shallow recessed tray rather
 /// than a flat rectangle), replacing the old dark-navy board background.
-void paintBoardTray(Canvas canvas, Rect rect, {required Color trayColor}) {
+/// [artImage] is the decoded `boardFrame` bitmap (task 23,
+/// `MrBitmapArtCache`) when one is bundled — it's drawn (cropped to cover,
+/// like `BoxFit.cover`) in place of the flat [trayColor] fill; the inner
+/// shadow still layers on top either way, so a bitmap tray keeps the same
+/// "recessed" depth cue as the code-drawn one.
+void paintBoardTray(
+  Canvas canvas,
+  Rect rect, {
+  required Color trayColor,
+  ui.Image? artImage,
+}) {
   final rrect = RRect.fromRectAndRadius(rect, const Radius.circular(28));
-  canvas.drawRRect(
-    rrect,
-    Paint()
-      ..style = PaintingStyle.fill
-      ..color = trayColor,
-  );
+  if (artImage != null) {
+    canvas.save();
+    canvas.clipRRect(rrect);
+    paintImage(canvas: canvas, rect: rect, image: artImage, fit: BoxFit.cover);
+    canvas.restore();
+  } else {
+    canvas.drawRRect(
+      rrect,
+      Paint()
+        ..style = PaintingStyle.fill
+        ..color = trayColor,
+    );
+  }
   canvas.save();
   canvas.clipRRect(rrect);
   canvas.drawRRect(

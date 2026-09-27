@@ -20,6 +20,7 @@ final class MergeRelayBoardPainter extends CustomPainter {
     this.celebrationCell,
     this.celebrationProgress = 0,
     this.highlightAlpha = 1,
+    this.artVersion = 0,
   });
 
   final MergeBoard board;
@@ -41,6 +42,13 @@ final class MergeRelayBoardPainter extends CustomPainter {
   /// of the session (`changedCells` itself is never cleared after a
   /// move — see `MergeRelayBoardArt.paint`).
   final double highlightAlpha;
+
+  /// `MrBitmapArtCache.instance.version`'s value at build time (task 23):
+  /// included purely so [shouldRepaint] notices when the tile/board-frame
+  /// bitmaps finish decoding after this painter's first frame — every
+  /// other field can be unchanged (same board, same everything) and this
+  /// is the only thing that flips a no-op repaint into a real one.
+  final int artVersion;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -77,6 +85,7 @@ final class MergeRelayBoardPainter extends CustomPainter {
         oldDelegate.shakeOffsetPx != shakeOffsetPx ||
         oldDelegate.celebrationCell != celebrationCell ||
         oldDelegate.celebrationProgress != celebrationProgress ||
-        oldDelegate.highlightAlpha != highlightAlpha;
+        oldDelegate.highlightAlpha != highlightAlpha ||
+        oldDelegate.artVersion != artVersion;
   }
 }
