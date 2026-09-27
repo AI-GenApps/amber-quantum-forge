@@ -3,7 +3,7 @@ epic: 15-ludo-launch
 task: 26a-economy-config-and-schema
 status: pending
 commit_scope: ludo
-depends_on: [15-ludo-launch/26-online-lobby-ui]
+depends_on: [15-ludo-launch/26x-online-preview-and-polish]
 estimate: L
 ---
 
