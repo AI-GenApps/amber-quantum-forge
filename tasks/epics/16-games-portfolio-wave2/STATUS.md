@@ -103,6 +103,12 @@ code-drawn or downloaded art and label it as generated. The orchestrator
 runs image tasks in a parallel lane with at most one image agent at a time,
 so code tasks don't wait on generation.
 
+**image-gen safety (2026-09-27):** `codex exec` has file-write access and twice
+dropped PNG copies into the repo (including under `apps-native/`) during task
+19. `~/.local/bin/image-gen` now always runs Codex from a fresh `mktemp -d`
+directory. Agents must still run `git status --porcelain` after generating and
+remove any stray files outside their task folder.
+
 ## Execution order
 
 Filename order is execution order. The workflow
@@ -142,7 +148,7 @@ commits and applies the small `.agents/games/*` index edits itself. The human co
 | 16 | Sixty-Second Heist: name candidates (strict uniqueness) | agent | [x] |
 | 17 | HUMAN: pick Merge Relay name + Pocket Biome direction | human | [x] |
 | 18 | Merge Relay: apply the chosen name | agent | [x] |
-| 19 | Merge Relay: logo + icon dry run | agent | [ ] |
+| 19 | Merge Relay: logo + icon dry run | agent | [x] |
 | 20 | Merge Relay: art-set dry run (tile characters, home scene) | agent | [ ] |
 | 21 | HUMAN: pick logo + art direction | human | [ ] |
 | 22 | Merge Relay: final logo/icon + integration | agent | [ ] |

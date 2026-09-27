@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 19-mr-logo-dry-run
-status: pending
+status: completed
 commit_scope: merge-relay
 depends_on: [16-games-portfolio-wave2/18-mr-apply-name]
 estimate: M
@@ -42,10 +42,10 @@ splash, and the home header) so the user can pick one in task 21.
 
 ## Implementation Checklist
 
-- [ ] Run the smoke test, then generate 3 icons and 3 wordmarks (dry-run quality).
-- [ ] VIEW every output and regenerate off-brief images once.
-- [ ] Create the mockups and `contact-sheet.png`.
-- [ ] Write the README (the prompt and parameters per file, the lookalike
+- [x] Run the smoke test, then generate 3 icons and 3 wordmarks (dry-run quality).
+- [x] VIEW every output and regenerate off-brief images once.
+- [x] Create the mockups and `contact-sheet.png`.
+- [x] Write the README (the prompt and parameters per file, the lookalike
       check, and a recommendation).
 
 ## Files Touched
