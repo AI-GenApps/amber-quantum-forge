@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../assets/merge_relay_art_manifest.dart';
 import '../merge_relay_theme.dart';
 import '../ui/mr_button.dart';
 import '../ui/mr_tokens.dart';
@@ -16,8 +17,10 @@ import '../ui/tiles/mr_tile_face_painter.dart';
 ///
 /// No account, network, or notification prompt anywhere here (solo v1) —
 /// just the hero tiles and the one line that explains the whole game
-/// (the task's Context/Decisions copy, verbatim). The logo slot uses the
-/// wordmark text fallback: final logo art is task 22.
+/// (the task's Context/Decisions copy, verbatim). The logo slot is
+/// [MergeRelayArtManifest.logoStacked] (task 22's icon-over-wordmark
+/// bitmap, falling back to the same "GLOW\nRESCUE" text if the bitmap
+/// isn't bundled).
 final class MergeRelayWelcome extends StatelessWidget {
   const MergeRelayWelcome({
     required this.theme,
@@ -54,16 +57,19 @@ final class MergeRelayWelcome extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: TextButton(onPressed: onSkip, child: const Text('Skip')),
               ),
-              Text(
-                'GLOW\nRESCUE',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: theme.ink,
-                  fontFamily: 'Fredoka',
-                  fontWeight: FontWeight.w900,
-                  fontSize: 38,
-                  height: 1.02,
-                  letterSpacing: 1,
+              // Task 22 fix round 1 (orchestrator review): the first pass
+              // fixed this to a 150dp *height*, so `BoxFit.contain` shrank
+              // it to a small badge instead of the hero element the
+              // welcome screen's first impression needs. ~65% of the full
+              // screen width (`outer.maxWidth`, from before this column's
+              // own 24dp side padding — the review's "60-70% of the
+              // screen width", not the narrower padded content width)
+              // reads as the hero; the height follows from the bitmap's
+              // own aspect ratio, same fix as the home header.
+              Center(
+                child: SizedBox(
+                  width: outer.maxWidth * 0.65,
+                  child: MergeRelayArtManifest.logoStacked(),
                 ),
               ),
               const SizedBox(height: 24),

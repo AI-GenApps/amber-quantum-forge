@@ -34,6 +34,11 @@ void main() {
   ) async {
     await tester.pumpWidget(const MergeRelayApp());
     await tester.pump();
+    // Task 22 fix round 1: the home header's bigger wordmark (55-65% of
+    // its own width, per the orchestrator review) pushes the Hero card's
+    // "Play rescue" button below the fold of the default 600-tall test
+    // surface — see `test/widget_test.dart`'s identical fix.
+    await tester.ensureVisible(find.text('Play rescue'));
     await tester.tap(find.text('Play rescue'));
     await tester.pumpAndSettle();
 
@@ -41,7 +46,10 @@ void main() {
     _expectBundledFonts(tester);
 
     // The interactive board + hand-hint step — `pump()`, never
-    // `pumpAndSettle`, since the hint's animation controller repeats.
+    // `pumpAndSettle`, since the hint's animation controller repeats. The
+    // welcome screen's bigger logo (task 22 fix round 1) also pushes this
+    // button below the fold here.
+    await tester.ensureVisible(find.text("Let's play"));
     await tester.tap(find.text("Let's play"));
     await tester.pump();
     _expectBundledFonts(tester);
@@ -52,6 +60,7 @@ void main() {
   ) async {
     await tester.pumpWidget(const MergeRelayApp());
     await tester.pump();
+    await tester.ensureVisible(find.text('Play rescue'));
     await tester.tap(find.text('Play rescue'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Skip'));
@@ -65,6 +74,7 @@ void main() {
   ) async {
     await tester.pumpWidget(const MergeRelayApp());
     await tester.pump();
+    await tester.ensureVisible(find.text('Play rescue'));
     await tester.tap(find.text('Play rescue'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Skip'));

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:merge_relay/src/merge_relay_app.dart';
@@ -8,10 +10,19 @@ import 'package:platform_core/platform_core.dart';
 
 void main() {
   testWidgets('fresh launch starts at a compact home', (tester) async {
+    // Task 22: the home header now shows the real `logoWide.png` bitmap
+    // instead of literal "GLOW RESCUE" text. `AssetImage`'s real decode
+    // happens on a background isolate that a plain `pump()` never waits
+    // for (see `test/goldens/screens_test.dart`'s `_precacheAssetImage`
+    // doc comment for the full explanation), so this precaches it inside
+    // `runAsync` first and asserts the bitmap rendered instead of the old
+    // fallback text.
+    await tester.runAsync(() => _precacheAssetImage('assets/art/logoWide.png'));
     await tester.pumpWidget(const MergeRelayApp());
     await tester.pump();
 
-    expect(find.text('GLOW RESCUE'), findsOneWidget);
+    expect(find.text('GLOW RESCUE'), findsNothing);
+    expect(find.byType(Image), findsWidgets);
     expect(find.text('Play rescue'), findsOneWidget);
     expect(find.text('Rescue paths'), findsOneWidget);
     expect(find.text('Friend relays'), findsNothing);
@@ -24,13 +35,22 @@ void main() {
     await tester.pumpWidget(const MergeRelayApp());
     await tester.pump();
 
+    // Task 22 fix round 1: the header's wordmark is now sized as the
+    // clear brand element (55-65% of its own width, per the orchestrator
+    // review), which grows the header's height and pushes the Hero card's
+    // "Play rescue" button below the fold of the default 600-tall test
+    // surface — the same class of issue `ensureVisible` already fixes
+    // below for "Replay tutorial"/"Resume".
+    await tester.ensureVisible(find.text('Play rescue'));
     await tester.tap(find.text('Play rescue'));
     await tester.pumpAndSettle();
     expect(find.text('Slide to merge matching tiles.'), findsOneWidget);
 
     // The first-run welcome step (task 12) precedes the interactive board;
     // `pump()` (never `pumpAndSettle`) from here on — the hand-hint's
-    // repeating animation controller never settles.
+    // repeating animation controller never settles. The bigger logo above
+    // (task 22 fix round 1) also pushes this button below the fold here.
+    await tester.ensureVisible(find.text("Let's play"));
     await tester.tap(find.text("Let's play"));
     await tester.pump();
     expect(find.text('First merge'), findsOneWidget);
@@ -48,6 +68,7 @@ void main() {
   ) async {
     await tester.pumpWidget(const MergeRelayApp());
     await tester.pump();
+    await tester.ensureVisible(find.text('Play rescue'));
     await tester.tap(find.text('Play rescue'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Skip'));
@@ -84,6 +105,7 @@ void main() {
       // see `merge_relay_onboarding_test.dart` for the "replay after
       // onboarding is done skips welcome" case.
       expect(find.text('Slide to merge matching tiles.'), findsOneWidget);
+      await tester.ensureVisible(find.text("Let's play"));
       await tester.tap(find.text("Let's play"));
       await tester.pump();
       expect(find.text('First merge'), findsOneWidget);
@@ -98,6 +120,7 @@ void main() {
       ),
     );
     await tester.pump();
+    await tester.ensureVisible(find.text('Play rescue'));
     await tester.tap(find.text('Play rescue'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Skip'));
@@ -146,6 +169,7 @@ void main() {
     final store = MemorySaveStore();
     await tester.pumpWidget(MergeRelayApp(saveStore: store));
     await tester.pump();
+    await tester.ensureVisible(find.text('Play rescue'));
     await tester.tap(find.text('Play rescue'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Skip'));
@@ -155,6 +179,7 @@ void main() {
     await tester.pumpWidget(MergeRelayApp(key: UniqueKey(), saveStore: store));
     await tester.pumpAndSettle();
     expect(find.text('See result'), findsOneWidget);
+    await tester.ensureVisible(find.text('See result'));
     await tester.tap(find.text('See result'));
     await tester.pumpAndSettle();
     expect(find.text('Path cleared'), findsOneWidget);
@@ -186,3 +211,26 @@ Offset _delta(MergeDirection direction) => switch (direction) {
   MergeDirection.left => const Offset(-180, 0),
   MergeDirection.right => const Offset(180, 0),
 };
+
+/// See `test/goldens/screens_test.dart`'s identical helper for why this is
+/// needed: resolves [assetPath] against the real default asset bundle and
+/// waits for its real decode `Future` before returning, which populates
+/// the shared [ImageCache] entry a later `Image(image: AssetImage(...))`
+/// build reads synchronously. Must run inside [WidgetTester.runAsync].
+Future<void> _precacheAssetImage(String assetPath) {
+  final completer = Completer<void>();
+  final stream = AssetImage(assetPath).resolve(ImageConfiguration.empty);
+  late ImageStreamListener listener;
+  listener = ImageStreamListener(
+    (image, synchronousCall) {
+      stream.removeListener(listener);
+      if (!completer.isCompleted) completer.complete();
+    },
+    onError: (error, stackTrace) {
+      stream.removeListener(listener);
+      if (!completer.isCompleted) completer.complete();
+    },
+  );
+  stream.addListener(listener);
+  return completer.future;
+}

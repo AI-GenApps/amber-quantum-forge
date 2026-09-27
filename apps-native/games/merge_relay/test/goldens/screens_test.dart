@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:merge_relay/src/merge_relay_app.dart';
@@ -225,6 +227,22 @@ void main() {
 /// [MergeRelayApp] loaded with the real shipped content (loading it first
 /// if [content] isn't already on hand) inside a keyed [RepaintBoundary],
 /// and returns that key.
+///
+/// The initial pump runs inside [WidgetTester.runAsync] (task 22) and
+/// pre-decodes the app's bundled logo bitmaps first: the welcome/home
+/// screens (and, via the dimmed backdrop, the settings/pause/how-to-play
+/// overlays) now show real bundled art (`logoWide.png`/`logoStacked.png`),
+/// and — like the real `rootBundle.loadString` read `_loadContent` already
+/// needs `runAsync` for — `AssetImage`'s real file-backed decode happens on
+/// a background isolate that `tester.pump()` alone never waits for, no
+/// matter how many times it's called: the frame is captured with the
+/// `Image` blank (no bitmap, and no error fallback either, since decoding
+/// is still merely *pending*, not failed) instead of hanging, which made
+/// this easy to miss before this fix. [_precacheAssetImage] awaits the
+/// image's own real completion `Future` directly (proven fast — tens of
+/// milliseconds — in this task's investigation), so by the time
+/// `pumpWidget` builds the real `Image` widgets, [ImageCache] already has
+/// the decoded bitmap and paints it on the very first frame.
 Future<Key> _bootApp(
   WidgetTester tester, {
   MergeRelayContentCatalog? content,
@@ -237,14 +255,42 @@ Future<Key> _bootApp(
   addTearDown(tester.view.reset);
   final resolvedContent = content ?? await _loadContent(tester);
   final key = UniqueKey();
-  await tester.pumpWidget(
-    RepaintBoundary(
-      key: key,
-      child: MergeRelayApp(content: resolvedContent, saveStore: saveStore),
-    ),
-  );
-  await tester.pump();
+  await tester.runAsync(() async {
+    await _precacheAssetImage('assets/art/logoWide.png');
+    await _precacheAssetImage('assets/art/logoStacked.png');
+    await tester.pumpWidget(
+      RepaintBoundary(
+        key: key,
+        child: MergeRelayApp(content: resolvedContent, saveStore: saveStore),
+      ),
+    );
+    await tester.pump();
+  });
   return key;
+}
+
+/// Resolves [assetPath] against the real default asset bundle and waits
+/// for its real decode `Future` to complete (or fail) before returning,
+/// which populates the shared [ImageCache] entry that a later `Image(
+/// image: AssetImage(assetPath))` build reads synchronously — see
+/// [_bootApp]'s doc comment for why this can't just be more `tester.pump()`
+/// calls. Must run inside [WidgetTester.runAsync].
+Future<void> _precacheAssetImage(String assetPath) {
+  final completer = Completer<void>();
+  final stream = AssetImage(assetPath).resolve(ImageConfiguration.empty);
+  late ImageStreamListener listener;
+  listener = ImageStreamListener(
+    (image, synchronousCall) {
+      stream.removeListener(listener);
+      if (!completer.isCompleted) completer.complete();
+    },
+    onError: (error, stackTrace) {
+      stream.removeListener(listener);
+      if (!completer.isCompleted) completer.complete();
+    },
+  );
+  stream.addListener(listener);
+  return completer.future;
 }
 
 /// Loads the real shipped content the same way `main.dart` does. Must run

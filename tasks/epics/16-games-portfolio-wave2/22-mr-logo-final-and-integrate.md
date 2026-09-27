@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 22-mr-logo-final-and-integrate
-status: pending
+status: completed
 commit_scope: merge-relay
 depends_on: [16-games-portfolio-wave2/21-human-logo-and-art-pick]
 estimate: M
@@ -38,14 +38,14 @@ icons, splash, and home header.
 
 ## Implementation Checklist
 
-- [ ] Run a smoke test, render the finals, VIEW them, and regenerate once if needed.
-- [ ] Create the stacked, wide, and transparent variants, plus a sheet on
+- [x] Run a smoke test, render the finals, VIEW them, and regenerate once if needed.
+- [x] Create the stacked, wide, and transparent variants, plus a sheet on
       the app background.
-- [ ] Integrate the icons, splash, and home header, with the manifest
+- [x] Integrate the icons, splash, and home header, with the manifest
       bindings and `LICENSES.md`.
-- [ ] Update the goldens (welcome, home, splash). Add a manifest test
+- [x] Update the goldens (welcome, home, splash). Add a manifest test
       showing the bitmap is used when present (decode inside `runAsync`).
-- [ ] Copy the goldens and the launcher-icon PNGs to
+- [x] Copy the goldens and the launcher-icon PNGs to
       `.agents/resources/2026-09-25/games-wave2-qa/22/`, and VIEW them.
 
 ## Files Touched

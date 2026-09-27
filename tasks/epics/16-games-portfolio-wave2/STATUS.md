@@ -151,7 +151,7 @@ commits and applies the small `.agents/games/*` index edits itself. The human co
 | 19 | Merge Relay: logo + icon dry run | agent | [x] |
 | 20 | Merge Relay: art-set dry run (tile characters, home scene) | agent | [x] |
 | 21 | HUMAN: pick logo + art direction | human | [x] |
-| 22 | Merge Relay: final logo/icon + integration | agent | [ ] |
+| 22 | Merge Relay: final logo/icon + integration | agent | [x] |
 | 23 | Merge Relay: final art set + integration | agent | [ ] |
 | 24 | Merge Relay: release readiness (privacy, data safety, listing, signing docs) | agent | [ ] |
 | 25 | HUMAN: device checkpoint + provisioning | human | [ ] |

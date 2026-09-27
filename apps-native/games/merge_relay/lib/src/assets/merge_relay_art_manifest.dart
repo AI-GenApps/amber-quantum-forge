@@ -36,10 +36,14 @@ final class MergeRelayArtManifest {
     fallback: (context) => const _FallbackScene(),
   );
 
+  /// Uses [BoxFit.contain] (unlike the other slots' [BoxFit.cover]): a
+  /// wordmark lockup must never be cropped, only ever letterboxed within
+  /// whatever box the caller gives it (task 22 acceptance criteria).
   static Widget logoWide({AssetBundle? bundle, Key? key}) => _slot(
     'assets/art/logoWide.png',
     bundle: bundle,
     key: key,
+    fit: BoxFit.contain,
     fallback: (context) => const _FallbackWordmark(stacked: false),
   );
 
@@ -47,6 +51,7 @@ final class MergeRelayArtManifest {
     'assets/art/logoStacked.png',
     bundle: bundle,
     key: key,
+    fit: BoxFit.contain,
     fallback: (context) => const _FallbackWordmark(stacked: true),
   );
 
@@ -75,11 +80,12 @@ final class MergeRelayArtManifest {
     required WidgetBuilder fallback,
     AssetBundle? bundle,
     Key? key,
+    BoxFit fit = BoxFit.cover,
   }) {
     return Image(
       key: key,
       image: AssetImage(assetPath, bundle: bundle),
-      fit: BoxFit.cover,
+      fit: fit,
       errorBuilder: (context, error, stackTrace) => fallback(context),
     );
   }

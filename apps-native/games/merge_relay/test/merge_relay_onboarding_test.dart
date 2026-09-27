@@ -79,6 +79,11 @@ void main() {
     await tester.pumpWidget(const MergeRelayApp());
     await tester.pump();
 
+    // Task 22 fix round 1: the home header's bigger wordmark (55-65% of
+    // its own width, per the orchestrator review) pushes the Hero card's
+    // "Play rescue" button below the fold of the default 600-tall test
+    // surface — see `test/widget_test.dart`'s identical fix.
+    await tester.ensureVisible(find.text('Play rescue'));
     await tester.tap(find.text('Play rescue'));
     await tester.pumpAndSettle();
     expect(find.text('Slide to merge matching tiles.'), findsOneWidget);
@@ -95,8 +100,10 @@ void main() {
     await tester.pumpWidget(const MergeRelayApp());
     await tester.pump();
 
+    await tester.ensureVisible(find.text('Play rescue'));
     await tester.tap(find.text('Play rescue'));
     await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text("Let's play"));
     await tester.tap(find.text("Let's play"));
     await tester.pump();
     expect(find.text('Slide the pair left.'), findsOneWidget);
@@ -111,6 +118,7 @@ void main() {
     (tester) async {
       await tester.pumpWidget(const MergeRelayApp());
       await tester.pump();
+      await tester.ensureVisible(find.text('Play rescue'));
       await tester.tap(find.text('Play rescue'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Skip'));
@@ -200,6 +208,7 @@ void main() {
         ),
       );
       await tester.pump();
+      await tester.ensureVisible(find.text("Let's play"));
       await tester.tap(find.text("Let's play"));
       await tester.pump();
 

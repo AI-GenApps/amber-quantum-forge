@@ -180,6 +180,10 @@ Future<_SurfaceFindings> _walkSurfaces(
   await tester.pumpAndSettle();
   final joinRelayOnHome = find.text('Join a relay').evaluate().isNotEmpty;
 
+  // Task 22 fix round 1: the home header's bigger wordmark (55-65% of its
+  // own width, per the orchestrator review) pushes the Hero card's "Play
+  // rescue" button below the fold of the default 600-tall test surface.
+  await tester.ensureVisible(find.text('Play rescue'));
   await tester.tap(find.text('Play rescue'));
   await tester.pumpAndSettle();
   await tester.tap(find.text('Skip'));
