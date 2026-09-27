@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 20-mr-art-set-dry-run
-status: pending
+status: completed
 commit_scope: merge-relay
 depends_on: [16-games-portfolio-wave2/19-mr-logo-dry-run]
 estimate: M
@@ -34,9 +34,9 @@ composited into full screens, so the user can approve one direction in task
 
 ## Implementation Checklist
 
-- [ ] Run the smoke test, then generate the samples for A and B at dry-run quality.
-- [ ] VIEW everything, and regenerate off-brief images once.
-- [ ] Create the mockups and `contact-sheet.png`, then write the README
+- [x] Run the smoke test, then generate the samples for A and B at dry-run quality.
+- [x] VIEW everything, and regenerate off-brief images once.
+- [x] Create the mockups and `contact-sheet.png`, then write the README
       (the prompt and parameters per file, plus the asset count and
       estimated generations for the final set).
 

@@ -149,7 +149,7 @@ commits and applies the small `.agents/games/*` index edits itself. The human co
 | 17 | HUMAN: pick Merge Relay name + Pocket Biome direction | human | [x] |
 | 18 | Merge Relay: apply the chosen name | agent | [x] |
 | 19 | Merge Relay: logo + icon dry run | agent | [x] |
-| 20 | Merge Relay: art-set dry run (tile characters, home scene) | agent | [ ] |
+| 20 | Merge Relay: art-set dry run (tile characters, home scene) | agent | [x] |
 | 21 | HUMAN: pick logo + art direction | human | [ ] |
 | 22 | Merge Relay: final logo/icon + integration | agent | [ ] |
 | 23 | Merge Relay: final art set + integration | agent | [ ] |
