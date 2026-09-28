@@ -84,7 +84,7 @@ next task.
 | 26b | Backend owner | Wallet, profile, progression, and inventory HTTP routes | [x] |
 | 26c | Backend owner | Coin-stake tables, match-start escrow, and payout/refund | [x] |
 | 26d | Backend owner | RevenueCat webhook, product grants, and Vortex Pass entitlement | [x] |
-| 26e | Client owner | Client wallet/level state, HUD chips, XP gain, and level-up celebration | [ ] |
+| 26e | Client owner | Client wallet/level state, HUD chips, XP gain, and level-up celebration | [x] |
 | 26f | Art owner (human) | Economy art session: theme sets, currency icons, store banners | [ ] |
 | 26g | Client owner | Store and inventory UI, `purchases_flutter` integration | [ ] |
 | 26h | Client/backend owner | Rewarded ads (AdMob SSV), UMP consent, and daily reward calendar UI | [ ] |

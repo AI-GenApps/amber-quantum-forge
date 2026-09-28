@@ -24,7 +24,9 @@ import 'package:ludo_rules/ludo_rules.dart' show LudoColor, LudoRuleset;
 
 import '../app.dart' show ludoIdentity;
 import '../assets/ludo_art_manifest.dart' show LudoArtManifest, LudoArtSlot;
+import '../net/ludo_auth_controller.dart' show LudoAuthController;
 import '../net/ludo_deep_link_router.dart' show LudoDeepLinkRouter;
+import '../net/ludo_gateway.dart' show LudoGateway;
 import '../net/ludo_engine_state_codec.dart'
     show ludoEngineStateFromWire, ludoSubjectIsBot;
 import '../net/ludo_match_models.dart' as ludo_wire;
@@ -38,6 +40,7 @@ import '../net/ludo_wire_json.dart' show LudoApiException;
 import '../state/ludo_local_save.dart';
 import '../state/ludo_profile_settings.dart';
 import '../state/ludo_sound_settings.dart';
+import '../state/ludo_wallet_state.dart';
 import '../telemetry/ludo_telemetry.dart';
 import '../theme/ludo_text_styles.dart';
 import '../theme/ludo_theme_tokens.dart';
@@ -46,6 +49,7 @@ import '../widgets/ludo_avatar.dart'
     show LudoAvatarMotif, LudoAvatarView, ludoAvatars;
 import '../widgets/ludo_dialog_frame.dart';
 import '../widgets/ludo_panel.dart';
+import '../widgets/ludo_wallet_hud.dart';
 import 'game_board_screen.dart';
 import 'matchmaking_search_screen.dart';
 import 'mode_setup_sheet.dart';
@@ -85,6 +89,9 @@ Future<void> startLudoLocalMatch(
   required bool isComputerMatch,
   LudoTelemetry? telemetry,
   int? diceSeed,
+  LudoWalletState? walletState,
+  LudoGateway? gateway,
+  LudoAuthController? authController,
 }) async {
   final config = await ModeSetupSheet.show(
     context,
@@ -106,6 +113,15 @@ Future<void> startLudoLocalMatch(
         soundSettings: LudoSoundSettings(),
         telemetry: telemetry,
         diceSeed: diceSeed,
+        // Task 26e: wires this local match's XP claim into the same
+        // wallet/gateway the lobby's HUD chips read from, whenever one
+        // resolved (production or the debug preview client) — `null`
+        // (unresolved online client) simply disables XP submission for
+        // this match, per `GameBoardScreen`'s own "any of the four
+        // `null` disables it" doc comment.
+        walletState: walletState,
+        gateway: gateway,
+        authController: authController,
       ),
     ),
   );
@@ -163,6 +179,14 @@ Future<void> _launchOnlineMatch(
   required LudoOnlineMatchReadyResult ready,
   required LudoMatchVariant variant,
   LudoTelemetry? telemetry,
+
+  /// Task 26e fix: forwarded to `GameBoardScreen` alongside
+  /// [onlineClient]'s gateway/auth controller so `_submitMatchXp` (and
+  /// therefore the level-up celebration) actually runs for an online
+  /// match instead of silently no-op'ing — see
+  /// `GameBoardScreen._submitMatchXp`'s doc comment on why all three of
+  /// walletState/gateway/authController must be non-null together.
+  LudoWalletState? walletState,
 }) async {
   if (!context.mounted) return;
   final (config, identities) = _onlineConfigAndIdentities(
@@ -200,6 +224,9 @@ Future<void> _launchOnlineMatch(
         telemetry: effectiveTelemetry,
         onlineMatch: onlineMatch,
         onlineVariant: variant,
+        walletState: walletState,
+        gateway: onlineClient.gateway,
+        authController: onlineClient.authController,
       ),
     ),
   );
@@ -213,6 +240,11 @@ Future<void> startLudoOnlineFriendsFlow(
   BuildContext context, {
   required LudoOnlineClient onlineClient,
   LudoTelemetry? telemetry,
+
+  /// Task 26e fix: forwarded to [_launchOnlineMatch] so an online match
+  /// started from this flow wires the wallet/XP path — see
+  /// [_launchOnlineMatch]'s `walletState` doc comment.
+  LudoWalletState? walletState,
 
   /// Test seam: overrides the native share-sheet call. `null` (the
   /// default) in production, where it calls `Share.share`. Overridden in
@@ -259,6 +291,7 @@ Future<void> startLudoOnlineFriendsFlow(
         ready: ready,
         variant: LudoMatchVariant.room,
         telemetry: telemetry,
+        walletState: walletState,
       );
     case LudoFriendsJoinChoice(:final roomCode):
       final LudoOnlineMatchReadyResult ready;
@@ -278,6 +311,7 @@ Future<void> startLudoOnlineFriendsFlow(
         ready: ready,
         variant: LudoMatchVariant.room,
         telemetry: telemetry,
+        walletState: walletState,
       );
   }
 }
@@ -332,6 +366,10 @@ Future<void> startLudoOnlineMatchmakingFlow(
   BuildContext context, {
   required LudoOnlineClient onlineClient,
   LudoTelemetry? telemetry,
+
+  /// Task 26e fix: forwarded to [_launchOnlineMatch] — see its
+  /// `walletState` doc comment.
+  LudoWalletState? walletState,
 }) async {
   final choice = await OnlineModeSetupSheet.show(context);
   if (choice == null || !context.mounted) return;
@@ -347,6 +385,7 @@ Future<void> startLudoOnlineMatchmakingFlow(
     ready: ready,
     variant: LudoMatchVariant.online,
     telemetry: telemetry,
+    walletState: walletState,
   );
 }
 
@@ -400,6 +439,7 @@ class HomeLobbyScreen extends StatefulWidget {
     this.onPlayFriends,
     this.onPlayOnline,
     this.shareInviteLink,
+    this.wallet,
   });
 
   /// Test seam: a summary to show the resume affordance for, bypassing this
@@ -450,6 +490,13 @@ class HomeLobbyScreen extends StatefulWidget {
   /// `splash_screen.dart` uses.
   final LudoProfileStore? profileStore;
 
+  /// Task 26e: the cached wallet/level state the HUD chips read from.
+  /// `null` (the default, and always in widget tests that don't care about
+  /// the economy) hides the HUD chips entirely — this screen never
+  /// constructs a [LudoWalletState] itself, since doing so needs a
+  /// [LudoAuthController] this screen has no other reason to depend on.
+  final LudoWalletState? wallet;
+
   /// Test seam: the resolved online client this screen's Play-with-Friends/
   /// Online tiles use, bypassing this screen's own async
   /// [loadOnlineClient] resolution entirely. `null` (the default) in
@@ -488,6 +535,15 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
   LudoProfileSettings? _loadedProfile;
   LudoOnlineClient? _loadedOnlineClient;
 
+  /// Task 26e: a wallet state derived from whichever online client
+  /// resolves (production or, on a device with no real backend deployed
+  /// yet, the debug preview client), used only when [widget.wallet] was
+  /// not explicitly supplied. `null` until an online client resolves, or
+  /// permanently `null` in a config-absent/Firebase-unavailable build —
+  /// the HUD chips simply don't appear, matching every other online
+  /// affordance's "coming soon" degradation.
+  LudoWalletState? _derivedWallet;
+
   @override
   void initState() {
     super.initState();
@@ -500,6 +556,13 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
     if (widget.onlineClient == null) {
       _loadOnlineClient();
     }
+    // Task 26e: refresh the cached wallet/level snapshot on lobby entry
+    // (this screen's own foreground-equivalent — the lobby is what a
+    // resumed/foregrounded app always lands on first). A failed refresh
+    // is silently absorbed by `LudoWalletState.refresh` itself (flips
+    // `isOffline`, keeps the last-synced snapshot) — never awaited here,
+    // so a slow/offline network never delays this screen's first frame.
+    unawaited(widget.wallet?.refresh());
     // Task 26x: routes a room code from a cold-launch or warm-start invite
     // link (`ludo_deep_link_router.dart`) into the join-by-code flow. This
     // screen is the only registrant; a code routed before it mounts is
@@ -525,6 +588,7 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
         context,
         onlineClient: client,
         telemetry: widget.telemetry,
+        walletState: _wallet,
         initialJoinCode: roomCode,
       ),
     );
@@ -539,14 +603,35 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
     // `LudoOnlinePreviewMode.isArmed` itself always reads `false` there
     // (nothing ever arms it outside a debug build either).
     if (kDebugMode && LudoOnlinePreviewMode.isArmed) {
-      setState(() => _loadedOnlineClient = createLudoPreviewOnlineClient());
+      final client = createLudoPreviewOnlineClient();
+      setState(() => _loadedOnlineClient = client);
+      _deriveWalletFrom(client);
       return;
     }
     final loader = widget.loadOnlineClient ?? createLudoOnlineClientForApp;
     final client = await loader();
     if (!mounted) return;
     setState(() => _loadedOnlineClient = client);
+    _deriveWalletFrom(client);
   }
+
+  /// Task 26e: builds [_derivedWallet] from [client]'s gateway/auth
+  /// controller and kicks off its first [LudoWalletState.refresh] — a
+  /// no-op when [widget.wallet] was explicitly supplied, or when [client]
+  /// itself is `null` (no online client resolved).
+  void _deriveWalletFrom(LudoOnlineClient? client) {
+    if (widget.wallet != null || client == null) return;
+    final wallet = LudoWalletState(
+      gateway: client.gateway,
+      authController: client.authController,
+    );
+    setState(() => _derivedWallet = wallet);
+    unawaited(wallet.refresh());
+  }
+
+  /// The wallet state the HUD chips read from: [widget.wallet] if
+  /// explicitly supplied (a test seam), otherwise [_derivedWallet].
+  LudoWalletState? get _wallet => widget.wallet ?? _derivedWallet;
 
   /// Long-press entry point for the debug-only online preview mode (task
   /// 26x), armed the same way the settings-screen toggle does. Compiled
@@ -629,6 +714,9 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
           initialState: loaded.state,
           localSave: save,
           telemetry: widget.telemetry,
+          walletState: _wallet,
+          gateway: _onlineClient?.gateway,
+          authController: _onlineClient?.authController,
         ),
       ),
     );
@@ -705,7 +793,7 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
                     ),
                   ),
                 ),
-                _ProfileHeader(profile: _profile),
+                _ProfileHeader(profile: _profile, wallet: _wallet),
                 const SizedBox(height: LudoThemeTokens.spaceMd),
                 if (summary != null) ...[
                   _ResumeCard(summary: summary, onTap: _handleResume),
@@ -737,6 +825,10 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
                                       isComputerMatch: true,
                                       telemetry: widget.telemetry,
                                       diceSeed: widget.diceSeed,
+                                      walletState: _wallet,
+                                      gateway: _onlineClient?.gateway,
+                                      authController:
+                                          _onlineClient?.authController,
                                     ),
                               ),
                             ),
@@ -754,6 +846,10 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
                                       isComputerMatch: false,
                                       telemetry: widget.telemetry,
                                       diceSeed: widget.diceSeed,
+                                      walletState: _wallet,
+                                      gateway: _onlineClient?.gateway,
+                                      authController:
+                                          _onlineClient?.authController,
                                     ),
                               ),
                             ),
@@ -779,6 +875,7 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
                                             context,
                                             onlineClient: _onlineClient!,
                                             telemetry: widget.telemetry,
+                                            walletState: _wallet,
                                             shareInviteLink:
                                                 widget.shareInviteLink,
                                           ))
@@ -800,6 +897,7 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
                                             context,
                                             onlineClient: _onlineClient!,
                                             telemetry: widget.telemetry,
+                                            walletState: _wallet,
                                           ))
                                     : null,
                               ),
@@ -860,30 +958,53 @@ class _LobbyBackground extends StatelessWidget {
 /// (renders as an empty box) until a profile has loaded, so the lobby
 /// never flashes a placeholder identity.
 class _ProfileHeader extends StatelessWidget {
-  const _ProfileHeader({required this.profile});
+  const _ProfileHeader({required this.profile, this.wallet});
 
   final LudoProfileSettings? profile;
+
+  /// Task 26e: coin/diamond/level HUD chips shown alongside the profile
+  /// name/avatar. `null` hides the chip row entirely.
+  final LudoWalletState? wallet;
 
   @override
   Widget build(BuildContext context) {
     final profile = this.profile;
     if (profile == null) return const SizedBox.shrink();
+    final wallet = this.wallet;
     return LudoPanel(
       padding: const EdgeInsets.symmetric(
         horizontal: LudoThemeTokens.spaceMd,
         vertical: LudoThemeTokens.spaceSm,
       ),
-      child: Row(
+      // Task 26e: the HUD chips get their own row below the name/avatar
+      // rather than sharing the name's row — three chips squeezed onto
+      // that row pushed a normal-length name down to an unreadable
+      // "Playe…" ellipsis on a real device; stacking keeps both fully
+      // legible at any name length.
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          LudoAvatarView(avatarId: profile.avatarId, size: 48),
-          const SizedBox(width: LudoThemeTokens.spaceMd),
-          Expanded(
-            child: Text(
-              profile.name,
-              style: LudoTextStyles.displaySmall,
-              overflow: TextOverflow.ellipsis,
-            ),
+          Row(
+            children: [
+              LudoAvatarView(avatarId: profile.avatarId, size: 48),
+              const SizedBox(width: LudoThemeTokens.spaceMd),
+              Expanded(
+                child: Text(
+                  profile.name,
+                  style: LudoTextStyles.displaySmall,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
           ),
+          if (wallet != null) ...[
+            const SizedBox(height: LudoThemeTokens.spaceSm),
+            Align(
+              alignment: Alignment.centerRight,
+              child: LudoWalletHud(wallet: wallet),
+            ),
+          ],
         ],
       ),
     );

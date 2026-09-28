@@ -12,7 +12,10 @@ import 'package:flutter/material.dart';
 import 'package:ludo_rules/ludo_rules.dart';
 
 import '../game/ludo_board_geometry.dart' show ludoColorPalette;
+import '../net/ludo_auth_controller.dart' show LudoAuthController;
+import '../net/ludo_gateway.dart' show LudoGateway;
 import '../state/ludo_sound_settings.dart';
+import '../state/ludo_wallet_state.dart' show LudoWalletState;
 import '../state/reduced_motion_setting.dart';
 import '../theme/ludo_background_painter.dart';
 import '../theme/ludo_text_styles.dart';
@@ -62,6 +65,9 @@ class ResultsScreen extends StatelessWidget {
     this.onQuit,
     this.onRematch,
     this.onHome,
+    this.walletState,
+    this.gateway,
+    this.authController,
   });
 
   /// The terminal match state to render the finish order from.
@@ -92,6 +98,19 @@ class ResultsScreen extends StatelessWidget {
   /// the first route on the navigator stack (the home lobby).
   final VoidCallback? onHome;
 
+  /// Task 26e fix: forwarded to a Rematch's new `GameBoardScreen` alongside
+  /// [gateway]/[authController] so `_submitMatchXp` (and the level-up
+  /// celebration) keeps running across a rematch instead of losing its
+  /// wiring — mirrors `home_lobby_screen.dart`'s `startLudoLocalMatch`,
+  /// which supplies the same three for the original match.
+  final LudoWalletState? walletState;
+
+  /// Task 26e fix: the gateway a Rematch's `xp/claim` call goes through.
+  final LudoGateway? gateway;
+
+  /// Task 26e fix: mints the game token a Rematch's `xp/claim` call needs.
+  final LudoAuthController? authController;
+
   void _defaultRematch(BuildContext context) {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
@@ -102,6 +121,9 @@ class ResultsScreen extends StatelessWidget {
           reducedMotion: reducedMotion,
           diceSeed: rematchDiceSeed,
           onQuit: onQuit,
+          walletState: walletState,
+          gateway: gateway,
+          authController: authController,
         ),
       ),
     );

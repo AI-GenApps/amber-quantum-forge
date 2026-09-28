@@ -11,7 +11,9 @@ import 'package:ludo/src/screens/pause_quit_dialog.dart';
 import 'package:ludo/src/screens/settings_screen.dart';
 import 'package:ludo/src/state/ludo_settings_store.dart';
 import 'package:ludo/src/state/ludo_sound_settings.dart';
+import 'package:ludo/src/state/ludo_wallet_state.dart';
 import 'package:ludo/src/state/reduced_motion_setting.dart';
+import 'package:ludo/src/widgets/ludo_wallet_hud.dart';
 
 final class _UnavailableFirebaseAuth implements LudoFirebaseAuthGateway {
   const _UnavailableFirebaseAuth();
@@ -271,7 +273,96 @@ void main() {
       );
     },
   );
+  testWidgets('hides the wallet/level panel when no wallet state is supplied', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _wrap(
+        SettingsScreen(
+          soundSettings: LudoSoundSettings(),
+          reducedMotion: ReducedMotionSetting(),
+        ),
+      ),
+    );
+
+    expect(find.text('Wallet & Level'), findsNothing);
+    expect(find.byType(LudoWalletHud), findsNothing);
+  });
+
+  testWidgets('shows the wallet/level panel when a wallet state is supplied', (
+    tester,
+  ) async {
+    final wallet = _testWallet();
+    await tester.pumpWidget(
+      _wrap(
+        SettingsScreen(
+          soundSettings: LudoSoundSettings(),
+          reducedMotion: ReducedMotionSetting(),
+          wallet: wallet,
+        ),
+      ),
+    );
+
+    expect(find.text('Wallet & Level'), findsOneWidget);
+    expect(find.byType(LudoWalletHud), findsOneWidget);
+  });
+
+  testWidgets('the wallet/level panel is reachable from the real pause-dialog '
+      '-> Settings navigation, not just a direct SettingsScreen construction', (
+    tester,
+  ) async {
+    final wallet = _testWallet();
+    await tester.pumpWidget(
+      _wrap(
+        Builder(
+          builder: (context) => ElevatedButton(
+            onPressed: () => showPauseQuitDialog(
+              context,
+              soundSettings: LudoSoundSettings(),
+              reducedMotion: ReducedMotionSetting(),
+              wallet: wallet,
+              onQuit: () {},
+            ),
+            child: const Text('open pause'),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('open pause'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('pause-dialog-settings-button')));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(SettingsScreen), findsOneWidget);
+    expect(find.text('Wallet & Level'), findsOneWidget);
+    expect(find.byType(LudoWalletHud), findsOneWidget);
+  });
 }
+
+/// A [LudoWalletState] with a never-resolving gateway call underneath —
+/// sufficient for asserting the panel/HUD is present, since these tests
+/// never await a [LudoWalletState.refresh].
+LudoWalletState _testWallet() => LudoWalletState(
+  gateway: LudoGateway(
+    config: LudoNetworkConfig(
+      apiBaseUri: Uri.parse('https://api.example.test/'),
+      environment: 'debug',
+    ),
+    transport: _UnreachableTransport(),
+  ),
+  authController: LudoAuthController(
+    gateway: LudoGateway(
+      config: LudoNetworkConfig(
+        apiBaseUri: Uri.parse('https://api.example.test/'),
+        environment: 'debug',
+      ),
+      transport: _UnreachableTransport(),
+    ),
+    firebaseAuth: const _UnavailableFirebaseAuth(),
+    googleSignIn: const _NoOpGoogleSignIn(),
+  ),
+);
 
 final class _UnreachableTransport implements LudoHttpTransport {
   @override

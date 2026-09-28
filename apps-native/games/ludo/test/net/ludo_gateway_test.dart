@@ -290,6 +290,89 @@ void main() {
     });
   });
 
+  group('LudoGateway wallet/profile/inventory/progression (task 26e)', () {
+    test('getWallet decodes coins/diamonds', () async {
+      final transport = FixtureLudoTransport({
+        'GET wallet': jsonResponse(_envelope('wallet_response')),
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      final wallet = await gateway.getWallet(gameToken: 'game-token');
+      expect(wallet.coins, 500);
+      expect(wallet.diamonds, 10);
+    });
+
+    test('getProfile decodes level/xp/xpRequiredForNextLevel', () async {
+      final transport = FixtureLudoTransport({
+        'GET profile': jsonResponse(_envelope('profile_response')),
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      final profile = await gateway.getProfile(gameToken: 'game-token');
+      expect(profile.level, 3);
+      expect(profile.xp, 240);
+      expect(profile.xpRequiredForNextLevel, 300);
+    });
+
+    test('getInventory decodes owned inventory and the full catalog', () async {
+      final transport = FixtureLudoTransport({
+        'GET inventory': jsonResponse(_envelope('inventory_response')),
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      final result = await gateway.getInventory(gameToken: 'game-token');
+      expect(result.inventory, hasLength(1));
+      expect(result.inventory.single.itemId, 'theme_default');
+      expect(result.catalog, hasLength(2));
+      expect(result.catalog[1].priceCoins, 2000);
+      expect(result.catalog[1].priceDiamonds, isNull);
+    });
+
+    test(
+      'claimXp posts the plausibility payload and decodes the result',
+      () async {
+        final transport = FixtureLudoTransport({
+          'POST xp/claim': jsonResponse(_envelope('xp_claim_response')),
+        });
+        final gateway = LudoGateway(config: _config(), transport: transport);
+        final result = await gateway.claimXp(
+          xpDelta: 100,
+          claimId: 'claim-1',
+          elapsedMs: 60000,
+          matchesCompleted: 1,
+          gameToken: 'game-token',
+        );
+        expect(result.levelsGained, 1);
+        expect(result.level, 2);
+        expect(transport.requests.single.$2, {
+          'xp_delta': 100,
+          'claim_id': 'claim-1',
+          'elapsed_ms': 60000,
+          'matches_completed': 1,
+        });
+      },
+    );
+
+    test('starterGrant decodes the grant result', () async {
+      final transport = FixtureLudoTransport({
+        'POST starter-grant': jsonResponse(_envelope('starter_grant_response')),
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      final result = await gateway.starterGrant(gameToken: 'game-token');
+      expect(result.granted, isTrue);
+      expect(result.coins, 500);
+    });
+
+    test('claimDailyReward decodes the streak/reward result', () async {
+      final transport = FixtureLudoTransport({
+        'POST daily-reward/claim': jsonResponse(
+          _envelope('daily_reward_claim_response'),
+        ),
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      final result = await gateway.claimDailyReward(gameToken: 'game-token');
+      expect(result.streakDay, 1);
+      expect(result.coinsGranted, 50);
+    });
+  });
+
   group('LudoGateway error decoding', () {
     test('a non-2xx response decodes into a LudoApiException', () async {
       final transport = FixtureLudoTransport({

@@ -15,6 +15,7 @@
 library;
 
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
@@ -23,18 +24,23 @@ import 'package:platform_core/platform_core.dart' show DeterministicRng;
 
 import '../game/ludo_bot_turn_runner.dart';
 import '../game/ludo_game.dart';
+import '../net/ludo_auth_controller.dart';
 import '../net/ludo_engine_state_codec.dart';
+import '../net/ludo_gateway.dart';
 import '../net/ludo_match_models.dart' as ludo_wire;
 import '../net/ludo_match_state_source.dart';
 import '../net/ludo_session_models.dart' show LudoMatchView;
 import '../state/ludo_local_save.dart';
+import '../state/ludo_offline_xp_queue.dart';
 import '../state/ludo_settings_store.dart';
 import '../state/ludo_sound_settings.dart';
+import '../state/ludo_wallet_state.dart';
 import '../state/reduced_motion_setting.dart';
 import '../telemetry/ludo_telemetry.dart';
 import '../theme/ludo_background_painter.dart';
 import '../theme/ludo_theme_tokens.dart';
 import '../widgets/ludo_3d_button.dart';
+import '../widgets/ludo_level_up_celebration.dart';
 import '../widgets/ludo_reconnecting_banner.dart';
 import '../widgets/player_corner_card.dart';
 import 'mode_setup_sheet.dart';
@@ -77,6 +83,10 @@ class GameBoardScreen extends StatefulWidget {
     this.botTurnDelay = const Duration(milliseconds: 700),
     this.onlineMatch,
     this.onlineVariant,
+    this.walletState,
+    this.offlineXpQueue,
+    this.gateway,
+    this.authController,
   }) : assert(
          onlineMatch == null || onlineVariant != null,
          'onlineVariant is required whenever onlineMatch is supplied',
@@ -154,6 +164,30 @@ class GameBoardScreen extends StatefulWidget {
   /// ignored (and may be left `null`) for a local match.
   final LudoMatchVariant? onlineVariant;
 
+  /// Task 26e: the cached wallet/level state a finished match's XP claim
+  /// applies its result onto. `null` (the default, and always in widget
+  /// tests that don't care about the economy) disables XP submission
+  /// entirely — this screen never constructs its own [LudoWalletState]/
+  /// [LudoGateway]/[LudoAuthController], since doing so would mean
+  /// throwaway instances disconnected from the shared ones the lobby/HUD
+  /// read from.
+  final LudoWalletState? walletState;
+
+  /// Test seam: persists/coalesces/retries a pending XP delta when
+  /// [gateway]'s claim can't reach the server. `null` (the default)
+  /// resolves the production queue (`LudoOfflineXpQueue.production`)
+  /// lazily, the same pattern [localSave] uses — but XP submission only
+  /// ever runs at all once [walletState]/[gateway]/[authController] are
+  /// all non-`null` too.
+  final LudoOfflineXpQueue? offlineXpQueue;
+
+  /// Task 26e: the gateway the `xp/claim` call goes through.
+  final LudoGateway? gateway;
+
+  /// Task 26e: mints the game token the `xp/claim` call authenticates
+  /// with.
+  final LudoAuthController? authController;
+
   @override
   State<GameBoardScreen> createState() => _GameBoardScreenState();
 }
@@ -165,6 +199,7 @@ class _GameBoardScreenState extends State<GameBoardScreen>
   late DeterministicRng _rng;
   late ReducedMotionSetting _reducedMotion;
   late Future<LudoLocalSave> _localSaveFuture;
+  late Future<LudoOfflineXpQueue> _offlineXpQueueFuture;
   late LudoTelemetry _telemetry;
   late final DateTime _matchStartedAt;
   DateTime? _turnDeadline;
@@ -226,6 +261,9 @@ class _GameBoardScreenState extends State<GameBoardScreen>
     _localSaveFuture = widget.localSave != null
         ? Future.value(widget.localSave)
         : LudoLocalSave.production();
+    _offlineXpQueueFuture = widget.offlineXpQueue != null
+        ? Future.value(widget.offlineXpQueue)
+        : LudoOfflineXpQueue.production();
     _state =
         widget.initialState ??
         LudoMatchState.initial(
@@ -547,6 +585,12 @@ class _GameBoardScreenState extends State<GameBoardScreen>
           : _state.currentPlayerIndex,
       duration: DateTime.now().difference(_matchStartedAt),
     );
+    // Task 26e: fired for every mode (vs Computer, Pass N Play, online),
+    // per task 26a's "XP everywhere" decision. Never awaited: XP
+    // submission must never delay the results navigation below, and a
+    // failed/offline claim is silently queued by `_submitMatchXp` itself
+    // rather than surfaced as an error here.
+    unawaited(_submitMatchXp());
     if (!mounted) return true;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
@@ -557,10 +601,92 @@ class _GameBoardScreenState extends State<GameBoardScreen>
           soundSettings: widget.soundSettings,
           reducedMotion: _reducedMotion,
           onQuit: widget.onQuit,
+          walletState: widget.walletState,
+          gateway: widget.gateway,
+          authController: widget.authController,
         ),
       ),
     );
     return true;
+  }
+
+  /// Task 26e: submits this finished match's XP delta (win/loss, per
+  /// `.agents/games/ludo-vortex/economy.md`'s 100/40 table) through the
+  /// offline queue — which persists it locally first, then attempts the
+  /// `xp/claim` call, so a call that can't reach the server (no network)
+  /// leaves the delta safely queued for the next successful gateway call
+  /// rather than losing it. Applies the claim result onto [widget.
+  /// walletState] and shows the level-up celebration on a level crossing.
+  /// A no-op whenever any of the four required dependencies is `null`
+  /// (see each field's doc comment).
+  Future<void> _submitMatchXp() async {
+    final walletState = widget.walletState;
+    final gateway = widget.gateway;
+    final authController = widget.authController;
+    if (walletState == null || gateway == null || authController == null) {
+      return;
+    }
+    final offlineXpQueue = await _offlineXpQueueFuture;
+    // Seat 0 is always the local human's seat, matching
+    // `_defaultSeatIdentities`'s "seat 0 is always 'You'" convention for
+    // every local mode; an online match's local seat is assigned the same
+    // way by `ludo_online_controller.dart`'s match-create/join flow.
+    final localSeatWon =
+        _state.winnerOrder.isNotEmpty && _state.winnerOrder.first == 0;
+    final xpDelta = localSeatWon ? ludoMatchWinXp : ludoMatchLossXp;
+    final elapsedMs = DateTime.now().difference(_matchStartedAt).inMilliseconds;
+    // Snapshot the cached wallet balance before the claim: the `xp/claim`
+    // route (`wallet-routes.ts`) only ever reports `levelsGained`, never
+    // the coin/diamond amounts a level-up granted — adding those fields
+    // there is explicitly out of scope for this task. Diffing
+    // [walletState]'s balance before vs. after a fresh [LudoWalletState.
+    // refresh] below reports the celebration's true, server-credited
+    // reward without fabricating or hand-rolling the reward formula
+    // client-side.
+    final coinsBeforeClaim = walletState.coins;
+    final diamondsBeforeClaim = walletState.diamonds;
+    await offlineXpQueue.enqueue(
+      xpDelta: xpDelta,
+      elapsedMs: elapsedMs,
+      matchesCompleted: 1,
+    );
+    final result = await offlineXpQueue.flush<LudoXpClaimResult>(
+      claim: (pending) async {
+        final gameToken = await authController.ensureGameToken();
+        return gateway.claimXp(
+          xpDelta: pending.xpDelta,
+          claimId: pending.claimId,
+          elapsedMs: pending.elapsedMs,
+          matchesCompleted: pending.matchesCompleted,
+          gameToken: gameToken,
+        );
+      },
+    );
+    if (result == null || !mounted) return;
+    walletState.applyXpClaimResult(result);
+    if (result.levelsGained > 0) {
+      // A level-up's coin/diamond bonus is credited to the wallet
+      // alongside the XP claim server-side, so re-syncing the wallet here
+      // picks it up; a failed refresh (offline) leaves the balance
+      // unchanged and the diff below correctly reports a zero reward
+      // rather than throwing.
+      await walletState.refresh();
+      if (!mounted) return;
+      final coinsGranted = math.max(0, walletState.coins - coinsBeforeClaim);
+      final diamondsGranted = math.max(
+        0,
+        walletState.diamonds - diamondsBeforeClaim,
+      );
+      await showLudoLevelUpCelebration(
+        context,
+        newLevel: result.level,
+        reward: LudoLevelUpReward(
+          coins: coinsGranted,
+          diamonds: diamondsGranted,
+        ),
+        reducedMotion: _reducedMotion,
+      );
+    }
   }
 
   void _openPauseDialog() {
@@ -570,6 +696,7 @@ class _GameBoardScreenState extends State<GameBoardScreen>
       reducedMotion: _reducedMotion,
       settingsStore: widget.settingsStore,
       telemetry: _telemetry,
+      wallet: widget.walletState,
       onQuit: widget.onQuit ?? _defaultOnQuit,
     );
   }

@@ -121,6 +121,246 @@ final class LudoJoinRoomResult {
   final bool idempotent;
 }
 
+/// `GET /games/ludo/:environment/wallet` (task 26b): `{coins, diamonds}`.
+final class LudoWallet {
+  const LudoWallet({required this.coins, required this.diamonds});
+
+  final int coins;
+  final int diamonds;
+
+  static LudoWallet fromWire(LudoJson value) {
+    requireFields(value, {'coins', 'diamonds'}, 'wallet response');
+    return LudoWallet(
+      coins: readInteger(value, 'coins'),
+      diamonds: readInteger(value, 'diamonds'),
+    );
+  }
+}
+
+/// `GET /games/ludo/:environment/profile` (task 26b): `{level, xp,
+/// xpRequiredForNextLevel}`.
+final class LudoProfileProgression {
+  const LudoProfileProgression({
+    required this.level,
+    required this.xp,
+    required this.xpRequiredForNextLevel,
+  });
+
+  final int level;
+  final int xp;
+  final int xpRequiredForNextLevel;
+
+  static LudoProfileProgression fromWire(LudoJson value) {
+    requireFields(value, {
+      'level',
+      'xp',
+      'xpRequiredForNextLevel',
+    }, 'profile response');
+    return LudoProfileProgression(
+      level: readInteger(value, 'level'),
+      xp: readInteger(value, 'xp'),
+      xpRequiredForNextLevel: readInteger(value, 'xpRequiredForNextLevel'),
+    );
+  }
+}
+
+/// One owned row from `GET .../inventory`'s `inventory` array.
+final class LudoOwnedInventoryItem {
+  const LudoOwnedInventoryItem({
+    required this.itemId,
+    required this.itemType,
+    required this.acquiredVia,
+    required this.acquiredAt,
+  });
+
+  final String itemId;
+  final String itemType;
+  final String acquiredVia;
+  final String acquiredAt;
+
+  static LudoOwnedInventoryItem fromWire(LudoJson value) {
+    requireFields(value, {
+      'item_id',
+      'item_type',
+      'acquired_via',
+      'acquired_at',
+    }, 'owned inventory item');
+    return LudoOwnedInventoryItem(
+      itemId: readText(value, 'item_id', 128),
+      itemType: readText(value, 'item_type', 32),
+      acquiredVia: readText(value, 'acquired_via', 32),
+      acquiredAt: readText(value, 'acquired_at', 64),
+    );
+  }
+}
+
+/// One row from `GET .../inventory`'s `catalog` array (the versioned
+/// economy config's theme list, served regardless of ownership).
+final class LudoCatalogItem {
+  const LudoCatalogItem({
+    required this.itemId,
+    required this.displayName,
+    required this.itemType,
+    required this.priceCoins,
+    required this.priceDiamonds,
+  });
+
+  final String itemId;
+  final String displayName;
+  final String itemType;
+
+  /// `null` for a free/starter item never sold for coins.
+  final int? priceCoins;
+
+  /// `null` for a free/starter item never sold for diamonds.
+  final int? priceDiamonds;
+
+  static LudoCatalogItem fromWire(LudoJson value) {
+    requireFields(
+      value,
+      {'item_id', 'display_name', 'item_type'},
+      'catalog item',
+      optional: {'price_coins', 'price_diamonds'},
+    );
+    return LudoCatalogItem(
+      itemId: readText(value, 'item_id', 128),
+      displayName: readText(value, 'display_name', 128),
+      itemType: readText(value, 'item_type', 32),
+      priceCoins: readOptionalInteger(value, 'price_coins'),
+      priceDiamonds: readOptionalInteger(value, 'price_diamonds'),
+    );
+  }
+}
+
+/// `GET /games/ludo/:environment/inventory` (task 26b).
+final class LudoInventoryResult {
+  const LudoInventoryResult({required this.inventory, required this.catalog});
+
+  final List<LudoOwnedInventoryItem> inventory;
+  final List<LudoCatalogItem> catalog;
+
+  static LudoInventoryResult fromWire(LudoJson value) {
+    requireFields(value, {'inventory', 'catalog'}, 'inventory response');
+    return LudoInventoryResult(
+      inventory: [
+        for (final entry in asJsonList(value['inventory'], 'inventory'))
+          LudoOwnedInventoryItem.fromWire(
+            asJsonObject(entry, 'inventory item'),
+          ),
+      ],
+      catalog: [
+        for (final entry in asJsonList(value['catalog'], 'catalog'))
+          LudoCatalogItem.fromWire(asJsonObject(entry, 'catalog item')),
+      ],
+    );
+  }
+}
+
+/// `POST /games/ludo/:environment/xp/claim` (task 26b)'s response.
+///
+/// The route itself only ever reports `levelsGained` — never the actual
+/// coin/diamond/theme amounts a level-up granted (that would need a
+/// backend route change, out of scope for task 26e; see
+/// `game_board_screen.dart`'s `_submitMatchXp`, which derives the
+/// celebration's reward honestly from a `GET wallet` diff instead of
+/// trusting a field this response doesn't carry).
+final class LudoXpClaimResult {
+  const LudoXpClaimResult({
+    required this.idempotent,
+    required this.xp,
+    required this.level,
+    required this.xpRequiredForNextLevel,
+    required this.levelsGained,
+  });
+
+  final bool idempotent;
+  final int xp;
+  final int level;
+  final int xpRequiredForNextLevel;
+
+  /// How many level boundaries this claim crossed. `0` for an idempotent
+  /// replay or a claim that didn't reach the next level's threshold.
+  final int levelsGained;
+
+  static LudoXpClaimResult fromWire(LudoJson value) {
+    requireFields(value, {
+      'idempotent',
+      'xp',
+      'level',
+      'xpRequiredForNextLevel',
+      'levelsGained',
+    }, 'xp claim response');
+    return LudoXpClaimResult(
+      idempotent: readBoolean(value, 'idempotent'),
+      xp: readInteger(value, 'xp'),
+      level: readInteger(value, 'level'),
+      xpRequiredForNextLevel: readInteger(value, 'xpRequiredForNextLevel'),
+      levelsGained: readInteger(value, 'levelsGained'),
+    );
+  }
+}
+
+/// `POST /games/ludo/:environment/starter-grant` (task 26b)'s response.
+final class LudoStarterGrantResult {
+  const LudoStarterGrantResult({
+    required this.granted,
+    required this.coins,
+    required this.diamonds,
+  });
+
+  final bool granted;
+  final int coins;
+  final int diamonds;
+
+  static LudoStarterGrantResult fromWire(LudoJson value) {
+    requireFields(value, {
+      'granted',
+      'coins',
+      'diamonds',
+    }, 'starter grant response');
+    return LudoStarterGrantResult(
+      granted: readBoolean(value, 'granted'),
+      coins: readInteger(value, 'coins'),
+      diamonds: readInteger(value, 'diamonds'),
+    );
+  }
+}
+
+/// `POST /games/ludo/:environment/daily-reward/claim` (task 26b)'s
+/// response.
+final class LudoDailyRewardClaimResult {
+  const LudoDailyRewardClaimResult({
+    required this.streakDay,
+    required this.coinsGranted,
+    required this.diamondsGranted,
+    required this.coins,
+    required this.diamonds,
+  });
+
+  final int streakDay;
+  final int coinsGranted;
+  final int diamondsGranted;
+  final int coins;
+  final int diamonds;
+
+  static LudoDailyRewardClaimResult fromWire(LudoJson value) {
+    requireFields(value, {
+      'streakDay',
+      'coinsGranted',
+      'diamondsGranted',
+      'coins',
+      'diamonds',
+    }, 'daily reward claim response');
+    return LudoDailyRewardClaimResult(
+      streakDay: readInteger(value, 'streakDay'),
+      coinsGranted: readInteger(value, 'coinsGranted'),
+      diamondsGranted: readInteger(value, 'diamondsGranted'),
+      coins: readInteger(value, 'coins'),
+      diamonds: readInteger(value, 'diamonds'),
+    );
+  }
+}
+
 final class LudoGateway {
   LudoGateway({required this.config, LudoHttpTransport? transport})
     : transport = transport ?? DartIoLudoHttpTransport();
@@ -422,5 +662,91 @@ final class LudoGateway {
       ),
       idempotent: readBoolean(data, 'idempotent'),
     );
+  }
+
+  // Task 26e: wallet/profile/inventory/progression, mirroring task 26b's
+  // routes (`packages/api/src/games/ludo/wallet-routes.ts`) field-for-field.
+
+  /// `GET /games/ludo/:environment/wallet`.
+  Future<LudoWallet> getWallet({required String gameToken}) async {
+    final data = await _request(
+      method: 'GET',
+      uri: config.gameEndpoint('wallet'),
+      bearerToken: gameToken,
+    );
+    return LudoWallet.fromWire(data);
+  }
+
+  /// `GET /games/ludo/:environment/profile`.
+  Future<LudoProfileProgression> getProfile({required String gameToken}) async {
+    final data = await _request(
+      method: 'GET',
+      uri: config.gameEndpoint('profile'),
+      bearerToken: gameToken,
+    );
+    return LudoProfileProgression.fromWire(data);
+  }
+
+  /// `GET /games/ludo/:environment/inventory`.
+  Future<LudoInventoryResult> getInventory({required String gameToken}) async {
+    final data = await _request(
+      method: 'GET',
+      uri: config.gameEndpoint('inventory'),
+      bearerToken: gameToken,
+    );
+    return LudoInventoryResult.fromWire(data);
+  }
+
+  /// `POST /games/ludo/:environment/xp/claim`: submits a pending local XP
+  /// delta plus the plausibility payload
+  /// (`elapsed_ms`/`matches_completed`) task 26b's replay-sanity check
+  /// expects.
+  Future<LudoXpClaimResult> claimXp({
+    required int xpDelta,
+    required String claimId,
+    required int elapsedMs,
+    required int matchesCompleted,
+    required String gameToken,
+  }) async {
+    final data = await _request(
+      method: 'POST',
+      uri: config.gameEndpoint('xp/claim'),
+      body: {
+        'xp_delta': xpDelta,
+        'claim_id': claimId,
+        'elapsed_ms': elapsedMs,
+        'matches_completed': matchesCompleted,
+      },
+      bearerToken: gameToken,
+    );
+    return LudoXpClaimResult.fromWire(data);
+  }
+
+  /// `POST /games/ludo/:environment/starter-grant`: idempotent, safe to
+  /// call every time a fresh player reaches the lobby.
+  Future<LudoStarterGrantResult> starterGrant({
+    required String gameToken,
+  }) async {
+    final data = await _request(
+      method: 'POST',
+      uri: config.gameEndpoint('starter-grant'),
+      body: const <String, Object?>{},
+      bearerToken: gameToken,
+    );
+    return LudoStarterGrantResult.fromWire(data);
+  }
+
+  /// `POST /games/ludo/:environment/daily-reward/claim`. This task only
+  /// wires the claim method itself — the calendar UI is task 26h's scope.
+  Future<LudoDailyRewardClaimResult> claimDailyReward({
+    required String gameToken,
+  }) async {
+    final data = await _request(
+      method: 'POST',
+      uri: config.gameEndpoint('daily-reward/claim'),
+      body: const <String, Object?>{},
+      bearerToken: gameToken,
+    );
+    return LudoDailyRewardClaimResult.fromWire(data);
   }
 }

@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 
 import '../state/ludo_settings_store.dart';
 import '../state/ludo_sound_settings.dart';
+import '../state/ludo_wallet_state.dart';
 import '../state/reduced_motion_setting.dart';
 import '../telemetry/ludo_telemetry.dart';
 import '../theme/ludo_theme_tokens.dart';
@@ -34,6 +35,7 @@ Future<void> showPauseQuitDialog(
   ReducedMotionSetting? reducedMotion,
   LudoSettingsStore? settingsStore,
   LudoTelemetry? telemetry,
+  LudoWalletState? wallet,
 }) {
   return showDialog<void>(
     context: context,
@@ -42,6 +44,7 @@ Future<void> showPauseQuitDialog(
       reducedMotion: reducedMotion,
       settingsStore: settingsStore,
       telemetry: telemetry,
+      wallet: wallet,
       onQuit: onQuit,
     ),
   );
@@ -56,6 +59,7 @@ class PauseQuitDialog extends StatelessWidget {
     this.reducedMotion,
     this.settingsStore,
     this.telemetry,
+    this.wallet,
   });
 
   final LudoSoundSettings soundSettings;
@@ -67,6 +71,11 @@ class PauseQuitDialog extends StatelessWidget {
 
   /// Forwarded to [SettingsScreen]'s persistence.
   final LudoSettingsStore? settingsStore;
+
+  /// Task 26e: forwarded to [SettingsScreen]'s wallet/level panel. `null`
+  /// (the default) hides that panel, matching [SettingsScreen.wallet]'s
+  /// own precedent.
+  final LudoWalletState? wallet;
 
   /// Test seam: the telemetry sink `ludo_settings_changed` records
   /// through, both for this dialog's own toggles and (forwarded) for
@@ -155,6 +164,7 @@ class PauseQuitDialog extends StatelessWidget {
                           reducedMotion: reducedMotion!,
                           store: settingsStore,
                           telemetry: telemetry,
+                          wallet: wallet,
                         ),
                       ),
                     ),

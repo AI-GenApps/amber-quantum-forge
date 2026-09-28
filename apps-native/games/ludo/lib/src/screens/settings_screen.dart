@@ -17,12 +17,14 @@ import '../net/ludo_auth_controller.dart';
 import '../net/ludo_online_preview_mode.dart' show LudoOnlinePreviewMode;
 import '../state/ludo_settings_store.dart';
 import '../state/ludo_sound_settings.dart';
+import '../state/ludo_wallet_state.dart';
 import '../state/reduced_motion_setting.dart';
 import '../telemetry/ludo_telemetry.dart';
 import '../theme/ludo_background_painter.dart';
 import '../theme/ludo_text_styles.dart';
 import '../theme/ludo_theme_tokens.dart';
 import '../widgets/ludo_panel.dart';
+import '../widgets/ludo_wallet_hud.dart';
 import 'how_to_play_screen.dart';
 
 const _minTapTarget = 48.0;
@@ -36,6 +38,7 @@ class SettingsScreen extends StatefulWidget {
     this.store,
     this.telemetry,
     this.authController,
+    this.wallet,
   });
 
   /// The shared sound/music/vibration toggle state — must be the same
@@ -65,6 +68,12 @@ class SettingsScreen extends StatefulWidget {
   /// instead of the one instance the online flow (tasks 25/26) actually
   /// authenticates through.
   final LudoAuthController? authController;
+
+  /// Task 26e: the cached wallet/level state this screen's profile panel
+  /// shows. `null` (the default, and always in widget tests that don't
+  /// care about the economy) hides that panel entirely, matching
+  /// [authController]'s precedent.
+  final LudoWalletState? wallet;
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -159,6 +168,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        if (widget.wallet != null) ...[
+          LudoPanel(
+            child: Row(
+              children: [
+                Text('Wallet & Level', style: LudoTextStyles.bodyStrong),
+                const Spacer(),
+                LudoWalletHud(
+                  wallet: widget.wallet!,
+                  reducedMotion: widget.reducedMotion,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: LudoThemeTokens.spaceMd),
+        ],
         LudoPanel(
           padding: EdgeInsets.zero,
           child: Column(

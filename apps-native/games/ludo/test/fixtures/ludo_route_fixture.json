@@ -193,5 +193,59 @@
     "refreshToken": "fixture-refresh-token-2",
     "expiresIn": 21600,
     "tokenType": "Bearer"
+  },
+  "wallet_response": {
+    "coins": 500,
+    "diamonds": 10
+  },
+  "profile_response": {
+    "level": 3,
+    "xp": 240,
+    "xpRequiredForNextLevel": 300
+  },
+  "inventory_response": {
+    "inventory": [
+      {
+        "item_id": "theme_default",
+        "item_type": "board",
+        "acquired_via": "starter_grant",
+        "acquired_at": "2026-01-01T00:00:00.000Z"
+      }
+    ],
+    "catalog": [
+      {
+        "item_id": "theme_default",
+        "display_name": "Classic",
+        "item_type": "board",
+        "price_coins": null,
+        "price_diamonds": null
+      },
+      {
+        "item_id": "theme_vortex",
+        "display_name": "Vortex",
+        "item_type": "board",
+        "price_coins": 2000,
+        "price_diamonds": null
+      }
+    ]
+  },
+  "xp_claim_response": {
+    "idempotent": false,
+    "xp": 100,
+    "level": 2,
+    "xpRequiredForNextLevel": 300,
+    "levelsGained": 1
+  },
+  "starter_grant_response": {
+    "granted": true,
+    "coins": 500,
+    "diamonds": 10
+  },
+  "daily_reward_claim_response": {
+    "streakDay": 1,
+    "coinsGranted": 50,
+    "diamondsGranted": 0,
+    "coins": 550,
+    "diamonds": 10
   }
 }

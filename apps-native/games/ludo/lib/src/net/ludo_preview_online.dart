@@ -29,6 +29,7 @@ library;
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'ludo_firebase_gateway.dart'
     show
@@ -228,6 +229,20 @@ final class PreviewLudoTransport implements LudoHttpTransport {
   int _ticketCounter = 0;
   int _matchCounter = 0;
 
+  // Task 26e device-evidence support: a tiny in-memory wallet/progression
+  // so the debug preview mode (the only device-evidence path available
+  // with no real economy backend deployed yet — task 26i is still
+  // pending) can also exercise the wallet HUD/level-up flow end-to-end
+  // through the real `LudoGateway`/`LudoWalletState` code path, never a
+  // hand-built fixture screenshot. Starts pre-populated (a starter grant
+  // already applied) and close to a level-up so a single Computer match
+  // reliably crosses a level boundary during a device walkthrough.
+  int _previewCoins = 640;
+  int _previewDiamonds = 12;
+  int _previewLevel = 1;
+  int _previewXp = 80;
+  final _claimedIds = <String>{};
+
   @override
   Future<LudoHttpResponse> send({
     required String method,
@@ -263,6 +278,26 @@ final class PreviewLudoTransport implements LudoHttpTransport {
         'environment': 'debug',
         'subject': 'preview-guest',
         'expires_in': 300,
+      });
+    }
+    if (method == 'GET' && path == 'wallet') {
+      return _json({'coins': _previewCoins, 'diamonds': _previewDiamonds});
+    }
+    if (method == 'GET' && path == 'profile') {
+      return _json({
+        'level': _previewLevel,
+        'xp': _previewXp,
+        'xpRequiredForNextLevel': _previewXpRequiredForNextLevel(_previewLevel),
+      });
+    }
+    if (method == 'POST' && path == 'xp/claim') {
+      return _claimXp(decodedBody);
+    }
+    if (method == 'POST' && path == 'starter-grant') {
+      return _json({
+        'granted': false,
+        'coins': _previewCoins,
+        'diamonds': _previewDiamonds,
       });
     }
     if (method == 'POST' && path == 'rooms') {
@@ -321,6 +356,57 @@ final class PreviewLudoTransport implements LudoHttpTransport {
       'diagnostic_id': 'preview',
     },
   }, statusCode: statusCode);
+
+  // -- Wallet/progression (task 26e device-evidence support) ---------
+
+  /// `100 * level^1.6`, rounded to the nearest 10 — mirrors
+  /// `economy-config.ts`'s `xpRequiredForLevel` exactly (the client never
+  /// needs this formula for anything real; only for this preview mode's
+  /// self-contained fake).
+  int _previewXpRequiredForNextLevel(int level) {
+    final raw = 100 * math.pow(level, 1.6);
+    return (raw / 10).round() * 10;
+  }
+
+  LudoHttpResponse _claimXp(Map<String, Object?> body) {
+    final claimId = body['claim_id'] as String? ?? '';
+    final xpDelta = body['xp_delta'] as int? ?? 0;
+    if (_claimedIds.contains(claimId)) {
+      return _json({
+        'idempotent': true,
+        'xp': _previewXp,
+        'level': _previewLevel,
+        'xpRequiredForNextLevel': _previewXpRequiredForNextLevel(_previewLevel),
+        'levelsGained': 0,
+      });
+    }
+    _claimedIds.add(claimId);
+    _previewXp += xpDelta;
+    var levelsGained = 0;
+    var required = _previewXpRequiredForNextLevel(_previewLevel);
+    while (_previewXp >= required) {
+      _previewLevel += 1;
+      levelsGained += 1;
+      // Mirrors the real server's per-level coin bonus / every-5th-level
+      // diamond bonus (economy.md) closely enough for a device walkthrough
+      // to see the follow-up `GET wallet` reflect a non-zero bonus — not a
+      // faithful reimplementation of `progression-service.ts`. The real
+      // `xp/claim` response never carries these amounts itself (see
+      // `LudoXpClaimResult`'s doc comment), so this fake doesn't put them
+      // in its response either; `_submitMatchXp` derives them from the
+      // wallet diff, same as it does against the real backend.
+      _previewCoins += 50 * levelsGained;
+      if (_previewLevel % 5 == 0) _previewDiamonds += 10;
+      required = _previewXpRequiredForNextLevel(_previewLevel);
+    }
+    return _json({
+      'idempotent': false,
+      'xp': _previewXp,
+      'level': _previewLevel,
+      'xpRequiredForNextLevel': required,
+      'levelsGained': levelsGained,
+    });
+  }
 
   // -- Rooms --------------------------------------------------------
 
