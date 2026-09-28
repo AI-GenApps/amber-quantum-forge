@@ -2,6 +2,18 @@
 
 All numbers live in a versioned **server** config (tunable after launch). Research and
 rationale: `.agents/resources/2026-09-25/ludo-vortex-economy/research.md`. Tasks: 26a–26i.
+Full doc + provenance/corrections: `docs-internal/gaming/ludo-economy.md` (task 26a).
+Implemented in `packages/api/src/games/ludo/economy-config.ts` as
+`LUDO_ECONOMY_CONFIG_V1` (`version: 1`).
+
+**Refinements from task 26a** (numbers below already reflect these):
+- Offline XP daily cap: **2,000 XP/day**, enforced server-side on claim.
+- Per-match XP: **100 (win) / 40 (loss)**, any mode.
+- Online free-play (no stake) win: **50 coins**, capped **10/day**.
+- XP-curve reference table: level 40 is **36,580** (the formula
+  `100 * 40^1.6` rounds to 36,580, not 36,590 — see
+  `docs-internal/gaming/ludo-economy.md`'s "What changed" note for why the
+  task's own reference list has a typo there).
 
 ## Principles
 

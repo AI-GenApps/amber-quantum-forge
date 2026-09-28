@@ -2,6 +2,7 @@ import { relations, sql } from "drizzle-orm";
 import {
   boolean,
   check,
+  date,
   foreignKey,
   index,
   integer,
@@ -240,6 +241,11 @@ export const ludoMatches = pgTable(
     turnDeadlineAt: timestamp("turn_deadline_at"),
     revision: integer("revision").notNull().default(0),
     matchOrigin: text("match_origin").notNull(),
+    // Pins the economy config version (packages/api/src/games/ludo/economy-config.ts)
+    // this match started under, so a config bump mid-flight cannot change
+    // the stakes/payouts of an in-progress match. Null for matches created
+    // before task 26a shipped, or for modes with no economy involvement.
+    economyConfigVersion: integer("economy_config_version"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
@@ -373,5 +379,185 @@ export const ludoRooms = pgTable(
   (table) => [
     primaryKey({ columns: [table.appId, table.environment, table.roomCode] }),
     check("ludo_rooms_seat_target_check", sql`"seat_target" IN (2, 4)`),
+  ],
+);
+
+// --- Ludo economy (task 26a) ---------------------------------------------
+// Server-authoritative wallet: append-only ledger (`ludoWalletTransactions`)
+// is the source of truth, `ludoBalances` is a denormalized summary written
+// only inside the same transaction as a ledger insert. No handler writes a
+// balance column directly from a request. Purpose-built tables per
+// research.md section 3(b), not the generic merge-relay artifact table.
+
+export const ludoWalletTransactions = pgTable(
+  "ludo_wallet_transactions",
+  {
+    id: text("id").primaryKey(),
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    subject: text("subject").notNull(),
+    currency: text("currency").notNull(),
+    delta: integer("delta").notNull(),
+    balanceAfter: integer("balance_after").notNull(),
+    reason: text("reason").notNull(),
+    sourceRef: text("source_ref"),
+    idempotencyKey: text("idempotency_key").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    check("ludo_wallet_transactions_currency_check", sql`"currency" IN ('coins', 'diamonds')`),
+    check(
+      "ludo_wallet_transactions_reason_check",
+      sql`"reason" IN (
+        'starter_grant', 'daily_login', 'rewarded_ad', 'level_up',
+        'online_match_win', 'coin_table_entry', 'coin_table_payout',
+        'coin_table_refund', 'iap_purchase', 'vortex_pass_perk',
+        'store_purchase', 'admin_adjustment'
+      )`,
+    ),
+    uniqueIndex("ludo_wallet_transactions_idempotency_unique").on(
+      table.appId,
+      table.environment,
+      table.subject,
+      table.idempotencyKey,
+    ),
+    index("ludo_wallet_transactions_subject_idx").on(
+      table.appId,
+      table.environment,
+      table.subject,
+      table.currency,
+      table.createdAt,
+    ),
+  ],
+);
+
+export const ludoBalances = pgTable(
+  "ludo_balances",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    subject: text("subject").notNull(),
+    currency: text("currency").notNull(),
+    balance: integer("balance").notNull().default(0),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.appId, table.environment, table.subject, table.currency] }),
+    check("ludo_balances_currency_check", sql`"currency" IN ('coins', 'diamonds')`),
+  ],
+);
+
+export const ludoInventory = pgTable(
+  "ludo_inventory",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    subject: text("subject").notNull(),
+    itemId: text("item_id").notNull(),
+    itemType: text("item_type").notNull(),
+    acquiredVia: text("acquired_via").notNull(),
+    acquiredAt: timestamp("acquired_at").defaultNow().notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.appId, table.environment, table.subject, table.itemId] }),
+    check("ludo_inventory_item_type_check", sql`"item_type" IN ('dice', 'token', 'board', 'pass')`),
+  ],
+);
+
+export const ludoCatalog = pgTable(
+  "ludo_catalog",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    itemId: text("item_id").notNull(),
+    itemType: text("item_type").notNull(),
+    displayName: text("display_name").notNull(),
+    priceCoins: integer("price_coins"),
+    priceDiamonds: integer("price_diamonds"),
+    configVersion: integer("config_version").notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.appId, table.environment, table.itemId] }),
+    check("ludo_catalog_item_type_check", sql`"item_type" IN ('dice', 'token', 'board', 'pass')`),
+  ],
+);
+
+export const ludoProgression = pgTable(
+  "ludo_progression",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    subject: text("subject").notNull(),
+    xp: integer("xp").notNull().default(0),
+    level: integer("level").notNull().default(1),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [primaryKey({ columns: [table.appId, table.environment, table.subject] })],
+);
+
+export const ludoDailyRewardState = pgTable(
+  "ludo_daily_reward_state",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    subject: text("subject").notNull(),
+    lastClaimDate: date("last_claim_date"),
+    streakDay: integer("streak_day").notNull().default(1),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.appId, table.environment, table.subject] }),
+    check("ludo_daily_reward_state_streak_day_check", sql`"streak_day" BETWEEN 1 AND 7`),
+  ],
+);
+
+export const ludoAdRewardClaims = pgTable(
+  "ludo_ad_reward_claims",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    subject: text("subject").notNull(),
+    adTransactionId: text("ad_transaction_id").notNull(),
+    rewardType: text("reward_type").notNull(),
+    claimDate: date("claim_date").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    primaryKey({
+      columns: [table.appId, table.environment, table.subject, table.adTransactionId],
+    }),
+    check("ludo_ad_reward_claims_reward_type_check", sql`"reward_type" IN ('coins', 'diamonds')`),
+    index("ludo_ad_reward_claims_daily_cap_idx").on(
+      table.appId,
+      table.environment,
+      table.subject,
+      table.rewardType,
+      table.claimDate,
+    ),
+  ],
+);
+
+export const ludoCoinTableEscrow = pgTable(
+  "ludo_coin_table_escrow",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    matchId: text("match_id").notNull(),
+    tier: text("tier").notNull(),
+    pot: integer("pot").notNull(),
+    rake: integer("rake").notNull(),
+    status: text("status").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    resolvedAt: timestamp("resolved_at"),
+  },
+  (table) => [
+    primaryKey({ columns: [table.appId, table.environment, table.matchId] }),
+    check("ludo_coin_table_escrow_tier_check", sql`"tier" IN ('low', 'mid', 'high')`),
+    check("ludo_coin_table_escrow_status_check", sql`"status" IN ('held', 'paid_out', 'refunded')`),
+    foreignKey({
+      columns: [table.appId, table.environment, table.matchId],
+      foreignColumns: [ludoMatches.appId, ludoMatches.environment, ludoMatches.matchId],
+      name: "ludo_coin_table_escrow_match_fk",
+    }).onDelete("cascade"),
   ],
 );

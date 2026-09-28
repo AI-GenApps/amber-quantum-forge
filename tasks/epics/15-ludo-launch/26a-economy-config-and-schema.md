@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 26a-economy-config-and-schema
-status: pending
+status: complete
 commit_scope: ludo
 depends_on: [15-ludo-launch/26x-online-preview-and-polish]
 estimate: L
@@ -98,24 +98,24 @@ research.md's numbers where they conflict with this list:
 
 ## Implementation Checklist
 
-- [ ] Write `docs-internal/gaming/ludo-economy.md`: currencies, sources/
+- [x] Write `docs-internal/gaming/ludo-economy.md`: currencies, sources/
   sinks tables, starting balances, coin-stake table, XP curve + formula +
   reference values above, IAP product list (no Remove Ads), Vortex Pass,
   theme catalog (6/4/3), rewarded-ad caps, daily reward calendar, the
   "coins never cashable" statement, and a short "what changed vs.
   research.md section 6" note listing every correction above so the
   provenance is traceable.
-- [ ] Create `packages/api/src/games/ludo/economy-config.ts`: a versioned
+- [x] Create `packages/api/src/games/ludo/economy-config.ts`: a versioned
   config object/module (e.g. `LUDO_ECONOMY_CONFIG_V1`) typed with every
   number from the doc, a `getEconomyConfig(version?: number)` accessor
   defaulting to latest, and the XP curve as an exported function
   `xpRequiredForLevel(level: number): number` implementing the formula
   (not a lookup table).
-- [ ] Add `packages/api/src/games/ludo/economy-config.test.ts` asserting
+- [x] Add `packages/api/src/games/ludo/economy-config.test.ts` asserting
   `xpRequiredForLevel` matches every reference value listed above, the coin
   table's payout math nets to the documented rake percentage for both 2p
   and 4p splits, and the config has no "Remove Ads"-named product.
-- [ ] Add the Drizzle tables to `packages/db/src/schema.ts`, following
+- [x] Add the Drizzle tables to `packages/db/src/schema.ts`, following
   `mergeRelayScopes`/`mergeRelayRecords`'s conventions (scoping columns,
   `check`/`uniqueIndex`), all scoped by `(app_id, environment, subject)`
   matching task 16's `ludo_players` scoping:
@@ -145,13 +145,13 @@ research.md's numbers where they conflict with this list:
   - `ludo_coin_table_escrow`: primary key `(app_id, environment, match_id)`,
     `tier` (`low`/`mid`/`high`), `pot`, `rake`, `status`
     (`held`/`paid_out`/`refunded`), `created_at`, `resolved_at`.
-- [ ] Run `cd packages/db && DATABASE_URL=postgresql://migration-generator.invalid/ludo bun run db:generate` and check in the generated migration (do not `db:push`).
-- [ ] Create `packages/api/src/games/ludo/economy-store.ts` (memory
+- [x] Run `cd packages/db && DATABASE_URL=postgresql://migration-generator.invalid/ludo bun run db:generate` and check in the generated migration (do not `db:push`).
+- [x] Create `packages/api/src/games/ludo/economy-store.ts` (memory
   implementation) and `packages/api/src/games/ludo/economy-drizzle-store.ts`
   (targeted per-row upserts, no whole-scope rewrite — same discipline as
   task 16's `LudoStore`), each exposing ledger-append + balance-read +
   inventory/progression/daily-reward/ad-claim/escrow operations.
-- [ ] Add `packages/api/src/games/ludo/economy-store.test.ts` covering the
+- [x] Add `packages/api/src/games/ludo/economy-store.test.ts` covering the
   ledger invariant: for every subject/currency, `SUM(delta)` across
   `ludo_wallet_transactions` always equals the corresponding
   `ludo_balances.balance` row, including after a simulated concurrent
