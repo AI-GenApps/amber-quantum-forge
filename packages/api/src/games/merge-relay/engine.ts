@@ -244,10 +244,23 @@ function moveBoard(
   const result = [...cells];
   let scoreDelta = 0;
   for (let line = 0; line < 4; line += 1) {
+    // `lineIndexes` already returns each line's indexes in anchor-first
+    // order for the requested direction (e.g. "right" starts at the
+    // rightmost cell), so that single order is both the correct
+    // compaction/merge scan order and the correct placement order for the
+    // result -- it's used directly for both.
+    //
+    // Fix (task 13, round 2): the previous code additionally reversed the
+    // scan order into `oriented`, then reversed the merged output again
+    // into `output`, which cancels out and makes "right"/"down" silently
+    // behave exactly like "left"/"up". That's the same bug found and
+    // fixed in the Dart engine
+    // (apps-native/games/packages/merge_rules/lib/src/merge_rules.dart) --
+    // left as-is, the server would validate right/down client moves
+    // against a different (wrong) board than the client actually computed.
     const indexes = lineIndexes(direction, line);
     const values = indexes.map((index) => cells[index]);
-    const oriented = direction === "right" || direction === "down" ? [...values].reverse() : values;
-    const compact = oriented.filter((value) => value !== 0);
+    const compact = values.filter((value) => value !== 0);
     const merged: number[] = [];
     for (let index = 0; index < compact.length; index += 1) {
       if (index + 1 < compact.length && compact[index] === compact[index + 1]) {
@@ -258,9 +271,8 @@ function moveBoard(
       } else merged.push(compact[index]);
     }
     while (merged.length < 4) merged.push(0);
-    const output = direction === "right" || direction === "down" ? [...merged].reverse() : merged;
     indexes.forEach((index, position) => {
-      result[index] = output[position];
+      result[index] = merged[position];
     });
   }
   return { board: result, scoreDelta };

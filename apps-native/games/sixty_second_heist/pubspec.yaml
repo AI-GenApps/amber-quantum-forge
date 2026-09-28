@@ -28,3 +28,16 @@ flutter:
   assets:
     - assets/
     - content/
+  fonts:
+    - family: Bungee
+      fonts:
+        - asset: assets/fonts/Bungee/Bungee-Regular.ttf
+    - family: ChakraPetch
+      fonts:
+        - asset: assets/fonts/ChakraPetch/ChakraPetch-Regular.ttf
+        - asset: assets/fonts/ChakraPetch/ChakraPetch-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/ChakraPetch/ChakraPetch-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/ChakraPetch/ChakraPetch-Bold.ttf
+          weight: 700

@@ -288,6 +288,107 @@ void main() {
   });
 
   test(
+    'a legacy (v1) session map migrates and keeps cleared rescue boards',
+    () async {
+      final context = runtimeAppContext(identity: mergeRelayIdentity);
+      final store = MemorySaveStore();
+      await store.write(
+        context,
+        SaveEnvelope.create(
+          context: context,
+          schemaVersion: 1,
+          savedAt: DateTime.utc(2026),
+          payload: {
+            'session_map_version': 1,
+            'active_session_key': null,
+            'sessions': <String, Object?>{},
+            'profile': {
+              'tutorial_version': mergeRelayTutorialVersion,
+              'theme_id': 'signal',
+              'reduced_motion': false,
+              'audio_enabled': true,
+              'haptics_enabled': true,
+              'accessible_controls': false,
+              'completed_rescue_ids': ['rescue-signal', 'rescue-echo'],
+            },
+          },
+        ),
+      );
+
+      final game = MergeRelayGame(context: context, saveStore: store);
+      await game.restore();
+      expect(game.completedRescueIds.value, {'rescue-signal', 'rescue-echo'});
+      game.openHome();
+      await game.flushWrites();
+
+      final envelope = await store.read(context);
+      expect(envelope?.payload['session_map_version'], 2);
+
+      final reopened = MergeRelayGame(context: context, saveStore: store);
+      await reopened.restore();
+      expect(reopened.completedRescueIds.value, {
+        'rescue-signal',
+        'rescue-echo',
+      });
+      game.dispose();
+      reopened.dispose();
+    },
+  );
+
+  test(
+    'a legacy rescue session without move_budget keeps its three-move play',
+    () async {
+      final context = runtimeAppContext(identity: mergeRelayIdentity);
+      final store = MemorySaveStore();
+      final state = MergeRelayContentCatalog.fallback.firstRescue.state;
+      await store.write(
+        context,
+        SaveEnvelope.create(
+          context: context,
+          schemaVersion: 1,
+          savedAt: DateTime.utc(2026),
+          payload: {
+            'session_map_version': 1,
+            'active_session_key': 'rescue:rescue-signal',
+            'sessions': {
+              'rescue:rescue-signal': {
+                'game': state.toJson(),
+                'mode': 'rescue',
+                'rescue_id': 'rescue-signal',
+                'daily_date': null,
+                'rescue_moves_used': 0,
+                'paused': false,
+                'result': null,
+                'content_version': mergeRelayContentVersion,
+                'goal_revision': mergeRelayGoalRevision,
+                'objective': 'Reach 16 points.',
+                'target_score': 16,
+                'rule_config': const MergeRuleConfig.legacy().toJson(),
+              },
+            },
+            'profile': {
+              'tutorial_version': mergeRelayTutorialVersion,
+              'theme_id': 'signal',
+              'reduced_motion': false,
+              'audio_enabled': true,
+              'haptics_enabled': true,
+              'accessible_controls': false,
+              'completed_rescue_ids': <String>[],
+            },
+          },
+        ),
+      );
+      final game = MergeRelayGame(context: context, saveStore: store);
+      await game.restore();
+
+      expect(game.movesRemaining, 3);
+      _playThreeRescueMoves(game);
+      expect(game.result.value, isNotNull);
+      game.dispose();
+    },
+  );
+
+  test(
     'invalid session map does not partially replace the live board',
     () async {
       final context = runtimeAppContext(identity: mergeRelayIdentity);

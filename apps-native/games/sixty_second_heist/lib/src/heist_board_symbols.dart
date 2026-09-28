@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:heist_rules/heist_rules.dart';
 
+import 'heist_typography.dart';
+
 final class HeistBoardSymbols {
   const HeistBoardSymbols._();
 
@@ -22,7 +24,13 @@ final class HeistBoardSymbols {
       ..lineTo(center.dx - cell * 0.2, center.dy)
       ..close();
     canvas.drawPath(diamond, paint);
-    drawLabel(canvas, label, center.translate(0, cell * 0.29), cell * 0.13);
+    drawLabel(
+      canvas,
+      label,
+      center.translate(0, cell * 0.29),
+      cell * 0.13,
+      fontFamily: HeistTypography.displayFamily,
+    );
   }
 
   static void paintPlayer(
@@ -58,6 +66,7 @@ final class HeistBoardSymbols {
       center.translate(0, -size * 0.2),
       size * 0.9,
       color: const Color(0xff0d2238),
+      fontFamily: HeistTypography.bodyFamily,
     );
   }
 
@@ -67,6 +76,7 @@ final class HeistBoardSymbols {
     Offset center,
     double size, {
     Color color = const Color(0xffd8f2ed),
+    String fontFamily = HeistTypography.displayFamily,
   }) {
     final text = TextPainter(
       text: TextSpan(
@@ -75,6 +85,7 @@ final class HeistBoardSymbols {
           color: color,
           fontSize: size,
           fontWeight: FontWeight.w900,
+          fontFamily: fontFamily,
         ),
       ),
       textDirection: TextDirection.ltr,

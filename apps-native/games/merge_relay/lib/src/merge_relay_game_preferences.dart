@@ -10,11 +10,17 @@ extension MergeRelayGamePreferences on MergeRelayGame {
   void setAudioEnabled(bool value) =>
       _updatePreferences(preferences.value.copyWith(audioEnabled: value));
 
+  void setMusicEnabled(bool value) =>
+      _updatePreferences(preferences.value.copyWith(musicEnabled: value));
+
   void setHapticsEnabled(bool value) =>
       _updatePreferences(preferences.value.copyWith(hapticsEnabled: value));
 
   void setAccessibleControls(bool value) =>
       _updatePreferences(preferences.value.copyWith(accessibleControls: value));
+
+  void setHighContrast(bool value) =>
+      _updatePreferences(preferences.value.copyWith(highContrast: value));
 
   void _updatePreferences(MergeRelayPreferences next) {
     if (!_readyForAction) return;

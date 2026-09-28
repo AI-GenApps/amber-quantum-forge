@@ -2,6 +2,10 @@ import 'dart:convert';
 
 import 'package:merge_rules/merge_rules.dart';
 
+/// The widest rescue move budget the campaign ramp can assign (chapter 6:
+/// 3 + floor((6-1)/2) = 5), plus headroom matching the solver's own cap.
+const mergeRelayMaxRescueMoveBudget = maxMergeRescueSolverMoveBudget;
+
 final class MergeRelayGoalValidation {
   const MergeRelayGoalValidation({
     required this.reachable,
@@ -18,7 +22,9 @@ MergeRelayGoalValidation validateMergeRelayGoal({
   MergeRules rules = const MergeRules(),
   int maxMoves = 3,
 }) {
-  if (targetScore <= state.score || maxMoves < 1 || maxMoves > 3) {
+  if (targetScore <= state.score ||
+      maxMoves < 1 ||
+      maxMoves > mergeRelayMaxRescueMoveBudget) {
     return const MergeRelayGoalValidation(reachable: false, shortestPath: null);
   }
   final queue = <(MergeGameState, int)>[(state, 0)];

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'ui/mr_theme.dart';
+import 'ui/mr_tokens.dart';
+
 final class MergeRelayTheme {
   const MergeRelayTheme({
     required this.paper,
@@ -24,23 +27,30 @@ final class MergeRelayTheme {
   final Color muted;
 }
 
+// Both cosmetic variants below share the brand base ([MrTokens.paper] /
+// [MrTokens.ink]) — restyled for task 07 away from the old flat cool-blue
+// "signal" paper — and differ only in their relay-light accent hues
+// (blue/sky/coral/warm). Task 08 replaces `board`/`slot`: both used to be
+// dark-navy/dark-purple (a holdover from the old flat theme, at odds with
+// the Threes!-style warm paper board), so both variants now use a soft
+// cream tray and a barely-darker pale well — never a dark hole.
 const signalRelayTheme = MergeRelayTheme(
-  paper: Color(0xffedf5fb),
-  ink: Color(0xff10243e),
-  board: Color(0xff10243e),
-  slot: Color(0xff203754),
-  blue: Color(0xff3e75b6),
-  sky: Color(0xff4e93d3),
-  coral: Color(0xffa53b36),
-  warm: Color(0xffe5534b),
-  muted: Color(0xff52677d),
+  paper: MrTokens.paper,
+  ink: MrTokens.ink,
+  board: Color(0xfff6ecd8),
+  slot: Color(0xffe9dcc0),
+  blue: Color(0xff3c5c9e),
+  sky: Color(0xff2a7a8c),
+  coral: Color(0xffc03e4f),
+  warm: Color(0xfff2914b),
+  muted: Color(0xff5c6a8a),
 );
 
 const emberRelayTheme = MergeRelayTheme(
-  paper: Color(0xfffbf2ea),
+  paper: MrTokens.paper,
   ink: Color(0xff2b1c36),
-  board: Color(0xff2b1c36),
-  slot: Color(0xff49304f),
+  board: Color(0xfff3e2d9),
+  slot: Color(0xffe6d0c8),
   blue: Color(0xff8d4d85),
   sky: Color(0xffb76b88),
   coral: Color(0xffb34d3f),
@@ -52,20 +62,8 @@ MergeRelayTheme relayThemeFor(String themeId) {
   return themeId == 'ember' ? emberRelayTheme : signalRelayTheme;
 }
 
-ThemeData materialThemeFor(MergeRelayTheme relayTheme) {
-  return ThemeData(
-    colorScheme:
-        ColorScheme.fromSeed(
-          seedColor: relayTheme.blue,
-          brightness: Brightness.light,
-        ).copyWith(
-          primary: relayTheme.ink,
-          onPrimary: relayTheme.paper,
-          secondary: relayTheme.coral,
-          surface: relayTheme.paper,
-          onSurface: relayTheme.ink,
-        ),
-    scaffoldBackgroundColor: relayTheme.paper,
-    useMaterial3: true,
-  );
-}
+/// Builds the app's [ThemeData] for a given cosmetic accent variant — see
+/// [MrTheme.build] for the design-system details (fonts, explicit
+/// [ColorScheme], rounded button/dialog/sheet chrome).
+ThemeData materialThemeFor(MergeRelayTheme relayTheme) =>
+    MrTheme.build(relayTheme);

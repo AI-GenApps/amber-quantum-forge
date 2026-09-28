@@ -2,7 +2,7 @@ import 'package:merge_rules/merge_rules.dart';
 
 const mergeRelayTutorialVersion = 1;
 
-enum MergeRelayRoute { home, tutorial, play, result, relay }
+enum MergeRelayRoute { home, tutorial, play, result, relay, chapterMap }
 
 enum MergeRelayOutcome { completed, missed, terminal, earlyFinish }
 
@@ -32,7 +32,7 @@ extension MergeRelayModePresentation on MergeRelayMode {
   String get goal => switch (this) {
     MergeRelayMode.rescue => 'Fuse the marked pair.',
     MergeRelayMode.daily => 'Find the best chain in three moves.',
-    MergeRelayMode.endless => 'Keep the relay alive for one more merge.',
+    MergeRelayMode.endless => 'Keep the chain going for one more merge.',
   };
 
   bool get usesMoveBudget => this != MergeRelayMode.endless;
@@ -50,29 +50,45 @@ final class MergeRelayPreferences {
     this.themeId = 'signal',
     this.reducedMotion = false,
     this.audioEnabled = true,
+    this.musicEnabled = true,
     this.hapticsEnabled = true,
     this.accessibleControls = false,
+    this.highContrast = false,
   });
 
   final String themeId;
   final bool reducedMotion;
+
+  /// Gates sound effects (the "Sound" toggle in Settings) — see
+  /// `MergeRelayAudioService.play`/`playMerge` in
+  /// `audio/merge_relay_audio_service.dart`.
   final bool audioEnabled;
+
+  /// Gates the looping background track (the "Music" toggle in Settings),
+  /// independent of [audioEnabled] — see
+  /// `MergeRelayAudioService.startMusicLoop`.
+  final bool musicEnabled;
   final bool hapticsEnabled;
   final bool accessibleControls;
+  final bool highContrast;
 
   MergeRelayPreferences copyWith({
     String? themeId,
     bool? reducedMotion,
     bool? audioEnabled,
+    bool? musicEnabled,
     bool? hapticsEnabled,
     bool? accessibleControls,
+    bool? highContrast,
   }) {
     return MergeRelayPreferences(
       themeId: themeId ?? this.themeId,
       reducedMotion: reducedMotion ?? this.reducedMotion,
       audioEnabled: audioEnabled ?? this.audioEnabled,
+      musicEnabled: musicEnabled ?? this.musicEnabled,
       hapticsEnabled: hapticsEnabled ?? this.hapticsEnabled,
       accessibleControls: accessibleControls ?? this.accessibleControls,
+      highContrast: highContrast ?? this.highContrast,
     );
   }
 }
@@ -97,7 +113,7 @@ final class MergeRelayResult {
   final String? rescueId;
 
   String get message => switch (outcome) {
-    MergeRelayOutcome.completed => 'Path cleared.',
+    MergeRelayOutcome.completed => 'Every tile found its place.',
     MergeRelayOutcome.missed => 'The pair stayed apart this time.',
     MergeRelayOutcome.terminal => 'Every lane is full. The chain ends here.',
     MergeRelayOutcome.earlyFinish => 'Your board is safe where you left it.',
@@ -161,12 +177,15 @@ final class MergeMovePresentation {
     required this.mergedCells,
     required this.spawnedCell,
     required this.spawnedValue,
+    this.isNewBestTile = false,
+    this.bestTileCell,
   });
 
   factory MergeMovePresentation.fromResult({
     required MergeGameState before,
     required MergeMoveResult result,
     required MergeDirection direction,
+    bool isNewBestTile = false,
   }) {
     final changedCells = <int>{};
     final mergedCells = {
@@ -177,6 +196,17 @@ final class MergeMovePresentation {
         changedCells.add(index);
       }
     }
+    int? bestTileCell;
+    if (isNewBestTile && mergedCells.isNotEmpty) {
+      final maxValue = result.state.board.cells.fold<int>(
+        0,
+        (highest, value) => value > highest ? value : highest,
+      );
+      bestTileCell = mergedCells.firstWhere(
+        (cell) => result.state.board.cells[cell] == maxValue,
+        orElse: () => mergedCells.first,
+      );
+    }
     return MergeMovePresentation(
       before: before.board,
       after: result.state.board,
@@ -186,6 +216,8 @@ final class MergeMovePresentation {
       mergedCells: Set.unmodifiable(mergedCells),
       spawnedCell: result.spawnedCell,
       spawnedValue: result.spawnedValue,
+      isNewBestTile: isNewBestTile,
+      bestTileCell: bestTileCell,
     );
   }
 
@@ -197,6 +229,15 @@ final class MergeMovePresentation {
   final Set<int> mergedCells;
   final int? spawnedCell;
   final int? spawnedValue;
+
+  /// True when this move raised the board's highest tile value above any
+  /// value reached so far this run — the trigger for the best-tile
+  /// celebration and its heavy haptic.
+  final bool isNewBestTile;
+
+  /// The merged destination cell the celebration confetti radiates from,
+  /// when [isNewBestTile] is true and the new max came from a merge.
+  final int? bestTileCell;
 
   bool get hasMerge => scoreDelta > 0 && mergedCells.isNotEmpty;
 }

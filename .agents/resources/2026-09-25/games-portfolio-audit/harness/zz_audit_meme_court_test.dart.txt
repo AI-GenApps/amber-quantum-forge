@@ -1,0 +1,25 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:meme_court/meme_court_app.dart';
+import 'zz_audit_shot_support.dart';
+
+void main() {
+  setUpAll(loadFonts);
+  testWidgets('audit shots', (tester) async {
+    phone(tester);
+    await tester.pumpWidget(framed(const MemeCourtApp()));
+    await shot(tester, 'meme_court-01-home');
+    await tapText(tester, 'Midnight snack, daytime confidence.');
+    final f = find.text('The plate understood the assignment.');
+    if (f.evaluate().length > 1) {
+      await tester.ensureVisible(f.at(1));
+      await tester.tap(f.at(1), warnIfMissed: false);
+      await settle(tester, 20);
+    }
+    await tapText(tester, 'Freeze the captions');
+    await shot(tester, 'meme_court-02-frozen');
+    dumpTexts(tester, 'frozen');
+    await tapText(tester, 'Reveal the verdict');
+    await shot(tester, 'meme_court-03-verdict');
+    dumpTexts(tester, 'verdict');
+  });
+}

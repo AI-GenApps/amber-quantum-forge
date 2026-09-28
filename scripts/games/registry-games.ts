@@ -13,9 +13,9 @@ import {
 export const GAME_REGISTRY: readonly GameRegistration[] = [
   {
     id: "merge_relay",
-    canonicalName: "Merge Relay",
-    publicTitle: "Merge Relay",
-    subtitle: "Merge tiles. Challenge friends",
+    canonicalName: "Glow Rescue",
+    publicTitle: "Glow Rescue",
+    subtitle: "Merge tiles, rescue the board.",
     lifecycle: "concept",
     paths: {
       app: "apps-native/games/merge_relay",

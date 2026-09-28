@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'snapquest_typography.dart';
+
 abstract final class SnapDesign {
   static const night = Color(0xFF18243A);
   static const butter = Color(0xFFFFF3B8);
@@ -17,6 +19,10 @@ abstract final class SnapDesign {
         surface: butter,
       ),
       scaffoldBackgroundColor: butter,
+      // Sets Andika as the default for every Material widget (buttons,
+      // list tiles, and any `textTheme` role left unset below); Baloo 2 is
+      // then layered on top of the display roles explicitly (task 04).
+      fontFamily: SnapQuestTypography.bodyFamily,
       appBarTheme: const AppBarTheme(
         backgroundColor: butter,
         foregroundColor: night,
@@ -30,7 +36,14 @@ abstract final class SnapDesign {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
           ),
-          textStyle: const TextStyle(fontWeight: FontWeight.w800),
+          // A `FilledButton`'s resolved `textStyle` becomes its child's
+          // ambient `DefaultTextStyle` outright (Material.build() does not
+          // merge it with the theme's default), so `fontFamily` must be
+          // set explicitly here or the label falls back to the platform
+          // default font.
+          textStyle: SnapQuestTypography.body(
+            const TextStyle(fontWeight: FontWeight.w800),
+          ),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -43,20 +56,24 @@ abstract final class SnapDesign {
           ),
         ),
       ),
-      textTheme: const TextTheme(
-        headlineMedium: TextStyle(
-          color: night,
-          fontSize: 30,
-          fontWeight: FontWeight.w900,
-          height: 1.04,
+      textTheme: TextTheme(
+        headlineMedium: SnapQuestTypography.heading(
+          const TextStyle(
+            color: night,
+            fontSize: 30,
+            fontWeight: FontWeight.w900,
+            height: 1.04,
+          ),
         ),
-        titleLarge: TextStyle(
-          color: night,
-          fontSize: 21,
-          fontWeight: FontWeight.w900,
+        titleLarge: SnapQuestTypography.heading(
+          const TextStyle(
+            color: night,
+            fontSize: 21,
+            fontWeight: FontWeight.w900,
+          ),
         ),
-        bodyLarge: TextStyle(color: night, fontSize: 16, height: 1.35),
-        bodyMedium: TextStyle(color: night, fontSize: 14, height: 1.3),
+        bodyLarge: const TextStyle(color: night, fontSize: 16, height: 1.35),
+        bodyMedium: const TextStyle(color: night, fontSize: 14, height: 1.3),
       ),
       useMaterial3: true,
     );
@@ -109,7 +126,13 @@ class SnapPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+      // Andika runs wider than the platform default at the same size, so
+      // all three status pills no longer fit one row at 360 logical width
+      // with the original 12px horizontal padding (task 04 orchestrator
+      // review). Tightened padding plus a touch of negative letter-spacing
+      // recovers the one-row layout with no copy change and no font-size
+      // drop below the label's original 12px.
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 7),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(100),
@@ -121,6 +144,7 @@ class SnapPill extends StatelessWidget {
           color: SnapDesign.night,
           fontSize: 12,
           fontWeight: FontWeight.w800,
+          letterSpacing: -0.2,
         ),
       ),
     );

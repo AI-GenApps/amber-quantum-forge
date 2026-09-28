@@ -3,6 +3,7 @@ import 'package:heist_rules/heist_rules.dart';
 import 'package:platform_core/platform_core.dart';
 
 import 'heist_app.dart';
+import 'heist_typography.dart';
 import 'heist_ui_components.dart';
 import 'heist_ui_controls.dart';
 
@@ -45,10 +46,9 @@ final class _SixtySecondHeistAppState extends State<SixtySecondHeistApp> {
     return MaterialApp(
       title: sixtySecondHeistIdentity.publicTitle,
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: _heistBlue),
-        scaffoldBackgroundColor: _heistPaper,
-        useMaterial3: true,
+      theme: HeistTypography.theme(
+        seedColor: _heistBlue,
+        background: _heistPaper,
       ),
       home: HeistScreen(game: game),
     );
@@ -152,13 +152,15 @@ final class _HeistHeader extends StatelessWidget {
           spacing: 8,
           runSpacing: 6,
           children: [
-            const Text(
+            Text(
               'MISSION 1',
-              style: TextStyle(
-                color: _heistCoral,
-                fontSize: 12,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 1.5,
+              style: HeistTypography.body(
+                const TextStyle(
+                  color: _heistCoral,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 1.5,
+                ),
               ),
             ),
             DecoratedBox(
@@ -173,10 +175,12 @@ final class _HeistHeader extends StatelessWidget {
                 ),
                 child: Text(
                   status,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w800,
+                  style: HeistTypography.body(
+                    const TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
               ),
@@ -184,20 +188,35 @@ final class _HeistHeader extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 8),
-        const Text(
-          'Sixty-Second Heist',
-          style: TextStyle(
-            color: _heistInk,
-            fontSize: 34,
-            fontWeight: FontWeight.w900,
-            height: 1,
-            letterSpacing: -1.1,
+        // Bungee runs considerably wider per character than the original
+        // default font this size was tuned for, so "Sixty-Second Heist"
+        // no longer fits one line at narrow widths. `FittedBox` +
+        // `softWrap: false` scale the whole title down just enough to
+        // keep it on one line (never grows it back up past `fontSize`),
+        // instead of guessing a smaller fixed size for every width.
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Sixty-Second Heist',
+            softWrap: false,
+            style: HeistTypography.heading(
+              const TextStyle(
+                color: _heistInk,
+                fontSize: 34,
+                fontWeight: FontWeight.w900,
+                height: 1,
+                letterSpacing: -1.1,
+              ),
+            ),
           ),
         ),
         const SizedBox(height: 7),
         Text(
           '$actionCount / 64 steps',
-          style: const TextStyle(color: Color(0xff5f7284), fontSize: 16),
+          style: HeistTypography.body(
+            const TextStyle(color: Color(0xff5f7284), fontSize: 16),
+          ),
         ),
       ],
     );
@@ -254,20 +273,24 @@ final class _Stat extends StatelessWidget {
           children: [
             Text(
               label,
-              style: TextStyle(
-                color: color,
-                fontSize: 10,
-                fontWeight: FontWeight.w900,
-                letterSpacing: 1.1,
+              style: HeistTypography.body(
+                TextStyle(
+                  color: color,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 1.1,
+                ),
               ),
             ),
             const SizedBox(height: 3),
             Text(
               value,
-              style: const TextStyle(
-                color: _heistInk,
-                fontSize: 22,
-                fontWeight: FontWeight.w900,
+              style: HeistTypography.body(
+                const TextStyle(
+                  color: _heistInk,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w900,
+                ),
               ),
             ),
           ],

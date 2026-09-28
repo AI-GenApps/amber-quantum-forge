@@ -107,7 +107,7 @@ android {
         val leaderboardId = mergeRelayPgsValue("LEADERBOARD_ID", "LeaderboardId")
         manifestPlaceholders["mergeRelayPgsApplicationId"] = applicationId
         manifestPlaceholders["mergeRelayAppLabel"] =
-            if (mergeRelayDebugPackageSuffix.isEmpty()) "Merge Relay" else "Merge Relay QA"
+            if (mergeRelayDebugPackageSuffix.isEmpty()) "Glow Rescue" else "Glow Rescue QA"
         manifestPlaceholders["mergeRelayPublicHost"] = mergeRelayPublicOriginUri?.host ?: ""
         buildConfigField(
             "String",

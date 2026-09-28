@@ -1,0 +1,22 @@
+apps-native/games/merge_relay/lib/src/merge_relay_relay_share.dart:58:  String get message => 'Join $creatorAlias in Merge Relay: $preferredLink';
+apps-native/games/merge_relay/lib/src/merge_relay_relay_share.dart:88:        'title': 'Merge Relay',
+apps-native/games/merge_relay/lib/src/merge_relay_result_screen.dart:3:/// Merge Relay's Result screen, restyled task 11: a hero panel with the
+apps-native/games/merge_relay/lib/src/merge_relay_play_screen.dart:25:/// Merge Relay's Play screen, recomposed task 11 so the board reads as the
+apps-native/games/merge_relay/lib/src/audio/merge_relay_audio_service.dart:14:/// Plays SFX and looping music for Merge Relay, gated by the live
+apps-native/games/merge_relay/lib/src/audio/merge_relay_audio_service.dart:18:/// Merge Relay's preferences are already a single `ValueNotifier` every
+apps-native/games/merge_relay/lib/src/merge_relay_home.dart:19:/// Merge Relay's Home screen (restyled task 11): a wordmark header, a hero
+apps-native/games/merge_relay/lib/src/network/merge_relay_network.dart:83:        throw const MergeRelayProtocolException('Invalid Merge Relay response');
+apps-native/games/merge_relay/lib/src/ui/mr_icon_button.dart:5:/// A round, bordered icon tap target (task 11) — Merge Relay's replacement
+apps-native/games/merge_relay/lib/src/ui/mr_theme.dart:7:/// Builds Merge Relay's [ThemeData] (task 07) from a [MergeRelayTheme]
+apps-native/games/merge_relay/lib/src/audio/merge_relay_audio.dart:1:/// Real SFX/music playback for Merge Relay, wired to the move-trace events
+apps-native/games/merge_relay/lib/src/audio/merge_relay_audio.dart:15:/// The flat, one-cue-per-event SFX Merge Relay's move-trace and lifecycle
+apps-native/games/merge_relay/lib/src/merge_relay_features.dart:1:/// Compile-time gate for Merge Relay's social surface (friend relays, Play
+apps-native/games/merge_relay/lib/src/merge_relay_features.dart:2:/// Games Services, and every HTTP call to the Merge Relay backend).
+apps-native/games/merge_relay/lib/src/merge_relay_features.dart:19:  /// and the HTTP gateway to the Merge Relay backend.
+apps-native/games/merge_relay/lib/src/ui/mr_text_styles.dart:3:/// Merge Relay's bundled typography (task 07): **Fredoka** for tile
+apps-native/games/merge_relay/lib/src/assets/merge_relay_art_manifest.dart:7:/// Named art slots for Merge Relay's original art (tasks 08/19/20/22/23).
+apps-native/games/merge_relay/lib/src/ui/mr_tokens.dart:3:/// Merge Relay's brand design tokens (task 07): the shared, theme-agnostic
+apps-native/games/merge_relay/lib/src/ui/mr_dialog.dart:7:/// Merge Relay's dialog chrome (task 07): a rounded [MrPanel] body with a
+apps-native/games/merge_relay/lib/src/network/merge_relay_wire.dart:51:    throw const MergeRelayProtocolException('Unsupported Merge Relay contract');
+apps-native/games/merge_relay/lib/src/network/merge_relay_wire.dart:64:        message: 'The server uses an unsupported Merge Relay contract',
+apps-native/games/merge_relay/lib/src/ui/mr_panel.dart:6:/// Merge Relay's replacement for flat `Card`/`DecoratedBox` chrome

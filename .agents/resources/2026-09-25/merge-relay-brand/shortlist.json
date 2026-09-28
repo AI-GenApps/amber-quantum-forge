@@ -1,0 +1,90 @@
+[
+  {
+    "name": "Glow Rescue",
+    "rationale": "Names the character-tile transformation (sleepy to starry-eyed = \"glow up\") and the game's own rescue-board framing in one plain, sayable phrase; zero conflict signal on Play, App Store, or the general web.",
+    "verdict": "NOT FOUND",
+    "checked_at": "2026-09-27",
+    "evidence": [
+      "https://play.google.com/store/search?q=Glow+Rescue&c=apps",
+      "https://itunes.apple.com/search?term=Glow+Rescue&entity=software&limit=50",
+      "https://apps.apple.com/us/app/glow-neon-puzzle-games/id597640801"
+    ]
+  },
+  {
+    "name": "Drowsy Drift",
+    "rationale": "\"Drowsy\" is the character art's starting state; \"Drift\" is literally the Threes!-style sliding-tile motion. Describes both the cast and the mechanic with zero conflict anywhere.",
+    "verdict": "NOT FOUND",
+    "checked_at": "2026-09-27",
+    "evidence": [
+      "https://play.google.com/store/search?q=Drowsy+Drift&c=apps",
+      "https://itunes.apple.com/search?term=Drowsy+Drift&entity=software&limit=50",
+      "https://www.crazygames.com/t/drifting"
+    ]
+  },
+  {
+    "name": "Cuddle Cove",
+    "rationale": "Warm and huddled-together in tone without colliding with the existing \"Huddle\" games brand; \"Cove\" anchors it to the game's harbor-and-chapter world map.",
+    "verdict": "NOT FOUND",
+    "checked_at": "2026-09-27",
+    "evidence": [
+      "https://play.google.com/store/search?q=Cuddle+Cove&c=apps",
+      "https://itunes.apple.com/search?term=Cuddle+Cove&entity=software&limit=50",
+      "https://store.steampowered.com/app/3647690/Cuddle_Corner/"
+    ]
+  },
+  {
+    "name": "Twinkle Cove",
+    "rationale": "\"Twinkle\" mirrors the starry-eyed evolved tile art; \"Cove\" keeps the place/journey framing. No close match anywhere.",
+    "verdict": "NOT FOUND",
+    "checked_at": "2026-09-27",
+    "evidence": [
+      "https://play.google.com/store/search?q=Twinkle+Cove&c=apps",
+      "https://itunes.apple.com/search?term=Twinkle+Cove&entity=software&limit=50",
+      "https://store.steampowered.com/app/3362960/Twinkleby/"
+    ]
+  },
+  {
+    "name": "Snug Convoy",
+    "rationale": "Warmth (\"snug\") paired with the sense of a caravan of rescued little characters traveling together across the six chapters (Harbor, Foundry, Orchard, Bazaar, Glacier, Observatory).",
+    "verdict": "NOT FOUND",
+    "checked_at": "2026-09-27",
+    "evidence": [
+      "https://play.google.com/store/search?q=Snug+Convoy&c=apps",
+      "https://itunes.apple.com/search?term=Snug+Convoy&entity=software&limit=50",
+      "https://store.steampowered.com/app/4017680/Snug/"
+    ]
+  },
+  {
+    "name": "Bundle Rescue",
+    "rationale": "Plain-spoken; names the mechanic (merge = bundle tiles together) and the in-game framing (rescue) directly, with zero conflict anywhere.",
+    "verdict": "NOT FOUND",
+    "checked_at": "2026-09-27",
+    "evidence": [
+      "https://play.google.com/store/search?q=Bundle+Rescue&c=apps",
+      "https://itunes.apple.com/search?term=Bundle+Rescue&entity=software&limit=50",
+      "https://apps.apple.com/us/app/rescue-games/id1620283528"
+    ]
+  },
+  {
+    "name": "Lantern Cove",
+    "rationale": "\"Lantern\" evokes the warm glow motif of the character tiles; \"Cove\" keeps the place/journey framing. Backup pick.",
+    "verdict": "NOT FOUND",
+    "checked_at": "2026-09-27",
+    "evidence": [
+      "https://play.google.com/store/search?q=Lantern+Cove&c=apps",
+      "https://itunes.apple.com/search?term=Lantern+Cove&entity=software&limit=50",
+      "https://play.google.com/store/apps/details?id=com.direwolfdigital.lanterns&hl=en_US"
+    ]
+  },
+  {
+    "name": "Ember Convoy",
+    "rationale": "\"Ember\" (campfire warmth) plus \"Convoy\" (traveling caravan) evokes cozy travel across the six biomes. Backup pick.",
+    "verdict": "NOT FOUND",
+    "checked_at": "2026-09-27",
+    "evidence": [
+      "https://play.google.com/store/search?q=Ember+Convoy&c=apps",
+      "https://itunes.apple.com/search?term=Ember+Convoy&entity=software&limit=50",
+      "https://store.steampowered.com/app/2295170/Emberville/"
+    ]
+  }
+]

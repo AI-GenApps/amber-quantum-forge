@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'snapquest_glyphs.dart';
 import 'snapquest_theme.dart';
 import 'snapquest_secondary_cards.dart';
 
@@ -43,14 +44,7 @@ class SnapTargetCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    Text(
-                      symbol,
-                      style: TextStyle(
-                        color: targetColor,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
+                    SnapGlyph(symbol: symbol, color: targetColor, size: 25),
                     const SizedBox(width: 8),
                     Text(
                       colorName,
@@ -181,22 +175,31 @@ class SnapObjectTile extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                object.symbol,
-                style: const TextStyle(
-                  color: SnapDesign.night,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w900,
-                ),
+              SnapGlyph(
+                symbol: object.symbol,
+                color: SnapDesign.night,
+                size: 30,
               ),
               const SizedBox(height: 4),
-              Text(
-                object.name,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: SnapDesign.night,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w800,
+              // Andika runs wider than the platform default at the same
+              // size, so "Red pebble"/"Golden leaf" no longer fit this
+              // tile's ~70 logical px text column on one line (task 04
+              // orchestrator review). `FittedBox(scaleDown)` around a
+              // `softWrap: false` label keeps every name on one line,
+              // shrinking only the hair's-breadth needed to fit instead of
+              // wrapping — "Blue shell" (which already fit) renders
+              // unscaled. No copy change.
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  object.name,
+                  textAlign: TextAlign.center,
+                  softWrap: false,
+                  style: const TextStyle(
+                    color: SnapDesign.night,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
             ],

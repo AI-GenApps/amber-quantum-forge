@@ -3,6 +3,7 @@ import 'package:merge_rules/merge_rules.dart';
 
 import 'merge_relay_app.dart';
 import 'merge_relay_models.dart';
+import 'merge_relay_motion.dart';
 import 'merge_relay_theme.dart';
 import 'merge_relay_overlays.dart';
 
@@ -37,10 +38,11 @@ final class MergeRelayHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'MERGE RELAY',
+                'GLOW RESCUE',
                 style: TextStyle(
                   color: theme.muted,
                   fontSize: 11,
+                  fontFamily: 'Fredoka',
                   fontWeight: FontWeight.w900,
                   letterSpacing: 1.6,
                 ),
@@ -53,6 +55,7 @@ final class MergeRelayHeader extends StatelessWidget {
                 style: TextStyle(
                   color: theme.ink,
                   fontSize: 28,
+                  fontFamily: 'Fredoka',
                   fontWeight: FontWeight.w900,
                   height: 1.05,
                   letterSpacing: -0.7,
@@ -178,6 +181,12 @@ final class MergeRelayScoreStrip extends StatelessWidget {
       (max, value) => value > max ? value : max,
     );
     final budget = game.movesRemaining;
+    // Reduced motion follows either source: the Settings toggle, or the
+    // platform's own accessibility signal, regardless of the in-app
+    // toggle — matching the board widget's `_reducedMotion`.
+    final reducedMotion =
+        game.preferences.value.reducedMotion ||
+        (MediaQuery.maybeDisableAnimationsOf(context) ?? false);
     return Row(
       children: [
         _Score(
@@ -185,6 +194,8 @@ final class MergeRelayScoreStrip extends StatelessWidget {
           value: '${game.state.value.score}',
           theme: theme,
           compact: compact,
+          pop: true,
+          reducedMotion: reducedMotion,
         ),
         const SizedBox(width: 8),
         _Score(
@@ -213,6 +224,8 @@ final class _Score extends StatelessWidget {
     required this.theme,
     required this.compact,
     this.accent,
+    this.pop = false,
+    this.reducedMotion = false,
   });
 
   final String label;
@@ -220,6 +233,11 @@ final class _Score extends StatelessWidget {
   final MergeRelayTheme theme;
   final bool compact;
   final Color? accent;
+
+  /// Plays the score-pop (an overshoot-then-settle scale) every time
+  /// [value] changes, via a fresh `ValueKey(value)` restarting the tween.
+  final bool pop;
+  final bool reducedMotion;
 
   @override
   Widget build(BuildContext context) {
@@ -246,22 +264,38 @@ final class _Score extends StatelessWidget {
               style: TextStyle(
                 color: accent ?? theme.muted,
                 fontSize: compact ? 9 : 10,
+                fontFamily: 'Fredoka',
                 fontWeight: FontWeight.w900,
                 letterSpacing: 0.9,
               ),
             ),
             const SizedBox(height: 3),
-            Text(
-              value,
-              style: TextStyle(
-                color: theme.ink,
-                fontSize: compact ? 16 : 22,
-                fontWeight: FontWeight.w900,
-              ),
-            ),
+            _valueText(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _valueText() {
+    final text = Text(
+      value,
+      style: TextStyle(
+        color: theme.ink,
+        fontSize: compact ? 16 : 22,
+        fontFamily: 'Fredoka',
+        fontWeight: FontWeight.w900,
+      ),
+    );
+    if (!pop || reducedMotion) return text;
+    return TweenAnimationBuilder<double>(
+      key: ValueKey(value),
+      tween: Tween(begin: 1.3, end: 1.0),
+      duration: mergeRelayScorePopDuration,
+      curve: Curves.easeOut,
+      builder: (context, scale, child) =>
+          Transform.scale(scale: scale, child: child),
+      child: text,
     );
   }
 }

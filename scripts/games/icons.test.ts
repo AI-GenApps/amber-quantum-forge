@@ -83,3 +83,35 @@ test("icon renderer produces opaque Apple and adaptive Android assets", async ()
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test("android label placeholder is accepted when Gradle resolves it to the title", async () => {
+  const root = fixtureRoot();
+  try {
+    expect(await renderIconAssets(root, "Fixture Game", sourceSvg)).toEqual([]);
+
+    const manifestPath = join(root, "android/app/src/main/AndroidManifest.xml");
+    const gradlePath = join(root, "android/app/build.gradle.kts");
+    // biome-ignore lint/suspicious/noTemplateCurlyInString: literal Android manifest placeholder syntax, not a JS template.
+    writeFileSync(manifestPath, '<application android:label="${fixtureAppLabel}" />\n');
+    writeFileSync(
+      gradlePath,
+      'manifestPlaceholders["fixtureAppLabel"] =\n' +
+        '    if (debugSuffix.isEmpty()) "Fixture Game" else "Fixture Game QA"\n',
+    );
+
+    expect(await renderIconAssets(root, "Fixture Game", sourceSvg, true)).toEqual([]);
+
+    writeFileSync(
+      gradlePath,
+      'manifestPlaceholders["fixtureAppLabel"] =\n' +
+        '    if (debugSuffix.isEmpty()) "Stale Name" else "Stale Name QA"\n',
+    );
+    expect(await renderIconAssets(root, "Fixture Game", sourceSvg, true)).toContain(
+      `Android launcher label placeholder \${fixtureAppLabel} in ${manifestPath} resolves to ` +
+        '"Stale Name", expected "Fixture Game" — update manifestPlaceholders["fixtureAppLabel"] ' +
+        "in android/app/build.gradle.kts",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});

@@ -17,6 +17,7 @@ extension MergeRelayGamePersistence on MergeRelayGame {
       if (!_disposed) {
         hydrated.value = true;
         unawaited(initializePlayGames());
+        unawaited(audio.startMusicLoop());
       }
     }
   }
@@ -40,15 +41,21 @@ extension MergeRelayGamePersistence on MergeRelayGame {
     completedRescueIds.value = Set.unmodifiable(
       restored.profile.completedRescueIds,
     );
+    bestEndlessScore.value = restored.profile.bestEndlessScore;
     legacyOffer.value = restored.legacyOffer;
     hasSavedSession.value = restored.sessions.isNotEmpty;
     _rescueMovesUsed = 0;
+    _activeMoveBudget = mergeRelayDefaultRescueMoveBudget;
     final active = restored.activeSessionKey == null
         ? null
         : restored.sessions[restored.activeSessionKey];
     if (active != null) {
       _activateSessionMetadata(active);
       state.value = active.state;
+      _bestTileSeen = active.state.board.cells.fold<int>(
+        0,
+        (highest, value) => value > highest ? value : highest,
+      );
       mode.value = active.mode;
       rescueId.value = active.rescueId;
       _dailyDate = active.dailyDate;
@@ -90,6 +97,7 @@ extension MergeRelayGamePersistence on MergeRelayGame {
       tutorialComplete: tutorialComplete.value,
       preferences: preferences.value,
       completedRescueIds: completedRescueIds.value,
+      bestEndlessScore: bestEndlessScore.value,
     );
     return SaveEnvelope.create(
       context: context,

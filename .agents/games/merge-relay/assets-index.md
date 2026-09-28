@@ -1,59 +1,40 @@
 # Merge Relay — assets & evidence index
 
-## Brand (this session, 2026-09-26)
+## Research & planning
 
 | What | Path |
 |---|---|
-| Strict name existence check + evidence URLs | `.agents/resources/2026-09-26/merge-relay-brand/name-check.md` |
-| 3 logo direction briefs (icon + wordmark prompts) | `.agents/resources/2026-09-26/merge-relay-brand/logo-briefs.md` |
-| Logo round 1 renders (3 directions x icon+wordmark, contact sheet, critique, lookalike notes, recommendation) | `.agents/resources/2026-09-26/merge-relay-brand/logo/` (see its `README.md`) |
-
-Round 1 rendered via `gpt_image_2_5` (Higgsfield CLI, `--quality high --resolution 2k`), all
-6 images passed QA on first generation. Recommended direction: Signal Grid icon, refined
-wordmark treatment (see `logo/README.md` recommendation section). Round 1 was flat/corporate
-in style and had a wordmark misspelling ("REIAY", an arc replacing the "l").
-
-| Logo round 2 renders (premium glossy casual restyle of Signal Grid: 2 icon variants, 2 wordmark variants x opaque+transparent, contact sheet, letter-by-letter spelling checks, critique, lookalike notes) | `.agents/resources/2026-09-26/merge-relay-brand/logo-round2/` (see its `README.md`) |
-
-Round 2 rendered via `gpt_image_2_5` (Higgsfield CLI, `--quality high --resolution 2k`,
-`--image-references` against the Ludo Vortex brand quality bar). All 6 generations passed
-QA on first attempt; both wordmarks verified letter-by-letter ("M-E-R-G-E R-E-L-A-Y").
-Recommended combo: `icon-v1.png` + `wordmark-v2.png`. **Approved by the user 2026-09-26 and
-integrated** — icon + splash/home logo only (see decisions log).
-
-## Current in-app art (integrated 2026-09-26)
-
-| What | Path |
-|---|---|
-| Launcher icon source (base64 PNG derived from `icon-v1.png`, embedded per the Ludo Vortex pattern) | `apps-native/games/merge_relay/assets/branding/icon.svg` |
-| Rasterized launcher icons (regenerated via `bun run games:icons -- --app merge_relay`) | `apps-native/games/merge_relay/android/app/src/main/res/mipmap-*/ic_launcher.png`, `.../drawable/ic_launcher_foreground.png`, `.../values/ic_launcher_colors.xml`, `apps-native/games/merge_relay/ios/Runner/Assets.xcassets/AppIcon.appiconset/` |
-| Stacked hero logo (home-screen hero; derived from `wordmark-v2-transparent.png`) | `apps-native/games/merge_relay/assets/art/logo_stacked.png` |
-| Wide header logo (derived from `wordmark-v1-transparent.png`) | `apps-native/games/merge_relay/assets/art/logo_wide.png` |
-| Brand art provenance | `apps-native/games/merge_relay/assets/art/LICENSES.md` |
-| Named-slot art manifest + bitmap/fallback widget | `apps-native/games/merge_relay/lib/src/merge_relay_art_manifest.dart` |
-| Theme definitions (Signal + Ember palettes, untouched) | `apps-native/games/merge_relay/lib/src/merge_relay_theme.dart` |
-| Home screen composition (hero + header wired to the art manifest) | `apps-native/games/merge_relay/lib/src/merge_relay_home.dart`, `merge_relay_home_widgets.dart`, `merge_relay_home_art.dart` |
-| Board painter/renderer (untouched — visual overhaul is a separate future epic) | `apps-native/games/merge_relay/lib/src/merge_relay_board_painter.dart` |
-
-## Device / visual evidence (pre-existing, from the implementation epic)
-
-| What | Path |
-|---|---|
-| Before/after overhaul snapshots | `docs-internal/gaming/evidence/visual/merge-relay-before.png`, `merge-relay-after.png` |
-| Real-merge capture (2026-09-17 Android smoke, device `SM-A525F`) | `docs-internal/gaming/evidence/visual/merge-relay-final-real-merge.png` |
-| Relaunch / new-round / new-confirmation / relaunch-route captures | `docs-internal/gaming/evidence/visual/merge-relay-final-relaunch.png`, `merge-relay-final-relaunch-route.png`, `merge-relay-final-new-round.png`, `merge-relay-final-new-confirmation.png` |
-| QA-candidate relaunch capture | `docs-internal/gaming/evidence/visual/merge-relay-qa-candidate-relaunch.png` |
-
-## Research & planning (pre-existing)
-
-| What | Path |
-|---|---|
-| Implementation handoff | `docs-internal/gaming/handoffs/merge-relay.md` |
-| Corrective release plan (UX contract, PGS decision, phases, state gates) | `docs-internal/gaming/merge-relay-release-plan.md` |
-| Versioned API/HTTP contract | `docs-internal/gaming/merge-relay-api-contract.md` |
-| Server commerce boundary (cosmetic IAP) | `docs-internal/gaming/merge-relay-commerce.md` |
-| Service/release audit (P1/P2 blockers) | `docs-internal/gaming/merge-relay-release-audit.md` |
-| Source provenance (Drive URLs, revisions, hashes) | `docs-internal/gaming/sources/merge-relay.json` |
-| Epic status | `tasks/epics/14-merge-relay-implementation/STATUS.md` |
-| Registry entry | `scripts/games/registry-games.ts` (id `merge_relay`) |
+| Portfolio audit (verdict, benchmark table, recommendation) | `.agents/resources/2026-09-25/games-portfolio-audit/README.md` |
+| Competitor references (Threes! primary + 2048, X2 Blocks, X2 Puzzle) | `.agents/resources/2026-09-25/games-competitor-references/README.md` |
+| Store-listing references: Threes! (primary, 6 imgs, both Play listings + App Store), X2 Blocks (game-feel only, 4 imgs), 2048 Cirulli (anti-reference, 3 imgs) (task 01) | `.agents/resources/2026-09-25/threes-store-reference/`, `.agents/resources/2026-09-25/x2-blocks-store-reference/`, `.agents/resources/2026-09-25/2048-cirulli-store-reference/` |
+| Merge Relay visual reference (anchors, do/don't checklist, contact sheet) (task 01) | `.agents/resources/2026-09-25/merge-relay-visual-reference/README.md`, `.agents/resources/2026-09-25/merge-relay-visual-reference/contact-sheet.png` |
+| Epic + task files | `tasks/epics/16-games-portfolio-wave2/` |
+| Prior backend release plan / audit (v0.3 full-scope plan, now partially deferred) | `docs-internal/gaming/merge-relay-release-plan.md`, `docs-internal/gaming/merge-relay-release-audit.md`, `docs-internal/gaming/merge-relay-api-contract.md`, `docs-internal/gaming/merge-relay-commerce.md` |
+| Requirement ledger + 2026-09-25 solo-v1 decision | `docs-internal/gaming/handoffs/merge-relay.md` |
 | Reusable process skill | `.claude/skills/audit-game-and-prepare-for-release/` |
+
+## Device / render evidence (our game)
+
+| What | Path |
+|---|---|
+| Device captures, 2026-09-17 (before/after, final states, QA candidate) | `docs-internal/gaming/evidence/visual/merge-relay-before.png`, `merge-relay-after.png`, `merge-relay-final-new-confirmation.png`, `merge-relay-final-new-round.png`, `merge-relay-final-real-merge.png`, `merge-relay-final-relaunch.png`, `merge-relay-final-relaunch-route.png`, `merge-relay-qa-candidate-relaunch.png` |
+| Headless renders, 2026-09-25 audit (home, tutorial, play, result) — Flame board tile digits render as white squares (font-loading test artifact, not a device bug) | `.agents/resources/2026-09-25/games-portfolio-audit/renders/merge_relay-01-home.png`, `merge_relay-02-tutorial.png`, `merge_relay-03-play.png`, `merge_relay-04-result.png` |
+| Full visual review write-up | `docs-internal/gaming/visual-review.md` |
+| Screen goldens (from task 07 onward, real fonts loaded) | `apps-native/games/merge_relay/test/goldens/screens/` |
+
+## Brand (not yet produced — planned this epic)
+
+| What | Path | Status |
+|---|---|---|
+| Threes!-grade visual reference set (task 01) | `.agents/resources/2026-09-25/merge-relay-visual-reference/` | done |
+| Name candidates (task 14) + human pick (task 17) | `.agents/resources/2026-09-25/<topic>/`, this folder's `decisions-log.md` | planned |
+| Logo + icon dry run (task 19) / final (task 22) | `.agents/resources/2026-09-25/<game>-art/logo/` | planned |
+| Art-set dry run (task 20) / final (task 23): character tiles, home scene | `.agents/resources/2026-09-25/<game>-art/<set>/` | planned |
+| CC0 audio + music (task 10) | `apps-native/games/merge_relay/assets/audio/` (with `LICENSES.md`, mirroring Ludo Vortex's pattern) | planned |
+| Store screenshots (6, 1080×2400) + feature graphic (1024×500), Pillow composites of the final goldens/art (task 24) | `.agents/resources/2026-09-25/merge-relay-store/` | done |
+
+## Fonts (planned, task 07)
+
+Fredoka (display) / Nunito Sans (body), OFL — source
+`github.com/google/fonts/tree/main/ofl/<family>`. Each family's `OFL.txt` is committed
+beside the font files.

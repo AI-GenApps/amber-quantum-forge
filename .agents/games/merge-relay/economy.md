@@ -1,21 +1,35 @@
 # Merge Relay — economy
 
-**TBD stub.** No currency/consumable economy (coins, diamonds, XP tables, store, inventory)
-is defined anywhere in the sourced docs (`docs-internal/gaming/handoffs/merge-relay.md`,
-`merge-relay-release-plan.md`, `merge-relay-commerce.md`, `merge-relay-release-audit.md`).
+## v1 decision (2026-09-25, user)
 
-What exists today:
-- A single **cosmetic-only, non-consumable** product: `merge_relay_theme_pack_v1` (Play
-  one-time product) → server entitlement `merge_relay.theme_pack.v1`. No price set, no Play
-  Console registration. See `docs-internal/gaming/merge-relay-commerce.md` and
-  `.agents/games/merge-relay/store-listing.md`'s In-app products table.
-- Registry capability list includes `ads`, but rewarded-ad integration (AdMob SSV) is
-  explicitly not implemented.
-- No coins/diamonds/soft-currency, no leveling/XP table, no in-app store screen, and no
-  server ledger are specified in the sourced PRD/plan/audit documents for this game.
+**No monetization in v1.** No ads (no rewarded, no interstitial, no banner) and no IAP.
+Solo Rescue/Daily/Endless with local save only ships free, with nothing to purchase and
+nothing to watch. This reverses the direction implied by the older PRD/handoff sources,
+which describe rewarded ads, IAP cosmetics, and a "Vortex Pass"-style commerce loop —
+those are explicitly **deferred to v1.1**, not cancelled.
 
-If/when an economy is scoped for Merge Relay (levels, currencies, cosmetics store beyond
-the single theme pack, rewarded-ad grants), replace this stub following
-`.claude/skills/audit-game-and-prepare-for-release/references/11-economy-monetization.md`
-and record the approved numbers here, mirroring `.agents/games/ludo-vortex/economy.md`'s
-format.
+## Deferred to v1.1 (kept in code, gated off)
+
+| Item | Requirement ledger row | Notes |
+|---|---|---|
+| Server-validated friend relays (async handoff) | MR-04, MR-05, MR-06, MR-07 | Needs the backend, deep links, challenge-first routing |
+| Anonymous identity + account upgrade | MR-08 | Only needed once relays/commerce require a server identity |
+| Rewards and purchases (ads/IAP) | MR-11 | Server-only Google Play `ProductPurchaseV2` verifier and cosmetic entitlement settlement exist but stay disabled; no native Billing/live provider wiring for v1 |
+| Safe social surfaces (report/block, codes) | MR-13 | Only relevant once relays are live |
+| Play Games Services (PGS) sign-in/leaderboards | — | `apps-native/games/merge_relay/lib/src/platform/merge_relay_pgs_account.dart`, `merge_relay_play_games.dart` kept but not wired into any v1 screen |
+
+Full requirement ledger: `docs-internal/gaming/handoffs/merge-relay.md`.
+
+## What v1 does have
+
+- Local save only (no server ledger, no server-authoritative wallet).
+- No currencies, no store, no cosmetics purchase path exposed in the UI.
+- Existing server-side commerce/relay code under
+  `packages/api/src/games/merge-relay/` and
+  `apps-native/games/merge_relay/lib/src/network/` stays in the repo, untouched by this
+  epic except for gating it out of the v1 UI/build (task 05, "solo v1 scope gate").
+
+## Open items for v1.1 (not this epic)
+
+Product IDs, prices, ad network choice, rake/reward tables — all **TBD**, deferred with
+the rest of the relay/commerce scope. Do not invent numbers.

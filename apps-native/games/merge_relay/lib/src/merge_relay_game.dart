@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:merge_rules/merge_rules.dart';
 import 'package:platform_core/platform_core.dart';
 
+import 'audio/merge_relay_audio.dart';
+import 'audio/merge_relay_audio_service.dart';
 import 'merge_relay_board_art.dart';
 import 'merge_relay_content.dart';
 import 'merge_relay_content_validation.dart';
+import 'merge_relay_features.dart';
+import 'merge_relay_haptics.dart';
 import 'merge_relay_models.dart';
 import 'merge_relay_relay_controller.dart';
 import 'platform/merge_relay_pgs_account.dart';
@@ -32,6 +36,7 @@ final class MergeRelayGame extends FlameGame {
     MergeRelayPgsAccountController? pgsAccount,
     MergeRelayPlayGamesProvider? playGames,
     MergeRelayContentCatalog? content,
+    this.features = const MergeRelayFeatures(),
     Clock? clock,
   }) : _providedPgsAccount = pgsAccount,
        content = content ?? MergeRelayContentCatalog.fallback,
@@ -54,6 +59,7 @@ final class MergeRelayGame extends FlameGame {
        legacyOffer = ValueNotifier(false),
        isPaused = ValueNotifier(false),
        completedRescueIds = ValueNotifier(const {}),
+       bestEndlessScore = ValueNotifier(0),
        roundComplete = ValueNotifier(false),
        hydrated = ValueNotifier(false),
        restoreFailed = ValueNotifier(false),
@@ -63,16 +69,22 @@ final class MergeRelayGame extends FlameGame {
            diagnosticCode: 'not_initialized',
          ),
        ),
+       blockedMoveSignal = ValueNotifier(0),
        persistenceMessage = ValueNotifier(null) {
+    _bestTileSeen = state.value.board.cells.fold<int>(
+      0,
+      (highest, value) => value > highest ? value : highest,
+    );
     pgsAccountController =
         _providedPgsAccount ??
-        (relayController == null
+        (relayController == null || !features.socialEnabled
             ? null
             : MergeRelayPgsAccountController(
                 provider: this.playGames,
                 gateway: relayController!.gateway,
                 ensureGuest: relayController!.bootstrap,
               ));
+    audio = MergeRelayAudioService(preferences: preferences);
   }
 
   final AppContext context;
@@ -80,10 +92,13 @@ final class MergeRelayGame extends FlameGame {
   final MergeRelayContentCatalog content;
   final SaveStore saveStore;
   final MergeRelayRelayController? relayController;
+  final MergeRelayFeatures features;
   final Clock clock;
   final MergeRelayPlayGamesProvider playGames;
   late final MergeRelayPgsAccountController? pgsAccountController;
+  late final MergeRelayAudioService audio;
   MergeRuleConfig _activeRuleConfig = const MergeRuleConfig.legacy();
+  int _activeMoveBudget = mergeRelayDefaultRescueMoveBudget;
   final MemoryTelemetrySink telemetrySink = MemoryTelemetrySink();
   final ValueNotifier<MergeGameState> state;
   final ValueNotifier<bool> hydrated;
@@ -100,14 +115,27 @@ final class MergeRelayGame extends FlameGame {
   final ValueNotifier<bool> legacyOffer;
   final ValueNotifier<bool> isPaused;
   final ValueNotifier<Set<String>> completedRescueIds;
+
+  /// The player's best-ever Endless score, shown on Home's Endless card
+  /// (task 11) — see `_MergeRelayProfile.bestEndlessScore` for how it's
+  /// persisted.
+  final ValueNotifier<int> bestEndlessScore;
   final ValueNotifier<bool> roundComplete;
   final ValueNotifier<bool> restoreFailed;
   final ValueNotifier<MergeRelayPlayGamesState> playGamesState;
+
+  /// Increments once per blocked move attempt so `MergeRelayBoard` can
+  /// detect a fresh block (even a repeat of the same direction) and play
+  /// the shake animation — a `ValueNotifier<int>` rather than the
+  /// direction itself, since two consecutive same-direction blocks would
+  /// otherwise look identical to a change listener.
+  final ValueNotifier<int> blockedMoveSignal;
 
   Timer? _feedbackTimer;
   Future<void> _writeTail = Future<void>.value();
   String? _dailyDate;
   int _rescueMovesUsed = 0;
+  int _bestTileSeen = 0;
   MergeRelayMode? _tutorialMode;
   int? _tutorialRescueIndex;
   int _writeRevision = 0;
@@ -122,10 +150,11 @@ final class MergeRelayGame extends FlameGame {
 
   int? get movesRemaining {
     if (!mode.value.usesMoveBudget) return null;
+    final budget = mode.value == MergeRelayMode.rescue ? _activeMoveBudget : 3;
     final used = mode.value == MergeRelayMode.rescue
         ? _rescueMovesUsed
         : state.value.moveCount;
-    return (3 - used).clamp(0, 3).toInt();
+    return (budget - used).clamp(0, budget).toInt();
   }
 
   bool get _readyForAction =>
@@ -167,7 +196,12 @@ final class MergeRelayGame extends FlameGame {
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    MergeRelayBoardArt.paint(canvas, state.value.board, size: size.toSize());
+    MergeRelayBoardArt.paint(
+      canvas,
+      state.value.board,
+      size: size.toSize(),
+      highContrast: preferences.value.highContrast,
+    );
   }
 
   @override
@@ -180,6 +214,7 @@ final class MergeRelayGame extends FlameGame {
     if (_disposed) return;
     _disposed = true;
     _feedbackTimer?.cancel();
+    unawaited(audio.dispose());
     state.dispose();
     hydrated.dispose();
     persistenceMessage.dispose();
@@ -195,9 +230,11 @@ final class MergeRelayGame extends FlameGame {
     legacyOffer.dispose();
     isPaused.dispose();
     completedRescueIds.dispose();
+    bestEndlessScore.dispose();
     roundComplete.dispose();
     restoreFailed.dispose();
     playGamesState.dispose();
+    blockedMoveSignal.dispose();
     pgsAccountController?.dispose();
   }
 }

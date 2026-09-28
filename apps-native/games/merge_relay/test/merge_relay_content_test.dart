@@ -9,30 +9,32 @@ void main() {
   test('bundled rescue content loads from the app asset', () async {
     final catalog = await MergeRelayContentCatalog.load();
 
-    expect(catalog.rescues, hasLength(5));
-    expect(catalog.firstRescue.id, 'rescue-signal');
-    expect(
-      catalog.rescues.map((rescue) => rescue.id),
-      containsAllInOrder([
-        'rescue-signal',
-        'rescue-echo',
-        'rescue-crossing',
-        'rescue-coral',
-        'rescue-late',
-      ]),
-    );
+    expect(catalog.rescues, hasLength(60));
+    expect(catalog.firstRescue.id, 'rescue-harbor-01');
+    final ids = catalog.rescues.map((rescue) => rescue.id).toSet();
+    expect(ids, hasLength(60));
+    final byChapter = <int, List<int>>{};
     for (final rescue in catalog.rescues) {
       expect(rescue.state.board.hasLegalMove, isTrue);
       expect(rescue.state.moveCount, rescue.originMoves.length);
       expect(rescue.state.seed, rescue.originSeed);
+      expect(rescue.chapter, inInclusiveRange(1, 6));
+      expect(rescue.indexInChapter, inInclusiveRange(1, 10));
+      expect(rescue.moveBudget, 3 + (rescue.chapter - 1) ~/ 2);
       expect(
         validateMergeRelayGoal(
           state: rescue.state,
           targetScore: rescue.targetScore,
+          maxMoves: rescue.moveBudget,
         ).reachable,
         isTrue,
       );
       expect(rescue.targetScore, greaterThan(rescue.state.score));
+      (byChapter[rescue.chapter] ??= []).add(rescue.indexInChapter);
+    }
+    expect(byChapter.keys.toSet(), {1, 2, 3, 4, 5, 6});
+    for (final indexes in byChapter.values) {
+      expect(indexes..sort(), List.generate(10, (i) => i + 1));
     }
   });
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:biome_rules/biome_rules.dart';
 
 import 'biome_content.dart';
+import 'pocket_biome_typography.dart';
 
 const _biomeInk = Color(0xff29483b);
 
@@ -25,20 +26,24 @@ final class BiomeAlbumPanel extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'ALBUM',
-            style: TextStyle(
-              color: _biomeInk,
-              fontSize: 11,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 1.2,
+            style: PocketBiomeTypography.body(
+              const TextStyle(
+                color: _biomeInk,
+                fontSize: 11,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 1.2,
+              ),
             ),
           ),
           const SizedBox(height: 8),
           if (entries.isEmpty)
-            const Text(
+            Text(
               'Harvest a grown plant to start your collection.',
-              style: TextStyle(color: Color(0xff61705d)),
+              style: PocketBiomeTypography.body(
+                const TextStyle(color: Color(0xff61705d)),
+              ),
             )
           else
             Wrap(

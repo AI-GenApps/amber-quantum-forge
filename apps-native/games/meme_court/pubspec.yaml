@@ -26,3 +26,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+  fonts:
+    - family: Bangers
+      fonts:
+        - asset: assets/fonts/Bangers/Bangers-Regular.ttf
+    - family: Lexend
+      fonts:
+        - asset: assets/fonts/Lexend/Lexend-Variable.ttf

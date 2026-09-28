@@ -5,6 +5,7 @@ extension MergeRelayGamePlatformActions on MergeRelayGame {
     if (_disposed ||
         !hydrated.value ||
         restoreFailed.value ||
+        !features.socialEnabled ||
         _playGamesInitializationStarted) {
       return;
     }
@@ -28,6 +29,7 @@ extension MergeRelayGamePlatformActions on MergeRelayGame {
     if (_disposed ||
         !hydrated.value ||
         restoreFailed.value ||
+        !features.socialEnabled ||
         !tutorialComplete.value ||
         account == null) {
       return;
@@ -40,6 +42,7 @@ extension MergeRelayGamePlatformActions on MergeRelayGame {
     if (_disposed ||
         !hydrated.value ||
         restoreFailed.value ||
+        !features.socialEnabled ||
         !tutorialComplete.value ||
         account == null ||
         account.currentState.isBusy) {
@@ -61,6 +64,7 @@ extension MergeRelayGamePlatformActions on MergeRelayGame {
   Future<void> signInToPlayGames() => linkPlayGames();
 
   bool get canShowPlayGamesActions {
+    if (!features.socialEnabled) return false;
     final account = pgsAccountController;
     return account != null &&
         account.currentState.configured &&

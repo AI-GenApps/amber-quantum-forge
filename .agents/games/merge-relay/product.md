@@ -1,123 +1,120 @@
 # Merge Relay — product
 
-Sourced from `docs-internal/gaming/handoffs/merge-relay.md`,
-`docs-internal/gaming/merge-relay-release-plan.md`,
-`docs-internal/gaming/merge-relay-api-contract.md`,
-`docs-internal/gaming/merge-relay-commerce.md`,
-`docs-internal/gaming/merge-relay-release-audit.md`,
-`docs-internal/gaming/sources/merge-relay.json`, `scripts/games/registry-games.ts`,
-`tasks/epics/14-merge-relay-implementation/STATUS.md`, and
-`apps-native/games/merge_relay/lib/src/*`. PRD sources are v0.3 (Drive-modified
-2026-09-10, checked latest 2026-09-16); an earlier v0.1 archive is superseded.
+## One-liner
 
-## Core loop / genre
+A warm, character-driven tile-merge puzzle: slide numbered tiles together to reach a
+goal, work through a 60-board rescue campaign in 6 chapters, or play Daily and Endless —
+solo, offline, no ads, no IAP.
 
-A 2048-style number-merge puzzle: a fixed 4x4 (16-cell) board of power-of-two tiles,
-swipe-first controls (Up/Left/Right/Down; on-screen accessibility arrow buttons are
-optional, not the default input). Rule version is frozen to `MR-2D-1`. The domain package
-(`apps-native/games/packages/merge_rules`) is pure Dart with no Flutter/Flame import,
-and must match a compiled-JS/server implementation bit-for-bit (seed, RNG state, spawn
-weights `spawn_two_weight`/`spawn_four_weight`, checkpoint hash over
-`board/move_count/rng_state/rule_version/score/seed`).
+## Scope for v1 (2026-09-25 decision)
 
-On top of the core puzzle sits a **relay** layer: a checkpoint (board state) can become an
-immutable "challenge" that a player sends via code/deep link to a friend, who plays a
-bounded continuation and can send a reciprocal "return relay" back.
+Solo-only. Friend relays (async two-player handoff), Play Games Services, and every
+server/network path are **gated off** for v1 but the code is kept for v1.1. See the
+dated decision section added to `docs-internal/gaming/handoffs/merge-relay.md` (this
+epic, task 00) for exactly which requirement-ledger rows (MR-04–MR-08, MR-11, MR-13)
+are deferred.
 
-## Modes
+The gate is a single compile-time constant,
+`apps-native/games/merge_relay/lib/src/merge_relay_features.dart`
+(`mergeRelaySocialEnabled = bool.fromEnvironment('MERGE_RELAY_SOCIAL', defaultValue: false)`),
+wrapped in an injectable `MergeRelayFeatures` seam so relay/PGS tests can force it on
+without deleting or skipping assertions (task 05,
+`apps-native/games/merge_relay/test/solo_v1_scope_test.dart`). While the flag is
+false: `createMergeRelayClient` (`lib/src/merge_relay_client.dart`) returns `null`
+before building the HTTP gateway or auth store; `MergeRelayGame` never constructs the
+`MergeRelayPgsAccountController` "PGS bridge"; `openRelay`, `createRelayFromCurrentBoard`,
+and every native Play Games call (`initializePlayGames`, `linkPlayGames`,
+`refreshPgsAccount`, achievements/leaderboards) no-op; and the "Join a relay" (Home),
+"Share this board" (Pause, Result), and Play Games (Settings) controls are hidden.
+An incoming `mergerelay://challenge…` or https challenge link is never even read while
+gated — the app just opens to Home. The Android intent filters
+(`apps-native/games/merge_relay/android/app/src/main/AndroidManifest.xml`) are kept
+as-is for v1 so v1.1 needs no manifest migration; `games:validate:strict` does not
+inspect manifest contents, so nothing forces their removal.
 
-- **Rescue** — authored, source-bound boards, each with its own move budget. Each board
-  declares an objective and four distinct results: success, missed, terminal, and
-  early-finish, each carrying score delta, max tile, and moves used, with mode-appropriate
-  Replay/Next/Home/Share/Return actions.
-- **Ranked relay** — a challenge created from a rescue/daily/endless checkpoint; capped at
-  **at most 3 legal moves**; the challenge and its result are immutable and idempotent once
-  created; a no-op move cannot advance the RNG; finish/expiry/retry cannot improve a result;
-  a reciprocal "return relay" is possible with immutable parent/child links.
-  Ranked history is kept separate from daily practice history.
-- **Daily challenge** — a server-provisioned, UTC-date-seeded board (`content_id` like
-  `daily_20260917`), fixed rule/content revision per date; a public read must not silently
-  publish unreviewed content. Daily is **practice-only** and does not inherit the ranked
-  move budget by accident — it is a separately resolved contract.
-- **Endless** — a local, deterministic continuation mode (referenced in evidence as one of
-  the "current client can play local deterministic rescue/endless paths").
+## Modes (as implemented today)
 
-Home screen (per the UX contract and `merge_relay_home.dart`) is compact: Continue/Play,
-Rescue (progress: boards cleared/total), Join a relay, and Daily are the primary actions;
-settings, profile, themes, and achievements stay behind secondary menus.
+| Mode | Status | Source |
+|---|---|---|
+| Rescue (goal-in-N-moves boards) | built; 60 boards in 6 chapters of 10 (task 06), every board solver-proven and progression-gated | `apps-native/games/merge_relay/content/rescue_boards.json`, `apps-native/games/merge_relay/content/manifest.json` (`client_milestone.rescue_boards.count: 60`) |
+| Daily | local-practice today (no server daily yet) | `apps-native/games/merge_relay/content/manifest.json` (`modes.daily: "local-practice"`) |
+| Endless | playable | `apps-native/games/merge_relay/content/manifest.json` (`modes.endless: "playable"`) |
+| Friend relay (async 2-player handoff) | **gated off for v1**, kept for v1.1 | `apps-native/games/merge_relay/lib/src/merge_relay_relay_models.dart`, `apps-native/games/merge_relay/lib/src/merge_relay_relay_actions.dart`, `apps-native/games/merge_relay/lib/src/network/merge_relay_network_operations.dart` |
+| Play Games Services (PGS) | **gated off for v1**, kept for v1.1 | `apps-native/games/merge_relay/lib/src/platform/merge_relay_pgs_account.dart`, `apps-native/games/merge_relay/lib/src/platform/merge_relay_play_games.dart` |
 
-## Audience / tone
+## Rules (engine, as implemented)
 
-Casual puzzle audience, friend-to-friend competitive/social hook (challenge codes, not
-open-ended chat/contacts/DMs — see MR-13 "safe social surfaces": codes resist enumeration,
-players can report/block, no free-text messaging). Copy is plain and instructional ("Build
-a clean chain before the board locks."), tone is calm/competitive rather than cartoon-cute
-or aggressive.
+- Deterministic merge engine with seeded spawning; board/snapshot/generator/moves must
+  match across the Dart client and the server fixtures (`bun run games:parity`).
+  Source: `apps-native/games/packages/merge_rules`.
+- Rescue boards ship an `origin_seed` and `origin_moves` trace; the client replays it and
+  rejects mismatched state (`apps-native/games/merge_relay/content/rescue_boards.json`,
+  `apps-native/games/merge_relay/content/manifest.json`
+  → `client_milestone.rescue_boards.provenance`).
+- Board size 4×4, up to 3 ranked/legal moves considered for relay continuation logic
+  (`apps-native/games/merge_relay/content/manifest.json` → `checkpoint.max_ranked_moves`),
+  2 initial tiles, spawn distribution 90% "2" / 10% "4"
+  (`checkpoint.initial_tiles`, `checkpoint.spawn_distribution`).
+- Rescue's own move budget ramps by chapter: `3 + floor((chapter-1)/2)` → 3,3,4,4,5,5
+  for chapters 1-6 (task 06). This budget is tracked per rescue session
+  (`MergeRelayGame._activeMoveBudget`, persisted as `move_budget` in the save's
+  session map) and is independent of the ranked-relay path's fixed
+  `max_ranked_moves: 3`, which rescue mode does not use.
+- Rescue boards are solver-proven: `apps-native/games/packages/merge_rules/lib/src/merge_rescue_solver.dart`
+  (`MergeRescueSolver`, algorithm `merge-rescue-solver-v1`) exhaustively searches every
+  full-length (== move budget) legal-move sequence from a board's checkpoint and proves
+  reachability of its `target_score`, returning a minimal winning line and the count of
+  winning lines (a difficulty signal). The generator
+  (`apps-native/games/packages/merge_rules/tool/generate_rescue_campaign.dart`) uses it to
+  pick each board's target so difficulty rises within a chapter.
+- Chapter progression: chapter N+1 unlocks after clearing 7 of chapter N's 10 boards
+  (`apps-native/games/merge_relay/lib/src/merge_relay_campaign.dart`,
+  `mergeRelayChapterUnlockThreshold`). The save's session-map schema is versioned
+  (`_mergeRelaySessionMapVersion` = 2) so an old (pre-campaign) save without
+  `move_budget` still restores — it defaults to 3 — and keeps its cleared boards.
+- Rule/content versions: `rule_version: MR-2D-1`, `content_version: MR-CONTENT-1`
+  (`apps-native/games/merge_relay/content/manifest.json`).
 
-## Visual style & palette (current)
+## Content (today vs. v1 target)
 
-Two named in-app themes (`apps-native/games/merge_relay/lib/src/merge_relay_theme.dart`):
+| | Today | v1 target (this epic) |
+|---|---|---|
+| Rescue boards | 60, in 6 chapters, every board solver-validated (task 06) | carried forward; visual overhaul restyles the chapter picker (task 11) |
+| Themes | 2 (`signal`, `ember`) (`manifest.json` → `client_milestone.themes`) | carried forward; visual overhaul restyles them (task 07–08) |
 
-| Theme | Paper (bg) | Ink/board | Slot | Accent blue | Accent sky | Coral | Warm | Muted |
-|---|---|---|---|---|---|---|---|---|
-| Signal (default) | `#EDF5FB` | `#10243E` | `#203754` | `#3E75B6` | `#4E93D3` | `#A53B36` | `#E5534B` | `#52677D` |
-| Ember (alt) | `#FBF2EA` | `#2B1C36` | `#49304F` | `#8D4D85` | `#B76B88` | `#B34D3F` | `#D48742` | `#72566B` |
+## Onboarding
 
-Current device screenshots (`docs-internal/gaming/evidence/visual/merge-relay-final-real-merge.png`,
-`merge-relay-final-relaunch.png`) show the Signal theme: light powder-blue page background,
-bold navy "Merge Relay" wordmark, a pill "ROUND 1" badge, three flat stat cards (Score /
-Best Tile / Target Tile), a large rounded dark-navy board panel with lighter-navy empty
-slots and solid mid-blue tile chips (white numerals, a subtle top-right highlight dot for a
-soft-3D glossy look). Mood: clean, flat, high-contrast "scoreboard" feel — geometric rounded
-rectangles, no textures or multi-stop gradients. This is functional/placeholder-adjacent
-styling, not yet a full visual overhaul against a competitor reference.
+A first-play tutorial exists (`apps-native/games/merge_relay/lib/src/merge_relay_tutorial.dart`),
+shown in the audit render `.agents/resources/2026-09-25/games-portfolio-audit/renders/merge_relay-02-tutorial.png`
+("First handoff").
 
-## Monetization plan
+## Screens (current)
 
-- **Cosmetic-only** in the current design: a single non-consumable product,
-  `merge_relay_theme_pack_v1` (Play one-time product) → server entitlement
-  `merge_relay.theme_pack.v1`, provider `google_play_billing`. No currency/consumable
-  economy is defined anywhere in the sourced docs.
-- Server-side purchase/restore/catalog/entitlements routes exist and are tested against
-  Google's official `ProductPurchaseV2` fixture (get/verify/acknowledge, pending/purchased/
-  cancelled/refunded/revoked settlement, encrypted token vault, idempotency) — but there is
-  **no native Google Play Billing SDK integration, no live Play product registration or
-  pricing, no RTDN/voided-purchase requery**.
-  Registry capabilities include `ads`, but AdMob rewarded-ad SSV is explicitly not built.
-- MR-11 (rewards/purchases) requires that cancel/no-fill/failure never blocks base play, and
-  ad/IAP callbacks settle exactly once — a design requirement, not yet fully verified.
+Home (`apps-native/games/merge_relay/lib/src/merge_relay_home_widgets.dart`), play board
+(`apps-native/games/merge_relay/lib/src/merge_relay_play_widgets.dart`), relay screens
+(gated off for v1 — `apps-native/games/merge_relay/lib/src/merge_relay_relay_screen_views.dart`),
+tutorial. Audit renders: `merge_relay-01-home.png`, `merge_relay-02-tutorial.png`,
+`merge_relay-03-play.png`, `merge_relay-04-result.png` under
+`.agents/resources/2026-09-25/games-portfolio-audit/renders/`.
 
-## Platform / status
+## Audio & feel (current gap, being closed this epic)
 
-- Registry (`scripts/games/registry-games.ts`): `platforms: ["ios","android"]`,
-  `rendering: "flame"`, `lifecycle: "concept"`, `release.version: "0.1.0"`,
-  `buildNumber: 1`, `storeProductIds: {ios: null, android: null}`, `publisher: null`.
-- Release sequencing: Google Play / Android first (user steering 2026-09-17); further iOS
-  QA is paused until after Google Play publication, though an iOS signed/install/play
-  baseline was retained from earlier work.
-- Epic `tasks/epics/14-merge-relay-implementation/` is **in-progress**: most subtasks are
-  `[~]` partial; task 03 (Flutter gateway / full end-to-end device wiring) is `[ ]` not
-  started; task 10 (bounded backend corrective foundation) and task 11 (CI/local smoke) are
-  the only `[x]` complete rows, and even those note "full-MVP gates remain open."
-- Test evidence: `bun run games:parity` passes the deterministic Dart/compiled-JS replay
-  fixture; the route-produced HTTP fixture and bounded backend suite pass 35 tests / 98
-  assertions; a 2026-09-18 isolated PostgreSQL 16.15 run validated migrations across
-  receipts/purchase/provider/vault. A single physical Android device
-  (`SM-A525F`, Android 14, 1080x2400) was used for a 2026-09-17 smoke/real-merge capture —
-  **no second device**, so cross-device relay/restore is unverified.
-- Explicitly NOT done: PGS (Play Games Services v2) project/app ID/OAuth client/achievement
-  IDs, Play signing/tracks, store listing/content rating/data safety inputs, native Billing
-  SDK, AdMob, any store submission.
+Sound toggle exists but **no audio files are bundled yet** (portfolio audit,
+`.agents/resources/2026-09-25/games-portfolio-audit/README.md`). Task 10 adds CC0 audio
+and music; task 09 adds motion/juice/haptics.
 
-## Ownership map (from the handoff doc)
+## Tech
 
-| Logical owner | Owns |
-|---|---|
-| `merge-domain` | `apps-native/games/packages/merge_rules` — board, seeded RNG, legal moves, terminal state, replay payload |
-| `merge-client` | `apps-native/games/merge_relay` — Flutter/Flame composition, onboarding, save/reconnect UX, accessibility |
-| `merge-service` | `/games/merge_relay` API — signed identity, opaque challenge, reservation, server recomputation, idempotent rewards |
-| `merge-content` | `apps-native/games/merge_relay/content` + validators — versioned rescue/daily boards, themes, fixture hashes |
-| `merge-release` | app config, Android QA, sandbox commerce, evidence, store checklist |
+Flutter + Flame; pure Dart rules package (`apps-native/games/packages/merge_rules`) with
+parity fixtures against a compiled JS server engine (`bun run games:parity`); a Hono
+service exists at `packages/api/src/games/merge-relay/` for the (v1.1-deferred) relay,
+guest-identity, save-sync and commerce paths — see
+`docs-internal/gaming/handoffs/merge-relay.md` requirement ledger (MR-01–MR-15) for what
+is specified vs. implemented vs. integrated vs. verified vs. enabled today.
 
-The pure rules package must never import Flutter/Flame/SDKs. The service must never trust a
-client-reported score, rule version, or `app_id` header for authorization.
+## Platform gating references
+
+- `apps-native/games/AGENTS.md` — source-indexed requirement rule (refresh provenance +
+  affected handoff before changing a requirement).
+- `docs-internal/gaming/handoffs/merge-relay.md` — requirement ledger and the 2026-09-25
+  solo-v1 decision section (added by this task).

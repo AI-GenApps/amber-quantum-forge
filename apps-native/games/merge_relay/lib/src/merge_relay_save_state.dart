@@ -1,6 +1,13 @@
 part of 'merge_relay_game.dart';
 
-const _mergeRelaySessionMapVersion = 1;
+/// Session-map schema version. Version 2 adds an optional per-session
+/// `move_budget` (rescue campaign chapters 3-6 use a budget above the old
+/// fixed 3). Version 1 saves are read the same way — `move_budget` simply
+/// defaults to 3 when absent — so this is a transparent migration: an old
+/// save keeps its cleared boards and in-progress sessions, and the next
+/// write upgrades it to version 2.
+const _mergeRelaySessionMapVersion = 2;
+const _mergeRelayLegacySessionMapVersion = 1;
 
 final class _MergeRelaySession {
   const _MergeRelaySession({
@@ -16,6 +23,7 @@ final class _MergeRelaySession {
     required this.objective,
     required this.targetScore,
     required this.ruleConfig,
+    required this.moveBudget,
   });
 
   final MergeRelayMode mode;
@@ -30,6 +38,7 @@ final class _MergeRelaySession {
   final String? objective;
   final int? targetScore;
   final MergeRuleConfig? ruleConfig;
+  final int moveBudget;
 
   bool get hasFrozenGoal =>
       mode != MergeRelayMode.rescue ||
@@ -52,6 +61,7 @@ final class _MergeRelaySession {
     'objective': objective,
     'target_score': targetScore,
     'rule_config': ruleConfig?.toJson(),
+    'move_budget': moveBudget,
   };
 }
 
@@ -60,20 +70,30 @@ final class _MergeRelayProfile {
     required this.tutorialComplete,
     required this.preferences,
     required this.completedRescueIds,
+    this.bestEndlessScore = 0,
   });
 
   final bool tutorialComplete;
   final MergeRelayPreferences preferences;
   final Set<String> completedRescueIds;
 
+  /// The player's best-ever Endless score (task 11's Home Endless card) —
+  /// tracked here rather than derived from a saved session, since an
+  /// Endless session is replaced by the next run and would otherwise lose
+  /// the record.
+  final int bestEndlessScore;
+
   Map<String, Object?> toJson() => {
     'tutorial_version': tutorialComplete ? mergeRelayTutorialVersion : 0,
     'theme_id': preferences.themeId,
     'reduced_motion': preferences.reducedMotion,
     'audio_enabled': preferences.audioEnabled,
+    'music_enabled': preferences.musicEnabled,
     'haptics_enabled': preferences.hapticsEnabled,
     'accessible_controls': preferences.accessibleControls,
+    'high_contrast': preferences.highContrast,
     'completed_rescue_ids': completedRescueIds.toList()..sort(),
+    'best_endless_score': bestEndlessScore,
   };
 }
 
@@ -112,6 +132,7 @@ extension MergeRelayGameSessions on MergeRelayGame {
     objective: _activeObjective,
     targetScore: _activeTargetScore,
     ruleConfig: _activeRuleConfig,
+    moveBudget: _activeMoveBudget,
   );
 
   bool _activateSession(String key) {
@@ -140,5 +161,6 @@ extension MergeRelayGameSessions on MergeRelayGame {
     _activeObjective = session.objective;
     _activeTargetScore = session.targetScore;
     _activeRuleConfig = session.ruleConfig ?? const MergeRuleConfig.legacy();
+    _activeMoveBudget = session.moveBudget;
   }
 }

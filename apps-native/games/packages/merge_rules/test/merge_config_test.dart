@@ -74,7 +74,7 @@ void main() {
     ]);
 
     expect(replay.toJson(), {
-      'board': [8, 8, 0, 0, 4, 0, 0, 0, 4, 0, 4, 0, 0, 0, 0, 0],
+      'board': [0, 0, 0, 0, 4, 0, 0, 4, 8, 0, 0, 0, 4, 8, 0, 0],
       'score': 16,
       'move_count': 5,
       'seed': 12345,

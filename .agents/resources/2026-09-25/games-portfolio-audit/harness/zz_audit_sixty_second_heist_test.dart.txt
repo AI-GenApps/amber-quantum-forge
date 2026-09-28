@@ -1,0 +1,13 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:sixty_second_heist/src/heist_ui.dart';
+import 'zz_audit_shot_support.dart';
+
+void main() {
+  setUpAll(loadFonts);
+  testWidgets('audit shots', (tester) async {
+    phone(tester);
+    await tester.pumpWidget(framed(const SixtySecondHeistApp()));
+    await shot(tester, 'sixty_second_heist-01-home');
+    dumpTexts(tester, 'home');
+  });
+}

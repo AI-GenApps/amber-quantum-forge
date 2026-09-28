@@ -1,0 +1,20 @@
+[
+  {
+    "file": "01.png",
+    "screen": "Mid-game board",
+    "source_url": "https://play.google.com/store/apps/details?id=com.gabrielecirulli.app2048&hl=en_US&gl=US",
+    "notes": "The genre baseline: flat pastel-brown squares on a warm grey grid, score/best/new/undo header. This is the 'flat squares' look the audit flagged our current build for reproducing."
+  },
+  {
+    "file": "02.png",
+    "screen": "Merge explainer overlay",
+    "source_url": "https://play.google.com/store/apps/details?id=com.gabrielecirulli.app2048&hl=en_US&gl=US",
+    "notes": "4+4=8 and 64+64=128 explainer arrows over the board."
+  },
+  {
+    "file": "03.png",
+    "screen": "Win screen",
+    "source_url": "https://play.google.com/store/apps/details?id=com.gabrielecirulli.app2048&hl=en_US&gl=US",
+    "notes": "'You win!' overlay with move/time stats and a 'Play for 4096!' continue prompt."
+  }
+]

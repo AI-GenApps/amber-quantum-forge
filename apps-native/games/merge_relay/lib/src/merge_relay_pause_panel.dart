@@ -9,9 +9,15 @@ final class _PausePanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
+      // Fully opaque (task 07 round 2): a translucent panel let the
+      // board's tiles show through behind the action labels, which read
+      // as low-contrast text and, on a short screen, as if "Finish here"
+      // overlapped a tile. An opaque `MrPanel`-style ink surface (plus its
+      // own drop shadow) guarantees full contrast for every label.
       decoration: BoxDecoration(
-        color: theme.ink.withValues(alpha: 0.94),
-        borderRadius: BorderRadius.circular(27),
+        color: theme.ink,
+        borderRadius: BorderRadius.circular(MrTokens.radiusLarge),
+        boxShadow: MrTokens.cardShadow(opacity: 0.3),
       ),
       child: LayoutBuilder(
         builder: (context, constraints) => SingleChildScrollView(
@@ -37,6 +43,7 @@ final class _PausePanel extends StatelessWidget {
                   style: TextStyle(
                     color: theme.paper,
                     fontSize: 23,
+                    fontFamily: 'Fredoka',
                     fontWeight: FontWeight.w900,
                   ),
                 ),
@@ -47,39 +54,57 @@ final class _PausePanel extends StatelessWidget {
                   style: TextStyle(color: theme.paper.withValues(alpha: 0.7)),
                 ),
                 const SizedBox(height: 18),
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    onPressed: () => game.setPaused(false),
-                    child: const Text('Resume'),
-                  ),
+                // `MrButton`'s defaults assume a paper background, so every
+                // button here overrides `color`/`foreground` to read
+                // correctly on this panel's own ink-coloured surface (task
+                // 11): the primary action flips to a solid paper pill with
+                // ink text, and every secondary action becomes a
+                // paper-outlined, paper-labelled pill.
+                MrButton(
+                  label: 'Resume',
+                  color: theme.paper,
+                  foreground: theme.ink,
+                  onPressed: () => game.setPaused(false),
                 ),
-                TextButton(
-                  onPressed: () => _confirmRestart(context),
-                  child: Text(
-                    'Restart run',
-                    style: TextStyle(color: theme.paper),
-                  ),
+                const SizedBox(height: 8),
+                MrButton(
+                  label: 'Restart run',
+                  variant: MrButtonVariant.secondary,
+                  color: theme.paper,
+                  onPressed: () => confirmRestartRun(context, game),
                 ),
-                TextButton(
+                const SizedBox(height: 8),
+                MrButton(
+                  label: 'Finish here',
+                  variant: MrButtonVariant.secondary,
+                  color: theme.paper,
                   onPressed: game.finishEarly,
-                  child: Text(
-                    'Finish here',
-                    style: TextStyle(color: theme.paper),
-                  ),
                 ),
-                if (game.relayController != null)
-                  TextButton.icon(
+                const SizedBox(height: 8),
+                MrButton(
+                  label: 'Settings',
+                  icon: Icons.tune_rounded,
+                  variant: MrButtonVariant.secondary,
+                  color: theme.paper,
+                  onPressed: () => showMergeRelaySettings(context, game, theme),
+                ),
+                if (game.features.socialEnabled &&
+                    game.relayController != null) ...[
+                  const SizedBox(height: 8),
+                  MrButton(
+                    label: 'Share this board',
+                    icon: Icons.ios_share_rounded,
+                    variant: MrButtonVariant.secondary,
+                    color: theme.paper,
                     onPressed: game.createRelayFromCurrentBoard,
-                    icon: Icon(Icons.ios_share_rounded, color: theme.paper),
-                    label: Text(
-                      'Share this board',
-                      style: TextStyle(color: theme.paper),
-                    ),
                   ),
-                TextButton(
+                ],
+                const SizedBox(height: 8),
+                MrButton(
+                  label: 'Home',
+                  variant: MrButtonVariant.secondary,
+                  color: theme.paper,
                   onPressed: game.openHome,
-                  child: Text('Home', style: TextStyle(color: theme.paper)),
                 ),
               ],
             ),
@@ -88,27 +113,27 @@ final class _PausePanel extends StatelessWidget {
       ),
     );
   }
+}
 
-  Future<void> _confirmRestart(BuildContext context) async {
-    final restart = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Restart this run?'),
-        content: const Text(
-          'Your current board will stay in the saved run until you choose restart.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Keep board'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Restart'),
-          ),
-        ],
-      ),
-    );
-    if (restart == true) game.newRound();
-  }
+/// Shared restart confirmation (task 11 fix round 1: previously private to
+/// the pause panel, now also used by the Play screen's lower-tray quick
+/// action so "Restart" is reachable without opening Pause first).
+Future<void> confirmRestartRun(
+  BuildContext context,
+  MergeRelayGame game,
+) async {
+  final restart = await showDialog<bool>(
+    context: context,
+    builder: (context) => MrDialog(
+      title: 'Restart this run?',
+      message:
+          'Your current board will stay in the saved run until you '
+          'choose restart.',
+      secondaryLabel: 'Keep board',
+      onSecondary: () => Navigator.pop(context, false),
+      primaryLabel: 'Restart',
+      onPrimary: () => Navigator.pop(context, true),
+    ),
+  );
+  if (restart == true) game.newRound();
 }

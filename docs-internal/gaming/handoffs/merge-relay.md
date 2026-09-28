@@ -51,3 +51,50 @@ The current consumer is `apps-native/games/merge_relay/lib/src/merge_relay_app.d
 ## Release and unresolved gates
 
 The effective repository sequence is Google Play and Android first, following user steering on 2026-09-17. This supersedes the source records' Apple-first wording for execution while retaining that wording in the source set. Play readiness means the Android artifact, device evidence, listing, privacy declarations, signing and support gates are prepared; it does not mean registration, submission or publication. Store fields, Play publisher ownership, minimum OS/device matrix, signing, billing, privacy manifests and track configuration remain unresolved. Camera, microphone, contacts, location and AI permissions are not required by this app. Theme/IAP prices in the source are hypotheses only. Android physical QA is the current owner gate; the prior iOS signed/install/play baseline is retained, and further iOS QA is paused until after Google Play publication. A build can be enabled for internal QA after the tests above, but submission, spending and production migrations still require explicit approval.
+
+## 2026-09-25 user decision — solo v1 scope cut
+
+The user directed a renamed, **single-player v1**: Rescue (expanding to 60 boards in 6
+chapters), Daily, and Endless, with local save only, and **no monetization in v1** (no
+ads, no IAP). This is a scope cut for v1, not a cancellation — every deferred
+requirement row below stays specified in this ledger, its code stays in the repository,
+and it is the target for **v1.1**. Full context: `tasks/epics/16-games-portfolio-wave2/`
+(epic "Games portfolio wave 2"), and the per-game knowledge base at
+`.agents/games/merge-relay/` (`economy.md`, `decisions-log.md`).
+
+Rows deferred to v1.1, gated off for v1:
+
+- **MR-04** (valid checkpoint capture and challenge creation) — needs the friend-relay
+  backend, out of scope for a local-save-only v1.
+- **MR-05** (challenge-first deep-link/code routing) — no relays to route to in v1.
+- **MR-06** (at-most-three-move ranked continuation) — ranked continuation is a relay
+  concept; v1 has no ranked/relay mode.
+- **MR-07** (replay and reciprocal relay) — depends on MR-04–MR-06.
+- **MR-08** (anonymous identity and optional account upgrade) — no server identity is
+  needed when there is no relay, save-sync, or commerce path exposed in v1.
+- **MR-11** (rewards and purchases) — v1 has no ads and no IAP; the server-only
+  verifier/entitlement code stays but is not wired into any v1 build.
+- **MR-13** (safe social surfaces) — only meaningful once relays/social are live.
+- Play Games Services (PGS) sign-in/leaderboards (`merge_relay_pgs_account.dart`,
+  `merge_relay_play_games.dart`) — not part of the ledger's numbered rows, but explicitly
+  gated off for v1 alongside the network paths above.
+
+No requirement row was deleted or marked `no` as a result of this decision; deferred
+rows keep their existing `Specified`/`Implemented`/`Integrated`/`Verified` values in the
+table above, since the underlying code and specification are unchanged — only the v1
+release gate (`Enabled`) excludes them, same as before this decision (all rows were
+already `Enabled: no`).
+
+## 2026-09-27 user decision — brand name "Glow Rescue"
+
+The user picked **Glow Rescue** as the public name (task 17, recorded in
+`tasks/epics/16-games-portfolio-wave2/decisions.md`; rank 1 in the strictly-checked
+shortlist from task 14). Task 18 applied it to every user-visible surface: the
+registry's `canonicalName`/`publicTitle` (regenerated `game.config.json` and
+`platform_core`'s `game_app_registry.dart`), the Android launcher label and iOS
+`CFBundleDisplayName`, and the in-app wordmark and fallback-screen copy. The internal
+id `merge_relay`, the bundle ids `app.w3dev.mergerelay(.debug)`, the save/analytics
+namespaces, and the folder names are unchanged. v1.1 relay/friend copy that sits
+behind the `mergeRelaySocialEnabled` gate (the share-sheet title, the deep-link
+scheme) is untouched — see `.agents/resources/2026-09-25/games-wave2-qa/18/README.md`
+for the full before/after grep and rationale.

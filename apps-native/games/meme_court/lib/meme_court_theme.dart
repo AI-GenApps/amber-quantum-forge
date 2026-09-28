@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'meme_court_typography.dart';
+
 abstract final class CourtDesign {
   static const ink = Color(0xFF18233A);
   static const parchment = Color(0xFFFFF4D8);
@@ -16,6 +18,10 @@ abstract final class CourtDesign {
         surface: parchment,
       ),
       scaffoldBackgroundColor: parchment,
+      // Sets Lexend as the default for every Material widget (buttons,
+      // list tiles, and any `textTheme` role left unset below); Bangers is
+      // then layered on top of the display roles explicitly (task 04).
+      fontFamily: MemeCourtTypography.bodyFamily,
       appBarTheme: const AppBarTheme(
         backgroundColor: parchment,
         foregroundColor: ink,
@@ -34,7 +40,14 @@ abstract final class CourtDesign {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          textStyle: const TextStyle(fontWeight: FontWeight.w800),
+          // A `FilledButton`'s resolved `textStyle` becomes its child's
+          // ambient `DefaultTextStyle` outright (Material.build() does not
+          // merge it with the theme's default), so `fontFamily` must be
+          // set explicitly here or the label falls back to the platform
+          // default font.
+          textStyle: MemeCourtTypography.body(
+            const TextStyle(fontWeight: FontWeight.w800),
+          ),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -47,20 +60,24 @@ abstract final class CourtDesign {
           ),
         ),
       ),
-      textTheme: const TextTheme(
-        headlineMedium: TextStyle(
-          color: ink,
-          fontSize: 30,
-          fontWeight: FontWeight.w900,
-          height: 1.05,
+      textTheme: TextTheme(
+        headlineMedium: MemeCourtTypography.heading(
+          const TextStyle(
+            color: ink,
+            fontSize: 30,
+            fontWeight: FontWeight.w900,
+            height: 1.05,
+          ),
         ),
-        titleLarge: TextStyle(
-          color: ink,
-          fontSize: 21,
-          fontWeight: FontWeight.w900,
+        titleLarge: MemeCourtTypography.heading(
+          const TextStyle(
+            color: ink,
+            fontSize: 21,
+            fontWeight: FontWeight.w900,
+          ),
         ),
-        bodyLarge: TextStyle(color: ink, fontSize: 16, height: 1.35),
-        bodyMedium: TextStyle(color: ink, fontSize: 14, height: 1.3),
+        bodyLarge: const TextStyle(color: ink, fontSize: 16, height: 1.35),
+        bodyMedium: const TextStyle(color: ink, fontSize: 14, height: 1.3),
       ),
       useMaterial3: true,
     );
@@ -129,10 +146,14 @@ class CourtPill extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: const TextStyle(
-          color: CourtDesign.ink,
-          fontSize: 12,
-          fontWeight: FontWeight.w800,
+        // Chips are one of the three places Bangers is used (task 04
+        // decision record), alongside titles and the verdict banner.
+        style: MemeCourtTypography.heading(
+          const TextStyle(
+            color: CourtDesign.ink,
+            fontSize: 12,
+            fontWeight: FontWeight.w800,
+          ),
         ),
       ),
     );

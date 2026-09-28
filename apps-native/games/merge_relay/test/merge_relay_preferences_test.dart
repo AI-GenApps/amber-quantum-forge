@@ -24,6 +24,25 @@ void main() {
     reopened.dispose();
   });
 
+  test('high-contrast preference survives reopening', () async {
+    final context = runtimeAppContext(identity: mergeRelayIdentity);
+    final store = MemorySaveStore();
+    final game = MergeRelayGame(context: context, saveStore: store);
+
+    await game.restore();
+    expect(game.preferences.value.highContrast, isFalse);
+    game.setHighContrast(true);
+    await Future<void>.delayed(Duration.zero);
+
+    final reopened = MergeRelayGame(context: context, saveStore: store);
+    await reopened.restore();
+
+    expect(reopened.preferences.value.highContrast, isTrue);
+
+    game.dispose();
+    reopened.dispose();
+  });
+
   test(
     'legacy installed board payload restores without inventing a mode',
     () async {

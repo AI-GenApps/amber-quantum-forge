@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:merge_relay/src/merge_relay_app.dart';
+import 'package:merge_relay/src/merge_relay_features.dart';
 import 'package:merge_relay/src/merge_relay_gateway.dart';
 import 'package:merge_relay/src/merge_relay_relay_controller.dart';
 import 'package:merge_relay/src/merge_relay_relay_persistence.dart';
@@ -124,9 +125,14 @@ Future<_PgsHarness> _pumpPgsApp(
       relayController: relay,
       pgsAccount: account,
       playGames: provider,
+      features: const MergeRelayFeatures(socialEnabled: true),
     ),
   );
   await tester.pumpAndSettle();
+  // Task 22 fix round 1: the home header's bigger wordmark (55-65% of its
+  // own width, per the orchestrator review) pushes the Hero card's "Play
+  // rescue" button below the fold of the default 600-tall test surface.
+  await tester.ensureVisible(find.text('Play rescue'));
   await tester.tap(find.text('Play rescue'));
   await tester.pumpAndSettle();
   await tester.tap(find.text('Skip'));

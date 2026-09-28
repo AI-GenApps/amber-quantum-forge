@@ -55,8 +55,31 @@ extension MergeRelayGameActions on MergeRelayGame {
     _queueWrite();
   }
 
+  /// Opens the full-screen Rescue chapter map (task 11), replacing the
+  /// earlier "Rescue paths" bottom sheet.
+  void openChapterMap() {
+    if (!_readyForAction) return;
+    route.value = MergeRelayRoute.chapterMap;
+  }
+
+  /// Picks a rescue board from the chapter map: routes through the
+  /// tutorial the first time, straight to Play afterward — the same rule
+  /// the old bottom sheet's `_RescueTile.onSelected` applied.
+  void pickRescueFromMap(int index) {
+    if (!_readyForAction) return;
+    if (!tutorialComplete.value) {
+      openRescue(index: index);
+    } else {
+      startRescue(index: index);
+    }
+  }
+
   void openRelay() {
-    if (!_readyForAction || relayController == null) return;
+    if (!_readyForAction ||
+        !features.socialEnabled ||
+        relayController == null) {
+      return;
+    }
     route.value = MergeRelayRoute.relay;
     unawaited(relayController!.bootstrap());
   }
@@ -77,16 +100,45 @@ extension MergeRelayGameActions on MergeRelayGame {
             ? 'No lanes left.'
             : 'That lane is blocked.',
       );
+      blockedMoveSignal.value += 1;
       if (moveResult.reason == 'terminal') _finish(MergeRelayOutcome.terminal);
       return;
     }
     state.value = moveResult.state;
     if (mode.value == MergeRelayMode.rescue) _rescueMovesUsed += 1;
-    presentation.value = MergeMovePresentation.fromResult(
+    final maxTile = moveResult.state.board.cells.fold<int>(
+      0,
+      (highest, value) => value > highest ? value : highest,
+    );
+    final isNewBestTile = maxTile > _bestTileSeen;
+    if (isNewBestTile) _bestTileSeen = maxTile;
+    final movePresentation = MergeMovePresentation.fromResult(
       before: before,
       result: moveResult,
       direction: direction,
+      isNewBestTile: isNewBestTile,
     );
+    presentation.value = movePresentation;
+    _haptic(MergeRelayHaptics.slide);
+    unawaited(audio.play(MergeRelayAudioEvent.slide));
+    if (movePresentation.hasMerge) {
+      _haptic(MergeRelayHaptics.merge);
+      final mergedValue = movePresentation.mergedCells.fold<int>(0, (
+        highest,
+        cell,
+      ) {
+        final value = moveResult.state.board.cells[cell];
+        return value > highest ? value : highest;
+      });
+      unawaited(audio.playMerge(mergedValue));
+    }
+    if (movePresentation.spawnedCell != null) {
+      unawaited(audio.play(MergeRelayAudioEvent.spawn));
+    }
+    if (isNewBestTile) {
+      _haptic(MergeRelayHaptics.bestTile);
+      unawaited(audio.play(MergeRelayAudioEvent.bestTile));
+    }
     _announce(
       moveResult.scoreDelta > 0
           ? 'Chain +${moveResult.scoreDelta}'
@@ -104,6 +156,21 @@ extension MergeRelayGameActions on MergeRelayGame {
     );
     _updateCompletion();
     _queueWrite();
+  }
+
+  /// Fires [effect] only when the player has haptics enabled — the single
+  /// gate every `MergeRelayHaptics` call in this file goes through.
+  void _haptic(void Function() effect) {
+    if (preferences.value.hapticsEnabled) effect();
+  }
+
+  /// A selection-click haptic (plus its matching button SFX) for discrete
+  /// button taps (Settings toggles, the accessible on-screen movement
+  /// controls) — public since those live in sibling widgets that only hold
+  /// a reference to the game.
+  void hapticSelect() {
+    _haptic(MergeRelayHaptics.select);
+    unawaited(audio.play(MergeRelayAudioEvent.button));
   }
 
   void startRescue({int index = 0}) {
@@ -208,7 +275,12 @@ extension MergeRelayGameActions on MergeRelayGame {
     _activeGoalRevision = rescue?.goalRevision;
     _activeObjective = rescue?.objective;
     _activeTargetScore = rescue?.targetScore;
+    _activeMoveBudget = rescue?.moveBudget ?? mergeRelayDefaultRescueMoveBudget;
     state.value = next;
+    _bestTileSeen = next.board.cells.fold<int>(
+      0,
+      (highest, value) => value > highest ? value : highest,
+    );
     mode.value = nextMode;
     rescueId.value = nextRescue;
     _dailyDate = dailyDate;
@@ -233,7 +305,7 @@ extension MergeRelayGameActions on MergeRelayGame {
       MergeRelayMode.rescue =>
         state.value.isTerminal
             ? MergeRelayOutcome.terminal
-            : _rescueMovesUsed >= 3
+            : _rescueMovesUsed >= _activeMoveBudget
             ? (_activeTargetScore != null &&
                       state.value.score >= _activeTargetScore!
                   ? MergeRelayOutcome.completed
@@ -272,11 +344,20 @@ extension MergeRelayGameActions on MergeRelayGame {
     );
     roundComplete.value = true;
     isPaused.value = false;
+    if (outcome == MergeRelayOutcome.completed) {
+      unawaited(audio.play(MergeRelayAudioEvent.boardCleared));
+    } else if (outcome == MergeRelayOutcome.terminal) {
+      unawaited(audio.play(MergeRelayAudioEvent.outOfMoves));
+    }
     if (outcome == MergeRelayOutcome.completed && rescueId.value != null) {
       completedRescueIds.value = Set.unmodifiable({
         ...completedRescueIds.value,
         rescueId.value!,
       });
+    }
+    if (mode.value == MergeRelayMode.endless &&
+        state.value.score > bestEndlessScore.value) {
+      bestEndlessScore.value = state.value.score;
     }
     route.value = MergeRelayRoute.result;
     _queueWrite();
