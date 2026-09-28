@@ -68,22 +68,31 @@ for each.
 
 ## Implementation Checklist
 
-- [ ] Add `GET /:environment/wallet`, `GET /:environment/profile`,
+- [x] Add `GET /:environment/wallet`, `GET /:environment/profile`,
   `GET /:environment/inventory` to `packages/api/src/games/ludo/routes.ts`.
-- [ ] Add `POST /:environment/xp/claim` with daily cap + replay-sanity
+- [x] Add `POST /:environment/xp/claim` with daily cap + replay-sanity
   check + idempotency, per Context.
-- [ ] Add `POST /:environment/starter-grant`, idempotent per subject.
-- [ ] Add `POST /:environment/daily-reward/claim` with streak logic.
-- [ ] Implement `applyXpAndLevelRewards` in
+- [x] Add `POST /:environment/starter-grant`, idempotent per subject.
+- [x] Add `POST /:environment/daily-reward/claim` with streak logic.
+- [x] Implement `applyXpAndLevelRewards` in
   `packages/api/src/games/ludo/progression-service.ts`, called from the XP
   claim route (this task) and referenced (not yet called — task 26c wires
   the caller) from match-resolution for a future match-reward credit path.
-- [ ] Confirm whether a server-side analytics emitter pattern exists in
+- [x] Confirm whether a server-side analytics emitter pattern exists in
   `packages/api/src/games/merge-relay/`; either wire the four events listed
   in Context through it, or document in this task's commit body that no
   server-side pattern exists and defer event emission to task 26e's
   client-side telemetry.
-- [ ] Add `packages/api/src/games/ludo/wallet-routes.test.ts` covering:
+  **Finding:** no server-side analytics emitter exists anywhere in
+  `packages/api` (`grep -rn "analytics" packages/api/src` returns nothing,
+  and `packages/api/src/games/merge-relay/` has no emit/track call site of
+  any kind). Every existing Ludo/merge-relay analytics event
+  (`ludo_*`, etc.) is emitted client-side. Per Context's own fallback
+  instruction, `ludo_wallet_starter_granted`, `ludo_xp_claimed`,
+  `ludo_level_up`, and `ludo_daily_reward_claimed` are deferred to task
+  26e's client-side telemetry rather than inventing a new server-side
+  analytics path unsupported anywhere else in this repo.
+- [x] Add `packages/api/src/games/ludo/wallet-routes.test.ts` covering:
   starter grant is idempotent across two calls, XP claim respects the daily
   cap (second claim past the cap is rejected, not clamped), XP claim
   rejects an implausible elapsed-time/match-count payload, daily reward
@@ -92,9 +101,51 @@ for each.
   theme bonus in the same transaction (verified via the ledger, not just
   the returned response).
 
+### Necessary additions beyond the listed Files Touched
+
+- **`packages/db/src/schema.ts`** (+migration `0007_lyrical_scalphunter.sql`,
+  generated via `bun run db:generate`, never pushed): added
+  `ludo_xp_claims`, mirroring `ludo_ad_reward_claims`'s shape (a claim id
+  unique per subject, a UTC `claim_date` column indexed for a same-day sum
+  query). Task 26a's schema had no table that could hold XP-claim
+  idempotency/daily-cap state — `ludo_wallet_transactions`' `currency`
+  check constrains rows to `coins`/`diamonds`, and XP is not a wallet
+  currency — so the daily-cap and idempotency requirements in this task's
+  own Context could not be implemented durably without it.
+- **`packages/api/src/games/ludo/economy-store.ts` /
+  `economy-drizzle-store.ts`**: added `LudoEconomyStore.applyProgressionAndLedger`
+  (plus `recordXpClaim`/`sumXpClaimed`) so the progression write and every
+  level-up reward ledger entry land in one SQL transaction for
+  `DrizzleLudoEconomyStore`, per this task's "same transaction" requirement
+  for `applyXpAndLevelRewards`. `appendLedgerEntry`'s body was factored
+  into a transaction-scoped private helper so both the plain and combined
+  paths share one implementation instead of duplicating the ledger-insert
+  logic.
+- **`packages/api/src/games/ludo/validation.ts`**: added
+  `parseXpClaimRequest` for the XP-claim body, following the existing
+  `parseCreateRoomRequest`-style validators in the same file.
+- **`packages/api/src/games/ludo/errors.ts`**: added the wallet/progression
+  error codes/classes (`ludo_xp_claim_invalid`, `ludo_xp_daily_cap_exceeded`,
+  `ludo_xp_claim_implausible`, `ludo_daily_reward_already_claimed`),
+  matching every other route family's per-rejection error class, and
+  widened `LudoError`'s status union to include `429` for the daily-cap
+  rejection.
+- **`packages/api/src/games/ludo/wallet-routes.ts`** (new) and
+  **`packages/api/src/games/ludo/routes-types.ts`** (new): adding this
+  task's six wallet/profile/inventory/xp/starter-grant/daily-reward routes
+  inline in `routes.ts` pushed it to 939 lines, over the repo's 800-line
+  commit-hook limit. Split those routes into `wallet-routes.ts`
+  (`registerLudoWalletRoutes`, called from `createLudoRoutes`) and hoisted
+  the shared `LudoRouteDependencies` type into `routes-types.ts` so both
+  route modules import it without a circular dependency. No behavior
+  change; `routes.ts` re-exports `LudoRouteDependencies` for existing
+  callers.
+
 ## Files Touched
 
 - `packages/api/src/games/ludo/routes.ts`
+- `packages/api/src/games/ludo/wallet-routes.ts`
+- `packages/api/src/games/ludo/routes-types.ts`
 - `packages/api/src/games/ludo/progression-service.ts`
 - `packages/api/src/games/ludo/wallet-routes.test.ts`
 

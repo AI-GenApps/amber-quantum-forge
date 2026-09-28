@@ -22,13 +22,18 @@ export type LudoErrorCode =
   | "ludo_room_not_found"
   | "ludo_room_expired"
   | "ludo_room_code_exhausted"
-  | "ludo_room_forbidden";
+  | "ludo_room_forbidden"
+  | "ludo_xp_claim_invalid"
+  | "ludo_xp_daily_cap_exceeded"
+  | "ludo_xp_claim_implausible"
+  | "ludo_daily_reward_already_claimed"
+  | "ludo_daily_reward_invalid";
 
 export class LudoError extends Error {
   readonly diagnosticId: string;
 
   constructor(
-    readonly status: 400 | 401 | 403 | 404 | 409 | 422 | 503,
+    readonly status: 400 | 401 | 403 | 404 | 409 | 422 | 429 | 503,
     readonly code: LudoErrorCode,
     message: string,
   ) {
@@ -177,5 +182,50 @@ export class LudoRoomCodeExhaustedError extends LudoCommandError {
 export class LudoRoomForbiddenError extends LudoCommandError {
   constructor() {
     super(403, "ludo_room_forbidden", "The caller does not own this room");
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Wallet/progression rejection paths (task 26b).
+// ---------------------------------------------------------------------------
+
+/** `POST .../xp/claim` with a malformed body (missing/non-positive `xp_delta`,
+ * missing `claim_id`, or a negative `elapsed_ms`/`matches_completed`). */
+export class LudoXpClaimInvalidError extends LudoCommandError {
+  constructor(
+    message = "A valid xp_delta, claim_id, elapsed_ms and matches_completed are required",
+  ) {
+    super(422, "ludo_xp_claim_invalid", message);
+  }
+}
+
+/** The claim's `xp_delta`, added to what the subject already claimed today
+ * (UTC), would exceed `LudoXpConfig.offlineDailyXpCap`. Rejected outright —
+ * never clamped — per task 26b's Context. */
+export class LudoXpDailyCapExceededError extends LudoCommandError {
+  constructor() {
+    super(429, "ludo_xp_daily_cap_exceeded", "The subject's daily XP claim cap has been reached");
+  }
+}
+
+/** The claim's `xp_delta`/`matches_completed`/`elapsed_ms` combination
+ * could not plausibly have been earned by legitimate play (e.g. more XP
+ * than `matches_completed * matchWinXp`, or more matches than
+ * `elapsed_ms` could fit at a generous minimum match duration). */
+export class LudoXpClaimImplausibleError extends LudoCommandError {
+  constructor(message: string) {
+    super(422, "ludo_xp_claim_implausible", message);
+  }
+}
+
+/** `POST .../daily-reward/claim` called again for a subject that already
+ * claimed today (UTC). */
+export class LudoDailyRewardAlreadyClaimedError extends LudoCommandError {
+  constructor() {
+    super(
+      409,
+      "ludo_daily_reward_already_claimed",
+      "The daily reward has already been claimed today",
+    );
   }
 }

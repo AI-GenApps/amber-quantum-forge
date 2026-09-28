@@ -62,6 +62,15 @@ export interface LudoAdRewardClaimRow {
   createdAt: string;
 }
 
+export interface LudoXpClaimRow {
+  environment: LudoEnvironment;
+  subject: string;
+  claimId: string;
+  xpDelta: number;
+  claimDate: string;
+  createdAt: string;
+}
+
 export interface LudoCoinTableEscrowRow {
   environment: LudoEnvironment;
   matchId: string;
@@ -92,6 +101,24 @@ export interface LudoLedgerAppendResult {
   /** `false` when this call was a replay of an already-applied
    * idempotency key — the ledger was not written to a second time. */
   applied: boolean;
+}
+
+export interface LudoApplyProgressionAndLedgerInput {
+  subject: string;
+  xp: number;
+  level: number;
+  now: string;
+  /** Zero or more reward credits (level-up coin/diamond bonuses) that must
+   * land in the same transaction as the progression write, per task 26b's
+   * `applyXpAndLevelRewards`. Each entry's idempotency key must already be
+   * unique per (subject, entry) — a duplicate key here is a no-op, exactly
+   * like a duplicate `appendLedgerEntry` call. */
+  ledgerEntries: Omit<LudoLedgerAppendInput, "subject" | "now">[];
+}
+
+export interface LudoApplyProgressionAndLedgerResult {
+  progression: LudoProgressionRow;
+  ledgerResults: LudoLedgerAppendResult[];
 }
 
 /**
@@ -137,6 +164,29 @@ export interface LudoEconomyStore {
     level: number,
     now: string,
   ): Promise<LudoProgressionRow>;
+
+  /** Writes the new progression row and every level-up reward ledger entry
+   * atomically (one SQL transaction for `DrizzleLudoEconomyStore`), so a
+   * crash between the two never leaves a level-up applied without its
+   * reward or vice versa. Used by `progression-service.ts`'s
+   * `applyXpAndLevelRewards`, never called directly from a route. */
+  applyProgressionAndLedger(
+    environment: LudoEnvironment,
+    input: LudoApplyProgressionAndLedgerInput,
+  ): Promise<LudoApplyProgressionAndLedgerResult>;
+
+  /** Idempotent by (subject, claimId): a repeat claim id never counts
+   * twice toward the daily XP cap. */
+  recordXpClaim(
+    environment: LudoEnvironment,
+    row: Omit<LudoXpClaimRow, "environment" | "createdAt">,
+    now: string,
+  ): Promise<{ claim: LudoXpClaimRow; applied: boolean }>;
+
+  /** Sum of `xpDelta` across every XP claim already recorded for `subject`
+   * on `claimDate` (a UTC `YYYY-MM-DD` string) — the daily-cap check reads
+   * this before crediting a new claim. */
+  sumXpClaimed(environment: LudoEnvironment, subject: string, claimDate: string): Promise<number>;
 
   getDailyRewardState(
     environment: LudoEnvironment,
@@ -185,6 +235,7 @@ interface EconomyEnvironmentState {
   progression: Map<string, LudoProgressionRow>;
   dailyRewardState: Map<string, LudoDailyRewardStateRow>;
   adClaims: Map<string, LudoAdRewardClaimRow>;
+  xpClaims: Map<string, LudoXpClaimRow>;
   escrow: Map<string, LudoCoinTableEscrowRow>;
 }
 
@@ -196,6 +247,7 @@ function emptyEnvironmentState(): EconomyEnvironmentState {
     progression: new Map(),
     dailyRewardState: new Map(),
     adClaims: new Map(),
+    xpClaims: new Map(),
     escrow: new Map(),
   };
 }
@@ -210,6 +262,10 @@ function inventoryKey(subject: string, itemId: string): string {
 
 function adClaimKey(subject: string, adTransactionId: string): string {
   return `${subject}\u0000${adTransactionId}`;
+}
+
+function xpClaimKey(subject: string, claimId: string): string {
+  return `${subject}\u0000${claimId}`;
 }
 
 function idempotencyKeyLookup(subject: string, idempotencyKey: string): string {
@@ -257,53 +313,112 @@ export class InMemoryLudoEconomyStore implements LudoEconomyStore {
     return result;
   }
 
+  /** Synchronous core of `appendLedgerEntry`, callable both directly (under
+   * `serialize`) and from within `applyProgressionAndLedger`'s single
+   * serialized operation, so the two never deadlock by nesting `serialize`
+   * calls for the same environment. */
+  private appendLedgerEntrySync(
+    environment: LudoEnvironment,
+    input: LudoLedgerAppendInput,
+  ): LudoLedgerAppendResult {
+    const state = this.state(environment);
+    let byKey = this.appliedIdempotencyKeys.get(environment);
+    if (!byKey) {
+      byKey = new Map();
+      this.appliedIdempotencyKeys.set(environment, byKey);
+    }
+    const lookup = idempotencyKeyLookup(input.subject, input.idempotencyKey);
+    const existingTransactionId = byKey.get(lookup);
+    if (existingTransactionId) {
+      const transaction = state.transactions.find((row) => row.id === existingTransactionId);
+      if (!transaction) throw new Error("ludo economy store: idempotency key/transaction desync");
+      const balance = state.balances.get(balanceKey(input.subject, input.currency));
+      if (!balance) throw new Error("ludo economy store: transaction without a balance row");
+      return { transaction, balance, applied: false };
+    }
+    const key = balanceKey(input.subject, input.currency);
+    const previousBalance = state.balances.get(key)?.balance ?? 0;
+    const balanceAfter = previousBalance + input.delta;
+    const transaction: LudoWalletTransactionRow = {
+      id: `wtx_${environment}_${state.transactions.length + 1}_${input.idempotencyKey}`,
+      environment,
+      subject: input.subject,
+      currency: input.currency,
+      delta: input.delta,
+      balanceAfter,
+      reason: input.reason,
+      sourceRef: input.sourceRef ?? null,
+      idempotencyKey: input.idempotencyKey,
+      createdAt: input.now,
+    };
+    state.transactions.push(transaction);
+    const balance: LudoBalanceRow = {
+      environment,
+      subject: input.subject,
+      currency: input.currency,
+      balance: balanceAfter,
+      updatedAt: input.now,
+    };
+    state.balances.set(key, balance);
+    byKey.set(lookup, transaction.id);
+    return { transaction, balance, applied: true };
+  }
+
   async appendLedgerEntry(
     environment: LudoEnvironment,
     input: LudoLedgerAppendInput,
   ): Promise<LudoLedgerAppendResult> {
+    return this.serialize(environment, () => this.appendLedgerEntrySync(environment, input));
+  }
+
+  async applyProgressionAndLedger(
+    environment: LudoEnvironment,
+    input: LudoApplyProgressionAndLedgerInput,
+  ): Promise<LudoApplyProgressionAndLedgerResult> {
     return this.serialize(environment, () => {
-      const state = this.state(environment);
-      let byKey = this.appliedIdempotencyKeys.get(environment);
-      if (!byKey) {
-        byKey = new Map();
-        this.appliedIdempotencyKeys.set(environment, byKey);
-      }
-      const lookup = idempotencyKeyLookup(input.subject, input.idempotencyKey);
-      const existingTransactionId = byKey.get(lookup);
-      if (existingTransactionId) {
-        const transaction = state.transactions.find((row) => row.id === existingTransactionId);
-        if (!transaction) throw new Error("ludo economy store: idempotency key/transaction desync");
-        const balance = state.balances.get(balanceKey(input.subject, input.currency));
-        if (!balance) throw new Error("ludo economy store: transaction without a balance row");
-        return { transaction, balance, applied: false };
-      }
-      const key = balanceKey(input.subject, input.currency);
-      const previousBalance = state.balances.get(key)?.balance ?? 0;
-      const balanceAfter = previousBalance + input.delta;
-      const transaction: LudoWalletTransactionRow = {
-        id: `wtx_${environment}_${state.transactions.length + 1}_${input.idempotencyKey}`,
+      const progression: LudoProgressionRow = {
         environment,
         subject: input.subject,
-        currency: input.currency,
-        delta: input.delta,
-        balanceAfter,
-        reason: input.reason,
-        sourceRef: input.sourceRef ?? null,
-        idempotencyKey: input.idempotencyKey,
-        createdAt: input.now,
-      };
-      state.transactions.push(transaction);
-      const balance: LudoBalanceRow = {
-        environment,
-        subject: input.subject,
-        currency: input.currency,
-        balance: balanceAfter,
+        xp: input.xp,
+        level: input.level,
         updatedAt: input.now,
       };
-      state.balances.set(key, balance);
-      byKey.set(lookup, transaction.id);
-      return { transaction, balance, applied: true };
+      this.state(environment).progression.set(input.subject, progression);
+      const ledgerResults = input.ledgerEntries.map((entry) =>
+        this.appendLedgerEntrySync(environment, {
+          ...entry,
+          subject: input.subject,
+          now: input.now,
+        }),
+      );
+      return { progression, ledgerResults };
     });
+  }
+
+  async recordXpClaim(
+    environment: LudoEnvironment,
+    row: Omit<LudoXpClaimRow, "environment" | "createdAt">,
+    now: string,
+  ): Promise<{ claim: LudoXpClaimRow; applied: boolean }> {
+    return this.serialize(environment, () => {
+      const state = this.state(environment);
+      const key = xpClaimKey(row.subject, row.claimId);
+      const existing = state.xpClaims.get(key);
+      if (existing) return { claim: existing, applied: false };
+      const claim: LudoXpClaimRow = { ...row, environment, createdAt: now };
+      state.xpClaims.set(key, claim);
+      return { claim, applied: true };
+    });
+  }
+
+  async sumXpClaimed(
+    environment: LudoEnvironment,
+    subject: string,
+    claimDate: string,
+  ): Promise<number> {
+    return Array.from(this.state(environment).xpClaims.values())
+      .filter((row) => row.subject === subject && row.claimDate === claimDate)
+      .reduce((total, row) => total + row.xpDelta, 0);
   }
 
   async getBalance(

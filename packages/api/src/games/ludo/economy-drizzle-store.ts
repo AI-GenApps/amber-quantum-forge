@@ -9,6 +9,7 @@ import {
   ludoInventory,
   ludoProgression,
   ludoWalletTransactions,
+  ludoXpClaims,
 } from "@repo/db";
 import type { LudoEnvironment } from "./contracts";
 import type { LudoCoinTableTier, LudoCurrency, LudoWalletReason } from "./economy-config";
@@ -16,6 +17,8 @@ import {
   LUDO_ECONOMY_STORE_APP_ID,
   type LudoAdRewardClaimRow,
   type LudoAdRewardType,
+  type LudoApplyProgressionAndLedgerInput,
+  type LudoApplyProgressionAndLedgerResult,
   type LudoBalanceRow,
   type LudoCoinTableEscrowRow,
   type LudoCoinTableEscrowStatus,
@@ -27,7 +30,12 @@ import {
   type LudoLedgerAppendResult,
   type LudoProgressionRow,
   type LudoWalletTransactionRow,
+  type LudoXpClaimRow,
 } from "./economy-store";
+
+/** Matches `DrizzleLudoStore`'s `LudoDrizzleTransaction` alias: the
+ * transaction handle type Drizzle hands `db.transaction`'s callback. */
+type LudoEconomyDrizzleTransaction = Parameters<Parameters<typeof db.transaction>[0]>[0];
 
 function toDate(value: string | null): Date | null {
   return value === null ? null : new Date(value);
@@ -53,7 +61,22 @@ export class DrizzleLudoEconomyStore implements LudoEconomyStore {
     environment: LudoEnvironment,
     input: LudoLedgerAppendInput,
   ): Promise<LudoLedgerAppendResult> {
-    return this.database.transaction(async (transaction) => {
+    return this.database.transaction((transaction) =>
+      this.appendLedgerEntryTx(transaction, environment, input),
+    );
+  }
+
+  /** Core of `appendLedgerEntry`, scoped to a caller-supplied transaction
+   * so `applyProgressionAndLedger` can run the progression write and every
+   * reward ledger entry inside one SQL transaction instead of nesting
+   * `this.database.transaction()` calls (which Drizzle does not support
+   * as independent commits). */
+  private async appendLedgerEntryTx(
+    transaction: LudoEconomyDrizzleTransaction,
+    environment: LudoEnvironment,
+    input: LudoLedgerAppendInput,
+  ): Promise<LudoLedgerAppendResult> {
+    {
       const [existing] = await transaction
         .select()
         .from(ludoWalletTransactions)
@@ -186,7 +209,103 @@ export class DrizzleLudoEconomyStore implements LudoEconomyStore {
         balance: toBalanceRow(balanceValues),
         applied: true,
       };
+    }
+  }
+
+  async applyProgressionAndLedger(
+    environment: LudoEnvironment,
+    input: LudoApplyProgressionAndLedgerInput,
+  ): Promise<LudoApplyProgressionAndLedgerResult> {
+    return this.database.transaction(async (transaction) => {
+      const progressionValues = {
+        appId: LUDO_ECONOMY_STORE_APP_ID,
+        environment,
+        subject: input.subject,
+        xp: input.xp,
+        level: input.level,
+        updatedAt: toDate(input.now) as Date,
+      };
+      await transaction
+        .insert(ludoProgression)
+        .values(progressionValues)
+        .onConflictDoUpdate({
+          target: [ludoProgression.appId, ludoProgression.environment, ludoProgression.subject],
+          set: {
+            xp: progressionValues.xp,
+            level: progressionValues.level,
+            updatedAt: progressionValues.updatedAt,
+          },
+        });
+      const progression: LudoProgressionRow = {
+        environment,
+        subject: input.subject,
+        xp: input.xp,
+        level: input.level,
+        updatedAt: input.now,
+      };
+      const ledgerResults: LudoLedgerAppendResult[] = [];
+      for (const entry of input.ledgerEntries) {
+        const result = await this.appendLedgerEntryTx(transaction, environment, {
+          ...entry,
+          subject: input.subject,
+          now: input.now,
+        });
+        ledgerResults.push(result);
+      }
+      return { progression, ledgerResults };
     });
+  }
+
+  async recordXpClaim(
+    environment: LudoEnvironment,
+    row: Omit<LudoXpClaimRow, "environment" | "createdAt">,
+    now: string,
+  ): Promise<{ claim: LudoXpClaimRow; applied: boolean }> {
+    return this.database.transaction(async (transaction) => {
+      const [existing] = await transaction
+        .select()
+        .from(ludoXpClaims)
+        .where(
+          and(
+            eq(ludoXpClaims.appId, LUDO_ECONOMY_STORE_APP_ID),
+            eq(ludoXpClaims.environment, environment),
+            eq(ludoXpClaims.subject, row.subject),
+            eq(ludoXpClaims.claimId, row.claimId),
+          ),
+        )
+        .limit(1);
+      if (existing) return { claim: toXpClaimRow(existing, environment), applied: false };
+      const values = {
+        appId: LUDO_ECONOMY_STORE_APP_ID,
+        environment,
+        subject: row.subject,
+        claimId: row.claimId,
+        xpDelta: row.xpDelta,
+        claimDate: row.claimDate,
+        createdAt: toDate(now) as Date,
+      };
+      await transaction.insert(ludoXpClaims).values(values);
+      return { claim: toXpClaimRow(values, environment), applied: true };
+    });
+  }
+
+  async sumXpClaimed(
+    environment: LudoEnvironment,
+    subject: string,
+    claimDate: string,
+  ): Promise<number> {
+    const rows = await this.database
+      .select()
+      .from(ludoXpClaims)
+      .where(
+        and(
+          eq(ludoXpClaims.appId, LUDO_ECONOMY_STORE_APP_ID),
+          eq(ludoXpClaims.environment, environment),
+          eq(ludoXpClaims.subject, subject),
+          eq(ludoXpClaims.claimDate, claimDate),
+        ),
+      );
+    return rows.reduce((total, row) => total + row.xpDelta, 0);
   }
 
   async getBalance(
@@ -578,6 +697,26 @@ function toBalanceRow(row: {
     currency: row.currency as LudoCurrency,
     balance: row.balance,
     updatedAt: row.updatedAt.toISOString(),
+  };
+}
+
+function toXpClaimRow(
+  row: {
+    subject: string;
+    claimId: string;
+    xpDelta: number;
+    claimDate: string;
+    createdAt: Date;
+  },
+  environment: LudoEnvironment,
+): LudoXpClaimRow {
+  return {
+    environment,
+    subject: row.subject,
+    claimId: row.claimId,
+    xpDelta: row.xpDelta,
+    claimDate: row.claimDate,
+    createdAt: row.createdAt.toISOString(),
   };
 }
 

@@ -129,6 +129,37 @@ export function parseRoomCodeParam(value: string): LudoValidationResult<string> 
   return ok(value);
 }
 
+/** `POST /:environment/xp/claim` request body (task 26b). */
+export interface LudoXpClaimRequest {
+  xpDelta: number;
+  claimId: string;
+  elapsedMs: number;
+  matchesCompleted: number;
+}
+
+function isPositiveFiniteInteger(value: unknown): value is number {
+  return typeof value === "number" && Number.isInteger(value) && value > 0;
+}
+
+function isNonNegativeFiniteInteger(value: unknown): value is number {
+  return typeof value === "number" && Number.isInteger(value) && value >= 0;
+}
+
+export function parseXpClaimRequest(value: unknown): LudoValidationResult<LudoXpClaimRequest> {
+  if (!isObject(value)) return fail("ludo_xp_claim_must_be_object");
+  const {
+    xp_delta: xpDelta,
+    claim_id: claimId,
+    elapsed_ms: elapsedMs,
+    matches_completed: matchesCompleted,
+  } = value;
+  if (!isPositiveFiniteInteger(xpDelta)) return fail("ludo_xp_delta_invalid");
+  if (!isIdempotencyKey(claimId)) return fail("ludo_claim_id_invalid");
+  if (!isNonNegativeFiniteInteger(elapsedMs)) return fail("ludo_elapsed_ms_invalid");
+  if (!isNonNegativeFiniteInteger(matchesCompleted)) return fail("ludo_matches_completed_invalid");
+  return ok({ xpDelta, claimId, elapsedMs, matchesCompleted });
+}
+
 export function parseEnvironmentParam(
   value: string,
 ): LudoValidationResult<"debug" | "staging" | "production"> {

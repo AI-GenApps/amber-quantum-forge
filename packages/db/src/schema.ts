@@ -537,6 +537,34 @@ export const ludoAdRewardClaims = pgTable(
   ],
 );
 
+// Task 26b: durable idempotency + daily-cap tracking for `POST
+// /:environment/xp/claim`. Mirrors `ludoAdRewardClaims`'s shape (a claim id
+// unique per subject, a UTC `claim_date` column indexed for a same-day sum
+// query) rather than extending `ludoWalletTransactions`, since that table's
+// `currency` check constrains rows to `coins`/`diamonds` and XP is not a
+// wallet currency.
+export const ludoXpClaims = pgTable(
+  "ludo_xp_claims",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    subject: text("subject").notNull(),
+    claimId: text("claim_id").notNull(),
+    xpDelta: integer("xp_delta").notNull(),
+    claimDate: date("claim_date").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.appId, table.environment, table.subject, table.claimId] }),
+    index("ludo_xp_claims_daily_cap_idx").on(
+      table.appId,
+      table.environment,
+      table.subject,
+      table.claimDate,
+    ),
+  ],
+);
+
 export const ludoCoinTableEscrow = pgTable(
   "ludo_coin_table_escrow",
   {

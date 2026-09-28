@@ -1,7 +1,6 @@
 import type { Context } from "hono";
 import { Hono } from "hono";
 import { verifyApiToken } from "../../routes/auth-tokens";
-import type { GameTokenVerifier } from "../tokens";
 import {
   EnvironmentGameTokenVerifier,
   GameTokenConfigurationError,
@@ -12,12 +11,15 @@ import type { LudoEnvironment, LudoSession } from "./contracts";
 import { LUDO_APP_ID, LUDO_CONTRACT_VERSION } from "./contracts";
 import { resolveMatchViewPublisher } from "./dependencies";
 import { DrizzleLudoStore } from "./drizzle-store";
+import { DrizzleLudoEconomyStore } from "./economy-drizzle-store";
+import type { LudoEconomyStore } from "./economy-store";
+import { InMemoryLudoEconomyStore } from "./economy-store";
 import { asLudoError, LudoError } from "./errors";
-import type { MatchViewPublisher } from "./match-view-publisher";
 import { NullMatchViewPublisher } from "./match-view-publisher";
 import { cancelTicket, createTicket, getTicket } from "./matchmaking-service";
 import { InMemoryLudoStore } from "./memory-store";
 import { createRoom, getRoom, joinRoom } from "./room-service";
+import type { LudoRouteDependencies } from "./routes-types";
 import { createMatch, getMatchState, getMatchView, processCommand } from "./service";
 import { LudoStorageError, type LudoStore, UnavailableLudoStore } from "./store";
 import {
@@ -28,6 +30,7 @@ import {
   parseRoomCodeParam,
   parseTicketIdParam,
 } from "./validation";
+import { registerLudoWalletRoutes } from "./wallet-routes";
 import {
   matchmakingTicketToWire,
   matchViewToWire,
@@ -38,17 +41,7 @@ import {
 
 const SESSION_TOKEN_TTL_SECONDS = 300;
 
-export interface LudoRouteDependencies {
-  signSessionToken: (environment: string, subject: string) => Promise<string>;
-  verifyGameToken: GameTokenVerifier;
-  store: LudoStore;
-  /**
-   * Task 22's realtime fanout. Optional so existing call sites/tests that
-   * do not care about fanout keep compiling unchanged; `createLudoRoutes`
-   * falls back to a `NullMatchViewPublisher` (no-op) when omitted.
-   */
-  matchViewPublisher?: MatchViewPublisher;
-}
+export type { LudoRouteDependencies } from "./routes-types";
 
 type AuthResult = { ok: true; session: LudoSession } | { ok: false; response: Response };
 
@@ -94,6 +87,7 @@ async function readJsonBody(c: Context): Promise<unknown> {
 export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
   const routes = new Hono();
   const matchViewPublisher = dependencies.matchViewPublisher ?? new NullMatchViewPublisher();
+  const economyStore = dependencies.economyStore ?? new InMemoryLudoEconomyStore();
 
   routes.post("/:environment/session", async (c) => {
     const environment = c.req.param("environment");
@@ -536,6 +530,8 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
     }
   });
 
+  registerLudoWalletRoutes(routes, dependencies, economyStore, authenticateGameToken);
+
   return routes;
 }
 
@@ -565,6 +561,7 @@ export function createConfiguredLudoRoutes(): Hono {
     verifyGameToken: new EnvironmentGameTokenVerifier(),
     store: configuredLudoStore(),
     matchViewPublisher: resolveMatchViewPublisher(),
+    economyStore: configuredLudoEconomyStore(),
   });
 }
 
@@ -574,6 +571,20 @@ export function configuredLudoStore(): LudoStore {
   }
   if (process.env.DATABASE_URL) return new DrizzleLudoStore();
   return new UnavailableLudoStore();
+}
+
+/** Mirrors `configuredLudoStore()`. `LudoEconomyStore` has no `Unavailable`
+ * variant (unlike `LudoStore`) — without `DATABASE_URL` this falls back to
+ * an in-memory store rather than failing route construction, matching this
+ * epic's "degrade gracefully when credentials/config are absent" rule; a
+ * misconfigured production deploy still fails match/session routes via
+ * `UnavailableLudoStore` regardless. */
+export function configuredLudoEconomyStore(): LudoEconomyStore {
+  if (process.env.NODE_ENV !== "production" && process.env.LUDO_LOCAL_STORE === "memory") {
+    return new InMemoryLudoEconomyStore();
+  }
+  if (process.env.DATABASE_URL) return new DrizzleLudoEconomyStore();
+  return new InMemoryLudoEconomyStore();
 }
 
 // Re-exported so callers that only need the storage error type (e.g. a
