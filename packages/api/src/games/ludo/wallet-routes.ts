@@ -174,22 +174,28 @@ export function registerLudoWalletRoutes(
       // config defines — even though this route accepts XP from any mode,
       // per Context's decision that XP is earned everywhere; a future
       // online-specific cap, if introduced, would live alongside this check.
-      const alreadyClaimedToday = await economyStore.sumXpClaimed(
+      //
+      // The check-then-write here goes through a single atomic store call
+      // (`recordXpClaimWithCap`) rather than a separate `sumXpClaimed` read
+      // followed by `recordXpClaim`: two concurrent claims for the same
+      // subject/day could otherwise both read the same pre-claim sum, both
+      // pass the cap check, and both record, exceeding the cap.
+      const recorded = await economyStore.recordXpClaimWithCap(
         environment,
-        auth.session.subject,
-        claimDate,
+        {
+          subject: auth.session.subject,
+          claimId,
+          xpDelta,
+          claimDate,
+          dailyCap: config.xp.offlineDailyXpCap,
+        },
+        nowIso,
       );
-      if (alreadyClaimedToday + xpDelta > config.xp.offlineDailyXpCap) {
+      if (recorded.outcome === "cap_exceeded") {
         const error = new LudoXpDailyCapExceededError();
         return c.json(error.response(), error.status);
       }
-
-      const recorded = await economyStore.recordXpClaim(
-        environment,
-        { subject: auth.session.subject, claimId, xpDelta, claimDate },
-        nowIso,
-      );
-      if (!recorded.applied) {
+      if (recorded.outcome === "duplicate") {
         // Idempotent replay of an already-applied claim id: report the
         // current progression without crediting xpDelta a second time.
         const progression = await economyStore.getProgression(environment, auth.session.subject);

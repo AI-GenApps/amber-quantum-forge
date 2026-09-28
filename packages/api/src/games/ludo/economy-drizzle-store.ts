@@ -17,6 +17,7 @@ import {
   getSubscriptionImpl,
   processRevenueCatEventImpl,
 } from "./economy-drizzle-store-revenuecat";
+import { recordXpClaimWithCapImpl } from "./economy-drizzle-store-xp-claim";
 import {
   LUDO_ECONOMY_STORE_APP_ID,
   type LudoAdRewardClaimRow,
@@ -35,6 +36,7 @@ import {
   type LudoProcessRevenueCatEventInput,
   type LudoProcessRevenueCatEventResult,
   type LudoProgressionRow,
+  type LudoRecordXpClaimWithCapResult,
   type LudoSubscriptionRow,
   type LudoWalletTransactionRow,
   type LudoXpClaimRow,
@@ -313,6 +315,20 @@ export class DrizzleLudoEconomyStore implements LudoEconomyStore {
         ),
       );
     return rows.reduce((total, row) => total + row.xpDelta, 0);
+  }
+
+  async recordXpClaimWithCap(
+    environment: LudoEnvironment,
+    input: {
+      subject: string;
+      claimId: string;
+      xpDelta: number;
+      claimDate: string;
+      dailyCap: number;
+    },
+    now: string,
+  ): Promise<LudoRecordXpClaimWithCapResult> {
+    return recordXpClaimWithCapImpl(this.database, environment, input, now);
   }
 
   async getBalance(
@@ -723,7 +739,7 @@ function toBalanceRow(row: {
   };
 }
 
-function toXpClaimRow(
+export function toXpClaimRow(
   row: {
     subject: string;
     claimId: string;

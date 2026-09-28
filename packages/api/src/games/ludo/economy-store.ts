@@ -82,6 +82,16 @@ export interface LudoCoinTableEscrowRow {
   resolvedAt: string | null;
 }
 
+/** Result of `LudoEconomyStore.recordXpClaimWithCap`: `"recorded"` when the
+ * claim was newly applied (within the cap), `"duplicate"` when `claimId`
+ * had already been recorded (the original row is returned, not
+ * re-applied), and `"cap_exceeded"` when applying `xpDelta` would push the
+ * subject's `claimDate` total over `dailyCap` — nothing was written. */
+export type LudoRecordXpClaimWithCapResult =
+  | { outcome: "recorded"; claim: LudoXpClaimRow }
+  | { outcome: "duplicate"; claim: LudoXpClaimRow }
+  | { outcome: "cap_exceeded"; totalClaimedToday: number };
+
 /** Task 26d: RevenueCat webhook event-id idempotency, one row per event. */
 export interface LudoRevenueCatEventRow {
   environment: LudoEnvironment;
@@ -236,9 +246,31 @@ export interface LudoEconomyStore {
   ): Promise<{ claim: LudoXpClaimRow; applied: boolean }>;
 
   /** Sum of `xpDelta` across every XP claim already recorded for `subject`
-   * on `claimDate` (a UTC `YYYY-MM-DD` string) — the daily-cap check reads
-   * this before crediting a new claim. */
+   * on `claimDate` (a UTC `YYYY-MM-DD` string). Exposed for read paths
+   * (e.g. a profile/debug view); the daily-cap check itself must go
+   * through `recordXpClaimWithCap`, not a separate call to this method,
+   * since the two together would be a check-then-write race. */
   sumXpClaimed(environment: LudoEnvironment, subject: string, claimDate: string): Promise<number>;
+
+  /** Atomically checks the daily XP cap and records the claim in one
+   * locked operation, closing the TOCTOU race a separate
+   * `sumXpClaimed` + `recordXpClaim` pair would have under concurrent
+   * requests (both could read the same pre-claim sum and both pass the
+   * cap check before either write lands). Idempotent by `claimId`: a
+   * replay of an already-recorded claim id returns `"duplicate"` with
+   * the original row, never re-checked against the cap and never
+   * double-counted. */
+  recordXpClaimWithCap(
+    environment: LudoEnvironment,
+    input: {
+      subject: string;
+      claimId: string;
+      xpDelta: number;
+      claimDate: string;
+      dailyCap: number;
+    },
+    now: string,
+  ): Promise<LudoRecordXpClaimWithCapResult>;
 
   getDailyRewardState(
     environment: LudoEnvironment,
@@ -490,6 +522,47 @@ export class InMemoryLudoEconomyStore implements LudoEconomyStore {
     return Array.from(this.state(environment).xpClaims.values())
       .filter((row) => row.subject === subject && row.claimDate === claimDate)
       .reduce((total, row) => total + row.xpDelta, 0);
+  }
+
+  async recordXpClaimWithCap(
+    environment: LudoEnvironment,
+    input: {
+      subject: string;
+      claimId: string;
+      xpDelta: number;
+      claimDate: string;
+      dailyCap: number;
+    },
+    now: string,
+  ): Promise<LudoRecordXpClaimWithCapResult> {
+    // Single `serialize()` call: the duplicate check, the daily-cap sum
+    // re-read, and the insert all happen inside one queued operation, so
+    // no concurrent call for the same environment can observe the sum
+    // before this claim's row lands.
+    return this.serialize(environment, () => {
+      const state = this.state(environment);
+      const key = xpClaimKey(input.subject, input.claimId);
+      const existing = state.xpClaims.get(key);
+      if (existing) return { outcome: "duplicate", claim: existing };
+
+      const totalClaimedToday = Array.from(state.xpClaims.values())
+        .filter((row) => row.subject === input.subject && row.claimDate === input.claimDate)
+        .reduce((total, row) => total + row.xpDelta, 0);
+      if (totalClaimedToday + input.xpDelta > input.dailyCap) {
+        return { outcome: "cap_exceeded", totalClaimedToday };
+      }
+
+      const claim: LudoXpClaimRow = {
+        environment,
+        subject: input.subject,
+        claimId: input.claimId,
+        xpDelta: input.xpDelta,
+        claimDate: input.claimDate,
+        createdAt: now,
+      };
+      state.xpClaims.set(key, claim);
+      return { outcome: "recorded", claim };
+    });
   }
 
   async getBalance(

@@ -213,6 +213,74 @@ describe("Ludo xp/claim route", () => {
     const progression = await economyStore.getProgression("debug", "cap-subject");
     expect(progression?.xp).toBe(cap - 100);
   });
+
+  it("never exceeds the daily xp cap when concurrent claims race each other", async () => {
+    const { app, economyStore, gameToken } = await testHarness("concurrent-cap-subject");
+    const config = getEconomyConfig();
+    const cap = config.xp.offlineDailyXpCap;
+    // Chosen so 6 concurrent claims of this size request more than the
+    // cap in total, forcing at least one to be rejected, while each
+    // individual claim stays plausible for its own match count.
+    const perClaimXp = Math.ceil(cap / 5);
+    const matches = Math.ceil(perClaimXp / config.xp.matchWinXp);
+
+    const responses = await Promise.all(
+      Array.from({ length: 6 }, (_, i) =>
+        app.request("/games/ludo/debug/xp/claim", {
+          method: "POST",
+          headers: { ...authHeaders(gameToken), "Content-Type": "application/json" },
+          body: JSON.stringify({
+            xp_delta: perClaimXp,
+            claim_id: `concurrent-claim-${i}`,
+            elapsed_ms: matches * 20_000,
+            matches_completed: matches,
+          }),
+        }),
+      ),
+    );
+
+    const bodies = await Promise.all(responses.map((r) => r.json()));
+    const succeeded = responses.filter((r) => r.status === 200);
+    const capped = responses.filter((r) => r.status === 429);
+    expect(succeeded.length + capped.length).toBe(6);
+    expect(capped.length).toBeGreaterThan(0);
+    for (const body of bodies) {
+      if (body.error) expect(body.error.code).toBe("ludo_xp_daily_cap_exceeded");
+    }
+
+    const progression = await economyStore.getProgression("debug", "concurrent-cap-subject");
+    expect(progression?.xp ?? 0).toBeLessThanOrEqual(cap);
+    const today = new Date().toISOString().slice(0, 10);
+    expect(
+      await economyStore.sumXpClaimed("debug", "concurrent-cap-subject", today),
+    ).toBeLessThanOrEqual(cap);
+  });
+
+  it("is idempotent under concurrent replays of the same claim id: xp credited exactly once", async () => {
+    const { app, economyStore, gameToken } = await testHarness("concurrent-replay-subject");
+
+    const responses = await Promise.all(
+      Array.from({ length: 8 }, () =>
+        app.request("/games/ludo/debug/xp/claim", {
+          method: "POST",
+          headers: { ...authHeaders(gameToken), "Content-Type": "application/json" },
+          body: JSON.stringify({
+            xp_delta: 50,
+            claim_id: "concurrent-replay-claim",
+            elapsed_ms: 60_000,
+            matches_completed: 1,
+          }),
+        }),
+      ),
+    );
+
+    for (const response of responses) {
+      expect(response.status).toBe(200);
+    }
+
+    const progression = await economyStore.getProgression("debug", "concurrent-replay-subject");
+    expect(progression?.xp).toBe(50);
+  });
 });
 
 describe("Ludo daily-reward/claim route", () => {

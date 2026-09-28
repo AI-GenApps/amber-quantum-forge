@@ -187,6 +187,53 @@ describe("InMemoryLudoEconomyStore inventory/progression/daily-reward/ad-claim/e
     expect(await store.countAdClaims(ENV, "user-8", "coins", "2026-09-25")).toBe(1);
   });
 
+  test("recordXpClaimWithCap never lets concurrent claims exceed the daily cap", async () => {
+    const store = new InMemoryLudoEconomyStore();
+    const subject = "user-race";
+    const claimDate = "2026-09-25";
+    const dailyCap = 500;
+
+    // 10 concurrent claims of 100 xp each request 1000 total against a
+    // 500 cap — at most 5 may be recorded. A racy check-then-write
+    // (separate `sumXpClaimed` + `recordXpClaim`) could let all 10 pass
+    // the check before any write landed.
+    const results = await Promise.all(
+      Array.from({ length: 10 }, (_, i) =>
+        store.recordXpClaimWithCap(
+          ENV,
+          { subject, claimId: `claim-${i}`, xpDelta: 100, claimDate, dailyCap },
+          `2026-09-25T00:0${i}:00.000Z`,
+        ),
+      ),
+    );
+
+    const recorded = results.filter((r) => r.outcome === "recorded");
+    const capExceeded = results.filter((r) => r.outcome === "cap_exceeded");
+    expect(recorded).toHaveLength(5);
+    expect(capExceeded).toHaveLength(5);
+    expect(await store.sumXpClaimed(ENV, subject, claimDate)).toBe(dailyCap);
+  });
+
+  test("recordXpClaimWithCap replay of the same claimId is idempotent, never double-counted", async () => {
+    const store = new InMemoryLudoEconomyStore();
+    const subject = "user-replay";
+    const claimDate = "2026-09-25";
+    const dailyCap = 500;
+    const input = { subject, claimId: "claim-dup", xpDelta: 100, claimDate, dailyCap };
+
+    const results = await Promise.all(
+      Array.from({ length: 10 }, () =>
+        store.recordXpClaimWithCap(ENV, input, "2026-09-25T00:00:00.000Z"),
+      ),
+    );
+
+    const recorded = results.filter((r) => r.outcome === "recorded");
+    const duplicate = results.filter((r) => r.outcome === "duplicate");
+    expect(recorded).toHaveLength(1);
+    expect(duplicate).toHaveLength(9);
+    expect(await store.sumXpClaimed(ENV, subject, claimDate)).toBe(100);
+  });
+
   test("escrow create is idempotent by matchId and resolveEscrow transitions status", async () => {
     const store = new InMemoryLudoEconomyStore();
     const row = {
