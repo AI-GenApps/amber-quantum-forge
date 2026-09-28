@@ -36,20 +36,48 @@ const ludoTokenCellHeightFraction = 1.3;
 /// shifts each stacked token's center by, on each axis, when 2+ tokens
 /// share a board cell — matching Ludo King's stacked-token convention
 /// instead of every token rendering exactly on top of the others. Shared
-/// with [LudoTokenComponent.containsLocalPoint]'s tightened stacked hit
-/// radius ([_stackedTapHitRadiusFraction]) below so the two stay
-/// consistent: the hit radius must always be smaller than this spread, or
-/// stacked tokens' circular hit regions would themselves start
-/// overlapping.
+/// with [LudoTokenComponent.containsLocalPoint]'s stacked hit radius
+/// ([_stackedTapHitRadiusFraction]) below so the two stay consistent: see
+/// that constant's doc comment (task 26) for the actual bound it must
+/// satisfy against this spread (it is deliberately *not* "smaller than
+/// this spread" any more — that was too conservative and produced an
+/// unusably tiny real-device tap target).
 const ludoTokenStackFanOutFraction = 0.22;
 
 /// Circular tap hit-test radius (fraction of one cell) for a *stacked*
-/// token — see [LudoTokenComponent.containsLocalPoint]. Deliberately well
-/// under [ludoTokenStackFanOutFraction] (the minimum center-to-center
-/// distance between any two tokens in a fan-out, in every 2/3/4+ token
-/// layout `LudoGame._fanOutOffset` produces) so no two stacked tokens'
-/// hit regions can ever overlap.
-const _stackedTapHitRadiusFraction = 0.16;
+/// token — see [LudoTokenComponent.containsLocalPoint].
+///
+/// Bug fix (task 26, device repro): the original value here
+/// (`ludoTokenStackFanOutFraction`, i.e. 0.22) was chosen only to satisfy
+/// "no two stacked tokens' hit regions ever overlap at all" — but on a
+/// real device that produced a hit *circle* under 5 logical pixels in
+/// radius (under 10px across), far smaller than a fingertip's contact
+/// area and well inside the visually-rendered pin (which is
+/// [ludoTokenCellWidthFraction] / ~0.95 of a cell wide). A tap that
+/// landed anywhere but that pinprick-sized center — i.e. almost every
+/// real tap — silently missed every token in the stack, leaving the
+/// player unable to move (repro: `game_board_screen_stack_tap_test.dart`).
+///
+/// The actual, tighter constraint this radius must satisfy is not "under
+/// [ludoTokenStackFanOutFraction]" but "under half of the minimum
+/// center-to-center distance between any two tokens sharing a stack" —
+/// which `LudoGame._fanOutOffset` guarantees is always exactly
+/// `2 * ludoTokenStackFanOutFraction`, for every 2/3/4+ token layout it
+/// produces (adjacent slots in every case are offset by
+/// `ludoTokenStackFanOutFraction` on one axis in opposite directions).
+/// Staying strictly under that `2x` bound (this constant uses `1.8x`, for
+/// margin) still guarantees each stacked token's own exact center is
+/// never also inside a stack-mate's hit circle — so a precise tap always
+/// resolves to the token it targets, and the existing exact-center
+/// stacked-tap test stays green — while now covering nearly a full
+/// token's width (~0.79 of a cell) instead of a third of it, matching
+/// Ludo King's forgiving "tap the stack, either token moves" feel. A
+/// nearby stack-mate's circle may now geometrically overlap this one
+/// (unlike before): an imprecise tap landing in that overlap resolves to
+/// whichever token Flame's tap dispatcher ranks topmost, which is always
+/// fine per this task's spec ("if multiple stacked tokens have identical
+/// legal moves, selecting either is fine").
+const _stackedTapHitRadiusFraction = ludoTokenStackFanOutFraction * 1.8;
 
 /// Duration of a single-cell hop.
 const ludoTokenHopDuration = Duration(milliseconds: 120);
