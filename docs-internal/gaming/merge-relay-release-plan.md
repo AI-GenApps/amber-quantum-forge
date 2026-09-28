@@ -295,3 +295,115 @@ and swipe findings from the rejected preview, whether process-death/offline
 tests were run on the recorded device, and whether any 16 KB test was physical
 or bundle inspection only. A second physical Android device is still required
 for cross-device relay and restore evidence.
+
+## Glow Rescue v1 solo release (task 24, 2026-09-28)
+
+Everything above this section describes the earlier, full-scope
+(multiplayer-first) plan and is **superseded for v1** by
+`tasks/epics/16-games-portfolio-wave2/` (see task 05's scope gate: friend
+relays, PGS, and every network path are compiled out via
+`mergeRelaySocialEnabled` and kept for v1.1). This section is the signing
+guide and release checklist for that v1 solo release; it does not replace
+the PGS/backend material above, which stays relevant when v1.1 re-enables
+the social surface.
+
+### Signing guide (Android upload keystore)
+
+Glow Rescue's Android build does **not** use a `key.properties` file — its
+Gradle config (`apps-native/games/merge_relay/android/app/build.gradle.kts`,
+`signingConfigs { if (gameEnvironment == "production") { ... } }`) reads the
+signing material straight from four environment variables and only requires
+them for a production build:
+
+| Env var | Meaning |
+|---|---|
+| `ANDROID_KEYSTORE_PATH` | Absolute path to the upload keystore (`.jks`/`.keystore`) file |
+| `ANDROID_KEY_ALIAS` | The key's alias inside that keystore |
+| `ANDROID_KEY_PASSWORD` | The key's password |
+| `ANDROID_STORE_PASSWORD` | The keystore file's password |
+
+**This task never generates or commits a real keystore.** The steps below
+are for the human who runs the actual release build, on their own machine,
+outside this repository's git history.
+
+1. **Generate the upload keystore once**, on a machine you control (not a
+   shared CI runner, unless that runner's secrets are already locked down),
+   with the JDK's `keytool` (JDK 17 matches this repo's toolchain):
+
+   ```bash
+   keytool -genkeypair -v \
+     -keystore /secure/path/outside/repo/glow-rescue-upload.jks \
+     -alias glow-rescue-upload \
+     -keyalg RSA -keysize 2048 -validity 10000
+   ```
+
+   `keytool` will prompt for the keystore password, the key password, and
+   your distinguished-name details (organization, etc.). Store both
+   passwords in a password manager — Play Console cannot recover a lost
+   upload key; losing it means filing a key-reset request with Google.
+
+2. **Never place the keystore file, or its passwords, inside this git
+   repository** — not even in a `.gitignore`d path under `apps-native/`.
+   Keep it in a secrets manager or an encrypted local path outside the
+   working tree (e.g. `~/secrets/glow-rescue-upload.jks`, not
+   `apps-native/games/merge_relay/android/`).
+
+3. **Export the four env vars** before building, for example from a local,
+   git-ignored shell snippet (a "`key.properties`-equivalent" — a small file
+   *outside the repo* that only sets environment variables, never checked
+   in):
+
+   ```bash
+   export ANDROID_KEYSTORE_PATH=~/secrets/glow-rescue-upload.jks
+   export ANDROID_KEY_ALIAS=glow-rescue-upload
+   export ANDROID_KEY_PASSWORD='...'
+   export ANDROID_STORE_PASSWORD='...'
+   ```
+
+4. **Build the release AAB** with the repo's own build command, which wires
+   `gameEnvironment=production` (triggering the `signingConfigs` block
+   above) and validates the release version/build number from the game
+   registry (`scripts/games/cli-build.ts`):
+
+   ```bash
+   export PATH=/data/tools/bun/bin:$PATH   # this server's toolchain prefix
+   bun run games:build -- --app merge_relay --platform android --mode aab --environment production
+   ```
+
+   This fails loudly (`GradleException`) if any of the four env vars is
+   missing, so a keystore can never be silently skipped for a production
+   build.
+
+5. **Play App Signing**: opt in when creating the app in Play Console. You
+   still upload AABs signed with the upload key above; Google re-signs with
+   its own app-signing key for distribution. This means losing the upload
+   key later is recoverable (request an upload-key reset), unlike a legacy
+   (non-Play-App-Signing) release key.
+
+6. **Back up the keystore and both passwords** (e.g. in the same secrets
+   manager used for other production credentials) before the first
+   production build — this task does not do that backup, since it never
+   creates the keystore.
+
+### Release checklist
+
+| Item | Status |
+|---|---|
+| Store listing copy (name, descriptions, category, tags) | **done** — `.agents/games/merge-relay/store-listing.md` |
+| Content rating questionnaire answers | **done** — same file, "Content rating" section |
+| Data safety form answers, cited against shipped code | **done** — same file, "Data safety form" section |
+| Ads / IAP declarations (both "none") | **done** |
+| Permissions rationale (`INTERNET` kept, documented) | **done** |
+| Privacy policy page content | **done** — `docs-public/legal/glow-rescue-privacy-policy.md` |
+| Privacy policy hosting URL | **human** — no public docs site is deployed by this task |
+| Crash-reporting interface + no-op default + test | **done** — `apps-native/games/merge_relay/lib/src/crash/`, wired into `main.dart` |
+| Crash-reporting vendor selection (Crashlytics/Sentry) and SDK integration | **human** (open decision, `open-questions.md` #2) — deliberately not done in v1, since it needs credentials this task must not fabricate |
+| Store screenshots (6, 1080×2400) | **done** — `.agents/resources/2026-09-25/merge-relay-store/screenshots/` |
+| Feature graphic (1024×500) | **done** — `.agents/resources/2026-09-25/merge-relay-store/feature-graphic.png` |
+| App icon, 512×512 Play Console export | **human** — needs a one-off export from the final icon master (`assets/art/logoStacked.png`), not produced by this task |
+| Signing guide | **done** — this section |
+| Upload keystore generation + secure storage | **credentials** — human-only, per the guide above; never done by an agent |
+| Play developer account + app creation | **human/credentials** |
+| Support contact email / developer name | **human** |
+| Closed testing track (testers, 14-day requirement if applicable) | **human/console** |
+| Final submission | **human/console** — out of scope for this task (task 25) |

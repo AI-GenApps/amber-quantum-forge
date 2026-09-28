@@ -30,6 +30,13 @@
           "support/known-issues",
           "support/faq"
         ]
+      },
+      {
+        "tab": "Legal",
+        "icon": "scale",
+        "pages": [
+          "legal/glow-rescue-privacy-policy"
+        ]
       }
     ]
   }

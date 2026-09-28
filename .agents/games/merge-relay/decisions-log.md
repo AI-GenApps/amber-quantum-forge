@@ -22,3 +22,12 @@ applied to Merge Relay specifically.
 | 2026-09-25 | Android deep-link intent filters (`mergerelay://challenge…` and the https challenge path) are **kept**, not removed, for v1 | `games:validate:strict` (`scripts/games/cli-commands.ts`) only checks the game registry/content/scaffold, not manifest contents, so nothing requires their removal; keeping them means v1.1 (relay re-enabled) needs no manifest migration. While gated, an incoming link is never read by the Dart layer — the app just opens to Home |
 | 2026-09-27 | Public name: **Glow Rescue** (task 17; rank 1 of the strictly checked shortlist in `.agents/resources/2026-09-25/merge-relay-brand/`). Internal id `merge_relay` and bundle ids unchanged. | user |
 | 2026-09-27 | Logo: **icon A** (hero glow tile) + **wordmark B** (gradient with spark); art set: **direction B** (glossy 3D-toy), keeping a clear numeral zone (task 21). | user |
+
+## Release-readiness decisions (task 24)
+
+| Date | Decision | Rationale / notes |
+|---|---|---|
+| 2026-09-28 | Keep the `INTERNET` permission in `AndroidManifest.xml` for v1 | It's a normal (non-dangerous) permission, granted with no runtime prompt; no network call is ever made while `mergeRelaySocialEnabled` is `false` (`merge_relay_client.dart:56` returns `null` before constructing any HTTP client); removing and re-adding it for v1.1 would be pure churn. Matches the 2026-09-25 decision to keep the relay deep-link intent filters for the same reason. See `store-listing.md` § Permissions |
+| 2026-09-28 | Crash reporting ships as `MergeRelayCrashReporter` (interface) + `NoOpCrashReporter` (the only implementation wired into v1); no crash SDK is bundled | No SDK needs build-time credentials to compile; the vendor choice (Crashlytics vs Sentry) stays an explicit open human decision (`open-questions.md` #2) instead of being made by default via whichever SDK happened to be added first |
+| 2026-09-28 | Privacy policy lives at `docs-public/legal/glow-rescue-privacy-policy.md`, under a new "Legal" tab in `docs-public/docs.json` | Follows the existing docs-public Mintlify structure (tabs organized by audience/context); no other public docs page existed for a game-specific policy |
+| 2026-09-28 | Store screenshots and feature graphic are Pillow composites of the final screen goldens and final integrated art (tasks 22/23) — no new image-gen renders | The task's own instruction ("made from the final goldens with Pillow captions"); avoids spending an image-gen budget on marketing crops when the final art already exists |

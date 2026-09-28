@@ -1,7 +1,7 @@
 ---
 epic: 16-games-portfolio-wave2
 task: 24-mr-release-readiness
-status: pending
+status: completed
 commit_scope: merge-relay
 depends_on: [16-games-portfolio-wave2/23-mr-art-final-and-integrate]
 estimate: M
@@ -44,19 +44,19 @@ it is configured.
 
 ## Implementation Checklist
 
-- [ ] Fill in `.agents/games/merge-relay/store-listing.md` completely:
+- [x] Fill in `.agents/games/merge-relay/store-listing.md` completely:
       title, short and full description, category, tags, content-rating
       questionnaire answers, data safety, ads/IAP = none, permissions
       rationale (`INTERNET`, if it stays, for a disabled future feature,
       otherwise remove it), support contact = TBD (human).
-- [ ] Add the `docs-public` privacy policy page and navigation entry.
-- [ ] Add a crash-reporting interface and no-op implementation, with a
+- [x] Add the `docs-public` privacy policy page and navigation entry.
+- [x] Add a crash-reporting interface and no-op implementation, with a
       test.
-- [ ] Make the store screenshots and feature graphic in
+- [x] Make the store screenshots and feature graphic in
       `.agents/resources/2026-09-25/merge-relay-store/`, then VIEW them.
-- [ ] Write the signing guide in `docs-internal/gaming/` (a Merge Relay
+- [x] Write the signing guide in `docs-internal/gaming/` (a Merge Relay
       release section).
-- [ ] Add a release checklist that marks each item done / human /
+- [x] Add a release checklist that marks each item done / human /
       credentials.
 
 ## Files Touched

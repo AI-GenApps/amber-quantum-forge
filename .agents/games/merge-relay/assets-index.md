@@ -31,6 +31,7 @@
 | Logo + icon dry run (task 19) / final (task 22) | `.agents/resources/2026-09-25/<game>-art/logo/` | planned |
 | Art-set dry run (task 20) / final (task 23): character tiles, home scene | `.agents/resources/2026-09-25/<game>-art/<set>/` | planned |
 | CC0 audio + music (task 10) | `apps-native/games/merge_relay/assets/audio/` (with `LICENSES.md`, mirroring Ludo Vortex's pattern) | planned |
+| Store screenshots (6, 1080×2400) + feature graphic (1024×500), Pillow composites of the final goldens/art (task 24) | `.agents/resources/2026-09-25/merge-relay-store/` | done |
 
 ## Fonts (planned, task 07)
 
