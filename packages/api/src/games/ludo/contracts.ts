@@ -1,4 +1,5 @@
 import type { GameEnvironment, GameSession } from "../contracts";
+import type { LudoCoinTableTier } from "./economy-config";
 
 export const LUDO_APP_ID = "ludo" as const;
 export const LUDO_CONTRACT_VERSION = "ludo.v1" as const;
@@ -59,6 +60,8 @@ export interface LudoCreateMatchCommand extends LudoCommandBase {
   type: "create_match";
   mode: LudoMode;
   seats: number;
+  /** Coin-stake table tier (task 26c). Omitted for a free-play match. */
+  coinTier?: LudoCoinTableTier;
 }
 
 export interface LudoJoinMatchCommand extends LudoCommandBase {
@@ -206,6 +209,10 @@ export interface LudoMatchmakingTicket {
   seatTarget: number;
   status: LudoMatchmakingTicketStatus;
   matchedMatchId: string | null;
+  /** Coin-stake table tier (task 26c). `null` for a free-play ticket; a
+   * coin-stake group is matched only against other tickets of the same
+   * tier (see `matchmaking-service.ts`'s grouping) and is never bot-filled. */
+  coinTier: LudoCoinTableTier | null;
   createdAt: string;
   expiresAt: string;
 }
@@ -215,6 +222,7 @@ export interface LudoCreateMatchmakingTicketRequest {
   mode: LudoMode;
   seatTarget: number;
   idempotencyKey: string;
+  coinTier?: LudoCoinTableTier;
 }
 
 export type LudoRoomStatus = "waiting" | "matched" | "expired";
@@ -229,6 +237,10 @@ export interface LudoRoom {
   /** Derived, not stored: `"matched"` once `matchId` is set, else `"expired"` past `expiresAt`, else `"waiting"`. */
   status: LudoRoomStatus;
   matchId: string | null;
+  /** Coin-stake table tier (task 26c), remembered from room creation until
+   * the room's first join forms the underlying match. `null` for a
+   * free-play room. */
+  coinTier: LudoCoinTableTier | null;
   createdAt: string;
   expiresAt: string;
 }
@@ -238,6 +250,7 @@ export interface LudoCreateRoomRequest {
   mode: LudoMode;
   seatTarget: number;
   idempotencyKey: string;
+  coinTier?: LudoCoinTableTier;
 }
 
 /** `POST /:environment/rooms/:roomCode/join` request body. */

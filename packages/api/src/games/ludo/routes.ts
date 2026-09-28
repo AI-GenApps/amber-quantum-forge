@@ -168,9 +168,10 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
           mode: parsed.value.mode,
           seats: parsed.value.seats,
           idempotencyKey: parsed.value.idempotencyKey,
+          coinTier: parsed.value.coinTier,
         },
         "direct",
-        { matchViewPublisher },
+        { matchViewPublisher, economyStore },
       );
       return c.json(
         { match_state: toWireMatchState(result.matchState), idempotent: result.idempotent },
@@ -205,6 +206,7 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
         environment,
         auth.session.subject,
         matchId,
+        { economyStore },
       );
       return c.json({ match_state: toWireMatchState(result.matchState) }, 200);
     } catch (cause) {
@@ -240,6 +242,7 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
         environment,
         auth.session.subject,
         matchId,
+        { economyStore },
       );
       return c.json({ match_view: matchViewToWire(result.matchView) }, 200);
     } catch (cause) {
@@ -278,7 +281,7 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
         environment,
         auth.session.subject,
         parsed.value,
-        { matchViewPublisher },
+        { matchViewPublisher, economyStore },
       );
       return c.json(
         { match_state: toWireMatchState(result.matchState), idempotent: result.idempotent },
@@ -319,6 +322,7 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
         mode: parsed.value.mode,
         seatTarget: parsed.value.seatTarget,
         idempotencyKey: parsed.value.idempotencyKey,
+        coinTier: parsed.value.coinTier,
       });
       return c.json(
         { ticket: matchmakingTicketToWire(result.ticket), idempotent: result.idempotent },
@@ -429,6 +433,7 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
         mode: parsed.value.mode,
         seatTarget: parsed.value.seatTarget,
         idempotencyKey: parsed.value.idempotencyKey,
+        coinTier: parsed.value.coinTier,
       });
       return c.json(
         {
@@ -514,7 +519,7 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
           roomCode: parsedRoomCode.value,
           idempotencyKey: parsedBody.value.idempotencyKey,
         },
-        { matchViewPublisher },
+        { matchViewPublisher, economyStore },
       );
       return c.json(
         {

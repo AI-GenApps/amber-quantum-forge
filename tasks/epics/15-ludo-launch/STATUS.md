@@ -82,7 +82,7 @@ next task.
 | 26x | Client owner | Debug-only online preview mode, online screen visual polish, warm-start deep links | [x] |
 | 26a | Backend/domain owner | Economy design doc, versioned economy config, wallet/ledger/inventory/progression Drizzle schema | [x] |
 | 26b | Backend owner | Wallet, profile, progression, and inventory HTTP routes | [x] |
-| 26c | Backend owner | Coin-stake tables, match-start escrow, and payout/refund | [ ] |
+| 26c | Backend owner | Coin-stake tables, match-start escrow, and payout/refund | [x] |
 | 26d | Backend owner | RevenueCat webhook, product grants, and Vortex Pass entitlement | [ ] |
 | 26e | Client owner | Client wallet/level state, HUD chips, XP gain, and level-up celebration | [ ] |
 | 26f | Art owner (human) | Economy art session: theme sets, currency icons, store banners | [ ] |

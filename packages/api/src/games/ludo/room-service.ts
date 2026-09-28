@@ -25,6 +25,7 @@ import type {
   LudoRoomStatus,
 } from "./contracts";
 import { ludoRoomInviteLink } from "./contracts";
+import type { LudoCoinTableTier } from "./economy-config";
 import {
   LudoRoomCodeExhaustedError,
   LudoRoomExpiredError,
@@ -75,6 +76,7 @@ function toContractRoom(row: LudoRoomRow, nowMs: number = Date.now()): LudoRoom 
     seatTarget: row.seatTarget,
     status: computeRoomStatus(row, nowMs),
     matchId: row.matchId,
+    coinTier: row.coinTier,
     createdAt: row.createdAt,
     expiresAt: row.expiresAt,
   };
@@ -85,6 +87,11 @@ export interface CreateRoomInput {
   mode: LudoMode;
   seatTarget: number;
   idempotencyKey: string;
+  /** Coin-stake table tier (task 26c). Omitted for a free-play room; the
+   * room owner's entry fee is debited (and the escrow row created) exactly
+   * when the underlying match is formed — see `joinRoom`'s module doc
+   * comment for why match formation is deferred to the room's first join. */
+  coinTier?: LudoCoinTableTier;
 }
 
 export interface CreateRoomResult {
@@ -122,6 +129,7 @@ export async function createRoom(
         r.ownerSubject === input.subject &&
         r.mode === input.mode &&
         r.seatTarget === input.seatTarget &&
+        (r.coinTier ?? undefined) === input.coinTier &&
         r.matchId === null &&
         Date.parse(r.expiresAt) > nowMs,
     );
@@ -155,6 +163,7 @@ export async function createRoom(
       mode: input.mode,
       seatTarget: input.seatTarget,
       matchId: null,
+      coinTier: input.coinTier ?? null,
       createdAt: nowIso,
       expiresAt: new Date(nowMs + resolveRoomExpiryMs()).toISOString(),
     };
@@ -237,6 +246,7 @@ export async function joinRoom(
         // never spawn a second match for the same room (`createMatch`'s own
         // idempotency-key dedup returns the same match to every caller).
         idempotencyKey: `room:${roomSnapshot.roomCode}:create`,
+        coinTier: roomSnapshot.coinTier ?? undefined,
       },
       "room",
       dependencies,

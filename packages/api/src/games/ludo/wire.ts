@@ -258,6 +258,7 @@ export function matchmakingTicketToWire(value: LudoMatchmakingTicket) {
     seat_target: value.seatTarget,
     status: value.status,
     matched_match_id: value.matchedMatchId,
+    coin_tier: value.coinTier,
     created_at: value.createdAt,
     expires_at: value.expiresAt,
   };
@@ -274,6 +275,7 @@ export function matchmakingTicketFromWire(
     seatTarget: value.seat_target,
     status: value.status,
     matchedMatchId: value.matched_match_id,
+    coinTier: value.coin_tier,
     createdAt: value.created_at,
     expiresAt: value.expires_at,
   };
@@ -289,6 +291,7 @@ export function roomToWire(value: LudoRoom) {
     seat_target: value.seatTarget,
     status: value.status,
     match_id: value.matchId,
+    coin_tier: value.coinTier,
     created_at: value.createdAt,
     expires_at: value.expiresAt,
   };
@@ -303,6 +306,7 @@ export function roomFromWire(value: ReturnType<typeof roomToWire>): LudoRoom {
     seatTarget: value.seat_target,
     status: value.status,
     matchId: value.match_id,
+    coinTier: value.coin_tier,
     createdAt: value.created_at,
     expiresAt: value.expires_at,
   };

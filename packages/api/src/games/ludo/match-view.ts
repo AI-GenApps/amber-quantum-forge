@@ -7,12 +7,18 @@
 /// engine). Split out of `service.ts` (task 22) purely to keep that file
 /// under the repo's per-file line limit — these functions have no
 /// transaction or fan-out concerns of their own.
-import type { LudoEnvironment, LudoEvent, LudoMatchState as WireMatchState } from "./contracts";
-import { LUDO_MATCH_VIEW_EVENT_LIMIT } from "./contracts";
+import type {
+  LudoEnvironment,
+  LudoEvent,
+  LudoMatchView,
+  LudoMatchState as WireMatchState,
+} from "./contracts";
+import { LUDO_APP_ID, LUDO_MATCH_VIEW_EVENT_LIMIT } from "./contracts";
 import {
   createMatchState,
   type LudoMatchState as EngineMatchState,
   eventFromJson,
+  eventToJson,
   LUDO_COLOR_ORDER,
   LUDO_MIN_SEATS,
   LUDO_RULESETS_BY_ID,
@@ -20,7 +26,8 @@ import {
   replay,
 } from "./engine";
 import { LudoMatchNotJoinableError } from "./errors";
-import type { LudoEventRow, LudoMatchRow, LudoPlayerRow, LudoStore } from "./store";
+import type { LudoServiceDependencies } from "./service-types";
+import type { LudoEventRow, LudoMatchRow, LudoPlayerRow, LudoState, LudoStore } from "./store";
 
 /** Maps an engine replay event's `type` to the `ludo_events.event_type` column value. */
 export const WIRE_EVENT_TYPE: Record<LudoReplayEvent["type"], string> = {
@@ -214,4 +221,62 @@ export function reconstructEngineState(
     .sort((a, b) => a.sequence - b.sequence)
     .map((e) => eventFromJson(e.payload as Record<string, unknown>));
   return replay(events, { ruleset, initialPlayers: initial.players });
+}
+
+/** Appends `events` to `ludo_events` starting at the next unused `sequence` for this match. */
+export function appendEvents(
+  state: LudoState,
+  row: LudoMatchRow,
+  events: readonly LudoReplayEvent[],
+  nowIso: string,
+): void {
+  const existingSequences = state.events
+    .filter((e) => e.matchId === row.matchId)
+    .map((e) => e.sequence);
+  let sequence = existingSequences.length ? Math.max(...existingSequences) + 1 : 0;
+  for (const event of events) {
+    state.events.push({
+      matchId: row.matchId,
+      environment: row.environment,
+      sequence,
+      eventType: WIRE_EVENT_TYPE[event.type],
+      payload: eventToJson(event),
+      createdAt: nowIso,
+    });
+    sequence += 1;
+  }
+}
+
+/**
+ * Fetches a fresh `LudoMatchView` and calls `dependencies.matchViewPublisher`
+ * (task 22) — a strict no-op when no publisher was supplied, matching
+ * `NullMatchViewPublisher` without needing to construct one. Always called
+ * *after* the triggering `store.transact()` has already resolved (returned
+ * or thrown past this point means the state change already committed), and
+ * always swallows its own errors: a fanout failure (Firestore outage,
+ * network error, ...) must never surface as a command error — the polling
+ * route (`getMatchView`) remains the ground truth regardless of whether
+ * this publish ever lands.
+ */
+export async function publishMatchView(
+  store: LudoStore,
+  environment: LudoEnvironment,
+  matchState: WireMatchState,
+  dependencies: LudoServiceDependencies,
+): Promise<void> {
+  const publisher = dependencies.matchViewPublisher;
+  if (!publisher) return;
+  try {
+    const recentEvents = await loadRecentEvents(store, environment, matchState.matchId);
+    const view: LudoMatchView = {
+      matchId: matchState.matchId,
+      environment,
+      matchState,
+      recentEvents,
+      publishedAt: new Date().toISOString(),
+    };
+    await publisher.publish(LUDO_APP_ID, environment, matchState.matchId, view);
+  } catch {
+    // Best-effort fan-out only — see this function's doc comment.
+  }
 }

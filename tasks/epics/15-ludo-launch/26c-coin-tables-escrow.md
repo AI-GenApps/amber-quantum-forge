@@ -55,37 +55,96 @@ command service and task 19's timeout handling.
 
 ## Implementation Checklist
 
-- [ ] Extend `packages/api/src/games/ludo/service.ts`'s `createMatch`/
+- [x] Extend `packages/api/src/games/ludo/service.ts`'s `createMatch`/
   `joinMatch` with an optional `coinTier` parameter: validates seat
   balances, debits entry fees, creates the escrow row, all inside the
   existing creation transaction.
-- [ ] Extend `processCommand`'s match-finished transition to credit payouts
+- [x] Extend `processCommand`'s match-finished transition to credit payouts
   and rake per the 2p/4p rules above, marking escrow `paid_out`, in the
   same transaction as the finish.
-- [ ] Add a refund path callable from task 19's timeout sweeper (or extend
+- [x] Add a refund path callable from task 19's timeout sweeper (or extend
   it directly if task 19's sweeper module is the right integration point —
   read `packages/api/src/games/ludo/` task 19's sweeper file before
   choosing where this lives) crediting refunds and marking escrow
   `refunded`.
-- [ ] Extend `packages/api/src/games/ludo/matchmaking-service.ts`/rooms
+- [x] Extend `packages/api/src/games/ludo/matchmaking-service.ts`/rooms
   service (tasks 20/21) call sites so a coin-stake ticket/room passes
   `coinTier` through to `createMatch` rather than duplicating the escrow
   transaction logic.
-- [ ] Add `packages/api/src/games/ludo/coin-tables.test.ts` covering: 2p
+- [x] Add `packages/api/src/games/ludo/coin-tables.test.ts` covering: 2p
   payout math, 4p 70/25 payout math (asserting the rake nets to 5% of
   pot), insufficient-balance rejection before match creation, refund on a
   simulated timeout, and a concurrency test proving two simultaneous
   resolution/refund attempts for the same match never double-pay or
   double-refund.
 
+### Implementation notes
+
+- `createMatch`/`joinMatch` do not literally share one SQL transaction with
+  the economy store's debit/escrow writes (`LudoStore` and
+  `LudoEconomyStore` are separate Drizzle stores, each opening its own
+  `db.transaction()` — true cross-store atomicity would require a deeper
+  store refactor out of this task's scope). Instead: the balance check +
+  debit + escrow-create run *before* the match/player rows are written (so
+  an insufficient-balance rejection never touches the ludo store at all),
+  and a compensating refund (`coin_table_entry_rollback` idempotency key)
+  runs if the subsequent match/seat write throws. Every debit/credit is
+  idempotent per `(matchId, subject, reason)`, which is what actually makes
+  concurrent resolution/refund attempts safe (proven by
+  `coin-tables.test.ts`'s two concurrency tests), not locking.
+- Rake is never credited to any subject's wallet (it is simply the gross
+  pot minus what was credited to the winner/placements) — matches this
+  task's Acceptance Criteria wording exactly ("unaccounted-for by any
+  player credit").
+- `ludo_matchmaking_tickets`/`ludo_rooms` gained a nullable `coin_tier`
+  column (migration `0008_boring_omega_sentinel.sql`, generated only —
+  never pushed) so a coin-stake ticket/room can remember its tier between
+  creation and the deferred match-formation step; matchmaking groups
+  tickets by `(mode, seatTarget, coinTier)` and never bot-fills a
+  coin-stake group (a bot has no wallet to pay an entry fee from).
+- `getMatchState`/`getMatchView` gained an optional `dependencies` param so
+  a client polling a match that lazily times out into `abandoned` can also
+  trigger that match's refund, not only the Cron sweeper.
+- To keep `service.ts` under the repo's 800-line max-file-lines pre-commit
+  check after this task's additions, three pieces were split into their own
+  files (behavior unchanged, pure extraction): coin-stake entry/escrow
+  helpers (`coin-stake.ts`), the shared `LudoServiceDependencies`/
+  `LudoCommandResult` types (`service-types.ts`, to avoid a circular import
+  between `service.ts` and `coin-stake.ts`), and the lazy-timeout/Cron-sweep
+  logic (`sweep.ts`); `appendEvents`/`publishMatchView` moved into the
+  existing `match-view.ts`. `service.ts` re-exports `LudoCommandResult`,
+  `LudoServiceDependencies`, `LUDO_SWEEP_BATCH_LIMIT`, and `sweepTimeouts`
+  so no external call site's import path changed.
+
 ## Files Touched
 
 - `packages/api/src/games/ludo/service.ts`
 - `packages/api/src/games/ludo/matchmaking-service.ts` (or task 20/21's
   actual filename — wire the coin-tier pass-through)
+- `packages/api/src/games/ludo/room-service.ts` (room-side coin-tier
+  pass-through)
 - `packages/api/src/games/ludo/routes.ts` (accept `coinTier` on the
   relevant create/matchmaking routes)
+- `packages/api/src/games/ludo/cron-routes.ts` (thread `economyStore` into
+  the sweeper so an abandoned coin-stake match's refund fires from Cron)
 - `packages/api/src/games/ludo/coin-tables.test.ts`
+- `packages/api/src/games/ludo/coin-stake.ts`, `service-types.ts`,
+  `sweep.ts` (new — pure extraction from `service.ts` to stay under the
+  max-file-lines limit; see Implementation notes)
+- `packages/api/src/games/ludo/match-view.ts` (gained `appendEvents`/
+  `publishMatchView`, moved from `service.ts`)
+- Small necessary additions beyond the list above, all covered by
+  `bun run typecheck`/`bun run check`/the existing suites plus this task's
+  new tests: `errors.ts` (`LudoInsufficientBalanceError`,
+  `LudoCoinTierInvalidError`), `contracts.ts`/`validation.ts`/`wire.ts`
+  (optional `coinTier`/`coin_tier` on the create-match command and the
+  ticket/room request+wire shapes), `store.ts`/`drizzle-store.ts` (a
+  `coinTier` field on the ticket/room row types, matching the new schema
+  column), `packages/db/src/schema.ts` + a generated-only migration
+  (`migrations/0008_boring_omega_sentinel.sql`) adding a nullable
+  `coin_tier` column to `ludo_matchmaking_tickets`/`ludo_rooms` — needed
+  because a coin-stake ticket/room must remember its tier between creation
+  and the deferred match-formation step.
 
 ## Acceptance Criteria (objective)
 

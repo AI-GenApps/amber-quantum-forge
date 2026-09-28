@@ -1,4 +1,5 @@
 import type { LudoEnvironment, LudoMode } from "./contracts";
+import type { LudoCoinTableTier } from "./economy-config";
 
 export const LUDO_STORE_APP_ID = "ludo" as const;
 export const LUDO_STATE_SCHEMA_VERSION = 1 as const;
@@ -59,6 +60,7 @@ export interface LudoMatchmakingTicketRow {
   seatTarget: number;
   status: "searching" | "matched" | "cancelled" | "expired";
   matchedMatchId: string | null;
+  coinTier: LudoCoinTableTier | null;
   createdAt: string;
   expiresAt: string;
 }
@@ -70,6 +72,7 @@ export interface LudoRoomRow {
   mode: LudoMode;
   seatTarget: number;
   matchId: string | null;
+  coinTier: LudoCoinTableTier | null;
   createdAt: string;
   expiresAt: string;
 }

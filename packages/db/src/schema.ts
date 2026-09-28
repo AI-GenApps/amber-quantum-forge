@@ -342,6 +342,10 @@ export const ludoMatchmakingTickets = pgTable(
     seatTarget: integer("seat_target").notNull(),
     status: text("status").notNull(),
     matchedMatchId: text("matched_match_id"),
+    // Coin-stake table tier (task 26c). Null for a free-play ticket; a
+    // coin-stake ticket is matched only against other tickets of the same
+    // tier (see matchmaking-service.ts's grouping) and never bot-filled.
+    coinTier: text("coin_tier"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     expiresAt: timestamp("expires_at").notNull(),
   },
@@ -360,6 +364,10 @@ export const ludoMatchmakingTickets = pgTable(
       "ludo_matchmaking_tickets_status_check",
       sql`"status" IN ('searching', 'matched', 'cancelled', 'expired')`,
     ),
+    check(
+      "ludo_matchmaking_tickets_coin_tier_check",
+      sql`"coin_tier" IS NULL OR "coin_tier" IN ('low', 'mid', 'high')`,
+    ),
   ],
 );
 
@@ -373,12 +381,20 @@ export const ludoRooms = pgTable(
     mode: text("mode").notNull(),
     seatTarget: integer("seat_target").notNull(),
     matchId: text("match_id"),
+    // Coin-stake table tier (task 26c), remembered from room creation until
+    // the room's first join forms the underlying match. Null for a
+    // free-play room.
+    coinTier: text("coin_tier"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     expiresAt: timestamp("expires_at").notNull(),
   },
   (table) => [
     primaryKey({ columns: [table.appId, table.environment, table.roomCode] }),
     check("ludo_rooms_seat_target_check", sql`"seat_target" IN (2, 4)`),
+    check(
+      "ludo_rooms_coin_tier_check",
+      sql`"coin_tier" IS NULL OR "coin_tier" IN ('low', 'mid', 'high')`,
+    ),
   ],
 );
 

@@ -213,6 +213,7 @@ function rowToTicket(row: Record<string, unknown>): LudoMatchmakingTicketRow {
     seatTarget: row.seatTarget as number,
     status: row.status as LudoMatchmakingTicketRow["status"],
     matchedMatchId: (row.matchedMatchId as string | null) ?? null,
+    coinTier: (row.coinTier as LudoMatchmakingTicketRow["coinTier"]) ?? null,
     createdAt: iso(row.createdAt),
     expiresAt: iso(row.expiresAt),
   };
@@ -226,6 +227,7 @@ function rowToRoom(row: Record<string, unknown>): LudoRoomRow {
     mode: row.mode as LudoRoomRow["mode"],
     seatTarget: row.seatTarget as number,
     matchId: (row.matchId as string | null) ?? null,
+    coinTier: (row.coinTier as LudoRoomRow["coinTier"]) ?? null,
     createdAt: iso(row.createdAt),
     expiresAt: iso(row.expiresAt),
   };
@@ -451,6 +453,7 @@ async function syncTickets(
       seatTarget: row.seatTarget,
       status: row.status,
       matchedMatchId: row.matchedMatchId,
+      coinTier: row.coinTier,
       createdAt: toDate(row.createdAt),
       expiresAt: toDate(row.expiresAt),
     };
@@ -499,6 +502,7 @@ async function syncRooms(
       mode: row.mode,
       seatTarget: row.seatTarget,
       matchId: row.matchId,
+      coinTier: row.coinTier,
       createdAt: toDate(row.createdAt),
       expiresAt: toDate(row.expiresAt),
     };

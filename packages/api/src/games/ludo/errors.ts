@@ -27,7 +27,9 @@ export type LudoErrorCode =
   | "ludo_xp_daily_cap_exceeded"
   | "ludo_xp_claim_implausible"
   | "ludo_daily_reward_already_claimed"
-  | "ludo_daily_reward_invalid";
+  | "ludo_daily_reward_invalid"
+  | "ludo_insufficient_balance"
+  | "ludo_coin_tier_invalid";
 
 export class LudoError extends Error {
   readonly diagnosticId: string;
@@ -227,5 +229,31 @@ export class LudoDailyRewardAlreadyClaimedError extends LudoCommandError {
       "ludo_daily_reward_already_claimed",
       "The daily reward has already been claimed today",
     );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Coin-stake table rejection paths (task 26c).
+// ---------------------------------------------------------------------------
+
+/** `createMatch`/`joinMatch` for a coin-stake table rejected because the
+ * subject's coin balance is below the tier's entry fee. Checked (and, for
+ * `joinMatch`, debited) before the match is created/the seat is filled, so
+ * a rejected caller never leaves behind an escrow row or a partial debit. */
+export class LudoInsufficientBalanceError extends LudoCommandError {
+  constructor() {
+    super(
+      422,
+      "ludo_insufficient_balance",
+      "The subject's coin balance is insufficient for this table's entry fee",
+    );
+  }
+}
+
+/** `createMatch` requested a `coinTier` that is not a known coin-table tier
+ * in the active economy config. */
+export class LudoCoinTierInvalidError extends LudoCommandError {
+  constructor(tier: string) {
+    super(422, "ludo_coin_tier_invalid", `Unknown coin table tier: ${tier}`);
   }
 }

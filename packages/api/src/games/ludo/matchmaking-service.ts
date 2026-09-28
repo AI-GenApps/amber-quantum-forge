@@ -13,6 +13,7 @@
 /// bot players and starts the match immediately.
 import { randomUUID } from "node:crypto";
 import type { LudoEnvironment, LudoMatchmakingTicket, LudoMode } from "./contracts";
+import type { LudoCoinTableTier } from "./economy-config";
 import {
   LudoTicketForbiddenError,
   LudoTicketNotCancellableError,
@@ -38,6 +39,11 @@ export interface CreateTicketInput {
   mode: LudoMode;
   seatTarget: number;
   idempotencyKey: string;
+  /** Coin-stake table tier (task 26c). Omitted for a free-play ticket. A
+   * coin-stake ticket is only ever FIFO-matched against other tickets of
+   * the same `(mode, seatTarget, coinTier)` — see `sweepMatchmaking`'s
+   * grouping — and is never bot-filled (a bot cannot pay an entry fee). */
+  coinTier?: LudoCoinTableTier;
 }
 
 export interface CreateTicketResult {
@@ -54,6 +60,7 @@ function toContractTicket(row: LudoMatchmakingTicketRow): LudoMatchmakingTicket 
     seatTarget: row.seatTarget,
     status: row.status,
     matchedMatchId: row.matchedMatchId,
+    coinTier: row.coinTier,
     createdAt: row.createdAt,
     expiresAt: row.expiresAt,
   };
@@ -91,7 +98,8 @@ export async function createTicket(
         t.subject === input.subject &&
         t.status === "searching" &&
         t.mode === input.mode &&
-        t.seatTarget === input.seatTarget,
+        t.seatTarget === input.seatTarget &&
+        (t.coinTier ?? undefined) === input.coinTier,
     );
     if (existing) return { ticket: toContractTicket(existing), idempotent: true };
 
@@ -104,6 +112,7 @@ export async function createTicket(
       seatTarget: input.seatTarget,
       status: "searching",
       matchedMatchId: null,
+      coinTier: input.coinTier ?? null,
       createdAt: now,
       expiresAt: computeTicketExpiry(now),
     };
@@ -183,6 +192,7 @@ async function formMatch(
       mode: first.mode,
       seats,
       idempotencyKey: `matchmaking:${first.ticketId}`,
+      coinTier: first.coinTier ?? undefined,
     },
     "matchmaking",
     dependencies,
@@ -250,9 +260,11 @@ export async function sweepMatchmaking(
       .slice(0, limit),
   );
 
+  // Grouped by (mode, seatTarget, coinTier) so a coin-stake ticket is never
+  // FIFO-matched against a free-play one, or against a different tier.
   const groups = new Map<string, LudoMatchmakingTicketRow[]>();
   for (const ticket of candidates) {
-    const key = `${ticket.mode}\u0000${ticket.seatTarget}`;
+    const key = `${ticket.mode}\u0000${ticket.seatTarget}\u0000${ticket.coinTier ?? ""}`;
     const list = groups.get(key);
     if (list) list.push(ticket);
     else groups.set(key, [ticket]);
@@ -272,7 +284,10 @@ export async function sweepMatchmaking(
       matched += 1;
     }
 
-    if (remaining.length > 0) {
+    // A coin-stake group is never bot-filled: a bot has no wallet to debit
+    // an entry fee from, so a stalled coin-stake ticket just keeps
+    // searching rather than being seated against an unpaid bot.
+    if (remaining.length > 0 && remaining[0].coinTier === null) {
       const oldest = remaining[0];
       const ageMs = nowMs - Date.parse(oldest.createdAt);
       if (ageMs >= botFillWindowMs) {

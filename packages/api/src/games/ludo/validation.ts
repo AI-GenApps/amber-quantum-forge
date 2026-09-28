@@ -6,6 +6,7 @@ import type {
   LudoJoinRoomRequest,
   LudoMode,
 } from "./contracts";
+import type { LudoCoinTableTier } from "./economy-config";
 
 export type LudoValidationResult<T> = { ok: true; value: T } | { ok: false; error: string };
 
@@ -37,6 +38,16 @@ function isSeatTarget(value: unknown): value is number {
   return value === 2 || value === 4;
 }
 
+/** `coin_tier` is optional on every request that accepts it; `undefined`
+ * means free-play, so this only validates a *present* value. */
+function parseOptionalCoinTier(
+  value: unknown,
+): LudoValidationResult<LudoCoinTableTier | undefined> {
+  if (value === undefined || value === null) return ok(undefined);
+  if (value === "low" || value === "mid" || value === "high") return ok(value);
+  return fail("ludo_coin_tier_invalid");
+}
+
 function isTicketId(value: unknown): value is string {
   return typeof value === "string" && /^[A-Za-z0-9_-]{1,64}$/.test(value);
 }
@@ -64,7 +75,9 @@ export function parseLudoCommand(value: unknown): LudoValidationResult<LudoComma
       if (!isMode(value.mode)) return fail("ludo_mode_invalid");
       if (typeof seats !== "number" || !Number.isInteger(seats) || seats < 2 || seats > 4)
         return fail("ludo_seats_invalid");
-      return ok({ type, idempotencyKey, mode: value.mode, seats });
+      const coinTier = parseOptionalCoinTier(value.coin_tier);
+      if (!coinTier.ok) return coinTier;
+      return ok({ type, idempotencyKey, mode: value.mode, seats, coinTier: coinTier.value });
     }
     case "join_match":
     case "roll_dice":
@@ -95,7 +108,9 @@ export function parseCreateMatchmakingTicketRequest(
   if (!isMode(mode)) return fail("ludo_mode_invalid");
   if (!isSeatTarget(seatTarget)) return fail("ludo_seat_target_invalid");
   if (!isIdempotencyKey(idempotencyKey)) return fail("ludo_idempotency_key_invalid");
-  return ok({ mode, seatTarget, idempotencyKey });
+  const coinTier = parseOptionalCoinTier(value.coin_tier);
+  if (!coinTier.ok) return coinTier;
+  return ok({ mode, seatTarget, idempotencyKey, coinTier: coinTier.value });
 }
 
 export function parseTicketIdParam(value: string): LudoValidationResult<string> {
@@ -113,7 +128,9 @@ export function parseCreateRoomRequest(
   if (!isMode(mode)) return fail("ludo_mode_invalid");
   if (!isSeatTarget(seatTarget)) return fail("ludo_seat_target_invalid");
   if (!isIdempotencyKey(idempotencyKey)) return fail("ludo_idempotency_key_invalid");
-  return ok({ mode, seatTarget, idempotencyKey });
+  const coinTier = parseOptionalCoinTier(value.coin_tier);
+  if (!coinTier.ok) return coinTier;
+  return ok({ mode, seatTarget, idempotencyKey, coinTier: coinTier.value });
 }
 
 /** `POST /:environment/rooms/:roomCode/join` request body. */
