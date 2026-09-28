@@ -484,14 +484,23 @@ enum _FriendsTab { create, join }
 /// minimal form (ruleset/player-count for create, a room-code field for
 /// join).
 class FriendsSetupSheet extends StatefulWidget {
-  const FriendsSetupSheet({super.key});
+  const FriendsSetupSheet({super.key, this.initialJoinCode});
 
-  static Future<LudoFriendsChoice?> show(BuildContext context) {
+  /// A room code to pre-fill and land on the Join tab with — set by a
+  /// routed warm-start/cold-launch invite link (task 26x's
+  /// `ludo_deep_link_router.dart`). `null` (the default) opens on the
+  /// Create tab with an empty code field, as before.
+  final String? initialJoinCode;
+
+  static Future<LudoFriendsChoice?> show(
+    BuildContext context, {
+    String? initialJoinCode,
+  }) {
     return showModalBottomSheet<LudoFriendsChoice>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => const FriendsSetupSheet(),
+      builder: (_) => FriendsSetupSheet(initialJoinCode: initialJoinCode),
     );
   }
 
@@ -500,10 +509,14 @@ class FriendsSetupSheet extends StatefulWidget {
 }
 
 class _FriendsSetupSheetState extends State<FriendsSetupSheet> {
-  _FriendsTab _tab = _FriendsTab.create;
+  late _FriendsTab _tab = widget.initialJoinCode == null
+      ? _FriendsTab.create
+      : _FriendsTab.join;
   LudoRuleset _ruleset = LudoRuleset.classic;
   int _playerCount = 4;
-  final _codeController = TextEditingController();
+  late final _codeController = TextEditingController(
+    text: widget.initialJoinCode ?? '',
+  );
 
   @override
   void dispose() {
@@ -620,16 +633,37 @@ class _FriendsSetupSheetState extends State<FriendsSetupSheet> {
     const SizedBox(height: 8),
     ConstrainedBox(
       constraints: const BoxConstraints(minHeight: _minTapTarget),
-      child: TextField(
-        key: const Key('friends-setup-code-field'),
-        controller: _codeController,
-        textCapitalization: TextCapitalization.characters,
-        style: LudoTextStyles.body,
-        decoration: const InputDecoration(
-          hintText: 'Enter code',
-          border: OutlineInputBorder(),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: LudoThemeTokens.backgroundDeepBlue,
+          borderRadius: BorderRadius.circular(LudoThemeTokens.radiusSm),
+          border: Border.all(color: LudoThemeTokens.gold, width: 2),
         ),
-        onSubmitted: (_) => _submitJoin(),
+        child: TextField(
+          key: const Key('friends-setup-code-field'),
+          controller: _codeController,
+          textCapitalization: TextCapitalization.characters,
+          textAlign: TextAlign.center,
+          style: LudoTextStyles.displaySmall.copyWith(
+            fontSize: 22,
+            letterSpacing: 4,
+          ),
+          cursorColor: LudoThemeTokens.gold,
+          decoration: InputDecoration(
+            hintText: 'ENTER CODE',
+            hintStyle: LudoTextStyles.body.copyWith(
+              color: LudoThemeTokens.textOnDark.withValues(alpha: 0.4),
+              letterSpacing: 2,
+            ),
+            filled: false,
+            border: InputBorder.none,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: LudoThemeTokens.spaceMd,
+              vertical: LudoThemeTokens.spaceSm,
+            ),
+          ),
+          onSubmitted: (_) => _submitJoin(),
+        ),
       ),
     ),
     const SizedBox(height: 20),

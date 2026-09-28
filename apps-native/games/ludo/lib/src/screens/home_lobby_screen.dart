@@ -16,12 +16,15 @@
 /// any kind appears here, matching task 07's product decision.
 library;
 
+import 'dart:async' show unawaited;
+
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:ludo_rules/ludo_rules.dart' show LudoColor, LudoRuleset;
-import 'package:share_plus/share_plus.dart' show Share;
 
 import '../app.dart' show ludoIdentity;
 import '../assets/ludo_art_manifest.dart' show LudoArtManifest, LudoArtSlot;
+import '../net/ludo_deep_link_router.dart' show LudoDeepLinkRouter;
 import '../net/ludo_engine_state_codec.dart'
     show ludoEngineStateFromWire, ludoSubjectIsBot;
 import '../net/ludo_match_models.dart' as ludo_wire;
@@ -29,14 +32,19 @@ import '../net/ludo_match_state_source.dart'
     show LudoOnlineMatchSession, createLudoMatchStateSource;
 import '../net/ludo_online_client.dart';
 import '../net/ludo_online_controller.dart';
+import '../net/ludo_online_preview_mode.dart' show LudoOnlinePreviewMode;
+import '../net/ludo_preview_online.dart' show createLudoPreviewOnlineClient;
+import '../net/ludo_wire_json.dart' show LudoApiException;
 import '../state/ludo_local_save.dart';
 import '../state/ludo_profile_settings.dart';
 import '../state/ludo_sound_settings.dart';
 import '../telemetry/ludo_telemetry.dart';
 import '../theme/ludo_text_styles.dart';
 import '../theme/ludo_theme_tokens.dart';
+import '../widgets/ludo_3d_button.dart' show Ludo3dButton;
 import '../widgets/ludo_avatar.dart'
     show LudoAvatarMotif, LudoAvatarView, ludoAvatars;
+import '../widgets/ludo_dialog_frame.dart';
 import '../widgets/ludo_panel.dart';
 import 'game_board_screen.dart';
 import 'matchmaking_search_screen.dart';
@@ -211,8 +219,16 @@ Future<void> startLudoOnlineFriendsFlow(
   /// tests (never a real platform channel, which doesn't exist in a
   /// `flutter test` host process).
   Future<void> Function(String inviteLink)? shareInviteLink,
+
+  /// Pre-fills the Join tab with a room code and opens on it directly —
+  /// set by a routed invite link (task 26x's `ludo_deep_link_router.dart`).
+  /// `null` (the default) opens on the Create tab as before.
+  String? initialJoinCode,
 }) async {
-  final choice = await FriendsSetupSheet.show(context);
+  final choice = await FriendsSetupSheet.show(
+    context,
+    initialJoinCode: initialJoinCode,
+  );
   if (choice == null || !context.mounted) return;
   switch (choice) {
     case LudoFriendsCreateChoice(:final mode, :final seatTarget):
@@ -220,23 +236,21 @@ Future<void> startLudoOnlineFriendsFlow(
         mode: mode,
         seatTarget: seatTarget,
       );
-      // Best-effort native share sheet — a platform-channel failure (no
-      // mock installed, or the user simply dismisses the sheet) is not an
-      // error condition worth surfacing; the room code stays valid and
-      // shareable by other means (read aloud, copied) regardless.
-      try {
-        await (shareInviteLink ?? Share.share)(created.inviteLink);
-      } on Object {
-        // Swallowed intentionally; see comment above.
-      }
       if (!context.mounted) return;
       final wait = onlineClient.onlineController.awaitRoomFilled(
         roomCode: created.roomCode,
       );
+      // Task 26x: the room code is shown on-screen with its own copy/share
+      // affordances (`MatchmakingSearchScreen`'s `_RoomCodeChip`) instead
+      // of blindly firing the native share sheet the moment the room is
+      // created — the player decides whether/how to share it.
       final ready = await MatchmakingSearchScreen.show(
         context,
         wait,
         title: 'Waiting for a friend...',
+        roomCode: created.roomCode,
+        inviteLink: created.inviteLink,
+        shareInviteLink: shareInviteLink,
       );
       if (ready == null || !context.mounted) return;
       await _launchOnlineMatch(
@@ -247,9 +261,16 @@ Future<void> startLudoOnlineFriendsFlow(
         telemetry: telemetry,
       );
     case LudoFriendsJoinChoice(:final roomCode):
-      final ready = await onlineClient.onlineController.joinRoom(
-        roomCode: roomCode,
-      );
+      final LudoOnlineMatchReadyResult ready;
+      try {
+        ready = await onlineClient.onlineController.joinRoom(
+          roomCode: roomCode,
+        );
+      } on Object catch (error) {
+        if (!context.mounted) return;
+        await _showRoomJoinError(context, error);
+        return;
+      }
       if (!context.mounted) return;
       await _launchOnlineMatch(
         context,
@@ -259,6 +280,50 @@ Future<void> startLudoOnlineFriendsFlow(
         telemetry: telemetry,
       );
   }
+}
+
+/// Surfaces a failed room join (invalid code, expired room, or a
+/// network/server error) as a themed [LudoDialogFrame] dialog instead of
+/// letting the exception propagate unhandled (task 26x: the documented gap
+/// left by task 26, which never wrapped `joinRoom` in a `try`/`catch` at
+/// all).
+Future<void> _showRoomJoinError(BuildContext context, Object error) async {
+  final message = switch (error) {
+    LudoApiException(code: 'ludo_room_not_found') =>
+      "That room code doesn't exist. Double-check it and try again.",
+    LudoApiException(code: 'ludo_room_expired') =>
+      'This invite has expired. Ask your friend for a new one.',
+    _ => "Couldn't join that room. Check your connection and try again.",
+  };
+  await showDialog<void>(
+    context: context,
+    builder: (dialogContext) => Dialog(
+      backgroundColor: Colors.transparent,
+      child: LudoDialogFrame(
+        title: 'Join failed',
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              message,
+              style: LudoTextStyles.body,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: LudoThemeTokens.spaceLg),
+            SizedBox(
+              width: double.infinity,
+              child: Ludo3dButton(
+                key: const Key('room-join-error-ok-button'),
+                semanticLabel: 'OK',
+                onPressed: () => Navigator.of(dialogContext).pop(),
+                child: const Text('OK'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }
 
 /// Drives the "Online" tile: ruleset/player-count pick, then a cancelable
@@ -435,13 +500,65 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
     if (widget.onlineClient == null) {
       _loadOnlineClient();
     }
+    // Task 26x: routes a room code from a cold-launch or warm-start invite
+    // link (`ludo_deep_link_router.dart`) into the join-by-code flow. This
+    // screen is the only registrant; a code routed before it mounts is
+    // held and delivered on this call (see the router's own doc comment).
+    LudoDeepLinkRouter.instance.register(_handleInviteRoomCode);
+  }
+
+  @override
+  void dispose() {
+    LudoDeepLinkRouter.instance.register(null);
+    super.dispose();
+  }
+
+  void _handleInviteRoomCode(String roomCode) {
+    final client = _onlineClient;
+    // No online client yet (still resolving, or never available in this
+    // build): silently drop the invite rather than crash — same "coming
+    // soon" degradation the disabled tiles already show for a
+    // config-absent build.
+    if (client == null || !mounted) return;
+    unawaited(
+      startLudoOnlineFriendsFlow(
+        context,
+        onlineClient: client,
+        telemetry: widget.telemetry,
+        initialJoinCode: roomCode,
+      ),
+    );
   }
 
   Future<void> _loadOnlineClient() async {
+    // Debug-only online preview mode (task 26x): armed via the settings
+    // toggle or a long-press on the lobby logo (see below), it replaces
+    // the production loader with the fake-transport-backed preview
+    // client for the remainder of this app session. `kDebugMode`-guarded
+    // so this branch is unreachable in a release build even though
+    // `LudoOnlinePreviewMode.isArmed` itself always reads `false` there
+    // (nothing ever arms it outside a debug build either).
+    if (kDebugMode && LudoOnlinePreviewMode.isArmed) {
+      setState(() => _loadedOnlineClient = createLudoPreviewOnlineClient());
+      return;
+    }
     final loader = widget.loadOnlineClient ?? createLudoOnlineClientForApp;
     final client = await loader();
     if (!mounted) return;
     setState(() => _loadedOnlineClient = client);
+  }
+
+  /// Long-press entry point for the debug-only online preview mode (task
+  /// 26x), armed the same way the settings-screen toggle does. Compiled
+  /// out of a release build by the `kDebugMode` guard on the
+  /// `GestureDetector` that calls this (below) — not merely hidden behind
+  /// a runtime flag.
+  void _armPreviewModeFromLogo() {
+    LudoOnlinePreviewMode.arm();
+    unawaited(_loadOnlineClient());
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Online preview mode armed')));
   }
 
   /// The resolved online client, if online play is available. `null`
@@ -555,10 +672,33 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
                       child: LayoutBuilder(
                         builder: (context, constraints) {
                           final width = constraints.maxWidth * 0.8;
-                          return LudoArtSlot(
+                          final logo = LudoArtSlot(
                             slot: LudoArtManifest.logoWideSlot,
                             fallbackPainter: LudoArtManifest.logoWide,
                             size: Size(width, width * 54 / 200),
+                          );
+                          // Debug-only online preview mode entry point
+                          // (task 26x), the same shape as the settings
+                          // toggle above: `kDebugMode`-guarded here, at
+                          // the call site that attaches the gesture, so a
+                          // release build never wraps the logo in a
+                          // `GestureDetector` at all — not merely a
+                          // runtime flag hiding it.
+                          if (!kDebugMode) return logo;
+                          // `container: true`: a separate SemanticsNode
+                          // boundary so this debug-only button's own label
+                          // never merges upward into (and so never
+                          // overwrites) the enclosing "Ludo Vortex"
+                          // wordmark label above.
+                          return Semantics(
+                            container: true,
+                            button: true,
+                            label: 'Debug: arm online preview mode',
+                            child: GestureDetector(
+                              key: const Key('lobby-logo-preview-trigger'),
+                              onLongPress: _armPreviewModeFromLogo,
+                              child: logo,
+                            ),
                           );
                         },
                       ),

@@ -8,6 +8,8 @@ library;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show Clipboard, ClipboardData;
+import 'package:share_plus/share_plus.dart' show Share;
 
 import '../net/ludo_online_controller.dart';
 import '../theme/ludo_background_painter.dart';
@@ -15,6 +17,7 @@ import '../theme/ludo_text_styles.dart';
 import '../theme/ludo_theme_tokens.dart';
 import '../widgets/ludo_3d_button.dart';
 import '../widgets/ludo_panel.dart';
+import '../widgets/ludo_searching_indicator.dart' show LudoSearchingIndicator;
 
 const _minTapTarget = 48.0;
 
@@ -25,6 +28,9 @@ class MatchmakingSearchScreen extends StatefulWidget {
     super.key,
     required this.wait,
     this.title = 'Finding players...',
+    this.roomCode,
+    this.inviteLink,
+    this.shareInviteLink,
   });
 
   final LudoOnlineWait wait;
@@ -34,14 +40,38 @@ class MatchmakingSearchScreen extends StatefulWidget {
   /// friend...") using the exact same screen.
   final String title;
 
+  /// A just-created room's code, shown as a legible chip with copy/share
+  /// affordances (task 26x's "clearly legible room code" polish target)
+  /// above the searching indicator. `null` (the default) for a
+  /// matchmaking search, which has no room code to show.
+  final String? roomCode;
+
+  /// The full shareable invite link backing [roomCode]'s share button.
+  /// Required whenever [roomCode] is set.
+  final String? inviteLink;
+
+  /// Test seam for the share button: overrides the native share-sheet
+  /// call. `null` (the default) in production, where it calls
+  /// `Share.share`.
+  final Future<void> Function(String inviteLink)? shareInviteLink;
+
   static Future<LudoOnlineMatchReadyResult?> show(
     BuildContext context,
     LudoOnlineWait wait, {
     String title = 'Finding players...',
+    String? roomCode,
+    String? inviteLink,
+    Future<void> Function(String inviteLink)? shareInviteLink,
   }) {
     return Navigator.of(context).push<LudoOnlineMatchReadyResult?>(
       MaterialPageRoute(
-        builder: (_) => MatchmakingSearchScreen(wait: wait, title: title),
+        builder: (_) => MatchmakingSearchScreen(
+          wait: wait,
+          title: title,
+          roomCode: roomCode,
+          inviteLink: inviteLink,
+          shareInviteLink: shareInviteLink,
+        ),
       ),
     );
   }
@@ -54,6 +84,7 @@ class MatchmakingSearchScreen extends StatefulWidget {
 class _MatchmakingSearchScreenState extends State<MatchmakingSearchScreen> {
   bool _cancelling = false;
   bool _failed = false;
+  bool _justCopied = false;
 
   @override
   void initState() {
@@ -73,6 +104,26 @@ class _MatchmakingSearchScreenState extends State<MatchmakingSearchScreen> {
       } else {
         setState(() => _failed = true);
       }
+    }
+  }
+
+  Future<void> _copyCode(String code) async {
+    await Clipboard.setData(ClipboardData(text: code));
+    if (!mounted) return;
+    setState(() => _justCopied = true);
+    unawaited(
+      Future<void>.delayed(const Duration(seconds: 2)).then((_) {
+        if (mounted) setState(() => _justCopied = false);
+      }),
+    );
+  }
+
+  Future<void> _shareLink(String inviteLink) async {
+    try {
+      await (widget.shareInviteLink ?? Share.share)(inviteLink);
+    } on Object {
+      // Best-effort, same as the auto-share on room create; a dismissed
+      // or unavailable share sheet is not an error.
     }
   }
 
@@ -115,14 +166,18 @@ class _MatchmakingSearchScreenState extends State<MatchmakingSearchScreen> {
   }
 
   List<Widget> _searchingContent(BuildContext context) => [
-    const SizedBox(
-      width: 56,
-      height: 56,
-      child: CircularProgressIndicator(
-        strokeWidth: 4,
-        color: LudoThemeTokens.gold,
+    if (widget.roomCode case final code?) ...[
+      _RoomCodeChip(
+        code: code,
+        justCopied: _justCopied,
+        onCopy: () => unawaited(_copyCode(code)),
+        onShare: widget.inviteLink == null
+            ? null
+            : () => unawaited(_shareLink(widget.inviteLink!)),
       ),
-    ),
+      const SizedBox(height: 20),
+    ],
+    const LudoSearchingIndicator(),
     const SizedBox(height: 20),
     Text(
       widget.title,
@@ -172,4 +227,107 @@ class _MatchmakingSearchScreenState extends State<MatchmakingSearchScreen> {
       ),
     ),
   ];
+}
+
+/// A legible room-code display with copy and native-share affordances
+/// (task 26x's "clearly legible room code" polish target), shown above the
+/// searching indicator on the room-fill wait screen.
+class _RoomCodeChip extends StatelessWidget {
+  const _RoomCodeChip({
+    required this.code,
+    required this.justCopied,
+    required this.onCopy,
+    this.onShare,
+  });
+
+  final String code;
+  final bool justCopied;
+  final VoidCallback onCopy;
+  final VoidCallback? onShare;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          'Room code',
+          style: LudoTextStyles.body.copyWith(
+            color: LudoThemeTokens.textOnDark.withValues(alpha: 0.7),
+          ),
+        ),
+        const SizedBox(height: 8),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: LudoThemeTokens.backgroundDeepBlue,
+            borderRadius: BorderRadius.circular(LudoThemeTokens.radiusSm),
+            border: Border.all(color: LudoThemeTokens.gold, width: 2),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: LudoThemeTokens.spaceMd,
+              vertical: LudoThemeTokens.spaceSm,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  code,
+                  style: LudoTextStyles.displaySmall.copyWith(
+                    fontSize: 22,
+                    letterSpacing: 4,
+                  ),
+                ),
+                const SizedBox(width: LudoThemeTokens.spaceSm),
+                _RoomCodeIconButton(
+                  key: const Key('room-code-copy-button'),
+                  icon: justCopied ? Icons.check_rounded : Icons.copy_rounded,
+                  semanticLabel: justCopied ? 'Copied' : 'Copy room code',
+                  onPressed: onCopy,
+                ),
+                if (onShare != null)
+                  _RoomCodeIconButton(
+                    key: const Key('room-code-share-button'),
+                    icon: Icons.ios_share_rounded,
+                    semanticLabel: 'Share room code',
+                    onPressed: onShare!,
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _RoomCodeIconButton extends StatelessWidget {
+  const _RoomCodeIconButton({
+    super.key,
+    required this.icon,
+    required this.semanticLabel,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final String semanticLabel;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: semanticLabel,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          minWidth: _minTapTarget,
+          minHeight: _minTapTarget,
+        ),
+        child: IconButton(
+          onPressed: onPressed,
+          icon: Icon(icon, color: LudoThemeTokens.gold),
+        ),
+      ),
+    );
+  }
 }

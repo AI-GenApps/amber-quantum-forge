@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 26x-online-preview-and-polish
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/26-online-lobby-ui]
 estimate: L
@@ -136,44 +136,50 @@ captured evidence judged against the reference screenshots.
 
 ## Implementation Checklist
 
-- [ ] Read tasks 24, 25, 26's task files (Context/Decisions and
+- [x] Read tasks 24, 25, 26's task files (Context/Decisions and
   Implementation Notes) and `git show 4636b11`/`552ea42`/`983a8d6` in full
   before writing code.
-- [ ] Add a debug-only fake `LudoGateway`/`LudoOnlineClient` implementation
+- [x] Add a debug-only fake `LudoGateway`/`LudoOnlineClient` implementation
   and a fake `LudoMatchStateSource` that deterministically script, on real
   timers, every online state listed in (a).
-- [ ] Wire a debug toggle (settings screen, gated to debug builds like task
+- [x] Wire a debug toggle (settings screen, gated to debug builds like task
   12a's demo) and a long-press on the lobby logo as the two entry points
   into preview mode; document both.
-- [ ] Verify the preview mode has no compiled entry point in a release
-  build.
-- [ ] Restyle every online screen/state (room create/join/share,
+- [x] Verify the preview mode has no compiled entry point in a release
+  build. (Confirmed both by grepping the release build's `libapp.so` for
+  the debug-only strings — absent — and by the same `kDebugMode` gate
+  pattern task 12a's demo already uses.)
+- [x] Restyle every online screen/state (room create/join/share,
   matchmaking search, connecting, waiting-for-players, opponent's-turn
   timer, reconnecting, disconnected/offline, match found, bot-filled seat)
   to use `LudoPanel`/`Ludo3dButton`/`RibbonBanner`/bundled fonts — no
-  Material-default styling.
-- [ ] Extend `ludo_deep_link.dart`'s `LudoDeepLinkGateway` interface with
+  Material-default styling. (Also added a themed `LudoSearchingIndicator`
+  replacing the Material `CircularProgressIndicator`, and a room-code chip
+  with copy/share affordances on the room-fill wait screen.)
+- [x] Extend `ludo_deep_link.dart`'s `LudoDeepLinkGateway` interface with
   the live `onLink` stream, add a no-op default, and subscribe lazily only
   from `main.dart`.
-- [ ] Confirm the full existing test suite passes unmodified before adding
+- [x] Confirm the full existing test suite passes unmodified before adding
   new deep-link tests.
-- [ ] Add unit tests for warm-start link routing logic and a widget test
+- [x] Add unit tests for warm-start link routing logic and a widget test
   driving `HomeLobbyScreen` with a fake non-empty link stream into the
   join-by-code flow with the code pre-filled.
-- [ ] Add goldens for every online screen/state listed above; diff old vs.
+- [x] Add goldens for every online screen/state listed above; diff old vs.
   new before committing.
-- [ ] Build, install, and walk every online preview state on serial
+- [x] Build, install, and walk every online preview state on serial
   `RZ8R32EAB7T`; save screenshots + README to
   `.agents/resources/2026-09-28/ludo-visual-qa/26x/`.
-- [ ] View and judge every device screenshot against
+- [x] View and judge every device screenshot against
   `.agents/resources/2026-09-24/ludo-visual-reference/` and
   `.agents/resources/2026-09-19/ludo-reference/`; fix and recapture any
-  screen that misses the bar.
-- [ ] Verify an `adb`-triggered invite link routes into join while the app
+  screen that misses the bar. (The room-code visibility gap found during
+  the first walk was fixed — room-code chip with copy/share buttons added
+  — and recaptured.)
+- [x] Verify an `adb`-triggered invite link routes into join while the app
   is already running; capture evidence.
-- [ ] Update `.agents/games/ludo-vortex/product.md`'s Online
+- [x] Update `.agents/games/ludo-vortex/product.md`'s Online
   section/Modes/Screens tables.
-- [ ] Update `.agents/games/ludo-vortex/assets-index.md`'s device-evidence
+- [x] Update `.agents/games/ludo-vortex/assets-index.md`'s device-evidence
   table with this task's evidence path.
 
 ## Files Touched
@@ -269,6 +275,50 @@ captured evidence judged against the reference screenshots.
 - Economy/wallet/store work (tasks 26a onward).
 - Any change to local (vs Computer / Pass N Play) screens or telemetry.
 - Push notifications for turn alerts (not in v1 scope, per task 26).
+
+## Implementation Note (fix-up pass, filled in during execution)
+
+- An independent verifier caught that the first pass's own evidence
+  `README.md` admitted the opponent's-turn timer ring and the
+  reconnecting/disconnected state were "not separately captured on-device
+  ... given time budget" — a direct miss against this task's own
+  Acceptance Criteria ("every online state above is walked and
+  screenshotted ... with any miss fixed and recaptured before this task is
+  marked complete").
+- Walking those two states surfaced a real, previously-undetected bug, not
+  just a missing screenshot: `PreviewLudoTransport._getMatchView` (the
+  fake `GET .../matches/:id/state` handler) returned its view fields at
+  the JSON body's top level instead of nested under a `match_view` key,
+  which `LudoGateway.getMatchView` requires. Every preview `/state` poll
+  was therefore throwing `LudoProtocolException: Missing field in match
+  view response` — silently, since `PollingMatchStateSource._tick`
+  swallows fetch failures by design — so a preview online match's board
+  never actually received a single live state update after its initial
+  snapshot in *any* prior pass (no opponent-turn hand-off, no
+  server-driven timer deadline ever reached the screen through this
+  route). Fixed by wrapping the response under `match_view`.
+- Added `LudoMatchStateSource.connected` (a `Stream<bool>`, implemented in
+  both `PollingMatchStateSource` and `FirestoreMatchStateSource`) so
+  `game_board_screen.dart` can show a new themed
+  `LudoReconnectingBanner` (`lib/src/widgets/ludo_reconnecting_banner.dart`,
+  reusing `LudoSearchingIndicator` at small scale — no Material banner)
+  while disconnected. The preview transport scripts one deliberate,
+  two-poll disconnect blip per match on a real `Timer`-driven poll cycle
+  (`_PreviewMatch.disconnectSimulated`/`disconnectFailuresRemaining`) so
+  this state is reliably reachable for a device walk.
+- New/updated tests: `test/net/ludo_match_state_source_test.dart`
+  (`connected` transitions on `PollingMatchStateSource`),
+  `test/net/ludo_preview_online_test.dart` (a regression test driving the
+  real `createLudoMatchStateSource` factory against the preview transport
+  — this is what would have caught the `match_view` bug originally),
+  `test/screens/game_board_screen_test.dart` (banner show/hide), and a new
+  golden `test/goldens/reconnecting_banner.png`.
+- Both new states (`16-opponent-turn-timer.png`,
+  `17-reconnecting-banner.png`, `18-reconnected-cleared.png`) were walked
+  and judged on serial `RZ8R32EAB7T` and added to
+  `.agents/resources/2026-09-28/ludo-visual-qa/26x/README.md`; the
+  previously-passing warm-start/cold-start deep-link states were
+  re-verified on the rebuilt app and remain PASS, unaffected by this fix.
 
 ## Commit message
 

@@ -26,6 +26,7 @@
 | Per-task visual QA (12a–12f, 12d-verify, 12g…) | `.agents/resources/2026-09-24/ludo-visual-qa/<task>/`, `.agents/resources/2026-09-25/ludo-visual-qa/` |
 | Full screen walk after overhaul (22 screens) | `.agents/resources/2026-09-24/ludo-visual-qa/12f/` |
 | User feedback capture (board "nowhere close") | `.agents/resources/2026-09-24/ludo-visual-qa/user-feedback-board-1902.png` |
+| Online preview mode walk: room create/join/share, room-code copy/share chip, matchmaking search (themed dice indicator), bot-fill labeling, invalid/expired join errors, live opponent-turn timer ring, reconnecting/reconnected banner, warm-start + cold-start deep links (task 26x) | `.agents/resources/2026-09-28/ludo-visual-qa/26x/` (`README.md` indexes each capture with pass/fail) |
 
 ## Competitor (Ludo King) references
 

@@ -12,21 +12,29 @@
 /// [ensureLudoFirebaseInitialized], [initialLink] swallows any
 /// platform-channel failure rather than throwing.
 ///
-/// [onLink] (the live-link stream) is deliberately **not** wired into any
-/// screen by this task: `package:app_links`'s `uriLinkStream` getter
-/// invokes an `EventChannel`, whose failed-`listen` case (no plugin
-/// registered — the normal state of a `flutter test`/`testWidgets` host
-/// process) is reported by the Flutter services binding directly via
+/// [onLink] (the live-link stream) was deliberately **not** wired into any
+/// screen by task 26: `package:app_links`'s `uriLinkStream` getter invokes
+/// an `EventChannel`, whose failed-`listen` case (no plugin registered —
+/// the normal state of a `flutter test`/`testWidgets` host process) is
+/// reported by the Flutter services binding directly via
 /// `FlutterError.reportError` rather than through this stream's own
 /// `onError` or any synchronously-catchable exception — so subscribing to
-/// it from a widget constructed by *any* existing test (not just this
-/// task's own) turns into a flaky, uncatchable test failure. The OS-level
-/// half of deep-link handling (the Android intent-filter, the iOS
-/// `CFBundleURLTypes` entry — both registered) is real and lets a tapped
-/// invite cold-launch the app; wiring the still-running-app case (a link
-/// tapped while the app is already open) needs a proper platform-channel
-/// mock story across the whole test suite and is left for a follow-up
-/// task rather than risking this one's test stability.
+/// it from a widget constructed by *any* existing test (not just task 26's
+/// own) turns into a flaky, uncatchable test failure.
+///
+/// Task 26x (this task) wires both halves, without reintroducing that
+/// flakiness: `main.dart`'s `wireLudoDeepLinks()` (`ludo_deep_link_bootstrap
+/// .dart`) is the **only** call site that ever touches
+/// [ProductionLudoDeepLinkGateway] — it runs `unawaited`, after `runApp`,
+/// exactly like `ensureLudoFirebaseInitialized()`, and never gates
+/// startup. It publishes a routed room code through
+/// `ludo_deep_link_router.dart`'s process-wide [LudoDeepLinkRouter], which
+/// `HomeLobbyScreen` (the only listener) registers/unregisters a handler
+/// with. Every existing widget-test construction path (and every new one)
+/// still never constructs a real `AppLinks`/platform channel at all, since
+/// nothing in the widget tree does so — [NoOpLudoDeepLinkGateway] is the
+/// gateway a test passes to `wireLudoDeepLinks()` directly if it wants to
+/// exercise the routing plumbing without a platform channel.
 library;
 
 import 'dart:async';
@@ -109,4 +117,19 @@ final class ProductionLudoDeepLinkGateway implements LudoDeepLinkGateway {
     controller.onCancel = subscription.cancel;
     return controller.stream;
   }
+}
+
+/// The no-op [LudoDeepLinkGateway] default: `initialLink()` always resolves
+/// `null` and [onLink] never emits. Used by every existing test
+/// construction path (so `HomeLobbyScreen`/`FriendsSetupSheet` never touch
+/// `package:app_links`), and as the safe default anywhere a real gateway
+/// isn't explicitly supplied (task 26x).
+final class NoOpLudoDeepLinkGateway implements LudoDeepLinkGateway {
+  const NoOpLudoDeepLinkGateway();
+
+  @override
+  Future<Uri?> initialLink() async => null;
+
+  @override
+  Stream<Uri> get onLink => const Stream<Uri>.empty();
 }

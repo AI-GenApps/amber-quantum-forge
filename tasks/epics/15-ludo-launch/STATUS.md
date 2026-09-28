@@ -79,7 +79,7 @@ next task.
 | 24 | Client owner | Guarded Firebase init, typed gateway client, guest/Google auth controller | [x] |
 | 25 | Client owner | Firestore match listener, polling fallback, reconnect, online board wiring | [x] |
 | 26 | Client owner | Rooms/matchmaking UI, enable online lobby tiles, ONLINE telemetry | [x] |
-| 26x | Client owner | Debug-only online preview mode, online screen visual polish, warm-start deep links | [ ] |
+| 26x | Client owner | Debug-only online preview mode, online screen visual polish, warm-start deep links | [x] |
 | 26a | Backend/domain owner | Economy design doc, versioned economy config, wallet/ledger/inventory/progression Drizzle schema | [ ] |
 | 26b | Backend owner | Wallet, profile, progression, and inventory HTTP routes | [ ] |
 | 26c | Backend owner | Coin-stake tables, match-start escrow, and payout/refund | [ ] |

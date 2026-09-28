@@ -104,6 +104,39 @@ void main() {
       expect(views, isNotEmpty);
     });
 
+    test('connected flips false on a failed tick and true again once a '
+        'later tick succeeds (task 26x reconnecting banner)', () async {
+      final transport = QueueLudoTransport({
+        'GET matches/match-1/state': [
+          jsonResponse({'match_view': _matchViewWire()}),
+          jsonResponse(ludoFixtureError('internal_error'), statusCode: 500),
+          jsonResponse({'match_view': _matchViewWire()}),
+        ],
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      final source = PollingMatchStateSource(
+        gateway: gateway,
+        matchId: 'match-1',
+        gameToken: 'game-token',
+        pollInterval: const Duration(milliseconds: 20),
+      );
+      addTearDown(source.dispose);
+
+      final connectedEvents = <bool>[];
+      final subscription = source.connected.listen(connectedEvents.add);
+      addTearDown(subscription.cancel);
+
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      expect(
+        connectedEvents,
+        [false, true],
+        reason:
+            'the first (eager) tick succeeds so nothing is emitted yet; '
+            'the second tick fails (false), the third succeeds (true) — '
+            'never a duplicate consecutive value',
+      );
+    });
+
     test('refresh() fetches once and re-emits on states', () async {
       // Two queued fixtures: the constructor's own eager first fetch
       // consumes one, then the explicit refresh() call below consumes the

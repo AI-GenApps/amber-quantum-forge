@@ -35,6 +35,7 @@ import '../telemetry/ludo_telemetry.dart';
 import '../theme/ludo_background_painter.dart';
 import '../theme/ludo_theme_tokens.dart';
 import '../widgets/ludo_3d_button.dart';
+import '../widgets/ludo_reconnecting_banner.dart';
 import '../widgets/player_corner_card.dart';
 import 'mode_setup_sheet.dart';
 import 'pass_and_play_interstitial.dart';
@@ -169,6 +170,13 @@ class _GameBoardScreenState extends State<GameBoardScreen>
   DateTime? _turnDeadline;
   Timer? _turnTimeoutTimer;
   StreamSubscription<LudoMatchView>? _onlineStatesSubscription;
+  StreamSubscription<bool>? _onlineConnectedSubscription;
+
+  /// `true` unless the active [LudoOnlineMatchSession.stateSource] most
+  /// recently reported a connectivity drop ([LudoMatchStateSource.connected]
+  /// emitting `false`) — drives [LudoReconnectingBanner]. Always `true` for
+  /// a local (non-online) match, which never subscribes to this stream.
+  bool _connected = true;
 
   /// Set once "don't show again" is checked on a Pass N Play interstitial;
   /// suppresses every further interstitial for the rest of this running
@@ -239,6 +247,10 @@ class _GameBoardScreenState extends State<GameBoardScreen>
       _onlineStatesSubscription = widget.onlineMatch!.stateSource.states.listen(
         _applyOnlineView,
       );
+      _onlineConnectedSubscription = widget.onlineMatch!.stateSource.connected
+          .listen((value) {
+            if (mounted) setState(() => _connected = value);
+          });
       return;
     }
     _armDeadlineForCurrentTurn();
@@ -260,6 +272,7 @@ class _GameBoardScreenState extends State<GameBoardScreen>
       WidgetsBinding.instance.removeObserver(this);
     }
     unawaited(_onlineStatesSubscription?.cancel());
+    unawaited(_onlineConnectedSubscription?.cancel());
     // Disposes the state source too (cancels its polling timer/Firestore
     // subscription) — without this, an online match's background polling
     // would keep running forever after this screen is popped/replaced.
@@ -678,6 +691,8 @@ class _GameBoardScreenState extends State<GameBoardScreen>
                   ),
                 ),
               ),
+              if (widget.onlineMatch != null && !_connected)
+                const LudoReconnectingBanner(),
             ],
           ),
         ),

@@ -9,10 +9,12 @@
 /// `platform_core` save mechanism rather than introducing a second one.
 library;
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 
 import '../app.dart' show ludoIdentity;
 import '../net/ludo_auth_controller.dart';
+import '../net/ludo_online_preview_mode.dart' show LudoOnlinePreviewMode;
 import '../state/ludo_settings_store.dart';
 import '../state/ludo_sound_settings.dart';
 import '../state/reduced_motion_setting.dart';
@@ -233,6 +235,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
         if (widget.authController != null) ...[
           const SizedBox(height: LudoThemeTokens.spaceMd),
           _googleLinkPanel(widget.authController!),
+        ],
+        // Debug-only online preview toggle (task 26x): compiled out of a
+        // release build entirely by this `kDebugMode` guard, mirroring
+        // task 12a's "Debug: All Bots Demo" button
+        // (`mode_setup_sheet.dart`) — neither present nor reachable
+        // outside a debug build. Arming here takes effect the next time
+        // the home lobby resolves its online client (a fresh app launch,
+        // or navigating back to the lobby), same as the logo long-press
+        // entry point.
+        if (kDebugMode) ...[
+          const SizedBox(height: LudoThemeTokens.spaceMd),
+          LudoPanel(
+            padding: EdgeInsets.zero,
+            child: ValueListenableBuilder<bool>(
+              valueListenable: LudoOnlinePreviewMode.armedNotifier,
+              builder: (context, armed, _) => _SettingsSwitch(
+                keyValue: 'settings-online-preview-switch',
+                label: 'Debug: Online preview mode',
+                subtitle: armed
+                    ? 'Armed — restart or reopen the lobby to use it'
+                    : 'Simulates online play with no real server',
+                value: armed,
+                onChanged: (value) {
+                  if (value) LudoOnlinePreviewMode.arm();
+                },
+              ),
+            ),
+          ),
         ],
       ],
     );

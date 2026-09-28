@@ -31,6 +31,16 @@ abstract interface class LudoMatchStateSource {
   /// Broadcast stream of every state update this source produces.
   Stream<LudoMatchView> get states;
 
+  /// Broadcast stream of connectivity transitions: `false` the moment a
+  /// state fetch fails (a dropped poll, or — while still on the primary
+  /// Firestore listener — a snapshot-stream error that hasn't yet
+  /// triggered a permanent fallback switch), `true` again the moment a
+  /// fetch next succeeds. `game_board_screen.dart` shows
+  /// `LudoReconnectingBanner` while the most recently emitted value is
+  /// `false`. Never emits more than once for the same transition (no
+  /// duplicate `true`/`true` or `false`/`false` in a row).
+  Stream<bool> get connected;
+
   /// Fetches the latest match state once via the ground-truth HTTP route
   /// (task 22's polling fallback is documented as the ground truth the
   /// Firestore doc merely mirrors), independent of whichever stream is
@@ -68,19 +78,33 @@ final class PollingMatchStateSource implements LudoMatchStateSource {
   final Duration pollInterval;
 
   final _controller = StreamController<LudoMatchView>.broadcast();
+  final _connectedController = StreamController<bool>.broadcast();
   Timer? _timer;
   bool _disposed = false;
+  bool _lastConnected = true;
 
   @override
   Stream<LudoMatchView> get states => _controller.stream;
 
+  @override
+  Stream<bool> get connected => _connectedController.stream;
+
+  void _setConnected(bool value) {
+    if (_disposed || value == _lastConnected) return;
+    _lastConnected = value;
+    _connectedController.add(value);
+  }
+
   Future<void> _tick() async {
     try {
       await refresh();
+      _setConnected(true);
     } on Object {
       // Transient network failure: this tick produces no update, and the
       // next timer tick tries again. The board screen keeps showing its
-      // last-known state rather than crashing.
+      // last-known state rather than crashing, but does surface the drop
+      // via [connected] so `LudoReconnectingBanner` can show.
+      _setConnected(false);
     }
   }
 
@@ -100,6 +124,7 @@ final class PollingMatchStateSource implements LudoMatchStateSource {
     _disposed = true;
     _timer?.cancel();
     unawaited(_controller.close());
+    unawaited(_connectedController.close());
   }
 }
 
@@ -169,13 +194,24 @@ final class FirestoreMatchStateSource implements LudoMatchStateSource {
   final LudoMatchStateSource fallback;
 
   final _controller = StreamController<LudoMatchView>.broadcast();
+  final _connectedController = StreamController<bool>.broadcast();
   StreamSubscription<Map<String, Object?>>? _subscription;
   StreamSubscription<LudoMatchView>? _fallbackSubscription;
+  StreamSubscription<bool>? _fallbackConnectedSubscription;
   bool _onFallback = false;
   bool _disposed = false;
 
   @override
   Stream<LudoMatchView> get states => _controller.stream;
+
+  /// Delegates to [fallback]'s own connectivity signal once this source has
+  /// switched to it ([_useFallback]); while still on the primary Firestore
+  /// listener, connectivity is assumed steady (a snapshot-stream error
+  /// triggers an immediate, permanent fallback switch rather than a
+  /// transient "reconnecting" blip — see this library's doc comment), so
+  /// no `false` is ever emitted before that switch.
+  @override
+  Stream<bool> get connected => _connectedController.stream;
 
   void _listen() {
     _subscription = watcher.watch().listen(
@@ -203,6 +239,9 @@ final class FirestoreMatchStateSource implements LudoMatchStateSource {
     _fallbackSubscription = fallback.states.listen((view) {
       if (!_disposed) _controller.add(view);
     });
+    _fallbackConnectedSubscription = fallback.connected.listen((value) {
+      if (!_disposed) _connectedController.add(value);
+    });
   }
 
   /// Whether this source has fallen back to polling. Exposed for tests
@@ -218,8 +257,10 @@ final class FirestoreMatchStateSource implements LudoMatchStateSource {
     _disposed = true;
     unawaited(_subscription?.cancel());
     unawaited(_fallbackSubscription?.cancel());
+    unawaited(_fallbackConnectedSubscription?.cancel());
     fallback.dispose();
     unawaited(_controller.close());
+    unawaited(_connectedController.close());
   }
 }
 

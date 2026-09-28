@@ -18,6 +18,7 @@ import 'package:ludo/src/state/ludo_sound_settings.dart';
 import 'package:ludo/src/state/reduced_motion_setting.dart';
 import 'package:ludo/src/telemetry/ludo_telemetry.dart' show LudoMatchVariant;
 import 'package:ludo/src/widgets/dice_zone.dart';
+import 'package:ludo/src/widgets/ludo_reconnecting_banner.dart';
 import 'package:ludo/src/widgets/player_corner_card.dart';
 
 /// A [LudoMatchStateSource] test double: [emit] pushes a view directly
@@ -28,13 +29,19 @@ import 'package:ludo/src/widgets/player_corner_card.dart';
 /// fetch rather than trusting stale in-memory state.
 final class _FakeMatchStateSource implements LudoMatchStateSource {
   final _controller = StreamController<LudoMatchView>.broadcast();
+  final _connectedController = StreamController<bool>.broadcast();
   int refreshCallCount = 0;
   LudoMatchView? refreshResult;
 
   @override
   Stream<LudoMatchView> get states => _controller.stream;
 
+  @override
+  Stream<bool> get connected => _connectedController.stream;
+
   void emit(LudoMatchView view) => _controller.add(view);
+
+  void emitConnected(bool value) => _connectedController.add(value);
 
   @override
   Future<LudoMatchView> refresh() async {
@@ -48,7 +55,10 @@ final class _FakeMatchStateSource implements LudoMatchStateSource {
   }
 
   @override
-  void dispose() => unawaited(_controller.close());
+  void dispose() {
+    unawaited(_controller.close());
+    unawaited(_connectedController.close());
+  }
 }
 
 Map<String, Object?> _fixture = {};
@@ -478,6 +488,49 @@ void main() {
             'never trust whatever was last on the stream before '
             'backgrounding',
       );
+    },
+  );
+
+  testWidgets(
+    'task 26x: a reconnecting banner shows while the online state source '
+    'reports connectivity lost, and clears once it reports restored',
+    (tester) async {
+      final config = _twoPlayerComputerConfig();
+      final fakeSource = _FakeMatchStateSource();
+      final session = LudoOnlineMatchSession(
+        gateway: _unusedGateway(),
+        matchId: 'match-1',
+        gameToken: 'game-token',
+        localSeat: 0,
+        stateSource: fakeSource,
+      );
+
+      await tester.pumpWidget(
+        _wrap(
+          GameBoardScreen(
+            config: config,
+            seatIdentities: _identities,
+            soundSettings: LudoSoundSettings(),
+            reducedMotion: ReducedMotionSetting(enabled: true),
+            initialState: LudoMatchState.initial(
+              ruleset: config.ruleset,
+              subjects: const ['local-0', 'local-1'],
+            ),
+            onlineMatch: session,
+            onlineVariant: LudoMatchVariant.online,
+          ),
+        ),
+      );
+      await _pumpGame(tester);
+      expect(find.byType(LudoReconnectingBanner), findsNothing);
+
+      fakeSource.emitConnected(false);
+      await _pumpGame(tester);
+      expect(find.byType(LudoReconnectingBanner), findsOneWidget);
+
+      fakeSource.emitConnected(true);
+      await _pumpGame(tester);
+      expect(find.byType(LudoReconnectingBanner), findsNothing);
     },
   );
 }
