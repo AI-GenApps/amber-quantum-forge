@@ -424,11 +424,13 @@ export const ludoWalletTransactions = pgTable(
     check("ludo_wallet_transactions_currency_check", sql`"currency" IN ('coins', 'diamonds')`),
     check(
       "ludo_wallet_transactions_reason_check",
+      // 'refund' added in task 26d: a RevenueCat REFUND event debits back a
+      // prior IAP grant (negative delta), append-only — never a deleted row.
       sql`"reason" IN (
         'starter_grant', 'daily_login', 'rewarded_ad', 'level_up',
         'online_match_win', 'coin_table_entry', 'coin_table_payout',
         'coin_table_refund', 'iap_purchase', 'vortex_pass_perk',
-        'store_purchase', 'admin_adjustment'
+        'store_purchase', 'admin_adjustment', 'refund'
       )`,
     ),
     uniqueIndex("ludo_wallet_transactions_idempotency_unique").on(
@@ -577,6 +579,49 @@ export const ludoXpClaims = pgTable(
       table.environment,
       table.subject,
       table.claimDate,
+    ),
+  ],
+);
+
+// Task 26d: RevenueCat webhook idempotency + Vortex Pass subscription
+// state. A dedicated `ludo_subscriptions` table (one row per subject, since
+// Vortex Pass is the only subscription product) rather than extending
+// `ludoInventory`: subscription state needs a `status`/`will_renew` pair
+// that inventory's single acquired-item shape doesn't carry, and every
+// subscription event (including CANCELLATION/EXPIRATION) reports a fresh
+// `expiration_at_ms` from RevenueCat, so a plain upsert of the full row is
+// always correct — no read-before-write merge needed.
+export const ludoRevenueCatEvents = pgTable(
+  "ludo_revenuecat_events",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    eventId: text("event_id").notNull(),
+    eventType: text("event_type").notNull(),
+    productId: text("product_id").notNull(),
+    subject: text("subject").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [primaryKey({ columns: [table.appId, table.environment, table.eventId] })],
+);
+
+export const ludoSubscriptions = pgTable(
+  "ludo_subscriptions",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    subject: text("subject").notNull(),
+    productId: text("product_id").notNull(),
+    status: text("status").notNull(),
+    willRenew: boolean("will_renew").notNull().default(true),
+    expiresAt: timestamp("expires_at"),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.appId, table.environment, table.subject] }),
+    check(
+      "ludo_subscriptions_status_check",
+      sql`"status" IN ('active', 'cancelled', 'expired', 'billing_issue', 'revoked')`,
     ),
   ],
 );

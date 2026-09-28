@@ -64,6 +64,13 @@
       "when": 1790611905866,
       "tag": "0008_boring_omega_sentinel",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1790613249752,
+      "tag": "0009_deep_patriot",
+      "breakpoints": true
     }
   ]
 }

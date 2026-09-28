@@ -20,6 +20,8 @@ Copy `.env.example` to `.env` and fill in all required values. Never commit `.en
 | `MERGE_RELAY_LOCAL_STORE` | local only | Set to `memory` with non-production `NODE_ENV` for ephemeral device HTTP checks | Local shell only; never production |
 | `CRON_SECRET` | for Ludo's cron sweeper | Bearer token Vercel Cron sends as `Authorization: Bearer <CRON_SECRET>` when invoking `GET/POST /api/games/ludo/cron/sweep-timeouts` (see `apps/web/vercel.json`); the route fails closed (401) when unset or mismatched | `openssl rand -hex 32`; set in the Vercel project so Vercel's own Cron invoker sends the same value |
 | `REVENUECAT_WEBHOOK_SECRET` | no | RevenueCat server-to-server notification secret | RevenueCat dashboard → Integrations |
+| `REVENUECAT_WEBHOOK_SECRET_LUDO` | no | Ludo-specific RevenueCat webhook secret for `POST /api/games/ludo/:environment/revenuecat/webhook`; falls back to `REVENUECAT_WEBHOOK_SECRET` when unset. The route rejects every call (401) when neither is configured | Ludo's RevenueCat project → Integrations → Webhooks |
+| `REVENUECAT_API_KEY_LUDO` | no | Ludo's RevenueCat secret API key, used server-side by `POST /api/games/ludo/:environment/revenuecat/sync` to call RevenueCat's REST API. The sync route degrades to a no-op (`synced: false`) when unset | Ludo's RevenueCat project → API keys → Secret key |
 
 ## Generating `API_JWT_SECRET`
 

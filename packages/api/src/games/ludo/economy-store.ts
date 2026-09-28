@@ -82,6 +82,37 @@ export interface LudoCoinTableEscrowRow {
   resolvedAt: string | null;
 }
 
+/** Task 26d: RevenueCat webhook event-id idempotency, one row per event. */
+export interface LudoRevenueCatEventRow {
+  environment: LudoEnvironment;
+  eventId: string;
+  eventType: string;
+  productId: string;
+  subject: string;
+  createdAt: string;
+}
+
+export type LudoSubscriptionStatus =
+  | "active"
+  | "cancelled"
+  | "expired"
+  | "billing_issue"
+  | "revoked";
+
+/** Task 26d: Vortex Pass entitlement state, one row per subject (the only
+ * subscription product). See `packages/db/src/schema.ts`'s
+ * `ludoSubscriptions` doc comment for why this is a dedicated table rather
+ * than an extension of `ludoInventory`. */
+export interface LudoSubscriptionRow {
+  environment: LudoEnvironment;
+  subject: string;
+  productId: string;
+  status: LudoSubscriptionStatus;
+  willRenew: boolean;
+  expiresAt: string | null;
+  updatedAt: string;
+}
+
 export interface LudoLedgerAppendInput {
   subject: string;
   currency: LudoCurrency;
@@ -119,6 +150,27 @@ export interface LudoApplyProgressionAndLedgerInput {
 export interface LudoApplyProgressionAndLedgerResult {
   progression: LudoProgressionRow;
   ledgerResults: LudoLedgerAppendResult[];
+}
+
+/** Task 26d: one RevenueCat webhook event's full effect — zero or more
+ * wallet credits/debits and/or a Vortex Pass subscription upsert — applied
+ * atomically and gated on the event id never having been processed before. */
+export interface LudoProcessRevenueCatEventInput {
+  eventId: string;
+  eventType: string;
+  productId: string;
+  subject: string;
+  now: string;
+  ledgerEntries: Omit<LudoLedgerAppendInput, "subject" | "now">[];
+  subscription?: Omit<LudoSubscriptionRow, "environment" | "subject" | "updatedAt">;
+}
+
+export interface LudoProcessRevenueCatEventResult {
+  /** `false` when `eventId` was already processed — nothing below was
+   * (re-)applied. */
+  applied: boolean;
+  ledgerResults: LudoLedgerAppendResult[];
+  subscription: LudoSubscriptionRow | null;
 }
 
 /**
@@ -226,6 +278,21 @@ export interface LudoEconomyStore {
     status: Exclude<LudoCoinTableEscrowStatus, "held">,
     resolvedAt: string,
   ): Promise<LudoCoinTableEscrowRow>;
+
+  /** Applies one RevenueCat webhook event's ledger entries and/or
+   * subscription upsert atomically, gated on `input.eventId` never having
+   * been processed before for this (environment, subject is not part of
+   * the idempotency key — the event id alone is globally unique per
+   * RevenueCat). A replayed event id is a no-op (`applied: false`). */
+  processRevenueCatEvent(
+    environment: LudoEnvironment,
+    input: LudoProcessRevenueCatEventInput,
+  ): Promise<LudoProcessRevenueCatEventResult>;
+
+  getSubscription(
+    environment: LudoEnvironment,
+    subject: string,
+  ): Promise<LudoSubscriptionRow | null>;
 }
 
 interface EconomyEnvironmentState {
@@ -237,6 +304,8 @@ interface EconomyEnvironmentState {
   adClaims: Map<string, LudoAdRewardClaimRow>;
   xpClaims: Map<string, LudoXpClaimRow>;
   escrow: Map<string, LudoCoinTableEscrowRow>;
+  revenueCatEvents: Map<string, LudoRevenueCatEventRow>;
+  subscriptions: Map<string, LudoSubscriptionRow>;
 }
 
 function emptyEnvironmentState(): EconomyEnvironmentState {
@@ -249,6 +318,8 @@ function emptyEnvironmentState(): EconomyEnvironmentState {
     adClaims: new Map(),
     xpClaims: new Map(),
     escrow: new Map(),
+    revenueCatEvents: new Map(),
+    subscriptions: new Map(),
   };
 }
 
@@ -567,5 +638,50 @@ export class InMemoryLudoEconomyStore implements LudoEconomyStore {
       state.escrow.set(matchId, updated);
       return updated;
     });
+  }
+
+  async processRevenueCatEvent(
+    environment: LudoEnvironment,
+    input: LudoProcessRevenueCatEventInput,
+  ): Promise<LudoProcessRevenueCatEventResult> {
+    return this.serialize(environment, () => {
+      const state = this.state(environment);
+      if (state.revenueCatEvents.has(input.eventId)) {
+        return { applied: false, ledgerResults: [], subscription: null };
+      }
+      state.revenueCatEvents.set(input.eventId, {
+        environment,
+        eventId: input.eventId,
+        eventType: input.eventType,
+        productId: input.productId,
+        subject: input.subject,
+        createdAt: input.now,
+      });
+      const ledgerResults = input.ledgerEntries.map((entry) =>
+        this.appendLedgerEntrySync(environment, {
+          ...entry,
+          subject: input.subject,
+          now: input.now,
+        }),
+      );
+      let subscription: LudoSubscriptionRow | null = null;
+      if (input.subscription) {
+        subscription = {
+          ...input.subscription,
+          environment,
+          subject: input.subject,
+          updatedAt: input.now,
+        };
+        state.subscriptions.set(input.subject, subscription);
+      }
+      return { applied: true, ledgerResults, subscription };
+    });
+  }
+
+  async getSubscription(
+    environment: LudoEnvironment,
+    subject: string,
+  ): Promise<LudoSubscriptionRow | null> {
+    return this.state(environment).subscriptions.get(subject) ?? null;
   }
 }

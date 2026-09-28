@@ -72,26 +72,26 @@ endpoint.
 
 ## Implementation Checklist
 
-- [ ] Add `packages/api/src/games/ludo/iap-catalog.ts`: product-id → grant
+- [x] Add `packages/api/src/games/ludo/iap-catalog.ts`: product-id → grant
   mapping for every IAP product in task 26a's config (confirm no Remove-Ads
   entry exists).
-- [ ] Add `POST /:environment/revenuecat/webhook` to
+- [x] Add `POST /:environment/revenuecat/webhook` to
   `packages/api/src/games/ludo/routes.ts`: header-secret auth, event-id
   idempotency, dispatch by event type to a grant/refund/subscription-state
   update, all inside one transaction per event.
-- [ ] Add `POST /:environment/revenuecat/sync`: authenticated by the Ludo
+- [x] Add `POST /:environment/revenuecat/sync`: authenticated by the Ludo
   game token, calls RevenueCat's REST API for the subject's `CustomerInfo`,
   reconciles entitlement/subscription state.
-- [ ] Add subscription/entitlement tracking for Vortex Pass per the Context
+- [x] Add subscription/entitlement tracking for Vortex Pass per the Context
   decision (extend `ludo_inventory` or add `ludo_subscriptions` — pick one,
   migrate if schema changes, document the choice).
-- [ ] Add `packages/api/src/games/ludo/revenuecat-webhook.test.ts` with
+- [x] Add `packages/api/src/games/ludo/revenuecat-webhook.test.ts` with
   fixture payloads for `INITIAL_PURCHASE` (coins), `NON_SUBSCRIPTION_
   PURCHASE`, `RENEWAL`/`CANCELLATION`/`EXPIRATION` (Vortex Pass), and
   `REFUND` — covering: correct grant per product, replayed event id is a
   no-op, refund debits the original grant, and an unrecognized product id
   is rejected/logged rather than silently ignored.
-- [ ] Add `packages/api/src/games/ludo/revenuecat-sync.test.ts` covering
+- [x] Add `packages/api/src/games/ludo/revenuecat-sync.test.ts` covering
   the sync endpoint reconciling a mocked `CustomerInfo` response.
 
 ## Files Touched

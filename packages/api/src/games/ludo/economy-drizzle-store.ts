@@ -14,6 +14,10 @@ import {
 import type { LudoEnvironment } from "./contracts";
 import type { LudoCoinTableTier, LudoCurrency, LudoWalletReason } from "./economy-config";
 import {
+  getSubscriptionImpl,
+  processRevenueCatEventImpl,
+} from "./economy-drizzle-store-revenuecat";
+import {
   LUDO_ECONOMY_STORE_APP_ID,
   type LudoAdRewardClaimRow,
   type LudoAdRewardType,
@@ -28,7 +32,10 @@ import {
   type LudoInventoryRow,
   type LudoLedgerAppendInput,
   type LudoLedgerAppendResult,
+  type LudoProcessRevenueCatEventInput,
+  type LudoProcessRevenueCatEventResult,
   type LudoProgressionRow,
+  type LudoSubscriptionRow,
   type LudoWalletTransactionRow,
   type LudoXpClaimRow,
 } from "./economy-store";
@@ -654,6 +661,22 @@ export class DrizzleLudoEconomyStore implements LudoEconomyStore {
     const updated = await this.getEscrow(environment, matchId);
     if (!updated) throw new Error(`ludo economy store: no escrow row for match ${matchId}`);
     return updated;
+  }
+
+  async processRevenueCatEvent(
+    environment: LudoEnvironment,
+    input: LudoProcessRevenueCatEventInput,
+  ): Promise<LudoProcessRevenueCatEventResult> {
+    return processRevenueCatEventImpl(this.database, environment, input, (transaction, env, i) =>
+      this.appendLedgerEntryTx(transaction, env, i),
+    );
+  }
+
+  async getSubscription(
+    environment: LudoEnvironment,
+    subject: string,
+  ): Promise<LudoSubscriptionRow | null> {
+    return getSubscriptionImpl(this.database, environment, subject);
   }
 }
 

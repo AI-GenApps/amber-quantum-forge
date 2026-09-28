@@ -29,7 +29,10 @@ export type LudoErrorCode =
   | "ludo_daily_reward_already_claimed"
   | "ludo_daily_reward_invalid"
   | "ludo_insufficient_balance"
-  | "ludo_coin_tier_invalid";
+  | "ludo_coin_tier_invalid"
+  | "ludo_revenuecat_unauthorized"
+  | "ludo_revenuecat_invalid_payload"
+  | "ludo_revenuecat_unknown_product";
 
 export class LudoError extends Error {
   readonly diagnosticId: string;
@@ -255,5 +258,34 @@ export class LudoInsufficientBalanceError extends LudoCommandError {
 export class LudoCoinTierInvalidError extends LudoCommandError {
   constructor(tier: string) {
     super(422, "ludo_coin_tier_invalid", `Unknown coin table tier: ${tier}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// RevenueCat webhook/sync rejection paths (task 26d).
+// ---------------------------------------------------------------------------
+
+/** The webhook's `Authorization` header did not match the configured
+ * shared secret (or no secret is configured — an unconfigured secret must
+ * never be treated as "any header passes"). */
+export class LudoRevenueCatUnauthorizedError extends LudoCommandError {
+  constructor() {
+    super(401, "ludo_revenuecat_unauthorized", "The RevenueCat webhook Authorization is invalid");
+  }
+}
+
+/** The webhook body is missing `event.id`/`event.type`/`event.app_user_id`/
+ * `event.product_id`, or is not valid JSON. */
+export class LudoRevenueCatInvalidPayloadError extends LudoCommandError {
+  constructor(message = "The RevenueCat webhook payload is malformed") {
+    super(422, "ludo_revenuecat_invalid_payload", message);
+  }
+}
+
+/** The webhook's `product_id` is not in `iap-catalog.ts`'s mapping —
+ * rejected loudly rather than silently ignored, per task 26d's Context. */
+export class LudoRevenueCatUnknownProductError extends LudoCommandError {
+  constructor(productId: string) {
+    super(422, "ludo_revenuecat_unknown_product", `Unknown RevenueCat product id: ${productId}`);
   }
 }

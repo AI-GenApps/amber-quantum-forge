@@ -18,6 +18,8 @@ import { asLudoError, LudoError } from "./errors";
 import { NullMatchViewPublisher } from "./match-view-publisher";
 import { cancelTicket, createTicket, getTicket } from "./matchmaking-service";
 import { InMemoryLudoStore } from "./memory-store";
+import { HttpRevenueCatClient } from "./revenuecat-client";
+import { registerLudoRevenueCatRoutes } from "./revenuecat-routes";
 import { createRoom, getRoom, joinRoom } from "./room-service";
 import type { LudoRouteDependencies } from "./routes-types";
 import { createMatch, getMatchState, getMatchView, processCommand } from "./service";
@@ -536,6 +538,7 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
   });
 
   registerLudoWalletRoutes(routes, dependencies, economyStore, authenticateGameToken);
+  registerLudoRevenueCatRoutes(routes, dependencies, economyStore, authenticateGameToken);
 
   return routes;
 }
@@ -567,7 +570,27 @@ export function createConfiguredLudoRoutes(): Hono {
     store: configuredLudoStore(),
     matchViewPublisher: resolveMatchViewPublisher(),
     economyStore: configuredLudoEconomyStore(),
+    revenueCatWebhookSecret: configuredRevenueCatWebhookSecret(),
+    revenueCatClient: configuredRevenueCatClient(),
   });
+}
+
+/** Task 26d: a Ludo-specific secret (`REVENUECAT_WEBHOOK_SECRET_LUDO`)
+ * takes precedence; falls back to the shared `REVENUECAT_WEBHOOK_SECRET`
+ * documented in `docs-internal/setup/02-env-vars.md` for a deploy that
+ * reuses one RevenueCat webhook secret across apps. No server-side route
+ * reads `REVENUECAT_WEBHOOK_SECRET` today (only `apps/native`'s client SDK
+ * reads an unrelated public API key), so this is a safe first use. */
+function configuredRevenueCatWebhookSecret(): string | undefined {
+  return process.env.REVENUECAT_WEBHOOK_SECRET_LUDO ?? process.env.REVENUECAT_WEBHOOK_SECRET;
+}
+
+/** Degrades to `NullRevenueCatClient` (via `registerLudoRevenueCatRoutes`'s
+ * default) when `REVENUECAT_API_KEY_LUDO` is absent — no RevenueCat
+ * credentials exist in this environment. */
+function configuredRevenueCatClient(): HttpRevenueCatClient | undefined {
+  const secretApiKey = process.env.REVENUECAT_API_KEY_LUDO;
+  return secretApiKey ? new HttpRevenueCatClient(secretApiKey) : undefined;
 }
 
 export function configuredLudoStore(): LudoStore {

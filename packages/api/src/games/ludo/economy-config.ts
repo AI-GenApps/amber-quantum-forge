@@ -34,7 +34,8 @@ export type LudoWalletReason =
   | "iap_purchase"
   | "vortex_pass_perk"
   | "store_purchase"
-  | "admin_adjustment";
+  | "admin_adjustment"
+  | "refund";
 
 export interface LudoStartingBalance {
   coins: number;

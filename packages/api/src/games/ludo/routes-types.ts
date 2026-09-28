@@ -1,6 +1,7 @@
 import type { GameTokenVerifier } from "../tokens";
 import type { LudoEconomyStore } from "./economy-store";
 import type { MatchViewPublisher } from "./match-view-publisher";
+import type { RevenueCatClient } from "./revenuecat-client";
 import type { LudoStore } from "./store";
 
 /**
@@ -23,4 +24,11 @@ export interface LudoRouteDependencies {
    * match/room/matchmaking routes keep compiling with an in-memory
    * fallback. */
   economyStore?: LudoEconomyStore;
+  /** Task 26d: shared secret the RevenueCat dashboard's webhook
+   * Authorization header must match. `undefined` means unconfigured —
+   * every webhook call is then rejected (never "accept anything"). */
+  revenueCatWebhookSecret?: string;
+  /** Task 26d: RevenueCat REST client for `POST .../revenuecat/sync`.
+   * Optional; `createLudoRoutes` falls back to `NullRevenueCatClient`. */
+  revenueCatClient?: RevenueCatClient;
 }
