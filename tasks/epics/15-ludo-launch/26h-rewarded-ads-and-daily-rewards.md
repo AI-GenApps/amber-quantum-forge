@@ -77,6 +77,11 @@ this monorepo per research.md section 3.
 - [ ] Capture device evidence (physical device, serial `RZ8R32EAB7T`) of a
   full rewarded-ad watch using AdMob **test ads** in debug, and the daily
   reward calendar claim flow.
+- [ ] Rewarded-ad daily caps (coins 5/day, diamonds 2/day) and the online
+  free-play coin win cap (10/day) must be enforced with an atomic
+  check-and-write in the economy store (same pattern as
+  `recordXpClaimWithCap` from commit f755ac1), with concurrency tests
+  firing simultaneous claims; a separate read-then-write is a failure.
 
 ## Files Touched
 
@@ -102,6 +107,12 @@ this monorepo per research.md section 3.
 - Device evidence of a real rewarded-ad watch (test ads) and a daily
   reward claim exists under
   `.agents/resources/2026-09-25/ludo-vortex-economy/device-evidence/`.
+- Rewarded-ad daily caps (coins 5/day, diamonds 2/day) and the online
+  free-play coin win cap (10/day) are enforced with an atomic
+  check-and-write in the economy store — the same pattern as
+  `recordXpClaimWithCap` (commit f755ac1), not a separate read-then-write
+  — verified by a concurrency test that fires simultaneous claims against
+  the same cap and asserts only the cap's worth of claims are credited.
 
 ## Verification Commands
 
