@@ -10,7 +10,8 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "build": "tsc -p tsconfig.build.json"
+    "build": "tsc -p tsconfig.build.json",
+    "fixture:determinism": "bun run tool/gen-determinism-fixture.ts"
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "0.21.0"

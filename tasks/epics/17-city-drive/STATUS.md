@@ -100,7 +100,7 @@ with `startAt` set to the next task ID.
 | 00 | Knowledge base, decisions, competitor notes | agent | [x] |
 | 01 | Workspace scaffold (`apps-games/*`, Vite, Vitest, lint/knip wiring) | agent | [x] |
 | 02 | Games registry `engine: "web"` + City Drive CI workflow | agent | [x] |
-| 03 | Vehicle physics core (Rapier raycast vehicle, fixed step, determinism) | agent | [ ] |
+| 03 | Vehicle physics core (Rapier raycast vehicle, fixed step, determinism) | agent | [x] |
 | 04 | CC0 asset pipeline (Kenney kits → GLB, licence records, budgets) | agent | [ ] |
 | 05 | City map format, road graph, static colliders | agent | [ ] |
 | 06 | Babylon city renderer + headless draw-call/triangle budget test | agent | [ ] |

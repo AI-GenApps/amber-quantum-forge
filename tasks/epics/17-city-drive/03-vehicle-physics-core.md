@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 03-vehicle-physics-core
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/01-workspace-scaffold]
 estimate: L
@@ -54,24 +54,24 @@ bit-identically.
 
 ## Implementation Checklist
 
-- [ ] Add the physics world wrapper, fixed-step clock, and car with
+- [x] Add the physics world wrapper, fixed-step clock, and car with
       vehicle-controller wiring.
-- [ ] Define the baseline `CarSpec`.
-- [ ] Tests:
-  - [ ] Acceleration curve within bands.
-  - [ ] Top speed within bands.
-  - [ ] Braking from 60 km/h stops within the expected distance.
-  - [ ] Steering produces a turning circle within bands.
-  - [ ] Reverse works.
-  - [ ] Full-lock at top speed stays upright (roll < 45°).
-  - [ ] Collision with a static box stops the car without tunnelling at top speed.
-  - [ ] Respawn resets state.
-- [ ] Determinism test: a 30-second scripted input run executed twice gives
+- [x] Define the baseline `CarSpec`.
+- [x] Tests:
+  - [x] Acceleration curve within bands.
+  - [x] Top speed within bands.
+  - [x] Braking from 60 km/h stops within the expected distance.
+  - [x] Steering produces a turning circle within bands.
+  - [x] Reverse works.
+  - [x] Full-lock at top speed stays upright (roll < 45°).
+  - [x] Collision with a static box stops the car without tunnelling at top speed.
+  - [x] Respawn resets state.
+- [x] Determinism test: a 30-second scripted input run executed twice gives
       equal state hashes at every second, and snapshot → restore → continue
       equals an uninterrupted run.
-- [ ] Performance test: 1 player car + 20 dynamic boxes, 600 steps,
+- [x] Performance test: 1 player car + 20 dynamic boxes, 600 steps,
       completes under a generous bound (log the timing, assert at most 2 s).
-- [ ] Write a decision note in `.agents/games/city-drive/decisions-log.md`
+- [x] Write a decision note in `.agents/games/city-drive/decisions-log.md`
       with the final tuning values.
 
 ## Files Touched

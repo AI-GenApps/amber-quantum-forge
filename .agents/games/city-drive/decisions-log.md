@@ -70,3 +70,42 @@ no-ads, no-IAP mission game.
 - **Capacitor 8** requires Node 22+, minSdk 24 / targetSdk 36, iOS 15+
   (Capacitor documentation, https://capacitorjs.com/docs; task 17 re-verifies
   against the installed version).
+
+## Task 03: vehicle physics core (2026-10-15)
+
+Rapier `DynamicRayCastVehicleController` inside `@city-drive/core`
+(`src/physics/**`, `src/cars/**`). Fixed step 1/60 s through a pure `SimClock`.
+Baseline car values live in `apps-games/city-drive-core/src/cars/specs.ts`
+(`BASELINE_CAR`); task 12 adds the roster and reuses
+`test/physics/handling-suite.ts` over each `CarSpec`.
+
+| Value | Setting | Why |
+|---|---|---|
+| Mass / chassis | 1200 kg, box 1.7 x 0.9 x 4.2 m, centre of mass 0.35 m below centre | Low CoM keeps the car upright at full lock |
+| Wheels | 4, radius 0.35 m, wheelbase 2.5 m, track 1.6 m; front steered, rear driven (RWD) and handbrake | Handbrake on driven rear wheels gives a drift |
+| Suspension | rest 0.35 m, travel 0.3 m, stiffness 30, compression 0.83, relaxation 0.88, max force 60 kN | Settles in under 1 s without bouncing |
+| Engine | 6000 N total, faded by `1 - (v/115 km/h)^3`; reverse is 60 % force, capped at 30 km/h | 0-60 km/h in 3.6 s, top speed 110 km/h |
+| Brakes | 12000 N total (about 1 g), coast brake 4 % | 60 km/h to 0 in 13.5 m |
+| Brake units | Rapier's wheel brake is an impulse limit per step, so the code passes `force * dt` | Passing newtons directly stopped the car in 0.2 s |
+| Steering | 0.5 rad max, speed limit `wheelbase * 1.4 g / v^2` with a 0.05 rad floor; rate 3.5 rad/s | Keeps lateral G near 1.4 at any speed; the car stays upright at full lock at 110 km/h |
+| Grip | friction slip 2.6; handbrake wheels use 35 % | A handbrake turn at 60 km/h gives about 3.2 rad/s yaw and does not flip |
+| Damping | linear 0.02, angular 0.6 | Stops spin from building up |
+| Axes | forward +Z, up +Y; steer +1 is right, which gives negative `yawRate` | Rapier engine force is positive along local +Z for this setup (verified by test) |
+
+- **Determinism:** no platform trig in `src/` (a test scans for `Math.sin`,
+  `Math.cos` and similar). `quatFromYaw` uses `detSin`/`detCos`, a degree-21
+  Taylor series with error below 1e-9. The state hash rounds position,
+  rotation and velocity to 1e-4 and leaves out visual wheel spin.
+- **Fixture:** `test/fixtures/determinism.json` is written only by
+  `bun run fixture:determinism` (Bun/JavaScriptCore) and compared inside
+  Vitest (Node/V8), so the match also proves equal results across two engines.
+- **Snapshot restore:** `takeSnapshot()` restores only the physics world. The
+  `Car` rebuilds its controller from the `CarSpec` on `rebind()` and re-applies
+  the wheel commands. The result is bit-exact against an uninterrupted run, so
+  the 1e-3 tolerance fallback was not needed.
+- **State for later tasks:** `Car.state()` returns velocity, yaw rate,
+  smoothed longitudinal/lateral G (taxi comfort, task 10) and per-wheel slip
+  (friction use, 0 rolling to 1 at the limit; skid audio, task 14).
+  `PhysicsWorld.drainCollisionImpulses()` returns contact-force events for
+  tasks 09 and 10.
+- **CCD** is on for the chassis; a 0.2 m wall is not tunnelled at 110 km/h.
