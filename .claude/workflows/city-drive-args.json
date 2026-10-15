@@ -43,6 +43,10 @@
       "human": true
     },
     {
+      "id": "08a",
+      "file": "08a-right-handed-scene-fix.md"
+    },
+    {
       "id": "09",
       "file": "09-ai-traffic.md"
     },
