@@ -1,0 +1,105 @@
+{
+  "budgetBytes": 1572864,
+  "appJsExcludingRapier": {
+    "bytes": 2900203,
+    "chunks": 109
+  },
+  "initial": {
+    "bytes": 1358586,
+    "gzip": 329583,
+    "chunks": 22
+  },
+  "lazy": {
+    "bytes": 1541617,
+    "gzip": 378649,
+    "chunks": 87
+  },
+  "rapier": {
+    "bytes": 0,
+    "chunks": 0
+  },
+  "largestInitial": [
+    {
+      "name": "index.js",
+      "bytes": 955992,
+      "gzip": 222020
+    },
+    {
+      "name": "thinEngine.pure.js",
+      "bytes": 127917,
+      "gzip": 30985
+    },
+    {
+      "name": "material.pure.js",
+      "bytes": 78903,
+      "gzip": 20213
+    },
+    {
+      "name": "math.color.pure.js",
+      "bytes": 76929,
+      "gzip": 18424
+    },
+    {
+      "name": "tools.pure.js",
+      "bytes": 30445,
+      "gzip": 10149
+    },
+    {
+      "name": "lightConstants.js",
+      "bytes": 18242,
+      "gzip": 4028
+    },
+    {
+      "name": "renderingManager.js",
+      "bytes": 17909,
+      "gzip": 4855
+    },
+    {
+      "name": "timingTools.js",
+      "bytes": 13862,
+      "gzip": 4899
+    }
+  ],
+  "largestLazy": [
+    {
+      "name": "openpbrMaterial.pure.js",
+      "bytes": 139965,
+      "gzip": 31318
+    },
+    {
+      "name": "pbrMaterial.pure.js",
+      "bytes": 134918,
+      "gzip": 25158
+    },
+    {
+      "name": "pbr.fragment.js",
+      "bytes": 97264,
+      "gzip": 18114
+    },
+    {
+      "name": "pbr.fragment.js",
+      "bytes": 93425,
+      "gzip": 16643
+    },
+    {
+      "name": "openpbr.fragment.js",
+      "bytes": 90284,
+      "gzip": 17637
+    },
+    {
+      "name": "openpbr.fragment.js",
+      "bytes": 88563,
+      "gzip": 17648
+    },
+    {
+      "name": "brdfTextureTools.js",
+      "bytes": 61276,
+      "gzip": 44778
+    },
+    {
+      "name": "oitFragment.js",
+      "bytes": 54614,
+      "gzip": 11401
+    }
+  ]
+}

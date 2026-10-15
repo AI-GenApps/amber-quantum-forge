@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 06-scene-renderer-and-budgets
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/05-city-map-and-road-graph]
 estimate: L
@@ -63,12 +63,12 @@ exceeded.
 
 ## Implementation Checklist
 
-- [ ] Asset container cache, city builder (thin instances per chunk plus
+- [x] Asset container cache, city builder (thin instances per chunk plus
       merged uniques), lighting, and fog.
-- [ ] Freeze/static optimizations.
-- [ ] Headless budget test with the JSON report.
-- [ ] Wire `main.ts` to load `district-1` with an orbit camera.
-- [ ] Evidence README with the measured draw calls and triangles per pose,
+- [x] Freeze/static optimizations.
+- [x] Headless budget test with the JSON report.
+- [x] Wire `main.ts` to load `district-1` with an orbit camera.
+- [x] Evidence README with the measured draw calls and triangles per pose,
       including the method.
 
 ## Files Touched

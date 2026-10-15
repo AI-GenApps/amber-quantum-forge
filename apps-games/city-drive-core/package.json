@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./city": "./src/city/index.ts",
+    "./maps/*": "./content/maps/*"
   },
   "types": "./src/index.ts",
   "scripts": {

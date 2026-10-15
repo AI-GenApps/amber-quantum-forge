@@ -31,7 +31,7 @@ Single test file while iterating (never run `bunx vitest` from the repo root;
 `packages/api` uses Vitest 2.x):
 
 ```bash
-cd apps-games/city-drive && bunx vitest run test/scene.test.ts
+cd apps-games/city-drive && bunx vitest run test/render/budget.test.ts
 ```
 
 Add `?inspector` to the dev URL to open the Babylon Inspector (dev builds only).

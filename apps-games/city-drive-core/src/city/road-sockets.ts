@@ -17,10 +17,17 @@ export const ROAD_SOCKETS: Readonly<Record<string, readonly Dir[]>> = {
 
 /**
  * Extra clockwise yaw (degrees) the renderer adds on top of the tile `rot` when it places each GLB,
- * so the model's artwork lines up with the sockets above. Left at 0 until a human checks the first
- * render (task 08); the simulation never reads it.
+ * so the model's artwork lines up with the sockets above. Derived headlessly in task 06 from the
+ * asphalt geometry of each GLB as Babylon's glTF loader places it (checked by
+ * `city-drive/test/render/road-alignment.test.ts`); a human confirms it by eye in task 08. The
+ * simulation never reads it.
  */
-export const ROAD_MODEL_YAW_OFFSET: Readonly<Record<string, number>> = {};
+export const ROAD_MODEL_YAW_OFFSET: Readonly<Record<string, number>> = {
+  "road-straight": 90,
+  "road-crossing": 90,
+  "road-corner": 270,
+  "road-end": 270,
+};
 
 export function hasRoadSockets(model: string): boolean {
   return Object.hasOwn(ROAD_SOCKETS, model);
