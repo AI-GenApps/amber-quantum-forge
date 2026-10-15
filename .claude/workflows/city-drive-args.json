@@ -1,0 +1,105 @@
+{
+  "repo": "/data/PROJECTS/games/amber-quantum-forge",
+  "branch": "main",
+  "epicDir": "tasks/epics/17-city-drive",
+  "epicTag": "17-city-drive",
+  "evidenceRoot": ".agents/resources/2026-10-15/city-drive-qa",
+  "tasks": [
+    {
+      "id": "00",
+      "file": "00-knowledge-base-and-decisions.md"
+    },
+    {
+      "id": "01",
+      "file": "01-workspace-scaffold.md"
+    },
+    {
+      "id": "02",
+      "file": "02-registry-and-ci.md"
+    },
+    {
+      "id": "03",
+      "file": "03-vehicle-physics-core.md"
+    },
+    {
+      "id": "04",
+      "file": "04-cc0-asset-pipeline.md"
+    },
+    {
+      "id": "05",
+      "file": "05-city-map-and-road-graph.md"
+    },
+    {
+      "id": "06",
+      "file": "06-scene-renderer-and-budgets.md"
+    },
+    {
+      "id": "07",
+      "file": "07-player-car-controls-camera.md"
+    },
+    {
+      "id": "08",
+      "file": "08-human-first-drive-checkpoint.md",
+      "human": true
+    },
+    {
+      "id": "09",
+      "file": "09-ai-traffic.md"
+    },
+    {
+      "id": "10",
+      "file": "10-mission-engine.md"
+    },
+    {
+      "id": "11",
+      "file": "11-districts-and-missions.md"
+    },
+    {
+      "id": "12",
+      "file": "12-economy-garage-save.md"
+    },
+    {
+      "id": "13",
+      "file": "13-ui-screens-and-hud.md"
+    },
+    {
+      "id": "14",
+      "file": "14-audio-haptics-onboarding.md"
+    },
+    {
+      "id": "15",
+      "file": "15-performance-pass.md"
+    },
+    {
+      "id": "16",
+      "file": "16-human-playtest-checkpoint.md",
+      "human": true
+    },
+    {
+      "id": "17",
+      "file": "17-capacitor-packaging.md"
+    },
+    {
+      "id": "18",
+      "file": "18-name-candidates-and-icon-dry-run.md"
+    },
+    {
+      "id": "19",
+      "file": "19-human-pick-name-and-icon.md",
+      "human": true
+    },
+    {
+      "id": "20",
+      "file": "20-apply-name-and-brand.md"
+    },
+    {
+      "id": "21",
+      "file": "21-release-readiness.md"
+    },
+    {
+      "id": "22",
+      "file": "22-human-device-checkpoint.md",
+      "human": true
+    }
+  ]
+}

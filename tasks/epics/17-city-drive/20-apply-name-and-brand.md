@@ -1,0 +1,86 @@
+---
+epic: 17-city-drive
+task: 20-apply-name-and-brand
+status: pending
+commit_scope: city-drive
+depends_on: [17-city-drive/19-human-pick-name-and-icon]
+estimate: M
+owner: agent
+---
+
+# Apply the chosen name, final icon, splash
+
+## Goal
+
+Rename the game everywhere user-facing to the name picked at task 19. Produce
+the final icon from the chosen draft and generate every platform icon and
+splash asset.
+
+## Context / Decisions
+
+- Read `tasks/epics/17-city-drive/decisions.md` for the name, the icon draft,
+  and the requested changes.
+- **Name:** change the single working-title constant (task 13), the Capacitor
+  `appName`, the Android `strings.xml` `app_name`, the iOS `CFBundleDisplayName`,
+  the HTML `<title>` and the web manifest, the registry `publicTitle`, and the
+  knowledge base.
+  - **Keep internal ids unchanged:** `city_drive`, `city-drive`, the folder
+    names, and `app.w3dev.citydrive`. Record this in the decisions log, the way
+    Merge Relay kept `merge_relay`.
+- **Final icon:**
+  - If changes were requested, regenerate with the `generate-image` skill:
+    smoke test first, log the prompts, and return blocked on failure.
+  - Clean up the master at 1024×1024 RGB with no alpha (iOS requirement).
+  - Make an Android adaptive foreground and background pair: a foreground with
+    a transparent background inside the safe zone, and a solid background
+    colour.
+  - Masters go under `.agents/resources/2026-10-15/city-drive-art/icon/`.
+- **Generate the platform assets** with `@capacitor/assets` (exact pin, dev
+  dependency) from `apps-games/city-drive/resources/{icon.png,icon-foreground.png,icon-background.png,splash.png,splash-dark.png}`.
+  - The splash is the logo on the brand colour, landscape-safe.
+  - Also make the web favicon and PWA manifest icons (192 and 512).
+- **Logo wordmark** for the home screen: the name set in Russo One plus a
+  small icon mark. Use HTML/CSS, not an image, so it stays crisp.
+- **Tests:**
+  - The name constant is used by the home screen and the document title.
+  - The icon files exist at the expected sizes; check them with sharp in a
+    Vitest test.
+  - The iOS icon has no alpha.
+
+## Implementation Checklist
+
+- [ ] Apply the name across all user-facing surfaces and the registry
+      `publicTitle`.
+- [ ] Final icon masters, then `@capacitor/assets` generation and `cap sync`.
+- [ ] Favicon and PWA icons; the home wordmark.
+- [ ] Tests for the name usage and the icon sizes and alpha.
+- [ ] Update the knowledge base: `README.md` quick facts, `assets-index.md`,
+      `decisions-log.md`.
+
+## Files Touched
+
+- `apps-games/city-drive/{resources/**,android/**/res/**,ios/**/Assets.xcassets/**,public/**,index.html,src/ui/**,capacitor.config.ts,package.json,test/**}`, `bun.lock`
+- `scripts/games/registry-games.ts` (`publicTitle`)
+- `.agents/games/city-drive/**`, `.agents/resources/2026-10-15/city-drive-art/icon/**`
+
+## Acceptance Criteria
+
+- No user-facing "City Drive" string remains (unless it was chosen as the
+  name). Check with `grep -rni "city drive"` over `src`, `index.html`, and
+  the native resources.
+- The icon tests pass, and `cap sync` succeeds.
+- The debug APK still builds if the toolchain exists (from task 17).
+
+## Out of Scope
+
+- Store screenshots and the listing (task 21).
+
+## Verification Commands
+
+- `bun run city-drive:test`
+- `bun run city-drive:cap:sync`
+- `bun run games:test:tooling`
+
+## Commit message
+
+`feat(city-drive): apply chosen name, icon and splash [17-city-drive/20]`
