@@ -18,11 +18,13 @@ const members = [
   ["apps-native/games/packages/heist_rules", "heist_rules"],
   ["apps-native/games/packages/court_rules", "court_rules"],
   ["apps-native/games/packages/snapquest_rules", "snapquest_rules"],
+  ["apps-native/games/packages/ludo_rules", "ludo_rules"],
   ["apps-native/games/merge_relay", "merge_relay"],
   ["apps-native/games/pocket_biome", "pocket_biome"],
   ["apps-native/games/sixty_second_heist", "sixty_second_heist"],
   ["apps-native/games/meme_court", "meme_court"],
   ["apps-native/games/snapquest", "snapquest"],
+  ["apps-native/games/ludo", "ludo"],
 ] as const;
 
 function workspaceFixture(overrides: Record<string, string> = {}): string {
@@ -86,7 +88,7 @@ test("unknown local Pub dependency forces a full matrix", () => {
       graph,
     });
     expect(result.fallback).toBe(true);
-    expect(result.apps).toHaveLength(5);
+    expect(result.apps).toHaveLength(6);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -104,6 +106,7 @@ test("Dart package changes use reverse consumers instead of copying game rules",
     "sixty_second_heist",
     "meme_court",
     "snapquest",
+    "ludo",
   ]);
 });
 
@@ -134,4 +137,48 @@ test("unused graph values remain type-safe fixtures", () => {
     errors: [],
   };
   expect(reverseDependencyClosure(graph, "missing")).toEqual(["missing"]);
+});
+
+test("web game paths map to city_drive and never enter the Flutter matrices", () => {
+  for (const path of [
+    "apps-games/city-drive/src/main.ts",
+    "apps-games/city-drive-core/src/index.ts",
+  ]) {
+    const result = affectedForFiles([path]);
+    expect(result.fallback).toBe(false);
+    expect(result.apps).toEqual([]);
+    expect(result.web_apps).toEqual(["city_drive"]);
+  }
+});
+
+test("web path lookalikes do not map to city_drive", () => {
+  const result = affectedForFiles(["apps-games/city-drive-notes/README.md"]);
+  expect(result.web_apps).toEqual([]);
+});
+
+test("mixed Flutter and web changes keep the two lists separate", () => {
+  const result = affectedForFiles([
+    "apps-native/games/merge_relay/lib/main.dart",
+    "apps-games/city-drive/src/main.ts",
+  ]);
+  expect(result.apps).toEqual(["merge_relay"]);
+  expect(result.web_apps).toEqual(["city_drive"]);
+});
+
+test("full matrix lists Flutter games in apps and web games in web_apps", () => {
+  const result = affectedForFiles(["turbo.json"]);
+  expect(result.fallback).toBe(true);
+  expect(result.apps).not.toContain("city_drive");
+  expect(result.web_apps).toEqual(["city_drive"]);
+});
+
+test("the Pub graph ignores web games", () => {
+  const root = workspaceFixture();
+  try {
+    const graph = buildPubReverseGraph(root);
+    expect(graph.members.some((member) => member.startsWith("apps-games/"))).toBe(false);
+    expect(graph.errors).toEqual([]);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });

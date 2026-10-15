@@ -50,6 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       apps: ${{ steps.detect.outputs.apps }}
+      web_apps: ${{ steps.detect.outputs.web_apps }}
       fallback: ${{ steps.detect.outputs.fallback }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -75,6 +76,7 @@ jobs:
           result="$(bun scripts/games/cli.ts affected --base "$base")"
           echo "$result"
           echo "apps=$(echo "$result" | jq -c '.apps')" >> "$GITHUB_OUTPUT"
+          echo "web_apps=$(echo "$result" | jq -c '.web_apps')" >> "$GITHUB_OUTPUT"
           echo "fallback=$(echo "$result" | jq -r '.fallback')" >> "$GITHUB_OUTPUT"
 
   dart:

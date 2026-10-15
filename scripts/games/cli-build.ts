@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
 import { parseEnvironment } from "./config";
-import type { GameRegistration } from "./registry";
+import { type GameRegistration, isWebGame, webEngineMessage } from "./registry";
 import { appDirectory, flag, run } from "./toolchain";
 import { generateXcodeProject } from "./xcodegen";
 
@@ -175,6 +175,10 @@ function buildIos(game: GameRegistration, mode: string, environment: string): vo
 }
 
 export function buildGame(args: string[], game: GameRegistration): void {
+  if (isWebGame(game)) {
+    console.log(webEngineMessage(game));
+    return;
+  }
   const platform = flag(args, "--platform") ?? "android";
   const mode = flag(args, "--mode") ?? "debug";
   const environment = parseEnvironment(flag(args, "--environment") ?? "debug");

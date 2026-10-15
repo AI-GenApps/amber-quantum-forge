@@ -1,14 +1,51 @@
+import { existsSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { GAME_REGISTRY } from "./registry-games";
-import type { GameRegistration } from "./registry-types";
+import { GAME_IDS, type GameRegistration } from "./registry-types";
+
+const REGISTRY_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 
 export { GAME_REGISTRY } from "./registry-games";
-export type { GameId, GameRegistration } from "./registry-types";
+export type { GameEngine, GameId, GameRegistration } from "./registry-types";
 
 export function gameById(id: string): GameRegistration | undefined {
   return GAME_REGISTRY.find((game) => game.id === id);
 }
 
-export function validateGameRegistry(): string[] {
+export function flutterGames(): GameRegistration[] {
+  return GAME_REGISTRY.filter((game) => game.engine === "flutter");
+}
+
+export function webGames(): GameRegistration[] {
+  return GAME_REGISTRY.filter((game) => game.engine === "web");
+}
+
+export function isWebGame(game: GameRegistration): boolean {
+  return game.engine === "web";
+}
+
+export function webEngineMessage(game: GameRegistration): string {
+  return `${game.id} uses the web engine: use \`bun run city-drive:build\` (Flutter games:* commands do not apply).`;
+}
+
+function validateEngine(game: GameRegistration, root: string): string[] {
+  const errors: string[] = [];
+  if (game.engine !== "flutter" && game.engine !== "web") errors.push(`invalid engine: ${game.id}`);
+  if (game.engine === "web") {
+    if (game.rendering !== "babylon")
+      errors.push(`web game must use babylon rendering: ${game.id}`);
+    for (const path of [game.paths.app, game.paths.rulesPackage]) {
+      if (!existsSync(join(root, path, "package.json")))
+        errors.push(`web game is missing package.json: ${game.id}/${path}`);
+    }
+  } else if (game.rendering === "babylon") {
+    errors.push(`babylon rendering requires the web engine: ${game.id}`);
+  }
+  return errors;
+}
+
+export function validateGameRegistry(root = REGISTRY_ROOT): string[] {
   const errors: string[] = [];
   const ids = new Set<string>();
   const appPaths = new Set<string>();
@@ -16,6 +53,7 @@ export function validateGameRegistry(): string[] {
   const applicationIds = new Set<string>();
 
   for (const game of GAME_REGISTRY) {
+    errors.push(...validateEngine(game, root));
     if (ids.has(game.id)) errors.push(`duplicate game id: ${game.id}`);
     ids.add(game.id);
     if (appPaths.has(game.paths.app)) errors.push(`duplicate app path: ${game.paths.app}`);
@@ -61,6 +99,8 @@ export function validateGameRegistry(): string[] {
     if (game.id === "meme_court" && game.rendering !== "flutter_widgets")
       errors.push("Meme Court must use Flutter widgets");
   }
-  if (GAME_REGISTRY.length !== 6) errors.push(`expected six games, found ${GAME_REGISTRY.length}`);
+  const expected = new Set<string>(GAME_IDS);
+  for (const id of expected) if (!ids.has(id)) errors.push(`registry entry is missing: ${id}`);
+  for (const id of ids) if (!expected.has(id)) errors.push(`registry entry is not declared: ${id}`);
   return errors;
 }

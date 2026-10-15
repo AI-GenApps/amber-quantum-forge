@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { activeIdForEnvironment } from "./config";
-import { appDirectory, ROOT, requireApp } from "./toolchain";
+import { appDirectory, ROOT, requireFlutterApp } from "./toolchain";
 
 interface HashSource {
   readonly directory: string;
@@ -137,7 +137,7 @@ function value(args: string[], name: string): string {
 }
 
 export function writeBuildMetadata(args: string[]): string {
-  const game = requireApp(value(args, "--app"));
+  const game = requireFlutterApp(value(args, "--app"));
   const platform = value(args, "--platform");
   const environment = value(args, "--environment") as "debug" | "staging" | "production";
   if (platform !== "android" && platform !== "ios")

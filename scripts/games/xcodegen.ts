@@ -1,7 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { GAME_REGISTRY } from "./registry";
+import { flutterGames, type GAME_REGISTRY, isWebGame, webEngineMessage } from "./registry";
 import { appDirectory } from "./toolchain";
 
 export function projectSpec(bundleId: string, deploymentTarget = "15.0"): string {
@@ -136,7 +136,11 @@ export function generateXcodeProject(
 }
 
 export function generateXcodeProjects(selected?: (typeof GAME_REGISTRY)[number]): void {
-  const games = selected ? [selected] : GAME_REGISTRY;
+  if (selected && isWebGame(selected)) {
+    console.log(`SKIP ${webEngineMessage(selected)}`);
+    return;
+  }
+  const games = selected ? [selected] : flutterGames();
   for (const game of games) {
     const root = appDirectory(game);
     generateXcodeProject(root, game.identity.iosBundleId, "15.0");

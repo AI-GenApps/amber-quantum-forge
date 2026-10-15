@@ -1,6 +1,6 @@
 import { selectedApps } from "./cli-commands";
 import { parseEnvironment, writeGameConfigs } from "./config";
-import type { GameRegistration } from "./registry";
+import { type GameRegistration, isWebGame, webEngineMessage } from "./registry";
 import { appDirectory, capture, flag, requireApp, run } from "./toolchain";
 import { generateXcodeProject } from "./xcodegen";
 
@@ -29,6 +29,8 @@ export function classifyPhysicalDevice(devices: unknown, deviceId: string): Phys
 function requiredGame(args: string[]): GameRegistration {
   const id = flag(args, "--app");
   if (!id) throw new Error("--app is required for games:run and games:build");
+  const requested = requireApp(id);
+  if (isWebGame(requested)) throw new Error(webEngineMessage(requested));
   return selectedApps(args)[0] ?? requireApp(id);
 }
 

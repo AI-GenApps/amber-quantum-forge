@@ -1,10 +1,11 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
-import { GAME_REGISTRY, type GameId } from "./registry";
+import { flutterGames, type GameId, webGames } from "./registry";
 import { flag, ROOT } from "./toolchain";
 export interface AffectedResult {
   readonly apps: GameId[];
+  readonly web_apps: GameId[];
   readonly fallback: boolean;
   readonly reason: string;
   readonly changed: string[];
@@ -39,7 +40,7 @@ function isPathInside(path: string, directory: string): boolean {
 function workspaceMembers(): string[] {
   return uniqueSorted([
     platformCorePath,
-    ...GAME_REGISTRY.flatMap((game) => [game.paths.app, game.paths.rulesPackage]),
+    ...flutterGames().flatMap((game) => [game.paths.app, game.paths.rulesPackage]),
   ]);
 }
 export function parsePubspecDependencies(contents: string): ParsedPubspec {
@@ -191,11 +192,17 @@ function changedFiles(base: string): ChangedFilesResult {
   return { files: uniqueSorted(files), baseError };
 }
 function appForPath(path: string): GameId | undefined {
-  return GAME_REGISTRY.find((game) => isPathInside(path, game.paths.app))?.id;
+  return flutterGames().find((game) => isPathInside(path, game.paths.app))?.id;
+}
+function webAppForPath(path: string): GameId | undefined {
+  return webGames().find(
+    (game) => isPathInside(path, game.paths.app) || isPathInside(path, game.paths.rulesPackage),
+  )?.id;
 }
 function fullMatrix(reason: string, changed: readonly string[]): AffectedResult {
   return {
-    apps: GAME_REGISTRY.map((game) => game.id),
+    apps: flutterGames().map((game) => game.id),
+    web_apps: webGames().map((game) => game.id),
     fallback: true,
     reason,
     changed: uniqueSorted(changed),
@@ -225,7 +232,9 @@ function sharedChange(path: string): boolean {
 }
 function appIdsForMembers(members: readonly string[]): GameId[] {
   const changed = new Set(members);
-  return GAME_REGISTRY.filter((game) => changed.has(game.paths.app)).map((game) => game.id);
+  return flutterGames()
+    .filter((game) => changed.has(game.paths.app))
+    .map((game) => game.id);
 }
 export function affectedForFiles(
   changed: readonly string[],
@@ -234,12 +243,18 @@ export function affectedForFiles(
   const normalized = uniqueSorted(changed.filter((path) => path.length > 0));
   const graph = options.graph ?? buildPubReverseGraph(options.root ?? ROOT);
   const affected = new Set<GameId>();
+  const affectedWeb = new Set<GameId>();
   for (const path of normalized) {
     if (sharedChange(path) || path.endsWith("/pubspec.lock")) {
       return fullMatrix(
         `Full matrix required for shared or orchestration change: ${path}`,
         normalized,
       );
+    }
+    const webApp = webAppForPath(path);
+    if (webApp) {
+      affectedWeb.add(webApp);
+      continue;
     }
     const app = appForPath(path);
     if (app) {
@@ -261,9 +276,17 @@ export function affectedForFiles(
       return fullMatrix(`Full matrix required for unclassified gaming change: ${path}`, normalized);
     }
   }
-  const apps = GAME_REGISTRY.filter((game) => affected.has(game.id)).map((game) => game.id);
-  const reason = apps.length > 0 ? "Affected app paths identified" : "No game changes detected";
-  return { apps, fallback: false, reason, changed: normalized };
+  const apps = flutterGames()
+    .filter((game) => affected.has(game.id))
+    .map((game) => game.id);
+  const web_apps = webGames()
+    .filter((game) => affectedWeb.has(game.id))
+    .map((game) => game.id);
+  const reason =
+    apps.length > 0 || web_apps.length > 0
+      ? "Affected app paths identified"
+      : "No game changes detected";
+  return { apps, web_apps, fallback: false, reason, changed: normalized };
 }
 export function detectAffected(base = "origin/main"): AffectedResult {
   const changedResult = changedFiles(base);
@@ -283,6 +306,7 @@ function main(args: string[]): void {
   }
   console.log(result.fallback ? `FULL MATRIX: ${result.reason}` : result.reason);
   console.log(result.apps.length > 0 ? result.apps.join("\n") : "No affected game apps");
+  if (result.web_apps.length > 0) console.log(`Web apps: ${result.web_apps.join(", ")}`);
   if (result.changed.length > 0) console.log(`Changed files: ${result.changed.length}`);
 }
 if (import.meta.main) main(process.argv.slice(2));

@@ -14,3 +14,13 @@ test("generated Dart registry is formatter-stable", () => {
   execFileSync("dart", ["format", "--output=none", "--set-exit-if-changed", registryPath]);
   expect(readFileSync(registryPath, "utf8")).toContain("GeneratedGameRegistry");
 });
+
+test("generated Dart registry excludes web games and is left untouched when unchanged", () => {
+  const before = readFileSync(registryPath, "utf8");
+  generateRegistry();
+  const after = readFileSync(registryPath, "utf8");
+  expect(after).toBe(before);
+  expect(after).not.toContain("city_drive");
+  expect(after).not.toContain("babylon");
+  expect(after).toContain("id: 'ludo'");
+});

@@ -1,7 +1,15 @@
 import { existsSync } from "node:fs";
 import { parseEnvironment, validateGameConfigs } from "./config";
 import { validateContent } from "./content";
-import { GAME_REGISTRY, type GameRegistration, gameById, validateGameRegistry } from "./registry";
+import {
+  flutterGames,
+  GAME_REGISTRY,
+  type GameRegistration,
+  gameById,
+  isWebGame,
+  validateGameRegistry,
+  webEngineMessage,
+} from "./registry";
 import {
   appDirectory,
   existingApps,
@@ -19,18 +27,24 @@ export function selectedApps(args: string[]): GameRegistration[] {
   const id = flag(args, "--app");
   if (!id) return existingApps();
   const game = requireApp(id);
+  if (isWebGame(game)) {
+    console.log(`SKIP ${webEngineMessage(game)}`);
+    return [];
+  }
   if (!existingApps().some((entry) => entry.id === game.id))
     throw new Error(`Game app is not scaffolded: ${game.id}`);
   return [game];
 }
 
-function packageDirectories(): string[] {
+function packageDirectories(args: string[]): string[] {
+  const id = flag(args, "--app");
+  if (id && isWebGame(requireApp(id))) return [];
   return existingPackages().map((path) => `${ROOT}/${path}`);
 }
 
 export function format(args: string[]): void {
   const check = args.includes("--check");
-  for (const directory of packageDirectories()) {
+  for (const directory of packageDirectories(args)) {
     run(
       "dart",
       ["format", ...(check ? ["--output=none", "--set-exit-if-changed"] : []), "."],
@@ -47,12 +61,12 @@ export function format(args: string[]): void {
 }
 
 export function analyze(args: string[]): void {
-  for (const directory of packageDirectories()) run("dart", ["analyze"], directory);
+  for (const directory of packageDirectories(args)) run("dart", ["analyze"], directory);
   for (const game of selectedApps(args)) run("flutter", ["analyze"], appDirectory(game));
 }
 
 export function test(args: string[]): void {
-  for (const directory of packageDirectories()) run("dart", ["test"], directory);
+  for (const directory of packageDirectories(args)) run("dart", ["test"], directory);
   for (const game of selectedApps(args)) run("flutter", ["test"], appDirectory(game));
 }
 
@@ -61,7 +75,7 @@ export function validate(args: string[]): void {
   errors.push(...validateGameConfigs(parseEnvironment(flag(args, "--environment") ?? "debug")));
   errors.push(...validateContent());
   if (args.includes("--strict")) {
-    for (const game of GAME_REGISTRY) {
+    for (const game of flutterGames()) {
       if (!gameById(game.id) || !existingApps().some((entry) => entry.id === game.id))
         errors.push(`missing app scaffold: ${game.id}`);
       if (!existingPackages().includes(game.paths.rulesPackage))
@@ -78,10 +92,10 @@ export function validate(args: string[]): void {
 
 export function bootstrap(): void {
   run("bun", ["install", "--frozen-lockfile"]);
-  const missingApps = GAME_REGISTRY.filter(
+  const missingApps = flutterGames().filter(
     (game) => !existingApps().some((entry) => entry.id === game.id),
   );
-  const missingPackages = GAME_REGISTRY.filter(
+  const missingPackages = flutterGames().filter(
     (game) => !existingPackages().includes(game.paths.rulesPackage),
   );
   if (missingApps.length > 0 || missingPackages.length > 0) {
@@ -96,7 +110,7 @@ export function bootstrap(): void {
     ["pub", "get", ...(existsSync(`${GAMES_ROOT}/pubspec.lock`) ? ["--enforce-lockfile"] : [])],
     GAMES_ROOT,
   );
-  for (const game of GAME_REGISTRY) {
+  for (const game of flutterGames()) {
     const lockfile = `${appDirectory(game)}/pubspec.lock`;
     run(
       "flutter",
@@ -107,6 +121,12 @@ export function bootstrap(): void {
 }
 
 export function doctor(args: string[]): void {
+  const appId = flag(args, "--app");
+  const selected = appId ? requireApp(appId) : undefined;
+  if (selected && isWebGame(selected)) {
+    console.log(`SKIP ${webEngineMessage(selected)}`);
+    return;
+  }
   const toolchain = readToolchain();
   const checks: [string, string[], string][] = [
     ["bun", ["--version"], toolchain.bun],
@@ -146,7 +166,7 @@ export function doctor(args: string[]): void {
 export function list(): void {
   for (const game of GAME_REGISTRY) {
     console.log(
-      `${game.id}\t${game.publicTitle}\t${game.identity.iosBundleId}\t${game.rendering}\t${game.readiness.implemented ? "implemented" : "scaffold"}`,
+      `${game.id}\t${game.publicTitle}\t${game.identity.iosBundleId}\t${game.engine}\t${game.rendering}\t${game.readiness.implemented ? "implemented" : "scaffold"}`,
     );
   }
 }

@@ -274,8 +274,15 @@ export function renderGeneratedIconSync(root: string, title: string): void {
 }
 
 async function renderRegisteredIcons(appId: string | undefined, check: boolean): Promise<void> {
-  const games = appId ? GAME_REGISTRY.filter((game) => game.id === appId) : GAME_REGISTRY;
+  const games = appId
+    ? GAME_REGISTRY.filter((game) => game.id === appId)
+    : GAME_REGISTRY.filter((game) => game.engine === "flutter");
   if (games.length === 0) throw new Error(`Unknown app '${appId ?? ""}'`);
+  const webGame = games.find((game) => game.engine === "web");
+  if (webGame) {
+    console.log(`SKIP ${webGame.id} uses the web engine; Flutter icon generation does not apply.`);
+    return;
+  }
   const errors: string[] = [];
   for (const game of games) {
     const root = appDirectory(game);

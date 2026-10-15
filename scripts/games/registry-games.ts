@@ -16,6 +16,7 @@ export const GAME_REGISTRY: readonly GameRegistration[] = [
     canonicalName: "Glow Rescue",
     publicTitle: "Glow Rescue",
     subtitle: "Merge tiles, rescue the board.",
+    engine: "flutter",
     lifecycle: "concept",
     paths: {
       app: "apps-native/games/merge_relay",
@@ -56,6 +57,7 @@ export const GAME_REGISTRY: readonly GameRegistration[] = [
     canonicalName: "Pocket Biome",
     publicTitle: "Pocket Biome",
     subtitle: "Grow a tiny living world",
+    engine: "flutter",
     lifecycle: "concept",
     paths: {
       app: "apps-native/games/pocket_biome",
@@ -89,6 +91,7 @@ export const GAME_REGISTRY: readonly GameRegistration[] = [
     canonicalName: "Sixty-Second Heist",
     publicTitle: "Sixty-Second Heist",
     subtitle: "Plan. Sneak. Escape.",
+    engine: "flutter",
     lifecycle: "concept",
     paths: {
       app: "apps-native/games/sixty_second_heist",
@@ -122,6 +125,7 @@ export const GAME_REGISTRY: readonly GameRegistration[] = [
     canonicalName: "Meme Court",
     publicTitle: "Meme Court",
     subtitle: "Caption battles with friends",
+    engine: "flutter",
     lifecycle: "concept",
     paths: {
       app: "apps-native/games/meme_court",
@@ -155,6 +159,7 @@ export const GAME_REGISTRY: readonly GameRegistration[] = [
     canonicalName: "SnapQuest",
     publicTitle: "Peeklings",
     subtitle: "Find objects. Meet creatures",
+    engine: "flutter",
     lifecycle: "concept",
     paths: {
       app: "apps-native/games/snapquest",
@@ -192,6 +197,7 @@ export const GAME_REGISTRY: readonly GameRegistration[] = [
     canonicalName: "Ludo Vortex",
     publicTitle: "Ludo Vortex",
     subtitle: "Roll, race, and capture with friends",
+    engine: "flutter",
     lifecycle: "concept",
     paths: {
       app: "apps-native/games/ludo",
@@ -220,6 +226,44 @@ export const GAME_REGISTRY: readonly GameRegistration[] = [
     readiness: scaffoldReadiness,
     identity: identity("ludo"),
     namespaces: namespaces("ludo"),
+    release: {
+      version: "0.1.0",
+      buildNumber: 1,
+      storeProductIds: { ios: null, android: null },
+      publisher: null,
+      domains: [],
+    },
+  },
+  {
+    id: "city_drive",
+    canonicalName: "City Drive",
+    publicTitle: "City Drive",
+    subtitle: "Free-roam the city and take on missions",
+    engine: "web",
+    lifecycle: "concept",
+    paths: {
+      app: "apps-games/city-drive",
+      rulesPackage: "apps-games/city-drive-core",
+    },
+    source: internalSource(
+      ".agents/games/city-drive",
+      ".agents/games/city-drive/README.md",
+      ".agents/games/city-drive/decisions-log.md",
+      "tasks/epics/17-city-drive/STATUS.md",
+      {
+        index: ".agents/games/city-drive/README.md",
+        prd: ".agents/games/city-drive/decisions-log.md",
+        validation: "tasks/epics/17-city-drive/STATUS.md",
+      },
+    ),
+    platforms: ["android", "ios"],
+    environments: supportedEnvironments,
+    rendering: "babylon",
+    capabilities: capabilities(["game_loop"]),
+    permissions: noPermissions,
+    readiness: scaffoldReadiness,
+    identity: identity("citydrive"),
+    namespaces: namespaces("city_drive"),
     release: {
       version: "0.1.0",
       buildNumber: 1,

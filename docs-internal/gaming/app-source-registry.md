@@ -9,6 +9,22 @@ The executable registry is [`scripts/games/registry.ts`](../../scripts/games/reg
 | `sixty_second_heist` | Sixty-Second Heist | `apps-native/games/sixty_second_heist` | `heist_rules` | `app.w3dev.sixtysecondheist` | `app.w3dev.sixtysecondheist.debug` | [`sources/sixty-second-heist.json`](sources/sixty-second-heist.json) |
 | `meme_court` | Meme Court | `apps-native/games/meme_court` | `court_rules` | `app.w3dev.memecourt` | `app.w3dev.memecourt.debug` | [`sources/meme-court.json`](sources/meme-court.json) |
 | `snapquest` | Peeklings | `apps-native/games/snapquest` | `snapquest_rules` | `app.w3dev.snapquest` | `app.w3dev.snapquest.debug` | [`sources/snapquest.json`](sources/snapquest.json) |
+| `city_drive` | City Drive (working title) | `apps-games/city-drive` | `apps-games/city-drive-core` (TypeScript) | `app.w3dev.citydrive` | `app.w3dev.citydrive.debug` | [`.agents/games/city-drive/`](../../.agents/games/city-drive/README.md) |
+
+## Engine field
+
+Every registry entry carries `engine: "flutter" | "web"`. The six existing games are `flutter`; `city_drive` is the first `web` game (Babylon.js + TypeScript, packaged with Capacitor in a later task). The `rendering` field also allows `babylon`, and `rendering: "babylon"` is valid only for `engine: "web"`.
+
+| Engine | `paths.app` must contain | `paths.rulesPackage` must contain | Tooling that applies |
+|---|---|---|---|
+| `flutter` | `pubspec.yaml` | Dart package with `pubspec.yaml` | Everything under `games:*` |
+| `web` | `package.json` (Bun workspace under `apps-games/*`) | `package.json` (pure TypeScript core, `apps-games/city-drive-core`) | `bun run city-drive:*` and `.github/workflows/city-drive-ci.yml` |
+
+`validateGameRegistry()` checks the entry list against the declared `GAME_IDS` list in `registry-types.ts` instead of a hard-coded count, so adding a game means adding its ID there and its entry in `registry-games.ts`.
+
+Flutter-only paths are gated by `engine === "flutter"`: app and package discovery (`existingApps`, `existingPackages`), `games:format`, `analyze`, `test`, `bootstrap`, `doctor`, `validate --strict`, generated `game.config.json` validation, content-manifest validation, `native`, `xcodegen`, `icons`, `metadata`, `run`, and the Dart registry codegen. The generated Dart registry therefore lists only Flutter games. With `--app city_drive`, `format`/`analyze`/`test`/`doctor`/`xcodegen`/`icons` print a `SKIP ... web engine` line and exit 0; `games:build -- --app city_drive` prints the web-engine message (use `bun run city-drive:build`) and exits 0; `run` and `metadata` fail with a clear web-engine error.
+
+`games:list` prints an engine column. `games:affected` maps `apps-games/city-drive/**` and `apps-games/city-drive-core/**` to `city_drive` in a separate `web_apps` field; the `apps` field (the Flutter Android/iOS matrices) never contains a web game. `city_drive` is intentionally not in `packages/api/src/games/contracts.ts` `GAME_APP_IDS`: v1 has no backend.
 
 SnapQuest and Peeklings are one product. `snapquest` remains the stable internal ID and `Apps/SnapQuest/` remains its canonical Drive folder. Public titles, subtitles, capabilities, and the complete source record set remain separate from technical bundle identifiers.
 

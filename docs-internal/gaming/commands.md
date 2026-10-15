@@ -6,13 +6,13 @@ Run commands from the repository root after Bun, Flutter 3.47.3, and Dart 3.13.3
 |---|---|
 | `bun run games:bootstrap` | Installs the Bun lockfile, verifies all five apps and six packages, resolves the scoped Pub workspace, and resolves each app against the workspace lockfile. |
 | `bun run games:doctor` | Reports Bun, Flutter, Dart, Xcode, and ADB availability. Add `-- --strict` to fail on toolchain mismatches. |
-| `bun run games:list` | Lists stable IDs, public titles, production iOS IDs, rendering surface, and readiness. |
+| `bun run games:list` | Lists stable IDs, public titles, production iOS IDs, engine (`flutter` or `web`), rendering surface, and readiness. |
 | `bun run games:format` | Formats pure packages and selected/all game clients. Add `-- --check` for CI. |
 | `bun run games:analyze` | Runs Dart analysis for packages and Flutter analysis for clients. Add `-- --app <id>` to select one client. |
 | `bun run games:test` | Runs package and client tests. Add `-- --app <id>` for one client. |
 | `bun run games:validate:strict` | Validates registry, generated config, native IDs, optional SDKs, permissions, content, and all workspace members. |
 | `bun run games:content:validate` | Checks JSON content for valid syntax, size limits, and blocked customer/photo/caption fields. |
-| `bun run games:affected -- --base <sha> --format=json` | Computes affected clients; invalid or missing bases produce a full matrix. Renames/deletes are included. |
+| `bun run games:affected -- --base <sha> --format=json` | Computes affected clients; invalid or missing bases produce a full matrix. Renames/deletes are included. The JSON has `apps` (Flutter matrices) and `web_apps` (web-engine games such as `city_drive`). |
 | `bun run games:run -- --app merge_relay --device-id <physical-id>` | Runs one app on a connected physical device. Emulator and simulator IDs return `NOT RUN` with exit code 2. |
 | `bun run games:build -- --app merge_relay --platform android --mode debug --environment debug` | Builds one debug APK with the debug application ID suffix. |
 | `bun run games:build -- --app merge_relay --platform android --mode release --environment debug` | Builds one optimized Android APK using the local debug keystore and the debug environment ID; this is a release-mode debug-signed artifact, not a store distribution build. |

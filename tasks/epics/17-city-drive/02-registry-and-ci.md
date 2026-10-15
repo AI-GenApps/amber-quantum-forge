@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 02-registry-and-ci
-status: pending
+status: completed
 commit_scope: games
 depends_on: [17-city-drive/01-workspace-scaffold]
 estimate: L
@@ -80,11 +80,11 @@ that gates City Drive changes.
 
 ## Implementation Checklist
 
-- [ ] Add the engine field, widen the types, and add the `city_drive` entry.
-- [ ] Gate Flutter-only paths; give web games friendly messages.
-- [ ] Update `affected.ts` and its tests.
-- [ ] Update `games-ci.yml` path filters/lists, and add `city-drive-ci.yml`.
-- [ ] Update the tooling tests and the registry doc.
+- [x] Add the engine field, widen the types, and add the `city_drive` entry.
+- [x] Gate Flutter-only paths; give web games friendly messages.
+- [x] Update `affected.ts` and its tests.
+- [x] Update `games-ci.yml` path filters/lists, and add `city-drive-ci.yml`.
+- [x] Update the tooling tests and the registry doc.
 
 ## Files Touched
 

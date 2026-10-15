@@ -1,6 +1,6 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { GAME_REGISTRY } from "./registry";
+import { flutterGames } from "./registry";
 import { ROOT } from "./toolchain";
 
 const maxContentFileBytes = 2_000_000;
@@ -167,7 +167,7 @@ function readJson(file: string, errors: string[]): unknown | undefined {
 
 export function validateContent(options: ContentValidationOptions = {}): string[] {
   const root = options.root ?? ROOT;
-  const games = options.games ?? GAME_REGISTRY;
+  const games = options.games ?? flutterGames();
   const errors: string[] = [];
   for (const game of games) {
     const appRoot = join(root, game.paths.app);

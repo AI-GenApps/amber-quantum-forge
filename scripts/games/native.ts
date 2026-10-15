@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { GAME_REGISTRY } from "./registry";
+import { flutterGames } from "./registry";
 import { appDirectory } from "./toolchain";
 
 const ENVIRONMENT_DECLARATION = `val gameEnvironment = project.findProperty("gameEnvironment")?.toString() ?: "debug"
@@ -159,7 +159,8 @@ function configureIosPodfile(root: string): void {
 }
 
 export function prepareNativeProjects(): void {
-  for (const game of GAME_REGISTRY) {
+  const games = flutterGames();
+  for (const game of games) {
     const root = appDirectory(game);
     if (!existsSync(join(root, "pubspec.yaml"))) throw new Error(`Missing app pubspec: ${root}`);
     configureAndroid(root, game.identity.androidApplicationId);
@@ -167,7 +168,7 @@ export function prepareNativeProjects(): void {
     configureIos(root, game.identity.iosBundleId);
     configureIosPodfile(root);
   }
-  console.log(`Configured native identities for ${GAME_REGISTRY.length} games.`);
+  console.log(`Configured native identities for ${games.length} games.`);
 }
 
 if (import.meta.main) prepareNativeProjects();

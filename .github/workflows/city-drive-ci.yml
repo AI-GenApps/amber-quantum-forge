@@ -1,0 +1,59 @@
+name: City Drive CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps-games/**"
+      - "package.json"
+      - "bun.lock"
+      - "knip.json"
+      - "biome.json"
+      - "turbo.json"
+      - ".github/workflows/city-drive-ci.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "apps-games/**"
+      - "package.json"
+      - "bun.lock"
+      - "knip.json"
+      - "biome.json"
+      - "turbo.json"
+      - ".github/workflows/city-drive-ci.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: city-drive-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  BUN_VERSION: "1.3.3"
+  NODE_VERSION: "24"
+
+jobs:
+  quality:
+    name: Lint, typecheck, test, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - uses: oven-sh/setup-bun@3d267786b128fe76c2f16a390aa2448b815359f3
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - run: bunx biome check apps-games
+      - run: bun run city-drive:typecheck
+      - run: bun run city-drive:test
+      - run: bun run city-drive:build
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: city-drive-dist
+          path: apps-games/city-drive/dist
+          if-no-files-found: error
+          retention-days: 7

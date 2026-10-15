@@ -1,10 +1,14 @@
-export type GameId =
-  | "merge_relay"
-  | "pocket_biome"
-  | "sixty_second_heist"
-  | "meme_court"
-  | "snapquest"
-  | "ludo";
+export const GAME_IDS = [
+  "merge_relay",
+  "pocket_biome",
+  "sixty_second_heist",
+  "meme_court",
+  "snapquest",
+  "ludo",
+  "city_drive",
+] as const;
+
+export type GameId = (typeof GAME_IDS)[number];
 
 export type GameCapability =
   | "game_loop"
@@ -17,6 +21,8 @@ export type GameCapability =
   | "notifications"
   | "moderation"
   | "web_voting";
+
+export type GameEngine = "flutter" | "web";
 
 type GamePlatform = "ios" | "android";
 export type GameEnvironment = "debug" | "staging" | "production";
@@ -40,6 +46,7 @@ export interface GameRegistration {
   readonly canonicalName: string;
   readonly publicTitle: string;
   readonly subtitle: string;
+  readonly engine: GameEngine;
   readonly lifecycle: "concept";
   readonly paths: {
     readonly app: string;
@@ -54,7 +61,7 @@ export interface GameRegistration {
   };
   readonly platforms: readonly GamePlatform[];
   readonly environments: readonly GameEnvironment[];
-  readonly rendering: "flame" | "flutter_widgets";
+  readonly rendering: "flame" | "flutter_widgets" | "babylon";
   readonly capabilities: GameCapabilities;
   readonly permissions: {
     readonly specified: readonly string[];

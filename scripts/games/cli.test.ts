@@ -10,10 +10,10 @@ import {
   validateGameConfigs,
 } from "./config";
 import { validateContent } from "./content";
-import { GAME_REGISTRY, validateGameRegistry } from "./registry";
+import { flutterGames, validateGameRegistry } from "./registry";
 import { appDirectory } from "./toolchain";
 
-test("registry keeps five independent app identities", () => {
+test("registry keeps seven independent app identities", () => {
   expect(validateGameRegistry()).toEqual([]);
 });
 
@@ -28,7 +28,7 @@ test("content fixtures contain no blocked customer data", () => {
 test("invalid affected base forces a full matrix", () => {
   const result = detectAffected("refs/heads/this-base-does-not-exist");
   expect(result.fallback).toBe(true);
-  expect(result.apps).toHaveLength(5);
+  expect(result.apps).toHaveLength(6);
 });
 
 test("deleted and renamed app paths remain attributable", () => {
@@ -46,7 +46,7 @@ test("deleted and renamed app paths remain attributable", () => {
 test("unknown gaming paths force the conservative full matrix", () => {
   const result = affectedForFiles(["apps-native/games/README.md"]);
   expect(result.fallback).toBe(true);
-  expect(result.apps).toHaveLength(5);
+  expect(result.apps).toHaveLength(6);
 });
 
 test("physical device detection accepts only real iOS and Android targets", () => {
@@ -72,7 +72,7 @@ test("physical device detection accepts only real iOS and Android targets", () =
 });
 
 test("Android artifact readiness does not depend on Apple publication metadata", () => {
-  const game = GAME_REGISTRY[0];
+  const game = flutterGames()[0];
   expect(game.identity.registrationStatus).toBe("unverified");
   expect(game.release.publisher).toBeNull();
   expect(game.release.storeProductIds.ios).toBeNull();
@@ -82,7 +82,7 @@ test("Android artifact readiness does not depend on Apple publication metadata",
 
 test("environment arguments leave tracked app sources unchanged", () => {
   const originals = new Map(
-    GAME_REGISTRY.map((game) => [
+    flutterGames().map((game) => [
       game.id,
       {
         config: readFileSync(join(appDirectory(game), "game.config.json"), "utf8"),
@@ -90,7 +90,7 @@ test("environment arguments leave tracked app sources unchanged", () => {
       },
     ]),
   );
-  const selected = GAME_REGISTRY[0];
+  const selected = flutterGames()[0];
   const calls: { command: string; args: string[]; cwd?: string }[] = [];
   runAndroidBuild(selected, "debug", "staging", (command, args, cwd) => {
     calls.push({ command, args, cwd });
@@ -103,7 +103,7 @@ test("environment arguments leave tracked app sources unchanged", () => {
       throw new Error("fixture build interruption");
     }),
   ).toThrow("fixture build interruption");
-  for (const game of GAME_REGISTRY) {
+  for (const game of flutterGames()) {
     const original = originals.get(game.id);
     expect(original).toBeDefined();
     if (!original) continue;
@@ -120,7 +120,7 @@ test("environment arguments leave tracked app sources unchanged", () => {
 });
 
 test("all native Android projects declare immutable environment branches", () => {
-  for (const game of GAME_REGISTRY) {
+  for (const game of flutterGames()) {
     const source = readFileSync(join(appDirectory(game), "android/app/build.gradle.kts"), "utf8");
     expect(source).toContain('setOf("debug", "staging", "production")');
     expect(source).toContain('applicationIdSuffix = ".staging"');
@@ -130,7 +130,7 @@ test("all native Android projects declare immutable environment branches", () =>
 
 test("camera hardware features stay optional and isolated to SnapQuest", () => {
   const snapManifest = readFileSync(
-    join(appDirectory(GAME_REGISTRY[4]), "android/app/src/main/AndroidManifest.xml"),
+    join(appDirectory(flutterGames()[4]), "android/app/src/main/AndroidManifest.xml"),
     "utf8",
   );
   expect(validateAndroidManifestFeatures(snapManifest, "snapquest", true)).toEqual([]);

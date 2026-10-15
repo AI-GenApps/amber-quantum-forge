@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { GAME_REGISTRY } from "./registry";
+import { flutterGames, type GAME_REGISTRY } from "./registry";
 import type { GameCapability } from "./registry-types";
 import { appDirectory, ROOT } from "./toolchain";
 
@@ -223,7 +223,7 @@ function validateOptionalNativeAccess(
 
 export function writeGameConfigs(environment: GameEnvironment = "debug"): string[] {
   const written: string[] = [];
-  for (const game of GAME_REGISTRY) {
+  for (const game of flutterGames()) {
     if (existsSync(join(appDirectory(game), "pubspec.yaml")))
       written.push(writeGameConfig(game, environment));
   }
@@ -241,7 +241,7 @@ export function writeGameConfig(
 
 export function validateGameConfigs(environment: GameEnvironment = "debug"): string[] {
   const errors: string[] = [];
-  for (const game of GAME_REGISTRY) {
+  for (const game of flutterGames()) {
     const path = join(appDirectory(game), "game.config.json");
     if (!existsSync(path)) {
       errors.push(`missing generated config: ${path}`);
