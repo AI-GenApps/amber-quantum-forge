@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 26h-rewarded-ads-and-daily-rewards
-status: pending
+status: in-progress
 commit_scope: ludo
 depends_on: [15-ludo-launch/26g-inventory-and-store-ui]
 estimate: L
@@ -56,32 +56,92 @@ this monorepo per research.md section 3.
 
 ## Implementation Checklist
 
-- [ ] Add `google_mobile_ads` dependency, guarded initialization (never
+- [x] Add `google_mobile_ads` dependency, guarded initialization (never
   live ad unit IDs in debug), and the two rewarded ad unit wrappers.
-- [ ] Add UMP consent flow, shown before the first ad request.
-- [ ] Add `POST /:environment/ads/rewarded/callback` to
+  (`google_mobile_ads ^9.1.0`; `lib/src/net/ludo_ads_config.dart` is the guard:
+  a debug build resolves only Google's sample rewarded unit and ignores every
+  `--dart-define`, a release build needs real `LUDO_ADMOB_COIN/DIAMOND_AD_UNIT_ID`
+  defines or has ads disabled; `ludo_ads_service.dart` + `ludo_google_ads_sdk.dart`
+  wrap the coin and diamond unit behind an SDK seam; Android manifest AdMob
+  app id placeholder in `build.gradle.kts`.)
+- [x] Add UMP consent flow, shown before the first ad request.
+  (`gatherConsent` runs before `initialize`/`load` on every watch; `main.dart`
+  only refreshes consent info at startup via `prepareLudoAdsConsent`.)
+- [x] Add `POST /:environment/ads/rewarded/callback` to
   `packages/api/src/games/ludo/routes.ts`: AdMob signature verification,
-  daily cap enforcement, idempotent credit.
-- [ ] Add `packages/api/src/games/ludo/rewarded-ads-callback.test.ts`
+  daily cap enforcement, idempotent credit. (Registered from `routes.ts` by
+  `rewarded-ads-routes.ts`; accepts GET too, since AdMob calls SSV URLs with
+  GET; `admob-ssv.ts` verifies the signature.)
+- [x] Add `packages/api/src/games/ludo/rewarded-ads-callback.test.ts`
   covering: valid signed callback credits once, replayed
   `transaction_id` is a no-op, an unsigned/invalid-signature callback
   credits nothing, and a callback past the daily cap is rejected.
-- [ ] Create `lib/src/screens/daily_reward_screen.dart` (or extend an
-  existing surface) driven by task 26b's daily-reward route.
-- [ ] Wire a "watch ad" action on the store/HUD surface calling the ad SDK,
+- [x] Create `lib/src/screens/daily_reward_screen.dart` (or extend an
+  existing surface) driven by task 26b's daily-reward route. (New
+  `GET daily-reward` read model plus the existing claim route, which now
+  applies the Vortex Pass bonus server-side.)
+- [x] Wire a "watch ad" action on the store/HUD surface calling the ad SDK,
   then the SSV-backed credit (client does not credit itself — it only
   triggers the ad watch and later refreshes wallet state via task 26e's
-  state after the SSV callback lands server-side).
-- [ ] Add `test/screens/daily_reward_screen_test.dart` and a rewarded-ad
+  state after the SSV callback lands server-side). (Lobby header gift button
+  with a claimable badge and a Store-screen "Free coins" button open the
+  Daily Rewards screen, whose rows call `LudoRewardedAdsState.watch`.)
+- [x] Add `test/screens/daily_reward_screen_test.dart` and a rewarded-ad
   flow test using a fake ad SDK double (no real ad network calls in CI).
+  (Also `test/net/ludo_ads_service_test.dart`,
+  `test/state/ludo_rewarded_ads_state_test.dart`, goldens
+  `test/goldens/daily_reward_screen_*.png`.)
+- device evidence pending: run ludo-economy-device-pass
 - [ ] Capture device evidence (physical device, serial `RZ8R32EAB7T`) of a
   full rewarded-ad watch using AdMob **test ads** in debug, and the daily
-  reward calendar claim flow.
-- [ ] Rewarded-ad daily caps (coins 5/day, diamonds 2/day) and the online
+  reward calendar claim flow. NOT RUN (deferred to the device workflow); the
+  flow is written in
+  `.agents/resources/2026-09-25/ludo-vortex-economy/device-evidence/26h/device-flow.md`.
+- [x] Rewarded-ad daily caps (coins 5/day, diamonds 2/day) and the online
   free-play coin win cap (10/day) must be enforced with an atomic
   check-and-write in the economy store (same pattern as
   `recordXpClaimWithCap` from commit f755ac1), with concurrency tests
   firing simultaneous claims; a separate read-then-write is a failure.
+  (`claimAdRewardWithCap`, `claimFreePlayWinWithCap`, and `claimDailyReward`
+  on `LudoEconomyStore`; concurrency tests in `economy-capped-claims.test.ts`,
+  `rewarded-ads-callback.test.ts`, `wallet-routes.test.ts`; Drizzle versions
+  run under the per-subject advisory lock in one transaction.)
+
+## Implementation Notes
+
+- Extra files (small necessary additions): `economy-store-types.ts` (row/input
+  types and the `LudoEconomyStore` interface moved out of `economy-store.ts`,
+  re-exported from it, to stay under the 800-line limit),
+  `economy-daily-reward.ts`, `economy-drizzle-store-capped.ts`,
+  `free-play-reward.ts`, `vortex-pass.ts`, `admob-ssv.ts`,
+  `rewarded-ads-routes.ts`; new table `ludo_free_play_win_claims` with
+  migration `packages/db/migrations/0010_silly_joystick.sql` (generated only,
+  never applied); a gated Postgres concurrency test
+  `economy-drizzle-capped-postgres.test.ts` (NOT RUN without
+  `LUDO_TEST_DATABASE_URL`); Dart `ludo_ads.dart`, `ludo_rewards_models.dart`,
+  `ludo_preview_rewards.dart` (debug preview rewards + `PreviewServerCreditAdSdk`),
+  `daily_reward_launcher.dart`, `ludo_daily_reward_state.dart`,
+  `ludo_rewarded_ads_state.dart`, `ludo_daily_reward_widgets.dart`;
+  the `ludo` registry entry enables the `ads` capability
+  (`scripts/games/registry-games.ts`, `game.config.json`, required by
+  `games:validate` once `google_mobile_ads` is bundled); two new env vars in
+  `docs-internal/setup/02-env-vars.md`.
+- The task text lists `POST` for the callback; AdMob itself only issues GET
+  requests to a configured SSV URL, so the route answers both.
+- The online free-play win reward (50 coins, 10/day) existed only as config
+  values; it is now paid from `settleCoinStakeMatch` (finished free-play match,
+  human winner, per-match idempotent) through the atomic capped claim.
+- The daily reward claim was a read-then-write; it is now the atomic
+  `claimDailyReward`, and it now applies the +50% Vortex Pass bonus (the
+  config value was never applied before).
+- Underage tagging is not applicable in v1: onboarding collects only a name and
+  an avatar, no age signal.
+- Not done (console/human steps, NOT RUN): AdMob app and ad unit creation,
+  enabling SSV with the callback URL, real `LUDO_ADMOB_*` values (task 26i/29).
+  iOS has no `GADApplicationIdentifier` (ludo is Android-first in the
+  registry).
+- No 26f art is used here: the screen is code-drawn (Material icons for the
+  currency glyphs, matching the 26g store).
 
 ## Files Touched
 

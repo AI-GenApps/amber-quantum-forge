@@ -35,7 +35,11 @@ export type LudoErrorCode =
   | "ludo_item_already_owned"
   | "ludo_revenuecat_unauthorized"
   | "ludo_revenuecat_invalid_payload"
-  | "ludo_revenuecat_unknown_product";
+  | "ludo_revenuecat_unknown_product"
+  | "ludo_ad_signature_invalid"
+  | "ludo_ad_callback_invalid"
+  | "ludo_ad_daily_cap_reached"
+  | "ludo_ad_not_configured";
 
 export class LudoError extends Error {
   readonly diagnosticId: string;
@@ -319,5 +323,41 @@ export class LudoItemNotFoundError extends LudoCommandError {
 export class LudoItemAlreadyOwnedError extends LudoCommandError {
   constructor(itemId: string) {
     super(409, "ludo_item_already_owned", `Store item already owned: ${itemId}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Rewarded-ad SSV callback rejection paths (task 26h).
+// ---------------------------------------------------------------------------
+
+/** The AdMob SSV callback's signature is missing, malformed, signed by an
+ * unknown key, or does not verify over the query string. Nothing is credited. */
+export class LudoAdSignatureInvalidError extends LudoCommandError {
+  constructor() {
+    super(403, "ludo_ad_signature_invalid", "The AdMob SSV callback signature is invalid");
+  }
+}
+
+/** The signed callback is valid but lacks a `transaction_id`/`user_id`, or
+ * names a reward type or ad unit this app does not grant. */
+export class LudoAdCallbackInvalidError extends LudoCommandError {
+  constructor(message = "The AdMob SSV callback is missing required fields") {
+    super(422, "ludo_ad_callback_invalid", message);
+  }
+}
+
+/** The subject already claimed the day's cap of rewarded ads of this type
+ * (5 coin ads / 2 diamond ads). Nothing is credited. */
+export class LudoAdDailyCapReachedError extends LudoCommandError {
+  constructor() {
+    super(429, "ludo_ad_daily_cap_reached", "The daily rewarded ad limit has been reached");
+  }
+}
+
+/** Production has no AdMob ad unit ids configured, so a callback's reward
+ * type cannot be derived from a trusted source. */
+export class LudoAdNotConfiguredError extends LudoCommandError {
+  constructor() {
+    super(503, "ludo_ad_not_configured", "Rewarded ad units are not configured");
   }
 }

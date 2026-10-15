@@ -264,6 +264,37 @@
     "coins": 550,
     "diamonds": 10
   },
+  "daily_reward_claim_pass_response": {
+    "streakDay": 3,
+    "coinsGranted": 450,
+    "diamondsGranted": 0,
+    "bonusCoins": 150,
+    "bonusDiamonds": 0,
+    "passBonusApplied": true,
+    "coins": 950,
+    "diamonds": 10
+  },
+  "daily_reward_status_response": {
+    "claimedToday": false,
+    "streakDay": 2,
+    "nextDay": 3,
+    "calendar": [
+      { "day": 1, "coins": 200, "diamonds": 0 },
+      { "day": 2, "coins": 250, "diamonds": 0 },
+      { "day": 3, "coins": 300, "diamonds": 0 },
+      { "day": 4, "coins": 350, "diamonds": 0 },
+      { "day": 5, "coins": 400, "diamonds": 0 },
+      { "day": 6, "coins": 500, "diamonds": 0 },
+      { "day": 7, "coins": 750, "diamonds": 5 }
+    ],
+    "passActive": true,
+    "passBonusPercent": 50
+  },
+  "rewarded_ads_status_response": {
+    "ssvUserId": "subject-1",
+    "coins": { "rewardAmount": 100, "dailyCap": 5, "claimedToday": 2, "remaining": 3 },
+    "diamonds": { "rewardAmount": 5, "dailyCap": 2, "claimedToday": 0, "remaining": 2 }
+  },
   "inventory_purchase_response": {
     "idempotent": false,
     "item": {

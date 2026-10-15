@@ -14,6 +14,7 @@ library;
 import 'ludo_command_models.dart';
 import 'ludo_http.dart';
 import 'ludo_match_models.dart';
+import 'ludo_rewards_models.dart';
 import 'ludo_session_models.dart';
 import 'ludo_store_models.dart';
 import 'ludo_wire_json.dart';
@@ -340,8 +341,11 @@ final class LudoStarterGrantResult {
   }
 }
 
-/// `POST /games/ludo/:environment/daily-reward/claim` (task 26b)'s
-/// response.
+/// `POST /games/ludo/:environment/daily-reward/claim` (tasks 26b/26h)'s
+/// response. [coinsGranted]/[diamondsGranted] are the totals credited,
+/// including any Vortex Pass bonus the server already applied
+/// ([bonusCoins]/[bonusDiamonds], [passBonusApplied]); the client only
+/// renders them.
 final class LudoDailyRewardClaimResult {
   const LudoDailyRewardClaimResult({
     required this.streakDay,
@@ -349,6 +353,9 @@ final class LudoDailyRewardClaimResult {
     required this.diamondsGranted,
     required this.coins,
     required this.diamonds,
+    this.bonusCoins = 0,
+    this.bonusDiamonds = 0,
+    this.passBonusApplied = false,
   });
 
   final int streakDay;
@@ -356,6 +363,9 @@ final class LudoDailyRewardClaimResult {
   final int diamondsGranted;
   final int coins;
   final int diamonds;
+  final int bonusCoins;
+  final int bonusDiamonds;
+  final bool passBonusApplied;
 
   static LudoDailyRewardClaimResult fromWire(LudoJson value) {
     requireFields(value, {
@@ -371,6 +381,9 @@ final class LudoDailyRewardClaimResult {
       diamondsGranted: readInteger(value, 'diamondsGranted'),
       coins: readInteger(value, 'coins'),
       diamonds: readInteger(value, 'diamonds'),
+      bonusCoins: readOptionalInteger(value, 'bonusCoins') ?? 0,
+      bonusDiamonds: readOptionalInteger(value, 'bonusDiamonds') ?? 0,
+      passBonusApplied: value['passBonusApplied'] == true,
     );
   }
 }
@@ -750,8 +763,33 @@ final class LudoGateway {
     return LudoStarterGrantResult.fromWire(data);
   }
 
-  /// `POST /games/ludo/:environment/daily-reward/claim`. This task only
-  /// wires the claim method itself — the calendar UI is task 26h's scope.
+  /// `GET /games/ludo/:environment/daily-reward` (task 26h): the calendar
+  /// screen's read model.
+  Future<LudoDailyRewardStatus> getDailyRewardStatus({
+    required String gameToken,
+  }) async {
+    final data = await _request(
+      method: 'GET',
+      uri: config.gameEndpoint('daily-reward'),
+      bearerToken: gameToken,
+    );
+    return LudoDailyRewardStatus.fromWire(data);
+  }
+
+  /// `GET /games/ludo/:environment/ads/rewarded/status` (task 26h): the
+  /// per-type remaining ad allowance and the SSV user id.
+  Future<LudoRewardedAdsStatus> getRewardedAdsStatus({
+    required String gameToken,
+  }) async {
+    final data = await _request(
+      method: 'GET',
+      uri: config.gameEndpoint('ads/rewarded/status'),
+      bearerToken: gameToken,
+    );
+    return LudoRewardedAdsStatus.fromWire(data);
+  }
+
+  /// `POST /games/ludo/:environment/daily-reward/claim`.
   Future<LudoDailyRewardClaimResult> claimDailyReward({
     required String gameToken,
   }) async {

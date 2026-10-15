@@ -28,6 +28,7 @@ Future<void> openLudoStore(
   ReducedMotionSetting? reducedMotion,
   LudoPurchasesGateway? purchases,
   LudoEquipStore? equipStore,
+  VoidCallback? onOpenRewards,
 }) async {
   LudoInventoryState? inventory;
   LudoIapState? iap;
@@ -60,6 +61,7 @@ Future<void> openLudoStore(
         inventory: inventory,
         iap: iap,
         reducedMotion: reducedMotion,
+        onOpenRewards: onOpenRewards,
       ),
     ),
   );

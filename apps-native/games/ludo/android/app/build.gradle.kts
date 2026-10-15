@@ -6,6 +6,16 @@ plugins {
 
 val gameEnvironment = project.findProperty("gameEnvironment")?.toString() ?: "debug"
 if (gameEnvironment !in setOf("debug", "staging", "production")) throw GradleException("Unsupported gameEnvironment: $gameEnvironment")
+// Task 26h: AdMob app id for the manifest. Google's sample app id is the
+// fallback, so a build without console provisioning can only ever serve test
+// ads (and the Dart config requests none outside debug without real units).
+val googleSampleAdMobAppId = "ca-app-pub-3940256099942544~3347511713"
+val admobAppId = project.findProperty("LUDO_ADMOB_APP_ID")?.toString()
+    ?: System.getenv("LUDO_ADMOB_APP_ID")
+    ?: googleSampleAdMobAppId
+if (gameEnvironment == "production" && admobAppId == googleSampleAdMobAppId) {
+    logger.warn("LUDO_ADMOB_APP_ID is not set: this production build uses Google's sample AdMob app id and will show no real ads.")
+}
 val androidKeystorePath = System.getenv("ANDROID_KEYSTORE_PATH")
 val androidKeystoreAlias = System.getenv("ANDROID_KEY_ALIAS")
 val androidKeystorePassword = System.getenv("ANDROID_KEY_PASSWORD")
@@ -48,6 +58,7 @@ android {
         // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        manifestPlaceholders["admobAppId"] = admobAppId
     }
 
     buildTypes {

@@ -3,6 +3,7 @@ import 'dart:async' show unawaited;
 import 'package:flutter/material.dart';
 
 import 'src/app.dart';
+import 'src/net/ludo_ads.dart' show prepareLudoAdsConsent;
 import 'src/net/ludo_deep_link_bootstrap.dart' show wireLudoDeepLinks;
 import 'src/net/ludo_firebase_gateway.dart' show ensureLudoFirebaseInitialized;
 
@@ -26,5 +27,10 @@ void main() {
   // mounted and online is available (see `ludo_deep_link_router.dart`),
   // never blocking the local/offline modes this app boots straight to.
   unawaited(wireLudoDeepLinks());
+  // Task 26h: refresh Google UMP consent info in the background (no form is
+  // shown here; the consent form appears just before the first rewarded ad
+  // request). Same "never throws, never gates startup" contract: with ads
+  // unconfigured or on an unsupported platform this is a no-op.
+  unawaited(prepareLudoAdsConsent());
   runApp(const LudoApp());
 }

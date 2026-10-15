@@ -147,6 +147,18 @@ UTC day resets `streakDay`).
 
 Vortex Pass subscribers get +50% on every day's coin/diamond amount above.
 
+**Implementation (task 26h).** `GET .../daily-reward` is the calendar read
+model (`claimedToday`, `streakDay`, `nextDay`, `calendar`, `passActive`,
+`passBonusPercent`); `POST .../daily-reward/claim` grants a day. The claim is
+one atomic store step (`claimDailyReward`: state read, ledger credits and
+state write under the subject's wallet lock), so two simultaneous claims
+credit one day and the loser gets `409 ludo_daily_reward_already_claimed`.
+The pass bonus is applied **by the server**: `floor(amount * 50 / 100)` per
+currency, written as a separate `vortex_pass_perk` ledger entry and returned
+as `bonusCoins`/`bonusDiamonds`/`passBonusApplied`; the client only renders
+them. A pass entitles while `active`, or `cancelled`/`billing_issue` before
+`expiresAt`; `expired`/`revoked` never do.
+
 ## Rewarded ads
 
 AdMob, Google UMP consent, server-side verification (SSV) required before
@@ -158,6 +170,50 @@ any grant — never trust a client-reported ad completion.
 | Diamonds | 5 | 2 ads/day (10 diamonds/day max) |
 
 No interstitial or banner ads anywhere — rewarded-only, opt-in.
+
+**Implementation (task 26h).**
+
+- Endpoint: `GET|POST /api/games/ludo/:environment/ads/rewarded/callback`
+  (AdMob calls it with GET; POST is also accepted). It carries no game token:
+  authority is AdMob's ECDSA (P-256, SHA-256) signature over the raw query
+  string up to `&signature=`, verified against Google's published keys
+  (`https://www.gstatic.com/admob/reward/verifier-keys.json`, cached 24 h, at
+  most one refetch per minute for an unknown `key_id`). Missing, malformed,
+  tampered or unknown-key signatures answer `403 ludo_ad_signature_invalid`
+  and credit nothing. `user_id` (set client-side to the subject from
+  `GET .../ads/rewarded/status`) is the credited subject and `transaction_id`
+  the idempotency key.
+- Reward type: with `LUDO_ADMOB_COIN_AD_UNIT_ID` / `LUDO_ADMOB_DIAMOND_AD_UNIT_ID`
+  configured, the signed `ad_unit` decides it and a contradicting
+  `custom_data` is rejected. Unconfigured, `custom_data` (`coins`/`diamonds`)
+  decides it in debug/staging, and **production refuses to grant**
+  (`503 ludo_ad_not_configured`). Amounts always come from the economy config,
+  never from `reward_amount`.
+- Credit: `claimAdRewardWithCap`: duplicate `transaction_id` check, the
+  per-type daily count, the claim row and the ledger credit (`rewarded_ad`,
+  key `rewarded_ad:<transaction_id>`) are one atomic step. A replay is a
+  `200 {credited:false}` no-op; a claim past the cap is
+  `429 ludo_ad_daily_cap_reached`.
+- Client: debug builds request only Google's sample rewarded units (see
+  `ludo_ads_config.dart`); a release build without real
+  `--dart-define=LUDO_ADMOB_*_AD_UNIT_ID` values shows no ads. The UMP consent
+  form is shown before the first ad request. The client never credits itself:
+  after the reward is earned it polls `GET .../ads/rewarded/status` until the
+  server's claim count rises, then refreshes the wallet.
+- Age signal: onboarding collects only a name and avatar, so underage tagging
+  is not applicable in v1 (`tagForUnderAgeOfConsent: false`).
+
+## Online free-play win reward
+
+An online (server-authoritative) match with no coin stake pays its human
+winner `onlineFreePlayWinCoins` (50), capped at `onlineFreePlayWinDailyCap`
+(10) wins per UTC day. `claimFreePlayWinWithCap` is the same single atomic
+step (claim row in `ludo_free_play_win_claims` keyed by subject and match,
+cap count, ledger credit `online_match_win`), invoked from
+`settleCoinStakeMatch` whenever a free-play match is seen finished, so the
+repeated settlements a finished match receives credit it once. Bots never earn
+it. Wins against bot-filled matchmaking seats count (the cap is what bounds
+farming).
 
 ## Online coin-stake tables
 

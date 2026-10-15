@@ -17,6 +17,7 @@ dependencies:
   flame: 1.38.2
   flutter:
     sdk: flutter
+  google_mobile_ads: ^9.1.0
   google_sign_in: ^6.2.1
   ludo_rules:
     path: ../packages/ludo_rules

@@ -1,4 +1,5 @@
 import type { GameTokenVerifier } from "../tokens";
+import type { AdMobVerifierKeyProvider } from "./admob-ssv";
 import type { LudoEconomyStore } from "./economy-store";
 import type { MatchViewPublisher } from "./match-view-publisher";
 import type { RevenueCatClient } from "./revenuecat-client";
@@ -31,4 +32,12 @@ export interface LudoRouteDependencies {
   /** Task 26d: RevenueCat REST client for `POST .../revenuecat/sync`.
    * Optional; `createLudoRoutes` falls back to `NullRevenueCatClient`. */
   revenueCatClient?: RevenueCatClient;
+  /** Task 26h: AdMob SSV verifier-key lookup. Optional; defaults to the
+   * HTTP provider that fetches Google's published keys. Tests inject a fake
+   * so no network call is made. */
+  admobKeyProvider?: AdMobVerifierKeyProvider;
+  /** Task 26h: the AdMob ad unit ids (numeric, or `ca-app-pub-x/y`) whose
+   * callbacks grant coins or diamonds. When set, the signed `ad_unit` decides
+   * the reward type; when unset, `custom_data` does (never in production). */
+  admobAdUnitIds?: { coins?: string; diamonds?: string };
 }

@@ -45,6 +45,7 @@ class StoreScreen extends StatefulWidget {
     this.iap,
     this.reducedMotion,
     this.autoLoad = true,
+    this.onOpenRewards,
   });
 
   /// The wallet whose balances the HUD row shows; `null` hides the row.
@@ -61,6 +62,10 @@ class StoreScreen extends StatefulWidget {
 
   /// Test seam: skip the initial `load()` calls on pre-loaded states.
   final bool autoLoad;
+
+  /// Task 26h: opens the daily rewards / watch-an-ad screen. `null` hides
+  /// the "Free coins" button.
+  final VoidCallback? onOpenRewards;
 
   @override
   State<StoreScreen> createState() => _StoreScreenState();
@@ -266,6 +271,7 @@ class _StoreScreenState extends State<StoreScreen> {
                             ),
                           ),
                         ),
+                      if (widget.onOpenRewards != null) _freeCoinsButton(),
                       TabBar(
                         isScrollable: true,
                         tabAlignment: TabAlignment.start,
@@ -299,6 +305,46 @@ class _StoreScreenState extends State<StoreScreen> {
                       ),
                     ],
                   ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _freeCoinsButton() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        LudoThemeTokens.spaceMd,
+        LudoThemeTokens.spaceSm,
+        LudoThemeTokens.spaceMd,
+        0,
+      ),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: _minTapTarget),
+        child: Ludo3dButton(
+          key: const Key('store-free-coins'),
+          semanticLabel: 'Free coins and daily rewards',
+          onPressed: widget.onOpenRewards,
+          padding: const EdgeInsets.symmetric(
+            horizontal: LudoThemeTokens.spaceMd,
+            vertical: LudoThemeTokens.spaceSm,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.ondemand_video,
+                size: 22,
+                color: LudoThemeTokens.textOutline,
+              ),
+              const SizedBox(width: LudoThemeTokens.spaceSm),
+              Text(
+                'Free coins',
+                style: LudoTextStyles.bodyStrong.copyWith(
+                  color: LudoThemeTokens.textOutline,
+                ),
+              ),
+            ],
           ),
         ),
       ),

@@ -41,6 +41,7 @@ import 'ludo_gateway.dart';
 import 'ludo_http.dart';
 import 'ludo_online_client.dart';
 import 'ludo_online_controller.dart';
+import 'ludo_preview_rewards.dart';
 import 'ludo_preview_store.dart';
 import 'ludo_auth_controller.dart';
 import 'ludo_wire_json.dart' show ludoContractVersion;
@@ -245,6 +246,7 @@ final class PreviewLudoTransport implements LudoHttpTransport {
   int _previewCoins = 2400;
   int _previewDiamonds = 60;
   final _store = PreviewStoreBackend();
+  final _rewards = PreviewRewardsBackend.current = PreviewRewardsBackend();
   int _previewLevel = 1;
   int _previewXp = 80;
   final _claimedIds = <String>{};
@@ -286,6 +288,16 @@ final class PreviewLudoTransport implements LudoHttpTransport {
         'expires_in': 300,
       });
     }
+    if (method == 'GET' &&
+        (path == 'wallet' || path == 'ads/rewarded/status')) {
+      // A watched ad's credit lands on the next read, like the real SSV one.
+      final credited = _rewards.applyPendingAdCredits(
+        _previewCoins,
+        _previewDiamonds,
+      );
+      _previewCoins = credited.coins;
+      _previewDiamonds = credited.diamonds;
+    }
     if (method == 'GET' && path == 'wallet') {
       return _json({'coins': _previewCoins, 'diamonds': _previewDiamonds});
     }
@@ -306,6 +318,17 @@ final class PreviewLudoTransport implements LudoHttpTransport {
         'diamonds': _previewDiamonds,
       });
     }
+    final rewardsResponse = _rewards.handle(
+      method: method,
+      path: path,
+      coins: _previewCoins,
+      diamonds: _previewDiamonds,
+      apply: (coins, diamonds) {
+        _previewCoins = coins;
+        _previewDiamonds = diamonds;
+      },
+    );
+    if (rewardsResponse != null) return rewardsResponse;
     final storeResponse = _store.handle(
       method: method,
       path: path,

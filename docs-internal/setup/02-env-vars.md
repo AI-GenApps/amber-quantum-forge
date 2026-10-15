@@ -22,6 +22,8 @@ Copy `.env.example` to `.env` and fill in all required values. Never commit `.en
 | `REVENUECAT_WEBHOOK_SECRET` | no | RevenueCat server-to-server notification secret | RevenueCat dashboard → Integrations |
 | `REVENUECAT_WEBHOOK_SECRET_LUDO` | no | Ludo-specific RevenueCat webhook secret for `POST /api/games/ludo/:environment/revenuecat/webhook`; falls back to `REVENUECAT_WEBHOOK_SECRET` when unset. The route rejects every call (401) when neither is configured | Ludo's RevenueCat project → Integrations → Webhooks |
 | `REVENUECAT_API_KEY_LUDO` | no | Ludo's RevenueCat secret API key, used server-side by `POST /api/games/ludo/:environment/revenuecat/sync` to call RevenueCat's REST API. The sync route degrades to a no-op (`synced: false`) when unset | Ludo's RevenueCat project → API keys → Secret key |
+| `LUDO_ADMOB_COIN_AD_UNIT_ID` | production only | Numeric (or `ca-app-pub-x/y`) id of Ludo's coin-rewarded AdMob ad unit. With it set, the signed `ad_unit` of an SSV callback decides the reward type; with neither unit id set, production refuses every rewarded-ad callback | AdMob console → Apps → Ludo Vortex → Ad units |
+| `LUDO_ADMOB_DIAMOND_AD_UNIT_ID` | production only | Same, for the diamond-rewarded ad unit | AdMob console → Apps → Ludo Vortex → Ad units |
 
 ## Generating `API_JWT_SECRET`
 

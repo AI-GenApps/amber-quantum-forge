@@ -20,6 +20,7 @@ import { cancelTicket, createTicket, getTicket } from "./matchmaking-service";
 import { InMemoryLudoStore } from "./memory-store";
 import { HttpRevenueCatClient } from "./revenuecat-client";
 import { registerLudoRevenueCatRoutes } from "./revenuecat-routes";
+import { registerLudoRewardedAdsRoutes } from "./rewarded-ads-routes";
 import { createRoom, getRoom, joinRoom } from "./room-service";
 import type { LudoRouteDependencies } from "./routes-types";
 import { createMatch, getMatchState, getMatchView, processCommand } from "./service";
@@ -539,6 +540,9 @@ export function createLudoRoutes(dependencies: LudoRouteDependencies): Hono {
 
   registerLudoWalletRoutes(routes, dependencies, economyStore, authenticateGameToken);
   registerLudoRevenueCatRoutes(routes, dependencies, economyStore, authenticateGameToken);
+  // Task 26h: AdMob SSV callback (`POST|GET /:environment/ads/rewarded/callback`)
+  // and the rewarded-ad status read model.
+  registerLudoRewardedAdsRoutes(routes, dependencies, economyStore, authenticateGameToken);
 
   return routes;
 }
@@ -572,6 +576,7 @@ export function createConfiguredLudoRoutes(): Hono {
     economyStore: configuredLudoEconomyStore(),
     revenueCatWebhookSecret: configuredRevenueCatWebhookSecret(),
     revenueCatClient: configuredRevenueCatClient(),
+    admobAdUnitIds: configuredAdMobAdUnitIds(),
   });
 }
 
@@ -583,6 +588,16 @@ export function createConfiguredLudoRoutes(): Hono {
  * reads an unrelated public API key), so this is a safe first use. */
 function configuredRevenueCatWebhookSecret(): string | undefined {
   return process.env.REVENUECAT_WEBHOOK_SECRET_LUDO ?? process.env.REVENUECAT_WEBHOOK_SECRET;
+}
+
+/** Task 26h: the real AdMob rewarded ad unit ids (task 26i's runbook creates
+ * them). Unset means the callback derives the reward type from `custom_data`
+ * in debug/staging and refuses to grant anything in production. */
+function configuredAdMobAdUnitIds(): { coins?: string; diamonds?: string } {
+  return {
+    coins: process.env.LUDO_ADMOB_COIN_AD_UNIT_ID,
+    diamonds: process.env.LUDO_ADMOB_DIAMOND_AD_UNIT_ID,
+  };
 }
 
 /** Degrades to `NullRevenueCatClient` (via `registerLudoRevenueCatRoutes`'s

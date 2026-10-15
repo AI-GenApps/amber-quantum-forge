@@ -1,5 +1,6 @@
 import type { LudoEnvironment } from "./contracts";
-import type { LudoCoinTableTier, LudoCurrency, LudoWalletReason } from "./economy-config";
+import type { LudoCurrency } from "./economy-config";
+import { dailyRewardLedgerEntries, planDailyRewardClaim } from "./economy-daily-reward";
 import type {
   LudoPurchaseInventoryItemInput,
   LudoPurchaseInventoryItemResult,
@@ -7,338 +8,75 @@ import type {
 import {
   adClaimKey,
   balanceKey,
+  freePlayWinKey,
   idempotencyKeyLookup,
   inventoryKey,
   xpClaimKey,
 } from "./economy-store-keys";
 
+import type {
+  LudoAdRewardClaimRow,
+  LudoAdRewardType,
+  LudoApplyProgressionAndLedgerInput,
+  LudoApplyProgressionAndLedgerResult,
+  LudoBalanceRow,
+  LudoClaimAdRewardInput,
+  LudoClaimAdRewardResult,
+  LudoClaimDailyRewardInput,
+  LudoClaimDailyRewardResult,
+  LudoClaimFreePlayWinInput,
+  LudoClaimFreePlayWinResult,
+  LudoCoinTableEscrowRow,
+  LudoCoinTableEscrowStatus,
+  LudoDailyRewardStateRow,
+  LudoEconomyStore,
+  LudoFreePlayWinClaimRow,
+  LudoInventoryRow,
+  LudoLedgerAppendInput,
+  LudoLedgerAppendResult,
+  LudoProcessRevenueCatEventInput,
+  LudoProcessRevenueCatEventResult,
+  LudoProgressionRow,
+  LudoRecordXpClaimWithCapResult,
+  LudoRevenueCatEventRow,
+  LudoSubscriptionRow,
+  LudoWalletTransactionRow,
+  LudoXpClaimRow,
+} from "./economy-store-types";
+
 export const LUDO_ECONOMY_STORE_APP_ID = "ludo" as const;
 
-export type LudoInventoryItemType = "dice" | "token" | "board" | "pass";
-export type LudoAdRewardType = "coins" | "diamonds";
-export type LudoCoinTableEscrowStatus = "held" | "paid_out" | "refunded";
-
-export interface LudoWalletTransactionRow {
-  id: string;
-  environment: LudoEnvironment;
-  subject: string;
-  currency: LudoCurrency;
-  delta: number;
-  balanceAfter: number;
-  reason: LudoWalletReason;
-  sourceRef: string | null;
-  idempotencyKey: string;
-  createdAt: string;
-}
-
-export interface LudoBalanceRow {
-  environment: LudoEnvironment;
-  subject: string;
-  currency: LudoCurrency;
-  balance: number;
-  updatedAt: string;
-}
-
-export interface LudoInventoryRow {
-  environment: LudoEnvironment;
-  subject: string;
-  itemId: string;
-  itemType: LudoInventoryItemType;
-  acquiredVia: string;
-  acquiredAt: string;
-}
-
-export interface LudoProgressionRow {
-  environment: LudoEnvironment;
-  subject: string;
-  xp: number;
-  level: number;
-  updatedAt: string;
-}
-
-export interface LudoDailyRewardStateRow {
-  environment: LudoEnvironment;
-  subject: string;
-  lastClaimDate: string | null;
-  streakDay: number;
-  updatedAt: string;
-}
-
-export interface LudoAdRewardClaimRow {
-  environment: LudoEnvironment;
-  subject: string;
-  adTransactionId: string;
-  rewardType: LudoAdRewardType;
-  claimDate: string;
-  createdAt: string;
-}
-
-export interface LudoXpClaimRow {
-  environment: LudoEnvironment;
-  subject: string;
-  claimId: string;
-  xpDelta: number;
-  claimDate: string;
-  createdAt: string;
-}
-
-export interface LudoCoinTableEscrowRow {
-  environment: LudoEnvironment;
-  matchId: string;
-  tier: LudoCoinTableTier;
-  pot: number;
-  rake: number;
-  status: LudoCoinTableEscrowStatus;
-  createdAt: string;
-  resolvedAt: string | null;
-}
-
-/** Result of `recordXpClaimWithCap`: `"recorded"` (applied within the cap),
- * `"duplicate"` (claimId already recorded, not re-applied) or
- * `"cap_exceeded"` (nothing written). */
-export type LudoRecordXpClaimWithCapResult =
-  | { outcome: "recorded"; claim: LudoXpClaimRow }
-  | { outcome: "duplicate"; claim: LudoXpClaimRow }
-  | { outcome: "cap_exceeded"; totalClaimedToday: number };
-
-/** Task 26d: RevenueCat webhook event-id idempotency, one row per event. */
-export interface LudoRevenueCatEventRow {
-  environment: LudoEnvironment;
-  eventId: string;
-  eventType: string;
-  productId: string;
-  subject: string;
-  createdAt: string;
-}
-
-export type LudoSubscriptionStatus =
-  | "active"
-  | "cancelled"
-  | "expired"
-  | "billing_issue"
-  | "revoked";
-
-/** Task 26d: Vortex Pass entitlement state, one row per subject (the only
- * subscription product). See `packages/db/src/schema.ts`'s
- * `ludoSubscriptions` doc comment for why this is a dedicated table rather
- * than an extension of `ludoInventory`. */
-export interface LudoSubscriptionRow {
-  environment: LudoEnvironment;
-  subject: string;
-  productId: string;
-  status: LudoSubscriptionStatus;
-  willRenew: boolean;
-  expiresAt: string | null;
-  updatedAt: string;
-}
-
-export interface LudoLedgerAppendInput {
-  subject: string;
-  currency: LudoCurrency;
-  /** Positive to credit, negative to debit. */
-  delta: number;
-  reason: LudoWalletReason;
-  sourceRef?: string | null;
-  /** Unique per (environment, subject); a repeat is a no-op that returns
-   * the original result instead of applying `delta` again. */
-  idempotencyKey: string;
-  now: string;
-}
-
-export interface LudoLedgerAppendResult {
-  transaction: LudoWalletTransactionRow;
-  balance: LudoBalanceRow;
-  /** `false` when this call was a replay of an already-applied
-   * idempotency key — the ledger was not written to a second time. */
-  applied: boolean;
-}
-
-export interface LudoApplyProgressionAndLedgerInput {
-  subject: string;
-  xp: number;
-  level: number;
-  now: string;
-  /** Zero or more reward credits (level-up coin/diamond bonuses) that must
-   * land in the same transaction as the progression write, per task 26b's
-   * `applyXpAndLevelRewards`. Each entry's idempotency key must already be
-   * unique per (subject, entry) — a duplicate key here is a no-op, exactly
-   * like a duplicate `appendLedgerEntry` call. */
-  ledgerEntries: Omit<LudoLedgerAppendInput, "subject" | "now">[];
-}
-
-export interface LudoApplyProgressionAndLedgerResult {
-  progression: LudoProgressionRow;
-  ledgerResults: LudoLedgerAppendResult[];
-}
-
-/** Task 26d: one RevenueCat webhook event's full effect — zero or more
- * wallet credits/debits and/or a Vortex Pass subscription upsert — applied
- * atomically and gated on the event id never having been processed before. */
-export interface LudoProcessRevenueCatEventInput {
-  eventId: string;
-  eventType: string;
-  productId: string;
-  subject: string;
-  now: string;
-  ledgerEntries: Omit<LudoLedgerAppendInput, "subject" | "now">[];
-  subscription?: Omit<LudoSubscriptionRow, "environment" | "subject" | "updatedAt">;
-}
-
-export interface LudoProcessRevenueCatEventResult {
-  /** `false` when `eventId` was already processed — nothing below was
-   * (re-)applied. */
-  applied: boolean;
-  ledgerResults: LudoLedgerAppendResult[];
-  subscription: LudoSubscriptionRow | null;
-}
-
-/**
- * Server-authoritative wallet/progression/inventory store for the Ludo
- * economy. Every implementation must uphold the ledger invariant: for a
- * given (environment, subject, currency), `SUM(delta)` across
- * `ludo_wallet_transactions` always equals `ludo_balances.balance`, and a
- * duplicate `idempotencyKey` never applies `delta` twice.
- */
-export interface LudoEconomyStore {
-  appendLedgerEntry(
-    environment: LudoEnvironment,
-    input: LudoLedgerAppendInput,
-  ): Promise<LudoLedgerAppendResult>;
-
-  getBalance(
-    environment: LudoEnvironment,
-    subject: string,
-    currency: LudoCurrency,
-  ): Promise<number>;
-
-  listWalletTransactions(
-    environment: LudoEnvironment,
-    subject: string,
-    currency: LudoCurrency,
-  ): Promise<LudoWalletTransactionRow[]>;
-
-  listInventory(environment: LudoEnvironment, subject: string): Promise<LudoInventoryRow[]>;
-
-  /** Idempotent by (subject, itemId): granting an already-owned item is a
-   * no-op that returns the existing row. */
-  grantInventoryItem(
-    environment: LudoEnvironment,
-    row: Omit<LudoInventoryRow, "environment">,
-  ): Promise<LudoInventoryRow>;
-
-  /** Task 26g: atomic coin/diamond purchase (duplicate-key, owned and
-   * balance checks plus debit and inventory insert in one locked step). */
-  purchaseInventoryItem(
-    environment: LudoEnvironment,
-    input: LudoPurchaseInventoryItemInput,
-  ): Promise<LudoPurchaseInventoryItemResult>;
-
-  getProgression(environment: LudoEnvironment, subject: string): Promise<LudoProgressionRow | null>;
-
-  setProgression(
-    environment: LudoEnvironment,
-    subject: string,
-    xp: number,
-    level: number,
-    now: string,
-  ): Promise<LudoProgressionRow>;
-
-  /** Writes the new progression row and every level-up reward ledger entry
-   * atomically (one SQL transaction for `DrizzleLudoEconomyStore`), so a
-   * crash between the two never leaves a level-up applied without its
-   * reward or vice versa. Used by `progression-service.ts`'s
-   * `applyXpAndLevelRewards`, never called directly from a route. */
-  applyProgressionAndLedger(
-    environment: LudoEnvironment,
-    input: LudoApplyProgressionAndLedgerInput,
-  ): Promise<LudoApplyProgressionAndLedgerResult>;
-
-  /** Idempotent by (subject, claimId): a repeat claim id never counts
-   * twice toward the daily XP cap. */
-  recordXpClaim(
-    environment: LudoEnvironment,
-    row: Omit<LudoXpClaimRow, "environment" | "createdAt">,
-    now: string,
-  ): Promise<{ claim: LudoXpClaimRow; applied: boolean }>;
-
-  /** Sum of `xpDelta` claimed by `subject` on `claimDate` (UTC). Read
-   * paths only; the cap check itself must use `recordXpClaimWithCap`. */
-  sumXpClaimed(environment: LudoEnvironment, subject: string, claimDate: string): Promise<number>;
-
-  /** Atomically checks the daily XP cap and records the claim in one
-   * locked operation, closing the TOCTOU race a separate
-   * `sumXpClaimed` + `recordXpClaim` pair would have under concurrent
-   * requests (both could read the same pre-claim sum and both pass the
-   * cap check before either write lands). Idempotent by `claimId`: a
-   * replay of an already-recorded claim id returns `"duplicate"` with
-   * the original row, never re-checked against the cap and never
-   * double-counted. */
-  recordXpClaimWithCap(
-    environment: LudoEnvironment,
-    input: {
-      subject: string;
-      claimId: string;
-      xpDelta: number;
-      claimDate: string;
-      dailyCap: number;
-    },
-    now: string,
-  ): Promise<LudoRecordXpClaimWithCapResult>;
-
-  getDailyRewardState(
-    environment: LudoEnvironment,
-    subject: string,
-  ): Promise<LudoDailyRewardStateRow | null>;
-
-  setDailyRewardState(
-    environment: LudoEnvironment,
-    row: Omit<LudoDailyRewardStateRow, "environment">,
-  ): Promise<LudoDailyRewardStateRow>;
-
-  /** Idempotent by (subject, adTransactionId): a repeat claim of the same
-   * ad transaction does not count twice against the daily cap. */
-  recordAdClaim(
-    environment: LudoEnvironment,
-    row: Omit<LudoAdRewardClaimRow, "environment" | "createdAt">,
-    now: string,
-  ): Promise<{ claim: LudoAdRewardClaimRow; applied: boolean }>;
-
-  countAdClaims(
-    environment: LudoEnvironment,
-    subject: string,
-    rewardType: LudoAdRewardType,
-    claimDate: string,
-  ): Promise<number>;
-
-  createEscrow(
-    environment: LudoEnvironment,
-    row: Omit<LudoCoinTableEscrowRow, "environment" | "status" | "resolvedAt">,
-  ): Promise<LudoCoinTableEscrowRow>;
-
-  getEscrow(environment: LudoEnvironment, matchId: string): Promise<LudoCoinTableEscrowRow | null>;
-
-  resolveEscrow(
-    environment: LudoEnvironment,
-    matchId: string,
-    status: Exclude<LudoCoinTableEscrowStatus, "held">,
-    resolvedAt: string,
-  ): Promise<LudoCoinTableEscrowRow>;
-
-  /** Applies one RevenueCat webhook event's ledger entries and/or
-   * subscription upsert atomically, gated on `input.eventId` never having
-   * been processed before for this (environment, subject is not part of
-   * the idempotency key — the event id alone is globally unique per
-   * RevenueCat). A replayed event id is a no-op (`applied: false`). */
-  processRevenueCatEvent(
-    environment: LudoEnvironment,
-    input: LudoProcessRevenueCatEventInput,
-  ): Promise<LudoProcessRevenueCatEventResult>;
-
-  getSubscription(
-    environment: LudoEnvironment,
-    subject: string,
-  ): Promise<LudoSubscriptionRow | null>;
-}
+export type {
+  LudoAdRewardClaimRow,
+  LudoAdRewardType,
+  LudoApplyProgressionAndLedgerInput,
+  LudoApplyProgressionAndLedgerResult,
+  LudoBalanceRow,
+  LudoClaimAdRewardInput,
+  LudoClaimAdRewardResult,
+  LudoClaimDailyRewardInput,
+  LudoClaimDailyRewardResult,
+  LudoClaimFreePlayWinInput,
+  LudoClaimFreePlayWinResult,
+  LudoCoinTableEscrowRow,
+  LudoCoinTableEscrowStatus,
+  LudoDailyRewardStateRow,
+  LudoEconomyStore,
+  LudoFreePlayWinClaimRow,
+  LudoInventoryItemType,
+  LudoInventoryRow,
+  LudoLedgerAppendInput,
+  LudoLedgerAppendResult,
+  LudoProcessRevenueCatEventInput,
+  LudoProcessRevenueCatEventResult,
+  LudoProgressionRow,
+  LudoRecordXpClaimWithCapResult,
+  LudoRevenueCatEventRow,
+  LudoSubscriptionRow,
+  LudoSubscriptionStatus,
+  LudoWalletTransactionRow,
+  LudoXpClaimRow,
+} from "./economy-store-types";
 
 interface EconomyEnvironmentState {
   transactions: LudoWalletTransactionRow[];
@@ -347,6 +85,7 @@ interface EconomyEnvironmentState {
   progression: Map<string, LudoProgressionRow>;
   dailyRewardState: Map<string, LudoDailyRewardStateRow>;
   adClaims: Map<string, LudoAdRewardClaimRow>;
+  freePlayWinClaims: Map<string, LudoFreePlayWinClaimRow>;
   xpClaims: Map<string, LudoXpClaimRow>;
   escrow: Map<string, LudoCoinTableEscrowRow>;
   revenueCatEvents: Map<string, LudoRevenueCatEventRow>;
@@ -361,6 +100,7 @@ function emptyEnvironmentState(): EconomyEnvironmentState {
     progression: new Map(),
     dailyRewardState: new Map(),
     adClaims: new Map(),
+    freePlayWinClaims: new Map(),
     xpClaims: new Map(),
     escrow: new Map(),
     revenueCatEvents: new Map(),
@@ -708,6 +448,131 @@ export class InMemoryLudoEconomyStore implements LudoEconomyStore {
       (row) =>
         row.subject === subject && row.rewardType === rewardType && row.claimDate === claimDate,
     ).length;
+  }
+
+  async claimAdRewardWithCap(
+    environment: LudoEnvironment,
+    input: LudoClaimAdRewardInput,
+  ): Promise<LudoClaimAdRewardResult> {
+    // One `serialize()` call: duplicate check, cap count, claim insert and
+    // ledger credit are atomic with respect to every other store write.
+    return this.serialize(environment, () => {
+      const state = this.state(environment);
+      const key = adClaimKey(input.subject, input.adTransactionId);
+      const existing = state.adClaims.get(key);
+      if (existing) return { outcome: "duplicate", claim: existing };
+      const claimedToday = Array.from(state.adClaims.values()).filter(
+        (row) =>
+          row.subject === input.subject &&
+          row.rewardType === input.rewardType &&
+          row.claimDate === input.claimDate,
+      ).length;
+      if (claimedToday >= input.dailyCap) return { outcome: "cap_exceeded", claimedToday };
+      const claim: LudoAdRewardClaimRow = {
+        environment,
+        subject: input.subject,
+        adTransactionId: input.adTransactionId,
+        rewardType: input.rewardType,
+        claimDate: input.claimDate,
+        createdAt: input.now,
+      };
+      state.adClaims.set(key, claim);
+      const ledger = this.appendLedgerEntrySync(environment, {
+        subject: input.subject,
+        currency: input.rewardType,
+        delta: input.amount,
+        reason: "rewarded_ad",
+        sourceRef: input.adTransactionId,
+        idempotencyKey: `rewarded_ad:${input.adTransactionId}`,
+        now: input.now,
+      });
+      return {
+        outcome: "credited",
+        claim,
+        transaction: ledger.transaction,
+        balance: ledger.balance,
+      };
+    });
+  }
+
+  async claimFreePlayWinWithCap(
+    environment: LudoEnvironment,
+    input: LudoClaimFreePlayWinInput,
+  ): Promise<LudoClaimFreePlayWinResult> {
+    return this.serialize(environment, () => {
+      const state = this.state(environment);
+      const key = freePlayWinKey(input.subject, input.matchId);
+      const existing = state.freePlayWinClaims.get(key);
+      if (existing) return { outcome: "duplicate", claim: existing };
+      const claimedToday = Array.from(state.freePlayWinClaims.values()).filter(
+        (row) => row.subject === input.subject && row.claimDate === input.claimDate,
+      ).length;
+      if (claimedToday >= input.dailyCap) return { outcome: "cap_exceeded", claimedToday };
+      const claim: LudoFreePlayWinClaimRow = {
+        environment,
+        subject: input.subject,
+        matchId: input.matchId,
+        claimDate: input.claimDate,
+        createdAt: input.now,
+      };
+      state.freePlayWinClaims.set(key, claim);
+      const ledger = this.appendLedgerEntrySync(environment, {
+        subject: input.subject,
+        currency: "coins",
+        delta: input.amount,
+        reason: "online_match_win",
+        sourceRef: input.matchId,
+        idempotencyKey: `online_match_win:${input.matchId}`,
+        now: input.now,
+      });
+      return {
+        outcome: "credited",
+        claim,
+        transaction: ledger.transaction,
+        balance: ledger.balance,
+      };
+    });
+  }
+
+  async claimDailyReward(
+    environment: LudoEnvironment,
+    input: LudoClaimDailyRewardInput,
+  ): Promise<LudoClaimDailyRewardResult> {
+    return this.serialize(environment, () => {
+      const state = this.state(environment);
+      const current = state.dailyRewardState.get(input.subject);
+      if (current?.lastClaimDate === input.today) {
+        return { outcome: "already_claimed", streakDay: current.streakDay };
+      }
+      const plan = planDailyRewardClaim(current ?? null, input);
+      const ledgerEntries = dailyRewardLedgerEntries(input.today, plan);
+      for (const entry of ledgerEntries) {
+        this.appendLedgerEntrySync(environment, {
+          ...entry,
+          subject: input.subject,
+          now: input.now,
+        });
+      }
+      state.dailyRewardState.set(input.subject, {
+        environment,
+        subject: input.subject,
+        lastClaimDate: input.today,
+        streakDay: plan.streakDay,
+        updatedAt: input.now,
+      });
+      const balanceOf = (currency: LudoCurrency) =>
+        state.balances.get(balanceKey(input.subject, currency))?.balance ?? 0;
+      return {
+        outcome: "claimed",
+        streakDay: plan.streakDay,
+        coinsGranted: plan.coins + plan.bonusCoins,
+        diamondsGranted: plan.diamonds + plan.bonusDiamonds,
+        bonusCoins: plan.bonusCoins,
+        bonusDiamonds: plan.bonusDiamonds,
+        coins: balanceOf("coins"),
+        diamonds: balanceOf("diamonds"),
+      };
+    });
   }
 
   async createEscrow(

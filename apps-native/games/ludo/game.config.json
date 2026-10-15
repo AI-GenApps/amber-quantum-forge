@@ -17,14 +17,17 @@
       "guest_identity",
       "save_sync",
       "billing",
+      "ads",
       "sharing"
     ],
     "implemented": [
       "billing",
+      "ads",
       "sharing"
     ],
     "enabled": [
       "billing",
+      "ads",
       "sharing"
     ]
   },

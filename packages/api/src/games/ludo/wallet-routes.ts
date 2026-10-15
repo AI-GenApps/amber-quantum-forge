@@ -2,6 +2,7 @@ import type { Context, Hono } from "hono";
 import { isGameEnvironment } from "../validation";
 import type { LudoEnvironment, LudoSession } from "./contracts";
 import { getEconomyConfig, xpRequiredForLevel } from "./economy-config";
+import { planDailyRewardClaim } from "./economy-daily-reward";
 import type { LudoEconomyStore } from "./economy-store";
 import {
   asLudoError,
@@ -19,6 +20,7 @@ import {
 import { applyXpAndLevelRewards } from "./progression-service";
 import type { LudoRouteDependencies } from "./routes-types";
 import { parsePurchaseRequest, parseXpClaimRequest } from "./validation";
+import { isVortexPassActive } from "./vortex-pass";
 
 /** A Ludo match can't plausibly finish faster than this — a generous floor
  * used only to reject implausible `xp/claim` payloads (task 26b's
@@ -40,6 +42,13 @@ async function readJsonBody(c: Context): Promise<unknown> {
   } catch {
     return {};
   }
+}
+
+/** The calendar day the next claim grants: tomorrow's day once today is
+ * claimed (day 7 wraps to 1), otherwise the day a claim made now would give. */
+function nextDayAfter(claimedToday: boolean, claimedDay: number, planned: number): number {
+  if (!claimedToday) return planned;
+  return claimedDay >= 7 ? 1 : claimedDay + 1;
 }
 
 /**
@@ -374,6 +383,58 @@ export function registerLudoWalletRoutes(
     }
   });
 
+  // Task 26h: the calendar screen's read model. `streakDay` is the last
+  // claimed calendar day while the streak is still alive (claimed today or
+  // yesterday), else 0; `nextDay` is the day the next claim grants.
+  routes.get("/:environment/daily-reward", async (c) => {
+    const environment = c.req.param("environment");
+    if (!isGameEnvironment(environment)) {
+      const error = new LudoError(
+        400,
+        "ludo_invalid_environment",
+        "Environment must be debug, staging or production",
+      );
+      return c.json(error.response(), error.status);
+    }
+    const auth = await authenticateGameToken(c, dependencies, environment);
+    if (!auth.ok) return auth.response;
+    try {
+      const config = getEconomyConfig();
+      const now = new Date();
+      const today = now.toISOString().slice(0, 10);
+      const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+      const [state, subscription] = await Promise.all([
+        economyStore.getDailyRewardState(environment, auth.session.subject),
+        economyStore.getSubscription(environment, auth.session.subject),
+      ]);
+      const claimedToday = state?.lastClaimDate === today;
+      const streakAlive = claimedToday || state?.lastClaimDate === yesterday;
+      const plan = planDailyRewardClaim(state, {
+        yesterday,
+        calendar: config.dailyRewards,
+        passBonusPercent: 0,
+      });
+      return c.json(
+        {
+          claimedToday,
+          streakDay: streakAlive ? (state?.streakDay ?? 0) : 0,
+          nextDay: nextDayAfter(claimedToday, state?.streakDay ?? 0, plan.streakDay),
+          calendar: config.dailyRewards.map((day) => ({
+            day: day.day,
+            coins: day.coins,
+            diamonds: day.diamonds,
+          })),
+          passActive: isVortexPassActive(subscription, now.getTime()),
+          passBonusPercent: config.vortexPass.dailyRewardBonusPercent,
+        },
+        200,
+      );
+    } catch (cause) {
+      const error = asLudoError(cause);
+      return c.json(error.response(), error.status);
+    }
+  });
+
   routes.post("/:environment/daily-reward/claim", async (c) => {
     const environment = c.req.param("environment");
     if (!isGameEnvironment(environment)) {
@@ -393,51 +454,33 @@ export function registerLudoWalletRoutes(
       const nowIso = now.toISOString();
       const today = nowIso.slice(0, 10);
       const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+      const subscription = await economyStore.getSubscription(environment, auth.session.subject);
+      const passActive = isVortexPassActive(subscription, now.getTime());
 
-      const state = await economyStore.getDailyRewardState(environment, auth.session.subject);
-      if (state?.lastClaimDate === today) {
+      // One atomic store step (state read, ledger credits, state write): two
+      // simultaneous claims credit the day once and the loser is rejected.
+      const claim = await economyStore.claimDailyReward(environment, {
+        subject: auth.session.subject,
+        today,
+        yesterday,
+        calendar: config.dailyRewards,
+        passBonusPercent: passActive ? config.vortexPass.dailyRewardBonusPercent : 0,
+        now: nowIso,
+      });
+      if (claim.outcome === "already_claimed") {
         const error = new LudoDailyRewardAlreadyClaimedError();
         return c.json(error.response(), error.status);
       }
-      const nextStreakDay =
-        state?.lastClaimDate === yesterday ? (state.streakDay >= 7 ? 1 : state.streakDay + 1) : 1;
-      const reward = config.dailyRewards.find((day) => day.day === nextStreakDay);
-      if (!reward) {
-        throw new Error(`ludo daily reward: no calendar entry for streak day ${nextStreakDay}`);
-      }
-
-      const coins = await economyStore.appendLedgerEntry(environment, {
-        subject: auth.session.subject,
-        currency: "coins",
-        delta: reward.coins,
-        reason: "daily_login",
-        idempotencyKey: `daily_reward:${today}`,
-        now: nowIso,
-      });
-      if (reward.diamonds > 0) {
-        await economyStore.appendLedgerEntry(environment, {
-          subject: auth.session.subject,
-          currency: "diamonds",
-          delta: reward.diamonds,
-          reason: "daily_login",
-          idempotencyKey: `daily_reward:${today}:diamonds`,
-          now: nowIso,
-        });
-      }
-      const diamonds = await economyStore.getBalance(environment, auth.session.subject, "diamonds");
-      await economyStore.setDailyRewardState(environment, {
-        subject: auth.session.subject,
-        lastClaimDate: today,
-        streakDay: nextStreakDay,
-        updatedAt: nowIso,
-      });
       return c.json(
         {
-          streakDay: nextStreakDay,
-          coinsGranted: reward.coins,
-          diamondsGranted: reward.diamonds,
-          coins: coins.balance.balance,
-          diamonds,
+          streakDay: claim.streakDay,
+          coinsGranted: claim.coinsGranted,
+          diamondsGranted: claim.diamondsGranted,
+          bonusCoins: claim.bonusCoins,
+          bonusDiamonds: claim.bonusDiamonds,
+          passBonusApplied: passActive,
+          coins: claim.coins,
+          diamonds: claim.diamonds,
         },
         200,
       );

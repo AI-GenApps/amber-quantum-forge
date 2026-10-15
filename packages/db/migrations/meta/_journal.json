@@ -71,6 +71,13 @@
       "when": 1790613249752,
       "tag": "0009_deep_patriot",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1792097087619,
+      "tag": "0010_silly_joystick",
+      "breakpoints": true
     }
   ]
 }

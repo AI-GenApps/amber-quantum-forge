@@ -346,4 +346,36 @@ void main() {
 
     expect(find.text('Gold'), findsOneWidget);
   });
+
+  testWidgets('shows a Free coins button only when a rewards opener is '
+      'supplied (task 26h)', (tester) async {
+    final harness = StoreHarness.create();
+    await _pumpStore(tester, harness);
+    expect(find.byKey(const Key('store-free-coins')), findsNothing);
+
+    var opened = 0;
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.75;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: buildLudoTheme(),
+        home: StoreScreen(
+          walletState: harness.wallet,
+          inventory: harness.inventory,
+          iap: harness.iap,
+          onOpenRewards: () => opened += 1,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.bySemanticsLabel('Free coins and daily rewards'),
+      findsOneWidget,
+    );
+    await tester.tap(find.byKey(const Key('store-free-coins')));
+    await tester.pump();
+    expect(opened, 1);
+  });
 }

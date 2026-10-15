@@ -2,7 +2,6 @@ import {
   and,
   db,
   eq,
-  ludoAdRewardClaims,
   ludoBalances,
   ludoCoinTableEscrow,
   ludoDailyRewardState,
@@ -13,6 +12,13 @@ import {
 } from "@repo/db";
 import type { LudoEnvironment } from "./contracts";
 import type { LudoCoinTableTier, LudoCurrency, LudoWalletReason } from "./economy-config";
+import {
+  claimAdRewardWithCapImpl,
+  claimDailyRewardImpl,
+  claimFreePlayWinWithCapImpl,
+  countAdClaimsImpl,
+  recordAdClaimImpl,
+} from "./economy-drizzle-store-capped";
 import { lockSubjectWallet, purchaseInventoryItemImpl } from "./economy-drizzle-store-purchase";
 import {
   getSubscriptionImpl,
@@ -30,6 +36,12 @@ import {
   type LudoApplyProgressionAndLedgerInput,
   type LudoApplyProgressionAndLedgerResult,
   type LudoBalanceRow,
+  type LudoClaimAdRewardInput,
+  type LudoClaimAdRewardResult,
+  type LudoClaimDailyRewardInput,
+  type LudoClaimDailyRewardResult,
+  type LudoClaimFreePlayWinInput,
+  type LudoClaimFreePlayWinResult,
   type LudoCoinTableEscrowRow,
   type LudoCoinTableEscrowStatus,
   type LudoDailyRewardStateRow,
@@ -565,32 +577,7 @@ export class DrizzleLudoEconomyStore implements LudoEconomyStore {
     row: Omit<LudoAdRewardClaimRow, "environment" | "createdAt">,
     now: string,
   ): Promise<{ claim: LudoAdRewardClaimRow; applied: boolean }> {
-    return this.database.transaction(async (transaction) => {
-      const [existing] = await transaction
-        .select()
-        .from(ludoAdRewardClaims)
-        .where(
-          and(
-            eq(ludoAdRewardClaims.appId, LUDO_ECONOMY_STORE_APP_ID),
-            eq(ludoAdRewardClaims.environment, environment),
-            eq(ludoAdRewardClaims.subject, row.subject),
-            eq(ludoAdRewardClaims.adTransactionId, row.adTransactionId),
-          ),
-        )
-        .limit(1);
-      if (existing) return { claim: toAdClaimRow(existing, environment), applied: false };
-      const values = {
-        appId: LUDO_ECONOMY_STORE_APP_ID,
-        environment,
-        subject: row.subject,
-        adTransactionId: row.adTransactionId,
-        rewardType: row.rewardType,
-        claimDate: row.claimDate,
-        createdAt: toDate(now) as Date,
-      };
-      await transaction.insert(ludoAdRewardClaims).values(values);
-      return { claim: toAdClaimRow(values, environment), applied: true };
-    });
+    return recordAdClaimImpl(this.database, environment, row, now);
   }
 
   async countAdClaims(
@@ -599,19 +586,34 @@ export class DrizzleLudoEconomyStore implements LudoEconomyStore {
     rewardType: LudoAdRewardType,
     claimDate: string,
   ): Promise<number> {
-    const rows = await this.database
-      .select()
-      .from(ludoAdRewardClaims)
-      .where(
-        and(
-          eq(ludoAdRewardClaims.appId, LUDO_ECONOMY_STORE_APP_ID),
-          eq(ludoAdRewardClaims.environment, environment),
-          eq(ludoAdRewardClaims.subject, subject),
-          eq(ludoAdRewardClaims.rewardType, rewardType),
-          eq(ludoAdRewardClaims.claimDate, claimDate),
-        ),
-      );
-    return rows.length;
+    return countAdClaimsImpl(this.database, environment, subject, rewardType, claimDate);
+  }
+
+  async claimAdRewardWithCap(
+    environment: LudoEnvironment,
+    input: LudoClaimAdRewardInput,
+  ): Promise<LudoClaimAdRewardResult> {
+    return claimAdRewardWithCapImpl(this.database, environment, input, (tx, env, i) =>
+      this.appendLedgerEntryTx(tx, env, i),
+    );
+  }
+
+  async claimFreePlayWinWithCap(
+    environment: LudoEnvironment,
+    input: LudoClaimFreePlayWinInput,
+  ): Promise<LudoClaimFreePlayWinResult> {
+    return claimFreePlayWinWithCapImpl(this.database, environment, input, (tx, env, i) =>
+      this.appendLedgerEntryTx(tx, env, i),
+    );
+  }
+
+  async claimDailyReward(
+    environment: LudoEnvironment,
+    input: LudoClaimDailyRewardInput,
+  ): Promise<LudoClaimDailyRewardResult> {
+    return claimDailyRewardImpl(this.database, environment, input, (tx, env, i) =>
+      this.appendLedgerEntryTx(tx, env, i),
+    );
   }
 
   async createEscrow(
@@ -769,26 +771,6 @@ export function toXpClaimRow(
     subject: row.subject,
     claimId: row.claimId,
     xpDelta: row.xpDelta,
-    claimDate: row.claimDate,
-    createdAt: row.createdAt.toISOString(),
-  };
-}
-
-function toAdClaimRow(
-  row: {
-    subject: string;
-    adTransactionId: string;
-    rewardType: string;
-    claimDate: string;
-    createdAt: Date;
-  },
-  environment: LudoEnvironment,
-): LudoAdRewardClaimRow {
-  return {
-    environment,
-    subject: row.subject,
-    adTransactionId: row.adTransactionId,
-    rewardType: row.rewardType as LudoAdRewardType,
     claimDate: row.claimDate,
     createdAt: row.createdAt.toISOString(),
   };

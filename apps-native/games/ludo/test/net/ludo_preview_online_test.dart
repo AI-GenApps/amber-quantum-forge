@@ -6,7 +6,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ludo/src/net/ludo_match_models.dart' show LudoMode;
 import 'package:ludo/src/net/ludo_match_state_source.dart';
+import 'package:ludo/src/net/ludo_ads_service.dart';
 import 'package:ludo/src/net/ludo_preview_online.dart';
+import 'package:ludo/src/net/ludo_preview_rewards.dart';
 import 'package:ludo/src/net/ludo_preview_store.dart';
 import 'package:ludo/src/net/ludo_purchases_gateway.dart';
 import 'package:ludo/src/net/ludo_wire_json.dart';
@@ -229,4 +231,108 @@ void main() {
       );
     });
   });
+
+  group('rewards preview (task 26h)', () {
+    test('the daily reward calendar starts at day 3, claims once and exposes '
+        'the claim through the real gateway', () async {
+      final client = createLudoPreviewOnlineClient();
+      final token = await client.authController.ensureGameToken();
+      final before = await client.gateway.getDailyRewardStatus(
+        gameToken: token,
+      );
+      expect(before.claimedToday, isFalse);
+      expect(before.streakDay, 2);
+      expect(before.nextDay, 3);
+      final wallet = await client.gateway.getWallet(gameToken: token);
+
+      final claim = await client.gateway.claimDailyReward(gameToken: token);
+      expect(claim.streakDay, 3);
+      expect(claim.coinsGranted, 300);
+      expect(claim.coins, wallet.coins + 300);
+
+      final after = await client.gateway.getDailyRewardStatus(gameToken: token);
+      expect(after.claimedToday, isTrue);
+      expect(after.nextDay, 4);
+      await expectLater(
+        client.gateway.claimDailyReward(gameToken: token),
+        throwsA(
+          isA<LudoApiException>().having(
+            (e) => e.code,
+            'code',
+            'ludo_daily_reward_already_claimed',
+          ),
+        ),
+      );
+    });
+
+    test('a watched test ad is credited by the preview server only after the '
+        'reward is earned, within the daily cap', () async {
+      final client = createLudoPreviewOnlineClient();
+      final token = await client.authController.ensureGameToken();
+      final start = (await client.gateway.getWallet(gameToken: token)).coins;
+      final sdk = PreviewServerCreditAdSdk(_EarningSdk());
+      final ad = await sdk.load(
+        adUnitId: 'u',
+        ssvUserId: 's',
+        customData: 'coins',
+      );
+
+      // Nothing is credited until the ad is actually watched to its reward.
+      expect((await client.gateway.getWallet(gameToken: token)).coins, start);
+      expect(await ad!.show(), isTrue);
+      expect(
+        (await client.gateway.getWallet(gameToken: token)).coins,
+        start + 100,
+      );
+      final status = await client.gateway.getRewardedAdsStatus(
+        gameToken: token,
+      );
+      expect(status.coins.claimedToday, 1);
+      expect(status.coins.remaining, 4);
+
+      // Past the cap (5 coin ads) nothing more is credited.
+      for (var i = 0; i < 6; i++) {
+        final next = await sdk.load(
+          adUnitId: 'u',
+          ssvUserId: 's',
+          customData: 'coins',
+        );
+        await next!.show();
+        await client.gateway.getRewardedAdsStatus(gameToken: token);
+      }
+      final capped = await client.gateway.getRewardedAdsStatus(
+        gameToken: token,
+      );
+      expect(capped.coins.claimedToday, 5);
+      expect(
+        (await client.gateway.getWallet(gameToken: token)).coins,
+        start + 500,
+      );
+    });
+  });
+}
+
+final class _EarningSdk implements LudoRewardedAdSdk {
+  @override
+  Future<LudoConsentOutcome> gatherConsent({
+    required bool showFormIfRequired,
+  }) async => LudoConsentOutcome.canRequestAds;
+
+  @override
+  Future<void> initialize() async {}
+
+  @override
+  Future<LudoRewardedAdHandle?> load({
+    required String adUnitId,
+    required String ssvUserId,
+    required String customData,
+  }) async => _EarningAd();
+}
+
+final class _EarningAd implements LudoRewardedAdHandle {
+  @override
+  Future<bool> show() async => true;
+
+  @override
+  void dispose() {}
 }

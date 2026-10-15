@@ -4,7 +4,7 @@ import type {
   LudoInventoryItemType,
   LudoInventoryRow,
   LudoWalletTransactionRow,
-} from "./economy-store";
+} from "./economy-store-types";
 
 /** Task 26g: one coin/diamond store purchase, applied by
  * `LudoEconomyStore.purchaseInventoryItem` as a single atomic

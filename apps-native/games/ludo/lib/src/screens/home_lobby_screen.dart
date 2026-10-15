@@ -37,6 +37,7 @@ import '../net/ludo_online_controller.dart';
 import '../net/ludo_online_preview_mode.dart' show LudoOnlinePreviewMode;
 import '../net/ludo_preview_online.dart' show createLudoPreviewOnlineClient;
 import '../net/ludo_wire_json.dart' show LudoApiException;
+import '../state/ludo_daily_reward_state.dart';
 import '../state/ludo_local_save.dart';
 import '../state/ludo_profile_settings.dart';
 import '../state/ludo_sound_settings.dart';
@@ -50,6 +51,7 @@ import '../widgets/ludo_avatar.dart'
 import '../widgets/ludo_dialog_frame.dart';
 import '../widgets/ludo_panel.dart';
 import '../widgets/ludo_wallet_hud.dart';
+import 'daily_reward_launcher.dart';
 import 'game_board_screen.dart';
 import 'matchmaking_search_screen.dart';
 import 'mode_setup_sheet.dart';
@@ -442,6 +444,8 @@ class HomeLobbyScreen extends StatefulWidget {
     this.shareInviteLink,
     this.wallet,
     this.onOpenStore,
+    this.dailyReward,
+    this.onOpenDailyRewards,
   });
 
   /// Test seam: a summary to show the resume affordance for, bypassing this
@@ -532,6 +536,16 @@ class HomeLobbyScreen extends StatefulWidget {
   /// [openLudoStore].
   final VoidCallback? onOpenStore;
 
+  /// Task 26h: the daily reward calendar state the header's rewards button
+  /// and its "ready to claim" badge read from. `null` (the default) derives
+  /// one from whichever online client resolves, exactly like [wallet]; the
+  /// button is hidden while there is no online client.
+  final LudoDailyRewardState? dailyReward;
+
+  /// Test seam (task 26h): overrides tapping the rewards button. `null` (the
+  /// default) in production, where a tap opens [openLudoDailyRewards].
+  final VoidCallback? onOpenDailyRewards;
+
   @override
   State<HomeLobbyScreen> createState() => _HomeLobbyScreenState();
 }
@@ -550,6 +564,10 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
   /// the HUD chips simply don't appear, matching every other online
   /// affordance's "coming soon" degradation.
   LudoWalletState? _derivedWallet;
+
+  /// Task 26h: derived alongside [_derivedWallet] from the same online
+  /// client; used only when [widget.dailyReward] was not supplied.
+  LudoDailyRewardState? _derivedDailyReward;
 
   @override
   void initState() {
@@ -570,6 +588,8 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
     // `isOffline`, keeps the last-synced snapshot) — never awaited here,
     // so a slow/offline network never delays this screen's first frame.
     unawaited(widget.wallet?.refresh());
+    // Task 26h: same non-blocking refresh for the rewards badge.
+    unawaited(widget.dailyReward?.load());
     // Task 26x: routes a room code from a cold-launch or warm-start invite
     // link (`ludo_deep_link_router.dart`) into the join-by-code flow. This
     // screen is the only registrant; a code routed before it mounts is
@@ -627,13 +647,45 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
   /// no-op when [widget.wallet] was explicitly supplied, or when [client]
   /// itself is `null` (no online client resolved).
   void _deriveWalletFrom(LudoOnlineClient? client) {
-    if (widget.wallet != null || client == null) return;
-    final wallet = LudoWalletState(
-      gateway: client.gateway,
-      authController: client.authController,
+    if (client == null) return;
+    var wallet = widget.wallet;
+    if (wallet == null) {
+      wallet = LudoWalletState(
+        gateway: client.gateway,
+        authController: client.authController,
+      );
+      setState(() => _derivedWallet = wallet);
+      unawaited(wallet.refresh());
+    }
+    if (widget.dailyReward == null) {
+      final dailyReward = LudoDailyRewardState(
+        gateway: client.gateway,
+        authController: client.authController,
+        walletState: wallet,
+      );
+      setState(() => _derivedDailyReward = dailyReward);
+      unawaited(dailyReward.load());
+    }
+  }
+
+  /// The calendar state behind the rewards button: [widget.dailyReward] if
+  /// supplied (a test seam), otherwise [_derivedDailyReward].
+  LudoDailyRewardState? get _dailyReward =>
+      widget.dailyReward ?? _derivedDailyReward;
+
+  void _openDailyRewards() {
+    final client = _onlineClient;
+    final wallet = _wallet;
+    final dailyReward = _dailyReward;
+    if (client == null || wallet == null || dailyReward == null) return;
+    unawaited(
+      openLudoDailyRewards(
+        context,
+        onlineClient: client,
+        walletState: wallet,
+        dailyReward: dailyReward,
+      ),
     );
-    setState(() => _derivedWallet = wallet);
-    unawaited(wallet.refresh());
   }
 
   /// The wallet state the HUD chips read from: [widget.wallet] if
@@ -803,6 +855,9 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
                 _ProfileHeader(
                   profile: _profile,
                   wallet: _wallet,
+                  dailyReward: _dailyReward,
+                  onOpenDailyRewards:
+                      widget.onOpenDailyRewards ?? _openDailyRewards,
                   onOpenStore:
                       widget.onOpenStore ??
                       () => unawaited(
@@ -810,6 +865,9 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
                           context,
                           onlineClient: _onlineClient,
                           walletState: _wallet,
+                          onOpenRewards: _dailyReward == null
+                              ? null
+                              : _openDailyRewards,
                         ),
                       ),
                 ),
@@ -981,9 +1039,16 @@ class _ProfileHeader extends StatelessWidget {
     required this.profile,
     this.wallet,
     required this.onOpenStore,
+    this.dailyReward,
+    this.onOpenDailyRewards,
   });
 
   final LudoProfileSettings? profile;
+
+  /// Task 26h: when non-null, the header shows a rewards button with a
+  /// badge while a daily reward is ready to claim.
+  final LudoDailyRewardState? dailyReward;
+  final VoidCallback? onOpenDailyRewards;
 
   /// Task 26g: opens the store.
   final VoidCallback onOpenStore;
@@ -1023,6 +1088,13 @@ class _ProfileHeader extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: LudoThemeTokens.spaceSm),
+              if (dailyReward != null) ...[
+                _DailyRewardsButton(
+                  dailyReward: dailyReward!,
+                  onPressed: onOpenDailyRewards,
+                ),
+                const SizedBox(width: LudoThemeTokens.spaceSm),
+              ],
               ConstrainedBox(
                 constraints: const BoxConstraints(
                   minWidth: _minTapTarget,
@@ -1051,6 +1123,67 @@ class _ProfileHeader extends StatelessWidget {
           ],
         ],
       ),
+    );
+  }
+}
+
+/// The header's daily rewards button (task 26h): a gift icon with a red
+/// badge while today's reward can be claimed.
+class _DailyRewardsButton extends StatelessWidget {
+  const _DailyRewardsButton({required this.dailyReward, this.onPressed});
+
+  final LudoDailyRewardState dailyReward;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: dailyReward,
+      builder: (context, _) {
+        final ready = dailyReward.isClaimable;
+        return Stack(
+          clipBehavior: Clip.none,
+          children: [
+            ConstrainedBox(
+              constraints: const BoxConstraints(
+                minWidth: _minTapTarget,
+                minHeight: _minTapTarget,
+              ),
+              child: Ludo3dButton(
+                key: const Key('lobby-daily-rewards-button'),
+                semanticLabel: ready
+                    ? 'Daily rewards, reward ready to claim'
+                    : 'Daily rewards',
+                onPressed: onPressed,
+                padding: const EdgeInsets.all(LudoThemeTokens.spaceSm),
+                child: const Icon(
+                  Icons.card_giftcard,
+                  size: 28,
+                  color: LudoThemeTokens.textOutline,
+                ),
+              ),
+            ),
+            if (ready)
+              Positioned(
+                top: -4,
+                right: -4,
+                child: Container(
+                  key: const Key('lobby-daily-rewards-badge'),
+                  width: 16,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    color: LudoThemeTokens.seatRed,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: LudoThemeTokens.textOnDark,
+                      width: 2,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }

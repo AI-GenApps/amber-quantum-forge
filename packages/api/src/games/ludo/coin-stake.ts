@@ -8,6 +8,7 @@ import type { LudoEnvironment, LudoMatchView } from "./contracts";
 import { getEconomyConfig, type LudoCoinTableTier, type LudoEconomyConfig } from "./economy-config";
 import type { LudoEconomyStore } from "./economy-store";
 import { LudoCoinTierInvalidError, LudoError, LudoInsufficientBalanceError } from "./errors";
+import { grantFreePlayWinReward } from "./free-play-reward";
 import type { LudoServiceDependencies } from "./service-types";
 import type { LudoStore } from "./store";
 
@@ -130,18 +131,33 @@ export async function settleCoinStakeMatch(
   if (matchState.status !== "finished" && matchState.status !== "abandoned") return;
 
   const escrow = await economyStore.getEscrow(environment, matchState.matchId);
-  if (escrow?.status !== "held") return;
-
-  const botSeats = await store.read(environment, async (state) => {
-    const seats = new Set<number>();
-    for (const p of state.players) {
-      if (p.matchId === matchState.matchId && p.isBot) seats.add(p.seat);
+  const botSubjectsOfMatch = async (): Promise<Set<string>> => {
+    const botSeats = await store.read(environment, async (state) => {
+      const seats = new Set<number>();
+      for (const p of state.players) {
+        if (p.matchId === matchState.matchId && p.isBot) seats.add(p.seat);
+      }
+      return seats;
+    });
+    return new Set(matchState.players.filter((p) => botSeats.has(p.seat)).map((p) => p.subject));
+  };
+  if (!escrow) {
+    // No escrow row: a free-play match. Task 26h pays the winner a daily-
+    // capped coin reward, idempotent per match.
+    if (matchState.status === "finished") {
+      await grantFreePlayWinReward(
+        economyStore,
+        environment,
+        matchState,
+        await botSubjectsOfMatch(),
+        dependencies.economyConfig ?? getEconomyConfig(),
+      );
     }
-    return seats;
-  });
-  const isBotSubject = new Set(
-    matchState.players.filter((p) => botSeats.has(p.seat)).map((p) => p.subject),
-  );
+    return;
+  }
+  if (escrow.status !== "held") return;
+
+  const isBotSubject = await botSubjectsOfMatch();
   const subjectAtSeat = (seat: number | undefined): string | undefined =>
     seat === undefined ? undefined : matchState.players.find((p) => p.seat === seat)?.subject;
   const now = new Date().toISOString();

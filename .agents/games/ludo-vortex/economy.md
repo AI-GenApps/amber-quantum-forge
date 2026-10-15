@@ -49,6 +49,8 @@ Day 1: 200 coins · 2: 250 · 3: 300 · 4: 350 · 5: 400 · 6: 500 · 7: 750 coi
 
 100 coins per ad, max 5/day · 5 diamonds per ad, max 2/day.
 
+Task 26h built it (see `docs-internal/gaming/ludo-economy.md`, Rewarded ads): SSV callback with AdMob signature verification, atomic capped credit, UMP before the first request, test ad units only in debug, and an on-screen Daily Rewards page (calendar + watch-ad rows). The online free-play win reward (50 coins, 10/day) is now also enforced with an atomic cap.
+
 ## Online coin tables (5% rake)
 
 | Tier | Entry | 2 players: winner gets | 4 players: 1st / 2nd get |

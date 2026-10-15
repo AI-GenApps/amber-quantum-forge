@@ -555,6 +555,34 @@ export const ludoAdRewardClaims = pgTable(
   ],
 );
 
+// Task 26h: durable idempotency + daily-cap tracking for the online
+// free-play (no coin stake) match-win coin reward (`onlineFreePlayWinCoins`,
+// capped at `onlineFreePlayWinDailyCap` per UTC day). One row per (subject,
+// match): the primary key is the per-match idempotency guard and the
+// `claim_date` index serves the same-day count the atomic
+// `claimFreePlayWinWithCap` store method makes under a per-subject
+// advisory lock. Mirrors `ludoAdRewardClaims`.
+export const ludoFreePlayWinClaims = pgTable(
+  "ludo_free_play_win_claims",
+  {
+    appId: text("app_id").notNull(),
+    environment: text("environment").notNull(),
+    subject: text("subject").notNull(),
+    matchId: text("match_id").notNull(),
+    claimDate: date("claim_date").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.appId, table.environment, table.subject, table.matchId] }),
+    index("ludo_free_play_win_claims_daily_cap_idx").on(
+      table.appId,
+      table.environment,
+      table.subject,
+      table.claimDate,
+    ),
+  ],
+);
+
 // Task 26b: durable idempotency + daily-cap tracking for `POST
 // /:environment/xp/claim`. Mirrors `ludoAdRewardClaims`'s shape (a claim id
 // unique per subject, a UTC `claim_date` column indexed for a same-day sum

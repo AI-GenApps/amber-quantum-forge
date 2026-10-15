@@ -7,6 +7,8 @@ import 'package:ludo/src/screens/home_lobby_screen.dart';
 import 'package:ludo/src/state/ludo_profile_settings.dart';
 import 'package:ludo/src/widgets/ludo_panel.dart';
 
+import '../state/ludo_rewards_test_support.dart';
+
 Widget _wrap(Widget child) =>
     MaterialApp(theme: ThemeData(useMaterial3: true), home: child);
 
@@ -280,5 +282,74 @@ void main() {
 
     expect(find.text('Store unavailable'), findsOneWidget);
     expect(tester.takeException(), isNull);
+  });
+
+  group('daily rewards button (task 26h)', () {
+    testWidgets('is hidden when there is no daily reward state', (
+      tester,
+    ) async {
+      await tester.pumpWidget(_wrap(HomeLobbyScreen(profile: _testProfile())));
+      expect(find.byKey(const Key('lobby-daily-rewards-button')), findsNothing);
+    });
+
+    testWidgets('shows a badge while a reward is claimable and opens the '
+        'rewards screen on tap', (tester) async {
+      final handle = tester.ensureSemantics();
+      final harness = RewardsHarness.create();
+      await harness.daily.load();
+      var opened = false;
+      await tester.pumpWidget(
+        _wrap(
+          HomeLobbyScreen(
+            profile: _testProfile(),
+            dailyReward: harness.daily,
+            onOpenDailyRewards: () => opened = true,
+          ),
+        ),
+      );
+
+      final button = find.byKey(const Key('lobby-daily-rewards-button'));
+      expect(button, findsOneWidget);
+      expect(
+        find.byKey(const Key('lobby-daily-rewards-badge')),
+        findsOneWidget,
+      );
+      expect(
+        find.bySemanticsLabel('Daily rewards, reward ready to claim'),
+        findsOneWidget,
+      );
+      final size = tester.getSize(button);
+      expect(size.width, greaterThanOrEqualTo(48));
+      expect(size.height, greaterThanOrEqualTo(48));
+
+      await tester.tap(button);
+      await tester.pump();
+      expect(opened, isTrue);
+      handle.dispose();
+    });
+
+    testWidgets('has no badge once today is claimed', (tester) async {
+      final harness = RewardsHarness.create(
+        script: {
+          'GET daily-reward': [
+            jsonOk(
+              dailyStatusBody(claimedToday: true, streakDay: 3, nextDay: 4),
+            ),
+          ],
+        },
+      );
+      await harness.daily.load();
+      await tester.pumpWidget(
+        _wrap(
+          HomeLobbyScreen(profile: _testProfile(), dailyReward: harness.daily),
+        ),
+      );
+
+      expect(
+        find.byKey(const Key('lobby-daily-rewards-button')),
+        findsOneWidget,
+      );
+      expect(find.byKey(const Key('lobby-daily-rewards-badge')), findsNothing);
+    });
   });
 }

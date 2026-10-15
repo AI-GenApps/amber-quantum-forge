@@ -373,6 +373,72 @@ void main() {
     });
   });
 
+  group('LudoGateway rewards routes (task 26h)', () {
+    test('getDailyRewardStatus decodes the calendar read model', () async {
+      final transport = FixtureLudoTransport({
+        'GET daily-reward': jsonResponse(
+          _envelope('daily_reward_status_response'),
+        ),
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      final status = await gateway.getDailyRewardStatus(
+        gameToken: 'game-token',
+      );
+      expect(status.claimedToday, isFalse);
+      expect(status.streakDay, 2);
+      expect(status.nextDay, 3);
+      expect(status.calendar, hasLength(7));
+      expect(status.calendar.last.diamonds, 5);
+      expect(status.passActive, isTrue);
+      expect(status.passBonusPercent, 50);
+      expect(transport.requests.single.$1, 'GET daily-reward');
+    });
+
+    test('claimDailyReward decodes the server-applied pass bonus', () async {
+      final transport = FixtureLudoTransport({
+        'POST daily-reward/claim': jsonResponse(
+          _envelope('daily_reward_claim_pass_response'),
+        ),
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      final result = await gateway.claimDailyReward(gameToken: 'game-token');
+      expect(result.coinsGranted, 450);
+      expect(result.bonusCoins, 150);
+      expect(result.passBonusApplied, isTrue);
+      expect(result.coins, 950);
+    });
+
+    test(
+      'getRewardedAdsStatus decodes the allowance and SSV user id',
+      () async {
+        final transport = FixtureLudoTransport({
+          'GET ads/rewarded/status': jsonResponse(
+            _envelope('rewarded_ads_status_response'),
+          ),
+        });
+        final gateway = LudoGateway(config: _config(), transport: transport);
+        final status = await gateway.getRewardedAdsStatus(
+          gameToken: 'game-token',
+        );
+        expect(status.ssvUserId, 'subject-1');
+        expect(status.coins.remaining, 3);
+        expect(status.coins.rewardAmount, 100);
+        expect(status.diamonds.dailyCap, 2);
+      },
+    );
+
+    test('a status missing a field is a protocol error', () async {
+      final transport = FixtureLudoTransport({
+        'GET ads/rewarded/status': jsonResponse({'ssvUserId': 'x'}),
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      await expectLater(
+        gateway.getRewardedAdsStatus(gameToken: 'game-token'),
+        throwsA(isA<LudoProtocolException>()),
+      );
+    });
+  });
+
   group('LudoGateway store routes (task 26g)', () {
     test('getInventory decodes the iap_products list', () async {
       final transport = FixtureLudoTransport({

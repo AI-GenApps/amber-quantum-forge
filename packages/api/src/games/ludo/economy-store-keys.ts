@@ -19,3 +19,7 @@ export function xpClaimKey(subject: string, claimId: string): string {
 export function idempotencyKeyLookup(subject: string, idempotencyKey: string): string {
   return `${subject}\u0000${idempotencyKey}`;
 }
+
+export function freePlayWinKey(subject: string, matchId: string): string {
+  return `${subject}\u0000${matchId}`;
+}

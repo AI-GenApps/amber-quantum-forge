@@ -337,6 +337,107 @@ describe("Ludo daily-reward/claim route", () => {
   });
 });
 
+describe("Ludo daily-reward status route and Vortex Pass bonus (task 26h)", () => {
+  const claim = (app: Hono, gameToken: string) =>
+    app.request("/games/ludo/debug/daily-reward/claim", {
+      method: "POST",
+      headers: authHeaders(gameToken),
+    });
+  const status = async (app: Hono, gameToken: string) => {
+    const response = await app.request("/games/ludo/debug/daily-reward", {
+      headers: authHeaders(gameToken),
+    });
+    expect(response.status).toBe(200);
+    return response.json();
+  };
+  const activePass = {
+    productId: "ludo_vortex_pass_monthly",
+    status: "active" as const,
+    willRenew: true,
+    expiresAt: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
+  };
+
+  it("requires a game token", async () => {
+    const { app } = await testHarness("status-anon");
+    expect((await app.request("/games/ludo/debug/daily-reward")).status).toBe(401);
+  });
+
+  it("reports an unclaimed calendar, then the claimed day and the next one", async () => {
+    const { app, gameToken } = await testHarness("status-subject");
+    const config = getEconomyConfig();
+    const before = await status(app, gameToken);
+    expect(before).toMatchObject({
+      claimedToday: false,
+      streakDay: 0,
+      nextDay: 1,
+      passActive: false,
+      passBonusPercent: config.vortexPass.dailyRewardBonusPercent,
+    });
+    expect(before.calendar).toEqual(
+      config.dailyRewards.map(({ day, coins, diamonds }) => ({ day, coins, diamonds })),
+    );
+    await claim(app, gameToken);
+    expect(await status(app, gameToken)).toMatchObject({
+      claimedToday: true,
+      streakDay: 1,
+      nextDay: 2,
+    });
+  });
+
+  it("applies the pass bonus server-side and reports it in the claim response", async () => {
+    const { app, economyStore, gameToken } = await testHarness("pass-subject");
+    const config = getEconomyConfig();
+    await economyStore.processRevenueCatEvent("debug", {
+      eventId: "pass-evt",
+      eventType: "INITIAL_PURCHASE",
+      productId: activePass.productId,
+      subject: "pass-subject",
+      now: new Date().toISOString(),
+      ledgerEntries: [],
+      subscription: activePass,
+    });
+    expect((await status(app, gameToken)).passActive).toBe(true);
+    const response = await claim(app, gameToken);
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    const base = config.dailyRewards[0].coins;
+    const bonus = Math.floor((base * config.vortexPass.dailyRewardBonusPercent) / 100);
+    expect(body).toMatchObject({
+      passBonusApplied: true,
+      bonusCoins: bonus,
+      coinsGranted: base + bonus,
+      coins: base + bonus,
+    });
+  });
+
+  it("applies no bonus for an expired pass", async () => {
+    const { app, economyStore, gameToken } = await testHarness("expired-pass-subject");
+    await economyStore.processRevenueCatEvent("debug", {
+      eventId: "expired-evt",
+      eventType: "EXPIRATION",
+      productId: activePass.productId,
+      subject: "expired-pass-subject",
+      now: new Date().toISOString(),
+      ledgerEntries: [],
+      subscription: { ...activePass, status: "expired", willRenew: false },
+    });
+    const body = await (await claim(app, gameToken)).json();
+    expect(body).toMatchObject({ passBonusApplied: false, bonusCoins: 0 });
+    expect(body.coinsGranted).toBe(getEconomyConfig().dailyRewards[0].coins);
+  });
+
+  it("credits one day when many claims arrive simultaneously", async () => {
+    const { app, economyStore, gameToken } = await testHarness("daily-race-subject");
+    const responses = await Promise.all(Array.from({ length: 12 }, () => claim(app, gameToken)));
+    const statuses = responses.map((response) => response.status).sort();
+    expect(statuses.filter((code) => code === 200)).toHaveLength(1);
+    expect(statuses.filter((code) => code === 409)).toHaveLength(11);
+    expect(await economyStore.getBalance("debug", "daily-race-subject", "coins")).toBe(
+      getEconomyConfig().dailyRewards[0].coins,
+    );
+  });
+});
+
 describe("Ludo inventory purchase route", () => {
   async function fund(
     economyStore: InMemoryLudoEconomyStore,

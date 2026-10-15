@@ -40,6 +40,16 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <!-- Task 26h: AdMob app id, required at startup by google_mobile_ads
+             (a missing id crashes the app). Injected by build.gradle.kts: the
+             real id from -PLUDO_ADMOB_APP_ID / the LUDO_ADMOB_APP_ID env var,
+             else Google's published sample app id. The sample id only ever
+             serves test ads, and the Dart side requests no ad at all in a
+             non-debug build without real ad unit ids (see
+             lib/src/net/ludo_ads_config.dart). -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="${admobAppId}" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
