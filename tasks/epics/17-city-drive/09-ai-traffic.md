@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 09-ai-traffic
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/07-player-car-controls-camera]
 estimate: L
@@ -55,23 +55,23 @@ simulation lives in core and stays deterministic.
 
 ## Implementation Checklist
 
-- [ ] Seeded RNG, IDM car-following maths, and intersection reservation table,
+- [x] Seeded RNG, IDM car-following maths, and intersection reservation table,
       each with unit tests.
-- [ ] Traffic manager in core: spawn/despawn, per-step update, and kinematic
+- [x] Traffic manager in core: spawn/despawn, per-step update, and kinematic
       body sync.
-- [ ] Player-collision handling via contact events, with tests.
-- [ ] Renderer: instanced traffic cars with interpolation, and wheel spin if
+- [x] Player-collision handling via contact events, with tests.
+- [x] Renderer: instanced traffic cars with interpolation, and wheel spin if
       cheap.
-- [ ] **Soak test** (headless core, no rendering): 16 agents for 10 simulated
+- [x] **Soak test** (headless core, no rendering): 16 agents for 10 simulated
       minutes on `district-1` with the player parked. Assert:
-  - [ ] zero AI–AI collisions
-  - [ ] no agent stuck (speed 0) for more than 20 s outside a reserved wait
-  - [ ] no deadlock (all agents keep progressing)
-  - [ ] every agent stays within 0.5 m of its lane polyline
+  - [x] zero AI–AI collisions
+  - [x] no agent stuck (speed 0) for more than 20 s outside a reserved wait
+  - [x] no deadlock (all agents keep progressing)
+  - [x] every agent stays within 0.5 m of its lane polyline
 
   Log the agent-minutes and the run time; it must run in at most 20 s in CI.
-- [ ] Determinism test over the same seed and input script.
-- [ ] Update the budget test to include traffic, and keep it passing.
+- [x] Determinism test over the same seed and input script.
+- [x] Update the budget test to include traffic, and keep it passing.
 
 ## Files Touched
 
@@ -104,3 +104,23 @@ These come from the read-only dry-run review of this epic. **Where they conflict
 - **"AI–AI collision" definition:** kinematic bodies produce no contacts with each other, so the soak test defines a collision as **OBB overlap** of two agents (or centre distance < 2.0 m), checked every step.
 - **Timing:** log the soak time, but assert a generous bound (at most 60 s). Record the actual numbers in `.agents/resources/2026-10-15/city-drive-qa/09/README.md` (add it to Files Touched).
 - **Files Touched:** also includes `apps-games/city-drive-core/src/physics/**` (contact events against kinematic bodies).
+
+## Implementation notes (task 09 run)
+
+- **Core** (`apps-games/city-drive-core/src/traffic/`): `rng.ts` (mulberry32 + `deriveSeed`), `idm.ts`,
+  `conflicts.ts` (geometric turn conflicts per intersection tile), `reservations.ts`, `arbiter.ts`
+  (right before straight before left, ageing, fair queue), `leader.ts` (look-ahead along the planned
+  path), `driving.ts`, `intersections.ts` (requests and the exit-capacity rule), `spawn.ts`, `agent.ts`,
+  `poses.ts`, `manager.ts`.
+- **Small necessary additions** beyond the listed paths: `src/physics/kinematic.ts` (kinematic Rapier
+  box; listed under the amendment), `apps-games/city-drive/src/render/trafficModel.ts` and
+  `trafficWheel.ts` (render split), `src/game/session.ts` and `src/main.ts` (wire traffic into the game
+  loop, off by default in `GameSession.create`, on in `main.ts` unless `?notraffic`), `test/render/poses.ts`
+  (traffic crowd for the budget test), and `.agents/resources/2026-10-15/city-drive-qa/09/`.
+- **Deviation:** traffic cars use a shared low-poly procedural wheel instead of the Kenney wheel,
+  because 64 Kenney wheels pushed the worst-case budget to 158k triangles (limit 150k). Bodies are
+  the Kenney models. The SUV is not used as traffic (its GLB has a spare-wheel node).
+- **Collision events:** the player's chassis already reports contact-force events; the agent collider
+  asks for them too. The session now drains the physics collision queue every step (it was never drained
+  before) and feeds it to `TrafficManager.processCollisions`.
+- Evidence: `.agents/resources/2026-10-15/city-drive-qa/09/README.md`.

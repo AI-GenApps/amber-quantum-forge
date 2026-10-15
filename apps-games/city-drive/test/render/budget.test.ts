@@ -10,19 +10,21 @@ import { type CarVisual, createCarVisual } from "../../src/render/carVisual";
 import { applyViewDistance } from "../../src/render/city";
 import { RENDER_BUDGETS } from "../../src/render/constants";
 import { type FrameStats, frameStats } from "../../src/render/stats";
+import { createTrafficVisual, type TrafficVisual } from "../../src/render/traffic";
 import { readManifest } from "../assets/helpers";
 import { buildDistrict1, readBytes } from "./helpers";
-import { budgetPoses, type Pose, sweepPoses } from "./poses";
+import { budgetPoses, type Pose, sweepPoses, trafficCrowd } from "./poses";
 
 const REPORT_PATH = join(
   __dirname,
-  "../../../../.agents/resources/2026-10-15/city-drive-qa/07/budget-report.json",
+  "../../../../.agents/resources/2026-10-15/city-drive-qa/09/budget-report.json",
 );
 
 type Built = Awaited<ReturnType<typeof buildDistrict1>>;
 let built: Built;
 let camera: UniversalCamera;
 let carVisual: CarVisual;
+let trafficVisual: TrafficVisual;
 
 /** Park the player's car at the pose's car spot, facing the pose's heading, on its settled wheels. */
 function placeCar(pose: Pose): void {
@@ -37,6 +39,7 @@ function placeCar(pose: Pose): void {
 
 function measure(pose: Pose): FrameStats {
   placeCar(pose);
+  trafficVisual.sync(trafficCrowd(pose));
   camera.position = new Vector3(pose.position.x, pose.position.y, pose.position.z);
   camera.setTarget(new Vector3(pose.target.x, pose.target.y, pose.target.z));
   built.city.scene.render();
@@ -51,6 +54,7 @@ beforeAll(async () => {
   applyViewDistance(camera);
   built.city.scene.activeCamera = camera;
   carVisual = await createCarVisual(built.city.scene, readManifest(), readBytes, BASELINE_CAR);
+  trafficVisual = await createTrafficVisual(built.city.scene, readManifest(), readBytes);
 });
 
 afterAll(() => {
@@ -81,8 +85,9 @@ describe("district-1 render budget", () => {
       const report = {
         map: built.city.map.id,
         withPlayerCar: true,
+        trafficCarsInView: 16,
         method:
-          "NullEngine; the player car (body, 4 wheels, blob shadow) is parked at each pose; scene.render() once per pose; draw calls = sum over active meshes of sub-mesh counts (a thin-instance host or InstancedMesh source counts once per sub-mesh); triangles = sub-mesh triangles x thin-instance count over active meshes; SceneInstrumentation is not meaningful under NullEngine",
+          "NullEngine; the player car (body, 4 wheels, blob shadow) is parked at each pose and 16 traffic cars (InstancedMesh body + 4 wheels each, 4 models) fill the view ahead of it; scene.render() once per pose; draw calls = sum over active meshes of sub-mesh counts (a thin-instance host or InstancedMesh source counts once per sub-mesh); triangles = sub-mesh triangles x thin-instance count over active meshes; SceneInstrumentation is not meaningful under NullEngine",
         budgets: RENDER_BUDGETS,
         camera: { fov: round(camera.fov), minZ: camera.minZ, maxZ: camera.maxZ },
         poses: rows.map(({ pose, stats }) => ({

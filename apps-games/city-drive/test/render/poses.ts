@@ -1,3 +1,4 @@
+import { quatFromForward } from "@city-drive/core";
 import { CHASE_DISTANCE_M, CHASE_HEIGHT_M } from "../../src/render/constants";
 
 export interface Pose {
@@ -72,4 +73,38 @@ export function sweepPoses(halfX: number, halfZ: number, step: number): Pose[] {
     }
   }
   return poses;
+}
+
+/** Seconds-free stand-in for 16 traffic cars: a 4 x 4 block of cars filling the view ahead. */
+export function trafficCrowd(
+  pose: Pose,
+  count = 16,
+): {
+  id: number;
+  modelIndex: number;
+  position: { x: number; y: number; z: number };
+  rotation: { x: number; y: number; z: number; w: number };
+  wheelRotation: number;
+  speedKmh: number;
+}[] {
+  const rotation = quatFromForward(pose.forward.x, pose.forward.z);
+  const side = { x: -pose.forward.z, z: pose.forward.x };
+  return Array.from({ length: count }, (_, i) => {
+    const row = Math.floor(i / 4);
+    const col = i % 4;
+    const ahead = 8 + row * 9;
+    const lateral = (col - 1.5) * 3.2;
+    return {
+      id: i,
+      modelIndex: i % 4,
+      position: {
+        x: pose.car.x + pose.forward.x * ahead + side.x * lateral,
+        y: 0.87,
+        z: pose.car.z + pose.forward.z * ahead + side.z * lateral,
+      },
+      rotation,
+      wheelRotation: i * 0.7,
+      speedKmh: 30,
+    };
+  });
 }

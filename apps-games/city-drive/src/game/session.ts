@@ -16,15 +16,30 @@ import {
   laneRespawn,
   type PhysicsWorld,
   type Pose,
+  playerFromCar,
   RespawnDetector,
   type RespawnReason,
   spawnPose,
+  type TrafficCollision,
+  TrafficManager,
+  type TrafficPose,
 } from "@city-drive/core";
 import { type InputSource, toCarInput } from "../input";
 import { type CarPose, interpolateCar } from "./interpolate";
 
 /** Chassis centre height used when the car is placed on the road. */
 const DROP_HEIGHT_M = 1.1;
+
+/** Traffic settings. Omit them and the city has no AI cars (the default for tests and tools). */
+interface TrafficSettings {
+  seed: number;
+  /** Agents alive at once. Defaults to 16. */
+  maxAgents?: number;
+}
+
+export interface SessionOptions {
+  traffic?: TrafficSettings;
+}
 
 export type RespawnCause = RespawnReason | "manual";
 
@@ -39,6 +54,9 @@ export interface RespawnEvent {
  */
 export class GameSession {
   readonly respawns: RespawnEvent[] = [];
+  /** Every time the player's car hit an AI car, in order. Missions (task 10) read this. */
+  readonly trafficHits: TrafficCollision[] = [];
+  readonly traffic: TrafficManager | undefined;
   private prev: CarState;
   private curr: CarState;
   private readonly detector = new RespawnDetector();
@@ -52,10 +70,19 @@ export class GameSession {
     readonly map: CityMap,
     private readonly graph: ReturnType<typeof buildRoadGraph>,
     private readonly input: InputSource,
+    options: SessionOptions,
   ) {
     this.laneIndex = new LaneIndex(graph);
     this.curr = car.state();
     this.prev = this.curr;
+    if (options.traffic) {
+      this.traffic = new TrafficManager(physics, graph, {
+        seed: options.traffic.seed,
+        maxAgents: options.traffic.maxAgents,
+        player: () => playerFromCar(this.curr, car.spec.chassisHalfExtents.z),
+        playerColliderHandle: car.colliderHandle,
+      });
+    }
   }
 
   static async create(
@@ -63,12 +90,13 @@ export class GameSession {
     manifest: CityManifest,
     input: InputSource,
     spec: CarSpec = BASELINE_CAR,
+    options: SessionOptions = {},
   ): Promise<GameSession> {
     const physics = await createPhysicsWorld();
     const plan = buildColliders(map, manifest);
     installColliders(physics, plan);
     const car = createCar(physics, spec, spawnPose(map, DROP_HEIGHT_M));
-    return new GameSession(physics, car, plan, map, buildRoadGraph(map), input);
+    return new GameSession(physics, car, plan, map, buildRoadGraph(map), input, options);
   }
 
   get state(): CarState {
@@ -81,6 +109,8 @@ export class GameSession {
     this.lastThrottle = input.throttle;
     this.car.applyInput(toCarInput(input));
     this.physics.step();
+    const impulses = this.physics.drainCollisionImpulses();
+    if (this.traffic) this.trafficHits.push(...this.traffic.processCollisions(impulses));
     this.prev = this.curr;
     this.curr = this.car.state();
     if (input.reset) {
@@ -110,6 +140,11 @@ export class GameSession {
   /** The car blended between the last two states, for drawing. */
   pose(alpha: number): CarPose {
     return interpolateCar(this.prev, this.curr, alpha);
+  }
+
+  /** The AI cars blended between their last two states, for drawing. */
+  trafficPoses(alpha: number): TrafficPose[] {
+    return this.traffic ? this.traffic.poses(alpha) : [];
   }
 
   dispose(): void {

@@ -13,7 +13,11 @@ import { applyViewDistance, createCityScene, loadDistrict1 } from "./render";
 import { createCarVisual } from "./render/carVisual";
 import { ChaseCamera } from "./render/chaseCamera";
 import { frameStats } from "./render/stats";
+import { createTrafficVisual } from "./render/traffic";
 import { mountControls, wantsTouchControls } from "./ui/controls/mount";
+
+/** Fixed seed: the same city traffic every run (a per-run seed can come with missions). */
+const TRAFFIC_SEED = 1;
 
 function requireElement(id: string): HTMLElement {
   const element = document.getElementById(id);
@@ -66,8 +70,15 @@ async function start(): Promise<void> {
     touch,
     new GamepadInput(() => navigator.getGamepads?.() ?? []),
   ]);
-  const session = await GameSession.create(map, parseCityManifest(manifest), input);
+  const session = await GameSession.create(
+    map,
+    parseCityManifest(manifest),
+    input,
+    undefined,
+    params.has("notraffic") ? {} : { traffic: { seed: TRAFFIC_SEED } },
+  );
   const carVisual = await createCarVisual(city.scene, manifest, loadBytes, session.car.spec);
+  const trafficVisual = await createTrafficVisual(city.scene, manifest, loadBytes);
   const chase = new ChaseCamera(city.scene, session.plan.boxes);
 
   let camera: Camera = chase.camera;
@@ -91,6 +102,7 @@ async function start(): Promise<void> {
     render: (alpha, frameSeconds) => {
       const pose = session.pose(alpha);
       carVisual.sync(pose);
+      trafficVisual.sync(session.trafficPoses(alpha));
       if (session.respawns.length !== seenRespawns) {
         seenRespawns = session.respawns.length;
         chase.snap();
