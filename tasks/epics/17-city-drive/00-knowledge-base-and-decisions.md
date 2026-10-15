@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 00-knowledge-base-and-decisions
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: []
 estimate: S
@@ -75,12 +75,12 @@ source of truth for what the game is and why, before any code exists.
 
 ## Implementation Checklist
 
-- [ ] Create the 7 knowledge-base files under `.agents/games/city-drive/`.
-- [ ] Record every decision from STATUS.md plus the research facts, with URLs,
+- [x] Create the 7 knowledge-base files under `.agents/games/city-drive/`.
+- [x] Record every decision from STATUS.md plus the research facts, with URLs,
       in `decisions-log.md`.
-- [ ] Write `.agents/resources/2026-10-15/city-drive-qa/00/README.md` with the
+- [x] Write `.agents/resources/2026-10-15/city-drive-qa/00/README.md` with the
       competitor table and research sources.
-- [ ] Add epic 17 to `tasks/STATUS.md` as `- [ ] 17 — City Drive (Babylon.js + Capacitor 3D city-driving game)`.
+- [x] Add epic 17 to `tasks/STATUS.md` as `- [ ] 17 — City Drive (Babylon.js + Capacitor 3D city-driving game)`.
 
 ## Files Touched
 

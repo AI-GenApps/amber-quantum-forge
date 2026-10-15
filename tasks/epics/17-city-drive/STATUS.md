@@ -97,7 +97,7 @@ with `startAt` set to the next task ID.
 
 | ID | Task | Owner | Status |
 |---|---|---|---|
-| 00 | Knowledge base, decisions, competitor notes | agent | [ ] |
+| 00 | Knowledge base, decisions, competitor notes | agent | [x] |
 | 01 | Workspace scaffold (`apps-games/*`, Vite, Vitest, lint/knip wiring) | agent | [ ] |
 | 02 | Games registry `engine: "web"` + City Drive CI workflow | agent | [ ] |
 | 03 | Vehicle physics core (Rapier raycast vehicle, fixed step, determinism) | agent | [ ] |
