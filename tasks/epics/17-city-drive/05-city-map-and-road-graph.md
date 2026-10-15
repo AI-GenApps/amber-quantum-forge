@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 05-city-map-and-road-graph
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/03-vehicle-physics-core, 17-city-drive/04-cc0-asset-pipeline]
 estimate: L
@@ -55,19 +55,19 @@ missions, and routing) and the static physics colliders.
 
 ## Implementation Checklist
 
-- [ ] Map types, parser, and validator with clear error messages
+- [x] Map types, parser, and validator with clear error messages
       (tile coordinates included).
-- [ ] Road sockets, road-graph builder, A\*, and spatial index.
-- [ ] Collider builder that feeds the task 03 physics world.
-- [ ] Author `district-1.json` and print its ASCII render into evidence.
-- [ ] Tests:
-  - [ ] The validator rejects each error class.
-  - [ ] The graph is strongly connected for `district-1`.
-  - [ ] A\* returns the shortest route on a hand-checked pair.
-  - [ ] Every lane polyline stays within its road tile bounds.
-  - [ ] A car spawned at `spawn` and driven straight at full throttle for 3 s
+- [x] Road sockets, road-graph builder, A\*, and spatial index.
+- [x] Collider builder that feeds the task 03 physics world.
+- [x] Author `district-1.json` and print its ASCII render into evidence.
+- [x] Tests:
+  - [x] The validator rejects each error class.
+  - [x] The graph is strongly connected for `district-1`.
+  - [x] A\* returns the shortest route on a hand-checked pair.
+  - [x] Every lane polyline stays within its road tile bounds.
+  - [x] A car spawned at `spawn` and driven straight at full throttle for 3 s
         does not pass through building colliders.
-  - [ ] `nearestLanePoint` is correct on sample points.
+  - [x] `nearestLanePoint` is correct on sample points.
 
 ## Files Touched
 
