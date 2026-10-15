@@ -33,7 +33,7 @@ server if the toolchain can be installed. Otherwise produce a verified
     (task 20 renames it), `webDir: "dist"`.
   - No server URL, no live reload in committed config.
   - `android.minWebViewVersion` set sensibly (WebGL2 needs a modern WebView).
-- **Native projects:** run `npx cap add android` and `npx cap add ios`, and
+- **Native projects:** run `bunx cap add android` and `bunx cap add ios`, and
   commit the generated `android/` and `ios/` folders. Their build outputs are
   git-ignored. Biome already excludes them (task 01).
   - iOS: Capacitor 8 defaults to SPM. Set the deployment target to **iOS 16.4**
@@ -54,8 +54,8 @@ server if the toolchain can be installed. Otherwise produce a verified
   suffix via a Gradle `applicationIdSuffix` in the debug buildType, matching
   the portfolio convention.
 - **Android toolchain:**
-  - Install **JDK 17** (Temurin tarball) and the **Android command-line tools**
-    under `/data/tools/{jdk17,android-sdk}`, with nothing system-wide.
+  - Install **JDK 21** (Temurin tarball; Capacitor 8 needs Java 21) and the **Android command-line tools**
+    under `/data/tools/{jdk21,android-sdk}`, with nothing system-wide.
   - Install `platform-tools`, `platforms;android-36`, and
     `build-tools;36.0.0` (or the version Capacitor's Gradle requires).
   - **The SDK licences need acceptance.** Do NOT auto-accept them with
@@ -69,7 +69,7 @@ server if the toolchain can be installed. Otherwise produce a verified
   `npx cap sync ios` must still succeed.
 - **Scripts:**
   - `city-drive:cap:sync` (build + `cap sync`)
-  - `city-drive:android:debug` (sync + `assembleDebug` with `JAVA_HOME` and
+  - `city-drive:android:debug` (sync + `assembleDebug` with `JAVA_HOME` (`/data/tools/jdk21`) and
     `ANDROID_HOME` pointing to `/data/tools`)
 - **Registry:** have `games:build` for `city_drive` print the new script
   names (task 02 left a message there).
@@ -115,3 +115,12 @@ server if the toolchain can be installed. Otherwise produce a verified
 ## Commit message
 
 `feat(city-drive): package with capacitor for android and ios [17-city-drive/17]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **JDK 21, not 17.** `@capacitor/android` 8.5.3 compiles with Java 21 (AGP 8.13). Install Temurin **JDK 21** at `/data/tools/jdk21` (verify the tarball's SHA-256).
+- **Android script:** the `city-drive:android:debug` script exports `JAVA_HOME=/data/tools/jdk21` and `ANDROID_HOME=/data/tools/android-sdk` explicitly.
+- **Bun only:** use `bunx cap …`, never `npx`.
+- **iOS on Linux:** `cap add ios` and `cap sync ios` may fail on Linux only at a macOS-only step (CocoaPods or SPM resolution). Record that step as **NOT RUN** with the exact error; it does not fail the task.

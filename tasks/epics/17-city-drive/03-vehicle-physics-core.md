@@ -100,3 +100,23 @@ bit-identically.
 ## Commit message
 
 `feat(city-drive): add deterministic rapier vehicle simulation [17-city-drive/03]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **Snapshot test:** Rapier's `takeSnapshot()` / `restoreSnapshot()` restore only the physics world. Vehicle controllers live JS-side and are **not** restored. The test must:
+  1. restore the world
+  2. rebuild the controller from the `CarSpec`
+  3. re-apply the per-wheel inputs
+  4. compare hashes that **exclude** visual wheel rotation
+
+  If exact equality is unattainable, fall back to a documented tolerance of 1e-3 and record why.
+- **No-tunnelling test:** enable CCD on the chassis.
+- **Extend `Car.state()` now**, because later tasks consume these fields:
+  - `velocity`, `yawRate`, `longitudinalG`, `lateralG` (taxi comfort, task 10)
+  - per-wheel `slip` (skid audio, task 14)
+  - a drained list of collision impulses, from an `EventQueue` owned by `PhysicsWorld` and exposed for tasks 09 and 10
+- **Parameterize** the handling sanity suite with a `CarSpec` argument; task 12 reuses it over 6 cars.
+- **Fixtures:** the determinism fixture is generated only by `tool/gen-determinism-fixture.ts`, and lives in `test/fixtures/`, which Biome excludes.
+- **Files Touched:** add `.agents/resources/2026-10-15/city-drive-qa/03/README.md` (tuning values and timings).

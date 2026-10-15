@@ -94,3 +94,13 @@ missions, and routing) and the static physics colliders.
 ## Commit message
 
 `feat(city-drive): add tile city format, road graph and colliders [17-city-drive/05]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **Colliders:** `buildColliders(map, manifest)` takes the parsed manifest as a parameter. Core must not depend on the app package. Tests read it from `../city-drive/public/assets/manifest.json`.
+- **Optional model:** `model` is optional for `park`, `plaza`, and `empty` tiles.
+- **Stable ids:** node and edge ids are **deterministic**, derived from the tile `(x, y)`, the lane, and the turn. Missions (tasks 10 and 11) store lane points as `{ edgeId, s }`, and these must survive rebuilds. Add a test that two builds produce identical ids.
+- **Spawn test:** `district-1`'s spawn must face a building within about 40 m along the drive line. The "drive straight 3 s" test then asserts the car collided or came to rest before the building's face. Otherwise the test is vacuous.
+- **Verification path:** `bun apps-games/city-drive-core/tool/render-map-ascii.ts apps-games/city-drive-core/content/maps/district-1.json`, run from the repo root.

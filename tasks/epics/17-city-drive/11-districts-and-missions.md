@@ -104,3 +104,20 @@ star-based district unlocks.
 ## Commit message
 
 `feat(city-drive): add three districts and 24 validated missions [17-city-drive/11]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **Difficulty is a function in core:** `missionDifficulty()`, with its own unit test. Each term is normalized to 0..1 against fixed maxima:
+
+  | Term | Normalized against | Weight |
+  |---|---|---|
+  | route-length / time-limit ratio | 1.0 | 0.4 |
+  | intersections on the route | 12 | 0.25 |
+  | traffic agents | 16 | 0.2 |
+  | parking tightness (bay margin) | 0.2 m (gives 1.0) to 1.5 m (gives 0) | 0.15 |
+
+  Missions without parking get 0 for that term. The weights live in `content/progression.json`.
+- **Mission ids:** `d{1..3}-m{01..08}`.
+- **Tool output:** the validation tool writes canonical JSON (2-space `JSON.stringify` plus a trailing newline) into `content/`, which Biome excludes.

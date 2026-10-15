@@ -37,14 +37,15 @@ const FROZEN = [
   '.agents/games/merge-relay',
 ]
 
-const ENV = 'export PATH=$HOME/.bun/bin:$HOME/.local/share/vite-plus/bin:$HOME/.local/bin:$PATH; [ -d /data/tools/jdk17 ] && export JAVA_HOME=/data/tools/jdk17 PATH=/data/tools/jdk17/bin:$PATH; [ -d /data/tools/android-sdk ] && export ANDROID_HOME=/data/tools/android-sdk ANDROID_SDK_ROOT=/data/tools/android-sdk'
+const ENV = 'export PATH=$HOME/.bun/bin:$HOME/.local/share/vite-plus/bin:$HOME/.local/bin:$PATH; [ -d /data/tools/jdk21 ] && export JAVA_HOME=/data/tools/jdk21 PATH=/data/tools/jdk21/bin:$PATH; [ -d /data/tools/android-sdk ] && export ANDROID_HOME=/data/tools/android-sdk ANDROID_SDK_ROOT=/data/tools/android-sdk'
 
 const RULES = `
 Hard rules for this run:
 - Work only on git branch ${BRANCH} in ${REPO}. Never push, never force, never rewrite history, never create or switch branches, never create worktrees except the throwaway HEAD worktree described below.
+- Each task file may end with a "Dry-run amendments" section; it overrides anything earlier in that file.
 - Do only what the task file scopes. Do not modify frozen paths (other sessions own them): ${FROZEN.join(', ')}. Reading them as a pattern is fine.
 - Environment: prefix EVERY shell command with: ${ENV}
-  Bun is 1.4.2 here while the repo pins 1.3.3 in toolchain.json/CI: do not change the pin. Flutter, Dart, Xcode and (until task 17) JDK/Android SDK are NOT installed: never run Flutter games:* commands (format/analyze/test/build/doctor) as verification; bun run games:test:tooling is fine. New tools install only under /data/tools/<name>, never system-wide.
+  Bun is 1.4.2 here while the repo pins 1.3.3 in toolchain.json/CI: do not change the pin. Flutter, Dart, Xcode and (until task 17) JDK/Android SDK are NOT installed: never run Flutter games:* commands (format/analyze/test/build/doctor) as verification; bun run games:test:tooling is fine but has 8 known environment failures at HEAD (bun pin, dart, flutter, plus 5 stale counts fixed in task 02) and rewrites a frozen generated Dart file: ALWAYS run "git checkout -- apps-native/" right after it. New tools install only under /data/tools/<name>, never system-wide.
 - NO BROWSER QA. Never launch Chrome/Chromium/Playwright/puppeteer or any headless browser, never take screenshots of the app, never use agent-browser. Verify rendering only headlessly with Vitest + Babylon NullEngine in Node. Starting the Vite dev server and probing it with curl is allowed; stop it afterwards. Visual and feel judgement belongs to the owner:human tasks.
 - No device and no emulator exist. Never boot emulators or simulators. Device, iOS build, store-console and Vercel steps are reported NOT RUN, never faked.
 - Never deploy. Never run vercel CLI in any form. Never run a GitHub Actions workflow.
@@ -149,7 +150,7 @@ const pre = await agent(
 1. Ensure the current branch is ${BRANCH} (git checkout ${BRANCH} if not). Report git status --porcelain.
 2. The tree is "clean" if git status --porcelain is empty.${RESUME_FILES ? `
    EXCEPTION: uncommitted in-progress work for the first task is allowed. Treat the tree as clean if every changed/untracked path is under one of: ${RESUME_FILES.join(', ')}.` : ''}
-3. With the environment prefix, run: bun --version, node --version (need >= 22 for Capacitor 8), git --version; report whether /data/tools/jdk17 and /data/tools/android-sdk exist; check node_modules/ exists at the repo root (run bun install if missing and report whether bun.lock changed).
+3. With the environment prefix, run: bun --version, node --version (need >= 22 for Capacitor 8), git --version; report whether /data/tools/jdk21 and /data/tools/android-sdk exist; check node_modules/ exists at the repo root (run bun install if missing and report whether bun.lock changed).
 4. Confirm ${EPIC}/STATUS.md exists, list the task files, and report which tasks STATUS.md marks [x].
 ok=true only if on ${BRANCH}, tree clean (per the rules above), ${EPIC} exists, node >= 22 and node_modules/ exists. Do not modify tracked files.
 ${RULES}`,

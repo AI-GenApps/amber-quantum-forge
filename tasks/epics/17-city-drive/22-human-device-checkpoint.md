@@ -49,3 +49,13 @@ owner: human
 - The device numbers are recorded per device and district.
 - The web deploy succeeded via GitHub Actions.
 - The store records exist, or their blockers are recorded.
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **Vercel project:** when creating it, use the settings recorded in `docs-internal/gaming/city-drive-release.md`:
+  - Root Directory `apps-games/city-drive`
+  - include files outside the root
+  - install from the repo root
+  - output `dist`

@@ -105,3 +105,20 @@ without consoles or devices.
 ## Commit message
 
 `chore(city-drive): add release readiness docs and web deploy workflow [17-city-drive/21]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **Privacy page:** follow the precedent `docs-public/legal/glow-rescue-privacy-policy.md`, and add the page to `docs-public/docs.json` navigation.
+- **Version sync:** the script sets these fields, and the sync test asserts all of them:
+  - `versionName` and `versionCode` (Android `build.gradle`)
+  - `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` (iOS)
+
+  Editing `ios/App/App.xcodeproj/project.pbxproj` is a documented exception for Capacitor projects (the "never edit .xcodeproj" rule is for XcodeGen apps); the alternative is an xcconfig. Record which in the release doc.
+- **Vercel project settings,** documented in the release doc and in task 22:
+  - Root Directory = `apps-games/city-drive`
+  - "Include source files outside of the Root Directory" = on
+  - Install command run from the repo root (`cd ../.. && bun install --frozen-lockfile`), because `@city-drive/core` is a workspace dependency
+  - Build command `bun run build`, output `dist`
+- **Tooling tests:** after any `games:test:tooling` run, run `git checkout -- apps-native/`.

@@ -121,3 +121,28 @@ that gates City Drive changes.
 ## Commit message
 
 `feat(games): register city drive as the first web-engine game [17-city-drive/02]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **Baseline at HEAD (this server):** `bun run games:test:tooling` already fails **8 of 43** tests:
+  - the Bun pin parity check (pinned 1.3.3, found 1.4.2)
+  - the dart-missing and flutter-missing checks
+  - **5 stale `toHaveLength(5)` expectations** (the registry now has 6 games): `cli.test.ts:31,49` and `affected.test.ts:89,104`
+
+  Fix the 5 stale expectations; you are editing those tests anyway, so set them to the new correct counts. Treat the Bun pin, dart, and flutter failures as **pre-existing environment failures**. Acceptance: every test passes except exactly those environment-only ones, which are listed by name in the evidence README.
+- **Frozen-file hazard:** `codegen.test.ts` calls `generateRegistry()`. Without `dart` on PATH, that rewrites the frozen file `apps-native/games/packages/platform_core/lib/src/generated/game_app_registry.dart` unformatted.
+  - Make `codegen.ts` write the file only if its content changed, and skip `dart format` when `dart` is absent.
+  - After **any** tooling run, execute `git checkout -- apps-native/`.
+  - Acceptance: `git status --porcelain` lists nothing under `apps-native/`.
+- **Gating is wider than listed:**
+  - Filter `affected.ts` `workspaceMembers()` and `fullMatrix().apps` to `engine === "flutter"`. Otherwise city_drive adds "missing workspace pubspec" graph errors and enters the Flutter Android/iOS matrices.
+  - Also gate `cli-device.ts` (`games:run`), `bootstrap()`, `validate --strict`, `validateGameConfigs` (which requires `game.config.json`), `validateContent` (which requires a content manifest), and `icons.ts`.
+- **Source entry:** city_drive uses the existing `internalSource()` helper, with repo-relative links.
+- **Verification:** add `bun run games:build -- --app city_drive` (it must print the web-engine message and exit 0).
+- **`city-drive-ci.yml`:**
+  - Use `actions/setup-node` **pinned by SHA** with `node-version: 24`, plus `oven-sh/setup-bun` with the **same SHA and Bun version as `games-ci.yml`**. The Vite 8, Vitest 5, and Capacitor 8 CLIs need Node 22.12 or newer.
+  - Add `knip.json`, `biome.json`, and `turbo.json` to the path filters.
+  - Validate the YAML in acceptance with `bun -e 'Bun.YAML.parse(await Bun.file(".github/workflows/city-drive-ci.yml").text())'`.
+- **Files Touched:** add `.agents/resources/2026-10-15/city-drive-qa/02/README.md`.

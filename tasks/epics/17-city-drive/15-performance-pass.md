@@ -94,3 +94,10 @@ and CPU-side profiling in Node.
 ## Commit message
 
 `perf(city-drive): add adaptive quality governor and budget gates [17-city-drive/15]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **CPU gate:** the server is shared, so take the **median of 5 runs**. Assert at most 2× a baseline recorded in `test/fixtures/perf-baseline.json`, which is written only by an explicit script. Put the absolute numbers in the evidence README.
+- **Bundle report:** report the app JS, the Rapier chunk (wasm inlined; there is no separate `.wasm`), models, audio, and fonts separately.

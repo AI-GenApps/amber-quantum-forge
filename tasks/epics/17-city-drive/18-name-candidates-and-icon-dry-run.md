@@ -79,3 +79,16 @@ directions as generated drafts, so the human can pick at task 19.
 ## Commit message
 
 `docs(city-drive): add name candidates and icon drafts [17-city-drive/18]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **Name research,** following epic 16 task 14 and `.claude/skills/audit-game-and-prepare-for-release/references/07-brand-name-logo.md`:
+  - Brainstorm and check **at least 25 names**.
+  - Shortlist **at least 6 NOT FOUND** names, each with **3 or more evidence URLs**.
+  - Search Play at `https://play.google.com/store/search?q=<name>&c=apps` and use the iTunes Search API (curl).
+  - Do a trademark glance via web search. Record **UNSURE** where a trademark database cannot be queried without a browser; USPTO and EUIPO direct searches are not required.
+  - Check domains with RDAP or DNS lookups via curl.
+  - Write `shortlist.json` (name, verdict, evidence URLs).
+- **Verifier:** independently re-checks the top 3 names on Play and the iTunes API.

@@ -100,3 +100,9 @@ smooth chase camera, with a respawn when flipped or stuck.
 ## Commit message
 
 `feat(city-drive): add drivable player car, controls and chase camera [17-city-drive/07]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **Files Touched:** also includes `apps-games/city-drive-core/src/**` and its tests. The camera-occlusion raycast helper and the auto-respawn detectors (roll, stuck) are simulation logic and belong in core. Also add `.agents/resources/2026-10-15/city-drive-qa/07/README.md`.

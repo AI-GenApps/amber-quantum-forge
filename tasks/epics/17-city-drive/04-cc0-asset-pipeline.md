@@ -105,3 +105,18 @@ licence record. Enforce size and triangle budgets with a script.
 ## Commit message
 
 `feat(city-drive): add cc0 kenney asset pipeline with budgets [17-city-drive/04]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **Default to uncompressed GLB.** A few dozen Kenney models at 512 px are well under the 8 MB budget. Uncompressed GLB also loads under Node and `NullEngine`, which the budget tests in tasks 06, 09, 11, and 15 need. Use meshopt only if uncompressed exceeds the budget. In that case:
+  - build-assets also emits an uncompressed test set (`assets-src/test-models/`, not shipped) for the Node tests
+  - the decoder comes from an exact-pinned `meshoptimizer` dependency copied into `public/`, never the Babylon CDN
+- **Fixed manifest ids**, which later tasks reference literally:
+  - roads: `road-straight`, `road-corner`, `road-t`, `road-crossroads`, `road-end`, `road-crossing`
+  - buildings: `bld-<kit>-<name>`
+  - props: `prop-<name>`
+  - cars: `car-<name>`
+
+  Document the schema (`id`, `file`, `kind`, `triangles`, `bytes`, `bbox {min, max}`, `pack`, `licence`) in the evidence README, and write a test that checks every id matches this scheme.

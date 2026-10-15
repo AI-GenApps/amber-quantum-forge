@@ -106,3 +106,11 @@ playable. Task 13 restyles the UI.
 ## Commit message
 
 `feat(city-drive): add mission engine with four mission types [17-city-drive/10]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **Files Touched:** also includes `apps-games/city-drive-core/src/physics/**`. The damage and comfort inputs come from task 03's extended `Car.state()` and impulse queue; extend those only if something is missing. Contacts against **static buildings** count as collisions too.
+- **Mission ids** use the scheme `d{n}-m{nn}` (for example `d1-m01`). Lane points are stored as `{ edgeId, s }` from task 05.
+- **Files Touched:** add `.agents/resources/2026-10-15/city-drive-qa/10/README.md`.

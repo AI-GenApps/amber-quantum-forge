@@ -97,3 +97,10 @@ no real money.
 ## Commit message
 
 `feat(city-drive): add coin economy, car roster and versioned save [17-city-drive/12]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **Add `@capacitor/core` 8.5.3 exactly** in this task: it is the peer dependency of `@capacitor/preferences` (8.0.1). Task 17 reuses this pin.
+- **Files Touched:** add `.agents/resources/2026-10-15/city-drive-qa/12/README.md` (the affordability simulation numbers).

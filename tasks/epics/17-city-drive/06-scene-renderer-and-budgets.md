@@ -99,3 +99,12 @@ exceeded.
 ## Commit message
 
 `feat(city-drive): render tile city with thin instances and budget gate [17-city-drive/06]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **JS budget, reworded:** Rapier's compat build inlines its wasm as base64 (about 4.3 MB of JS). Load Rapier through a dynamic `import()` so it lands in **its own chunk**. The budget becomes: **app JS excluding the Rapier chunk is at most 1.5 MB minified**. Report the Rapier chunk separately.
+- **Budget report file:** the budget test writes `budget-report.json` **only when `BUDGET_REPORT=1`** is set, with deterministic content (no timestamps), so normal test runs never dirty the tree.
+- **Draw calls under `NullEngine`:** `SceneInstrumentation` counts are not meaningful under `NullEngine`. Define the draw-call count as the sum over active meshes of their sub-mesh counts, where each thin-instance host or `InstancedMesh` source counts **once per sub-mesh**. Document this definition in the evidence.
+- **Test environment:** render tests use `// @vitest-environment node`.

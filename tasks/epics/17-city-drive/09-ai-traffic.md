@@ -96,3 +96,11 @@ simulation lives in core and stays deterministic.
 ## Commit message
 
 `feat(city-drive): add deterministic lane-following ai traffic [17-city-drive/09]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **"AI–AI collision" definition:** kinematic bodies produce no contacts with each other, so the soak test defines a collision as **OBB overlap** of two agents (or centre distance < 2.0 m), checked every step.
+- **Timing:** log the soak time, but assert a generous bound (at most 60 s). Record the actual numbers in `.agents/resources/2026-10-15/city-drive-qa/09/README.md` (add it to Files Touched).
+- **Files Touched:** also includes `apps-games/city-drive-core/src/physics/**` (contact events against kinematic bodies).

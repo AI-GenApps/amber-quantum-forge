@@ -98,3 +98,11 @@ mission that teaches the controls.
 ## Commit message
 
 `feat(city-drive): add audio, haptics and first-drive onboarding [17-city-drive/14]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **Encoding:** use `ffmpeg` (`/home/linuxbrew/.linuxbrew/bin/ffmpeg`) and encode **MP3 only** (simplest cross-platform format).
+- **Missing sounds:** if no CC0 music loop, horn, or skid sample is found, ship without it, record it in `open-questions.md`, and **do not block**. The procedural WebAudio exception covers the engine and may cover the horn; label these "procedural", never "generated" or "CC0".
+- **Files Touched:** add `.agents/resources/2026-10-15/city-drive-qa/14/README.md`.

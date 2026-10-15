@@ -47,9 +47,13 @@ knowledge-base slug is `city-drive`. The public name is picked at task 19.
 
 - **Tools:** Bun 1.4.2 (the repo pins 1.3.3 in `toolchain.json` and CI; do not change the pin in this epic) and Node 24. `codex` is at `~/.local/bin/codex`.
 - **Not installed:** JDK, Android SDK, Flutter, Xcode. `/data/tools` does not exist.
-- **Do not use:** the Flutter `games:*` commands (format, analyze, test, build, doctor). They need Flutter and are expected to fail or report NOT RUN here. `bun run games:test:tooling` works.
-- **Android builds:** task 17 may install JDK 17 and the Android SDK under `/data/tools/` (the portfolio convention). If a licence prompt needs a human, the task returns blocked with the exact command.
+- **Do not use:** the Flutter `games:*` commands (format, analyze, test, build, doctor). They need Flutter and are expected to fail or report NOT RUN here. `bun run games:test:tooling` runs, but at HEAD 8 of 43 tests fail for environment reasons (Bun pin, missing dart/flutter, 5 stale counts that task 02 fixes). It also rewrites a frozen generated Dart file, so always follow it with `git checkout -- apps-native/`.
+- **Android builds:** task 17 may install **JDK 21** (Capacitor 8 / AGP 8.13 need Java 21) and the Android SDK under `/data/tools/` (the portfolio convention). If a licence prompt needs a human, the task returns blocked with the exact command.
 - **Not available:** devices, emulators, and browser QA. Device and visual steps are always reported **NOT RUN**, never faked.
+
+## Dry-run review (2026-10-15)
+
+A read-only Sonnet dry run reviewed every task against the repo. Its fixes are appended to each affected task file under **"Dry-run amendments"**, which take precedence over the original text.
 
 ## Shared-code caution
 

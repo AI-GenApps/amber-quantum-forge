@@ -84,3 +84,13 @@ splash asset.
 ## Commit message
 
 `feat(city-drive): apply chosen name, icon and splash [17-city-drive/20]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **Adaptive foreground:** ask the `generate-image` skill for the mark on a flat key colour (or a transparent PNG), then key out or clean the background with sharp. Log the prompts.
+- **`canonicalName`:** decide whether the registry `canonicalName` changes with the brand (Merge Relay's did), and record the decision in the decisions log.
+- **Wider name grep:** the "no leftover working title" grep also covers `docs-public/` and the registry.
+- **Tooling tests:** after `games:test:tooling`, run `git checkout -- apps-native/`; nothing may change under `apps-native/`.
+- **Files Touched:** add `.agents/resources/2026-10-15/city-drive-qa/20/README.md`.

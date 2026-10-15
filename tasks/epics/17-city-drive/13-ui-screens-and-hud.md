@@ -119,3 +119,14 @@ bundled custom fonts; nothing renders in the platform default font.
 ## Commit message
 
 `feat(city-drive): add game screens, hud and custom fonts [17-city-drive/13]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **Font format:** the Google Fonts repo ships **TTF**. Ship TTF with `@font-face … format("truetype")`; do not add a woff2 converter.
+- **Font licences:** add `assets-src/LICENSES/fonts-<family>.txt` (URL, date, SHA-256) beside the bundled `OFL.txt`.
+- **Font test:** set `css: true` in the app's Vitest config, or load the CSS with `?raw`, so the test sees real CSS.
+- **Contrast:** add a contrast-ratio unit test over the text/background colour pairs in `tokens.css` (AA ≥ 4.5:1 for body text, ≥ 3:1 for large text).
+- **Legibility:** the 640×360 legibility check is a task 16 human item. The agent covers layout only through component tests.
+- **Files Touched:** add `.agents/resources/2026-10-15/city-drive-qa/13/README.md`.

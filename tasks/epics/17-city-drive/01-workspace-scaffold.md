@@ -110,3 +110,29 @@ gameplay yet.
 ## Commit message
 
 `feat(city-drive): scaffold babylon app and core workspaces [17-city-drive/01]`
+
+## Dry-run amendments (2026-10-15)
+
+These come from the read-only dry-run review of this epic. **Where they conflict with anything above, these amendments win.**
+
+- **Exact pins** (verified with `npm view` on 2026-10-15):
+
+  | Package | Version |
+  |---|---|
+  | `typescript` | **5.9.3**, the repo root's version. Never TS 7: `scripts/check-staged-types.ts` uses the TS 5 API, and a hoisted TS 7 would break the pre-commit hook. |
+  | `@babylonjs/core`, `@babylonjs/loaders`, `@babylonjs/inspector` | 9.31.0 |
+  | `@dimforge/rapier3d-compat` | 0.21.0 |
+  | `vite` | 8.3.4 |
+  | `vitest` | 5.0.5 |
+  | `happy-dom` | 21.0.1 |
+  | `preact` | 11.0.1 |
+
+  If a newer patch exists when you run, keep these unless a bug forces a change; record any change.
+- **Running Vitest:** always use the workspace scripts (`cd apps-games/<ws> && bunx vitest run <file>`). Never run `bunx vitest` from the repo root, because `packages/api` uses vitest 2.x.
+- **Vitest config:** set `testTimeout: 60000` in both workspaces' configs. Declare the environment per test file: `// @vitest-environment node` for render, physics, and core tests; `happy-dom` only for UI tests.
+- **Resolving the core package:** in `@city-drive/core`'s `package.json`, point `exports` and `types` at `./src/index.ts`. The app consumes the source directly; the `tsc` build exists only as a CI build check. `city-drive:test` must work without building core first.
+- **Knip:** the workspace entries must also include `scripts/*.ts`, `tool/*.ts`, and `test/**`. At HEAD, `knip:ci` already fails on Ludo and Merge Relay exports, so the acceptance check is `bun run knip:ci | grep apps-games` printing nothing.
+- **Biome:** also exclude `!apps-games/**/content/**` and `!apps-games/**/test/fixtures/**`. They are tool-written data, and Biome's JSON formatting would fight `JSON.stringify(…, 2)` output.
+- **Purity test:** add `test/architecture.test.ts` in core. It scans `src/**` and fails on any of these tokens: `@babylonjs`, `window`, `document`, `Date.now`, `performance.now`, `Math.random`, `localStorage`. Every later task keeps it green.
+- **Acceptance:** add `bun run test` (the `@repo/api` suite) to the acceptance criteria, proving the new Vitest major did not break it.
+- **Files Touched:** add `.agents/resources/2026-10-15/city-drive-qa/01/README.md`.
