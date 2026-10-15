@@ -227,6 +227,22 @@
         "price_coins": 2000,
         "price_diamonds": null
       }
+    ],
+    "iap_products": [
+      {
+        "product_id": "ludo_coins_small",
+        "display_name": "Coins — Small",
+        "kind": "consumable",
+        "grants_coins": 5500,
+        "grants_diamonds": null
+      },
+      {
+        "product_id": "ludo_vortex_pass_monthly",
+        "display_name": "Vortex Pass (monthly)",
+        "kind": "subscription",
+        "grants_coins": null,
+        "grants_diamonds": null
+      }
     ]
   },
   "xp_claim_response": {
@@ -247,5 +263,33 @@
     "diamondsGranted": 0,
     "coins": 550,
     "diamonds": 10
+  },
+  "inventory_purchase_response": {
+    "idempotent": false,
+    "item": {
+      "item_id": "theme_vortex",
+      "item_type": "board",
+      "acquired_via": "store_purchase",
+      "acquired_at": "2026-10-16T00:00:00.000Z"
+    },
+    "coins": 500,
+    "diamonds": 10
+  },
+  "revenuecat_sync_response": {
+    "synced": true,
+    "grantedPurchases": 1,
+    "subscription": {
+      "environment": "debug",
+      "subject": "user-1",
+      "productId": "ludo_vortex_pass_monthly",
+      "status": "active",
+      "willRenew": true,
+      "expiresAt": "2026-11-16T00:00:00.000Z",
+      "updatedAt": "2026-10-16T00:00:00.000Z"
+    }
+  },
+  "revenuecat_sync_unavailable_response": {
+    "synced": false,
+    "reason": "revenuecat_unavailable"
   }
 }

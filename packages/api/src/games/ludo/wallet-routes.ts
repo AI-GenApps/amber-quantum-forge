@@ -7,13 +7,18 @@ import {
   asLudoError,
   LudoDailyRewardAlreadyClaimedError,
   LudoError,
+  LudoIdempotencyConflictError,
+  LudoInsufficientBalanceError,
+  LudoItemAlreadyOwnedError,
+  LudoItemNotFoundError,
+  LudoPurchaseInvalidError,
   LudoXpClaimImplausibleError,
   LudoXpClaimInvalidError,
   LudoXpDailyCapExceededError,
 } from "./errors";
 import { applyXpAndLevelRewards } from "./progression-service";
 import type { LudoRouteDependencies } from "./routes-types";
-import { parseXpClaimRequest } from "./validation";
+import { parsePurchaseRequest, parseXpClaimRequest } from "./validation";
 
 /** A Ludo match can't plausibly finish faster than this — a generous floor
  * used only to reject implausible `xp/claim` payloads (task 26b's
@@ -120,9 +125,82 @@ export function registerLudoWalletRoutes(
           price_coins: item.priceCoins,
           price_diamonds: item.priceDiamonds,
         })),
+        iap_products: getEconomyConfig().iapProducts.map((product) => ({
+          product_id: product.productId,
+          display_name: product.displayName,
+          kind: product.kind,
+          grants_coins: product.grantsCoins,
+          grants_diamonds: product.grantsDiamonds,
+        })),
       },
       200,
     );
+  });
+
+  // Task 26g: coin/diamond spend on a theme item. All of the checks and
+  // writes happen inside `economyStore.purchaseInventoryItem`'s single
+  // atomic operation, so an insufficient balance never leaves a partial
+  // debit and concurrent purchases can never overspend.
+  routes.post("/:environment/inventory/purchase", async (c) => {
+    const environment = c.req.param("environment");
+    if (!isGameEnvironment(environment)) {
+      const error = new LudoError(
+        400,
+        "ludo_invalid_environment",
+        "Environment must be debug, staging or production",
+      );
+      return c.json(error.response(), error.status);
+    }
+    const auth = await authenticateGameToken(c, dependencies, environment);
+    if (!auth.ok) return auth.response;
+
+    const parsed = parsePurchaseRequest(await readJsonBody(c));
+    if (!parsed.ok) {
+      const error = new LudoPurchaseInvalidError();
+      return c.json(error.response(), error.status);
+    }
+    const { itemId, currency, idempotencyKey } = parsed.value;
+    try {
+      const item = getEconomyConfig().themes.find((theme) => theme.itemId === itemId);
+      if (!item) throw new LudoItemNotFoundError(itemId);
+      const price = currency === "coins" ? item.priceCoins : item.priceDiamonds;
+      if (price === null) {
+        throw new LudoPurchaseInvalidError(`${itemId} cannot be bought with ${currency}`);
+      }
+      const result = await economyStore.purchaseInventoryItem(environment, {
+        subject: auth.session.subject,
+        itemId,
+        itemType: item.category,
+        currency,
+        price,
+        idempotencyKey: `store_purchase:${idempotencyKey}`,
+        now: new Date().toISOString(),
+      });
+      if (result.outcome === "idempotency_conflict") throw new LudoIdempotencyConflictError();
+      if (result.outcome === "already_owned") throw new LudoItemAlreadyOwnedError(itemId);
+      if (result.outcome === "insufficient_balance") throw new LudoInsufficientBalanceError();
+      const [coins, diamonds] = await Promise.all([
+        economyStore.getBalance(environment, auth.session.subject, "coins"),
+        economyStore.getBalance(environment, auth.session.subject, "diamonds"),
+      ]);
+      return c.json(
+        {
+          idempotent: result.outcome === "duplicate",
+          item: {
+            item_id: result.inventory.itemId,
+            item_type: result.inventory.itemType,
+            acquired_via: result.inventory.acquiredVia,
+            acquired_at: result.inventory.acquiredAt,
+          },
+          coins,
+          diamonds,
+        },
+        200,
+      );
+    } catch (cause) {
+      const error = asLudoError(cause);
+      return c.json(error.response(), error.status);
+    }
   });
 
   routes.post("/:environment/xp/claim", async (c) => {

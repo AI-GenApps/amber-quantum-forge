@@ -53,6 +53,7 @@ import '../widgets/ludo_wallet_hud.dart';
 import 'game_board_screen.dart';
 import 'matchmaking_search_screen.dart';
 import 'mode_setup_sheet.dart';
+import 'store_launcher.dart';
 
 const _minTapTarget = 48.0;
 
@@ -440,6 +441,7 @@ class HomeLobbyScreen extends StatefulWidget {
     this.onPlayOnline,
     this.shareInviteLink,
     this.wallet,
+    this.onOpenStore,
   });
 
   /// Test seam: a summary to show the resume affordance for, bypassing this
@@ -524,6 +526,11 @@ class HomeLobbyScreen extends StatefulWidget {
   /// Test seam forwarded to [startLudoOnlineFriendsFlow]'s own
   /// `shareInviteLink` parameter. `null` (the default) in production.
   final Future<void> Function(String inviteLink)? shareInviteLink;
+
+  /// Test seam (task 26g): overrides tapping the header's Store button.
+  /// `null` (the default) in production, where a tap opens the store via
+  /// [openLudoStore].
+  final VoidCallback? onOpenStore;
 
   @override
   State<HomeLobbyScreen> createState() => _HomeLobbyScreenState();
@@ -793,7 +800,19 @@ class _HomeLobbyScreenState extends State<HomeLobbyScreen> {
                     ),
                   ),
                 ),
-                _ProfileHeader(profile: _profile, wallet: _wallet),
+                _ProfileHeader(
+                  profile: _profile,
+                  wallet: _wallet,
+                  onOpenStore:
+                      widget.onOpenStore ??
+                      () => unawaited(
+                        openLudoStore(
+                          context,
+                          onlineClient: _onlineClient,
+                          walletState: _wallet,
+                        ),
+                      ),
+                ),
                 const SizedBox(height: LudoThemeTokens.spaceMd),
                 if (summary != null) ...[
                   _ResumeCard(summary: summary, onTap: _handleResume),
@@ -958,9 +977,16 @@ class _LobbyBackground extends StatelessWidget {
 /// (renders as an empty box) until a profile has loaded, so the lobby
 /// never flashes a placeholder identity.
 class _ProfileHeader extends StatelessWidget {
-  const _ProfileHeader({required this.profile, this.wallet});
+  const _ProfileHeader({
+    required this.profile,
+    this.wallet,
+    required this.onOpenStore,
+  });
 
   final LudoProfileSettings? profile;
+
+  /// Task 26g: opens the store.
+  final VoidCallback onOpenStore;
 
   /// Task 26e: coin/diamond/level HUD chips shown alongside the profile
   /// name/avatar. `null` hides the chip row entirely.
@@ -994,6 +1020,24 @@ class _ProfileHeader extends StatelessWidget {
                   profile.name,
                   style: LudoTextStyles.displaySmall,
                   overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              const SizedBox(width: LudoThemeTokens.spaceSm),
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minWidth: _minTapTarget,
+                  minHeight: _minTapTarget,
+                ),
+                child: Ludo3dButton(
+                  key: const Key('lobby-store-button'),
+                  semanticLabel: 'Store',
+                  onPressed: onOpenStore,
+                  padding: const EdgeInsets.all(LudoThemeTokens.spaceSm),
+                  child: const Icon(
+                    Icons.storefront,
+                    size: 28,
+                    color: LudoThemeTokens.textOutline,
+                  ),
                 ),
               ),
             ],

@@ -266,3 +266,92 @@ describe("InMemoryLudoEconomyStore inventory/progression/daily-reward/ad-claim/e
     ).rejects.toThrow();
   });
 });
+
+describe("InMemoryLudoEconomyStore.purchaseInventoryItem", () => {
+  const NOW = "2026-10-16T00:00:00.000Z";
+
+  async function funded(store: InMemoryLudoEconomyStore, subject: string, coins: number) {
+    await store.appendLedgerEntry(ENV, {
+      subject,
+      currency: "coins",
+      delta: coins,
+      reason: "starter_grant",
+      idempotencyKey: "fund",
+      now: NOW,
+    });
+  }
+
+  function purchase(subject: string, itemId: string, key: string, price = 1500) {
+    return {
+      subject,
+      itemId,
+      itemType: "dice" as const,
+      currency: "coins" as const,
+      price,
+      idempotencyKey: `store_purchase:${key}`,
+      now: NOW,
+    };
+  }
+
+  test("concurrent purchases of different items never overspend the balance", async () => {
+    const store = new InMemoryLudoEconomyStore();
+    const subject = "buyer-race";
+    await funded(store, subject, 3000);
+
+    const results = await Promise.all(
+      Array.from({ length: 8 }, (_, i) =>
+        store.purchaseInventoryItem(ENV, purchase(subject, `dice_item_${i}`, `k${i}`)),
+      ),
+    );
+
+    expect(results.filter((r) => r.outcome === "purchased")).toHaveLength(2);
+    expect(results.filter((r) => r.outcome === "insufficient_balance")).toHaveLength(6);
+    expect(await store.getBalance(ENV, subject, "coins")).toBe(0);
+    const transactions = await store.listWalletTransactions(ENV, subject, "coins");
+    expect(transactions.reduce((total, row) => total + row.delta, 0)).toBe(0);
+    expect(await store.listInventory(ENV, subject)).toHaveLength(2);
+  });
+
+  test("concurrent purchases of the same item under different keys debit once", async () => {
+    const store = new InMemoryLudoEconomyStore();
+    const subject = "buyer-same-item";
+    await funded(store, subject, 10000);
+
+    const results = await Promise.all(
+      Array.from({ length: 6 }, (_, i) =>
+        store.purchaseInventoryItem(ENV, purchase(subject, "dice_gold", `k${i}`)),
+      ),
+    );
+
+    expect(results.filter((r) => r.outcome === "purchased")).toHaveLength(1);
+    expect(results.filter((r) => r.outcome === "already_owned")).toHaveLength(5);
+    expect(await store.getBalance(ENV, subject, "coins")).toBe(8500);
+  });
+
+  test("a replayed idempotency key never debits twice", async () => {
+    const store = new InMemoryLudoEconomyStore();
+    const subject = "buyer-replay";
+    await funded(store, subject, 5000);
+    const input = purchase(subject, "dice_gold", "same-key");
+
+    const results = await Promise.all(
+      Array.from({ length: 5 }, () => store.purchaseInventoryItem(ENV, input)),
+    );
+
+    expect(results.filter((r) => r.outcome === "purchased")).toHaveLength(1);
+    expect(results.filter((r) => r.outcome === "duplicate")).toHaveLength(4);
+    expect(await store.getBalance(ENV, subject, "coins")).toBe(3500);
+  });
+
+  test("reusing a key for a different item is an idempotency conflict", async () => {
+    const store = new InMemoryLudoEconomyStore();
+    const subject = "buyer-conflict";
+    await funded(store, subject, 5000);
+    await store.purchaseInventoryItem(ENV, purchase(subject, "dice_gold", "k"));
+
+    const conflict = await store.purchaseInventoryItem(ENV, purchase(subject, "dice_marble", "k"));
+
+    expect(conflict.outcome).toBe("idempotency_conflict");
+    expect(await store.getBalance(ENV, subject, "coins")).toBe(3500);
+  });
+});

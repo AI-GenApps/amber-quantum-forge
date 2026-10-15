@@ -30,6 +30,9 @@ export type LudoErrorCode =
   | "ludo_daily_reward_invalid"
   | "ludo_insufficient_balance"
   | "ludo_coin_tier_invalid"
+  | "ludo_purchase_invalid"
+  | "ludo_item_not_found"
+  | "ludo_item_already_owned"
   | "ludo_revenuecat_unauthorized"
   | "ludo_revenuecat_invalid_payload"
   | "ludo_revenuecat_unknown_product";
@@ -287,5 +290,34 @@ export class LudoRevenueCatInvalidPayloadError extends LudoCommandError {
 export class LudoRevenueCatUnknownProductError extends LudoCommandError {
   constructor(productId: string) {
     super(422, "ludo_revenuecat_unknown_product", `Unknown RevenueCat product id: ${productId}`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Store purchase rejection paths (task 26g).
+// ---------------------------------------------------------------------------
+
+/** `POST .../inventory/purchase` with a malformed body, or a currency the
+ * item is not priced in (e.g. coins for a diamond-only board theme, or any
+ * price for a free default item). */
+export class LudoPurchaseInvalidError extends LudoCommandError {
+  constructor(message = "A valid item_id, currency and idempotency_key are required") {
+    super(422, "ludo_purchase_invalid", message);
+  }
+}
+
+/** `POST .../inventory/purchase` for an item id absent from the economy
+ * config's theme catalog. */
+export class LudoItemNotFoundError extends LudoCommandError {
+  constructor(itemId: string) {
+    super(404, "ludo_item_not_found", `Unknown store item: ${itemId}`);
+  }
+}
+
+/** `POST .../inventory/purchase` for an item the subject already owns,
+ * under a fresh idempotency key. Nothing is debited. */
+export class LudoItemAlreadyOwnedError extends LudoCommandError {
+  constructor(itemId: string) {
+    super(409, "ludo_item_already_owned", `Store item already owned: ${itemId}`);
   }
 }

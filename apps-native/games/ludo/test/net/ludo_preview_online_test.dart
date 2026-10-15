@@ -7,6 +7,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ludo/src/net/ludo_match_models.dart' show LudoMode;
 import 'package:ludo/src/net/ludo_match_state_source.dart';
 import 'package:ludo/src/net/ludo_preview_online.dart';
+import 'package:ludo/src/net/ludo_preview_store.dart';
+import 'package:ludo/src/net/ludo_purchases_gateway.dart';
 import 'package:ludo/src/net/ludo_wire_json.dart';
 
 const _fastDelay = Duration(milliseconds: 30);
@@ -165,5 +167,66 @@ void main() {
           'exactly one disconnect/reconnect blip, never a permanent '
           'reconnecting state',
     );
+  });
+
+  group('preview store routes (task 26g)', () {
+    test('lists the catalog, buys with coins, then rejects an unaffordable '
+        'second purchase', () async {
+      final client = createLudoPreviewOnlineClient();
+      final token = await client.authController.ensureGameToken();
+
+      final inventory = await client.gateway.getInventory(gameToken: token);
+      expect(
+        inventory.catalog.map((item) => item.itemId),
+        contains('dice_gold'),
+      );
+      expect(
+        inventory.inventory.map((item) => item.itemId),
+        contains('dice_default'),
+      );
+      expect(inventory.iapProducts, isNotEmpty);
+      final before = await client.gateway.getWallet(gameToken: token);
+      expect(before.coins, 2400);
+
+      final bought = await client.gateway.purchaseInventoryItem(
+        itemId: 'dice_gold',
+        currency: 'coins',
+        idempotencyKey: 'preview-1',
+        gameToken: token,
+      );
+      expect(bought.coins, 900);
+      final after = await client.gateway.getWallet(gameToken: token);
+      expect(after.coins, 900);
+      final owned = await client.gateway.getInventory(gameToken: token);
+      expect(owned.inventory.map((item) => item.itemId), contains('dice_gold'));
+
+      await expectLater(
+        client.gateway.purchaseInventoryItem(
+          itemId: 'dice_marble',
+          currency: 'coins',
+          idempotencyKey: 'preview-2',
+          gameToken: token,
+        ),
+        throwsA(
+          isA<LudoApiException>().having(
+            (e) => e.code,
+            'code',
+            'ludo_insufficient_balance',
+          ),
+        ),
+      );
+      expect((await client.gateway.getWallet(gameToken: token)).coins, 900);
+    });
+
+    test('the preview RevenueCat stand-in lists offers but never completes a '
+        'purchase', () async {
+      const gateway = PreviewLudoPurchasesGateway();
+      final packages = await gateway.getPackages();
+      expect(packages, isNotEmpty);
+      expect(
+        await gateway.purchase(packages.first),
+        LudoStorePurchaseStatus.cancelled,
+      );
+    });
   });
 }

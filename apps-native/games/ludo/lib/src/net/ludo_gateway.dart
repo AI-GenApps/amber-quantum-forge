@@ -15,6 +15,7 @@ import 'ludo_command_models.dart';
 import 'ludo_http.dart';
 import 'ludo_match_models.dart';
 import 'ludo_session_models.dart';
+import 'ludo_store_models.dart';
 import 'ludo_wire_json.dart';
 
 /// The API access token pair minted by `POST /api/auth/exchange`.
@@ -234,10 +235,18 @@ final class LudoCatalogItem {
 
 /// `GET /games/ludo/:environment/inventory` (task 26b).
 final class LudoInventoryResult {
-  const LudoInventoryResult({required this.inventory, required this.catalog});
+  const LudoInventoryResult({
+    required this.inventory,
+    required this.catalog,
+    this.iapProducts = const [],
+  });
 
   final List<LudoOwnedInventoryItem> inventory;
   final List<LudoCatalogItem> catalog;
+
+  /// Real-money products (task 26g); empty when the server predates the
+  /// `iap_products` field.
+  final List<LudoIapProductInfo> iapProducts;
 
   static LudoInventoryResult fromWire(LudoJson value) {
     requireFields(value, {'inventory', 'catalog'}, 'inventory response');
@@ -251,6 +260,11 @@ final class LudoInventoryResult {
       catalog: [
         for (final entry in asJsonList(value['catalog'], 'catalog'))
           LudoCatalogItem.fromWire(asJsonObject(entry, 'catalog item')),
+      ],
+      iapProducts: [
+        if (value['iap_products'] != null)
+          for (final entry in asJsonList(value['iap_products'], 'iap_products'))
+            LudoIapProductInfo.fromWire(asJsonObject(entry, 'iap product')),
       ],
     );
   }
@@ -748,5 +762,44 @@ final class LudoGateway {
       bearerToken: gameToken,
     );
     return LudoDailyRewardClaimResult.fromWire(data);
+  }
+
+  /// `POST /games/ludo/:environment/inventory/purchase` (task 26g): a
+  /// coin/diamond spend on a theme item. [currency] is `coins` or
+  /// `diamonds`. Safe to retry with the same [idempotencyKey]: the server
+  /// replays instead of debiting twice.
+  Future<LudoPurchaseResult> purchaseInventoryItem({
+    required String itemId,
+    required String currency,
+    required String idempotencyKey,
+    required String gameToken,
+  }) async {
+    final data = await _request(
+      method: 'POST',
+      uri: config.gameEndpoint('inventory/purchase'),
+      body: {
+        'item_id': itemId,
+        'currency': currency,
+        'idempotency_key': idempotencyKey,
+      },
+      bearerToken: gameToken,
+    );
+    return LudoPurchaseResult.fromWire(data);
+  }
+
+  /// `POST /games/ludo/:environment/revenuecat/sync` (task 26d): asks the
+  /// server to reconcile RevenueCat state into the wallet/entitlements.
+  /// Called after every real-money purchase and restore; the server, not
+  /// the client's purchase result, decides what was granted.
+  Future<LudoRevenueCatSyncResult> syncRevenueCat({
+    required String gameToken,
+  }) async {
+    final data = await _request(
+      method: 'POST',
+      uri: config.gameEndpoint('revenuecat/sync'),
+      body: const <String, Object?>{},
+      bearerToken: gameToken,
+    );
+    return LudoRevenueCatSyncResult.fromWire(data);
   }
 }

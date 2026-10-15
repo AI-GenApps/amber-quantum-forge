@@ -14,3 +14,5 @@
 | 10 | Localization (Hindi first?) | user | listing languages |
 | 11 | iOS timing (App Store account, StoreKit products, 6.9" screenshots) | user | iOS launch |
 | 12 | ~~Human checkpoint 13~~ — signed off 2026-09-26 | user | done |
+
+- (2026-10-16, task 26g) Apply the equipped dice/token/board theme inside matches (board/token/dice components still render the default look); blocked on 26f art and a follow-up task. Vortex Pass perk copy in the Pass tab is static text mirroring `economy-config.ts` and must be kept in sync by hand.

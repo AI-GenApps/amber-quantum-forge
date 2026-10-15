@@ -13,11 +13,16 @@ import {
 } from "@repo/db";
 import type { LudoEnvironment } from "./contracts";
 import type { LudoCoinTableTier, LudoCurrency, LudoWalletReason } from "./economy-config";
+import { lockSubjectWallet, purchaseInventoryItemImpl } from "./economy-drizzle-store-purchase";
 import {
   getSubscriptionImpl,
   processRevenueCatEventImpl,
 } from "./economy-drizzle-store-revenuecat";
 import { recordXpClaimWithCapImpl } from "./economy-drizzle-store-xp-claim";
+import type {
+  LudoPurchaseInventoryItemInput,
+  LudoPurchaseInventoryItemResult,
+} from "./economy-purchase";
 import {
   LUDO_ECONOMY_STORE_APP_ID,
   type LudoAdRewardClaimRow,
@@ -86,6 +91,7 @@ export class DrizzleLudoEconomyStore implements LudoEconomyStore {
     input: LudoLedgerAppendInput,
   ): Promise<LudoLedgerAppendResult> {
     {
+      await lockSubjectWallet(transaction, environment, input.subject);
       const [existing] = await transaction
         .select()
         .from(ludoWalletTransactions)
@@ -219,6 +225,15 @@ export class DrizzleLudoEconomyStore implements LudoEconomyStore {
         applied: true,
       };
     }
+  }
+
+  async purchaseInventoryItem(
+    environment: LudoEnvironment,
+    input: LudoPurchaseInventoryItemInput,
+  ): Promise<LudoPurchaseInventoryItemResult> {
+    return purchaseInventoryItemImpl(this.database, environment, input, (tx, env, i) =>
+      this.appendLedgerEntryTx(tx, env, i),
+    );
   }
 
   async applyProgressionAndLedger(

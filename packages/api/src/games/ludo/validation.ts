@@ -177,6 +177,24 @@ export function parseXpClaimRequest(value: unknown): LudoValidationResult<LudoXp
   return ok({ xpDelta, claimId, elapsedMs, matchesCompleted });
 }
 
+/** `POST /:environment/inventory/purchase` request body (task 26g). */
+export interface LudoPurchaseRequest {
+  itemId: string;
+  currency: "coins" | "diamonds";
+  idempotencyKey: string;
+}
+
+export function parsePurchaseRequest(value: unknown): LudoValidationResult<LudoPurchaseRequest> {
+  if (!isObject(value)) return fail("ludo_purchase_must_be_object");
+  const { item_id: itemId, currency, idempotency_key: idempotencyKey } = value;
+  if (typeof itemId !== "string" || itemId.length === 0 || itemId.length > 64) {
+    return fail("ludo_item_id_invalid");
+  }
+  if (currency !== "coins" && currency !== "diamonds") return fail("ludo_currency_invalid");
+  if (!isIdempotencyKey(idempotencyKey)) return fail("ludo_idempotency_key_invalid");
+  return ok({ itemId, currency, idempotencyKey });
+}
+
 export function parseEnvironmentParam(
   value: string,
 ): LudoValidationResult<"debug" | "staging" | "production"> {

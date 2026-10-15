@@ -41,6 +41,7 @@ import 'ludo_gateway.dart';
 import 'ludo_http.dart';
 import 'ludo_online_client.dart';
 import 'ludo_online_controller.dart';
+import 'ludo_preview_store.dart';
 import 'ludo_auth_controller.dart';
 import 'ludo_wire_json.dart' show ludoContractVersion;
 import 'ludo_deep_link.dart' show ludoDeepLinkScheme;
@@ -237,8 +238,13 @@ final class PreviewLudoTransport implements LudoHttpTransport {
   // hand-built fixture screenshot. Starts pre-populated (a starter grant
   // already applied) and close to a level-up so a single Computer match
   // reliably crosses a level boundary during a device walkthrough.
-  int _previewCoins = 640;
-  int _previewDiamonds = 12;
+  //
+  // Task 26g: raised from 640/12 so the store can be walked on a device —
+  // enough for one 1500-coin item (leaving 900, so a second one shows the
+  // insufficient-balance rejection) and short of the 80-diamond boards.
+  int _previewCoins = 2400;
+  int _previewDiamonds = 60;
+  final _store = PreviewStoreBackend();
   int _previewLevel = 1;
   int _previewXp = 80;
   final _claimedIds = <String>{};
@@ -300,6 +306,18 @@ final class PreviewLudoTransport implements LudoHttpTransport {
         'diamonds': _previewDiamonds,
       });
     }
+    final storeResponse = _store.handle(
+      method: method,
+      path: path,
+      body: decodedBody,
+      coins: _previewCoins,
+      diamonds: _previewDiamonds,
+      apply: (coins, diamonds) {
+        _previewCoins = coins;
+        _previewDiamonds = diamonds;
+      },
+    );
+    if (storeResponse != null) return storeResponse;
     if (method == 'POST' && path == 'rooms') {
       return _createRoom(decodedBody);
     }

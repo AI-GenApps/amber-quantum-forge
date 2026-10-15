@@ -1,5 +1,16 @@
 import type { LudoEnvironment } from "./contracts";
 import type { LudoCoinTableTier, LudoCurrency, LudoWalletReason } from "./economy-config";
+import type {
+  LudoPurchaseInventoryItemInput,
+  LudoPurchaseInventoryItemResult,
+} from "./economy-purchase";
+import {
+  adClaimKey,
+  balanceKey,
+  idempotencyKeyLookup,
+  inventoryKey,
+  xpClaimKey,
+} from "./economy-store-keys";
 
 export const LUDO_ECONOMY_STORE_APP_ID = "ludo" as const;
 
@@ -82,11 +93,9 @@ export interface LudoCoinTableEscrowRow {
   resolvedAt: string | null;
 }
 
-/** Result of `LudoEconomyStore.recordXpClaimWithCap`: `"recorded"` when the
- * claim was newly applied (within the cap), `"duplicate"` when `claimId`
- * had already been recorded (the original row is returned, not
- * re-applied), and `"cap_exceeded"` when applying `xpDelta` would push the
- * subject's `claimDate` total over `dailyCap` — nothing was written. */
+/** Result of `recordXpClaimWithCap`: `"recorded"` (applied within the cap),
+ * `"duplicate"` (claimId already recorded, not re-applied) or
+ * `"cap_exceeded"` (nothing written). */
 export type LudoRecordXpClaimWithCapResult =
   | { outcome: "recorded"; claim: LudoXpClaimRow }
   | { outcome: "duplicate"; claim: LudoXpClaimRow }
@@ -217,6 +226,13 @@ export interface LudoEconomyStore {
     row: Omit<LudoInventoryRow, "environment">,
   ): Promise<LudoInventoryRow>;
 
+  /** Task 26g: atomic coin/diamond purchase (duplicate-key, owned and
+   * balance checks plus debit and inventory insert in one locked step). */
+  purchaseInventoryItem(
+    environment: LudoEnvironment,
+    input: LudoPurchaseInventoryItemInput,
+  ): Promise<LudoPurchaseInventoryItemResult>;
+
   getProgression(environment: LudoEnvironment, subject: string): Promise<LudoProgressionRow | null>;
 
   setProgression(
@@ -245,11 +261,8 @@ export interface LudoEconomyStore {
     now: string,
   ): Promise<{ claim: LudoXpClaimRow; applied: boolean }>;
 
-  /** Sum of `xpDelta` across every XP claim already recorded for `subject`
-   * on `claimDate` (a UTC `YYYY-MM-DD` string). Exposed for read paths
-   * (e.g. a profile/debug view); the daily-cap check itself must go
-   * through `recordXpClaimWithCap`, not a separate call to this method,
-   * since the two together would be a check-then-write race. */
+  /** Sum of `xpDelta` claimed by `subject` on `claimDate` (UTC). Read
+   * paths only; the cap check itself must use `recordXpClaimWithCap`. */
   sumXpClaimed(environment: LudoEnvironment, subject: string, claimDate: string): Promise<number>;
 
   /** Atomically checks the daily XP cap and records the claim in one
@@ -355,26 +368,6 @@ function emptyEnvironmentState(): EconomyEnvironmentState {
   };
 }
 
-function balanceKey(subject: string, currency: LudoCurrency): string {
-  return `${subject}\u0000${currency}`;
-}
-
-function inventoryKey(subject: string, itemId: string): string {
-  return `${subject}\u0000${itemId}`;
-}
-
-function adClaimKey(subject: string, adTransactionId: string): string {
-  return `${subject}\u0000${adTransactionId}`;
-}
-
-function xpClaimKey(subject: string, claimId: string): string {
-  return `${subject}\u0000${claimId}`;
-}
-
-function idempotencyKeyLookup(subject: string, idempotencyKey: string): string {
-  return `${subject}\u0000${idempotencyKey}`;
-}
-
 /**
  * In-process economy store, matching `InMemoryLudoStore`'s single-flight
  * tail-per-environment concurrency pattern: a duplicate idempotency key
@@ -416,10 +409,8 @@ export class InMemoryLudoEconomyStore implements LudoEconomyStore {
     return result;
   }
 
-  /** Synchronous core of `appendLedgerEntry`, callable both directly (under
-   * `serialize`) and from within `applyProgressionAndLedger`'s single
-   * serialized operation, so the two never deadlock by nesting `serialize`
-   * calls for the same environment. */
+  /** Synchronous core of `appendLedgerEntry`, reusable inside other
+   * serialized operations without nesting `serialize` calls. */
   private appendLedgerEntrySync(
     environment: LudoEnvironment,
     input: LudoLedgerAppendInput,
@@ -535,10 +526,7 @@ export class InMemoryLudoEconomyStore implements LudoEconomyStore {
     },
     now: string,
   ): Promise<LudoRecordXpClaimWithCapResult> {
-    // Single `serialize()` call: the duplicate check, the daily-cap sum
-    // re-read, and the insert all happen inside one queued operation, so
-    // no concurrent call for the same environment can observe the sum
-    // before this claim's row lands.
+    // One `serialize()` call: duplicate check, cap sum and insert are atomic.
     return this.serialize(environment, () => {
       const state = this.state(environment);
       const key = xpClaimKey(input.subject, input.claimId);
@@ -601,6 +589,57 @@ export class InMemoryLudoEconomyStore implements LudoEconomyStore {
       const full: LudoInventoryRow = { ...row, environment };
       state.inventory.set(key, full);
       return full;
+    });
+  }
+
+  async purchaseInventoryItem(
+    environment: LudoEnvironment,
+    input: LudoPurchaseInventoryItemInput,
+  ): Promise<LudoPurchaseInventoryItemResult> {
+    return this.serialize(environment, () => {
+      const state = this.state(environment);
+      const ownedKey = inventoryKey(input.subject, input.itemId);
+      const balanceOf = () =>
+        state.balances.get(balanceKey(input.subject, input.currency))?.balance ?? 0;
+      const lookup = idempotencyKeyLookup(input.subject, input.idempotencyKey);
+      const replayId = this.appliedIdempotencyKeys.get(environment)?.get(lookup);
+      if (replayId) {
+        const original = state.transactions.find((row) => row.id === replayId);
+        const inventory = state.inventory.get(ownedKey);
+        if (!original || original.sourceRef !== input.itemId || !inventory) {
+          return { outcome: "idempotency_conflict" };
+        }
+        return { outcome: "duplicate", inventory, balance: balanceOf() };
+      }
+      const owned = state.inventory.get(ownedKey);
+      if (owned) return { outcome: "already_owned", inventory: owned };
+      if (balanceOf() < input.price) {
+        return { outcome: "insufficient_balance", balance: balanceOf() };
+      }
+      const ledger = this.appendLedgerEntrySync(environment, {
+        subject: input.subject,
+        currency: input.currency,
+        delta: -input.price,
+        reason: "store_purchase",
+        sourceRef: input.itemId,
+        idempotencyKey: input.idempotencyKey,
+        now: input.now,
+      });
+      const inventory: LudoInventoryRow = {
+        environment,
+        subject: input.subject,
+        itemId: input.itemId,
+        itemType: input.itemType,
+        acquiredVia: "store_purchase",
+        acquiredAt: input.now,
+      };
+      state.inventory.set(ownedKey, inventory);
+      return {
+        outcome: "purchased",
+        inventory,
+        transaction: ledger.transaction,
+        balance: ledger.balance,
+      };
     });
   }
 

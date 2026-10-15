@@ -16,12 +16,15 @@
       "game_loop",
       "guest_identity",
       "save_sync",
+      "billing",
       "sharing"
     ],
     "implemented": [
+      "billing",
       "sharing"
     ],
     "enabled": [
+      "billing",
       "sharing"
     ]
   },

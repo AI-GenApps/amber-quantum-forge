@@ -21,6 +21,7 @@ dependencies:
   ludo_rules:
     path: ../packages/ludo_rules
   path_provider: ^2.1.5
+  purchases_flutter: ^8.2.1
   share_plus: ^10.1.4
   platform_core:
     path: ../packages/platform_core

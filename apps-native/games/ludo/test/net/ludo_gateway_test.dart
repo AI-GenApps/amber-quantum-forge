@@ -373,6 +373,127 @@ void main() {
     });
   });
 
+  group('LudoGateway store routes (task 26g)', () {
+    test('getInventory decodes the iap_products list', () async {
+      final transport = FixtureLudoTransport({
+        'GET inventory': jsonResponse(_envelope('inventory_response')),
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      final result = await gateway.getInventory(gameToken: 'game-token');
+      expect(result.iapProducts, hasLength(2));
+      expect(result.iapProducts.first.productId, 'ludo_coins_small');
+      expect(result.iapProducts.first.grantsCoins, 5500);
+      expect(result.iapProducts.first.grantsDiamonds, isNull);
+      expect(result.iapProducts.last.isSubscription, isTrue);
+    });
+
+    test('getInventory tolerates a server without iap_products', () async {
+      final body = Map<String, Object?>.of(_envelope('inventory_response'))
+        ..remove('iap_products');
+      final transport = FixtureLudoTransport({
+        'GET inventory': jsonResponse(body),
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      final result = await gateway.getInventory(gameToken: 'game-token');
+      expect(result.iapProducts, isEmpty);
+    });
+
+    test('purchaseInventoryItem posts item/currency/key and decodes the '
+        'result', () async {
+      final transport = FixtureLudoTransport({
+        'POST inventory/purchase': jsonResponse(
+          _envelope('inventory_purchase_response'),
+        ),
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      final result = await gateway.purchaseInventoryItem(
+        itemId: 'theme_vortex',
+        currency: 'coins',
+        idempotencyKey: 'buy-1',
+        gameToken: 'game-token',
+      );
+      expect(result.idempotent, isFalse);
+      expect(result.item.itemId, 'theme_vortex');
+      expect(result.item.acquiredVia, 'store_purchase');
+      expect(result.coins, 500);
+      expect(result.diamonds, 10);
+      expect(transport.requests.single.$2, {
+        'item_id': 'theme_vortex',
+        'currency': 'coins',
+        'idempotency_key': 'buy-1',
+      });
+    });
+
+    test('an insufficient-balance purchase decodes into a '
+        'LudoApiException', () async {
+      final transport = FixtureLudoTransport({
+        'POST inventory/purchase': jsonResponse(
+          ludoFixtureError('ludo_insufficient_balance'),
+          statusCode: 422,
+        ),
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      await expectLater(
+        gateway.purchaseInventoryItem(
+          itemId: 'theme_vortex',
+          currency: 'coins',
+          idempotencyKey: 'buy-2',
+          gameToken: 'game-token',
+        ),
+        throwsA(
+          isA<LudoApiException>()
+              .having((e) => e.statusCode, 'statusCode', 422)
+              .having((e) => e.code, 'code', 'ludo_insufficient_balance'),
+        ),
+      );
+    });
+
+    test('a malformed purchase body throws LudoProtocolException', () async {
+      final transport = FixtureLudoTransport({
+        'POST inventory/purchase': jsonResponse({'idempotent': false}),
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      await expectLater(
+        gateway.purchaseInventoryItem(
+          itemId: 'theme_vortex',
+          currency: 'coins',
+          idempotencyKey: 'buy-3',
+          gameToken: 'game-token',
+        ),
+        throwsA(isA<LudoProtocolException>()),
+      );
+    });
+
+    test(
+      'syncRevenueCat decodes a synced result with an active pass',
+      () async {
+        final transport = FixtureLudoTransport({
+          'POST revenuecat/sync': jsonResponse(
+            _envelope('revenuecat_sync_response'),
+          ),
+        });
+        final gateway = LudoGateway(config: _config(), transport: transport);
+        final result = await gateway.syncRevenueCat(gameToken: 'game-token');
+        expect(result.synced, isTrue);
+        expect(result.grantedPurchases, 1);
+        expect(result.passActive, isTrue);
+      },
+    );
+
+    test('syncRevenueCat decodes the revenuecat-unavailable result', () async {
+      final transport = FixtureLudoTransport({
+        'POST revenuecat/sync': jsonResponse(
+          _envelope('revenuecat_sync_unavailable_response'),
+        ),
+      });
+      final gateway = LudoGateway(config: _config(), transport: transport);
+      final result = await gateway.syncRevenueCat(gameToken: 'game-token');
+      expect(result.synced, isFalse);
+      expect(result.reason, 'revenuecat_unavailable');
+      expect(result.passActive, isFalse);
+    });
+  });
+
   group('LudoGateway error decoding', () {
     test('a non-2xx response decodes into a LudoApiException', () async {
       final transport = FixtureLudoTransport({

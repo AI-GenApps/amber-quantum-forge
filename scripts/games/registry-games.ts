@@ -212,9 +212,9 @@ export const GAME_REGISTRY: readonly GameRegistration[] = [
     environments: supportedEnvironments,
     rendering: "flame",
     capabilities: {
-      specified: ["game_loop", "guest_identity", "save_sync", "sharing"],
-      implemented: ["sharing"],
-      enabled: ["sharing"],
+      specified: ["game_loop", "guest_identity", "save_sync", "billing", "sharing"],
+      implemented: ["billing", "sharing"],
+      enabled: ["billing", "sharing"],
     },
     permissions: noPermissions,
     readiness: scaffoldReadiness,

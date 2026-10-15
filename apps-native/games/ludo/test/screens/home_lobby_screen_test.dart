@@ -243,4 +243,42 @@ void main() {
       );
     },
   );
+
+  testWidgets('the header Store button invokes onOpenStore with a labelled '
+      '48dp+ tap target', (tester) async {
+    final handle = tester.ensureSemantics();
+    var opened = false;
+    await tester.pumpWidget(
+      _wrap(
+        HomeLobbyScreen(
+          profile: _testProfile(),
+          onOpenStore: () => opened = true,
+        ),
+      ),
+    );
+
+    final button = find.byKey(const Key('lobby-store-button'));
+    expect(button, findsOneWidget);
+    expect(find.bySemanticsLabel('Store'), findsOneWidget);
+    final size = tester.getSize(button);
+    expect(size.width, greaterThanOrEqualTo(48));
+    expect(size.height, greaterThanOrEqualTo(48));
+
+    await tester.tap(button);
+    await tester.pump();
+
+    expect(opened, isTrue);
+    handle.dispose();
+  });
+
+  testWidgets('with no online client the default Store button opens the '
+      '"Store unavailable" screen', (tester) async {
+    await tester.pumpWidget(_wrap(HomeLobbyScreen(profile: _testProfile())));
+
+    await tester.tap(find.byKey(const Key('lobby-store-button')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Store unavailable'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
 }

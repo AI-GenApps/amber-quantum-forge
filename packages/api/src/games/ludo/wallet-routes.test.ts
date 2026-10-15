@@ -336,3 +336,195 @@ describe("Ludo daily-reward/claim route", () => {
     expect((await consecutive.json()).streakDay).toBe(2);
   });
 });
+
+describe("Ludo inventory purchase route", () => {
+  async function fund(
+    economyStore: InMemoryLudoEconomyStore,
+    subject: string,
+    coins: number,
+    diamonds = 0,
+  ) {
+    const now = "2026-10-16T00:00:00.000Z";
+    await economyStore.appendLedgerEntry("debug", {
+      subject,
+      currency: "coins",
+      delta: coins,
+      reason: "starter_grant",
+      idempotencyKey: "fund:coins",
+      now,
+    });
+    if (diamonds > 0) {
+      await economyStore.appendLedgerEntry("debug", {
+        subject,
+        currency: "diamonds",
+        delta: diamonds,
+        reason: "starter_grant",
+        idempotencyKey: "fund:diamonds",
+        now,
+      });
+    }
+  }
+
+  function buy(
+    app: Hono,
+    gameToken: string,
+    body: Record<string, unknown>,
+  ): Response | Promise<Response> {
+    return app.request("/games/ludo/debug/inventory/purchase", {
+      method: "POST",
+      headers: { ...authHeaders(gameToken), "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+  }
+
+  it("debits the coin price and adds the item to inventory", async () => {
+    const { app, economyStore, gameToken } = await testHarness("buyer-1");
+    await fund(economyStore, "buyer-1", 2000);
+
+    const response = await buy(app, gameToken, {
+      item_id: "dice_gold",
+      currency: "coins",
+      idempotency_key: "buy-1",
+    });
+
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body.idempotent).toBe(false);
+    expect(body.item.item_id).toBe("dice_gold");
+    expect(body.item.item_type).toBe("dice");
+    expect(body.coins).toBe(500);
+    expect(await economyStore.getBalance("debug", "buyer-1", "coins")).toBe(500);
+    const owned = await economyStore.listInventory("debug", "buyer-1");
+    expect(owned.map((row) => row.itemId)).toEqual(["dice_gold"]);
+  });
+
+  it("debits the diamond price for a diamond-only board theme", async () => {
+    const { app, economyStore, gameToken } = await testHarness("buyer-2");
+    await fund(economyStore, "buyer-2", 0, 100);
+
+    const response = await buy(app, gameToken, {
+      item_id: "board_cosmic",
+      currency: "diamonds",
+      idempotency_key: "buy-2",
+    });
+
+    expect(response.status).toBe(200);
+    expect((await response.json()).diamonds).toBe(20);
+  });
+
+  it("rejects an insufficient balance with no partial debit and no inventory row", async () => {
+    const { app, economyStore, gameToken } = await testHarness("buyer-3");
+    await fund(economyStore, "buyer-3", 1499);
+
+    const response = await buy(app, gameToken, {
+      item_id: "dice_gold",
+      currency: "coins",
+      idempotency_key: "buy-3",
+    });
+
+    expect(response.status).toBe(422);
+    expect((await response.json()).error.code).toBe("ludo_insufficient_balance");
+    expect(await economyStore.getBalance("debug", "buyer-3", "coins")).toBe(1499);
+    expect(await economyStore.listInventory("debug", "buyer-3")).toEqual([]);
+    expect(await economyStore.listWalletTransactions("debug", "buyer-3", "coins")).toHaveLength(1);
+  });
+
+  it("replays the same idempotency key without debiting twice", async () => {
+    const { app, economyStore, gameToken } = await testHarness("buyer-4");
+    await fund(economyStore, "buyer-4", 5000);
+    const request = { item_id: "dice_gold", currency: "coins", idempotency_key: "buy-4" };
+
+    const first = await buy(app, gameToken, request);
+    const second = await buy(app, gameToken, request);
+
+    expect((await first.json()).idempotent).toBe(false);
+    const replay = await second.json();
+    expect(replay.idempotent).toBe(true);
+    expect(replay.coins).toBe(3500);
+    expect(await economyStore.getBalance("debug", "buyer-4", "coins")).toBe(3500);
+  });
+
+  it("rejects an already-owned item under a fresh key without debiting", async () => {
+    const { app, economyStore, gameToken } = await testHarness("buyer-5");
+    await fund(economyStore, "buyer-5", 5000);
+    await buy(app, gameToken, { item_id: "dice_gold", currency: "coins", idempotency_key: "a" });
+
+    const again = await buy(app, gameToken, {
+      item_id: "dice_gold",
+      currency: "coins",
+      idempotency_key: "b",
+    });
+
+    expect(again.status).toBe(409);
+    expect((await again.json()).error.code).toBe("ludo_item_already_owned");
+    expect(await economyStore.getBalance("debug", "buyer-5", "coins")).toBe(3500);
+  });
+
+  it("rejects unknown items, unpriced currencies, free defaults and malformed bodies", async () => {
+    const { app, economyStore, gameToken } = await testHarness("buyer-6");
+    await fund(economyStore, "buyer-6", 100000, 1000);
+
+    const unknown = await buy(app, gameToken, {
+      item_id: "dice_nope",
+      currency: "coins",
+      idempotency_key: "u1",
+    });
+    expect(unknown.status).toBe(404);
+    expect((await unknown.json()).error.code).toBe("ludo_item_not_found");
+
+    const boardInCoins = await buy(app, gameToken, {
+      item_id: "board_cosmic",
+      currency: "coins",
+      idempotency_key: "u2",
+    });
+    expect(boardInCoins.status).toBe(422);
+    expect((await boardInCoins.json()).error.code).toBe("ludo_purchase_invalid");
+
+    const freeDefault = await buy(app, gameToken, {
+      item_id: "dice_default",
+      currency: "coins",
+      idempotency_key: "u3",
+    });
+    expect(freeDefault.status).toBe(422);
+
+    const malformed = await buy(app, gameToken, { item_id: "dice_gold" });
+    expect(malformed.status).toBe(422);
+    expect(await economyStore.getBalance("debug", "buyer-6", "coins")).toBe(100000);
+    expect(await economyStore.listInventory("debug", "buyer-6")).toEqual([]);
+  });
+
+  it("requires a game token", async () => {
+    const { app } = await testHarness("buyer-7");
+    const response = await app.request("/games/ludo/debug/inventory/purchase", {
+      method: "POST",
+      body: JSON.stringify({ item_id: "dice_gold", currency: "coins", idempotency_key: "x" }),
+    });
+    expect(response.status).toBe(401);
+  });
+
+  it("concurrent requests for different items cannot overspend", async () => {
+    const { app, economyStore, gameToken } = await testHarness("buyer-8");
+    await fund(economyStore, "buyer-8", 3000);
+    const items = ["dice_classic_wood", "dice_neon_vortex", "dice_marble", "dice_galaxy"];
+
+    const responses = await Promise.all(
+      items.map((itemId, i) =>
+        buy(app, gameToken, { item_id: itemId, currency: "coins", idempotency_key: `c${i}` }),
+      ),
+    );
+
+    const statuses = responses.map((response) => response.status).sort();
+    expect(statuses).toEqual([200, 200, 422, 422]);
+    expect(await economyStore.getBalance("debug", "buyer-8", "coins")).toBe(0);
+  });
+
+  it("lists iap products alongside the theme catalog", async () => {
+    const { app, gameToken } = await testHarness("buyer-9");
+    const response = await app.request("/games/ludo/debug/inventory", {
+      headers: authHeaders(gameToken),
+    });
+    const body = await response.json();
+    expect(body.iap_products.length).toBe(getEconomyConfig().iapProducts.length);
+    expect(body.iap_products[0]).toHaveProperty("product_id");
+  });
+});
