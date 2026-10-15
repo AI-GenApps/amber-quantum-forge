@@ -1,0 +1,165 @@
+{
+  "map": "district-1",
+  "withPlayerCar": true,
+  "method": "NullEngine; the player car (body, 4 wheels, blob shadow) is parked at each pose; scene.render() once per pose; draw calls = sum over active meshes of sub-mesh counts (a thin-instance host or InstancedMesh source counts once per sub-mesh); triangles = sub-mesh triangles x thin-instance count over active meshes; SceneInstrumentation is not meaningful under NullEngine",
+  "budgets": {
+    "maxDrawCalls": 100,
+    "targetDrawCalls": 60,
+    "maxTriangles": 150000
+  },
+  "camera": {
+    "fov": 0.8,
+    "minZ": 0.5,
+    "maxZ": 240
+  },
+  "poses": [
+    {
+      "name": "edge-N",
+      "camera": {
+        "x": 0,
+        "y": 6,
+        "z": -120
+      },
+      "target": {
+        "x": 0,
+        "y": 1,
+        "z": -95
+      },
+      "activeMeshes": 31,
+      "drawCalls": 49,
+      "triangles": 125267
+    },
+    {
+      "name": "edge-NE",
+      "camera": {
+        "x": 117.071,
+        "y": 6,
+        "z": -117.071
+      },
+      "target": {
+        "x": 99.393,
+        "y": 1,
+        "z": -99.393
+      },
+      "activeMeshes": 30,
+      "drawCalls": 48,
+      "triangles": 120023
+    },
+    {
+      "name": "edge-E",
+      "camera": {
+        "x": 120,
+        "y": 6,
+        "z": 0
+      },
+      "target": {
+        "x": 95,
+        "y": 1,
+        "z": 0
+      },
+      "activeMeshes": 31,
+      "drawCalls": 49,
+      "triangles": 125267
+    },
+    {
+      "name": "edge-SE",
+      "camera": {
+        "x": 117.071,
+        "y": 6,
+        "z": 117.071
+      },
+      "target": {
+        "x": 99.393,
+        "y": 1,
+        "z": 99.393
+      },
+      "activeMeshes": 31,
+      "drawCalls": 49,
+      "triangles": 125267
+    },
+    {
+      "name": "edge-S",
+      "camera": {
+        "x": 0,
+        "y": 6,
+        "z": 120
+      },
+      "target": {
+        "x": 0,
+        "y": 1,
+        "z": 95
+      },
+      "activeMeshes": 30,
+      "drawCalls": 48,
+      "triangles": 120023
+    },
+    {
+      "name": "edge-SW",
+      "camera": {
+        "x": -117.071,
+        "y": 6,
+        "z": 117.071
+      },
+      "target": {
+        "x": -99.393,
+        "y": 1,
+        "z": 99.393
+      },
+      "activeMeshes": 31,
+      "drawCalls": 49,
+      "triangles": 125267
+    },
+    {
+      "name": "edge-W",
+      "camera": {
+        "x": -120,
+        "y": 6,
+        "z": 0
+      },
+      "target": {
+        "x": -95,
+        "y": 1,
+        "z": 0
+      },
+      "activeMeshes": 30,
+      "drawCalls": 48,
+      "triangles": 120023
+    },
+    {
+      "name": "edge-NW",
+      "camera": {
+        "x": -117.071,
+        "y": 6,
+        "z": -117.071
+      },
+      "target": {
+        "x": -99.393,
+        "y": 1,
+        "z": -99.393
+      },
+      "activeMeshes": 31,
+      "drawCalls": 49,
+      "triangles": 125267
+    },
+    {
+      "name": "centre",
+      "camera": {
+        "x": 0,
+        "y": 6,
+        "z": 10
+      },
+      "target": {
+        "x": 0,
+        "y": 1,
+        "z": -15
+      },
+      "activeMeshes": 22,
+      "drawCalls": 34,
+      "triangles": 72474
+    }
+  ],
+  "worst": {
+    "drawCalls": 49,
+    "triangles": 125267
+  }
+}

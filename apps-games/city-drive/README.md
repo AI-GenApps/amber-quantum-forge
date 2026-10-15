@@ -34,7 +34,14 @@ Single test file while iterating (never run `bunx vitest` from the repo root;
 cd apps-games/city-drive && bunx vitest run test/render/budget.test.ts
 ```
 
-Add `?inspector` to the dev URL to open the Babylon Inspector (dev builds only).
+URL flags (all optional): `?inspector` opens the Babylon Inspector (dev builds only), `?debugcam` swaps
+the chase camera for the orbit camera, `?fps` shows an fps / draw-call / triangle overlay, and `?touch`
+shows the on-screen touch buttons on a desktop (they appear by default on touch devices). The Vite dev
+server listens on all interfaces (`host: true`) so a phone on the LAN can open it.
+
+Controls: WASD or arrow keys drive, Space is the handbrake, R respawns. On touch, steer with the left
+buttons, gas, brake and handbrake on the right (multi-touch). The game is landscape only; portrait
+shows a rotate message.
 
 ## Conventions
 

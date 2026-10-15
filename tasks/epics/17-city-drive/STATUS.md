@@ -104,7 +104,7 @@ with `startAt` set to the next task ID.
 | 04 | CC0 asset pipeline (Kenney kits → GLB, licence records, budgets) | agent | [x] |
 | 05 | City map format, road graph, static colliders | agent | [x] |
 | 06 | Babylon city renderer + headless draw-call/triangle budget test | agent | [x] |
-| 07 | Player car, touch/keyboard controls, chase camera | agent | [ ] |
+| 07 | Player car, touch/keyboard controls, chase camera | agent | [x] |
 | 08 | HUMAN: first-drive checkpoint (browser, desktop + phone) | human | [ ] |
 | 09 | AI traffic on the road graph | agent | [ ] |
 | 10 | Mission engine (delivery, taxi, time trial, parking; stars) | agent | [ ] |

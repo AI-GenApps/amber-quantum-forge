@@ -56,9 +56,16 @@ export class AssetCache {
     return [...this.containers.keys()];
   }
 
-  /** Frees the source containers (their meshes, materials and textures). */
+  /**
+   * Frees the source containers (their meshes and glTF materials). The textures are kept: the
+   * shared pack materials sample the same colormap, and a disposed texture is never "ready", so a
+   * real WebGL engine would skip every mesh that uses it. The scene owns them from here on.
+   */
   dispose(): void {
-    for (const container of this.containers.values()) container.dispose();
+    for (const container of this.containers.values()) {
+      container.textures.length = 0;
+      container.dispose();
+    }
     this.containers.clear();
   }
 }

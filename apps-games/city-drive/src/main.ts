@@ -1,16 +1,24 @@
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera.js";
+import type { Camera } from "@babylonjs/core/Cameras/camera.js";
 import { Engine } from "@babylonjs/core/Engines/engine.js";
+import { SceneInstrumentation } from "@babylonjs/core/Instrumentation/sceneInstrumentation.js";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
-import { mapHalfExtents } from "@city-drive/core/city";
+import { mapHalfExtents, parseCityManifest } from "@city-drive/core/city";
 import type { AssetManifest } from "./assets/manifest";
+import { FpsOverlay } from "./game/fpsOverlay";
+import { GameLoop } from "./game/loop";
+import { GameSession } from "./game/session";
+import { CombinedInput, GamepadInput, KeyboardInput, TouchInput } from "./input";
 import { applyViewDistance, createCityScene, loadDistrict1 } from "./render";
+import { createCarVisual } from "./render/carVisual";
+import { ChaseCamera } from "./render/chaseCamera";
+import { frameStats } from "./render/stats";
+import { mountControls, wantsTouchControls } from "./ui/controls/mount";
 
-function requireCanvas(): HTMLCanvasElement {
-  const canvas = document.getElementById("game");
-  if (!(canvas instanceof HTMLCanvasElement)) {
-    throw new Error("City Drive: #game canvas element is missing from index.html");
-  }
-  return canvas;
+function requireElement(id: string): HTMLElement {
+  const element = document.getElementById(id);
+  if (!element) throw new Error(`City Drive: #${id} element is missing from index.html`);
+  return element;
 }
 
 async function fetchChecked(path: string): Promise<Response> {
@@ -21,20 +29,11 @@ async function fetchChecked(path: string): Promise<Response> {
   return response;
 }
 
-async function start(): Promise<void> {
-  const canvas = requireCanvas();
-  const manifest = (await (await fetchChecked("manifest.json")).json()) as AssetManifest;
-  const map = loadDistrict1(manifest);
+const loadBytes = async (file: string): Promise<Uint8Array> =>
+  new Uint8Array(await (await fetchChecked(file)).arrayBuffer());
 
-  const engine = new Engine(canvas, true, { stencil: false }, true);
-  const city = await createCityScene(
-    engine,
-    map,
-    manifest,
-    async (file) => new Uint8Array(await (await fetchChecked(file)).arrayBuffer()),
-  );
-
-  const half = mapHalfExtents(map);
+function createOrbitCamera(city: Awaited<ReturnType<typeof createCityScene>>, canvas: HTMLElement) {
+  const half = mapHalfExtents(city.map);
   const orbit = new ArcRotateCamera(
     "orbit",
     -Math.PI / 2,
@@ -48,16 +47,65 @@ async function start(): Promise<void> {
   orbit.upperBetaLimit = Math.PI / 2 - 0.03;
   orbit.wheelDeltaPercentage = 0.01;
   orbit.attachControl(canvas, true);
-  applyViewDistance(orbit);
-  city.scene.activeCamera = orbit;
+  return orbit;
+}
+
+async function start(): Promise<void> {
+  const canvas = requireElement("game");
+  if (!(canvas instanceof HTMLCanvasElement)) throw new Error("City Drive: #game is not a canvas");
+  const params = new URLSearchParams(window.location.search);
+  const manifest = (await (await fetchChecked("manifest.json")).json()) as AssetManifest;
+  const map = loadDistrict1(manifest);
+
+  const engine = new Engine(canvas, true, { stencil: false }, true);
+  const city = await createCityScene(engine, map, manifest, loadBytes);
+
+  const touch = new TouchInput();
+  const input = new CombinedInput([
+    new KeyboardInput(window),
+    touch,
+    new GamepadInput(() => navigator.getGamepads?.() ?? []),
+  ]);
+  const session = await GameSession.create(map, parseCityManifest(manifest), input);
+  const carVisual = await createCarVisual(city.scene, manifest, loadBytes, session.car.spec);
+  const chase = new ChaseCamera(city.scene, session.plan.boxes);
+
+  let camera: Camera = chase.camera;
+  if (params.has("debugcam")) camera = createOrbitCamera(city, canvas);
+  applyViewDistance(camera);
+  city.scene.activeCamera = camera;
+  mountControls(requireElement("ui"), touch, wantsTouchControls(window));
+
+  const instrumentation = new SceneInstrumentation(city.scene);
+  const fps = params.has("fps")
+    ? new FpsOverlay(requireElement("ui"), () => ({
+        fps: engine.getFps(),
+        drawCalls: instrumentation.drawCallsCounter.current,
+        triangles: frameStats(city.scene).triangles,
+      }))
+    : undefined;
+
+  let seenRespawns = 0;
+  const loop = new GameLoop({
+    step: () => session.step(),
+    render: (alpha, frameSeconds) => {
+      const pose = session.pose(alpha);
+      carVisual.sync(pose);
+      if (session.respawns.length !== seenRespawns) {
+        seenRespawns = session.respawns.length;
+        chase.snap();
+      }
+      chase.update(frameSeconds, pose);
+      city.scene.render();
+      fps?.update(performance.now());
+    },
+  });
 
   await city.scene.whenReadyAsync();
-  engine.runRenderLoop(() => {
-    city.scene.render();
-  });
+  engine.runRenderLoop(() => loop.frame(performance.now()));
   window.addEventListener("resize", () => engine.resize());
 
-  if (import.meta.env.DEV && new URLSearchParams(window.location.search).has("inspector")) {
+  if (import.meta.env.DEV && params.has("inspector")) {
     void import("./devInspector").then(({ showInspector }) => showInspector(city.scene));
   }
 }

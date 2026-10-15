@@ -99,3 +99,22 @@ export function hashNumbers(values: readonly number[]): string {
   }
   return (h >>> 0).toString(16).padStart(8, "0");
 }
+
+/**
+ * Quaternion about +Y that turns the car's local +Z onto the horizontal direction (dx, dz).
+ * Uses only + - * / and sqrt (all exactly rounded), so it is bit-identical on every engine.
+ */
+export function quatFromForward(dx: number, dz: number): Quat {
+  const len = Math.sqrt(dx * dx + dz * dz);
+  if (len < 1e-9) return { x: 0, y: 0, z: 0, w: 1 };
+  const sinYaw = dx / len;
+  const cosYaw = dz / len;
+  const w = Math.sqrt(Math.max(0, (1 + cosYaw) / 2));
+  const y = Math.sqrt(Math.max(0, (1 - cosYaw) / 2)) * (sinYaw < 0 ? -1 : 1);
+  return { x: 0, y, z: 0, w };
+}
+
+/** World-space Y component of a unit quaternion's up axis: 1 upright, 0 on its side, -1 upside down. */
+export function uprightness(q: Quat): number {
+  return 1 - 2 * (q.x * q.x + q.z * q.z);
+}

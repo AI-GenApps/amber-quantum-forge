@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 07-player-car-controls-camera
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/06-scene-renderer-and-budgets]
 estimate: L
@@ -64,18 +64,18 @@ smooth chase camera, with a respawn when flipped or stuck.
 
 ## Implementation Checklist
 
-- [ ] Fixed-step game loop with interpolation and tests (fake clock: 7 ms and
+- [x] Fixed-step game loop with interpolation and tests (fake clock: 7 ms and
       40 ms frame sequences give the correct step counts).
-- [ ] Input sources, merge rule, and tests (simulated keyboard and pointer
+- [x] Input sources, merge rule, and tests (simulated keyboard and pointer
       events in happy-dom, including multi-touch).
-- [ ] Touch-control overlay, portrait guard, and safe areas.
-- [ ] Car visual sync, wheels, and blob shadow.
-- [ ] Chase camera with occlusion pull-in and tests for the pure maths.
-- [ ] Auto and manual respawn, with tests via core.
-- [ ] A headless integration test: game loop + core + `NullEngine` scene, with
+- [x] Touch-control overlay, portrait guard, and safe areas.
+- [x] Car visual sync, wheels, and blob shadow.
+- [x] Chase camera with occlusion pull-in and tests for the pure maths.
+- [x] Auto and manual respawn, with tests via core.
+- [x] A headless integration test: game loop + core + `NullEngine` scene, with
       scripted throttle for 5 s, asserting the car mesh moved by the
       simulated distance (±0.1 m interpolation tolerance).
-- [ ] Re-run the task 06 budget test with the car added; it must stay in budget.
+- [x] Re-run the task 06 budget test with the car added; it must stay in budget.
 
 ## Files Touched
 

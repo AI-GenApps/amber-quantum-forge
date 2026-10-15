@@ -33,6 +33,10 @@ export { LaneIndex, nearestLanePoint, pointOnEdge } from "./lane-index";
 export type { CityManifest, CityManifestModel } from "./manifest";
 export { modelById, parseCityManifest } from "./manifest";
 export { parseCityMap } from "./parse";
+export type { RayHit } from "./raycast";
+export { raycastBoxes } from "./raycast";
+export type { LaneRespawn } from "./respawn-point";
+export { laneRespawn } from "./respawn-point";
 export { ROAD_MODEL_YAW_OFFSET, ROAD_SOCKETS, tileSockets } from "./road-sockets";
 export type {
   CityMap,

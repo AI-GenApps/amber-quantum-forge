@@ -126,3 +126,20 @@ Baseline car values live in `apps-games/city-drive-core/src/cars/specs.ts`
   `road-crossroads` = `road-crossroad` (4-way).
 - **Raw packs** stay outside git (`assets-src/raw/`, gitignored). Without them the script verifies
   the committed manifest, budgets and licence records and exits 0.
+
+## Task 07 — Player car, controls, chase camera (2026-10-15)
+
+- **Handedness.** The simulation and city map are right-handed; Babylon draws them left-handed, so
+  the screen is a mirror image. The player's steer is negated in `toCarInput` so "right" turns toward
+  the screen's right (tested with the mesh's own right vector). Open for task 08: the map looks
+  mirrored against its compass description, and right-hand traffic appears on the screen's left.
+- **Task 06 fix.** `AssetCache.dispose()` no longer disposes textures (the pack materials share
+  them); a disposed texture is never ready in WebGL, which would have hidden the whole city.
+- **Respawn rules** live in core (`RespawnDetector`): tilt over 70 degrees for 2 s, or under 1 km/h
+  on full throttle for 4 s. Target is the nearest lane point (`laneRespawn`), facing the lane.
+- **Camera occlusion** is a pure slab-test ray against the collider boxes (`raycastBoxes`, core).
+- **Input**: keyboard, touch (steer ramp 0.25 s up, 0.15 s down) and an optional gamepad merge with
+  "larger absolute value wins". The simulation reads input once per fixed step; reset is edge-triggered.
+- **Car visual**: Kenney `car-sedan` split into body and 4 wheel meshes; scaled so its wheel radius
+  matches physics (x1.167). Cost: 6 draw calls, about 2,050 triangles (worst pose 49 draws, 125k tris).
+

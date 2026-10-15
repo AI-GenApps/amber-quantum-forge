@@ -6,6 +6,9 @@ export interface Pose {
   position: { x: number; y: number; z: number };
   /** Point the camera looks at. */
   target: { x: number; y: number; z: number };
+  /** Where the player's car stands for this pose, and the way it faces (unit x/z). */
+  car: { x: number; z: number };
+  forward: { x: number; z: number };
 }
 
 /** Where the car stands, measured inward from the map edge. */
@@ -25,6 +28,8 @@ function chasePose(name: string, car: { x: number; z: number }, forward: { x: nu
       z: car.z - fz * CHASE_DISTANCE_M,
     },
     target: { x: car.x + fx * LOOK_AHEAD_M, y: LOOK_HEIGHT_M, z: car.z + fz * LOOK_AHEAD_M },
+    car: { x: car.x, z: car.z },
+    forward: { x: fx, z: fz },
   } satisfies Pose;
 }
 
