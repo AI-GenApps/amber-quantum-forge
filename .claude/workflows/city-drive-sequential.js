@@ -66,12 +66,15 @@ Hard rules for this run:
 const PREFLIGHT = {
   type: 'object',
   properties: {
-    ok: { type: 'boolean' },
     branch: { type: 'string' },
     clean: { type: 'boolean' },
+    dataToolsWritable: { type: 'boolean' },
+    nodeAtLeast22: { type: 'boolean' },
+    nodeModulesPresent: { type: 'boolean' },
+    epicExists: { type: 'boolean' },
     notes: { type: 'string' },
   },
-  required: ['ok', 'branch', 'clean', 'notes'],
+  required: ['branch', 'clean', 'dataToolsWritable', 'nodeAtLeast22', 'nodeModulesPresent', 'epicExists', 'notes'],
 }
 
 const REVIEW = {
@@ -153,11 +156,12 @@ const pre = await agent(
    EXCEPTION: uncommitted in-progress work for the first task is allowed. Treat the tree as clean if every changed/untracked path is under one of: ${RESUME_FILES.join(', ')}.` : ''}
 3. With the environment prefix, run: bun --version, node --version (need >= 22 for Capacitor 8), git --version; report whether /data/tools/jdk21 and /data/tools/android-sdk exist; confirm /data/tools, /data/tools/cache and /data/tools/tmp exist and are writable by the current user (create cache/ and tmp/ subfolders if /data/tools is writable; never use sudo); check node_modules/ exists at the repo root (run bun install if missing and report whether bun.lock changed).
 4. Confirm ${EPIC}/STATUS.md exists, list the task files, and report which tasks STATUS.md marks [x].
-ok=true only if /data/tools is writable, on ${BRANCH}, tree clean (per the rules above), ${EPIC} exists, node >= 22 and node_modules/ exists. Do not modify tracked files.
+Report each check as its own boolean field, factually (the orchestrator decides pass/fail from them). Do not modify tracked files.
 ${RULES}`,
   { label: 'preflight', phase: 'Preflight', schema: PREFLIGHT, effort: 'low', model: 'sonnet' },
 )
-if (!pre || !pre.ok) {
+const preOk = !!pre && pre.branch === BRANCH && pre.clean && pre.dataToolsWritable && pre.nodeAtLeast22 && pre.nodeModulesPresent && pre.epicExists
+if (!preOk) {
   log('Preflight failed — stopping before any task runs.')
   return { stoppedAt: 'preflight', preflight: pre }
 }
