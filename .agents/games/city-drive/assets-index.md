@@ -14,18 +14,22 @@
 | What | Path | Status |
 |---|---|---|
 | QA reports, budget JSON, licence tables, research notes per task | `.agents/resources/2026-10-15/city-drive-qa/<task-id>/` (each with a `README.md`) | planned |
-| Kenney City Kit and Car Kit licence records (URL, date, SHA-256) | `.agents/resources/2026-10-15/city-drive-qa/04/` | planned (task 04) |
+| Kenney City Kit and Car Kit licence table, budget report, model list | `.agents/resources/2026-10-15/city-drive-qa/04/` (`README.md`, `budget-report.json`) | done (task 04) |
+| Per-pack licence records (URL, date, SHA-256, verbatim `License.txt`) | `apps-games/city-drive/assets-src/LICENSES/<pack>.txt` | done (task 04) |
 | Name candidates and uniqueness evidence | `.agents/resources/2026-10-15/city-drive-qa/18/` | planned (task 18) |
 | Icon dry run and art masters | `.agents/resources/2026-10-15/city-drive-art/<set>/` | planned (tasks 18, 20) |
 
-## Code and shipped assets (planned)
+## Code and shipped assets
 
 | What | Path | Task |
 |---|---|---|
 | App (Vite, Babylon, Preact, Capacitor) | `apps-games/city-drive` | 01 |
 | Pure-TS simulation | `apps-games/city-drive-core` | 01, 03 |
-| CC0 GLB models | `apps-games/city-drive/public/` (with licence records) | 04 |
-| CC0 audio | `apps-games/city-drive/public/` (with licence records) | 14 |
+| CC0 GLB models (42, uncompressed, 2.36 MB) | `apps-games/city-drive/public/assets/models/` | 04 |
+| Model manifest (id, file, kind, triangles, bytes, bbox, pack, licence) | `apps-games/city-drive/public/assets/manifest.json` | 04 |
+| Manifest types, id scheme and budgets | `apps-games/city-drive/src/assets/manifest.ts` | 04 |
+| Asset build script (idempotent, `bun run --filter @city-drive/app build-assets`) | `apps-games/city-drive/scripts/build-assets.ts` | 04 |
+| CC0 audio | `apps-games/city-drive/public/` (with licence records) | 14 (planned) |
 
 ## Fonts (planned, task 13)
 

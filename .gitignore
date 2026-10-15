@@ -82,3 +82,6 @@ apps-native/unity/**/*.csproj
 apps-native/unity/**/*.sln
 apps-native/unity/**/*.slnx
 apps-native/unity/**/Assets/Resources/PerformanceTestRun*.json
+
+# City Drive raw Kenney packs (untrusted downloads, never committed)
+apps-games/city-drive/assets-src/raw/

@@ -10,7 +10,8 @@
         "tool/*.ts",
         "test/**"
       ],
-      "project": ["src/**", "scripts/**", "tool/**", "test/**"]
+      "project": ["src/**", "scripts/**", "tool/**", "test/**"],
+      "ignoreDependencies": ["@gltf-transform/cli"]
     },
     "apps-games/city-drive-core": {
       "entry": [

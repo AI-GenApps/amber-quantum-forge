@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "build-assets": "bun scripts/build-assets.ts"
   },
   "dependencies": {
     "@babylonjs/core": "9.31.0",
@@ -18,8 +19,13 @@
   },
   "devDependencies": {
     "@babylonjs/inspector": "9.31.0",
+    "@gltf-transform/cli": "4.5.1",
+    "@gltf-transform/core": "4.5.1",
+    "@gltf-transform/extensions": "4.5.1",
+    "@gltf-transform/functions": "4.5.1",
     "@types/node": "^20.11.17",
     "happy-dom": "21.0.1",
+    "sharp": "0.35.3",
     "typescript": "5.9.3",
     "vite": "8.3.4",
     "vitest": "5.0.5"

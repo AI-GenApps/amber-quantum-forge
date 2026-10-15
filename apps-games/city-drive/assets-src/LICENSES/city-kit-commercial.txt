@@ -1,0 +1,36 @@
+Pack: Kenney City Kit (Commercial)
+Licence id: city-kit-commercial
+Licence: Creative Commons Zero 1.0 (CC0), http://creativecommons.org/publicdomain/zero/1.0/
+Source URL: https://kenney.nl/assets/city-kit-commercial
+Download URL: https://kenney.nl/media/pages/assets/city-kit-commercial/a742d900eb-1753115042/kenney_city-kit-commercial_2.1.zip
+Download date: 2026-10-15
+Zip file: kenney_city-kit-commercial_2.1.zip
+Zip SHA-256: f8b09b081c2bb88bcc126e2dec1cb40fd0dad7e7e591b6c26aaefe96fb35276b
+
+----- License.txt from the pack (verbatim) -----
+City Kit Commercial (2.1)
+
+	Created/distributed by Kenney (www.kenney.nl)
+	Creation date: 21-07-2025 18:16
+	
+			------------------------------
+
+	License: (Creative Commons Zero, CC0)
+	http://creativecommons.org/publicdomain/zero/1.0/
+
+	You can use this content for personal, educational, and commercial purposes.
+
+	Support by crediting 'Kenney' or 'www.kenney.nl' (this is not a requirement)
+
+			------------------------------
+
+	• Website : www.kenney.nl
+	• Donate  : www.kenney.nl/donate
+
+	• Patreon : patreon.com/kenney
+	
+	Follow on social media for updates:
+
+	• Twitter:	 twitter.com/KenneyNL
+	• BlueSky:	 kenney.bsky.social
+	• Instagram: instagram.com/kenney_nl

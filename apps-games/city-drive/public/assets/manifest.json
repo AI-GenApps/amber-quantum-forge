@@ -1,0 +1,887 @@
+{
+  "schemaVersion": 1,
+  "models": [
+    {
+      "id": "bld-commercial-a",
+      "file": "models/bld-commercial-a.glb",
+      "kind": "building",
+      "triangles": 1252,
+      "bytes": 74272,
+      "bbox": {
+        "min": {
+          "x": -0.4418,
+          "y": 0,
+          "z": -0.47
+        },
+        "max": {
+          "x": 0.4418,
+          "y": 1.293,
+          "z": 0.47
+        }
+      },
+      "pack": "city-kit-commercial",
+      "licence": "city-kit-commercial"
+    },
+    {
+      "id": "bld-commercial-b",
+      "file": "models/bld-commercial-b.glb",
+      "kind": "building",
+      "triangles": 1276,
+      "bytes": 74448,
+      "bbox": {
+        "min": {
+          "x": -0.485,
+          "y": 0,
+          "z": -0.47
+        },
+        "max": {
+          "x": 0.485,
+          "y": 1.293,
+          "z": 0.47
+        }
+      },
+      "pack": "city-kit-commercial",
+      "licence": "city-kit-commercial"
+    },
+    {
+      "id": "bld-commercial-c",
+      "file": "models/bld-commercial-c.glb",
+      "kind": "building",
+      "triangles": 1195,
+      "bytes": 68968,
+      "bbox": {
+        "min": {
+          "x": -0.4418,
+          "y": 0,
+          "z": -0.545
+        },
+        "max": {
+          "x": 0.4418,
+          "y": 0.893,
+          "z": 0.545
+        }
+      },
+      "pack": "city-kit-commercial",
+      "licence": "city-kit-commercial"
+    },
+    {
+      "id": "bld-commercial-d",
+      "file": "models/bld-commercial-d.glb",
+      "kind": "building",
+      "triangles": 1100,
+      "bytes": 65648,
+      "bbox": {
+        "min": {
+          "x": -0.42,
+          "y": 0,
+          "z": -0.45
+        },
+        "max": {
+          "x": 0.42,
+          "y": 1.293,
+          "z": 0.45
+        }
+      },
+      "pack": "city-kit-commercial",
+      "licence": "city-kit-commercial"
+    },
+    {
+      "id": "bld-commercial-e",
+      "file": "models/bld-commercial-e.glb",
+      "kind": "building",
+      "triangles": 1509,
+      "bytes": 88932,
+      "bbox": {
+        "min": {
+          "x": -0.82,
+          "y": 0,
+          "z": -0.5039
+        },
+        "max": {
+          "x": 0.82,
+          "y": 0.893,
+          "z": 0.5039
+        }
+      },
+      "pack": "city-kit-commercial",
+      "licence": "city-kit-commercial"
+    },
+    {
+      "id": "bld-commercial-f",
+      "file": "models/bld-commercial-f.glb",
+      "kind": "building",
+      "triangles": 1794,
+      "bytes": 97104,
+      "bbox": {
+        "min": {
+          "x": -0.42,
+          "y": 0,
+          "z": -0.515
+        },
+        "max": {
+          "x": 0.42,
+          "y": 1.693,
+          "z": 0.515
+        }
+      },
+      "pack": "city-kit-commercial",
+      "licence": "city-kit-commercial"
+    },
+    {
+      "id": "bld-commercial-g",
+      "file": "models/bld-commercial-g.glb",
+      "kind": "building",
+      "triangles": 2006,
+      "bytes": 109512,
+      "bbox": {
+        "min": {
+          "x": -0.485,
+          "y": 0,
+          "z": -0.461
+        },
+        "max": {
+          "x": 0.485,
+          "y": 1.693,
+          "z": 0.461
+        }
+      },
+      "pack": "city-kit-commercial",
+      "licence": "city-kit-commercial"
+    },
+    {
+      "id": "bld-commercial-h",
+      "file": "models/bld-commercial-h.glb",
+      "kind": "building",
+      "triangles": 1512,
+      "bytes": 84792,
+      "bbox": {
+        "min": {
+          "x": -0.4418,
+          "y": 0,
+          "z": -0.5039
+        },
+        "max": {
+          "x": 0.4418,
+          "y": 1.293,
+          "z": 0.5039
+        }
+      },
+      "pack": "city-kit-commercial",
+      "licence": "city-kit-commercial"
+    },
+    {
+      "id": "bld-commercial-i",
+      "file": "models/bld-commercial-i.glb",
+      "kind": "building",
+      "triangles": 2544,
+      "bytes": 138444,
+      "bbox": {
+        "min": {
+          "x": -0.62,
+          "y": 0,
+          "z": -0.651
+        },
+        "max": {
+          "x": 0.62,
+          "y": 1.68,
+          "z": 0.651
+        }
+      },
+      "pack": "city-kit-commercial",
+      "licence": "city-kit-commercial"
+    },
+    {
+      "id": "bld-commercial-skyscraper-a",
+      "file": "models/bld-commercial-skyscraper-a.glb",
+      "kind": "building",
+      "triangles": 1292,
+      "bytes": 82636,
+      "bbox": {
+        "min": {
+          "x": -0.68,
+          "y": 0,
+          "z": -0.68
+        },
+        "max": {
+          "x": 0.68,
+          "y": 2.88,
+          "z": 0.68
+        }
+      },
+      "pack": "city-kit-commercial",
+      "licence": "city-kit-commercial"
+    },
+    {
+      "id": "bld-suburban-a",
+      "file": "models/bld-suburban-a.glb",
+      "kind": "building",
+      "triangles": 1174,
+      "bytes": 66476,
+      "bbox": {
+        "min": {
+          "x": -0.65,
+          "y": 0,
+          "z": -0.5141
+        },
+        "max": {
+          "x": 0.65,
+          "y": 0.8335,
+          "z": 0.5141
+        }
+      },
+      "pack": "city-kit-suburban",
+      "licence": "city-kit-suburban"
+    },
+    {
+      "id": "bld-suburban-b",
+      "file": "models/bld-suburban-b.glb",
+      "kind": "building",
+      "triangles": 1748,
+      "bytes": 90720,
+      "bbox": {
+        "min": {
+          "x": -0.914,
+          "y": 0,
+          "z": -0.57
+        },
+        "max": {
+          "x": 0.914,
+          "y": 1.1375,
+          "z": 0.57
+        }
+      },
+      "pack": "city-kit-suburban",
+      "licence": "city-kit-suburban"
+    },
+    {
+      "id": "bld-suburban-c",
+      "file": "models/bld-suburban-c.glb",
+      "kind": "building",
+      "triangles": 1196,
+      "bytes": 68940,
+      "bbox": {
+        "min": {
+          "x": -0.6432,
+          "y": 0,
+          "z": -0.5141
+        },
+        "max": {
+          "x": 0.6432,
+          "y": 1.0335,
+          "z": 0.5141
+        }
+      },
+      "pack": "city-kit-suburban",
+      "licence": "city-kit-suburban"
+    },
+    {
+      "id": "bld-suburban-d",
+      "file": "models/bld-suburban-d.glb",
+      "kind": "building",
+      "triangles": 1757,
+      "bytes": 92568,
+      "bbox": {
+        "min": {
+          "x": -0.8782,
+          "y": 0,
+          "z": -0.514
+        },
+        "max": {
+          "x": 0.8782,
+          "y": 1.2375,
+          "z": 0.514
+        }
+      },
+      "pack": "city-kit-suburban",
+      "licence": "city-kit-suburban"
+    },
+    {
+      "id": "bld-suburban-e",
+      "file": "models/bld-suburban-e.glb",
+      "kind": "building",
+      "triangles": 1731,
+      "bytes": 90228,
+      "bbox": {
+        "min": {
+          "x": -0.65,
+          "y": 0,
+          "z": -0.514
+        },
+        "max": {
+          "x": 0.65,
+          "y": 1.1375,
+          "z": 0.514
+        }
+      },
+      "pack": "city-kit-suburban",
+      "licence": "city-kit-suburban"
+    },
+    {
+      "id": "bld-suburban-f",
+      "file": "models/bld-suburban-f.glb",
+      "kind": "building",
+      "triangles": 1616,
+      "bytes": 88708,
+      "bbox": {
+        "min": {
+          "x": -0.714,
+          "y": 0,
+          "z": -0.7029
+        },
+        "max": {
+          "x": 0.714,
+          "y": 1.1375,
+          "z": 0.7029
+        }
+      },
+      "pack": "city-kit-suburban",
+      "licence": "city-kit-suburban"
+    },
+    {
+      "id": "bld-suburban-g",
+      "file": "models/bld-suburban-g.glb",
+      "kind": "building",
+      "triangles": 1067,
+      "bytes": 61068,
+      "bbox": {
+        "min": {
+          "x": -0.725,
+          "y": 0,
+          "z": -0.589
+        },
+        "max": {
+          "x": 0.725,
+          "y": 0.7682,
+          "z": 0.589
+        }
+      },
+      "pack": "city-kit-suburban",
+      "licence": "city-kit-suburban"
+    },
+    {
+      "id": "bld-suburban-h",
+      "file": "models/bld-suburban-h.glb",
+      "kind": "building",
+      "triangles": 770,
+      "bytes": 51892,
+      "bbox": {
+        "min": {
+          "x": -0.65,
+          "y": 0,
+          "z": -0.458
+        },
+        "max": {
+          "x": 0.65,
+          "y": 0.7375,
+          "z": 0.458
+        }
+      },
+      "pack": "city-kit-suburban",
+      "licence": "city-kit-suburban"
+    },
+    {
+      "id": "car-hatchback-sports",
+      "file": "models/car-hatchback-sports.glb",
+      "kind": "car",
+      "triangles": 2088,
+      "bytes": 76308,
+      "bbox": {
+        "min": {
+          "x": -0.65,
+          "y": 0,
+          "z": -1.45
+        },
+        "max": {
+          "x": 0.65,
+          "y": 1.1,
+          "z": 1.4
+        }
+      },
+      "pack": "car-kit",
+      "licence": "car-kit"
+    },
+    {
+      "id": "car-police",
+      "file": "models/car-police.glb",
+      "kind": "car",
+      "triangles": 2304,
+      "bytes": 87100,
+      "bbox": {
+        "min": {
+          "x": -0.75,
+          "y": 0,
+          "z": -1.55
+        },
+        "max": {
+          "x": 0.75,
+          "y": 1.3,
+          "z": 1.55
+        }
+      },
+      "pack": "car-kit",
+      "licence": "car-kit"
+    },
+    {
+      "id": "car-race",
+      "file": "models/car-race.glb",
+      "kind": "car",
+      "triangles": 1952,
+      "bytes": 69804,
+      "bbox": {
+        "min": {
+          "x": -0.65,
+          "y": 0,
+          "z": -1.2799
+        },
+        "max": {
+          "x": 0.65,
+          "y": 0.7325,
+          "z": 1.2799
+        }
+      },
+      "pack": "car-kit",
+      "licence": "car-kit"
+    },
+    {
+      "id": "car-sedan",
+      "file": "models/car-sedan.glb",
+      "kind": "car",
+      "triangles": 2032,
+      "bytes": 72984,
+      "bbox": {
+        "min": {
+          "x": -0.75,
+          "y": 0,
+          "z": -1.3
+        },
+        "max": {
+          "x": 0.75,
+          "y": 1.3,
+          "z": 1.25
+        }
+      },
+      "pack": "car-kit",
+      "licence": "car-kit"
+    },
+    {
+      "id": "car-suv",
+      "file": "models/car-suv.glb",
+      "kind": "car",
+      "triangles": 2474,
+      "bytes": 90064,
+      "bbox": {
+        "min": {
+          "x": -0.75,
+          "y": 0,
+          "z": -1.35
+        },
+        "max": {
+          "x": 0.75,
+          "y": 1.3,
+          "z": 1.35
+        }
+      },
+      "pack": "car-kit",
+      "licence": "car-kit"
+    },
+    {
+      "id": "car-taxi",
+      "file": "models/car-taxi.glb",
+      "kind": "car",
+      "triangles": 2072,
+      "bytes": 75316,
+      "bbox": {
+        "min": {
+          "x": -0.75,
+          "y": 0,
+          "z": -1.4
+        },
+        "max": {
+          "x": 0.75,
+          "y": 1.5,
+          "z": 1.35
+        }
+      },
+      "pack": "car-kit",
+      "licence": "car-kit"
+    },
+    {
+      "id": "car-truck",
+      "file": "models/car-truck.glb",
+      "kind": "car",
+      "triangles": 2082,
+      "bytes": 75240,
+      "bbox": {
+        "min": {
+          "x": -0.75,
+          "y": 0,
+          "z": -1.5
+        },
+        "max": {
+          "x": 0.75,
+          "y": 1.3,
+          "z": 1.45
+        }
+      },
+      "pack": "car-kit",
+      "licence": "car-kit"
+    },
+    {
+      "id": "car-van",
+      "file": "models/car-van.glb",
+      "kind": "car",
+      "triangles": 2082,
+      "bytes": 75316,
+      "bbox": {
+        "min": {
+          "x": -0.75,
+          "y": 0,
+          "z": -1.4
+        },
+        "max": {
+          "x": 0.75,
+          "y": 1.35,
+          "z": 1.35
+        }
+      },
+      "pack": "car-kit",
+      "licence": "car-kit"
+    },
+    {
+      "id": "prop-cone",
+      "file": "models/prop-cone.glb",
+      "kind": "prop",
+      "triangles": 172,
+      "bytes": 25624,
+      "bbox": {
+        "min": {
+          "x": -0.2381,
+          "y": 0,
+          "z": -0.2381
+        },
+        "max": {
+          "x": 0.2381,
+          "y": 0.5952,
+          "z": 0.2381
+        }
+      },
+      "pack": "car-kit",
+      "licence": "car-kit"
+    },
+    {
+      "id": "prop-construction-barrier",
+      "file": "models/prop-construction-barrier.glb",
+      "kind": "prop",
+      "triangles": 60,
+      "bytes": 19068,
+      "bbox": {
+        "min": {
+          "x": -0.0677,
+          "y": 0,
+          "z": -0.1125
+        },
+        "max": {
+          "x": 0.0677,
+          "y": 0.13,
+          "z": 0.1125
+        }
+      },
+      "pack": "city-kit-roads",
+      "licence": "city-kit-roads"
+    },
+    {
+      "id": "prop-construction-cone",
+      "file": "models/prop-construction-cone.glb",
+      "kind": "prop",
+      "triangles": 66,
+      "bytes": 19720,
+      "bbox": {
+        "min": {
+          "x": -0.0375,
+          "y": 0,
+          "z": -0.0375
+        },
+        "max": {
+          "x": 0.0375,
+          "y": 0.0938,
+          "z": 0.0375
+        }
+      },
+      "pack": "city-kit-roads",
+      "licence": "city-kit-roads"
+    },
+    {
+      "id": "prop-light-curved",
+      "file": "models/prop-light-curved.glb",
+      "kind": "prop",
+      "triangles": 92,
+      "bytes": 21416,
+      "bbox": {
+        "min": {
+          "x": -0.025,
+          "y": 0,
+          "z": -0.2
+        },
+        "max": {
+          "x": 0.025,
+          "y": 0.675,
+          "z": 0.025
+        }
+      },
+      "pack": "city-kit-roads",
+      "licence": "city-kit-roads"
+    },
+    {
+      "id": "prop-light-square",
+      "file": "models/prop-light-square.glb",
+      "kind": "prop",
+      "triangles": 60,
+      "bytes": 20068,
+      "bbox": {
+        "min": {
+          "x": -0.025,
+          "y": 0,
+          "z": -0.2125
+        },
+        "max": {
+          "x": 0.025,
+          "y": 0.6,
+          "z": 0.025
+        }
+      },
+      "pack": "city-kit-roads",
+      "licence": "city-kit-roads"
+    },
+    {
+      "id": "prop-planter",
+      "file": "models/prop-planter.glb",
+      "kind": "prop",
+      "triangles": 204,
+      "bytes": 25204,
+      "bbox": {
+        "min": {
+          "x": -0.2,
+          "y": 0,
+          "z": -0.1506
+        },
+        "max": {
+          "x": 0.2,
+          "y": 0.1771,
+          "z": 0.1494
+        }
+      },
+      "pack": "city-kit-suburban",
+      "licence": "city-kit-suburban"
+    },
+    {
+      "id": "prop-sign-stop",
+      "file": "models/prop-sign-stop.glb",
+      "kind": "prop",
+      "triangles": 104,
+      "bytes": 21880,
+      "bbox": {
+        "min": {
+          "x": -0.0514,
+          "y": 0,
+          "z": -0.0691
+        },
+        "max": {
+          "x": 0.0261,
+          "y": 0.4941,
+          "z": 0.0691
+        }
+      },
+      "pack": "city-kit-roads",
+      "licence": "city-kit-roads"
+    },
+    {
+      "id": "prop-traffic-light",
+      "file": "models/prop-traffic-light.glb",
+      "kind": "prop",
+      "triangles": 212,
+      "bytes": 26772,
+      "bbox": {
+        "min": {
+          "x": -0.0726,
+          "y": 0,
+          "z": -0.045
+        },
+        "max": {
+          "x": 0.045,
+          "y": 0.515,
+          "z": 0.045
+        }
+      },
+      "pack": "city-kit-roads",
+      "licence": "city-kit-roads"
+    },
+    {
+      "id": "prop-tree-large",
+      "file": "models/prop-tree-large.glb",
+      "kind": "prop",
+      "triangles": 42,
+      "bytes": 20272,
+      "bbox": {
+        "min": {
+          "x": -0.1052,
+          "y": 0,
+          "z": -0.1215
+        },
+        "max": {
+          "x": 0.1052,
+          "y": 0.767,
+          "z": 0.1215
+        }
+      },
+      "pack": "city-kit-suburban",
+      "licence": "city-kit-suburban"
+    },
+    {
+      "id": "prop-tree-small",
+      "file": "models/prop-tree-small.glb",
+      "kind": "prop",
+      "triangles": 42,
+      "bytes": 20272,
+      "bbox": {
+        "min": {
+          "x": -0.1052,
+          "y": 0,
+          "z": -0.1215
+        },
+        "max": {
+          "x": 0.1052,
+          "y": 0.567,
+          "z": 0.1215
+        }
+      },
+      "pack": "city-kit-suburban",
+      "licence": "city-kit-suburban"
+    },
+    {
+      "id": "road-corner",
+      "file": "models/road-corner.glb",
+      "kind": "road",
+      "triangles": 260,
+      "bytes": 27668,
+      "bbox": {
+        "min": {
+          "x": -0.5,
+          "y": 0,
+          "z": -0.5
+        },
+        "max": {
+          "x": 0.5,
+          "y": 0.02,
+          "z": 0.5
+        }
+      },
+      "pack": "city-kit-roads",
+      "licence": "city-kit-roads"
+    },
+    {
+      "id": "road-crossing",
+      "file": "models/road-crossing.glb",
+      "kind": "road",
+      "triangles": 104,
+      "bytes": 22068,
+      "bbox": {
+        "min": {
+          "x": -0.5,
+          "y": 0,
+          "z": -0.5
+        },
+        "max": {
+          "x": 0.5,
+          "y": 0.02,
+          "z": 0.5
+        }
+      },
+      "pack": "city-kit-roads",
+      "licence": "city-kit-roads"
+    },
+    {
+      "id": "road-crossroads",
+      "file": "models/road-crossroads.glb",
+      "kind": "road",
+      "triangles": 116,
+      "bytes": 23040,
+      "bbox": {
+        "min": {
+          "x": -0.5,
+          "y": 0,
+          "z": -0.5
+        },
+        "max": {
+          "x": 0.5,
+          "y": 0.02,
+          "z": 0.5
+        }
+      },
+      "pack": "city-kit-roads",
+      "licence": "city-kit-roads"
+    },
+    {
+      "id": "road-end",
+      "file": "models/road-end.glb",
+      "kind": "road",
+      "triangles": 42,
+      "bytes": 19308,
+      "bbox": {
+        "min": {
+          "x": -0.5,
+          "y": 0,
+          "z": -0.5
+        },
+        "max": {
+          "x": 0.5,
+          "y": 0.02,
+          "z": 0.5
+        }
+      },
+      "pack": "city-kit-roads",
+      "licence": "city-kit-roads"
+    },
+    {
+      "id": "road-straight",
+      "file": "models/road-straight.glb",
+      "kind": "road",
+      "triangles": 44,
+      "bytes": 19528,
+      "bbox": {
+        "min": {
+          "x": -0.5,
+          "y": 0,
+          "z": -0.5
+        },
+        "max": {
+          "x": 0.5,
+          "y": 0.02,
+          "z": 0.5
+        }
+      },
+      "pack": "city-kit-roads",
+      "licence": "city-kit-roads"
+    },
+    {
+      "id": "road-t",
+      "file": "models/road-t.glb",
+      "kind": "road",
+      "triangles": 84,
+      "bytes": 21464,
+      "bbox": {
+        "min": {
+          "x": -0.5,
+          "y": 0,
+          "z": -0.5
+        },
+        "max": {
+          "x": 0.5,
+          "y": 0.02,
+          "z": 0.5
+        }
+      },
+      "pack": "city-kit-roads",
+      "licence": "city-kit-roads"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "totalBytes": 2470860,
+  "budgetTotalBytes": 8388608,
+  "models": 42,
+  "byKind": {
+    "building": {
+      "count": 18,
+      "bytes": 1495356,
+      "maxTri": 2544,
+      "maxTriId": "bld-commercial-i"
+    },
+    "car": {
+      "count": 8,
+      "bytes": 622132,
+      "maxTri": 2474,
+      "maxTriId": "car-suv"
+    },
+    "prop": {
+      "count": 10,
+      "bytes": 220296,
+      "maxTri": 212,
+      "maxTriId": "prop-traffic-light"
+    },
+    "road": {
+      "count": 6,
+      "bytes": 133076,
+      "maxTri": 260,
+      "maxTriId": "road-corner"
+    }
+  },
+  "caps": {
+    "building": 3000,
+    "car": 5000,
+    "road": 500
+  },
+  "format": "uncompressed GLB (no Draco, no meshopt)",
+  "generated": "2026-10-15"
+}

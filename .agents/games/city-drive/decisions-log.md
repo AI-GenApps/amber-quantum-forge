@@ -109,3 +109,20 @@ Baseline car values live in `apps-games/city-drive-core/src/cars/specs.ts`
   `PhysicsWorld.drainCollisionImpulses()` returns contact-force events for
   tasks 09 and 10.
 - **CCD** is on for the chassis; a 0.2 m wall is not tunnelled at 110 km/h.
+
+## Task 04 — CC0 asset pipeline (2026-10-15)
+
+- **Uncompressed GLB.** 42 models total 2.36 MB against an 8 MB budget, so no meshopt or
+  Draco is used and no decoder is shipped. Uncompressed GLBs also parse under Node
+  `NullEngine`, which the budget tests of later tasks need.
+- **Tooling:** `@gltf-transform/{core,functions,extensions,cli}` 4.5.1 and `sharp` 0.35.3, all
+  exact-pinned dev dependencies. The script drives the library API (dedup, prune, weld,
+  textureCompress at most 512 px); the CLI is used for `--validate`.
+- **Triangle counts per node instance.** `dedup` merges identical meshes (the four car wheels), so
+  triangles are summed per node, which matches what the renderer draws.
+- **No bench** exists in the four Kenney packs; `prop-planter` is the street-furniture stand-in.
+  No other pack was added (Kenney only, no Quaternius).
+- **Road mapping:** `road-corner` = `road-bend`, `road-t` = `road-intersection` (3-way),
+  `road-crossroads` = `road-crossroad` (4-way).
+- **Raw packs** stay outside git (`assets-src/raw/`, gitignored). Without them the script verifies
+  the committed manifest, budgets and licence records and exits 0.

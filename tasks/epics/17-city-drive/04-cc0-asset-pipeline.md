@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 04-cc0-asset-pipeline
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/01-workspace-scaffold]
 estimate: M
@@ -67,14 +67,14 @@ licence record. Enforce size and triangle budgets with a script.
 
 ## Implementation Checklist
 
-- [ ] Download the 4 Kenney packs to `/data/tools/tmp/04/`, verify CC0, and record
+- [x] Download the 4 Kenney packs to `/data/tools/tmp/04/`, verify CC0, and record
       SHA-256 hashes.
-- [ ] Write `build-assets.ts` (idempotent), choose the curated set, and
+- [x] Write `build-assets.ts` (idempotent), choose the curated set, and
       generate the GLBs and manifest.
-- [ ] Self-host the meshopt decoder, or document the fallback to uncompressed.
-- [ ] Write a Vitest budget test plus a manifest-schema test.
-- [ ] Load one GLB per kind under `NullEngine` in a test (proves it parses).
-- [ ] Evidence README: the chosen models list, totals, and licence table.
+- [x] Self-host the meshopt decoder, or document the fallback to uncompressed.
+- [x] Write a Vitest budget test plus a manifest-schema test.
+- [x] Load one GLB per kind under `NullEngine` in a test (proves it parses).
+- [x] Evidence README: the chosen models list, totals, and licence table.
       Update `.agents/games/city-drive/assets-index.md`.
 
 ## Files Touched
