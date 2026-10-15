@@ -75,7 +75,18 @@
               "gaming/handoffs/pocket-biome",
               "gaming/handoffs/sixty-second-heist",
               "gaming/handoffs/meme-court",
-              "gaming/handoffs/snapquest"
+              "gaming/handoffs/snapquest",
+              "gaming/handoffs/ludo",
+              "gaming/ludo-flutter-plan",
+              "gaming/ludo-release-checklist",
+              "gaming/ludo-economy",
+              "gaming/ludo-revenuecat-admob-runbook",
+              "gaming/ludo-store-product-ids",
+              "gaming/ludo-performance-budgets",
+              "gaming/ludo-privacy-policy",
+              "gaming/ludo-data-safety",
+              "gaming/ludo-content-rating",
+              "gaming/ludo-store-listing"
             ]
           }
         ]

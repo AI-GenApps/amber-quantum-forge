@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 28-docs-and-release-checklist
-status: pending
+status: completed
 commit_scope: gaming
 depends_on: [15-ludo-launch/27-release-hardening]
 estimate: M
@@ -71,19 +71,19 @@ remains.
 
 ## Implementation Checklist
 
-- [ ] Finish `docs-internal/gaming/ludo-flutter-plan.md` per the outline
+- [x] Finish `docs-internal/gaming/ludo-flutter-plan.md` per the outline
   above.
-- [ ] Create `docs-internal/gaming/handoffs/ludo.md` following
+- [x] Create `docs-internal/gaming/handoffs/ludo.md` following
   `merge-relay.md`'s structure, with a fully cited requirement ledger.
-- [ ] Create the release checklist (as its own file or a section of the
+- [x] Create the release checklist (as its own file or a section of the
   handoff — state the choice at the top of whichever file holds it).
-- [ ] Check for an existing public how-to-play convention across the other
+- [x] Check for an existing public how-to-play convention across the other
   five games under `docs-public/`; either add a matching Ludo page or
   record in the handoff why one was not added.
-- [ ] Add a `ludo` row to any cross-game index/table this repo maintains
+- [x] Add a `ludo` row to any cross-game index/table this repo maintains
   (e.g. `docs-internal/gaming/team-handoff.md`, if it lists all games) so
   Ludo is discoverable the same way the other five games are.
-- [ ] Cross-link the new docs from `tasks/epics/15-ludo-launch/STATUS.md`'s
+- [x] Cross-link the new docs from `tasks/epics/15-ludo-launch/STATUS.md`'s
   Notes section.
 
 ## Files Touched
@@ -121,3 +121,16 @@ remains.
 ## Commit message
 
 `docs(gaming): write ludo architecture plan, handoff, and release checklist [15-ludo-launch/28]`
+
+## Result notes
+
+- device evidence pending: run ludo-economy-device-pass
+
+- Architecture doc `docs-internal/gaming/ludo-flutter-plan.md` extended (kept the task 15 contract stub's information and task 23's identity section; added shape, path map, rulesets, contract matrix, command service, timeouts, matchmaking, rooms, fanout, client, economy, release hardening and known gaps).
+- Quick definition copied from task 12g (and `ludo_config.dart`), not task 01: task 01's original Quick guess was superseded. Classic is copied from task 01. Documented as such.
+- Handoff `docs-internal/gaming/handoffs/ludo.md`: 28 ledger rows (LD-01 to LD-28), every implemented or verified claim cites real files; all `Enabled` are `no`.
+- Release checklist is its own file, `docs-internal/gaming/ludo-release-checklist.md` (choice stated at its top).
+- Public docs: not added. `docs-public/` has no how-to-play page for any game (only a Glow Rescue privacy policy under legal); recorded in the handoff.
+- Index rows: `docs-internal/gaming/team-handoff.md` and the Gaming nav in `docs-internal/docs.json` (small addition beyond Files Touched: also lists the other Ludo docs so links resolve in navigation).
+- Findings recorded, none fixed here (docs only): no `google-services` Gradle plugin on Android; probable `LUDO_API_BASE_URL` mismatch between sign-in (`api/auth/...`) and Ludo routes (`games/ludo/...`); `games:build` omits the API and economy dart-defines; six migrations not one; Firestore rules absent; env-vars doc incomplete. These need follow-up code tasks before task 29's online run. Knowledge base `.agents/games/ludo-vortex/` updated.
+- Verification (2026-10-16): `check:doc-paths` pass; `check:staged-docs` pass (Mintlify validate, with the new docs staged); `games:validate -- --strict` pass. Extra runs backing the ledger: `games:test -- --app ludo` 481 pass; `dart test` ludo_rules 61 pass; API vitest 305 pass, 7 skipped (Postgres, gated, NOT RUN); `games:ludo:parity` NOT RUN (needs Bun 1.3.3, found 1.4.2). Logs in `.agents/resources/2026-10-16/ludo-task-28/`.

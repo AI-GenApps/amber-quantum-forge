@@ -27,4 +27,4 @@ Evidence (screenshots, research, art masters) lives in dated folders under
 | Genre | Board game (Ludo), casual, multiplayer |
 | Monetization | Free to play; IAP (coins, diamonds, themes, Vortex Pass) via RevenueCat; rewarded ads only |
 | Visual bar | Match or beat Ludo King; original art only |
-| Status (2026-09-25) | Local game (vs Computer, pass-and-play) playable on device; brand + lobby art done/pending integration; backend, online, economy not built yet |
+| Status (2026-10-16) | Local game signed off on device (task 13). Online backend, client, and economy (wallet, coin tables, store, IAP, rewarded ads, daily rewards) built and tested against fakes only; nothing provisioned or device-verified online. Architecture, handoff and release checklist written (task 28). Task 29 (human provisioning and physical-device acceptance) open. Task 26f art skipped. |

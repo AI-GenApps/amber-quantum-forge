@@ -1,0 +1,12 @@
+Task 28 verification (2026-10-16), working tree on main, nothing committed.
+bun run check:doc-paths            pass (no output, exit 0)
+bun run check:staged-docs          pass (mintlify validate: "build validation passed", docs-internal; ludo docs staged)
+bun run games:validate -- --strict pass ("Gaming registry and content validation passed in strict mode.")
+bun run check:ci (biome check .)   pass (400 files, no fixes)
+bun run games:test -- --app ludo   pass, 481 Flutter tests (games-test-ludo.log)
+dart test (packages/ludo_rules)    pass, 61 tests
+vitest run src/games/ludo src/routes/__tests__/auth.test.ts (packages/api), DATABASE_URL and LUDO_TEST_DATABASE_URL unset:
+                                   pass, 305 passed, 7 skipped (Postgres-gated suites NOT RUN) (api-ludo-test.log)
+bun run games:ludo:parity          NOT RUN: requires pinned Bun 1.3.3, found 1.4.2 (exits 1)
+mintlify broken-links              reports extensionless relative links in many existing docs (merge-relay, ludo 26i) as broken; same convention used here; not part of the task's verification commands
+Device evidence                    NOT RUN (deferred to device workflow); task has no device flow

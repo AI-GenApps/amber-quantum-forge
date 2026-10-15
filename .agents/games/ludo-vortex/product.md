@@ -14,7 +14,7 @@ token, and board themes.
 | Pass N Play (one phone) | 2–4 | built (local) |
 | Play with Friends (private room code / invite link) | 2–4 | built (tasks 21, 26, 26x); real backend pending task 29 provisioning |
 | Online (random matchmaking, bot-fill if no players) | 2 or 4 | built (tasks 20, 25, 26, 26x); real backend pending task 29 provisioning |
-| Online coin tables (coin stakes) | 2 or 4 | planned (task 26c) |
+| Online coin tables (coin stakes) | 2 or 4 | built server-side (task 26c); needs task 29 provisioning |
 
 Each mode offers **Classic** or **Quick** rules.
 
@@ -85,7 +85,7 @@ settings (sound, music, vibration, reduced motion, tutorial replay, debug online
 toggle) · how to play · resume after app restart · Play with Friends (create/join room,
 legible room code with copy/share) · matchmaking search (themed dice/ring searching
 indicator, bot-filled seat labeling) · join errors (invalid/expired code, themed dialog).
-Planned: store, inventory, profile/level, daily rewards.
+Built since (tasks 26e, 26g, 26h): wallet HUD and level, store, inventory, daily rewards. Theme art for the store is code-drawn until task 26f art exists.
 
 ## Audio & feel
 

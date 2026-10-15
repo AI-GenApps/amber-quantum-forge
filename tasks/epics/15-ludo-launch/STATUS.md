@@ -90,7 +90,7 @@ next task.
 | 26h | Client/backend owner | Rewarded ads (AdMob SSV), UMP consent, and daily reward calendar UI | [x] |
 | 26i | Docs/release owner | Economy compliance docs, store product IDs, and RevenueCat/AdMob runbook | [x] |
 | 27 | Release owner | Crash reporting, perf/size budgets, privacy policy + data safety + store listing drafts | [x] |
-| 28 | Docs owner | Architecture doc, handoff, release checklist | [ ] |
+| 28 | Docs owner | Architecture doc, handoff, release checklist | [x] |
 | 29 | Release owner (human) | Physical-device acceptance, Firebase console provisioning, privacy/data-safety/store-listing execution | [ ] |
 
 ## Frozen layout (target)
@@ -143,6 +143,11 @@ human-only acceptance and provisioning checklist (real Firebase project,
 physical two-device online verification, privacy policy hosting, Play Data
 Safety form, store listing assets) and does not grant store publication.
 
-See `docs-internal/gaming/ludo-flutter-plan.md` (architecture) and
-`docs-internal/gaming/handoffs/ludo.md` (ownership/requirement ledger, both
-written by task 28) for details once those exist.
+See `docs-internal/gaming/ludo-flutter-plan.md` (architecture),
+`docs-internal/gaming/handoffs/ludo.md` (ownership/requirement ledger) and
+`docs-internal/gaming/ludo-release-checklist.md` (what task 29 executes), all
+written by task 28. Task 28 also recorded open findings that need follow-up
+code tasks before task 29's online run: no `google-services` Gradle plugin on
+Android, a probable API base URL mismatch between sign-in and Ludo routes in
+`LudoGateway`, and `games:build` not passing the API and economy dart-defines
+(see the plan's "Known gaps" section).
