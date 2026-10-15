@@ -8,7 +8,7 @@ import type { AssetCache } from "./assetCache";
 export interface CarWheelPart {
   /** Geometry centred on the wheel axle, so rotating the mesh spins the wheel. */
   mesh: Mesh;
-  /** Axle position in model space (the model rests on y = 0, faces +Z, +X on the right). */
+  /** Axle position in model space (the model rests on y = 0, faces +Z; its left is +X). */
   centre: Vector3;
   radius: number;
 }
@@ -25,6 +25,7 @@ function bakedCopy(scene: Scene, name: string, source: Mesh, matrix: Matrix): Me
   const part = new Mesh(name, scene);
   VertexData.ExtractFromMesh(source, false, true).applyToMesh(part);
   part.bakeTransformIntoVertices(matrix);
+  part.sideOrientation = source.sideOrientation;
   part.setEnabled(false);
   return part;
 }
@@ -45,8 +46,8 @@ function verticalRadius(mesh: Mesh): number {
 }
 
 /**
- * Splits a Kenney car GLB into a body mesh and four wheel meshes. The glTF loader's handedness
- * flip is baked into the vertices, as for the city templates. Wheels are re-centred on their axle.
+ * Splits a Kenney car GLB into a body mesh and four wheel meshes, as authored (the scene is
+ * right-handed, so the loader adds no flip). Wheels are re-centred on their axle.
  * Kenney names the wheel nodes `wheel-<front|back>-<left|right>`; a car without them is rejected.
  */
 export function buildCarParts(scene: Scene, cache: AssetCache, id: string): CarModelParts {

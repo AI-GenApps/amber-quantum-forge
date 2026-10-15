@@ -20,10 +20,9 @@ export interface InputSource {
 }
 
 /**
- * Player input to car input. The simulation is right-handed (steer +1 turns toward -X when facing
- * +Z) but Babylon draws the same numbers left-handed, where +X is on the screen's right. So the
- * player's "right" must command the simulation's negative steer to turn toward the screen's right.
+ * Player input to car input. The scene is drawn right-handed, the same handedness as the
+ * simulation, so player right (+1) is the simulation's right turn (+1) and nothing is negated.
  */
 export function toCarInput(input: PlayerInput): CarInput {
-  return { throttle: input.throttle, steer: -input.steer, handbrake: input.handbrake };
+  return { throttle: input.throttle, steer: input.steer, handbrake: input.handbrake };
 }

@@ -61,11 +61,16 @@ describe("CombinedInput", () => {
 });
 
 describe("toCarInput", () => {
-  it("mirrors steering for the left-handed screen and passes the rest through", () => {
+  it("passes every field through unchanged (the scene is right-handed like the simulation)", () => {
     expect(toCarInput(input({ throttle: 1, steer: 0.5, handbrake: true }))).toEqual({
       throttle: 1,
-      steer: -0.5,
+      steer: 0.5,
       handbrake: true,
+    });
+    expect(toCarInput(input({ throttle: -1, steer: -1 }))).toEqual({
+      throttle: -1,
+      steer: -1,
+      handbrake: false,
     });
   });
 });

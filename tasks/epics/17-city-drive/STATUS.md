@@ -106,7 +106,7 @@ with `startAt` set to the next task ID.
 | 06 | Babylon city renderer + headless draw-call/triangle budget test | agent | [x] |
 | 07 | Player car, touch/keyboard controls, chase camera | agent | [x] |
 | 08 | HUMAN: first-drive checkpoint (browser, desktop + phone) | human | [ ] |
-| 08a | Fix: render the scene right-handed (no mirrored world) | agent | [ ] |
+| 08a | Fix: render the scene right-handed (no mirrored world) | agent | [x] |
 | 09 | AI traffic on the road graph | agent | [ ] |
 | 10 | Mission engine (delivery, taxi, time trial, parking; stars) | agent | [ ] |
 | 11 | Three districts + 24 validated missions + free-roam markers | agent | [ ] |

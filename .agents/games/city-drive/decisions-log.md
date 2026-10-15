@@ -143,3 +143,25 @@ Baseline car values live in `apps-games/city-drive-core/src/cars/specs.ts`
 - **Car visual**: Kenney `car-sedan` split into body and 4 wheel meshes; scaled so its wheel radius
   matches physics (x1.167). Cost: 6 draw calls, about 2,050 triangles (worst pose 49 draws, 125k tris).
 
+## Task 08a — Render the scene right-handed (2026-10-15)
+
+- **Decision.** Every Babylon scene is right-handed (`scene.useRightHandedSystem = true`), set in one
+  place, `apps-games/city-drive/src/render/scene.ts` (`createScene`), which the city and every test
+  scene use. Rapier and the map were already right-handed, so no coordinate is converted: a mesh at
+  simulation (x, y, z) is at world (x, y, z). Closes open question 7.
+- **Steering.** The negation in `toCarInput` is deleted: player right (+1) is the simulation's right
+  turn (+1). The car's right is forward x up, which is -X when it faces +Z, and the east lane of a
+  north-facing road.
+- **glTF content.** With a right-handed scene Babylon's loader adds no `__root__` mirror, so the
+  baked templates and car parts are the artwork as authored. A new `Mesh` defaults to the clockwise
+  winding of builder meshes, so `buildTemplate` and `buildCarParts` copy the loader mesh's side
+  orientation (counter-clockwise). Builder meshes (ground, plaza pads) keep Babylon's default.
+- **Road yaw offsets re-derived** against the unmirrored geometry: `road-corner` 270 -> 180,
+  `road-end` 270 -> 90; `road-straight` and `road-crossing` stay 90; `road-t` and `road-crossroads`
+  stay 0. Every district-1 road tile is checked against its sockets by `road-alignment.test.ts`.
+- **Camera.** The chase-camera maths needed no change (it works in simulation coordinates). Tests that
+  read the camera's forward axis must use `Vector3.Forward(scene.useRightHandedSystem)`, which is
+  -Z in a right-handed scene.
+- **Not changed.** The `?debugcam` orbit camera keeps its start angle (it now looks from the north
+  edge, so east is on its left); visual polish is for the human checkpoint.
+

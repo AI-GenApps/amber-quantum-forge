@@ -5,7 +5,7 @@ import type { Scene } from "@babylonjs/core/scene.js";
 import type { AssetPack } from "../assets/manifest";
 import type { AssetCache } from "./assetCache";
 
-/** Geometry of one manifest model with its glTF node transforms and handedness baked in. */
+/** Geometry of one manifest model with its glTF node transforms baked in (right-handed, native). */
 export interface ModelTemplate {
   id: string;
   pack: AssetPack;
@@ -13,7 +13,12 @@ export interface ModelTemplate {
   parts: Mesh[];
 }
 
-/** Bakes each container mesh's world matrix (including the loader's root flip) into new meshes. */
+/**
+ * Bakes each container mesh's world matrix into new meshes. The scene is right-handed, so the glTF
+ * loader adds no root flip and the baked geometry is the artwork as authored. The new mesh would
+ * default to the winding of builder meshes (clockwise), so it takes the loader's own side
+ * orientation (counter-clockwise, the glTF convention) from the source instead.
+ */
 export function buildTemplate(scene: Scene, cache: AssetCache, id: string): ModelTemplate {
   const entry = cache.entry(id);
   const parts: Mesh[] = [];
@@ -23,6 +28,7 @@ export function buildTemplate(scene: Scene, cache: AssetCache, id: string): Mode
     const part = new Mesh(`${id}:${source.name}`, scene);
     VertexData.ExtractFromMesh(geometry, false, true).applyToMesh(part);
     part.bakeTransformIntoVertices(source.computeWorldMatrix(true));
+    part.sideOrientation = geometry.sideOrientation;
     part.setEnabled(false);
     parts.push(part);
   }

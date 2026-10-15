@@ -1,0 +1,15 @@
+{
+  "rightHanded": true,
+  "simRightPointNdcX": 0.159,
+  "simLeftPointNdcX": -0.159,
+  "steering": {
+    "playerRightHeadingNdcXBefore": 0,
+    "playerRightHeadingNdcXAfter": 0.359,
+    "playerRightYawCrossY": -0.628,
+    "playerLeftHeadingNdcXBefore": 0,
+    "playerLeftHeadingNdcXAfter": -0.362,
+    "playerLeftYawCrossY": 0.632
+  },
+  "spawnLaneNdcX": 0,
+  "spawnRoadCentreNdcX": -2.093
+}

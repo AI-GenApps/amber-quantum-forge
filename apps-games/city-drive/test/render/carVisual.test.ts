@@ -1,11 +1,12 @@
 // @vitest-environment node
 import { NullEngine } from "@babylonjs/core/Engines/nullEngine.js";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
-import { Scene } from "@babylonjs/core/scene.js";
+import type { Scene } from "@babylonjs/core/scene.js";
 import { BASELINE_CAR } from "@city-drive/core";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import type { CarPose } from "../../src/game/interpolate";
 import { type CarVisual, createCarVisual } from "../../src/render/carVisual";
+import { createScene } from "../../src/render/scene";
 import { readManifest } from "../assets/helpers";
 import { readBytes } from "./helpers";
 
@@ -41,7 +42,7 @@ function worldOf(node: {
 
 beforeAll(async () => {
   engine = new NullEngine();
-  scene = new Scene(engine);
+  scene = createScene(engine);
   visual = await createCarVisual(scene, readManifest(), readBytes, BASELINE_CAR);
 });
 
@@ -74,13 +75,14 @@ describe("car visual", () => {
     expect(Math.abs(bodyBottom)).toBeLessThan(0.1);
   });
 
-  it("puts the front wheels ahead (+Z) and the right-hand wheels on +X", () => {
+  it("puts the front wheels ahead (+Z) and the +X wheels on the car's left", () => {
     visual.sync(pose());
-    const [fr, fl, rr, rl] = visual.wheels.map(worldOf) as [Vector3, Vector3, Vector3, Vector3];
-    expect(fr.z).toBeGreaterThan(rr.z);
+    const [fl, fr, rl, rr] = visual.wheels.map(worldOf) as [Vector3, Vector3, Vector3, Vector3];
     expect(fl.z).toBeGreaterThan(rl.z);
-    expect(fr.x).toBeGreaterThan(fl.x);
-    expect(rr.x).toBeGreaterThan(rl.x);
+    expect(fr.z).toBeGreaterThan(rr.z);
+    // Right-handed frame: a car facing +Z has its left on +X and its right on -X.
+    expect(fl.x).toBeGreaterThan(fr.x);
+    expect(rl.x).toBeGreaterThan(rr.x);
   });
 
   it("compresses a wheel upward when its suspension shortens", () => {

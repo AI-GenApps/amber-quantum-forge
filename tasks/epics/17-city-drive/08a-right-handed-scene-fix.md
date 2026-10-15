@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 08a-right-handed-scene-fix
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/07-player-car-controls-camera]
 estimate: S
@@ -57,14 +57,14 @@ so right-hand traffic appears on the right.
 
 ## Implementation Checklist
 
-- [ ] Set `useRightHandedSystem = true` on all scenes, including the tests'
+- [x] Set `useRightHandedSystem = true` on all scenes, including the tests'
       scene factory.
-- [ ] Remove the steer negation, and re-derive the template and car-model
+- [x] Remove the steer negation, and re-derive the template and car-model
       transforms and road yaw offsets.
-- [ ] Add tests 1–4 above, and update the affected existing tests (never by
+- [x] Add tests 1–4 above, and update the affected existing tests (never by
       weakening assertions).
-- [ ] Close open question 7, and add a decisions-log entry.
-- [ ] Evidence README with before and after projected-point numbers.
+- [x] Close open question 7, and add a decisions-log entry.
+- [x] Evidence README with before and after projected-point numbers.
 
 ## Files Touched
 

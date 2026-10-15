@@ -1,19 +1,20 @@
 // @vitest-environment node
 import { NullEngine } from "@babylonjs/core/Engines/nullEngine.js";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
-import { Scene } from "@babylonjs/core/scene.js";
+import type { Scene } from "@babylonjs/core/scene.js";
 import type { StaticBox } from "@city-drive/core";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { CarPose } from "../../src/game/interpolate";
 import { CHASE, chaseDistance, chaseFov, chaseHeight } from "../../src/render/cameraMath";
 import { ChaseCamera } from "../../src/render/chaseCamera";
+import { createScene } from "../../src/render/scene";
 
 let engine: NullEngine;
 let scene: Scene;
 
 beforeEach(() => {
   engine = new NullEngine();
-  scene = new Scene(engine);
+  scene = createScene(engine);
 });
 
 afterEach(() => {
@@ -54,7 +55,7 @@ describe("ChaseCamera", () => {
     const cam = new ChaseCamera(scene, []);
     cam.update(1 / 60, carAt(0, 0));
     cam.camera.getViewMatrix(true);
-    const forward = cam.camera.getDirection(Vector3.Forward());
+    const forward = cam.camera.getDirection(Vector3.Forward(scene.useRightHandedSystem));
     expect(forward.z).toBeGreaterThan(0.5);
     expect(forward.y).toBeLessThan(0);
   });

@@ -3,21 +3,22 @@
 import { VertexBuffer } from "@babylonjs/core/Buffers/buffer.js";
 import { NullEngine } from "@babylonjs/core/Engines/nullEngine.js";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
-import { Scene } from "@babylonjs/core/scene.js";
 import {
   DIR_VEC,
   DIRS,
   ROAD_MODEL_YAW_OFFSET,
   ROAD_SOCKETS,
   type TileRotation,
+  tileCenter,
   tileSockets,
 } from "@city-drive/core/city";
 import { describe, expect, it } from "vitest";
 import { AssetCache } from "../../src/render/assetCache";
 import { placementMatrix } from "../../src/render/chunkBuilder";
+import { createScene } from "../../src/render/scene";
 import { buildTemplate } from "../../src/render/templates";
 import { readManifest } from "../assets/helpers";
-import { readBytes } from "./helpers";
+import { buildDistrict1, readBytes } from "./helpers";
 
 const ROTATIONS: TileRotation[] = [0, 90, 180, 270];
 const ASPHALT_MIN_Y = 0.005;
@@ -29,7 +30,7 @@ describe("road model alignment with the socket table", () => {
   it("asphalt reaches exactly the sockets of every road model at every rotation", async () => {
     const manifest = readManifest();
     const engine = new NullEngine();
-    const scene = new Scene(engine);
+    const scene = createScene(engine);
     const ids = Object.keys(ROAD_SOCKETS);
     const cache = await AssetCache.load(scene, manifest, ids, readBytes);
     for (const id of ids) {
@@ -68,5 +69,73 @@ describe("road model alignment with the socket table", () => {
     cache.dispose();
     scene.dispose();
     engine.dispose();
+  });
+
+  it("test 4: every placed road tile of district 1 touches exactly the edges its sockets declare", async () => {
+    const manifest = readManifest();
+    const { city, engine: cityEngine } = await buildDistrict1();
+    const engine = new NullEngine();
+    const scene = createScene(engine);
+    const roads = city.plan.placements.filter((p) => p.group === "road");
+    const cache = await AssetCache.load(
+      scene,
+      manifest,
+      new Set(roads.map((p) => p.model)),
+      readBytes,
+    );
+    const asphaltOf = new Map<string, Vector3[]>();
+    for (const id of new Set(roads.map((p) => p.model))) {
+      const points: Vector3[] = [];
+      for (const part of buildTemplate(scene, cache, id).parts) {
+        const data = part.getVerticesData(VertexBuffer.PositionKind) ?? [];
+        for (let i = 0; i < data.length; i += 3) {
+          if ((data[i + 1] as number) > ASPHALT_MIN_Y && (data[i + 1] as number) < ASPHALT_MAX_Y) {
+            points.push(new Vector3(data[i], data[i + 1], data[i + 2]));
+          }
+        }
+      }
+      asphaltOf.set(id, points);
+    }
+    const models = new Set<string>();
+    for (const placement of roads) {
+      const tile = city.map.tiles.find((t) => {
+        const c = tileCenter(city.map, t.x, t.y);
+        return (
+          t.kind === "road" &&
+          Math.abs(c.x - placement.x) < 1e-6 &&
+          Math.abs(c.z - placement.z) < 1e-6
+        );
+      });
+      expect(tile, `${placement.model} at ${placement.x},${placement.z}`).toBeDefined();
+      if (!tile) continue;
+      models.add(placement.model);
+      const m = placementMatrix(placement);
+      const world = (asphaltOf.get(placement.model) ?? []).map((v) =>
+        Vector3.TransformCoordinates(v, m),
+      );
+      const half = placement.scale / 2;
+      const box = {
+        minX: Math.min(...world.map((v) => v.x - placement.x)),
+        maxX: Math.max(...world.map((v) => v.x - placement.x)),
+        minZ: Math.min(...world.map((v) => v.z - placement.z)),
+        maxZ: Math.max(...world.map((v) => v.z - placement.z)),
+      };
+      const eps = placement.scale * EDGE_EPS;
+      const touching = DIRS.filter((d) => {
+        if (d === "N") return box.minZ <= -half + eps;
+        if (d === "S") return box.maxZ >= half - eps;
+        if (d === "E") return box.maxX >= half - eps;
+        return box.minX <= -half + eps;
+      });
+      expect(touching, `${placement.model} rot ${tile.rot} at tile ${tile.x},${tile.y}`).toEqual(
+        tileSockets(tile),
+      );
+    }
+    expect(models.size).toBeGreaterThanOrEqual(3);
+    cache.dispose();
+    scene.dispose();
+    engine.dispose();
+    city.dispose();
+    cityEngine.dispose();
   });
 });

@@ -70,9 +70,9 @@ describe("loop + core + NullEngine scene", () => {
     input.set({ throttle: 1 });
     clockMs = runFrames(loop, 60, FRAME_MS, clockMs);
     const before = session.state;
-    // The mesh's own right-hand side (+X in Babylon's left-handed frame) before the turn starts.
+    // The car's own right-hand side before the turn starts: forward x up in the right-handed frame.
     car.root.computeWorldMatrix(true);
-    const right = car.root.getDirection(Vector3.Right());
+    const right = Vector3.Cross(car.root.getDirection(Vector3.Forward()), Vector3.Up());
     input.set({ throttle: 1, steer });
     clockMs = runFrames(loop, 45, FRAME_MS, clockMs);
     const after = session.state.position;

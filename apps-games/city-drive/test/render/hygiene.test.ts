@@ -23,6 +23,14 @@ describe("src hygiene", () => {
     }
   });
 
+  it("makes every Scene through createScene, so each one is right-handed", () => {
+    for (const file of files.filter((f) => !f.endsWith("render/scene.ts"))) {
+      expect(readFileSync(file, "utf8"), file).not.toMatch(/new\s+Scene\s*\(/);
+    }
+    const factory = readFileSync(join(appDir, "src/render/scene.ts"), "utf8");
+    expect(factory).toMatch(/useRightHandedSystem\s*=\s*true/);
+  });
+
   it("references no CDN or remote URL", () => {
     for (const file of files) {
       expect(readFileSync(file, "utf8"), file).not.toMatch(/https?:\/\//);

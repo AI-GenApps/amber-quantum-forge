@@ -4,7 +4,7 @@ import { Color3 } from "@babylonjs/core/Maths/math.color.js";
 import { CreateGround } from "@babylonjs/core/Meshes/Builders/groundBuilder.js";
 import type { Mesh } from "@babylonjs/core/Meshes/mesh.js";
 import "@babylonjs/core/Meshes/thinInstanceMesh.js";
-import { Scene } from "@babylonjs/core/scene.js";
+import type { Scene } from "@babylonjs/core/scene.js";
 import { type CityMap, mapHalfExtents } from "@city-drive/core/city";
 import type { AssetManifest } from "../assets/manifest";
 import { AssetCache, type LoadBytes } from "./assetCache";
@@ -14,6 +14,7 @@ import { setupLighting } from "./lighting";
 import { createPackMaterials, flatMaterial } from "./materials";
 import { buildPads } from "./pads";
 import { type CityPlan, planCity } from "./placements";
+import { createScene } from "./scene";
 import { buildTemplate, disposeTemplates, type ModelTemplate } from "./templates";
 
 export interface RenderedCity {
@@ -54,7 +55,7 @@ export async function createCityScene(
   manifest: AssetManifest,
   loadBytes: LoadBytes,
 ): Promise<RenderedCity> {
-  const scene = new Scene(engine);
+  const scene = createScene(engine);
   setupLighting(scene);
 
   const plan = planCity(map, manifest);

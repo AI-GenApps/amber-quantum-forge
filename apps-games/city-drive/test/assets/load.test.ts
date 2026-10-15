@@ -3,10 +3,10 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { NullEngine } from "@babylonjs/core/Engines/nullEngine.js";
 import { LoadAssetContainerAsync } from "@babylonjs/core/Loading/sceneLoader.js";
-import { Scene } from "@babylonjs/core/scene.js";
 import "@babylonjs/loaders/glTF/index.js";
 import { describe, expect, it } from "vitest";
 import { ASSET_KINDS, type AssetKind } from "../../src/assets/manifest";
+import { createScene } from "../../src/render/scene";
 import { assetsDir, readManifest } from "./helpers";
 
 const manifest = readManifest();
@@ -22,7 +22,7 @@ describe("GLB parsing under NullEngine", () => {
     it(`loads one ${kind} model and matches the manifest triangle count`, async () => {
       const model = firstOfKind(kind);
       const engine = new NullEngine();
-      const scene = new Scene(engine);
+      const scene = createScene(engine);
       const bytes = readFileSync(join(assetsDir, model.file));
       const container = await LoadAssetContainerAsync(new Uint8Array(bytes), scene, {
         pluginExtension: ".glb",
@@ -40,7 +40,7 @@ describe("GLB parsing under NullEngine", () => {
 
   it("loads every shipped model without error", async () => {
     const engine = new NullEngine();
-    const scene = new Scene(engine);
+    const scene = createScene(engine);
     for (const model of manifest.models) {
       const bytes = readFileSync(join(assetsDir, model.file));
       const container = await LoadAssetContainerAsync(new Uint8Array(bytes), scene, {
