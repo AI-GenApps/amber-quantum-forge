@@ -8,8 +8,9 @@ public URL and Play Console and the in-app link point to it. Counsel should
 review before publication. Fields in angle brackets are placeholders to fill
 at hosting time. The text must stay consistent with
 [`ludo-data-safety.md`](ludo-data-safety.md). Task 26i created this file
-because task 27 had not yet; task 27 extends it (crash reporting, retention
-periods, final contact details).
+because task 27 had not yet; task 27 added the crash reporting paragraph and
+the retention periods below. The final contact details and legal entity are
+still placeholders for task 29.
 
 The text below is the draft policy to host.
 
@@ -59,8 +60,16 @@ and not grant it twice.
 
 **App interactions and diagnostics.** The app records what you do in it, such
 as starting or finishing a match or opening the store, using a fixed set of
-event fields that never include free text such as your display name. `<If crash
-reporting ships: we also collect crash reports and diagnostics to fix bugs.>`
+event fields that never include free text such as your display name.
+
+**Crash reports and diagnostics.** In released builds, if the app crashes or
+hits an unexpected error, Google Firebase Crashlytics, acting as our service
+provider, receives a crash report: the error and its stack trace, your device
+model and operating system version, the app version, how much memory and
+storage was free, and a random installation ID that Firebase creates for the
+app on your device. We do not attach your player ID, display name, email or
+any other identifier of ours to these reports, and we use them only to find
+and fix bugs. Crash reporting is switched off in development builds.
 
 We do not collect your precise location, contacts, photos, files, microphone or
 messages.
@@ -82,7 +91,7 @@ optional rewarded ads, and understand and improve how the app is used.
 ## Who we share it with
 
 We use service providers who process data for us: Google (Firebase
-Authentication and Firestore, Google Play Billing), RevenueCat (purchase
+Authentication, Firestore and Crashlytics, Google Play Billing), RevenueCat (purchase
 management), and our hosting provider `<provider>`. Google AdMob receives
 advertising data as described above. We do not sell your personal information.
 We may disclose information if the law requires it or to protect the game and
@@ -91,7 +100,10 @@ its players.
 ## Retention and deletion
 
 We keep account, game and purchase records for as long as your account exists
-and as needed for tax, accounting and fraud prevention. To ask for your account
+and as needed for tax, accounting and fraud prevention. Crash reports are kept
+by Firebase Crashlytics for 90 days, after which they are deleted
+automatically. Purchase and tax records may be kept for up to `<number>`
+years as the law of `<jurisdiction>` requires. To ask for your account
 and associated data to be deleted, email `<privacy contact email>` from the
 address you linked, or use `<deletion request URL, required by Google Play,
 to be provided in task 29>`. Some purchase records may be kept as the law
@@ -129,7 +141,13 @@ We will post changes here and update the effective date.
   webhook and sync (26d), AdMob SSV, UMP and daily caps (26h), identity
   (task 23/24).
 - Open before hosting: legal entity and contact, deletion mechanism and URL,
-  region age policy, crash reporting wording, retention periods, and a
-  Settings entry to reopen the UMP privacy options form (not built).
+  region age policy, the statutory retention numbers in the Retention
+  section, and a Settings entry to reopen the UMP privacy options form (not
+  built). Crash reporting wording and the Crashlytics 90 day retention are
+  done (task 27); confirm 90 days against Firebase's documentation again at
+  hosting time, since Google can change it.
+- Crashlytics sends nothing unless the build has a Firebase config and is not
+  a debug build; with no config the app uses a no-op reporter. This is why the
+  policy can say "released builds".
 - Telemetry in the current build is not uploaded; remove or keep the
   "app interactions" sentence depending on whether an upload pipeline ships.

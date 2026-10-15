@@ -3,12 +3,12 @@ title: Ludo Vortex Data Safety draft
 description: Draft Google Play Data Safety form answers for Ludo Vortex covering purchases, advertising ID, accounts and telemetry.
 ---
 
-Draft for the Play Console **Data safety** form. Task 29 submits it; task 27
-adds crash reporting and re-verifies the SDK list against the final merged
-manifest and dependency tree. Entries marked **verify** depend on that check.
-This task (26i) is the first to create this file: task 27 had not created the
-release-prep docs yet when 26i ran (the ordering discrepancy is noted in the
-commit body), so task 27 should extend this file rather than recreate it.
+Draft for the Play Console **Data safety** form. Task 29 submits it. Task 27
+added crash reporting (Firebase Crashlytics) and re-verified the SDK list
+against the merged release manifest and the resolved dependency tree (see
+"SDK check" below). Entries marked **verify** still need the final production
+build re-checked in task 29. Task 26i first created this file because task 27
+had not yet; task 27 extended it rather than recreating it.
 
 Companion: [`ludo-privacy-policy.md`](ludo-privacy-policy.md) (the hosted
 policy text must match these answers) and
@@ -24,6 +24,7 @@ policy text must match these answers) and
 | Purchases | RevenueCat SDK (`purchases_flutter`) and Google Play Billing; RevenueCat webhook to the API | store receipts handled by Google and RevenueCat; purchase history (product id, time, order id, refund state) keyed to the player id |
 | Rewarded ads | Google Mobile Ads SDK (`google_mobile_ads`) with UMP consent | advertising ID (GAID), coarse device and ad-interaction data, ad impressions; SSV callback carries the player id as `user_id` |
 | Online realtime | Firestore match views | match state keyed by match id and seat; no names beyond the in-match display name |
+| Crash reports | Firebase Crashlytics (`firebase_crashlytics`), release builds with Firebase config only | uncaught Dart and platform errors with stack traces, device model and OS version, app version and an app installation id; no user id, display name or custom keys are set |
 | App interactions | `LudoTelemetry` | event names with allow-listed fields only (action, reason, status, counts). In the current build events stay in an in-memory sink and are **not uploaded**; declare them as collected only if an upload pipeline ships (see below) |
 
 ## Data types
@@ -43,7 +44,9 @@ the advertising ID for ads is.
 | Financial info: Payment info | **No** | No | n/a | n/a | card and billing details are handled entirely by Google Play; the app and server never receive them |
 | Financial info: User payment info (virtual currency) | Not a Play category | n/a | n/a | n/a | coins and diamonds are virtual, no real-world value; balances are stored as game data, not as financial account data |
 | App activity: App interactions | Yes | No | No | Analytics, app functionality | match results, store and reward actions; telemetry fields are allow-listed |
-| App info and performance: Crash logs, Diagnostics | Yes (**verify**, task 27) | No | No | Analytics, app functionality | only once crash reporting ships |
+| App info and performance: Crash logs | Yes | No | No | Analytics (crash analysis), app functionality | Firebase Crashlytics; processed on our behalf by Google, so not "shared". Collection is off in debug builds and does nothing at all when Firebase config is absent |
+| App info and performance: Diagnostics | Yes | No | No | Analytics, app functionality | Crashlytics device and session diagnostics (OS version, device model, free memory/disk at crash) |
+| Device or other IDs: Firebase installation id (app instance id) | Yes | No | No | Analytics, app functionality | created by the Firebase Installations SDK that Crashlytics and Firebase Auth depend on; this is not the advertising ID |
 | **Device or other IDs: Advertising ID** | **Yes** | **Yes** | Yes (consent-gated, resettable) | **Advertising** | AdMob rewarded ads; shared with Google (AdMob) and its ad partners |
 | Location (approximate or precise) | No | n/a | n/a | n/a | |
 | Contacts, photos, files, calendar, messages, audio | No | n/a | n/a | n/a | |
@@ -61,9 +64,28 @@ Notes behind the bold rows:
   **verify** it in the final merged manifest and in Play Console's
   advertising ID declaration. Where UMP consent is required and refused, AdMob serves limited
   or no ads and the advertising ID is not used for personalization.
-- If the final release dependency tree adds the Firebase Analytics or
-  Crashlytics SDK, add **Device or other IDs: App instance ID** and the
-  matching diagnostics rows.
+- Crashlytics is now in the dependency tree (task 27), so the Crash logs,
+  Diagnostics and Firebase installation id rows above are declared. The
+  Firebase Analytics SDK is **not** in the tree: do not declare analytics
+  collection beyond the rows above unless it is added.
+
+## SDK check (task 27)
+
+Merged release manifest and resolved dependencies checked on 2026-10-16:
+
+- Permissions: see "Permissions in the merged manifest" in
+  [`ludo-store-listing.md`](ludo-store-listing.md). `AD_ID` and the
+  `ACCESS_ADSERVICES_*` permissions are present (Google Mobile Ads), so the
+  advertising ID declaration is **Yes, used for Advertising**. Nothing in the
+  manifest requests location, contacts, camera, microphone or storage.
+- Firebase components in the manifest: Auth, Firestore, Crashlytics,
+  Installations and Sessions (`com.google.firebase.sessions`, pulled in by
+  Crashlytics). They all act as service providers for this app.
+- No Firebase Analytics, no Google Sign-In-independent social SDK and no
+  third-party analytics SDK is present.
+- **verify in task 29**: re-run the manifest check on the production build
+  (`--environment production`), because it needs the production application id
+  and signing, which were not available here.
 
 ## Security practices
 

@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 27-release-hardening
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/26i-economy-compliance-and-provisioning-docs]
 estimate: M
@@ -56,27 +56,27 @@ needs.
 
 ## Implementation Checklist
 
-- [ ] Create `lib/src/telemetry/ludo_crash_reporter.dart`: the
+- [x] Create `lib/src/telemetry/ludo_crash_reporter.dart`: the
   `LudoCrashReporter` interface, `FirebaseCrashlyticsReporter`, and
   `NullCrashReporter`, selected the same way task 24 selects Firebase-backed
   vs. no-op implementations.
-- [ ] Wire the crash reporter into `main.dart`'s error handling
+- [x] Wire the crash reporter into `main.dart`'s error handling
   (`FlutterError.onError`, `PlatformDispatcher.instance.onError`).
-- [ ] Add `test/telemetry/ludo_crash_reporter_test.dart` covering:
+- [x] Add `test/telemetry/ludo_crash_reporter_test.dart` covering:
   `NullCrashReporter` never throws, and the factory picks the right
   implementation based on Firebase config presence.
-- [ ] Add a profile-mode benchmark test for `ludo_game.dart`'s frame
+- [x] Add a profile-mode benchmark test for `ludo_game.dart`'s frame
   build/update cost under representative load, asserting it stays within
   the ~16ms budget; if CI tooling cannot support this reliably, add a
   documented manual profiling procedure instead and say so explicitly in
   the doc.
-- [ ] Run `bun run games:build -- --app ludo --platform android --mode
+- [x] Run `bun run games:build -- --app ludo --platform android --mode
   release --environment debug` (or the closest environment that succeeds
   without real release signing) and record the resulting APK size, or
   record `NOT RUN` with the reason if it fails.
-- [ ] Create `docs-internal/gaming/ludo-privacy-policy.md`.
-- [ ] Create `docs-internal/gaming/ludo-data-safety.md`.
-- [ ] Create `docs-internal/gaming/ludo-store-listing.md`.
+- [x] Create `docs-internal/gaming/ludo-privacy-policy.md`.
+- [x] Create `docs-internal/gaming/ludo-data-safety.md`.
+- [x] Create `docs-internal/gaming/ludo-store-listing.md`.
 
 ## Files Touched
 
@@ -125,3 +125,12 @@ needs.
 ## Commit message
 
 `feat(ludo): add crash reporting, perf/size budgets, and release-prep drafts [15-ludo-launch/27]`
+
+## Result notes
+
+- Added `ludo_performance_budgets` doc `docs-internal/gaming/ludo-performance-budgets.md` (small addition beyond Files Touched) to hold the frame and size results and the manual on-device procedure.
+- Added `firebase_crashlytics: ^4.1.3` to `apps-native/games/ludo/pubspec.yaml` (workspace `pubspec.lock` updated). The privacy policy, data safety and store listing docs already existed from task 26i and were extended (crash reporting, retention, Firebase installation id, listing text, merged-manifest permission check).
+- Frame budget: automated host-VM benchmark (p90 262-392 us vs 16 ms); GPU raster not measured, manual device procedure documented for task 29.
+- Size: `games:build ... --mode release --environment debug` succeeded; universal APK 64.9 MB (over 40 MB, bundles three ABIs); per-ABI APKs 25.9-30.0 MB (arm64 28.4 MB). Budget applied to the per-ABI download Play serves. AAB size NOT RUN (needs upload keystore, task 29).
+- Crashlytics on a real device is not exercised: no `google-services.json` or Gradle plugins exist until task 29 provisions Firebase; builds run the `NullCrashReporter` until then.
+- device evidence pending: run ludo-economy-device-pass

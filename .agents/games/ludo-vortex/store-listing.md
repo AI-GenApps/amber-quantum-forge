@@ -27,7 +27,7 @@ advertise online play or features that aren't live in the submitted build.
   modes (vs Computer with 3 bot levels, Pass N Play, Play with Friends, Online) · rules
   (Classic + Quick: one token home + one capture) · progression (levels, daily rewards,
   collectible dice/token/board themes) · fair play (server-verified dice online) · no
-  forced ads (optional rewarded ads only) · offline play. Write final in task 27/28.
+  forced ads (optional rewarded ads only) · offline play. Final drafted in `docs-internal/gaming/ludo-store-listing.md` (task 27).
 - **App Store (later):** subtitle (≤30) `Classic & Quick Ludo Party`; keywords (≤100)
   `ludo,dice,board game,parchisi,pachisi,family,friends,multiplayer,classic,quick` — **verify**
   no competitor trademarks in keywords.
@@ -69,7 +69,7 @@ confirm; not designed for children → Families policy does not apply. Declare "
 | Email (only if Google account linked) | Yes, optional | Account management | via Google Sign-In |
 | Purchase history | Yes | App functionality (grants, restore) | via RevenueCat / Play Billing |
 | App interactions / in-app actions | Yes | Analytics | telemetry events |
-| Crash logs / diagnostics | Yes | App functionality / analytics | crash reporting (task 27) |
+| Crash logs / diagnostics / Firebase installation id | Yes | App functionality / analytics | Firebase Crashlytics (task 27); see `docs-internal/gaming/ludo-data-safety.md` |
 | Device or other IDs (advertising ID) | Yes | Advertising | AdMob rewarded ads |
 | Location, contacts, photos, messages | No | — | — |
 Security: data encrypted in transit (HTTPS). Deletion: provide in-app/URL request path — **TBD** (required).
@@ -97,7 +97,7 @@ Odds disclosure: not applicable, no randomized paid items. Release-prep docs liv
 ## Permissions (Android)
 
 INTERNET; `com.google.android.gms.permission.AD_ID` (AdMob); billing
-(`com.android.vending.BILLING`); VIBRATE. No location/camera/contacts. **Verify** final merged manifest.
+(`com.android.vending.BILLING`); `ACCESS_ADSERVICES_*`. No VIBRATE (haptics need none; verified in the merged release manifest, task 27). No location/camera/contacts. **Verify** again on the production build.
 
 ## Testing & release
 

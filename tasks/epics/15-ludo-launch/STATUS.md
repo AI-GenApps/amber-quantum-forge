@@ -89,7 +89,7 @@ next task.
 | 26g | Client owner | Store and inventory UI, `purchases_flutter` integration | [x] |
 | 26h | Client/backend owner | Rewarded ads (AdMob SSV), UMP consent, and daily reward calendar UI | [x] |
 | 26i | Docs/release owner | Economy compliance docs, store product IDs, and RevenueCat/AdMob runbook | [x] |
-| 27 | Release owner | Crash reporting, perf/size budgets, privacy policy + data safety + store listing drafts | [ ] |
+| 27 | Release owner | Crash reporting, perf/size budgets, privacy policy + data safety + store listing drafts | [x] |
 | 28 | Docs owner | Architecture doc, handoff, release checklist | [ ] |
 | 29 | Release owner (human) | Physical-device acceptance, Firebase console provisioning, privacy/data-safety/store-listing execution | [ ] |
 
