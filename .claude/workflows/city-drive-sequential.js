@@ -37,11 +37,12 @@ const FROZEN = [
   '.agents/games/merge-relay',
 ]
 
-const ENV = 'export PATH=$HOME/.bun/bin:$HOME/.local/share/vite-plus/bin:$HOME/.local/bin:$PATH; [ -d /data/tools/jdk21 ] && export JAVA_HOME=/data/tools/jdk21 PATH=/data/tools/jdk21/bin:$PATH; [ -d /data/tools/android-sdk ] && export ANDROID_HOME=/data/tools/android-sdk ANDROID_SDK_ROOT=/data/tools/android-sdk'
+const ENV = 'export PATH=$HOME/.bun/bin:$HOME/.local/share/vite-plus/bin:$HOME/.local/bin:$PATH BUN_INSTALL_CACHE_DIR=/data/tools/cache/bun npm_config_cache=/data/tools/cache/npm GRADLE_USER_HOME=/data/tools/cache/gradle TMPDIR=/data/tools/tmp XDG_CACHE_HOME=/data/tools/cache/xdg; [ -d /data/tools/jdk21 ] && export JAVA_HOME=/data/tools/jdk21 PATH=/data/tools/jdk21/bin:$PATH; [ -d /data/tools/android-sdk ] && export ANDROID_HOME=/data/tools/android-sdk ANDROID_SDK_ROOT=/data/tools/android-sdk'
 
 const RULES = `
 Hard rules for this run:
 - Work only on git branch ${BRANCH} in ${REPO}. Never push, never force, never rewrite history, never create or switch branches, never create worktrees except the throwaway HEAD worktree described below.
+- DISK: the root filesystem (/, /home, /tmp) has only ~20 GB free. Everything you install, download or cache goes under /data/tools: toolchains in /data/tools/<name> (jdk21, android-sdk, ...), package/build caches in /data/tools/cache/<tool> (the env prefix sets BUN_INSTALL_CACHE_DIR, npm_config_cache, GRADLE_USER_HOME, XDG_CACHE_HOME), and scratch downloads/extractions (asset zips, audio, font sources, throwaway HEAD worktrees) in /data/tools/tmp/<task-id>/ — never /tmp or the home directory. Delete your scratch folder when the task is done. Never use sudo. If /data/tools is not writable, return blocked.
 - Each task file may end with a "Dry-run amendments" section; it overrides anything earlier in that file.
 - Do only what the task file scopes. Do not modify frozen paths (other sessions own them): ${FROZEN.join(', ')}. Reading them as a pattern is fine.
 - Environment: prefix EVERY shell command with: ${ENV}
@@ -59,7 +60,7 @@ Hard rules for this run:
 - No real secrets, keystores or signing keys in the repo.
 - Work incrementally: keep each Write/Edit under ~200 lines and files under ~300 lines (split modules); act early instead of planning the whole task first; never search the whole filesystem (no find /, no find ~); run long commands with a timeout or in the background and poll.
 - Vitest: run single files while iterating (bunx vitest run <file>). A hanging or slow test is a bug in this task's code (usually an un-stepped loop or an unresolved promise), never a reason to return blocked.
-- Pre-existing failures: if a verification command fails for a reason unrelated to this task, prove it by reproducing on HEAD in a throwaway worktree (git worktree add <scratch dir> HEAD; run there; git worktree remove --force <dir>). Never use git stash. A proven pre-existing unrelated failure is recorded as "pre-existing" with evidence and does not fail the task.
+- Pre-existing failures: if a verification command fails for a reason unrelated to this task, prove it by reproducing on HEAD in a throwaway worktree (git worktree add /data/tools/tmp/head-<task-id> HEAD; run there; git worktree remove --force <dir>). Never use git stash. A proven pre-existing unrelated failure is recorded as "pre-existing" with evidence and does not fail the task.
 - Commits: never add Co-Authored-By or "Generated with Claude Code" lines. Never use --no-verify.`
 
 const PREFLIGHT = {
@@ -150,9 +151,9 @@ const pre = await agent(
 1. Ensure the current branch is ${BRANCH} (git checkout ${BRANCH} if not). Report git status --porcelain.
 2. The tree is "clean" if git status --porcelain is empty.${RESUME_FILES ? `
    EXCEPTION: uncommitted in-progress work for the first task is allowed. Treat the tree as clean if every changed/untracked path is under one of: ${RESUME_FILES.join(', ')}.` : ''}
-3. With the environment prefix, run: bun --version, node --version (need >= 22 for Capacitor 8), git --version; report whether /data/tools/jdk21 and /data/tools/android-sdk exist; check node_modules/ exists at the repo root (run bun install if missing and report whether bun.lock changed).
+3. With the environment prefix, run: bun --version, node --version (need >= 22 for Capacitor 8), git --version; report whether /data/tools/jdk21 and /data/tools/android-sdk exist; confirm /data/tools, /data/tools/cache and /data/tools/tmp exist and are writable by the current user (create cache/ and tmp/ subfolders if /data/tools is writable; never use sudo); check node_modules/ exists at the repo root (run bun install if missing and report whether bun.lock changed).
 4. Confirm ${EPIC}/STATUS.md exists, list the task files, and report which tasks STATUS.md marks [x].
-ok=true only if on ${BRANCH}, tree clean (per the rules above), ${EPIC} exists, node >= 22 and node_modules/ exists. Do not modify tracked files.
+ok=true only if /data/tools is writable, on ${BRANCH}, tree clean (per the rules above), ${EPIC} exists, node >= 22 and node_modules/ exists. Do not modify tracked files.
 ${RULES}`,
   { label: 'preflight', phase: 'Preflight', schema: PREFLIGHT, effort: 'low', model: 'sonnet' },
 )

@@ -51,6 +51,18 @@ knowledge-base slug is `city-drive`. The public name is picked at task 19.
 - **Android builds:** task 17 may install **JDK 21** (Capacitor 8 / AGP 8.13 need Java 21) and the Android SDK under `/data/tools/` (the portfolio convention). If a licence prompt needs a human, the task returns blocked with the exact command.
 - **Not available:** devices, emulators, and browser QA. Device and visual steps are always reported **NOT RUN**, never faked.
 
+## Disk policy (user, 2026-10-15)
+
+The root filesystem (`/`, `/home`, `/tmp`) has only about 20 GB free. **Everything installed, downloaded or cached goes under `/data/tools`:**
+
+| What | Where |
+|---|---|
+| Toolchains (JDK 21, Android SDK, anything else) | `/data/tools/<name>` |
+| Bun / npm / Gradle / XDG caches | `/data/tools/cache/{bun,npm,gradle,xdg}` (set by the workflow's env prefix) |
+| Scratch downloads, extracted archives, throwaway HEAD worktrees | `/data/tools/tmp/<task-id>/`, deleted when the task ends |
+
+Never `/tmp` or `$HOME`, and never `sudo`. `/data/tools` must exist and be owned by the user before the run (created once by the human).
+
 ## Dry-run review (2026-10-15)
 
 A read-only Sonnet dry run reviewed every task against the repo. Its fixes are appended to each affected task file under **"Dry-run amendments"**, which take precedence over the original text.

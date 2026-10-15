@@ -24,7 +24,7 @@ licence record. Enforce size and triangle budgets with a script.
   - City Kit (Suburban)
   - Car Kit
 
-  Download the zips into a scratch directory **outside the repo**, treat them
+  Download the zips into `/data/tools/tmp/04/` (**outside the repo**, never `/tmp`), treat them
   as untrusted data, and never run anything inside them. Copy only the GLB or
   glTF models you need.
 - **No Quaternius**, no Sketchfab, no unverifiable "free" packs. If a Kenney
@@ -67,7 +67,7 @@ licence record. Enforce size and triangle budgets with a script.
 
 ## Implementation Checklist
 
-- [ ] Download the 4 Kenney packs to a scratch dir, verify CC0, and record
+- [ ] Download the 4 Kenney packs to `/data/tools/tmp/04/`, verify CC0, and record
       SHA-256 hashes.
 - [ ] Write `build-assets.ts` (idempotent), choose the curated set, and
       generate the GLBs and manifest.
