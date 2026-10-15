@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 01-workspace-scaffold
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/00-knowledge-base-and-decisions]
 estimate: M
@@ -66,16 +66,16 @@ gameplay yet.
 
 ## Implementation Checklist
 
-- [ ] Add the workspace glob and root scripts; run `bun install` and verify
+- [x] Add the workspace glob and root scripts; run `bun install` and verify
       that the only `bun.lock` changes are the new dependencies.
-- [ ] Scaffold `apps-games/city-drive-core` with its tsconfig, Vitest config,
+- [x] Scaffold `apps-games/city-drive-core` with its tsconfig, Vitest config,
       and placeholder export + test.
-- [ ] Scaffold `apps-games/city-drive` with Vite, the Babylon WebGL2 scene,
+- [x] Scaffold `apps-games/city-drive` with Vite, the Babylon WebGL2 scene,
       and the `NullEngine` test.
-- [ ] Update `biome.json` and `knip.json`.
-- [ ] Write `apps-games/city-drive/README.md` (commands, architecture: core
+- [x] Update `biome.json` and `knip.json`.
+- [x] Write `apps-games/city-drive/README.md` (commands, architecture: core
       = simulation, app = render + UI).
-- [ ] Record pinned versions in `.agents/resources/2026-10-15/city-drive-qa/01/README.md`.
+- [x] Record pinned versions in `.agents/resources/2026-10-15/city-drive-qa/01/README.md`.
 
 ## Files Touched
 

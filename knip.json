@@ -1,5 +1,29 @@
 {
   "$schema": "./node_modules/knip/schema.json",
+  "workspaces": {
+    "apps-games/city-drive": {
+      "entry": [
+        "src/main.ts",
+        "vite.config.ts",
+        "vitest.config.ts",
+        "scripts/*.ts",
+        "tool/*.ts",
+        "test/**"
+      ],
+      "project": ["src/**", "scripts/**", "tool/**", "test/**"]
+    },
+    "apps-games/city-drive-core": {
+      "entry": [
+        "src/index.ts",
+        "vitest.config.ts",
+        "scripts/*.ts",
+        "tool/*.ts",
+        "test/**"
+      ],
+      "project": ["src/**", "scripts/**", "tool/**", "test/**"],
+      "ignoreDependencies": ["@dimforge/rapier3d-compat"]
+    }
+  },
   "ignoreBinaries": [
     "dart",
     "eas",

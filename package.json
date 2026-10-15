@@ -50,6 +50,10 @@
     "games:codegen": "bun scripts/games/cli.ts codegen",
     "knip": "DATABASE_URL=postgresql://knip.invalid/knip knip",
     "knip:ci": "DATABASE_URL=postgresql://knip.invalid/knip knip --reporter compact",
+    "city-drive:dev": "bun run --filter @city-drive/app dev",
+    "city-drive:build": "bun run --filter '@city-drive/*' build",
+    "city-drive:test": "bun run --filter '@city-drive/*' test",
+    "city-drive:typecheck": "bun run --filter '@city-drive/*' typecheck",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -77,6 +81,7 @@
   "packageManager": "bun@1.3.3",
   "workspaces": [
     "apps/*",
+    "apps-games/*",
     "packages/*",
     "plugins/expo/*"
   ]

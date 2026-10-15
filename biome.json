@@ -8,6 +8,7 @@
   "files": {
     "includes": [
       "apps/**",
+      "apps-games/**",
       "packages/**",
       "plugins/**",
       "scripts/**",
@@ -22,6 +23,11 @@
       "!**/android/build",
       "!**/android/app/build",
       "!apps/native/ios",
+      "!apps-games/**/android",
+      "!apps-games/**/ios",
+      "!apps-games/**/public/assets",
+      "!apps-games/**/content",
+      "!apps-games/**/test/fixtures",
       "!**/*.generated.*",
       "!**/*.css"
     ],
