@@ -1,7 +1,7 @@
 ---
 epic: 15-ludo-launch
 task: 26i-economy-compliance-and-provisioning-docs
-status: pending
+status: completed
 commit_scope: ludo
 depends_on: [15-ludo-launch/26h-rewarded-ads-and-daily-rewards]
 estimate: M
@@ -88,25 +88,27 @@ itself is not edited by this task).
 
 ## Implementation Checklist
 
-- [ ] Read task 27's three release-prep docs (or confirm they don't exist
+- [x] Read task 27's three release-prep docs (or confirm they don't exist
   yet) and extend/create them with the purchase/ads/advertising-ID/
   simulated-gambling content above.
-- [ ] Add the content-rating notes section (simulated gambling + never-
+- [x] Add the content-rating notes section (simulated gambling + never-
   cashable statement together, odds-disclosure "not applicable" statement)
   to `docs-internal/gaming/ludo-data-safety.md` or a new
   `docs-internal/gaming/ludo-content-rating.md` if that reads cleaner as
   its own file.
-- [ ] Write `docs-internal/gaming/ludo-store-product-ids.md`: the full
+- [x] Write `docs-internal/gaming/ludo-store-product-ids.md`: the full
   product id list for Play Console and App Store Connect, cross-referenced
   against task 26d's `iap-catalog.ts`.
-- [ ] Write `docs-internal/gaming/ludo-revenuecat-admob-runbook.md` per
+- [x] Write `docs-internal/gaming/ludo-revenuecat-admob-runbook.md` per
   Context.
-- [ ] Write the exact task 29 checklist additions as a clearly delimited
+- [x] Write the exact task 29 checklist additions as a clearly delimited
   section in this task's commit body (and, if useful, as a short
   standalone note under `docs-internal/gaming/` referenced by name) —
   do not touch `29-human-acceptance-provisioning.md` itself.
-- [ ] Run `bun run check:doc-paths` and `bun run check:staged-docs` against
+- [x] Run `bun run check:doc-paths` and `bun run check:staged-docs` against
   every new/changed doc.
+
+Note: device evidence pending: run ludo-economy-device-pass
 
 ## Files Touched
 

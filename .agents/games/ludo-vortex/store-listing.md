@@ -77,18 +77,22 @@ Third parties: Google (Firebase, AdMob, Play Billing), RevenueCat.
 
 ## Ads declaration & consent
 
-Contains ads: Yes (rewarded, opt-in). Google UMP consent in EEA/UK; privacy options
+Contains ads: Yes (rewarded, opt-in). Google UMP consent in EEA/UK; privacy options (NOT BUILT yet, see open-questions)
 entry in Settings. No ads targeted to children.
 
 ## In-app products (to create in Play Console)
 
-See `economy.md` → IAP table; record final product IDs here after task 26i:
+Final IDs (task 26i; full console notes in `docs-internal/gaming/ludo-store-product-ids.md`):
 | Product | ID | Type | Price |
 |---|---|---|---|
-| Starter Pack | **TBD** | one-time (consumable, purchasable once) | ₹49 |
-| Coins S/M/L | **TBD** | consumable | ₹99/₹399/₹1,499 |
-| Diamonds S/M/L | **TBD** | consumable | ₹149/₹699/₹1,699 |
-| Vortex Pass | **TBD** | subscription (monthly) | ₹199 |
+| Starter Pack | `ludo_starter_pack` | one-time (mark non-consumable in RevenueCat) | ₹49 |
+| Coins S/M/L | `ludo_coins_small` / `ludo_coins_medium` / `ludo_coins_large` | consumable | ₹99/₹399/₹1,499 |
+| Diamonds S/M/L | `ludo_diamonds_small` / `ludo_diamonds_medium` / `ludo_diamonds_large` | consumable | ₹149/₹699/₹1,699 |
+| Vortex Pass | `ludo_vortex_pass_monthly` | subscription (monthly) | ₹199 |
+
+Not `ludo_pass_monthly` (the task text's name): the server only knows `ludo_vortex_pass_monthly`.
+Odds disclosure: not applicable, no randomized paid items. Release-prep docs live in
+`docs-internal/gaming/ludo-{privacy-policy,data-safety,content-rating,store-listing,store-product-ids,revenuecat-admob-runbook}.md`.
 
 ## Permissions (Android)
 
