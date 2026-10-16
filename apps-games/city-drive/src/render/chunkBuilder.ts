@@ -44,6 +44,9 @@ function buildHost(
   });
   return template.parts.map((part, partIndex) => {
     const host = part.clone(`host:${chunk}:${template.id}:${partIndex}`);
+    // A clone shares its geometry, and Babylon keeps thin-instance buffers on the geometry: without
+    // this, every host of the model draws the last host's matrices and the other chunks lose them.
+    host.makeGeometryUnique();
     host.setEnabled(true);
     host.material = requirePackMaterial(materials, template.pack);
     host.thinInstanceSetBuffer("matrix", buffer.slice(), 16, true);

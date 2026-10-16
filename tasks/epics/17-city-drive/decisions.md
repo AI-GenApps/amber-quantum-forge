@@ -32,5 +32,5 @@
 
 - "The game looks good but the roads are not continuous, which needs to be fixed so it looks better
   and more real-world like." Headless checks found the road graph fully connected and every road model
-  sharing one edge profile, so the cause is still unknown. Waiting on a screenshot or a description
-  from the owner, then a fix task (16a).
+  sharing one edge profile. The owner's screenshot showed most straight roads missing; root cause
+  was thin-instance hosts sharing one geometry. Fixed in task 16a (`16a-road-thin-instance-fix.md`).

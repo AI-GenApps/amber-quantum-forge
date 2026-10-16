@@ -25,6 +25,8 @@ export function buildPads(scene: Scene, pads: readonly PadPlacement[]): Mesh[] {
   for (const key of [...byChunk.keys()].sort()) {
     const group = byChunk.get(key) ?? [];
     const host = source.clone(`pads:${key}`);
+    // Thin-instance buffers live on the geometry, so each chunk's host needs its own (see chunkBuilder).
+    host.makeGeometryUnique();
     const buffer = new Float32Array(group.length * 16);
     group.forEach((pad, i) => {
       Matrix.Compose(
