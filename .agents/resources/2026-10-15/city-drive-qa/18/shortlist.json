@@ -1,0 +1,170 @@
+[
+  {
+    "rank": 1,
+    "name": "Honkville",
+    "chars": 9,
+    "rationale": "A town where everybody honks: friendly, instantly sayable, fits missions and traffic in one word.",
+    "verdict": "NOT FOUND",
+    "trademark": "UNSURE (web glance clear; USPTO/EUIPO need a browser)",
+    "checked_at": "2026-10-16",
+    "domains": {
+      "honkville.com": "available",
+      "honkville.app": "available"
+    },
+    "web_query": "\"Honkville\" game",
+    "evidence": [
+      "https://play.google.com/store/search?q=Honkville&c=apps",
+      "https://play.google.com/store/search?q=%22Honkville%22&c=apps",
+      "https://itunes.apple.com/search?term=Honkville&entity=software&limit=50",
+      "https://rdap.verisign.com/com/v1/domain/honkville.com",
+      "https://pubapi.registry.google/rdap/domain/honkville.app"
+    ]
+  },
+  {
+    "rank": 2,
+    "name": "Tarmac Town",
+    "chars": 11,
+    "rationale": "The road surface plus a small stylized city; reads clearly as a driving game in a town.",
+    "verdict": "NOT FOUND",
+    "trademark": "UNSURE (web glance clear; USPTO/EUIPO need a browser)",
+    "checked_at": "2026-10-16",
+    "domains": {
+      "tarmactown.com": "available",
+      "tarmactown.app": "available"
+    },
+    "web_query": "\"Tarmac Town\" game",
+    "evidence": [
+      "https://play.google.com/store/search?q=Tarmac%20Town&c=apps",
+      "https://play.google.com/store/search?q=%22Tarmac%20Town%22&c=apps",
+      "https://itunes.apple.com/search?term=Tarmac%20Town&entity=software&limit=50",
+      "https://rdap.verisign.com/com/v1/domain/tarmactown.com",
+      "https://pubapi.registry.google/rdap/domain/tarmactown.app"
+    ]
+  },
+  {
+    "rank": 3,
+    "name": "Kerbside Run",
+    "chars": 12,
+    "rationale": "A kerbside run is a delivery or pickup; covers the delivery and taxi missions. Uses the British spelling kerb.",
+    "verdict": "NOT FOUND",
+    "trademark": "UNSURE (web glance clear; USPTO/EUIPO need a browser)",
+    "checked_at": "2026-10-16",
+    "domains": {
+      "kerbsiderun.com": "available",
+      "kerbsiderun.app": "available"
+    },
+    "web_query": "\"Kerbside Run\" game",
+    "evidence": [
+      "https://play.google.com/store/search?q=Kerbside%20Run&c=apps",
+      "https://play.google.com/store/search?q=%22Kerbside%20Run%22&c=apps",
+      "https://itunes.apple.com/search?term=Kerbside%20Run&entity=software&limit=50",
+      "https://rdap.verisign.com/com/v1/domain/kerbsiderun.com",
+      "https://pubapi.registry.google/rdap/domain/kerbsiderun.app"
+    ]
+  },
+  {
+    "rank": 4,
+    "name": "Turnpike Town",
+    "chars": 13,
+    "rationale": "A toll-road town; evokes highways and city blocks, strong alliteration.",
+    "verdict": "NOT FOUND",
+    "trademark": "UNSURE (web glance clear; USPTO/EUIPO need a browser)",
+    "checked_at": "2026-10-16",
+    "domains": {
+      "turnpiketown.com": "available",
+      "turnpiketown.app": "available"
+    },
+    "web_query": "\"Turnpike Town\" game",
+    "evidence": [
+      "https://play.google.com/store/search?q=Turnpike%20Town&c=apps",
+      "https://play.google.com/store/search?q=%22Turnpike%20Town%22&c=apps",
+      "https://itunes.apple.com/search?term=Turnpike%20Town&entity=software&limit=50",
+      "https://rdap.verisign.com/com/v1/domain/turnpiketown.com",
+      "https://pubapi.registry.google/rdap/domain/turnpiketown.app"
+    ]
+  },
+  {
+    "rank": 5,
+    "name": "Cobble Cruise",
+    "chars": 13,
+    "rationale": "Cobbled streets plus a relaxed cruise; softer, cosy tone for free roam.",
+    "verdict": "NOT FOUND",
+    "trademark": "UNSURE (web glance clear; USPTO/EUIPO need a browser)",
+    "checked_at": "2026-10-16",
+    "domains": {
+      "cobblecruise.com": "available",
+      "cobblecruise.app": "available"
+    },
+    "web_query": "\"Cobble Cruise\" game",
+    "evidence": [
+      "https://play.google.com/store/search?q=Cobble%20Cruise&c=apps",
+      "https://play.google.com/store/search?q=%22Cobble%20Cruise%22&c=apps",
+      "https://itunes.apple.com/search?term=Cobble%20Cruise&entity=software&limit=50",
+      "https://rdap.verisign.com/com/v1/domain/cobblecruise.com",
+      "https://pubapi.registry.google/rdap/domain/cobblecruise.app"
+    ]
+  },
+  {
+    "rank": 6,
+    "name": "Tollgate Town",
+    "chars": 13,
+    "rationale": "A gated town of toll roads; hints at districts that unlock.",
+    "verdict": "NOT FOUND",
+    "trademark": "UNSURE (web glance clear; USPTO/EUIPO need a browser)",
+    "checked_at": "2026-10-16",
+    "domains": {
+      "tollgatetown.com": "available",
+      "tollgatetown.app": "available"
+    },
+    "web_query": "\"Tollgate Town\" game",
+    "evidence": [
+      "https://play.google.com/store/search?q=Tollgate%20Town&c=apps",
+      "https://play.google.com/store/search?q=%22Tollgate%20Town%22&c=apps",
+      "https://itunes.apple.com/search?term=Tollgate%20Town&entity=software&limit=50",
+      "https://rdap.verisign.com/com/v1/domain/tollgatetown.com",
+      "https://pubapi.registry.google/rdap/domain/tollgatetown.app"
+    ]
+  },
+  {
+    "rank": 7,
+    "name": "Honkopolis",
+    "chars": 10,
+    "rationale": "Honk plus metropolis: a whole city of traffic; playful and short.",
+    "verdict": "NOT FOUND",
+    "trademark": "UNSURE (web glance clear; USPTO/EUIPO need a browser)",
+    "checked_at": "2026-10-16",
+    "domains": {
+      "honkopolis.com": "available",
+      "honkopolis.app": "available"
+    },
+    "web_query": "\"Honkopolis\" game",
+    "evidence": [
+      "https://play.google.com/store/search?q=Honkopolis&c=apps",
+      "https://play.google.com/store/search?q=%22Honkopolis%22&c=apps",
+      "https://itunes.apple.com/search?term=Honkopolis&entity=software&limit=50",
+      "https://rdap.verisign.com/com/v1/domain/honkopolis.com",
+      "https://pubapi.registry.google/rdap/domain/honkopolis.app"
+    ]
+  },
+  {
+    "rank": 8,
+    "name": "Wheelwick",
+    "chars": 9,
+    "rationale": "Invented place name (wheel plus -wick, like a village); abstract but pronounceable and brandable.",
+    "verdict": "NOT FOUND",
+    "trademark": "UNSURE (web glance clear; USPTO/EUIPO need a browser)",
+    "checked_at": "2026-10-16",
+    "domains": {
+      "wheelwick.com": "available",
+      "wheelwick.app": "available"
+    },
+    "web_query": "\"Wheelwick\" game app",
+    "evidence": [
+      "https://play.google.com/store/search?q=Wheelwick&c=apps",
+      "https://play.google.com/store/search?q=%22Wheelwick%22&c=apps",
+      "https://itunes.apple.com/search?term=Wheelwick&entity=software&limit=50",
+      "https://rdap.verisign.com/com/v1/domain/wheelwick.com",
+      "https://pubapi.registry.google/rdap/domain/wheelwick.app"
+    ]
+  }
+]

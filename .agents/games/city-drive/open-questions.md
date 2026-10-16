@@ -2,8 +2,8 @@
 
 | # | Question / blocker | Owner | Blocks |
 |---|---|---|---|
-| 1 | **Public name.** "City Drive" is a working title. Task 18 proposes candidates that pass a strict uniqueness check; the human picks at task 19. | user | branding (task 20), listing, everything downstream of the name |
-| 2 | **Icon direction.** Task 18 produces an icon dry run; the human picks the direction at task 19. | user | final icon and splash (task 20) |
+| 1 | **Public name.** "City Drive" is a working title. Task 18 (2026-10-16) produced 8 NOT FOUND candidates, ranked: **Honkville**, Tarmac Town, Kerbside Run, Turnpike Town, Cobble Cruise, Tollgate Town, Honkopolis, Wheelwick (≤14 chars, both .com/.app free, stores and web clear; top 3 independently rechecked). **Pick one at task 19.** Trademarks are UNSURE (USPTO/EUIPO not queryable headlessly), so run a formal clearance on the pick. Evidence: `.agents/resources/2026-10-15/city-drive-qa/18/README.md`. | user | branding (task 20), listing, everything downstream of the name |
+| 2 | **Icon direction.** Task 18 produced 6 generated drafts (3 directions x 2): 1a/1b hero car, 2a map pin / 2b road sign, 3a/3b top-down drift; contact sheet in `.agents/resources/2026-10-15/city-drive-qa/18/contact-sheet.png`. Recommendation: **1b**, alternative 2a. **Pick the direction at task 19.** | user | final icon and splash (task 20) |
 | 3 | **Web hosting: Vercel project.** The browser build needs a Vercel project and its GitHub Actions deploy secrets; agents never deploy. Provisioned at human task 22. | user | web release |
 | 4 | **Real-device performance on low-end Android.** No device exists on the build server, so frame rate against the 100 draw call / 150k triangle budget is only proven headlessly. Measured on a real device at human task 22 (with the playtest at task 16 for browsers). | user | Android release |
 | 5 | **Play developer account owner, signing key, iOS provisioning.** Which account submits; keystore and certificates stay outside the repo. | user | store release (task 22) |

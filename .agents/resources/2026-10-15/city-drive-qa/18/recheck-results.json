@@ -1,0 +1,404 @@
+[
+ {
+  "name": "Honkville",
+  "checked_at": "2026-10-16",
+  "queries": [
+   {
+    "store": "play",
+    "q": "Honkville game",
+    "url": "https://play.google.com/store/search?q=Honkville%20game&c=apps",
+    "http": 200,
+    "n": 30,
+    "flags": []
+   },
+   {
+    "store": "itunes-us",
+    "q": "Honkville game",
+    "url": "https://itunes.apple.com/search?term=Honkville%20game&entity=software&country=us&limit=50",
+    "http": 200,
+    "n": 43,
+    "flags": []
+   },
+   {
+    "store": "itunes-gb",
+    "q": "Honkville game",
+    "url": "https://itunes.apple.com/search?term=Honkville%20game&entity=software&country=gb&limit=50",
+    "http": 200,
+    "n": 43,
+    "flags": []
+   },
+   {
+    "store": "itunes-ca",
+    "q": "Honkville game",
+    "url": "https://itunes.apple.com/search?term=Honkville%20game&entity=software&country=ca&limit=50",
+    "http": 200,
+    "n": 45,
+    "flags": []
+   },
+   {
+    "store": "play",
+    "q": "Honk ville",
+    "url": "https://play.google.com/store/search?q=Honk%20ville&c=apps",
+    "http": 200,
+    "n": 8,
+    "flags": []
+   },
+   {
+    "store": "itunes-us",
+    "q": "Honk ville",
+    "url": "https://itunes.apple.com/search?term=Honk%20ville&entity=software&country=us&limit=50",
+    "http": 200,
+    "n": 19,
+    "flags": []
+   },
+   {
+    "store": "itunes-gb",
+    "q": "Honk ville",
+    "url": "https://itunes.apple.com/search?term=Honk%20ville&entity=software&country=gb&limit=50",
+    "http": 200,
+    "n": 18,
+    "flags": []
+   },
+   {
+    "store": "itunes-ca",
+    "q": "Honk ville",
+    "url": "https://itunes.apple.com/search?term=Honk%20ville&entity=software&country=ca&limit=50",
+    "http": 200,
+    "n": 19,
+    "flags": []
+   },
+   {
+    "store": "play",
+    "q": "Honkville driving",
+    "url": "https://play.google.com/store/search?q=Honkville%20driving&c=apps",
+    "http": 200,
+    "n": 30,
+    "flags": []
+   },
+   {
+    "store": "itunes-us",
+    "q": "Honkville driving",
+    "url": "https://itunes.apple.com/search?term=Honkville%20driving&entity=software&country=us&limit=50",
+    "http": 200,
+    "n": 46,
+    "flags": []
+   },
+   {
+    "store": "itunes-gb",
+    "q": "Honkville driving",
+    "url": "https://itunes.apple.com/search?term=Honkville%20driving&entity=software&country=gb&limit=50",
+    "http": 200,
+    "n": 42,
+    "flags": []
+   },
+   {
+    "store": "itunes-ca",
+    "q": "Honkville driving",
+    "url": "https://itunes.apple.com/search?term=Honkville%20driving&entity=software&country=ca&limit=50",
+    "http": 200,
+    "n": 45,
+    "flags": []
+   },
+   {
+    "store": "play",
+    "q": "Honkville car",
+    "url": "https://play.google.com/store/search?q=Honkville%20car&c=apps",
+    "http": 200,
+    "n": 30,
+    "flags": []
+   },
+   {
+    "store": "itunes-us",
+    "q": "Honkville car",
+    "url": "https://itunes.apple.com/search?term=Honkville%20car&entity=software&country=us&limit=50",
+    "http": 200,
+    "n": 41,
+    "flags": []
+   },
+   {
+    "store": "itunes-gb",
+    "q": "Honkville car",
+    "url": "https://itunes.apple.com/search?term=Honkville%20car&entity=software&country=gb&limit=50",
+    "http": 200,
+    "n": 41,
+    "flags": []
+   },
+   {
+    "store": "itunes-ca",
+    "q": "Honkville car",
+    "url": "https://itunes.apple.com/search?term=Honkville%20car&entity=software&country=ca&limit=50",
+    "http": 200,
+    "n": 44,
+    "flags": []
+   }
+  ]
+ },
+ {
+  "name": "Tarmac Town",
+  "checked_at": "2026-10-16",
+  "queries": [
+   {
+    "store": "play",
+    "q": "Tarmac Town game",
+    "url": "https://play.google.com/store/search?q=Tarmac%20Town%20game&c=apps",
+    "http": 200,
+    "n": 30,
+    "flags": []
+   },
+   {
+    "store": "itunes-us",
+    "q": "Tarmac Town game",
+    "url": "https://itunes.apple.com/search?term=Tarmac%20Town%20game&entity=software&country=us&limit=50",
+    "http": 200,
+    "n": 43,
+    "flags": []
+   },
+   {
+    "store": "itunes-gb",
+    "q": "Tarmac Town game",
+    "url": "https://itunes.apple.com/search?term=Tarmac%20Town%20game&entity=software&country=gb&limit=50",
+    "http": 200,
+    "n": 43,
+    "flags": []
+   },
+   {
+    "store": "itunes-ca",
+    "q": "Tarmac Town game",
+    "url": "https://itunes.apple.com/search?term=Tarmac%20Town%20game&entity=software&country=ca&limit=50",
+    "http": 200,
+    "n": 44,
+    "flags": []
+   },
+   {
+    "store": "play",
+    "q": "TarmacTown",
+    "url": "https://play.google.com/store/search?q=TarmacTown&c=apps",
+    "http": 200,
+    "n": 0,
+    "flags": []
+   },
+   {
+    "store": "itunes-us",
+    "q": "TarmacTown",
+    "url": "https://itunes.apple.com/search?term=TarmacTown&entity=software&country=us&limit=50",
+    "http": 200,
+    "n": 3,
+    "flags": []
+   },
+   {
+    "store": "itunes-gb",
+    "q": "TarmacTown",
+    "url": "https://itunes.apple.com/search?term=TarmacTown&entity=software&country=gb&limit=50",
+    "http": 200,
+    "n": 3,
+    "flags": []
+   },
+   {
+    "store": "itunes-ca",
+    "q": "TarmacTown",
+    "url": "https://itunes.apple.com/search?term=TarmacTown&entity=software&country=ca&limit=50",
+    "http": 200,
+    "n": 3,
+    "flags": []
+   },
+   {
+    "store": "play",
+    "q": "Tarmac Town driving",
+    "url": "https://play.google.com/store/search?q=Tarmac%20Town%20driving&c=apps",
+    "http": 200,
+    "n": 13,
+    "flags": []
+   },
+   {
+    "store": "itunes-us",
+    "q": "Tarmac Town driving",
+    "url": "https://itunes.apple.com/search?term=Tarmac%20Town%20driving&entity=software&country=us&limit=50",
+    "http": 200,
+    "n": 45,
+    "flags": []
+   },
+   {
+    "store": "itunes-gb",
+    "q": "Tarmac Town driving",
+    "url": "https://itunes.apple.com/search?term=Tarmac%20Town%20driving&entity=software&country=gb&limit=50",
+    "http": 200,
+    "n": 45,
+    "flags": []
+   },
+   {
+    "store": "itunes-ca",
+    "q": "Tarmac Town driving",
+    "url": "https://itunes.apple.com/search?term=Tarmac%20Town%20driving&entity=software&country=ca&limit=50",
+    "http": 200,
+    "n": 46,
+    "flags": []
+   },
+   {
+    "store": "play",
+    "q": "Tarmac Town car",
+    "url": "https://play.google.com/store/search?q=Tarmac%20Town%20car&c=apps",
+    "http": 200,
+    "n": 30,
+    "flags": []
+   },
+   {
+    "store": "itunes-us",
+    "q": "Tarmac Town car",
+    "url": "https://itunes.apple.com/search?term=Tarmac%20Town%20car&entity=software&country=us&limit=50",
+    "http": 200,
+    "n": 42,
+    "flags": []
+   },
+   {
+    "store": "itunes-gb",
+    "q": "Tarmac Town car",
+    "url": "https://itunes.apple.com/search?term=Tarmac%20Town%20car&entity=software&country=gb&limit=50",
+    "http": 200,
+    "n": 42,
+    "flags": []
+   },
+   {
+    "store": "itunes-ca",
+    "q": "Tarmac Town car",
+    "url": "https://itunes.apple.com/search?term=Tarmac%20Town%20car&entity=software&country=ca&limit=50",
+    "http": 200,
+    "n": 42,
+    "flags": []
+   }
+  ]
+ },
+ {
+  "name": "Kerbside Run",
+  "checked_at": "2026-10-16",
+  "queries": [
+   {
+    "store": "play",
+    "q": "Kerbside Run game",
+    "url": "https://play.google.com/store/search?q=Kerbside%20Run%20game&c=apps",
+    "http": 200,
+    "n": 8,
+    "flags": []
+   },
+   {
+    "store": "itunes-us",
+    "q": "Kerbside Run game",
+    "url": "https://itunes.apple.com/search?term=Kerbside%20Run%20game&entity=software&country=us&limit=50",
+    "http": 200,
+    "n": 38,
+    "flags": []
+   },
+   {
+    "store": "itunes-gb",
+    "q": "Kerbside Run game",
+    "url": "https://itunes.apple.com/search?term=Kerbside%20Run%20game&entity=software&country=gb&limit=50",
+    "http": 200,
+    "n": 36,
+    "flags": []
+   },
+   {
+    "store": "itunes-ca",
+    "q": "Kerbside Run game",
+    "url": "https://itunes.apple.com/search?term=Kerbside%20Run%20game&entity=software&country=ca&limit=50",
+    "http": 200,
+    "n": 39,
+    "flags": []
+   },
+   {
+    "store": "play",
+    "q": "Kerbsiderun",
+    "url": "https://play.google.com/store/search?q=Kerbsiderun&c=apps",
+    "http": 200,
+    "n": 0,
+    "flags": []
+   },
+   {
+    "store": "itunes-us",
+    "q": "Kerbsiderun",
+    "url": "https://itunes.apple.com/search?term=Kerbsiderun&entity=software&country=us&limit=50",
+    "http": 200,
+    "n": 38,
+    "flags": []
+   },
+   {
+    "store": "itunes-gb",
+    "q": "Kerbsiderun",
+    "url": "https://itunes.apple.com/search?term=Kerbsiderun&entity=software&country=gb&limit=50",
+    "http": 200,
+    "n": 34,
+    "flags": []
+   },
+   {
+    "store": "itunes-ca",
+    "q": "Kerbsiderun",
+    "url": "https://itunes.apple.com/search?term=Kerbsiderun&entity=software&country=ca&limit=50",
+    "http": 200,
+    "n": 38,
+    "flags": []
+   },
+   {
+    "store": "play",
+    "q": "Kerbside Run driving",
+    "url": "https://play.google.com/store/search?q=Kerbside%20Run%20driving&c=apps",
+    "http": 200,
+    "n": 30,
+    "flags": []
+   },
+   {
+    "store": "itunes-us",
+    "q": "Kerbside Run driving",
+    "url": "https://itunes.apple.com/search?term=Kerbside%20Run%20driving&entity=software&country=us&limit=50",
+    "http": 200,
+    "n": 40,
+    "flags": []
+   },
+   {
+    "store": "itunes-gb",
+    "q": "Kerbside Run driving",
+    "url": "https://itunes.apple.com/search?term=Kerbside%20Run%20driving&entity=software&country=gb&limit=50",
+    "http": 200,
+    "n": 44,
+    "flags": []
+   },
+   {
+    "store": "itunes-ca",
+    "q": "Kerbside Run driving",
+    "url": "https://itunes.apple.com/search?term=Kerbside%20Run%20driving&entity=software&country=ca&limit=50",
+    "http": 200,
+    "n": 45,
+    "flags": []
+   },
+   {
+    "store": "play",
+    "q": "Curbside Run",
+    "url": "https://play.google.com/store/search?q=Curbside%20Run&c=apps",
+    "http": 200,
+    "n": 30,
+    "flags": []
+   },
+   {
+    "store": "itunes-us",
+    "q": "Curbside Run",
+    "url": "https://itunes.apple.com/search?term=Curbside%20Run&entity=software&country=us&limit=50",
+    "http": 200,
+    "n": 40,
+    "flags": []
+   },
+   {
+    "store": "itunes-gb",
+    "q": "Curbside Run",
+    "url": "https://itunes.apple.com/search?term=Curbside%20Run&entity=software&country=gb&limit=50",
+    "http": 200,
+    "n": 40,
+    "flags": []
+   },
+   {
+    "store": "itunes-ca",
+    "q": "Curbside Run",
+    "url": "https://itunes.apple.com/search?term=Curbside%20Run&entity=software&country=ca&limit=50",
+    "http": 200,
+    "n": 41,
+    "flags": []
+   }
+  ]
+ }
+]

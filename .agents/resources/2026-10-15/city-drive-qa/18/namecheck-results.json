@@ -1,0 +1,2050 @@
+[
+ {
+  "name": "Kerbside Run",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Kerbside%20Run&c=apps",
+   "http": 200,
+   "n_titles": 8,
+   "flags": [],
+   "top": [
+    "RunDouble - Couch to 5K",
+    "run.events",
+    "ASICS Runkeeper: Fitness App",
+    "Mom, Run! \u2014 Merge Mystery",
+    "Nike Run Club - Running Coach",
+    "Stockbit - Investasi Saham",
+    "The Run Experience",
+    "Home Run High"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Kerbside%20Run%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Kerbside%20Run&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 35,
+   "flags": [],
+   "top": [
+    "Get Running",
+    "Flippy",
+    "Garmin Kansas City Marathon",
+    "Run Race 3D: Multiplayer Games",
+    "parkrun Official",
+    "MCM Events",
+    "Building Run",
+    "Stone Marble Run Rolling Saga Race Mania Hot Games"
+   ]
+  },
+  "domains": {
+   "kerbsiderun.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/kerbsiderun.com",
+    "state": "available"
+   },
+   "kerbsiderun.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/kerbsiderun.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Crosstown Dash",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Crosstown%20Dash&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [
+    {
+     "title": "Crosstown",
+     "why": "similar 0.82"
+    }
+   ],
+   "top": [
+    "Crosstown",
+    "Crosstowne",
+    "Boulder Dash\u00ae 30th Anniversary",
+    "Crossy Road",
+    "Geometry Dash Lite",
+    "Geometry Dash",
+    "Tap Tap Dash",
+    "Sonic Dash Run"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Crosstown%20Dash%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Crosstown%20Dash&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 43,
+   "flags": [
+    {
+     "title": "Crosstown",
+     "why": "similar 0.82"
+    }
+   ],
+   "top": [
+    "Stacky Dash",
+    "Wave Dash : Geometry Arrow",
+    "Tap Tap Dash",
+    "Geometry Run - Make The Block Dash",
+    "Crossy Road+",
+    "Arrow Dash Tap",
+    "Geometry Game : Jump Dash",
+    "Crossy Jump Tap Dash Road - Hard Games Free"
+   ]
+  },
+  "domains": {
+   "crosstowndash.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/crosstowndash.com",
+    "state": "available"
+   },
+   "crosstowndash.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/crosstowndash.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Tarmac Town",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Tarmac%20Town&c=apps",
+   "http": 200,
+   "n_titles": 13,
+   "flags": [],
+   "top": [
+    "Town Matters - Match Hero",
+    "SimTown Match - Build & Match",
+    "Towniz World: Avatar Life",
+    "State Connect: Traffic Control",
+    "TownsFolk",
+    "Townsmen - Medieval Strategy",
+    "My Town : ICEME Amusement Park",
+    "Town Horizon: Merge It"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Tarmac%20Town%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Tarmac%20Town&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 2,
+   "flags": [],
+   "top": [
+    "Top Designer - Merge Town",
+    "Tarmac \u2014 Baggage Handler"
+   ]
+  },
+  "domains": {
+   "tarmactown.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/tarmactown.com",
+    "state": "available"
+   },
+   "tarmactown.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/tarmactown.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Gridwheel",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Gridwheel&c=apps",
+   "http": 200,
+   "n_titles": 29,
+   "flags": [
+    {
+     "title": "iwheel",
+     "why": "similar 0.80"
+    }
+   ],
+   "top": [
+    "GRID\u2122 Legends: Deluxe Edition",
+    "Wheeldot",
+    "Grid of Change",
+    "iwheel",
+    "Gridle: The Idle Grid Strategy",
+    "lewheel",
+    "Reverse Grid - F1 Predictor",
+    "PickWheel - Spin Wheel Picker"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Gridwheel%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Gridwheel&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 44,
+   "flags": [],
+   "top": [
+    "Wheel Scale!",
+    "Onewheel",
+    "Logic Grid Puzzles: Word Games",
+    "Type Spin",
+    "Twisty Wheel",
+    "Spin The Wheel - GK Random",
+    "Spin The Wheel Spinner Picker",
+    "Daily Decision Wheel"
+   ]
+  },
+  "domains": {
+   "gridwheel.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/gridwheel.com",
+    "state": "registered"
+   },
+   "gridwheel.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/gridwheel.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Midtown Mile",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Midtown%20Mile&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "MILE",
+    "Midtown Authentic",
+    "Mitanand",
+    "Midtown Station",
+    "Midtown Radio",
+    "Mill Mile-Paterson Great Falls",
+    "Midtown Mgmt: Making Life Easy",
+    "MyAMAT"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Midtown%20Mile%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Midtown%20Mile&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 24,
+   "flags": [],
+   "top": [
+    "IN*MidtownATL",
+    "Perplexity - AI Search & Chat",
+    "DeepSeek - AI Assistant",
+    "Suno - AI Songs, Music, Lyrics",
+    "Kling AI: AI Image&Video Maker",
+    "Trip.com: Book Flights, Hotels",
+    "MPG Manhattan Parking",
+    "Meta AI"
+   ]
+  },
+  "domains": {
+   "midtownmile.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/midtownmile.com",
+    "state": "registered"
+   },
+   "midtownmile.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/midtownmile.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Lanewise",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Lanewise&c=apps",
+   "http": 200,
+   "n_titles": 13,
+   "flags": [],
+   "top": [
+    "Collectible Lane",
+    "Gemwise",
+    "Lanes & Planes",
+    "Azur Lane",
+    "Livewise: Finance Beyond Life!",
+    "Welling AI Nutrition Assistant",
+    "Ascension: Deckbuilding Game",
+    "DraftLane"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Lanewise%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Lanewise&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 39,
+   "flags": [],
+   "top": [
+    "Magic Earth Navigation & Maps",
+    "Rods \u2014 Corner & Road Alerts",
+    "511 Georgia",
+    "INDOT Trafficwise",
+    "Express Lanes",
+    "Peach Pass Verify",
+    "RoadSnap by the Next EXIT",
+    "Freeways"
+   ]
+  },
+  "domains": {
+   "lanewise.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/lanewise.com",
+    "state": "registered"
+   },
+   "lanewise.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/lanewise.app",
+    "state": "registered"
+   }
+  }
+ },
+ {
+  "name": "Honkville",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Honkville&c=apps",
+   "http": 200,
+   "n_titles": 9,
+   "flags": [],
+   "top": [
+    "Hvil\u00ae",
+    "Honible",
+    "H\u00f6ga Kusten",
+    "H-nivete ( hnivete )",
+    "Yogoe Hunter",
+    "H - Cloud by Hoonved",
+    "Honfleur",
+    "Hankkija mobiilisovellus"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Honkville%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Honkville&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 47,
+   "flags": [],
+   "top": [
+    "HONK Partner",
+    "WKDQ 99.5",
+    "KISS COUNTRY 93.7 (KXKS)",
+    "hubNashville 311",
+    "98.1 KHAK",
+    "KICKS 105 (KYKS)",
+    "Statesville Record & Landmark",
+    "GoDanRiver"
+   ]
+  },
+  "domains": {
+   "honkville.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/honkville.com",
+    "state": "available"
+   },
+   "honkville.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/honkville.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Wheelwick",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Wheelwick&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Wheelwick%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Wheelwick&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 41,
+   "flags": [],
+   "top": [
+    "Wheel Scale!",
+    "Summer Wheelie",
+    "Spin The Wheel - GK Random",
+    "Twisty Wheel",
+    "Daily Decision Wheel",
+    "Spin The Wheel Spinner Picker",
+    "Decision Maker: Spin the Wheel",
+    "Wheelie Life 2"
+   ]
+  },
+  "domains": {
+   "wheelwick.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/wheelwick.com",
+    "state": "available"
+   },
+   "wheelwick.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/wheelwick.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Blockrunner",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Blockrunner&c=apps",
+   "http": 200,
+   "n_titles": 50,
+   "flags": [
+    {
+     "title": "Block Runner 2D",
+     "why": "contains"
+    },
+    {
+     "title": "Block Runner",
+     "why": "contains"
+    },
+    {
+     "title": "Block runner",
+     "why": "contains"
+    },
+    {
+     "title": "Mine Block Runner",
+     "why": "contains"
+    },
+    {
+     "title": "Block Runner: Subway Escape",
+     "why": "contains"
+    },
+    {
+     "title": "Blockade Runner",
+     "why": "similar 0.88"
+    },
+    {
+     "title": "Snake Block Runner 3D",
+     "why": "contains"
+    },
+    {
+     "title": "Parkour Dash: Block Runner",
+     "why": "contains"
+    },
+    {
+     "title": "Aim Block Runner",
+     "why": "contains"
+    },
+    {
+     "title": "Snake Block Runner",
+     "why": "contains"
+    },
+    {
+     "title": "Blox Runner",
+     "why": "similar 0.86"
+    },
+    {
+     "title": "Yar Hop! - Neon Block Runner",
+     "why": "contains"
+    }
+   ],
+   "top": [
+    "Block Runner 2D",
+    "Block Runner",
+    "Block runner",
+    "Mine Block Runner",
+    "Block run - Pixel runner",
+    "Block Runner: Subway Escape",
+    "Miner Runner",
+    "Blockrun \u2013 Block Puzzle"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Blockrunner%22&c=apps",
+   "http": 200,
+   "n_titles": 3,
+   "flags": [],
+   "top": [
+    "Cube Run",
+    "GoldenReward",
+    "Stair Builder - Toilet Games"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Blockrunner&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 36,
+   "flags": [
+    {
+     "title": "Block Runners",
+     "why": "contains"
+    }
+   ],
+   "top": [
+    "Block Runners",
+    "Blocky Raider",
+    "Temple Run 2",
+    "SuperBall 3 Lite Edition",
+    "Blocks vs Blocks",
+    "Block Earth Classic",
+    "Cube Runner",
+    "Craft Parkour : 3D Blocky Race"
+   ]
+  },
+  "domains": {
+   "blockrunner.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/blockrunner.com",
+    "state": "registered"
+   },
+   "blockrunner.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/blockrunner.app",
+    "state": "registered"
+   }
+  }
+ },
+ {
+  "name": "Streetlark",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Streetlark&c=apps",
+   "http": 200,
+   "n_titles": 29,
+   "flags": [
+    {
+     "title": "Street Link",
+     "why": "similar 0.80"
+    }
+   ],
+   "top": [
+    "Park Street",
+    "Street Park: Street Workout",
+    "Street Parking",
+    "Strek - Discover Nearby",
+    "Street Parking",
+    "Parkkipiste",
+    "Park\u00f6r",
+    "street parking mobile"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Streetlark%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Streetlark&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 13,
+   "flags": [],
+   "top": [
+    "Streetwear Official",
+    "Streets App",
+    "Access Commerce City",
+    "Upstairs Shopping App",
+    "ChiSweep",
+    "DTLA - Safe & Clean",
+    "Urban Hustle: Rule the Streets",
+    "Swaganz"
+   ]
+  },
+  "domains": {
+   "streetlark.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/streetlark.com",
+    "state": "registered"
+   },
+   "streetlark.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/streetlark.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Citylark",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Citylark&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Citylark%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Citylark&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 40,
+   "flags": [],
+   "top": [
+    "City Story Metro\u2122",
+    "Century City",
+    "Pocket City 2+",
+    "Cityscapes: Sim Builder",
+    "Upland: City-Builder",
+    "My Town - City Life Story game",
+    "Modern Community",
+    "SuperCity: My Town Life Sim"
+   ]
+  },
+  "domains": {
+   "citylark.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/citylark.com",
+    "state": "registered"
+   },
+   "citylark.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/citylark.app",
+    "state": "registered"
+   }
+  }
+ },
+ {
+  "name": "Turnpike Town",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Turnpike%20Town&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Party Town",
+    "Town of Salem - The Coven",
+    "Idle Town Master - Pixel Game",
+    "The Town",
+    "Towneez",
+    "Tune Town: Merge & Story",
+    "Topple Town - Physics Puzzles",
+    "TasteTown"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Turnpike%20Town%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Turnpike%20Town&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 11,
+   "flags": [],
+   "top": [
+    "Maine E-ZPass",
+    "Frontier Town: Idle RPG",
+    "DriveKS",
+    "Idle Toll",
+    "Toll Master 3D",
+    "Monroevian",
+    "BRIDGEWATERMA Connect",
+    "TOWNSOUP"
+   ]
+  },
+  "domains": {
+   "turnpiketown.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/turnpiketown.com",
+    "state": "available"
+   },
+   "turnpiketown.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/turnpiketown.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Tailpipe Town",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Tailpipe%20Town&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Little Kitty Town - Cat World",
+    "Little Kitty Town",
+    "Town Pets - Hatch & Grow",
+    "Pocket Town - Animal World",
+    "Travel Town - Merge Adventure",
+    "Wroom - Engine Sounds",
+    "The Town",
+    "Town Pets - Grow Animals"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Tailpipe%20Town%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Tailpipe%20Town&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 8,
+   "flags": [],
+   "top": [
+    "MotorTrend",
+    "Tyler Pipe Technical Tools",
+    "Classic American",
+    "HEAT CONNECT",
+    "B&B Muffler Mart Exhaust",
+    "ShowMeTheExhaust",
+    "BPI Hoses",
+    "BPI Catalogue"
+   ]
+  },
+  "domains": {
+   "tailpipetown.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/tailpipetown.com",
+    "state": "available"
+   },
+   "tailpipetown.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/tailpipetown.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Cobble Cruise",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Cobble%20Cruise&c=apps",
+   "http": 200,
+   "n_titles": 14,
+   "flags": [],
+   "top": [
+    "Norwegian Cruise Line",
+    "Celebrity Cruises",
+    "Cobble",
+    "Royal Caribbean International",
+    "CruiseHuddle",
+    "Cruise Deals",
+    "Cravings \"N\" Cruise",
+    "Cruise with Aarhus"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Cobble%20Cruise%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Cobble%20Cruise&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 44,
+   "flags": [],
+   "top": [
+    "Holland America Line Navigator",
+    "Norwegian Cruise Line",
+    "Disney Cruise Line Navigator",
+    "Cruise Finder by iCruise.com",
+    "My Cruise",
+    "Celebrity Cruises",
+    "Cruise Tycoon: Simulator",
+    "Virgin Voyages"
+   ]
+  },
+  "domains": {
+   "cobblecruise.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/cobblecruise.com",
+    "state": "available"
+   },
+   "cobblecruise.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/cobblecruise.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Tinytown Drive",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Tinytown%20Drive&c=apps",
+   "http": 200,
+   "n_titles": 29,
+   "flags": [],
+   "top": [
+    "Tiny Towns",
+    "Drive 2 Climb: Offroad 4x4",
+    "My Tiny Traveler",
+    "SimCity BuildIt",
+    "Travel Town - Merge Adventure",
+    "Teeny Tiny Town",
+    "Little Kitty Town - Cat World",
+    "Hillside Drive: car racing"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Tinytown%20Drive%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Tinytown%20Drive&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 38,
+   "flags": [],
+   "top": [
+    "Mini Motorways",
+    "Coloring Games for Kids 2-6!",
+    "Piano \u065e",
+    "DeepSeek - AI Assistant",
+    "Suno - AI Songs, Music, Lyrics",
+    "Tinytown",
+    "Blackmagic Camera",
+    "Bike Race: Free Style Games"
+   ]
+  },
+  "domains": {
+   "tinytowndrive.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/tinytowndrive.com",
+    "state": "available"
+   },
+   "tinytowndrive.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/tinytowndrive.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Dashville",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Dashville&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Ville de Villers-Semeuse",
+    "The Longest Dachshund",
+    "Soul Dash: The Long Way Home",
+    "DASE",
+    "DashSharing",
+    "Deauville School",
+    "Campbellsville University App",
+    "FamilyDash: Family Organizer"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Dashville%22&c=apps",
+   "http": 200,
+   "n_titles": 1,
+   "flags": [],
+   "top": [
+    "Country Radio"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Dashville&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 48,
+   "flags": [],
+   "top": [
+    "Roav DashCam",
+    "VAVA Dash",
+    "Peztio",
+    "Nextbase",
+    "FITCAMX",
+    "Wolfbox Auto",
+    "Miofive",
+    "Geode Mods"
+   ]
+  },
+  "domains": {
+   "dashville.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/dashville.com",
+    "state": "registered"
+   },
+   "dashville.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/dashville.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Honk Hollow",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Honk%20Hollow&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Guide for Hollow Knight",
+    "HONK",
+    "Cat Quest",
+    "Wuthering Waves",
+    "Disney+",
+    "Eternal Evolution",
+    "Reddit",
+    "Block Crush: Wood Block Puzzle"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Honk%20Hollow%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Honk%20Hollow&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 5,
+   "flags": [],
+   "top": [
+    "Honker",
+    "Goose Honk Piano & Soundboard",
+    "Car Horn Sounds",
+    "Funny Horn",
+    "HonkyTonk"
+   ]
+  },
+  "domains": {
+   "honkhollow.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/honkhollow.com",
+    "state": "available"
+   },
+   "honkhollow.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/honkhollow.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Wheelhaven",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Wheelhaven&c=apps",
+   "http": 200,
+   "n_titles": 10,
+   "flags": [],
+   "top": [
+    "Wellness Wheel",
+    "Greenwheels - Car sharing",
+    "Gloomhaven Companion",
+    "carzhaven",
+    "Wheel With Me Adapt Fit",
+    "Klin Wheels",
+    "Wheel Wheeler: Rail Runner",
+    "Hot Wheels Track Creator\u2122"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Wheelhaven%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Wheelhaven&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 45,
+   "flags": [],
+   "top": [
+    "The Wheel Deal\u2122 \u2013 Slots Casino",
+    "Wheel Scale!",
+    "Finger Driver",
+    "Spin The Wheel - GK Random",
+    "Roulette Royale - Grand Casino",
+    "Twisty Wheel",
+    "Daily Decision Wheel",
+    "Wheelie Life 2"
+   ]
+  },
+  "domains": {
+   "wheelhaven.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/wheelhaven.com",
+    "state": "registered"
+   },
+   "wheelhaven.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/wheelhaven.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Kerbcrawl",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Kerbcrawl&c=apps",
+   "http": 200,
+   "n_titles": 50,
+   "flags": [],
+   "top": [
+    "PubCrawl",
+    "Kerbl",
+    "DuneCrawl",
+    "KERB",
+    "Krawl",
+    "Ker & Downey",
+    "KLCR - Claim Investigation",
+    "Card Crawl Adventure"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Kerbcrawl%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Kerbcrawl&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 6,
+   "flags": [],
+   "top": [
+    "Best Kebab Cwmbran",
+    "Chepstow Sedbury Kebab House",
+    "Kebabish Plus",
+    "Horley Kebab Center",
+    "Merstham Kebab House",
+    "Star O.K. Kebab"
+   ]
+  },
+  "domains": {
+   "kerbcrawl.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/kerbcrawl.com",
+    "state": "registered"
+   },
+   "kerbcrawl.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/kerbcrawl.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Loopline Lane",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Loopline%20Lane&c=apps",
+   "http": 200,
+   "n_titles": 50,
+   "flags": [
+    {
+     "title": "Loopline",
+     "why": "similar 0.80"
+    }
+   ],
+   "top": [
+    "Loopline",
+    "Loopline: Car Jam Puzzle",
+    "LoopNWX",
+    "LoopIn",
+    "Looping - Sort, recycle, smile",
+    "LineLoop \u2013 Slitherlink Puzzles",
+    "LOOPiN",
+    "Looprail\u2013Spend Beyond Borders"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Loopline%20Lane%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Loopline%20Lane&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 4,
+   "flags": [],
+   "top": [
+    "Express Lanes",
+    "SKEEPER",
+    "Amazing Curve Line",
+    "GA Express Lanes"
+   ]
+  },
+  "domains": {
+   "looplinelane.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/looplinelane.com",
+    "state": "available"
+   },
+   "looplinelane.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/looplinelane.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Cruise Quarter",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Cruise%20Quarter&c=apps",
+   "http": 200,
+   "n_titles": 23,
+   "flags": [],
+   "top": [
+    "CruiseLegend",
+    "Cruizer",
+    "World Cruise Story",
+    "Rhodes Quarter",
+    "Color Cruise",
+    "CruiSea",
+    "CruiseMapper",
+    "Cravings \"N\" Cruise"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Cruise%20Quarter%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Cruise%20Quarter&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 46,
+   "flags": [],
+   "top": [
+    "Holland America Line Navigator",
+    "Royal Caribbean International",
+    "Disney Cruise Line Navigator",
+    "Norwegian Cruise Line",
+    "My Cruise",
+    "Cruise Finder by iCruise.com",
+    "Celebrity Cruises",
+    "Cruise Tycoon: Simulator"
+   ]
+  },
+  "domains": {
+   "cruisequarter.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/cruisequarter.com",
+    "state": "available"
+   },
+   "cruisequarter.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/cruisequarter.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Blockbeat",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Blockbeat&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [
+    {
+     "title": "\u5f8b\u52a8 BlockBeats-CryptoAlphaNews",
+     "why": "contains"
+    },
+    {
+     "title": "Block Beat",
+     "why": "contains"
+    },
+    {
+     "title": "Block Blast!",
+     "why": "similar 0.84"
+    },
+    {
+     "title": "BlockBen",
+     "why": "similar 0.82"
+    }
+   ],
+   "top": [
+    "\u5f8b\u52a8 BlockBeats-CryptoAlphaNews",
+    "Beat Blocks - Rhythm Practice",
+    "Beat Blocks - Rhythm Practice",
+    "Block Beat",
+    "Block Blast!",
+    "Beat The Beat! : Rhythm Action",
+    "Streetbeat: AI Stock Investing",
+    "Blockpit: Crypto Tax App"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Blockbeat%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Blockbeat&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 43,
+   "flags": [
+    {
+     "title": "\u5f8b\u52a8 BlockBeats",
+     "why": "contains"
+    },
+    {
+     "title": "BlockBeats",
+     "why": "contains"
+    },
+    {
+     "title": "Block\u00a0Blast\uff01",
+     "why": "similar 0.84"
+    },
+    {
+     "title": "BlockBear!",
+     "why": "similar 0.89"
+    }
+   ],
+   "top": [
+    "\u5f8b\u52a8 BlockBeats",
+    "Beat Blocks",
+    "BlockBeats",
+    "ChainCatcher",
+    "BeatStars - Instrumental Beats",
+    "Block\u00a0Blast\uff01",
+    "BlockSite: Block Apps & Focus",
+    "Phira"
+   ]
+  },
+  "domains": {
+   "blockbeat.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/blockbeat.com",
+    "state": "registered"
+   },
+   "blockbeat.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/blockbeat.app",
+    "state": "registered"
+   }
+  }
+ },
+ {
+  "name": "Streetwheel",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Streetwheel&c=apps",
+   "http": 200,
+   "n_titles": 29,
+   "flags": [
+    {
+     "title": "Night Street Wheel",
+     "why": "contains"
+    }
+   ],
+   "top": [
+    "Wheels Scooters",
+    "Racing Wheel",
+    "Steering Wheel for PC",
+    "iwheel",
+    "Night Street Wheel",
+    "lewheel",
+    "Starlit On Wheels: Super Kart",
+    "On Wheels"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Streetwheel%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Streetwheel&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 39,
+   "flags": [],
+   "top": [
+    "MotorTrend",
+    "Wheel Scale!",
+    "Onewheel",
+    "Super Unicycle",
+    "Subway Skater vs Skate Surfers",
+    "Real Car Driving: 3D Car City",
+    "Street Racing 3D Drift",
+    "MX Locker"
+   ]
+  },
+  "domains": {
+   "streetwheel.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/streetwheel.com",
+    "state": "registered"
+   },
+   "streetwheel.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/streetwheel.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Mileblock",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Mileblock&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [
+    {
+     "title": "mBlock",
+     "why": "similar 0.80"
+    }
+   ],
+   "top": [
+    "My Block",
+    "mBlock Blockly",
+    "LLLock: Block Apps & Notecards",
+    "Move the Block : Slide Puzzle",
+    "Block Puzzle: Block Smash Game",
+    "Block Mania - Block Puzzle",
+    "Block Jam: 3D Color Puzzle",
+    "Block Mania - Block Puzzle"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Mileblock%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Mileblock&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 41,
+   "flags": [],
+   "top": [
+    "Mile Logger - Mileage tracker",
+    "Road Trip MPG Lite",
+    "Mileage Tracker App by TripLog",
+    "Block Ops II: Block Warfare",
+    "Block.io",
+    "Mileage IQ",
+    "MileWiz 2027: Mileage Tracker",
+    "Radius Map"
+   ]
+  },
+  "domains": {
+   "mileblock.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/mileblock.com",
+    "state": "registered"
+   },
+   "mileblock.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/mileblock.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Driftburg",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Driftburg&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Absolute Drift",
+    "DR!FT",
+    "Thumb Drift Fast Furious Cars",
+    "Drift Racing:3v3",
+    "DriftGuard: Maintenance Tool",
+    "Drifto: Infinite Drifting",
+    "Drift Max Pro Car Racing Game",
+    "Tofu Drifter"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Driftburg%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Driftburg&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 45,
+   "flags": [],
+   "top": [
+    "Snow Drift!",
+    "Torque Drift",
+    "FR Legends",
+    "Sling Drift",
+    "Donuts Drift - Slide Drifting",
+    "Drifto: Infinite Drifting",
+    "Drifty Chase",
+    "Drift Park"
+   ]
+  },
+  "domains": {
+   "driftburg.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/driftburg.com",
+    "state": "available"
+   },
+   "driftburg.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/driftburg.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Wheelburg",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Wheelburg&c=apps",
+   "http": 200,
+   "n_titles": 29,
+   "flags": [],
+   "top": [
+    "WHEELDEALMOTRHUB",
+    "Weelbaro",
+    "Wheel With Me Adapt Fit",
+    "Wheelchair",
+    "WheelLog",
+    "Wheelhouse CU",
+    "Eurowheel",
+    "Unfair Wheel - Spin the Wheel"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Wheelburg%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Wheelburg&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 45,
+   "flags": [
+    {
+     "title": "WheelU",
+     "why": "similar 0.80"
+    }
+   ],
+   "top": [
+    "Wheel Scale!",
+    "Wheelie Life 2",
+    "Twisty Wheel",
+    "Wheelie Life",
+    "Summer Wheelie",
+    "Steering Wheel Evolution",
+    "Spin The Wheel Spinner Picker",
+    "Daily Decision Wheel"
+   ]
+  },
+  "domains": {
+   "wheelburg.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/wheelburg.com",
+    "state": "available"
+   },
+   "wheelburg.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/wheelburg.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Honkopolis",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Honkopolis&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Honkopolis%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Honkopolis&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 31,
+   "flags": [],
+   "top": [
+    "Honkai Impact 3rd",
+    "Nekopara Sekai Connect",
+    "\u0422\u041e\u041a\u0418\u041e-CITY \u2014 \u0437\u0430\u043a\u0430\u0437 \u0435\u0434\u044b \u043e\u043d\u043b\u0430\u0439\u043d",
+    "Hakuoki: Premium Edition",
+    "OfflineVideo",
+    "Sutoko & Friendzon\u00e9 : jeux sms",
+    "Tokyo Travel Guide & Planner",
+    "EriMoekko"
+   ]
+  },
+  "domains": {
+   "honkopolis.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/honkopolis.com",
+    "state": "available"
+   },
+   "honkopolis.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/honkopolis.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Metro Meander",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Metro%20Meander&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Mini Metro",
+    "NUUA METRO- Offline Subway Map",
+    "Midlands Meander",
+    "Metro de Madrid Official",
+    "metroEV",
+    "NMRE eMeter",
+    "Metro Berlin - TP Map",
+    "Metro Bank"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Metro%20Meander%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Metro%20Meander&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 43,
+   "flags": [],
+   "top": [
+    "Yandex Metro",
+    "Subway Idle",
+    "Delhi-NCR Metro",
+    "Shanghai Metro DADUHUI",
+    "Delhi Metro Route Map and Fare",
+    "Mini Metro+",
+    "Subway Idle 3D",
+    "Metro Pulse"
+   ]
+  },
+  "domains": {
+   "metromeander.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/metromeander.com",
+    "state": "registered"
+   },
+   "metromeander.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/metromeander.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Lamppost Lane",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Lamppost%20Lane&c=apps",
+   "http": 200,
+   "n_titles": 7,
+   "flags": [
+    {
+     "title": "Lamppost",
+     "why": "similar 0.80"
+    }
+   ],
+   "top": [
+    "Lamppost",
+    "Lightpost",
+    "Collectible Lane",
+    "Lampost",
+    "RentSlam",
+    "LotusLamp X",
+    "LandGlide: Land & Field Maps"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Lamppost%20Lane%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Lamppost%20Lane&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 2,
+   "flags": [],
+   "top": [
+    "Urban Light Day to Night",
+    "Crony\u2014\u00a0emotional no-man's-land"
+   ]
+  },
+  "domains": {
+   "lamppostlane.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/lamppostlane.com",
+    "state": "available"
+   },
+   "lamppostlane.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/lamppostlane.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Zipzone",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Zipzone&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [
+    {
+     "title": "Zim-Zone",
+     "why": "similar 0.86"
+    }
+   ],
+   "top": [
+    "Trinity Metro On-Demand",
+    "ZonaGPS",
+    "HideZone: GPS Hide & Seek",
+    "Jzones",
+    "Zone X: Wasteland Survival RPG",
+    "winzone",
+    "AceZone",
+    "Zim-Zone"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Zipzone%22&c=apps",
+   "http": 200,
+   "n_titles": 1,
+   "flags": [],
+   "top": [
+    "Safe2Go"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Zipzone&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 37,
+   "flags": [
+    {
+     "title": "Zip Zone Express Mobile",
+     "why": "contains"
+    }
+   ],
+   "top": [
+    "Zip Zone Express Mobile",
+    "Trinity Metro On-Demand",
+    "GoPass",
+    "Citylink Transit",
+    "Zipcar: cars on-demand",
+    "Zip Codes",
+    "Unzip - Zip RAR 7Z File Viewer",
+    "Zip & Rar"
+   ]
+  },
+  "domains": {
+   "zipzone.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/zipzone.com",
+    "state": "registered"
+   },
+   "zipzone.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/zipzone.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Zebra Crossing",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Zebra%20Crossing&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Zebra Wireless Connect",
+    "ZSFinder",
+    "Zebra Nucleus Connector",
+    "Zebra BT Comms Utility",
+    "Zebra Workstation Connect",
+    "ZQ2 Zebra Printer Setup",
+    "Zebra Digital ID",
+    "My Singing Monsters"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Zebra%20Crossing%22&c=apps",
+   "http": 200,
+   "n_titles": 11,
+   "flags": [],
+   "top": [
+    "Siren Jam: Car Parking Puzzle",
+    "Baby Panda's Safety & Habits",
+    "Traffic Rush!",
+    "Binary Eye",
+    "MySkillGlobal - Drive Expenses",
+    "Traffic Simulator: City Flow",
+    "wAVMon",
+    "Ticket Tycoon: IT Support Game"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Zebra%20Crossing&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 38,
+   "flags": [],
+   "top": [
+    "Sailing Coach",
+    "Flags for Sailing",
+    "Cross Logic Puzzle Game",
+    "Rail Crossing Locator",
+    "Zebra Evolution Animal envolve",
+    "Railroad Crossing 2",
+    "Railroad Crossing Game",
+    "Hard Penny Dell Logic Puzzles"
+   ]
+  },
+  "domains": {
+   "zebracrossing.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/zebracrossing.com",
+    "state": "registered"
+   },
+   "zebracrossing.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/zebracrossing.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Roundabout Run",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Roundabout%20Run&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [
+    {
+     "title": "Roundabout Rush",
+     "why": "similar 0.89"
+    }
+   ],
+   "top": [
+    "Roundabout 2: City Driving Sim",
+    "Roundabout: Sports Car Sim",
+    "RunGo: voice-guided run routes",
+    "Roundabout Traffic Control",
+    "Round Run",
+    "Runaround",
+    "Orka Run: Adaptive Race Plans",
+    "Run"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Roundabout%20Run%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Roundabout%20Run&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 33,
+   "flags": [
+    {
+     "title": "Roundabouts!",
+     "why": "similar 0.83"
+    }
+   ],
+   "top": [
+    "Roundabout 2: City Driving Sim",
+    "Speed Maze - The Ultimate Run",
+    "Spin Shots Run",
+    "Roundabout Simulator",
+    "Roundabout Radar",
+    "Slice Run",
+    "Run Road 3D",
+    "Geometry Run: Mad Challenge"
+   ]
+  },
+  "domains": {
+   "roundaboutrun.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/roundaboutrun.com",
+    "state": "available"
+   },
+   "roundaboutrun.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/roundaboutrun.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Gridlane",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Gridlane&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [
+    {
+     "title": "Gridline",
+     "why": "similar 0.88"
+    },
+    {
+     "title": "Gridline",
+     "why": "similar 0.88"
+    }
+   ],
+   "top": [
+    "Gridline",
+    "Grid of Change",
+    "Gridline",
+    "GRID\u2122 Legends: Deluxe Edition",
+    "Griddr. - A Grid Camera App",
+    "Grid : Photo Editing & Drawing",
+    "gridlo",
+    "Gridle: The Idle Grid Strategy"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Gridlane%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Gridlane&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 38,
+   "flags": [
+    {
+     "title": "Gridlane",
+     "why": "contains"
+    }
+   ],
+   "top": [
+    "Gridlane",
+    "Warped Kart Racers",
+    "Parking Tycoon - Drag Racing",
+    "Car Out! Parking Spot Games",
+    "Traffic Hero: Car Puzzle",
+    "Bus Fever - Car Parking Jam",
+    "GRID\u2122 Autosport Custom Edition",
+    "Blocky Cars - tank games"
+   ]
+  },
+  "domains": {
+   "gridlane.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/gridlane.com",
+    "state": "registered"
+   },
+   "gridlane.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/gridlane.app",
+    "state": "registered"
+   }
+  }
+ },
+ {
+  "name": "Pavement Pilot",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Pavement%20Pilot&c=apps",
+   "http": 200,
+   "n_titles": 11,
+   "flags": [],
+   "top": [
+    "PILOT",
+    "PlayPilot",
+    "Garmin Pilot",
+    "Ecler pilot",
+    "Pilot Life - Flight Tracker",
+    "Pilot Plug",
+    "Pilot Pro",
+    "Pilot Trading: Trade with AI"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Pavement%20Pilot%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Pavement%20Pilot&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 41,
+   "flags": [
+    {
+     "title": "PavementSoft",
+     "why": "similar 0.80"
+    }
+   ],
+   "top": [
+    "Build Roads",
+    "Asphalt Calculator Plus",
+    "Park Marks",
+    "PaveCool",
+    "Pavement Guru",
+    "Wheels Mobile Assistant",
+    "UDOT Traffic",
+    "COtrip Planner"
+   ]
+  },
+  "domains": {
+   "pavementpilot.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/pavementpilot.com",
+    "state": "registered"
+   },
+   "pavementpilot.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/pavementpilot.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Tollgate Town",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Tollgate%20Town&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "TollGate: Earn Screen Time",
+    "Party Town",
+    "Citygate Mobile",
+    "Go2Gate",
+    "Town City - Village Building S",
+    "Westgate Tower V2",
+    "Go To Town",
+    "Bid Wars 1: Auction Simulator"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Tollgate%20Town%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Tollgate%20Town&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 41,
+   "flags": [],
+   "top": [
+    "NTTA TollMate\u00ae",
+    "EZ TAG",
+    "Illinois Tollway",
+    "E-PASS Toll App",
+    "NC Quick Pass",
+    "The Toll Roads",
+    "PA Toll Pay",
+    "GoToll: Pay tolls as you go"
+   ]
+  },
+  "domains": {
+   "tollgatetown.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/tollgatetown.com",
+    "state": "available"
+   },
+   "tollgatetown.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/tollgatetown.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Crosswind City",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Crosswind%20City&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "CrossWind Calculator",
+    "Crosswind Calculator",
+    "Crosswind Huddle",
+    "Pilot Crosswind Calculator",
+    "RWDI Crosswind",
+    "CrossWinds Church",
+    "WindHub - Marine Weather",
+    "PredictWind - Marine Forecasts"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Crosswind%20City%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Crosswind%20City&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 46,
+   "flags": [],
+   "top": [
+    "City Story Metro\u2122",
+    "Block Craft 3D: Building Games",
+    "Pocket City 2+",
+    "Designer City 2",
+    "Riverside Merge - Build a City",
+    "Cityscapes: Sim Builder",
+    "My City - Entertainment Tycoon",
+    "iamcrosswind"
+   ]
+  },
+  "domains": {
+   "crosswindcity.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/crosswindcity.com",
+    "state": "available"
+   },
+   "crosswindcity.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/crosswindcity.app",
+    "state": "available"
+   }
+  }
+ }
+]

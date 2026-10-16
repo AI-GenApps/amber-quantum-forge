@@ -1,0 +1,68 @@
+[
+  {
+    "id": "1a",
+    "file": "icons/1a-hero-car-block.png",
+    "direction": "hero car 3/4 view on city block (smoke test)",
+    "tool": "codex exec --dangerously-bypass-approvals-and-sandbox -C <scratch> (generate-image skill; built-in codex image tool)",
+    "codex_model": "gpt-6.1-sol",
+    "params": "requested 1024x1024; tool returned 1254x1254, downscaled to 1024x1024 with Pillow LANCZOS (first run: same)",
+    "prompt": "App icon artwork, square 1024x1024 composition, full-bleed with no rounded corners and no border. A friendly stylized low-poly toy hatchback (no real car brand, generic design) seen from a three-quarter front view, driving on a small flat-shaded city block with a few simple low-poly buildings, a road with a dashed centre line and a tree. Kenney-style low-poly flat shading, clean flat colour palette: warm amber-orange car, slate-blue and cream buildings, teal-green trees, soft dusk-blue sky gradient. Car is centered and large, readable at 48 pixels. No text, no words, no letters, no numbers, no logos.",
+    "prompt_suffix_instruction": "Use your image generation tool to create one image. <prompt> Save the generated image to EXACTLY this absolute path and nowhere else: <out>",
+    "date": "2026-10-16"
+  },
+  {
+    "id": "1b",
+    "file": "icons/1b-hero-car-sunset.png",
+    "direction": "hero car rear 3/4 at sunset",
+    "tool": "codex exec --dangerously-bypass-approvals-and-sandbox -C <scratch> (generate-image skill; built-in codex image tool)",
+    "codex_model": "gpt-6.1-sol",
+    "params": "requested 1024x1024; tool returned 1254x1254, downscaled to 1024x1024 with Pillow LANCZOS (first run: same)",
+    "prompt": "A different take on a hero car icon: a friendly stylized low-poly toy coupe (generic, no real brand) in teal-green, seen from a low three-quarter rear-side view, speeding down a city street toward a skyline of simple blocky slate-blue and cream buildings with a bright sunset sky in amber and pink behind it, with a tiny hint of speed streaks. Car is large and centered. Kenney-style low-poly flat shading, clean flat colour palette (warm amber-orange, slate-blue, cream, teal-green, dusk-blue). Square 1024x1024 full-bleed app icon artwork, no rounded corners, no border, no frame. Must read clearly at 48 pixels. No text, no words, no letters, no numbers, no logos, no real car brand.",
+    "prompt_suffix_instruction": "Use your image generation tool to create one image. <prompt> Save the generated image to EXACTLY this absolute path and nowhere else: <out>",
+    "date": "2026-10-16"
+  },
+  {
+    "id": "2a",
+    "file": "icons/2a-map-pin-car.png",
+    "direction": "map pin with car",
+    "tool": "codex exec --dangerously-bypass-approvals-and-sandbox -C <scratch> (generate-image skill; built-in codex image tool)",
+    "codex_model": "gpt-6.1-sol",
+    "params": "requested 1024x1024; tool returned 1254x1254, downscaled to 1024x1024 with Pillow LANCZOS (first run: same)",
+    "prompt": "A bold map-pin (location marker) mark in warm amber-orange, with a small low-poly car silhouette (no text) inside the round head of the pin instead of a dot, set on a slate-blue background with a simplified low-poly city block grid of roads and a dashed route line curving to the pin. Pin is large and centered, strong silhouette. Kenney-style low-poly flat shading, clean flat colour palette (warm amber-orange, slate-blue, cream, teal-green, dusk-blue). Square 1024x1024 full-bleed app icon artwork, no rounded corners, no border, no frame. Must read clearly at 48 pixels. No text, no words, no letters, no numbers, no logos, no real car brand.",
+    "prompt_suffix_instruction": "Use your image generation tool to create one image. <prompt> Save the generated image to EXACTLY this absolute path and nowhere else: <out>",
+    "date": "2026-10-16"
+  },
+  {
+    "id": "2b",
+    "file": "icons/2b-road-sign-turn.png",
+    "direction": "road sign turn arrow",
+    "tool": "codex exec --dangerously-bypass-approvals-and-sandbox -C <scratch> (generate-image skill; built-in codex image tool)",
+    "codex_model": "gpt-6.1-sol",
+    "params": "requested 1024x1024; tool returned 1254x1254, downscaled to 1024x1024 with Pillow LANCZOS (first run: same)",
+    "prompt": "A road-sign style mark: a rounded diamond-shaped amber-orange road sign with a thick cream border, containing only a simple low-poly arrow curving into a right turn (a pure symbol, absolutely no letters or numbers), mounted on a slim slate pole, in front of a dusk-blue sky and a few low-poly city buildings in the background. Sign is large and centered. Kenney-style low-poly flat shading, clean flat colour palette (warm amber-orange, slate-blue, cream, teal-green, dusk-blue). Square 1024x1024 full-bleed app icon artwork, no rounded corners, no border, no frame. Must read clearly at 48 pixels. No text, no words, no letters, no numbers, no logos, no real car brand.",
+    "prompt_suffix_instruction": "Use your image generation tool to create one image. <prompt> Save the generated image to EXACTLY this absolute path and nowhere else: <out>",
+    "date": "2026-10-16"
+  },
+  {
+    "id": "3a",
+    "file": "icons/3a-topdown-drift-crosswalk.png",
+    "direction": "top-down drift crosswalk",
+    "tool": "codex exec --dangerously-bypass-approvals-and-sandbox -C <scratch> (generate-image skill; built-in codex image tool)",
+    "codex_model": "gpt-6.1-sol",
+    "params": "requested 1024x1024; tool returned 1254x1254, downscaled to 1024x1024 with Pillow LANCZOS (first run: same)",
+    "prompt": "A top-down (bird's-eye) view of a small stylized low-poly toy car (generic, no real brand) in amber-orange drifting sideways around a city intersection with a crosswalk, with two short curved tire-mark skid trails behind it on dark slate-blue asphalt, cream lane markings, and corner rooftops of low-poly buildings and teal-green treetops at the edges. Car is large and centered. Kenney-style low-poly flat shading, clean flat colour palette (warm amber-orange, slate-blue, cream, teal-green, dusk-blue). Square 1024x1024 full-bleed app icon artwork, no rounded corners, no border, no frame. Must read clearly at 48 pixels. No text, no words, no letters, no numbers, no logos, no real car brand.",
+    "prompt_suffix_instruction": "Use your image generation tool to create one image. <prompt> Save the generated image to EXACTLY this absolute path and nowhere else: <out>",
+    "date": "2026-10-16"
+  },
+  {
+    "id": "3b",
+    "file": "icons/3b-topdown-drift-curve.png",
+    "direction": "top-down drift curve",
+    "tool": "codex exec --dangerously-bypass-approvals-and-sandbox -C <scratch> (generate-image skill; built-in codex image tool)",
+    "codex_model": "gpt-6.1-sol",
+    "params": "requested 1024x1024; tool returned 1254x1254, downscaled to 1024x1024 with Pillow LANCZOS (first run: same)",
+    "prompt": "A top-down (bird's-eye) view of a stylized low-poly toy car (generic, no real brand) in teal-green taking a sharp curved turn through a four-way road intersection, long arcing amber drift trail behind it, a little puff of cream smoke from the rear wheels, roads in slate-blue with cream dashed lines, and green low-poly park blocks in the four corners. Car is large and centered. Kenney-style low-poly flat shading, clean flat colour palette (warm amber-orange, slate-blue, cream, teal-green, dusk-blue). Square 1024x1024 full-bleed app icon artwork, no rounded corners, no border, no frame. Must read clearly at 48 pixels. No text, no words, no letters, no numbers, no logos, no real car brand.",
+    "prompt_suffix_instruction": "Use your image generation tool to create one image. <prompt> Save the generated image to EXACTLY this absolute path and nowhere else: <out>",
+    "date": "2026-10-16"
+  }
+]

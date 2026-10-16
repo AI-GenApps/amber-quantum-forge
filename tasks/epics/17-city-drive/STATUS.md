@@ -116,7 +116,7 @@ with `startAt` set to the next task ID.
 | 15 | Performance pass (adaptive scaling, freezing, LOD, budget gate) | agent | [x] |
 | 16 | HUMAN: full browser playtest checkpoint | human | [ ] |
 | 17 | Capacitor packaging (Android/iOS), Android toolchain, debug APK | agent | [x] |
-| 18 | Name candidates (strict uniqueness) + icon dry run | agent | [ ] |
+| 18 | Name candidates (strict uniqueness) + icon dry run | agent | [x] |
 | 19 | HUMAN: pick the name + icon direction | human | [ ] |
 | 20 | Apply the name, final icon, splash | agent | [ ] |
 | 21 | Release readiness (privacy, data safety, listing, web deploy workflow) | agent | [ ] |

@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 18-name-candidates-and-icon-dry-run
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/17-capacitor-packaging]
 estimate: M
@@ -51,9 +51,9 @@ directions as generated drafts, so the human can pick at task 19.
 
 ## Implementation Checklist
 
-- [ ] Name research and a shortlist of 6–8 passing candidates, with evidence.
-- [ ] Image-generation smoke test, then 6 icon drafts and a contact sheet.
-- [ ] Update `.agents/games/city-drive/open-questions.md` with the pick request.
+- [x] Name research and a shortlist of 6–8 passing candidates, with evidence.
+- [x] Image-generation smoke test, then 6 icon drafts and a contact sheet.
+- [x] Update `.agents/games/city-drive/open-questions.md` with the pick request.
 
 ## Files Touched
 
