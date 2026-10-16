@@ -1,0 +1,1042 @@
+[
+ {
+  "name": "Redline Boulevard",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Redline%20Boulevard&c=apps",
+   "http": 200,
+   "n_titles": 29,
+   "flags": [],
+   "top": [
+    "Redline by CCEP",
+    "REDLINE: Longest Burn",
+    "Redline Rush: Police Chase",
+    "Redline Delivery Driver",
+    "InnLiner \u2013 Rufbus M\u00fchldorf",
+    "Read Along by Google",
+    "Rise of Red Line",
+    "Destiny: Rising"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Redline%20Boulevard%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Redline%20Boulevard&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 1,
+   "flags": [],
+   "top": [
+    "Redline Maker"
+   ]
+  },
+  "domains": {
+   "redlineboulevard.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/redlineboulevard.com",
+    "state": "available"
+   },
+   "redlineboulevard.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/redlineboulevard.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Chrome Streets",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Chrome%20Streets&c=apps",
+   "http": 200,
+   "n_titles": 11,
+   "flags": [],
+   "top": [
+    "Chrome Kings: Street Racing",
+    "Google Chrome",
+    "Chrome Beta",
+    "Streets App",
+    "Chrome Dev",
+    "Chrome Canary (Unstable)",
+    "Globoplay: Novelas, s\u00e9ries e +",
+    "Sin Streets: Grand Racing Game"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Chrome%20Streets%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Chrome%20Streets&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 45,
+   "flags": [],
+   "top": [
+    "GStreet - Street Map Viewer",
+    "Google Chrome",
+    "Norton 360 Security & VPN",
+    "Comet - AI Browser & Assistant",
+    "invideo: AI Video Editor",
+    "Yandex Maps & Navigator",
+    "Notion: Notes, Tasks, AI",
+    "Perplexity - AI Search & Chat"
+   ]
+  },
+  "domains": {
+   "chromestreets.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/chromestreets.com",
+    "state": "available"
+   },
+   "chromestreets.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/chromestreets.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Sunset Streets",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Sunset%20Streets&c=apps",
+   "http": 200,
+   "n_titles": 14,
+   "flags": [],
+   "top": [
+    "Sunset & Sunrise Sun Ephemeris",
+    "Sun Position: Sunrise & Sunset",
+    "Sunrise and Sunset Times",
+    "Sunrise Sunset",
+    "Suntime: Sunrise & Sunset",
+    "Sunday\u30fbSunrise Sunset Times",
+    "Sunrise Sunset Times",
+    "Sun Ephemeris (Sunset Sunrise)"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Sunset%20Streets%22&c=apps",
+   "http": 200,
+   "n_titles": 1,
+   "flags": [],
+   "top": [
+    "PrismBall"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Sunset%20Streets&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 48,
+   "flags": [],
+   "top": [
+    "SkyCandy - Sunset Forecast App",
+    "SCRUFF - Gay Dating & Chat",
+    "Enjoy the Sunset",
+    "Sunsets Reminder",
+    "Netflix Stories",
+    "Planner 5D: AI Home Design",
+    "Freyr Sunset",
+    "Notion: Notes, Tasks, AI"
+   ]
+  },
+  "domains": {
+   "sunsetstreets.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/sunsetstreets.com",
+    "state": "registered"
+   },
+   "sunsetstreets.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/sunsetstreets.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Torque Avenue",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Torque%20Avenue&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Torque Pro (OBD 2 & Car)",
+    "Torque Offroad - Truck Driving",
+    "Realtime Charts for Torque Pro",
+    "Torque Drift",
+    "Torque Lite (OBD2 & Car)",
+    "Ariel Torque Guide",
+    "TORQUE",
+    "Torque Burnout"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Torque%20Avenue%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Torque%20Avenue&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 40,
+   "flags": [],
+   "top": [
+    "Torque Pro : OBD2 Car Scanner",
+    "Ariel Torque Guide",
+    "Torque Wrench Extension Calc.",
+    "Torque Indicator Remote Pro",
+    "MotorTrend",
+    "Torque Tightening",
+    "Torque Source",
+    "Torque Tools"
+   ]
+  },
+  "domains": {
+   "torqueavenue.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/torqueavenue.com",
+    "state": "registered"
+   },
+   "torqueavenue.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/torqueavenue.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Gearshift City",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Gearshift%20City&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [
+    {
+     "title": "Gearshift",
+     "why": "similar 0.82"
+    }
+   ],
+   "top": [
+    "Gearshift",
+    "GearShift Racer: Traffic Racer",
+    "Shifts Calendar (Shifty)",
+    "Gearbox",
+    "Manual Shifter Under Parker",
+    "Shiftry: Smart Shift Planner",
+    "ShiftSwift - Shift Calendar",
+    "Shift Show: Shift Planner"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Gearshift%20City%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Gearshift%20City&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 47,
+   "flags": [],
+   "top": [
+    "Pocket City 2+",
+    "Real Car Driving: 3D Car City",
+    "Grand Vegas Crime City Games",
+    "City Car Driver 2020",
+    "Diamond City: Idle Tycoon",
+    "Flying Hero Cyber City",
+    "Century City",
+    "Bit City: Building Evolution"
+   ]
+  },
+  "domains": {
+   "gearshiftcity.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/gearshiftcity.com",
+    "state": "available"
+   },
+   "gearshiftcity.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/gearshiftcity.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Metro Cruise",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Metro%20Cruise&c=apps",
+   "http": 200,
+   "n_titles": 10,
+   "flags": [],
+   "top": [
+    "METRO Splash Pass",
+    "MetroBUC:Bucharest Metro Guide",
+    "Nomad Cruise",
+    "metroEV",
+    "The Cruise Globe",
+    "Ride Sun Metro",
+    "Metro 24x7",
+    "Emerald Cruises & Tours"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Metro%20Cruise%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Metro%20Cruise&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 47,
+   "flags": [
+    {
+     "title": "Metro Cruise",
+     "why": "contains"
+    }
+   ],
+   "top": [
+    "Metro Cruise",
+    "Holland America Line Navigator",
+    "Royal Caribbean International",
+    "Disney Cruise Line Navigator",
+    "Norwegian Cruise Line",
+    "Yandex Metro",
+    "Celebrity Cruises",
+    "Virgin Voyages"
+   ]
+  },
+  "domains": {
+   "metrocruise.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/metrocruise.com",
+    "state": "registered"
+   },
+   "metrocruise.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/metrocruise.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Crown Avenue",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Crown%20Avenue&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Crown Tours",
+    "Crown Master: Puzzle Game",
+    "Crown Wealth",
+    "CROWN",
+    "Firefox Fast & Private Browser",
+    "Clash Royale",
+    "Uber - Driver: Drive & Deliver",
+    "Royal Match"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Crown%20Avenue%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Crown%20Avenue&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 2,
+   "flags": [],
+   "top": [
+    "Connect by Crown",
+    "No6 Babmaes Street"
+   ]
+  },
+  "domains": {
+   "crownavenue.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/crownavenue.com",
+    "state": "registered"
+   },
+   "crownavenue.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/crownavenue.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Boulevard Kings",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Boulevard%20Kings&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "King James Bible - Verse+Audio",
+    "Lowriders Comeback: Boulevard",
+    "Roblox",
+    "Road to Valor: Empires",
+    "Revenge of Sultans",
+    "Game of Sultans",
+    "Legacy of Kings: Idle Builder",
+    "RISK: Global Domination"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Boulevard%20Kings%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Boulevard%20Kings&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 3,
+   "flags": [],
+   "top": [
+    "McDonald\u2019s",
+    "No Limit Drag Racing 2",
+    "foodora: Food & Groceries"
+   ]
+  },
+  "domains": {
+   "boulevardkings.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/boulevardkings.com",
+    "state": "registered"
+   },
+   "boulevardkings.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/boulevardkings.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Street Royale",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Street%20Royale&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Clash Royale",
+    "Free Fire x NARUTO SHIPPUDEN",
+    "Stumble Guys",
+    "Google Chrome",
+    "Roblox",
+    "PUBG MOBILE",
+    "YouTube",
+    "Free Fire MAX x NARUTO"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Street%20Royale%22&c=apps",
+   "http": 200,
+   "n_titles": 1,
+   "flags": [],
+   "top": [
+    "Rumaisas Collect"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Street%20Royale&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 50,
+   "flags": [],
+   "top": [
+    "CarX Street",
+    "Clash of Clans",
+    "Auto Brawl Chess:Battle Royale",
+    "Zooba: Zoo Battle Royale Games",
+    "Clash of Zombies:Heroes Mobile",
+    "Brawl Stars",
+    "Fortnite",
+    "Battle Royale Tycoon Idle Game"
+   ]
+  },
+  "domains": {
+   "streetroyale.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/streetroyale.com",
+    "state": "registered"
+   },
+   "streetroyale.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/streetroyale.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Apex Avenue",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Apex%20Avenue&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Apex Hotels",
+    "Apex Auto",
+    "Google Ads",
+    "Honor of Kings",
+    "Meta Horizon",
+    "Top Force",
+    "Apex Capital",
+    "OPay"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Apex%20Avenue%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Apex%20Avenue&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 1,
+   "flags": [],
+   "top": [
+    "The Peak Daily"
+   ]
+  },
+  "domains": {
+   "apexavenue.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/apexavenue.com",
+    "state": "registered"
+   },
+   "apexavenue.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/apexavenue.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Ember Streets",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Ember%20Streets&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Embers Rest: Wall Defense",
+    "Ember Supreme",
+    "Eternal Ember",
+    "Ember: One Daily Challenge",
+    "Ember:Be The One Who Remembers",
+    "Ember Baby",
+    "Ember",
+    "Magic Streets: GPS Fantasy RPG"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Ember%20Streets%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Ember%20Streets&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "domains": {
+   "emberstreets.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/emberstreets.com",
+    "state": "available"
+   },
+   "emberstreets.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/emberstreets.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Velvet Drive",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Velvet%20Drive&c=apps",
+   "http": 200,
+   "n_titles": 28,
+   "flags": [],
+   "top": [
+    "Velvet GPS Pro",
+    "Velvet 89",
+    "Velvet Rendezvous",
+    "Velvet: Couples & Party Games",
+    "Wedding Velvet",
+    "Velvet Hub",
+    "Velvet Vibes",
+    "Velvet: AI Makeup Try On"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Velvet%20Drive%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Velvet%20Drive&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 6,
+   "flags": [],
+   "top": [
+    "Fusvob VPN : Super VPN 2026",
+    "Buddy VPN",
+    "VPN - Fast VPN 2026",
+    "AladdinVPN - \u0411\u044b\u0441\u0442\u0440\u044b\u0439 VPN",
+    "VPN\u0412\u041f\u041d2027",
+    "Drive Audio"
+   ]
+  },
+  "domains": {
+   "velvetdrive.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/velvetdrive.com",
+    "state": "registered"
+   },
+   "velvetdrive.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/velvetdrive.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Downtown Torque",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Downtown%20Torque&c=apps",
+   "http": 200,
+   "n_titles": 15,
+   "flags": [],
+   "top": [
+    "Torque Pro (OBD 2 & Car)",
+    "Torque Lite (OBD2 & Car)",
+    "Downtown",
+    "TORQUE",
+    "Widgets for Torque (OBD / Car)",
+    "Troodon OBD",
+    "Norbar Torque Wrench Extension",
+    "TorqueScan (Torque OBD Plugin)"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Downtown%20Torque%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Downtown%20Torque&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 42,
+   "flags": [],
+   "top": [
+    "Torque Pro : OBD2 Car Scanner",
+    "Ariel Torque Guide",
+    "Torque Indicator Remote Pro",
+    "AI Chat 6.0: Genius",
+    "Torque Wrench Extension Calc.",
+    "Torque Tightening",
+    "Torque Source",
+    "Torque Tools"
+   ]
+  },
+  "domains": {
+   "downtowntorque.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/downtowntorque.com",
+    "state": "available"
+   },
+   "downtowntorque.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/downtowntorque.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Cruise District",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Cruise%20District&c=apps",
+   "http": 200,
+   "n_titles": 8,
+   "flags": [],
+   "top": [
+    "Celebrity Cruises",
+    "Cruise Director 3",
+    "Cruise Finder - iCruise.com",
+    "Cruise Deals",
+    "The Cruise Globe",
+    "Disney Cruise Line Navigator",
+    "Cruise Countdown & Picker",
+    "Cruise Planner & Port Guide"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Cruise%20District%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Cruise%20District&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 46,
+   "flags": [],
+   "top": [
+    "Holland America Line Navigator",
+    "Disney Cruise Line Navigator",
+    "Royal Caribbean International",
+    "Cruise Finder by iCruise.com",
+    "Norwegian Cruise Line",
+    "Celebrity Cruises",
+    "My Cruise",
+    "Virgin Voyages"
+   ]
+  },
+  "domains": {
+   "cruisedistrict.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/cruisedistrict.com",
+    "state": "registered"
+   },
+   "cruisedistrict.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/cruisedistrict.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Golden Mile Drive",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Golden%20Mile%20Drive&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [
+    {
+     "title": "Golden Drive",
+     "why": "similar 0.85"
+    }
+   ],
+   "top": [
+    "17 Mile Drive Audio Tour Guide",
+    "Golden Drive",
+    "DriveGo: Speed Tracker & Maps",
+    "One Mile Driver",
+    "Golden Mile REAL ESTATE",
+    "Mobile Legends: Bang Bang",
+    "Golden Lap",
+    "HBO Max: Stream TV & Movies"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Golden%20Mile%20Drive%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Golden%20Mile%20Drive&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 10,
+   "flags": [],
+   "top": [
+    "Telegram Messenger",
+    "Vector: Parkour Run",
+    "Talking Tom Gold Run",
+    "San Francisco Driving GPS Tour",
+    "Golden Mile: Traffic Racer",
+    "Subway Surfers",
+    "Gentleman's Drive",
+    "Instagram"
+   ]
+  },
+  "domains": {
+   "goldenmiledrive.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/goldenmiledrive.com",
+    "state": "available"
+   },
+   "goldenmiledrive.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/goldenmiledrive.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Nightfall Avenue",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Nightfall%20Avenue&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Nightfall: Kingdom Frontier TD",
+    "Nightfall",
+    "Nightfall Capital Hub",
+    "Nightfall",
+    "NightFall",
+    "Nightfall Town-Book of Ashes",
+    "Nightfall Warriors",
+    "Dark Tower: Nightfall"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Nightfall%20Avenue%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Nightfall%20Avenue&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "domains": {
+   "nightfallavenue.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/nightfallavenue.com",
+    "state": "available"
+   },
+   "nightfallavenue.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/nightfallavenue.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Amber Boulevard",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Amber%20Boulevard&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Boulevard Professional",
+    "Lowriders Comeback: Boulevard",
+    "Yanosik antiradar & navigation",
+    "1Weather: Forecast & Radar",
+    "Character AI: Chat, Talk, Text",
+    "Oolimo Guitar Chords",
+    "Reliance Digital Online Shop",
+    "Savant"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Amber%20Boulevard%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Amber%20Boulevard&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 1,
+   "flags": [],
+   "top": [
+    "Amber Marie and Company"
+   ]
+  },
+  "domains": {
+   "amberboulevard.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/amberboulevard.com",
+    "state": "available"
+   },
+   "amberboulevard.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/amberboulevard.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Overpass City",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Overpass%20City&c=apps",
+   "http": 200,
+   "n_titles": 29,
+   "flags": [],
+   "top": [
+    "Go City: Travel Plan & Tickets",
+    "My CityPASS",
+    "URBO City",
+    "Bridge Race",
+    "CITYPASS CLUB",
+    "Bridge City State Bank",
+    "Old Bridge Township NJ",
+    "Visit London Official Guide"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Overpass%20City%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Overpass%20City&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 41,
+   "flags": [],
+   "top": [
+    "Mini Motorways",
+    "City Story Metro\u2122",
+    "Pocket City",
+    "Designer City 2",
+    "Pocket City 2+",
+    "City Service 3D",
+    "Upland: City-Builder",
+    "Build Roads"
+   ]
+  },
+  "domains": {
+   "overpasscity.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/overpasscity.com",
+    "state": "available"
+   },
+   "overpasscity.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/overpasscity.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "City Apex",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=City%20Apex&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [
+    {
+     "title": "Apex City",
+     "why": "all-words"
+    }
+   ],
+   "top": [
+    "Apex City",
+    "Aerial City",
+    "APEX Racer - Pixel Cars",
+    "Apex Go",
+    "ApeX Protocol: Trade Crypto",
+    "eFootball\u2122",
+    "Angry Birds 2",
+    "Stumble Guys"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22City%20Apex%22&c=apps",
+   "http": 200,
+   "n_titles": 2,
+   "flags": [],
+   "top": [
+    "Aerial City",
+    "Apex Freefall"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=City%20Apex&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 46,
+   "flags": [
+    {
+     "title": "Apex City",
+     "why": "all-words"
+    }
+   ],
+   "top": [
+    "Apex Centre \u2013 McKinney, TX",
+    "Aerial City",
+    "Pocket City",
+    "Pocket City 2+",
+    "City Car Driving School Games",
+    "My City - Entertainment Tycoon",
+    "Payback 2",
+    "Undead City: Zombie Survivor"
+   ]
+  },
+  "domains": {
+   "cityapex.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/cityapex.com",
+    "state": "registered"
+   },
+   "cityapex.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/cityapex.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Avenue Kings",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Avenue%20Kings&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Avenue K",
+    "Rage of Kings - Kings Landing",
+    "Kard Avenue",
+    "Kings Rental",
+    "Empires & Puzzles: Match-3 RPG",
+    "Zomato: Food Delivery & Dining",
+    "Land of Empires: Immortal",
+    "Crossy Road"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Avenue%20Kings%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Avenue%20Kings&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 13,
+   "flags": [],
+   "top": [
+    "Sacramento Kings",
+    "91.1 The Avenue",
+    "H&M",
+    "ZARA",
+    "Nike: Engineered for Athletes",
+    "Chick-fil-A",
+    "Supreme Kings Radio",
+    "Lamar Avenue Church of Christ"
+   ]
+  },
+  "domains": {
+   "avenuekings.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/avenuekings.com",
+    "state": "registered"
+   },
+   "avenuekings.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/avenuekings.app",
+    "state": "available"
+   }
+  }
+ }
+]

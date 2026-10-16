@@ -225,3 +225,12 @@ Baseline car values live in `apps-games/city-drive-core/src/cars/specs.ts`
 - **Dev switch**: `?district=district-2` (or `-3`) in the app URL loads that district with its own
   missions and traffic density. The real switch lives on the map screen (task 13).
 
+
+## 2026-10-16 — Public name and icon (task 19, owner)
+
+- **Name: Street Royale.** The owner rejected the task-18 shortlist (too cartoony) and asked for a cool /
+  premium style, then dropped the domain requirement. Round 2 checked 52 names on Google Play, the App
+  Store and the web; Street Royale had no exact or near match. Trademark clearance is still to do.
+  Evidence: `.agents/resources/2026-10-15/city-drive-qa/18/round-2/`.
+- **Icon: 1b** (teal coupe at sunset), unchanged.
+- Registry id `city_drive` and bundle id `app.w3dev.citydrive` stay as they are.

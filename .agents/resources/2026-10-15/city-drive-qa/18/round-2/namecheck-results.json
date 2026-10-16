@@ -1,0 +1,1903 @@
+[
+ {
+  "name": "Neon Avenue",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Neon%20Avenue&c=apps",
+   "http": 200,
+   "n_titles": 28,
+   "flags": [],
+   "top": [
+    "Neon Companion",
+    "Neon",
+    "Dancing Road: Color Ball Run!",
+    "Neon Chrome",
+    "Retro Mode - Icon Pack (Neon)",
+    "Merge Neon Car: Idle Car Merge",
+    "Neon Notes - Colorize Thoughts",
+    "Neon Wood"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Neon%20Avenue%22&c=apps",
+   "http": 200,
+   "n_titles": 3,
+   "flags": [],
+   "top": [
+    "Cyber Swarm: Neon Siege",
+    "City Night Wallpaper 4K Live",
+    "Bare Metal AI Armageddon"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Neon%20Avenue&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 12,
+   "flags": [],
+   "top": [
+    "Neon On!",
+    "Brightspace Pulse",
+    "My Neon City - Healing game",
+    "Neon Photo Editor & Effects",
+    "C6 Bank: Cart\u00e3o, conta e mais!",
+    "Play 107",
+    "LuArcade: Neon Mini Games",
+    "NEON ARC"
+   ]
+  },
+  "domains": {
+   "neonavenue.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/neonavenue.com",
+    "state": "registered"
+   },
+   "neonavenue.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/neonavenue.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Midnight Avenue",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Midnight%20Avenue&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Roblox",
+    "Midnight Shift: Doppelganger",
+    "Midnight Market : Tycoon",
+    "MakeMyTrip: Hotel, Flight, Bus",
+    "Discord - Talk, Play, Hang Out",
+    "Brave Private Web Browser, VPN",
+    "Vinted: Shop & sell pre-loved",
+    "Microsoft Teams"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Midnight%20Avenue%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Midnight%20Avenue&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 1,
+   "flags": [],
+   "top": [
+    "MCTV Midnight City Television"
+   ]
+  },
+  "domains": {
+   "midnightavenue.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/midnightavenue.com",
+    "state": "registered"
+   },
+   "midnightavenue.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/midnightavenue.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Chrome District",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Chrome%20District&c=apps",
+   "http": 200,
+   "n_titles": 10,
+   "flags": [],
+   "top": [
+    "Chrome Dev",
+    "MyJio: For Everything Jio",
+    "Microsoft Outlook",
+    "Joom. Shopping for every day",
+    "LinkedIn: Community & Network",
+    "Zoom Workplace",
+    "Firefox Beta for Testers",
+    "ZDF |\u202fStreaming und Live-TV"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Chrome%20District%22&c=apps",
+   "http": 200,
+   "n_titles": 1,
+   "flags": [],
+   "top": [
+    "NEON DRIFT RUSH"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Chrome%20District&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 9,
+   "flags": [],
+   "top": [
+    "Google Chrome",
+    "LinkedIn: Community & Network",
+    "Spray Chrome Centr Cosmichrome",
+    "Canvas by Instructure",
+    "Google Photos: Backup & Edit",
+    "Google Gemini",
+    "Google Maps",
+    "YouTube"
+   ]
+  },
+  "domains": {
+   "chromedistrict.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/chromedistrict.com",
+    "state": "registered"
+   },
+   "chromedistrict.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/chromedistrict.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Afterglow Drive",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Afterglow%20Drive&c=apps",
+   "http": 200,
+   "n_titles": 8,
+   "flags": [
+    {
+     "title": "Afterglow Drive - Sunset",
+     "why": "contains"
+    }
+   ],
+   "top": [
+    "Afterglow Drive - Sunset",
+    "Afterglow: Mobile MMORPG",
+    "Afterglow",
+    "Afterglow: Wellness Companion",
+    "AfterGlow: Disposable Camera",
+    "Afterglow: Concert Tracker",
+    "Afterglow Premium",
+    "Driveo - Fleet Management"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Afterglow%20Drive%22&c=apps",
+   "http": 200,
+   "n_titles": 1,
+   "flags": [
+    {
+     "title": "Afterglow Drive - Sunset",
+     "why": "contains"
+    }
+   ],
+   "top": [
+    "Afterglow Drive - Sunset"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Afterglow%20Drive&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 33,
+   "flags": [],
+   "top": [
+    "Extreme Car Driving Simulator",
+    "MadOut 2: Grand Auto Racing 3D",
+    "Collage Maker - LiveCollage",
+    "Car Parking Multiplayer",
+    "Skyscanner Flights & Travel",
+    "LINE",
+    "DuckDuckGo, optional Duck.ai",
+    "Alight Motion"
+   ]
+  },
+  "domains": {
+   "afterglowdrive.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/afterglowdrive.com",
+    "state": "available"
+   },
+   "afterglowdrive.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/afterglowdrive.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Skyline Cruise",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Skyline%20Cruise&c=apps",
+   "http": 200,
+   "n_titles": 13,
+   "flags": [],
+   "top": [
+    "Cruise Finder - iCruise.com",
+    "Royal Caribbean International",
+    "Circle Line Sightseeing",
+    "Mein Schiff Cruises",
+    "Shipmate - Cruise Tracker",
+    "CruiseMapper",
+    "The Cruise Globe",
+    "SkyLiner: Flights & Hotels"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Skyline%20Cruise%22&c=apps",
+   "http": 200,
+   "n_titles": 1,
+   "flags": [],
+   "top": [
+    "Mumbai Simulator"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Skyline%20Cruise&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 43,
+   "flags": [],
+   "top": [
+    "Disney Cruise Line Navigator",
+    "Holland America Line Navigator",
+    "Norwegian Cruise Line",
+    "Princess Cruises",
+    "Royal Caribbean International",
+    "Cruise Tycoon: Simulator",
+    "My Cruise",
+    "Cruise Finder by iCruise.com"
+   ]
+  },
+  "domains": {
+   "skylinecruise.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/skylinecruise.com",
+    "state": "registered"
+   },
+   "skylinecruise.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/skylinecruise.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Neon Boulevard",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Neon%20Boulevard&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Neon LED Keyboard: RGB & Emoji",
+    "Stickman Hook",
+    "Neon LED Scroller \u2014 Text Board",
+    "Neon LED Keyboard",
+    "LED Banner: Edge Lighting Neon",
+    "Neon Love Theme",
+    "Just Desserts: Revenge & Merge",
+    "Blackjack - World Tournament"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Neon%20Boulevard%22&c=apps",
+   "http": 200,
+   "n_titles": 1,
+   "flags": [],
+   "top": [
+    "Chicken Road"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Neon%20Boulevard&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 27,
+   "flags": [],
+   "top": [
+    "Neon On!",
+    "My Neon City - Healing game",
+    "Neon Photo Editor & Effects",
+    "Brick Blast: Neon Ball Shooter",
+    "Neon Driver",
+    "Glow Draw - Neon Art",
+    "Neon Glow Path Legend",
+    "Glow Doodle: Neon Drawing Art"
+   ]
+  },
+  "domains": {
+   "neonboulevard.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/neonboulevard.com",
+    "state": "registered"
+   },
+   "neonboulevard.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/neonboulevard.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Asphalt Noir",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Asphalt%20Noir&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Asphalt 8 - Car Racing Game",
+    "Asphalt Legends - Racing Game",
+    "Asphalt Speed",
+    "Noir: USB Camera HDMI Monitor",
+    "Asphalt Xtreme",
+    "Noir Walls",
+    "Noir Pro: USB Camera HDMI Link",
+    "Roblox"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Asphalt%20Noir%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Asphalt%20Noir&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 11,
+   "flags": [],
+   "top": [
+    "Park Marks",
+    "The Asphalt App",
+    "Asphalt Pro",
+    "Caterpillar Paving Calculator",
+    "Bloody Roads, San Verde",
+    "Schroeder Asphalt",
+    "Death Race Speed Rage: Gangsta Over Drive Wreck",
+    "Bugatti Parking"
+   ]
+  },
+  "domains": {
+   "asphaltnoir.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/asphaltnoir.com",
+    "state": "registered"
+   },
+   "asphaltnoir.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/asphaltnoir.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Urban Glide",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Urban%20Glide&c=apps",
+   "http": 200,
+   "n_titles": 50,
+   "flags": [
+    {
+     "title": "Urban Glide",
+     "why": "contains"
+    },
+    {
+     "title": "UrbanGlide Ride XS",
+     "why": "contains"
+    },
+    {
+     "title": "UrbanGlide",
+     "why": "contains"
+    },
+    {
+     "title": "Urban Glide MV",
+     "why": "contains"
+    }
+   ],
+   "top": [
+    "Urban Glide",
+    "UrbanGlide Ride XS",
+    "UrbanGlide",
+    "Urban Glide MV",
+    "UrbMob",
+    "Urban Rider Scooter Navigation",
+    "Glide Launcher: privacy & AI",
+    "Facebook"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Urban%20Glide%22&c=apps",
+   "http": 200,
+   "n_titles": 2,
+   "flags": [
+    {
+     "title": "Urban Glide",
+     "why": "contains"
+    },
+    {
+     "title": "Urban Glide MV",
+     "why": "contains"
+    }
+   ],
+   "top": [
+    "Urban Glide",
+    "Urban Glide MV"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Urban%20Glide&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 35,
+   "flags": [
+    {
+     "title": "UrbanGlide",
+     "why": "contains"
+    },
+    {
+     "title": "URBANGLIDE",
+     "why": "contains"
+    }
+   ],
+   "top": [
+    "UrbanGlide",
+    "URBANGLIDE",
+    "GORUNNER",
+    "Urban Connect",
+    "Elevated Run: City Freestyle",
+    "Hop - Enjoy the city",
+    "City Frenzy",
+    "Urban Posh"
+   ]
+  },
+  "domains": {
+   "urbanglide.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/urbanglide.com",
+    "state": "registered"
+   },
+   "urbanglide.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/urbanglide.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Dusk Drive",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Dusk%20Drive&c=apps",
+   "http": 200,
+   "n_titles": 9,
+   "flags": [],
+   "top": [
+    "DUSK - Drinks, Deals & Rewards",
+    "dusk",
+    "Dusk - For Better Sleep",
+    "Dusk Launcher",
+    "Done By Dusk",
+    "Dusk Fitness",
+    "Dusk KWGT",
+    "Dusk Till Dawn Poker"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Dusk%20Drive%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Dusk%20Drive&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 41,
+   "flags": [],
+   "top": [
+    "Google Drive",
+    "Road Buddy - Driving Log",
+    "Night Drive 3D Simulator",
+    "Real Car Driving Night City",
+    "Car Drifting Night Driving",
+    "IKEA",
+    "Drive Time: Tracking Log",
+    "Dazz Cam - Vintage Camera"
+   ]
+  },
+  "domains": {
+   "duskdrive.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/duskdrive.com",
+    "state": "registered"
+   },
+   "duskdrive.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/duskdrive.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Gridlight",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Gridlight&c=apps",
+   "http": 200,
+   "n_titles": 50,
+   "flags": [
+    {
+     "title": "GridLight",
+     "why": "contains"
+    },
+    {
+     "title": "GRIDLIGHT",
+     "why": "contains"
+    },
+    {
+     "title": "GridLights",
+     "why": "contains"
+    },
+    {
+     "title": "GridLight Field Tool",
+     "why": "contains"
+    },
+    {
+     "title": "GridLight Service Link",
+     "why": "contains"
+    },
+    {
+     "title": "Aria's Sudoku by Gridlight",
+     "why": "contains"
+    },
+    {
+     "title": "Grid Light",
+     "why": "contains"
+    }
+   ],
+   "top": [
+    "GridLight",
+    "GRIDLIGHT",
+    "GridLights",
+    "GridLight Field Tool",
+    "GridLight Service Link",
+    "The Grid Pro - Neon Icon Pack",
+    "GRID\u2122 Legends: Deluxe Edition",
+    "Gemstone Lights HUB"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Gridlight%22&c=apps",
+   "http": 200,
+   "n_titles": 7,
+   "flags": [
+    {
+     "title": "GridLight",
+     "why": "contains"
+    },
+    {
+     "title": "GRIDLIGHT",
+     "why": "contains"
+    },
+    {
+     "title": "GridLight Field Tool",
+     "why": "contains"
+    },
+    {
+     "title": "GridLight Service Link",
+     "why": "contains"
+    },
+    {
+     "title": "Aria's Sudoku by Gridlight",
+     "why": "contains"
+    }
+   ],
+   "top": [
+    "GridLight",
+    "GRIDLIGHT",
+    "GridLight Field Tool",
+    "GridLight Service Link",
+    "Aria's Sudoku by Gridlight",
+    "The Radio",
+    "Split Screen Dashboard"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Gridlight&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 49,
+   "flags": [
+    {
+     "title": "GridLight",
+     "why": "contains"
+    }
+   ],
+   "top": [
+    "GridLight",
+    "Keepsmile",
+    "Flashlight - Night Light Clock",
+    "Apollo Lighting",
+    "Magic-Lantern",
+    "TYPE S LED",
+    "LotusLamp X",
+    "Elgato Control Center"
+   ]
+  },
+  "domains": {
+   "gridlight.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/gridlight.com",
+    "state": "registered"
+   },
+   "gridlight.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/gridlight.app",
+    "state": "registered"
+   }
+  }
+ },
+ {
+  "name": "Carbon Avenue",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Carbon%20Avenue&c=apps",
+   "http": 200,
+   "n_titles": 29,
+   "flags": [],
+   "top": [
+    "CarbonRC",
+    "Carbon",
+    "Carbon3 EV",
+    "Carbon(\uce74\ubcf8)",
+    "Carbon Culture",
+    "Carbon Voice: Talk Async",
+    "Carbon - Macro Coach & Tracker",
+    "CT Carbon"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Carbon%20Avenue%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Carbon%20Avenue&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 12,
+   "flags": [],
+   "top": [
+    "Simply Carbon Fiber",
+    "C6 Bank: Cart\u00e3o, conta e mais!",
+    "Carbon Cred",
+    "Bambu \u2013 Easy carbon credits",
+    "Carbon Capture Canada",
+    "Knowsley Carbon-IQ",
+    "ProMEX",
+    "ACT Action Compassion Traction"
+   ]
+  },
+  "domains": {
+   "carbonavenue.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/carbonavenue.com",
+    "state": "registered"
+   },
+   "carbonavenue.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/carbonavenue.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Highline Drive",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Highline%20Drive&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "HighQ Drive",
+    "Highline",
+    "IONOS HiDrive",
+    "Infinity Drive",
+    "Drive 2 Climb: Offroad 4x4",
+    "HiDrive",
+    "Driveline Wizard",
+    "Garmin Drive\u2122"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Highline%20Drive%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Highline%20Drive&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 49,
+   "flags": [],
+   "top": [
+    "#DRIVE",
+    "Driving School Simulator",
+    "Dr. Driving",
+    "Car Simulator 2",
+    "Microsoft OneDrive",
+    "Google Drive",
+    "Extreme Car Driving Simulator",
+    "Real Car Driving - Racing City"
+   ]
+  },
+  "domains": {
+   "highlinedrive.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/highlinedrive.com",
+    "state": "registered"
+   },
+   "highlinedrive.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/highlinedrive.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Streetglow",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Streetglow&c=apps",
+   "http": 200,
+   "n_titles": 29,
+   "flags": [
+    {
+     "title": "ScreenGlow",
+     "why": "similar 0.80"
+    }
+   ],
+   "top": [
+    "Ledglow",
+    "LOWGLOW LED",
+    "ProGLOW",
+    "Glow Spin - Rhythm Reflex Game",
+    "GlowStone Lighting Plus",
+    "Driftglow",
+    "Ambient Glow - Mood Light",
+    "NightGlow - Bedroom Light"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Streetglow%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Streetglow&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 31,
+   "flags": [],
+   "top": [
+    "City Frenzy",
+    "Street Art Cities",
+    "Strobe Flash: Beat & SOS Light",
+    "Street Runner \u2013 Endless Runner",
+    "Flashbang Pro",
+    "TerraGo StreetlightOps",
+    "PortraitMode.io",
+    "CDOT Lighting Management"
+   ]
+  },
+  "domains": {
+   "streetglow.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/streetglow.com",
+    "state": "registered"
+   },
+   "streetglow.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/streetglow.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Ember Avenue",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Ember%20Avenue&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Eternal Ember",
+    "Ember: One Daily Challenge",
+    "Ember Supreme",
+    "ember.",
+    "Ember: Claim the Board",
+    "Ember",
+    "Ember",
+    "Ember:Be The One Who Remembers"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Ember%20Avenue%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Ember%20Avenue&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "domains": {
+   "emberavenue.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/emberavenue.com",
+    "state": "registered"
+   },
+   "emberavenue.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/emberavenue.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Lumen City",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Lumen%20City&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [
+    {
+     "title": "Lumino City",
+     "why": "similar 0.84"
+    }
+   ],
+   "top": [
+    "Lumen",
+    "Lumen Edge",
+    "Lumen",
+    "Lumen 3",
+    "Lumen",
+    "Lumen Playground",
+    "Lumen Solar",
+    "Lumen"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Lumen%20City%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Lumen%20City&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 42,
+   "flags": [
+    {
+     "title": "Lumino City",
+     "why": "similar 0.84"
+    }
+   ],
+   "top": [
+    "Pocket City 2+",
+    "City Story Metro\u2122",
+    "Pocket City",
+    "Idle Light City",
+    "Designer City 2",
+    "City Service 3D",
+    "My City - Entertainment Tycoon",
+    "My Boo Town Pocket World Game"
+   ]
+  },
+  "domains": {
+   "lumencity.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/lumencity.com",
+    "state": "registered"
+   },
+   "lumencity.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/lumencity.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Velocity Row",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Velocity%20Row&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [
+    {
+     "title": "Velocity",
+     "why": "similar 0.84"
+    },
+    {
+     "title": "Velocity",
+     "why": "similar 0.84"
+    },
+    {
+     "title": "Velocity",
+     "why": "similar 0.84"
+    },
+    {
+     "title": "Velocity",
+     "why": "similar 0.84"
+    }
+   ],
+   "top": [
+    "Velocity",
+    "Row West",
+    "Row'r",
+    "Rowlytics: Rowing & Paddling",
+    "Velocity.Travel",
+    "SmartRow",
+    "RpiRoadbook",
+    "RowHero"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Velocity%20Row%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Velocity%20Row&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 36,
+   "flags": [
+    {
+     "title": "Velocity Pro",
+     "why": "similar 0.91"
+    }
+   ],
+   "top": [
+    "Metrownome: A Rowing Metronome",
+    "Velocity Vortex Scorer",
+    "Row Forge",
+    "Easy Velocity",
+    "RowStream - Row Together",
+    "Row Downstream",
+    "Row West",
+    "Row-Coach"
+   ]
+  },
+  "domains": {
+   "velocityrow.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/velocityrow.com",
+    "state": "registered"
+   },
+   "velocityrow.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/velocityrow.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Slipstream City",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Slipstream%20City&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [
+    {
+     "title": "Slipstream",
+     "why": "similar 0.83"
+    }
+   ],
+   "top": [
+    "Slipstream",
+    "Slipstream: Rogue Space",
+    "Slipstream: Traffic Racer",
+    "Steam City: Town building Sim",
+    "Street Art Cities",
+    "SimCity BuildIt",
+    "Shell Racing Legends",
+    "Rogue Streets: Beat 'Em Up"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Slipstream%20City%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Slipstream%20City&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 39,
+   "flags": [],
+   "top": [
+    "Pocket City 2+",
+    "Pocket City",
+    "Designer City 2",
+    "My City - Entertainment Tycoon",
+    "Diamond City: Idle Tycoon",
+    "Cityscapes: Sim Builder",
+    "Elevated Run: City Freestyle",
+    "Mayor 4000: City Builder"
+   ]
+  },
+  "domains": {
+   "slipstreamcity.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/slipstreamcity.com",
+    "state": "registered"
+   },
+   "slipstreamcity.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/slipstreamcity.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Redline City",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Redline%20City&c=apps",
+   "http": 200,
+   "n_titles": 27,
+   "flags": [],
+   "top": [
+    "Redline by CCEP",
+    "REDLINE: Longest Burn",
+    "Redline",
+    "REDLINE: Drive Beyond Limits",
+    "Redline Rush: Police Chase",
+    "Redline: AI Contract Scanner",
+    "Redline Delivery Driver",
+    "Redline"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Redline%20City%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Redline%20City&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 40,
+   "flags": [],
+   "top": [
+    "City Story Metro\u2122",
+    "Pocket City 2+",
+    "Pocket City",
+    "Diamond City: Idle Tycoon",
+    "Century City",
+    "Cityscapes: Sim Builder",
+    "Steam City: Town building Sim",
+    "Idle Island - City Tycoon"
+   ]
+  },
+  "domains": {
+   "redlinecity.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/redlinecity.com",
+    "state": "registered"
+   },
+   "redlinecity.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/redlinecity.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Afterhours Drive",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Afterhours%20Drive&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [
+    {
+     "title": "AfterHours",
+     "why": "similar 0.80"
+    },
+    {
+     "title": "Afterhours",
+     "why": "similar 0.80"
+    }
+   ],
+   "top": [
+    "AfterHours",
+    "Afterhours",
+    "AfterHour: Social Copy Trading",
+    "Afterhours: Find a Restaurant",
+    "Drive Car Beyond Desert",
+    "Drives and Detours",
+    "I Drive Winter Auto",
+    "Drive Car Beyond Desert Game"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Afterhours%20Drive%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Afterhours%20Drive&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 22,
+   "flags": [],
+   "top": [
+    "Road Buddy - Driving Log",
+    "On the hour",
+    "Instagram",
+    "My Drive for KLS",
+    "My Drive for Genesis",
+    "WhatsApp Messenger",
+    "Night Ride: Klitih",
+    "Drivers Hours"
+   ]
+  },
+  "domains": {
+   "afterhoursdrive.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/afterhoursdrive.com",
+    "state": "available"
+   },
+   "afterhoursdrive.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/afterhoursdrive.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Coastline Drive",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Coastline%20Drive&c=apps",
+   "http": 200,
+   "n_titles": 12,
+   "flags": [
+    {
+     "title": "Coast Drive",
+     "why": "similar 0.83"
+    }
+   ],
+   "top": [
+    "Coast Drive",
+    "C&C Drive",
+    "Coastline Community College",
+    "Coastline Destin",
+    "DriveWell Go\u2122",
+    "RtDrive Dcc-Ex",
+    "DriveGo: Speed Tracker & Maps",
+    "Coast-Enjoy the ride"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Coastline%20Drive%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Coastline%20Drive&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 44,
+   "flags": [],
+   "top": [
+    "17 Mile Drive Audio Tour Guide",
+    "30A",
+    "Pacific Coast Highway 1 Guide",
+    "Volusia County Beaches",
+    "Aceable Drivers Ed & More",
+    "BeachLens",
+    "OBX Beach & Weather",
+    "YourCoast"
+   ]
+  },
+  "domains": {
+   "coastlinedrive.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/coastlinedrive.com",
+    "state": "available"
+   },
+   "coastlinedrive.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/coastlinedrive.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Midnight Mile",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Midnight%20Mile&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Lady's Mile",
+    "MILE",
+    "Midnight Market : Tycoon",
+    "Milesight ToolBox",
+    "Hinge Dating App: Match & Date",
+    "Vita Mahjong",
+    "Bumble Dating App: Meet & Date",
+    "Zalando \u2013 online fashion store"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Midnight%20Mile%22&c=apps",
+   "http": 200,
+   "n_titles": 3,
+   "flags": [],
+   "top": [
+    "Profit Rush: Money Clicker",
+    "Pie Cannon: Carnival Shootout",
+    "Jack City"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Midnight%20Mile&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 19,
+   "flags": [],
+   "top": [
+    "Perplexity - AI Search & Chat",
+    "Kling AI: AI Image&Video Maker",
+    "Baby Milestone Tracker Sprouty",
+    "Midnight City Drifting Games",
+    "Temple Run",
+    "Meta AI",
+    "FaceApp: Perfect Face Editor",
+    "Grok AI"
+   ]
+  },
+  "domains": {
+   "midnightmile.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/midnightmile.com",
+    "state": "registered"
+   },
+   "midnightmile.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/midnightmile.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Chrome Avenue",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Chrome%20Avenue&c=apps",
+   "http": 200,
+   "n_titles": 14,
+   "flags": [],
+   "top": [
+    "Google Chrome",
+    "Chrome Remote Desktop",
+    "Chrome Beta",
+    "Chrome Canary (Unstable)",
+    "Twitch: Live Streaming",
+    "Document Scanner - PDF Creator",
+    "Cronometer: Calorie Counter",
+    "Globoplay: Novelas, s\u00e9ries e +"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Chrome%20Avenue%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Chrome%20Avenue&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 2,
+   "flags": [],
+   "top": [
+    "GOAT \u2013 Sneakers & Apparel",
+    "Gieng Browser Fast and Modern"
+   ]
+  },
+  "domains": {
+   "chromeavenue.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/chromeavenue.com",
+    "state": "registered"
+   },
+   "chromeavenue.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/chromeavenue.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Drive Noir",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Drive%20Noir&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [
+    {
+     "title": "Noir Partner - Drive & Earn",
+     "why": "all-words"
+    }
+   ],
+   "top": [
+    "Noir Partner - Drive & Earn",
+    "Noir: USB Camera HDMI Monitor",
+    "Noir Pro: USB Camera HDMI Link",
+    "Roblox",
+    "YouTube Kids",
+    "Film Noir Movies",
+    "Noir Chronicles: City of Crime",
+    "Truecaller: Phone Call Blocker"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Drive%20Noir%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Drive%20Noir&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 39,
+   "flags": [
+    {
+     "title": "Noir Partner - Drive & Earn",
+     "why": "all-words"
+    }
+   ],
+   "top": [
+    "Noir Partner - Drive & Earn",
+    "VR Noir",
+    "Miraculous Ladybug & Cat Noir",
+    "Noir Chronicles",
+    "Talking Tom Hero Dash",
+    "The Posthumous Investigation",
+    "Gemini Rue",
+    "Film Noir Movies"
+   ]
+  },
+  "domains": {
+   "drivenoir.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/drivenoir.com",
+    "state": "registered"
+   },
+   "drivenoir.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/drivenoir.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Neon Mile",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Neon%20Mile&c=apps",
+   "http": 200,
+   "n_titles": 16,
+   "flags": [],
+   "top": [
+    "Neon LED Keyboard: RGB & Emoji",
+    "Neon Race",
+    "MILE",
+    "Lavien Lines Neon",
+    "Neonda: Neon Tilt Maze",
+    "Neon Racer",
+    "Poker Miles",
+    "Neon Cyber Calculator"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Neon%20Mile%22&c=apps",
+   "http": 200,
+   "n_titles": 3,
+   "flags": [],
+   "top": [
+    "Dance Knight",
+    "Betano Apuestas Online",
+    "Desert Lights Casino"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Neon%20Mile&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 34,
+   "flags": [],
+   "top": [
+    "Neon Race - Light Bike Race",
+    "Neon On!",
+    "3D Neon Lights Retro Simulator",
+    "HappyLighting-Life with smart",
+    "Neon Driver",
+    "Instagram",
+    "My Neon City - Healing game",
+    "Neon Swipe"
+   ]
+  },
+  "domains": {
+   "neonmile.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/neonmile.com",
+    "state": "registered"
+   },
+   "neonmile.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/neonmile.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Golden Hour Drive",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Golden%20Hour%20Drive&c=apps",
+   "http": 200,
+   "n_titles": 29,
+   "flags": [
+    {
+     "title": "Golden Hour",
+     "why": "similar 0.80"
+    },
+    {
+     "title": "Golden Hour",
+     "why": "similar 0.80"
+    },
+    {
+     "title": "Golden Hour+",
+     "why": "similar 0.80"
+    },
+    {
+     "title": "Golden Drive",
+     "why": "similar 0.85"
+    }
+   ],
+   "top": [
+    "Golden Hour",
+    "Golden Hour",
+    "Golden Hour+",
+    "Golden Hour Finder: Sun & Moon",
+    "My golden hour",
+    "GoldenHour: Film Camera",
+    "Golden Hour Planner",
+    "Drive Hours \u2013 Learner Log"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Golden%20Hour%20Drive%22&c=apps",
+   "http": 200,
+   "n_titles": 1,
+   "flags": [],
+   "top": [
+    "Emerald Cruise"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Golden%20Hour%20Drive&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 47,
+   "flags": [
+    {
+     "title": "Golden Hour",
+     "why": "similar 0.80"
+    },
+    {
+     "title": "Golden Hour!",
+     "why": "similar 0.80"
+    }
+   ],
+   "top": [
+    "Golden Hour Calculator",
+    "Golden Hour",
+    "Golden Hour One",
+    "Golden Hour App",
+    "Golden Hour: Sunset & Sunrise",
+    "Traffic Tour: Car Race",
+    "Golden Hour & Blue Hour",
+    "Golden Hour!"
+   ]
+  },
+  "domains": {
+   "goldenhourdrive.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/goldenhourdrive.com",
+    "state": "available"
+   },
+   "goldenhourdrive.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/goldenhourdrive.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Sunset Avenue",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Sunset%20Avenue&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Sunset & Sunrise Sun Ephemeris",
+    "Sun Position: Sunrise & Sunset",
+    "Sunrise and Sunset Times",
+    "Suntime: Sunrise & Sunset",
+    "Alpenglow: Sunset Predictions",
+    "Sunset and Sunrise time",
+    "Sunrise & Sunset Timings",
+    "Sunrise Sunset Times"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Sunset%20Avenue%22&c=apps",
+   "http": 200,
+   "n_titles": 1,
+   "flags": [],
+   "top": [
+    "SJCHS CHITTARANJAN"
+   ]
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Sunset%20Avenue&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 27,
+   "flags": [],
+   "top": [
+    "Enjoy the Sunset",
+    "SkyCandy - Sunset Forecast App",
+    "Freyr Sunset",
+    "Sunset",
+    "ZARA",
+    "H&M",
+    "Bovel",
+    "Sunset Challenge"
+   ]
+  },
+  "domains": {
+   "sunsetavenue.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/sunsetavenue.com",
+    "state": "registered"
+   },
+   "sunsetavenue.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/sunsetavenue.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Dusk District",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Dusk%20District&c=apps",
+   "http": 200,
+   "n_titles": 9,
+   "flags": [],
+   "top": [
+    "DUSK - Drinks, Deals & Rewards",
+    "District 128",
+    "dusk",
+    "Done By Dusk",
+    "Yandex Weather & Rain Radar",
+    "Focus Dock -Standby Desk Clock",
+    "World Clock Widget",
+    "HBO Max: Stream TV & Movies"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Dusk%20District%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Dusk%20District&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 13,
+   "flags": [],
+   "top": [
+    "dusk. - for sunset lovers",
+    "Dawn and Dusk",
+    "Crystal Colony",
+    "Golden Hour App",
+    "LightPlan: Sun Path & Shadow",
+    "World Sky Clock",
+    "Twilight Time",
+    "Sunrise Sunset Info"
+   ]
+  },
+  "domains": {
+   "duskdistrict.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/duskdistrict.com",
+    "state": "registered"
+   },
+   "duskdistrict.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/duskdistrict.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Afterglow City",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Afterglow%20City&c=apps",
+   "http": 200,
+   "n_titles": 8,
+   "flags": [
+    {
+     "title": "Afterglow",
+     "why": "similar 0.82"
+    },
+    {
+     "title": "Afterglow",
+     "why": "similar 0.82"
+    },
+    {
+     "title": "Afterglow TV",
+     "why": "similar 0.83"
+    }
+   ],
+   "top": [
+    "Afterglow",
+    "Afterglow: Mobile MMORPG",
+    "AfterGlow: Disposable Camera",
+    "Afterglow: Wellness Companion",
+    "Afterglow: Concert Tracker",
+    "Afterglow",
+    "Afterglow TV",
+    "Afterglow: AI Video Maker"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Afterglow%20City%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Afterglow%20City&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 42,
+   "flags": [],
+   "top": [
+    "City Story Metro\u2122",
+    "Pocket City 2+",
+    "Designer City 2",
+    "Idle Light City",
+    "Pocket City",
+    "Diamond City: Idle Tycoon",
+    "My City - Entertainment Tycoon",
+    "Post Apo Tycoon - Idle Builder"
+   ]
+  },
+  "domains": {
+   "afterglowcity.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/afterglowcity.com",
+    "state": "registered"
+   },
+   "afterglowcity.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/afterglowcity.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Velvet Avenue",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Velvet%20Avenue&c=apps",
+   "http": 200,
+   "n_titles": 29,
+   "flags": [],
+   "top": [
+    "Velvet Rendezvous",
+    "Wedding Velvet",
+    "Velvet",
+    "Velvet Vibes",
+    "Velvet Hub",
+    "Velvet: AI That Remembers You",
+    "Velvet: AI Makeup Try On",
+    "Velvet: Couples & Party Games"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Velvet%20Avenue%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Velvet%20Avenue&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 2,
+   "flags": [],
+   "top": [
+    "Fifth Avenue Galgorm",
+    "American Velvet"
+   ]
+  },
+  "domains": {
+   "velvetavenue.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/velvetavenue.com",
+    "state": "registered"
+   },
+   "velvetavenue.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/velvetavenue.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Low Sun Drive",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Low%20Sun%20Drive&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "Synology Drive",
+    "Endless Night Drive",
+    "Sun Position: Sunrise & Sunset",
+    "Sun Surveyor Lite",
+    "Netflix",
+    "Sunrise and Sunset Times",
+    "YouTube",
+    "Prime Video"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Low%20Sun%20Drive%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Low%20Sun%20Drive&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 47,
+   "flags": [],
+   "top": [
+    "Sun Surveyor Lite",
+    "Extreme Car Driving Simulator",
+    "Sunrise Sunset Time SolarWatch",
+    "Dr. Driving",
+    "Sunlight Clock Free",
+    "Sunlitt: Sun Tracker & Seeker",
+    "Sun Seeker - Sunlight Tracker",
+    "Sun position and path"
+   ]
+  },
+  "domains": {
+   "lowsundrive.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/lowsundrive.com",
+    "state": "available"
+   },
+   "lowsundrive.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/lowsundrive.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Amber Avenue",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Amber%20Avenue&c=apps",
+   "http": 200,
+   "n_titles": 29,
+   "flags": [],
+   "top": [
+    "amber: find student apartments",
+    "Amber's Airline - 7 Wonders",
+    "Amber's Airline - High Hopes",
+    "Amber",
+    "Character AI: Chat, Talk, Text",
+    "Tasty Travels: Merge Game",
+    "Reliance Digital Online Shop",
+    "amber"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Amber%20Avenue%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Amber%20Avenue&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 1,
+   "flags": [],
+   "top": [
+    "Shop Amber and Fig"
+   ]
+  },
+  "domains": {
+   "amberavenue.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/amberavenue.com",
+    "state": "registered"
+   },
+   "amberavenue.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/amberavenue.app",
+    "state": "available"
+   }
+  }
+ },
+ {
+  "name": "Citylight Run",
+  "checked_at": "2026-10-16",
+  "play_plain": {
+   "url": "https://play.google.com/store/search?q=Citylight%20Run&c=apps",
+   "http": 200,
+   "n_titles": 30,
+   "flags": [],
+   "top": [
+    "CityLight LA",
+    "City Run",
+    "CityLight LA",
+    "City Run",
+    "City Lights 3D",
+    "CityLight Church",
+    "Citylight Church",
+    "Citylight Church App"
+   ]
+  },
+  "play_quoted": {
+   "url": "https://play.google.com/store/search?q=%22Citylight%20Run%22&c=apps",
+   "http": 200,
+   "n_titles": 0,
+   "flags": [],
+   "top": []
+  },
+  "itunes": {
+   "url": "https://itunes.apple.com/search?term=Citylight%20Run&entity=software&limit=50",
+   "http": 200,
+   "n_titles": 47,
+   "flags": [],
+   "top": [
+    "Angry Gran Run - Running Game",
+    "Temple Run 2",
+    "Subway Surfers City",
+    "Obby Prison Escape",
+    "Rooftop Run",
+    "Vector: Parkour Run",
+    "Run Race 3D \u2014 Fun Parkour Game",
+    "Subway Surfers+"
+   ]
+  },
+  "domains": {
+   "citylightrun.com": {
+    "url": "https://rdap.verisign.com/com/v1/domain/citylightrun.com",
+    "state": "available"
+   },
+   "citylightrun.app": {
+    "url": "https://pubapi.registry.google/rdap/domain/citylightrun.app",
+    "state": "available"
+   }
+  }
+ }
+]
