@@ -31,3 +31,15 @@ applied to Merge Relay specifically.
 | 2026-09-28 | Crash reporting ships as `MergeRelayCrashReporter` (interface) + `NoOpCrashReporter` (the only implementation wired into v1); no crash SDK is bundled | No SDK needs build-time credentials to compile; the vendor choice (Crashlytics vs Sentry) stays an explicit open human decision (`open-questions.md` #2) instead of being made by default via whichever SDK happened to be added first |
 | 2026-09-28 | Privacy policy lives at `docs-public/legal/glow-rescue-privacy-policy.md`, under a new "Legal" tab in `docs-public/docs.json` | Follows the existing docs-public Mintlify structure (tabs organized by audience/context); no other public docs page existed for a game-specific policy |
 | 2026-09-28 | Store screenshots and feature graphic are Pillow composites of the final screen goldens and final integrated art (tasks 22/23) — no new image-gen renders | The task's own instruction ("made from the final goldens with Pillow captions"); avoids spending an image-gen budget on marketing crops when the final art already exists |
+
+## Release-manifest hardening decisions (task 27)
+
+| Date | Decision | Rationale / notes |
+|---|---|---|
+| 2026-10-16 | **Play Games Services SDK (`play-services-games-v2`) stays in the app**, gated off in v1 (`mergeRelaySocialEnabled` false) | Owner decision. The release inspection's "drop the SDK" option is rejected; the manifest and disclosures are made correct for "SDK present, dormant" instead |
+| 2026-10-16 | `com.google.android.gms.games.APP_ID` is no longer in the static manifest; Gradle adds it to the merged manifest only when a numeric `MERGE_RELAY_PGS_<ENV>_APPLICATION_ID` is set (as a `@string/` reference) | Decompiled SDK 22.1.0: the only read of the entry is app shortcuts inside `PlayGamesSdk.initialize`, which catches `NumberFormatException`; the init provider is removed and nothing calls initialize in v1, so an absent entry is safe. An empty entry looked like a real declaration. A fake numeric placeholder was rejected as worse |
+| 2026-10-16 | The https challenge App Link intent-filter is added to the merged manifest only when `MERGE_RELAY_PUBLIC_ORIGIN` is a valid https origin; the `mergerelay://challenge` filter stays | An https filter with an empty host is an invalid App Link declaration |
+| 2026-10-16 | `android:allowBackup="false"`; backup rule files exclude every domain | The privacy policy promised no cloud backup; the default was auto-backup on |
+| 2026-10-16 | `games:build --mode release --environment production` now builds the production release APKs (`--split-per-abi`) behind the AAB keystore guard | The CLI refused it; the size budget is measured on the arm64 release APK |
+| 2026-10-16 | Disclosures (privacy policy, store-listing Data safety) now name the bundled SDK, say what v1.1 changes, and tell the human to verify SDK-collected data answers in Play Console help | The repo can prove the game makes no calls; it cannot prove how Google's form treats a dormant SDK |
+

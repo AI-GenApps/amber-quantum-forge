@@ -374,6 +374,23 @@ outside this repository's git history.
    missing, so a keystore can never be silently skipped for a production
    build.
 
+   **Release APK for performance and size checks (task 27).** The same CLI
+   builds the production-signed release APKs, one per ABI, with the same
+   keystore guard (it prints `NOT RUN` and exits 2 when any of the four
+   variables or the keystore file is missing):
+
+   ```bash
+   bun run games:build -- --app merge_relay --platform android --mode release --environment production
+   ```
+
+   This runs `flutter build apk --release --split-per-abi --android-project-arg
+   gameEnvironment=production --dart-define GAME_ENVIRONMENT=production
+   --dart-define APP_VERSION=<registry version>` in
+   `apps-native/games/merge_relay`; the APKs land in
+   `build/app/outputs/flutter-apk/`. The arm64 APK (`app-arm64-v8a-release.apk`)
+   is the size-budget artifact (at most 40 MB). Before task 27 this mode was
+   refused for production and the same flutter command had to be typed by hand.
+
 5. **Play App Signing**: opt in when creating the app in Play Console. You
    still upload AABs signed with the upload key above; Google re-signs with
    its own app-signing key for distribution. This means losing the upload
@@ -385,6 +402,56 @@ outside this repository's git history.
    production build — this task does not do that backup, since it never
    creates the keystore.
 
+### Play Games Services SDK in the v1 build (task 27, 2026-10-16)
+
+Owner decision: `com.google.android.gms:play-services-games-v2` stays in the
+app. In v1 it is present but dormant. How the build handles it:
+
+- `PlayGamesInitProvider` is removed in `AndroidManifest.xml`
+  (`tools:node="remove"`), so the SDK never starts by itself. Nothing in the
+  game calls `PlayGamesSdk.initialize` unless Dart does, and Dart returns early
+  while `mergeRelaySocialEnabled` is false.
+- `com.google.android.gms.games.APP_ID` is **not** in the static manifest. The
+  Gradle task `MergeRelayManifestConditionalsTask`
+  (`android/app/build.gradle.kts`) adds it to the merged manifest only when
+  `MERGE_RELAY_PGS_<ENV>_APPLICATION_ID` (environment `DEBUG`, `STAGING` or
+  `PRODUCTION`) or the Gradle property `mergeRelayPgs<Env>ApplicationId` is a
+  numeric id, as a `@string/` reference (so the entry is omitted only when no
+  `MERGE_RELAY_PGS_<ENV>_APPLICATION_ID` variable is set for the build; aapt2 would store a short numeric
+  literal as an integer, which the SDK cannot read). A non-numeric value fails
+  the build. Blank means no entry.
+- Why omission is safe (read from the SDK 22.1.0 classes): the SDK's own
+  manifest does not declare the entry; its only read of it is the app-shortcut
+  setup inside `PlayGamesSdk.initialize`, which catches the
+  `NumberFormatException` an absent or blank value produces and simply creates
+  no shortcuts. Behaviour of the Google Play services app when signing in
+  without an id is outside this repository; PGS must stay off until a real id
+  is set.
+- The https challenge App Link is added the same way, only when
+  `MERGE_RELAY_PUBLIC_ORIGIN` is a valid https origin.
+- `android:allowBackup="false"`; the backup rule files exclude every domain.
+- SDK-contributed manifest entries that remain (documented, not removed): the
+  exported `PlayGamesAppShortcutsActivity`, `GamesResolutionActivity`,
+  `GoogleApiActivity` (play-services-base), the `games.version` and
+  `gms.version` meta-data, and `<queries>` for `com.google.android.gms` and
+  `com.android.vending`. The game itself exports only `MainActivity`.
+
+**Human step required before enabling PGS (v1.1):** in Play Console > Play
+Games Services > Setup and management > Configuration, create the PGS project
+for `app.w3dev.mergerelay`, then provide the **numeric project (application)
+id**, the achievement id, the leaderboard id and the server client id to the
+build as `MERGE_RELAY_PGS_PRODUCTION_APPLICATION_ID`,
+`..._ACHIEVEMENT_ID`, `..._LEADERBOARD_ID` and `..._SERVER_CLIENT_ID`. Until
+then PGS features must stay off, and v1 ships without the `APP_ID` entry (this
+holds only when no `MERGE_RELAY_PGS_<ENV>_APPLICATION_ID` environment variable
+is set for the build).
+
+**Data safety:** the answers in `.agents/games/merge-relay/store-listing.md`
+describe the game's own code. How a bundled-but-dormant Play Games SDK must be
+declared is not decided by this repository: verify in Play Console help before
+submitting, and redo the form (player id, leaderboard and achievement data,
+network use) before the v1.1 release that enables PGS.
+
 ### Release checklist
 
 | Item | Status |
@@ -394,6 +461,9 @@ outside this repository's git history.
 | Data safety form answers, cited against shipped code | **done** — same file, "Data safety form" section |
 | Ads / IAP declarations (both "none") | **done** |
 | Permissions rationale (`INTERNET` kept, documented) | **done** |
+| Manifest hardening: no empty `APP_ID`, no empty-host https filter, `allowBackup=false` | **done** (task 27; no `APP_ID` entry holds only when no `MERGE_RELAY_PGS_<ENV>_APPLICATION_ID` variable is set) — verified on a rebuilt production AAB and release APK, `.agents/resources/2026-10-16/glow-rescue-release-build/README.md` ("After task 27") |
+| Play Games SDK disclosure (policy, Data safety evidence) | **done for what the repo can prove** (task 27); **human**: verify SDK-collected data answers in Play Console help before submission |
+| Real Play Games application id and PGS project | **human**, v1.1 only (see the section above) |
 | Privacy policy page content | **done** — `docs-public/legal/glow-rescue-privacy-policy.md` |
 | Privacy policy hosting URL | **human** — no public docs site is deployed by this task |
 | Crash-reporting interface + no-op default + test | **done** — `apps-native/games/merge_relay/lib/src/crash/`, wired into `main.dart` |

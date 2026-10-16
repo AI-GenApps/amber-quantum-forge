@@ -6,11 +6,14 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="false"
+        android:allowBackup="false"
         android:fullBackupContent="@xml/backup_rules"
         android:dataExtractionRules="@xml/data_extraction_rules">
-        <meta-data
-            android:name="com.google.android.gms.games.APP_ID"
-            android:value="${mergeRelayPgsApplicationId}" />
+        <!-- Play Games Services v2 is bundled but dormant in v1 (mergeRelaySocialEnabled is false
+             and the SDK init provider is removed below). The com.google.android.gms.games.APP_ID
+             meta-data is deliberately NOT declared here: app/build.gradle.kts adds it to the merged
+             manifest only when a numeric Play Games application id is configured
+             (MERGE_RELAY_PGS_<ENV>_APPLICATION_ID), so an empty value can never ship. -->
         <meta-data
             android:name="com.google.android.gms.games.SUPPRESS_GAME_PROFILE_CREATION"
             android:value="true" />
@@ -44,15 +47,10 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data android:scheme="mergerelay" android:host="challenge"/>
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data
-                    android:scheme="https"
-                    android:host="${mergeRelayPublicHost}"
-                    android:pathPrefix="/games/merge-relay/challenges" />
-            </intent-filter>
+            <!-- The https App Link intent-filter for /games/merge-relay/challenges is NOT declared
+                 here: app/build.gradle.kts adds it to the merged manifest only when
+                 MERGE_RELAY_PUBLIC_ORIGIN (or -PmergeRelayPublicOrigin) is a valid https origin,
+                 so a filter with an empty host can never ship. -->
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

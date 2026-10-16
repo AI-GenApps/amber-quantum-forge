@@ -16,6 +16,7 @@ Run commands from the repository root after Bun, Flutter 3.47.3, and Dart 3.13.3
 | `bun run games:run -- --app merge_relay --device-id <physical-id>` | Runs one app on a connected physical device. Emulator and simulator IDs return `NOT RUN` with exit code 2. |
 | `bun run games:build -- --app merge_relay --platform android --mode debug --environment debug` | Builds one debug APK with the debug application ID suffix. |
 | `bun run games:build -- --app merge_relay --platform android --mode release --environment debug` | Builds one optimized Android APK using the local debug keystore and the debug environment ID; this is a release-mode debug-signed artifact, not a store distribution build. |
+| `bun run games:build -- --app merge_relay --platform android --mode release --environment production` | Builds the production-signed release APKs (`flutter build apk --release --split-per-abi`, one per ABI; the arm64 APK is the size-budget artifact). Same keystore guard as `--mode aab`: without `ANDROID_KEYSTORE_PATH`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`, `ANDROID_STORE_PASSWORD` and an existing keystore file it prints `NOT RUN` and exits 2. |
 | `bun run games:build -- --app merge_relay --platform ios --mode unsigned --environment debug` | Builds one unsigned iOS app on macOS with Xcode. Signed/device/distribution modes remain explicit release gates. |
 | `bun run games:generate -- --id generated_sixth --title "Generated Sixth" --output <new-directory>` | Creates a generic Flutter app with isolated debug IDs/config and no registered game rules or optional SDKs. |
 | `bun run games:validate-generated -- --output <directory>` | Validates the generated config, Android package, iOS IDs, runtime config asset, and no cross-game imports. |
@@ -28,7 +29,7 @@ Run commands from the repository root after Bun, Flutter 3.47.3, and Dart 3.13.3
 | `bun run games:xcodegen` | Regenerates each iOS project from its checked-in `ios/project.yml`; it does not sign or submit an app. |
 | `bun run knip:ci` | Runs pinned Knip analysis with exact, documented exceptions. |
 
-Build commands never submit to stores, distribute externally, spend money, run production migrations, or boot a simulator. `--mode release --environment debug` remains local debug-signed verification. Production builds stop with `NOT RUN` until registration and distribution signing are verified. CI uses a Linux Android debug job and a macOS unsigned iOS job through [`games-build.yml`](../../.github/workflows/games-build.yml).
+Build commands never submit to stores, distribute externally, spend money, run production migrations, or boot a simulator. `--mode release --environment debug` remains local debug-signed verification. Production builds (Android `--mode aab` or `--mode release`, iOS `archive`/`ipa`) stop with `NOT RUN` until registration and distribution signing are verified. CI uses a Linux Android debug job and a macOS unsigned iOS job through [`games-build.yml`](../../.github/workflows/games-build.yml).
 
 ## Merge Relay local HTTP smoke
 

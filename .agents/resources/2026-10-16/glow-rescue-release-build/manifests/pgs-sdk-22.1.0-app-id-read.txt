@@ -1,0 +1,22 @@
+     413: ldc           #208                // String com.google.android.gms.games.APP_ID
+     415: ldc           #134                // String
+     417: invokevirtual #170                // Method android/os/Bundle.getString:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+     420: invokestatic  #212                // Method java/lang/Long.parseLong:(Ljava/lang/String;)J
+    Exception table:
+       from    to  target type
+           5    17   438   Class android/content/pm/PackageManager$NameNotFoundException
+         276   289   444   Class android/content/pm/PackageManager$NameNotFoundException
+         412   430   451   Class java/lang/NumberFormatException
+}
+  public final boolean onCreate();
+    Code:
+       0: aload_0
+       1: invokevirtual #54                 // Method getContext:()Landroid/content/Context;
+       4: astore_0
+       5: aload_0
+       6: ifnonnull     18
+       9: ldc           #56                 // String GamesInitProvider
+      11: ldc           #58                 // String No Context available. Please manually invoke PlayGamesSdk.initialize().
+      13: invokestatic  #64                 // Method com/google/android/gms/internal/games_v2/zzfy.zze:(Ljava/lang/String;Ljava/lang/String;)V
+      16: iconst_0
+      17: ireturn

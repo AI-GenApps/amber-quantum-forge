@@ -1,5 +1,6 @@
 import { expect, test } from "bun:test";
-import { readFileSync } from "node:fs";
+import { readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { affectedForFiles, detectAffected } from "./affected";
 import { classifyPhysicalDevice } from "./cli";
@@ -142,4 +143,113 @@ test("camera hardware features stay optional and isolated to SnapQuest", () => {
     ),
   ).toHaveLength(3);
   expect(validateAndroidManifestFeatures("<manifest />", "fixture", false)).toEqual([]);
+});
+
+const ANDROID_SIGNING_VARIABLES = [
+  "ANDROID_KEYSTORE_PATH",
+  "ANDROID_KEY_ALIAS",
+  "ANDROID_KEY_PASSWORD",
+  "ANDROID_STORE_PASSWORD",
+] as const;
+
+function withAndroidSigning(values: Record<string, string> | null, body: () => void): void {
+  const saved = new Map<string, string | undefined>(
+    ANDROID_SIGNING_VARIABLES.map((name) => [name, process.env[name]]),
+  );
+  const savedExitCode = process.exitCode;
+  for (const name of ANDROID_SIGNING_VARIABLES) delete process.env[name];
+  if (values) Object.assign(process.env, values);
+  try {
+    body();
+  } finally {
+    for (const [name, value] of saved) {
+      if (value === undefined) delete process.env[name];
+      else process.env[name] = value;
+    }
+    process.exitCode = savedExitCode ?? 0;
+  }
+}
+
+test("production release APK is refused without the AAB keystore guard inputs", () => {
+  const calls: string[][] = [];
+  withAndroidSigning(null, () => {
+    runAndroidBuild(flutterGames()[0], "release", "production", (_command, args) => {
+      calls.push(args);
+    });
+    expect(process.exitCode).toBe(2);
+  });
+  expect(calls).toEqual([]);
+});
+
+test("production release APK builds per ABI once the signing inputs exist", () => {
+  const keystore = join(tmpdir(), `games-cli-keystore-${process.pid}.jks`);
+  writeFileSync(keystore, "not a real keystore; only its existence is checked");
+  const calls: string[][] = [];
+  try {
+    withAndroidSigning(
+      {
+        ANDROID_KEYSTORE_PATH: keystore,
+        ANDROID_KEY_ALIAS: "fixture",
+        ANDROID_KEY_PASSWORD: "fixture",
+        ANDROID_STORE_PASSWORD: "fixture",
+      },
+      () => {
+        runAndroidBuild(flutterGames()[0], "release", "production", (_command, args) => {
+          calls.push(args);
+        });
+      },
+    );
+  } finally {
+    rmSync(keystore, { force: true });
+  }
+  expect(calls).toHaveLength(1);
+  expect(calls[0]).toEqual(
+    expect.arrayContaining([
+      "apk",
+      "--release",
+      "--split-per-abi",
+      "gameEnvironment=production",
+      "GAME_ENVIRONMENT=production",
+    ]),
+  );
+});
+
+test("non-production release and debug APK builds are unchanged and need no keystore", () => {
+  const calls: string[][] = [];
+  withAndroidSigning(null, () => {
+    runAndroidBuild(flutterGames()[0], "release", "staging", (_command, args) => {
+      calls.push(args);
+    });
+    runAndroidBuild(flutterGames()[0], "debug", "debug", (_command, args) => {
+      calls.push(args);
+    });
+    expect(process.exitCode).not.toBe(2);
+  });
+  expect(calls).toHaveLength(2);
+  for (const args of calls) expect(args).not.toContain("--split-per-abi");
+});
+
+test("games:build accepts production Android --mode release and reports the keystore guard", () => {
+  const env: Record<string, string | undefined> = { ...process.env };
+  for (const name of ANDROID_SIGNING_VARIABLES) delete env[name];
+  const result = Bun.spawnSync(
+    [
+      "bun",
+      "scripts/games/cli.ts",
+      "build",
+      "--app",
+      "merge_relay",
+      "--platform",
+      "android",
+      "--mode",
+      "release",
+      "--environment",
+      "production",
+    ],
+    { env },
+  );
+  const output = result.stdout.toString();
+  expect(output).toContain("Android release APK signing is unavailable");
+  expect(output).not.toContain("production builds use");
+  expect(result.exitCode).toBe(2);
 });

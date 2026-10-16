@@ -1,9 +1,82 @@
+import com.android.build.api.artifact.SingleArtifact
 import java.net.URI
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.transform.OutputKeys
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
 
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+}
+
+/**
+ * Adds the two manifest entries that must only exist when a real value is configured, to the
+ * MERGED manifest (a manifest placeholder can change an attribute value but cannot omit an
+ * element, and an empty value would ship as an invalid declaration):
+ *
+ * - `com.google.android.gms.games.APP_ID` meta-data, only when a numeric Play Games application
+ *   id is configured. The value is a `@string/` reference because aapt2 stores a plain numeric
+ *   literal of up to 10 digits as an integer, which `Bundle.getString` (what the Play Games SDK
+ *   calls) does not return.
+ * - The https App Link intent-filter on MainActivity, only when MERGE_RELAY_PUBLIC_ORIGIN names
+ *   a valid https origin.
+ *
+ * Blank input leaves the merged manifest byte-for-byte unchanged in meaning: nothing is added.
+ */
+abstract class MergeRelayManifestConditionalsTask : DefaultTask() {
+    @get:InputFile
+    @get:PathSensitive(PathSensitivity.NONE)
+    abstract val mergedManifest: RegularFileProperty
+
+    @get:OutputFile
+    abstract val updatedManifest: RegularFileProperty
+
+    @get:Input
+    abstract val pgsApplicationId: Property<String>
+
+    @get:Input
+    abstract val publicHost: Property<String>
+
+    @TaskAction
+    fun apply() {
+        val androidNs = "http://schemas.android.com/apk/res/android"
+        val factory = DocumentBuilderFactory.newInstance()
+        factory.isNamespaceAware = true
+        val document = factory.newDocumentBuilder().parse(mergedManifest.get().asFile)
+        val application = document.getElementsByTagName("application").item(0)
+            ?: throw GradleException("merged manifest has no <application>")
+        if (pgsApplicationId.get().isNotBlank()) {
+            val meta = document.createElement("meta-data")
+            meta.setAttributeNS(androidNs, "android:name", "com.google.android.gms.games.APP_ID")
+            meta.setAttributeNS(androidNs, "android:value", "@string/merge_relay_pgs_application_id")
+            application.appendChild(meta)
+        }
+        if (publicHost.get().isNotBlank()) {
+            val activities = document.getElementsByTagName("activity")
+            val main = (0 until activities.length)
+                .map { activities.item(it) as org.w3c.dom.Element }
+                .firstOrNull { it.getAttributeNS(androidNs, "name").endsWith(".MainActivity") }
+                ?: throw GradleException("merged manifest has no MainActivity")
+            fun child(tag: String, name: String): org.w3c.dom.Element =
+                document.createElement(tag).also { it.setAttributeNS(androidNs, "android:name", name) }
+            val filter = document.createElement("intent-filter")
+            filter.appendChild(child("action", "android.intent.action.VIEW"))
+            filter.appendChild(child("category", "android.intent.category.DEFAULT"))
+            filter.appendChild(child("category", "android.intent.category.BROWSABLE"))
+            val data = document.createElement("data")
+            data.setAttributeNS(androidNs, "android:scheme", "https")
+            data.setAttributeNS(androidNs, "android:host", publicHost.get())
+            data.setAttributeNS(androidNs, "android:pathPrefix", "/games/merge-relay/challenges")
+            filter.appendChild(data)
+            main.appendChild(filter)
+        }
+        val transformer = TransformerFactory.newInstance().newTransformer()
+        transformer.setOutputProperty(OutputKeys.ENCODING, "utf-8")
+        transformer.transform(DOMSource(document), StreamResult(updatedManifest.get().asFile))
+    }
 }
 
 val gameEnvironment = project.findProperty("gameEnvironment")?.toString() ?: "debug"
@@ -37,6 +110,13 @@ fun mergeRelayPgsValue(environmentSuffix: String, propertySuffix: String): Strin
     System.getenv("MERGE_RELAY_PGS_${gameEnvironment.uppercase()}_$environmentSuffix")
         ?: project.findProperty("mergeRelayPgs${mergeRelayPgsPropertyEnvironment}$propertySuffix")?.toString()
         ?: ""
+// Blank means "no Play Games project configured": the APP_ID meta-data is then not emitted at all
+// (see MergeRelayManifestConditionalsTask). A real id comes from Play Console > Play Games
+// Services > Setup and management > Configuration; it is numeric (the project id).
+val mergeRelayPgsApplicationId = mergeRelayPgsValue("APPLICATION_ID", "ApplicationId").trim()
+if (mergeRelayPgsApplicationId.isNotEmpty() && !Regex("[0-9]{1,20}").matches(mergeRelayPgsApplicationId)) {
+    throw GradleException("The Play Games application id must be numeric (the Play Console project id)")
+}
 val androidKeystorePath = System.getenv("ANDROID_KEYSTORE_PATH")
 val androidKeystoreAlias = System.getenv("ANDROID_KEY_ALIAS")
 val androidKeystorePassword = System.getenv("ANDROID_KEY_PASSWORD")
@@ -67,6 +147,7 @@ android {
 
     buildFeatures {
         buildConfig = true
+        resValues = true
     }
 
     compileOptions {
@@ -102,13 +183,14 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
         val serverClientId = mergeRelayPgsValue("SERVER_CLIENT_ID", "ServerClientId")
-        val applicationId = mergeRelayPgsValue("APPLICATION_ID", "ApplicationId")
+        val applicationId = mergeRelayPgsApplicationId
         val achievementId = mergeRelayPgsValue("ACHIEVEMENT_ID", "AchievementId")
         val leaderboardId = mergeRelayPgsValue("LEADERBOARD_ID", "LeaderboardId")
-        manifestPlaceholders["mergeRelayPgsApplicationId"] = applicationId
+        if (applicationId.isNotEmpty()) {
+            resValue("string", "merge_relay_pgs_application_id", applicationId)
+        }
         manifestPlaceholders["mergeRelayAppLabel"] =
             if (mergeRelayDebugPackageSuffix.isEmpty()) "Glow Rescue" else "Glow Rescue QA"
-        manifestPlaceholders["mergeRelayPublicHost"] = mergeRelayPublicOriginUri?.host ?: ""
         buildConfigField(
             "String",
             "MERGE_RELAY_PUBLIC_ORIGIN",
@@ -166,7 +248,27 @@ android {
     }
 }
 
+androidComponents {
+    onVariants { variant ->
+        val taskName = "mergeRelay${variant.name.replaceFirstChar { it.uppercase() }}ManifestConditionals"
+        val conditionals = tasks.register<MergeRelayManifestConditionalsTask>(taskName) {
+            pgsApplicationId.set(mergeRelayPgsApplicationId)
+            publicHost.set(mergeRelayPublicOriginUri?.host ?: "")
+        }
+        variant.artifacts
+            .use(conditionals)
+            .wiredWithFiles(
+                MergeRelayManifestConditionalsTask::mergedManifest,
+                MergeRelayManifestConditionalsTask::updatedManifest,
+            )
+            .toTransform(SingleArtifact.MERGED_MANIFEST)
+    }
+}
+
 dependencies {
+    // Play Games Services v2 stays bundled (owner decision 2026-10-16) but is DORMANT in v1:
+    // PlayGamesInitProvider is removed in the manifest and Dart gates every call behind
+    // mergeRelaySocialEnabled (false). See tasks/epics/16-games-portfolio-wave2/27-*.md.
     implementation("com.google.android.gms:play-services-games-v2:22.1.0")
     testImplementation("junit:junit:4.13.2")
 }

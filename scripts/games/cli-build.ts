@@ -76,12 +76,23 @@ export function runAndroidBuild(
   }
   if (mode !== "debug" && mode !== "release")
     throw new Error(`Unsupported Android build mode: ${mode}`);
+  const productionRelease = mode === "release" && environment === "production";
+  if (productionRelease) {
+    // Same keystore guard as the AAB path: fail fast with NOT RUN, not late inside Gradle.
+    const missing = requireAndroidReleaseCredentials();
+    if (missing.length > 0) {
+      notRun(`Android release APK signing is unavailable: missing ${missing.join(", ")}.`);
+      return;
+    }
+  }
   execute(
     "flutter",
     [
       "build",
       "apk",
       `--${mode}`,
+      // Production release APKs are measured per ABI (the arm64 size budget), like store delivery.
+      ...(productionRelease ? ["--split-per-abi"] : []),
       "--android-project-arg",
       `gameEnvironment=${environment}`,
       "--dart-define",
@@ -191,8 +202,12 @@ export function buildGame(args: string[], game: GameRegistration): void {
     return;
   }
   if (environment === "production") {
-    if (!(platform === "android" ? mode === "aab" : mode === "archive" || mode === "ipa")) {
-      notRun("production builds use Android --mode aab or iOS --mode archive/ipa.");
+    if (
+      !(platform === "android"
+        ? mode === "aab" || mode === "release"
+        : mode === "archive" || mode === "ipa")
+    ) {
+      notRun("production builds use Android --mode aab or release, or iOS --mode archive/ipa.");
       return;
     }
     const identityErrors = productionIdentityErrors(game, platform);

@@ -4,7 +4,7 @@ The executable registry is [`scripts/games/registry.ts`](../../scripts/games/reg
 
 | Internal ID | Public title | Client path | Pure rules package | Production IDs | Local debug ID | Source record |
 |---|---|---|---|---|---|---|
-| `merge_relay` | Merge Relay | `apps-native/games/merge_relay` | `merge_rules` | `app.w3dev.mergerelay` | `app.w3dev.mergerelay.debug` | [`sources/merge-relay.json`](sources/merge-relay.json) |
+| `merge_relay` | Glow Rescue | `apps-native/games/merge_relay` | `merge_rules` | `app.w3dev.mergerelay` | `app.w3dev.mergerelay.debug` | [`sources/merge-relay.json`](sources/merge-relay.json) |
 | `pocket_biome` | Pocket Biome | `apps-native/games/pocket_biome` | `biome_rules` | `app.w3dev.pocketbiome` | `app.w3dev.pocketbiome.debug` | [`sources/pocket-biome.json`](sources/pocket-biome.json) |
 | `sixty_second_heist` | Sixty-Second Heist | `apps-native/games/sixty_second_heist` | `heist_rules` | `app.w3dev.sixtysecondheist` | `app.w3dev.sixtysecondheist.debug` | [`sources/sixty-second-heist.json`](sources/sixty-second-heist.json) |
 | `meme_court` | Meme Court | `apps-native/games/meme_court` | `court_rules` | `app.w3dev.memecourt` | `app.w3dev.memecourt.debug` | [`sources/meme-court.json`](sources/meme-court.json) |
