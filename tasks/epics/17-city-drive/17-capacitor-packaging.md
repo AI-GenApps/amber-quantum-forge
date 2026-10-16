@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 17-capacitor-packaging
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/16-human-playtest-checkpoint]
 estimate: L
@@ -76,14 +76,16 @@ server if the toolchain can be installed. Otherwise produce a verified
 
 ## Implementation Checklist
 
-- [ ] Add the Capacitor dependencies and config; `cap add android ios`;
+- [x] Add the Capacitor dependencies and config; `cap add android ios`;
       orientation; debug suffix.
-- [ ] Lifecycle, back-button, keep-awake, and status-bar wiring behind
+- [x] Lifecycle, back-button, keep-awake, and status-bar wiring behind
       interfaces, with tests (mocked plugins; web no-ops).
-- [ ] Install the toolchain under `/data/tools` (or return blocked on
-      licences with the exact command).
-- [ ] `assembleDebug` produces an APK. Record the size and path in the evidence README.
-- [ ] Docs: `docs-internal/gaming/city-drive-native-build.md` (toolchain,
+- [x] Install the toolchain under `/data/tools` (or return blocked on
+      licences with the exact command). *JDK 21 and the command-line tools
+      installed; the human accepted the SDK licences.*
+- [x] `assembleDebug` produces an APK. Record the size and path in the evidence README.
+      *9,533,928 bytes, `app.w3dev.citydrive.debug`.*
+- [x] Docs: `docs-internal/gaming/city-drive-native-build.md` (toolchain,
       commands, signing left for task 22).
 
 ## Files Touched

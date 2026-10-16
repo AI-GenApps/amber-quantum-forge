@@ -55,6 +55,7 @@ export class FakeContext implements ContextLike {
   gains: FakeGain[] = [];
   sources: FakeSource[] = [];
   resumed = 0;
+  suspended = 0;
   closed = 0;
   failDecode = new Set<number>();
 
@@ -79,6 +80,11 @@ export class FakeContext implements ContextLike {
   async resume(): Promise<void> {
     this.resumed++;
     this.state = "running";
+  }
+
+  async suspend(): Promise<void> {
+    this.suspended++;
+    this.state = "suspended";
   }
 
   async close(): Promise<void> {

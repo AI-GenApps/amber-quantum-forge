@@ -115,7 +115,7 @@ with `startAt` set to the next task ID.
 | 14 | Audio, haptics, first-drive onboarding | agent | [x] |
 | 15 | Performance pass (adaptive scaling, freezing, LOD, budget gate) | agent | [x] |
 | 16 | HUMAN: full browser playtest checkpoint | human | [ ] |
-| 17 | Capacitor packaging (Android/iOS), Android toolchain, debug APK | agent | [ ] |
+| 17 | Capacitor packaging (Android/iOS), Android toolchain, debug APK | agent | [x] |
 | 18 | Name candidates (strict uniqueness) + icon dry run | agent | [ ] |
 | 19 | HUMAN: pick the name + icon direction | human | [ ] |
 | 20 | Apply the name, final icon, splash | agent | [ ] |

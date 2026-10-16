@@ -71,6 +71,16 @@ export class AudioManager implements AudioPort {
     return this.unlocking;
   }
 
+  /** The app went to the background: stop the audio clock. No-op until the context exists. */
+  async suspend(): Promise<void> {
+    if (this.ctx?.state === "running") await this.ctx.suspend();
+  }
+
+  /** The app came back. Does nothing if audio was never unlocked or is already running. */
+  async resume(): Promise<void> {
+    if (this.ctx && this.ctx.state !== "running") await this.ctx.resume();
+  }
+
   setToggles(toggles: MixerToggles): void {
     this.toggles = toggles;
     this.mixer?.setToggles(toggles);

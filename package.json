@@ -52,6 +52,8 @@
     "knip:ci": "DATABASE_URL=postgresql://knip.invalid/knip knip --reporter compact",
     "city-drive:dev": "bun run --filter @city-drive/app dev",
     "city-drive:build": "bun run --filter '@city-drive/*' build",
+    "city-drive:cap:sync": "bun run --filter @city-drive/app cap:sync",
+    "city-drive:android:debug": "bun run --filter @city-drive/app android:debug",
     "city-drive:test": "bun run --filter '@city-drive/*' test",
     "city-drive:typecheck": "bun run --filter '@city-drive/*' typecheck",
     "prepare": "husky"

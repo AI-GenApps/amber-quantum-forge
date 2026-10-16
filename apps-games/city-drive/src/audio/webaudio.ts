@@ -34,6 +34,7 @@ export interface ContextLike {
   createBufferSource(): SourceLike;
   decodeAudioData(data: ArrayBuffer): Promise<BufferLike>;
   resume(): Promise<void>;
+  suspend(): Promise<void>;
   close(): Promise<void>;
 }
 

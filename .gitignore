@@ -85,3 +85,10 @@ apps-native/unity/**/Assets/Resources/PerformanceTestRun*.json
 
 # City Drive raw Kenney packs (untrusted downloads, never committed)
 apps-games/city-drive/assets-src/raw/
+
+# City Drive native projects: never commit signing material or machine-local SDK paths
+apps-games/city-drive/android/local.properties
+apps-games/city-drive/android/**/*.jks
+apps-games/city-drive/android/**/*.keystore
+apps-games/city-drive/android/keystore.properties
+apps-games/city-drive/android/app/google-services.json

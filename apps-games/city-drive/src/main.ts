@@ -17,6 +17,13 @@ import { GameLoop } from "./game/loop";
 import { DISTRICT_MISSIONS, PROGRESSION_RAW } from "./game/missions";
 import { createDriver, HapticsService } from "./haptics";
 import { CombinedInput, GamepadInput, KeyboardInput, TouchInput } from "./input";
+import {
+  bindKeepAwake,
+  bindLifecycle,
+  browserNativeEnv,
+  createNativeServices,
+  DomExitPrompt,
+} from "./native";
 import { createGarage } from "./render/garage";
 import { frameStats } from "./render/stats";
 import { LastDistrict, PreferencesSaveStore, Profile, ROSTER, showSaveNotice } from "./save";
@@ -145,6 +152,7 @@ async function start(): Promise<void> {
     controller.onStep(report);
   });
   unlockOnFirstGesture(window, audio);
+  const nativeServices = createNativeServices(browserNativeEnv(new DomExitPrompt(ui)));
   mountUi(
     ui,
     {
@@ -158,16 +166,23 @@ async function start(): Promise<void> {
       touch,
       minimap: () => host.minimapModel(),
     },
-    new EscapeBackSource(window),
+    nativeServices.deviceBack ?? new EscapeBackSource(window),
     window,
   );
 
   soundButtonTaps(ui, () => feel.uiTap());
-  document.addEventListener("visibilitychange", () => {
-    controller.setHidden(document.hidden);
-    if (document.hidden) void saveManager.flush();
+  // Background and foreground: pause the game, save and silence audio (web: page visibility; device:
+  // @capacitor/app). The pause menu stays up when the app returns.
+  bindLifecycle(nativeServices.lifecycle, {
+    setHidden: (hidden) => {
+      controller.setHidden(hidden);
+      if (!hidden) void nativeServices.display.enterGameDisplay();
+    },
+    save: async () => void (await saveManager.flush()),
+    audio,
   });
-  window.addEventListener("pagehide", () => void saveManager.flush());
+  bindKeepAwake(controller, nativeServices.keepAwake);
+  void nativeServices.display.enterGameDisplay();
 
   let instrumented: { scene: Scene; instrumentation: SceneInstrumentation } | undefined;
   // Only the ?fps overlay counts draw calls, so the instrumentation code is loaded on demand.

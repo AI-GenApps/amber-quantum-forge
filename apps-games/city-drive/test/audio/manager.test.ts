@@ -272,3 +272,29 @@ describe("AudioManager engine", () => {
     expect(manager.play("ui_tap")).toBe(false);
   });
 });
+
+describe("AudioManager background", () => {
+  it("does nothing before the first gesture", async () => {
+    const { ctx, manager } = setup();
+    await manager.suspend();
+    await manager.resume();
+    expect(ctx.suspended).toBe(0);
+    expect(ctx.resumed).toBe(0);
+  });
+
+  it("suspends a running context and resumes it again", async () => {
+    const { ctx, manager } = setup();
+    await manager.unlock();
+    expect(ctx.state).toBe("running");
+    await manager.suspend();
+    expect(ctx.suspended).toBe(1);
+    expect(ctx.state).toBe("suspended");
+    await manager.suspend();
+    expect(ctx.suspended).toBe(1);
+    await manager.resume();
+    expect(ctx.state).toBe("running");
+    expect(ctx.resumed).toBe(2);
+    await manager.resume();
+    expect(ctx.resumed).toBe(2);
+  });
+});

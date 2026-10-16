@@ -94,6 +94,8 @@ test("games:build for a web game prints the web-engine message and builds nothin
   expect(result.code).toBe(0);
   expect(result.out).toContain(webEngineMessage(city()));
   expect(result.out).toContain("bun run city-drive:build");
+  expect(result.out).toContain("bun run city-drive:cap:sync");
+  expect(result.out).toContain("bun run city-drive:android:debug");
   expect(() => buildGame([], city())).not.toThrow();
 });
 

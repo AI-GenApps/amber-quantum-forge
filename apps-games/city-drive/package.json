@@ -10,19 +10,28 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "build-assets": "bun scripts/build-assets.ts",
-    "build-audio": "bun scripts/build-audio.ts"
+    "build-audio": "bun scripts/build-audio.ts",
+    "cap:sync": "vite build && cap sync",
+    "android:debug": "bun scripts/android-debug.ts"
   },
   "dependencies": {
     "@babylonjs/core": "9.31.0",
     "@babylonjs/loaders": "9.31.0",
+    "@capacitor-community/keep-awake": "8.0.1",
+    "@capacitor/android": "8.5.3",
+    "@capacitor/app": "8.1.2",
     "@capacitor/core": "8.5.3",
     "@capacitor/haptics": "8.0.2",
+    "@capacitor/ios": "8.5.3",
     "@capacitor/preferences": "8.0.1",
+    "@capacitor/screen-orientation": "8.0.2",
+    "@capacitor/status-bar": "8.0.4",
     "@city-drive/core": "workspace:*",
     "preact": "11.0.1"
   },
   "devDependencies": {
     "@babylonjs/inspector": "9.31.0",
+    "@capacitor/cli": "8.5.3",
     "@gltf-transform/cli": "4.5.1",
     "@gltf-transform/core": "4.5.1",
     "@gltf-transform/extensions": "4.5.1",

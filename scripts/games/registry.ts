@@ -26,7 +26,7 @@ export function isWebGame(game: GameRegistration): boolean {
 }
 
 export function webEngineMessage(game: GameRegistration): string {
-  return `${game.id} uses the web engine: use \`bun run city-drive:build\` (Flutter games:* commands do not apply).`;
+  return `${game.id} uses the web engine: use \`bun run city-drive:build\`, \`bun run city-drive:cap:sync\` or \`bun run city-drive:android:debug\` (Flutter games:* commands do not apply).`;
 }
 
 function validateEngine(game: GameRegistration, root: string): string[] {
