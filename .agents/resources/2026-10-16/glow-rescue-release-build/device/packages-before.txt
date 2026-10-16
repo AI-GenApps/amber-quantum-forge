@@ -1,0 +1,3 @@
+package:app.w3dev.mergerelay.debug
+package:app.w3dev.ludo.debug
+package:app.w3dev.mergerelay.debug.qa

@@ -1,0 +1,6 @@
+    flags=0x0
+    versionCode=2001 minSdk=24 targetSdk=36
+    versionName=0.1.0
+    flags=[ HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+      firstInstallTime=2026-10-16 19:11:12
+      firstInstallTime=2026-10-16 19:11:12
