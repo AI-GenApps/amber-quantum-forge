@@ -15,6 +15,7 @@ import {
   LaneIndex,
   laneRespawn,
   loadMissionCatalog,
+  type MissionPayoutInfo,
   type MissionResult,
   MissionSystem,
   type PhysicsWorld,
@@ -30,7 +31,9 @@ import {
   trafficConstants,
 } from "@city-drive/core";
 import { type InputSource, toCarInput } from "../input";
+import type { Profile } from "../save";
 import { type CarPose, interpolateCar } from "./interpolate";
+import { MissionCredit } from "./sessionCredit";
 
 /** Chassis centre height used when the car is placed on the road. */
 const DROP_HEIGHT_M = 1.1;
@@ -48,6 +51,11 @@ export interface SessionOptions {
   traffic?: TrafficSettings;
   /** Raw mission JSON files. Omit them and the city has no missions (the default for tests). */
   missions?: readonly unknown[];
+  /**
+   * The player's progress. With it the selected car is the one that spawns (unless a spec is
+   * passed explicitly) and every finished mission pays coins and is saved.
+   */
+  profile?: Profile;
 }
 
 export type RespawnCause = RespawnReason | "manual";
@@ -68,8 +76,9 @@ export class GameSession {
   readonly traffic: TrafficManager | undefined;
   /** The mission system, when the session was created with missions. */
   readonly missions: MissionSystem | undefined;
-  /** Results of missions the player has closed, oldest first. Task 12 turns these into coins. */
+  /** Results of missions the player has closed, oldest first. Coins are paid when a mission ends. */
   readonly missionResults: MissionResult[] = [];
+  private readonly credit: MissionCredit | undefined;
   private pausedValue = false;
   private parkedPosesCache: TrafficPose[] | undefined;
   private prev: CarState;
@@ -91,10 +100,12 @@ export class GameSession {
     this.curr = car.state();
     this.prev = this.curr;
     if (options.missions) {
+      const catalog = loadMissionCatalog(options.missions, { graph, laneIndex: this.laneIndex });
+      if (options.profile) this.credit = new MissionCredit(options.profile, catalog);
       this.missions = new MissionSystem({
         graph,
         laneIndex: this.laneIndex,
-        missions: loadMissionCatalog(options.missions, { graph, laneIndex: this.laneIndex }),
+        missions: catalog,
         car: {
           halfLength: car.spec.chassisHalfExtents.z,
           halfWidth: car.spec.chassisHalfExtents.x,
@@ -117,18 +128,24 @@ export class GameSession {
     map: CityMap,
     manifest: CityManifest,
     input: InputSource,
-    spec: CarSpec = BASELINE_CAR,
+    spec?: CarSpec,
     options: SessionOptions = {},
   ): Promise<GameSession> {
+    const carSpec = spec ?? options.profile?.selectedSpec() ?? BASELINE_CAR;
     const physics = await createPhysicsWorld();
     const plan = buildColliders(map, manifest);
     installColliders(physics, plan);
-    const car = createCar(physics, spec, spawnPose(map, DROP_HEIGHT_M));
+    const car = createCar(physics, carSpec, spawnPose(map, DROP_HEIGHT_M));
     return new GameSession(physics, car, plan, map, buildRoadGraph(map), input, options);
   }
 
   get state(): CarState {
     return this.curr;
+  }
+
+  /** What the last finished mission paid. Undefined without a profile or before any mission ends. */
+  get lastPayout(): MissionPayoutInfo | undefined {
+    return this.credit?.lastPayout;
   }
 
   get paused(): boolean {
@@ -153,6 +170,7 @@ export class GameSession {
     this.prev = this.curr;
     this.curr = this.car.state();
     this.missions?.step(this.curr, impulses);
+    this.credit?.check(this.missions?.run.result);
     if (input.reset) {
       this.respawn("manual");
       return;

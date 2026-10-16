@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "coins": 812,
+  "owned_cars": ["sedan", "hatch"],
+  "selected_car": "hatch",
+  "missions": {
+    "d1-m01": { "stars": 3, "best_time_s": 14.2 },
+    "d1-m02": { "stars": 1, "best_time_s": 61.5 },
+    "d1-m03": { "stars": 2, "best_time_s": null }
+  },
+  "settings": {
+    "audio": false,
+    "haptics": true,
+    "control_layout": "mirrored",
+    "graphics_quality": "medium"
+  },
+  "onboarding": { "first_drive": true, "controls_hint": true }
+}

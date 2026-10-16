@@ -14,6 +14,8 @@
   "dependencies": {
     "@babylonjs/core": "9.31.0",
     "@babylonjs/loaders": "9.31.0",
+    "@capacitor/core": "8.5.3",
+    "@capacitor/preferences": "8.0.1",
     "@city-drive/core": "workspace:*",
     "preact": "11.0.1"
   },

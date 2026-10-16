@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "starter": "sedan",
+  "cars": [
+    {
+      "id": "sedan",
+      "model_id": "car-sedan",
+      "name": "City Sedan",
+      "price": 0,
+      "spec": {}
+    },
+    {
+      "id": "hatch",
+      "model_id": "car-hatchback-sports",
+      "name": "Sprint Hatch",
+      "price": 400,
+      "spec": {
+        "mass": 1050,
+        "topSpeedKmh": 112,
+        "maxSteerAngle": 0.55,
+        "steerRate": 4,
+        "frictionSlip": 2.8
+      }
+    },
+    {
+      "id": "suv",
+      "model_id": "car-suv",
+      "name": "Trail SUV",
+      "price": 700,
+      "spec": {
+        "mass": 1500,
+        "engineForce": 7600,
+        "topSpeedKmh": 108,
+        "comDrop": 0.45,
+        "brakeForce": 14500,
+        "maxSteerAngle": 0.46,
+        "frictionSlip": 3
+      }
+    },
+    {
+      "id": "patrol",
+      "model_id": "car-police",
+      "name": "Patrol",
+      "price": 900,
+      "spec": {
+        "mass": 1300,
+        "engineForce": 7000,
+        "topSpeedKmh": 118,
+        "brakeForce": 14000,
+        "frictionSlip": 2.8
+      }
+    },
+    {
+      "id": "cab",
+      "model_id": "car-taxi",
+      "name": "City Cab",
+      "price": 1000,
+      "spec": {
+        "mass": 1250,
+        "engineForce": 7200,
+        "topSpeedKmh": 114,
+        "brakeForce": 13500,
+        "steerRate": 4.2,
+        "frictionSlip": 3
+      }
+    },
+    {
+      "id": "racer",
+      "model_id": "car-race",
+      "name": "Apex Racer",
+      "price": 1200,
+      "spec": {
+        "mass": 1000,
+        "engineForce": 6200,
+        "topSpeedKmh": 119,
+        "comDrop": 0.45,
+        "brakeForce": 12800,
+        "maxSteerAngle": 0.55,
+        "steerRate": 4.5,
+        "maxLateralG": 1.7,
+        "frictionSlip": 3.2
+      }
+    }
+  ]
+}

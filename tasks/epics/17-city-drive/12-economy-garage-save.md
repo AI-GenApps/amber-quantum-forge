@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 12-economy-garage-save
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/11-districts-and-missions]
 estimate: M
@@ -57,18 +57,18 @@ no real money.
 
 ## Implementation Checklist
 
-- [ ] Economy rules and tests (first-clear, upgrade-diff, replay bonus, no
+- [x] Economy rules and tests (first-clear, upgrade-diff, replay bonus, no
       negative balances, purchase rules).
-- [ ] `cars.json` with the roster, plus the parameterized handling sanity
+- [x] `cars.json` with the roster, plus the parameterized handling sanity
       suite.
-- [ ] Affordability simulation test.
-- [ ] Save schema, store interface, in-memory store, migrations, and
+- [x] Affordability simulation test.
+- [x] Save schema, store interface, in-memory store, migrations, and
       corruption recovery, each tested.
-- [ ] App `PreferencesSaveStore` plus tests with mocked Capacitor and a
+- [x] App `PreferencesSaveStore` plus tests with mocked Capacitor and a
       happy-dom `localStorage`.
-- [ ] Wire this into the app session: mission results credit coins and save;
+- [x] Wire this into the app session: mission results credit coins and save;
       the selected car is used on spawn.
-- [ ] Update `.agents/games/city-drive/economy.md` with the final prices and
+- [x] Update `.agents/games/city-drive/economy.md` with the final prices and
       payouts table.
 
 ## Files Touched

@@ -3,7 +3,7 @@ import type { Camera } from "@babylonjs/core/Cameras/camera.js";
 import { Engine } from "@babylonjs/core/Engines/engine.js";
 import { SceneInstrumentation } from "@babylonjs/core/Instrumentation/sceneInstrumentation.js";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
-import { districtInfo, parseProgression } from "@city-drive/core";
+import { districtInfo, parseProgression, SaveManager } from "@city-drive/core";
 import { mapHalfExtents, parseCityManifest } from "@city-drive/core/city";
 import type { AssetManifest } from "./assets/manifest";
 import { FpsOverlay } from "./game/fpsOverlay";
@@ -17,6 +17,7 @@ import { ChaseCamera } from "./render/chaseCamera";
 import { createMissionVisual } from "./render/missionVisual";
 import { frameStats } from "./render/stats";
 import { createTrafficVisual } from "./render/traffic";
+import { PreferencesSaveStore, Profile, ROSTER, showSaveNotice } from "./save";
 import { mountControls, wantsTouchControls } from "./ui/controls/mount";
 import { mountMissionPanel } from "./ui/mission-debug/mount";
 
@@ -78,7 +79,12 @@ async function start(): Promise<void> {
     touch,
     new GamepadInput(() => navigator.getGamepads?.() ?? []),
   ]);
-  const sessionOptions: SessionOptions = {};
+  const saveManager = new SaveManager(new PreferencesSaveStore(), {
+    starterCarId: ROSTER.starter,
+    onNotice: (notice) => showSaveNotice(requireElement("ui"), notice),
+  });
+  const profile = await Profile.load(saveManager, ROSTER);
+  const sessionOptions: SessionOptions = { profile };
   if (!params.has("notraffic")) {
     sessionOptions.traffic = { seed: TRAFFIC_SEED, maxAgents: traffic };
   }
@@ -90,7 +96,13 @@ async function start(): Promise<void> {
     undefined,
     sessionOptions,
   );
-  const carVisual = await createCarVisual(city.scene, manifest, loadBytes, session.car.spec);
+  const carVisual = await createCarVisual(
+    city.scene,
+    manifest,
+    loadBytes,
+    session.car.spec,
+    profile.selectedEntry().model_id,
+  );
   const trafficVisual = await createTrafficVisual(city.scene, manifest, loadBytes);
   const chase = new ChaseCamera(city.scene, session.plan.boxes);
   const missionVisual = createMissionVisual(city.scene);
@@ -113,7 +125,11 @@ async function start(): Promise<void> {
         window,
       )
     : undefined;
-  document.addEventListener("visibilitychange", () => session.setPaused(document.hidden));
+  document.addEventListener("visibilitychange", () => {
+    session.setPaused(document.hidden);
+    if (document.hidden) void saveManager.flush();
+  });
+  window.addEventListener("pagehide", () => void saveManager.flush());
 
   let camera: Camera = chase.camera;
   if (params.has("debugcam")) camera = createOrbitCamera(city, canvas);
