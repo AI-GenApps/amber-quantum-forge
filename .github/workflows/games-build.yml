@@ -20,7 +20,7 @@ permissions:
   contents: read
 
 env:
-  BUN_VERSION: "1.3.3"
+  BUN_VERSION: "1.4.3"
   FLUTTER_VERSION: "3.47.3"
   XCODEGEN_VERSION: "2.44.1"
   XCODEGEN_SHA256: "a2e905fb68446e9bb4008cdfe2e13e3f176d0cbcca828b71770f8e53fca91b73"

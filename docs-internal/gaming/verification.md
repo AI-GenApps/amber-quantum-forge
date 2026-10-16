@@ -4,6 +4,8 @@ The gaming preparation is reported in five states: specified, implemented, integ
 
 The current copy-review criterion is that primary game screens use concise game-native language. Implementation and status explanations belong in internal documentation or secondary help. The wording review and screenshot pair status are recorded in [the visual review](visual-review.md); copy acceptance is separate from physical-device and Play readiness.
 
+Toolchain pin change (2026-10-16): the repository's pinned Bun moved from 1.3.3 to 1.4.3 (`package.json`, `apps-native/games/toolchain.json`, every CI workflow). The Bun 1.3.3 commands below are historical records of the earlier verification run and are kept as written.
+
 ## Historical checks from the frozen worktree
 
 - `PATH=/tmp/luna-bun-1.3.3/bin:$PATH bun install --frozen-lockfile` completed with the pinned Bun release. The official `bun-v1.3.3` Darwin arm64 archive matched SHA-256 `f50f5cc767c3882c46675fbe07e0b7b1df71a73ce544aadb537ad9261af00bb1`.

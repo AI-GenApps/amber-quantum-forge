@@ -24,7 +24,7 @@ The registry at `scripts/games/registry.ts` is the source of identity, source re
 
 ## Toolchain
 
-The pinned toolchain is in `toolchain.json`: Flutter 3.47.3, Dart 3.13.3, Flame 1.38.2, and the repository Bun version 1.3.3. Dart is bundled by Flutter; the standalone Dart value is a diagnostic check.
+The pinned toolchain is in `toolchain.json`: Flutter 3.47.3, Dart 3.13.3, Flame 1.38.2, and the repository Bun version 1.4.3. Dart is bundled by Flutter; the standalone Dart value is a diagnostic check.
 
 ## Commands
 

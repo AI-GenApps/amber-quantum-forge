@@ -70,8 +70,8 @@ never only in `/tmp`.
 - [ ] Google Play Console developer account (for sections 10 and 11; the account
   type decides the closed-test requirement, open question 2).
 - [ ] RevenueCat and AdMob accounts (section 10).
-- [ ] Bun 1.3.3 (the repo pins it; 1.4.2 only warns in `games:doctor` but
-  `games:ludo:parity` refuses to run), Flutter 3.47.3 and Dart 3.13.3, Android SDK,
+- [ ] Bun 1.4.3 (the repo pins it in `apps-native/games/toolchain.json`; a different
+  Bun makes `games:doctor` warn and `games:ludo:parity` refuse to run), Flutter 3.47.3 and Dart 3.13.3, Android SDK,
   `adb`.
 
 ## 2. Preflight on a clean checkout (no accounts needed)
@@ -85,7 +85,7 @@ spend time on consoles.
 - [ ] `bun run games:analyze -- --app ludo`
 - [ ] `bun run games:test -- --app ludo` (about 480 tests, under 3 minutes)
 - [ ] `bun run games:validate -- --strict`
-- [ ] `bun run games:ludo:parity` (needs Bun 1.3.3; this is the three-way Dart VM,
+- [ ] `bun run games:ludo:parity` (needs the pinned Bun 1.4.3; this is the three-way Dart VM,
   compiled JS and TypeScript check)
 - [ ] `cd packages/api && npx vitest run src/games/ludo` (Postgres suites skip
   unless `LUDO_TEST_DATABASE_URL` is set; see section 4 for running them)

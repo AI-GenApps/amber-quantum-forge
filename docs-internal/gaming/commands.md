@@ -61,7 +61,7 @@ behavior is intentional.
 
 This server has no physical Android/iOS device and no emulator or simulator,
 so `games:run` and any `xcodebuild`/`adb` step in `games:doctor` are always
-`NOT RUN`. The rest of the toolchain lives under `/data/tools` (Bun 1.3.3,
+`NOT RUN`. The rest of the toolchain lives under `/data/tools` (Bun 1.4.3,
 Flutter 3.47.3, Dart 3.13.3, JDK 17, Android SDK platform 36 + build-tools
 36.0.0, a Pillow venv for image work) and every command runs with:
 
