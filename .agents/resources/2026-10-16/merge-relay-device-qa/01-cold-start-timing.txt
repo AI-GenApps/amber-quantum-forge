@@ -1,0 +1,7 @@
+Starting: Intent { cmp=app.w3dev.mergerelay.debug/app.w3dev.mergerelay.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: app.w3dev.mergerelay.debug/app.w3dev.mergerelay.MainActivity
+TotalTime: 7152
+WaitTime: 7161
+Complete

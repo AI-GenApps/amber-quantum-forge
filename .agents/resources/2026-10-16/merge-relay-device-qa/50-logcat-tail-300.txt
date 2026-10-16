@@ -1,0 +1,311 @@
+--------- beginning of main
+10-16 18:46:09.937  3776  3776 I adbd    : adbd service requested 'shell,v2,TERM=xterm-256color,raw:uiautomator dump /sdcard/ui.xml'
+10-16 18:46:10.100 27645 27645 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-16 18:46:10.107 27645 27645 I AndroidRuntime: Using default boot image
+10-16 18:46:10.107 27645 27645 I AndroidRuntime: Leaving lock profiling enabled
+10-16 18:46:10.107 27645 27645 D SecNativeFeatureCppIf: encoded
+10-16 18:46:10.108 27645 27645 D SecNativeFeatureCppIf: decoding and unzip finish
+10-16 18:46:10.108 27645 27645 D SecNativeFeatureCppIf: use unCompDataBuff. encoded
+10-16 18:46:10.108 27645 27645 D SecNativeFeatureCppIf: Free unCompDataBuff
+10-16 18:46:10.108 27645 27645 D AndroidRuntime: addProductProperty not brand or 7
+10-16 18:46:10.110 27645 27645 I app_process: Core platform API enforcement reporting only by runtime option
+10-16 18:46:10.111 27645 27645 I app_process: Using non-generational CollectorTypeCC GC.
+10-16 18:46:10.183 27645 27645 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-16 18:46:10.202 27645 27645 D nativeloader: Load libicu_jni.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+10-16 18:46:10.202 27645 27645 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+10-16 18:46:10.202 27645 27645 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+10-16 18:46:10.204 27645 27645 D nativeloader: Load libjavacore.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+10-16 18:46:10.205 27645 27645 D nativeloader: Load libopenjdk.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+10-16 18:46:10.206 27645 27645 I app_process: Priority-to-niceness mapping: 19, 16, 13, 10, 0, -2, -4, -5, -6, -8
+10-16 18:46:10.231 27645 27645 E SemDvfsManager_JNI: SemDvfsManager: registerfunction enter
+10-16 18:46:10.231 27645 27645 E SemAffinityControl: SemAffinityControl: registerfunction enter
+10-16 18:46:10.245 27645 27645 W libc    : Access denied finding property "ro.product.name_for_attestation"
+10-16 18:46:10.245 27645 27645 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+10-16 18:46:10.245   949   949 E audit   : type=1400 audit(1792156570.241:51375): avc:  denied  { read } for  pid=27645 comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=9295 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0 SEPF_SM-A525F_12_0001 audit_filtered
+10-16 18:46:10.245 27645 27645 W libc    : Access denied finding property "ro.product.model_for_attestation"
+10-16 18:46:10.245   949   949 E audit   : type=1400 audit(1792156570.241:51376): avc:  denied  { read } for  pid=27645 comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=9295 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0 SEPF_SM-A525F_12_0001 audit_filtered
+10-16 18:46:10.245   949   949 E audit   : type=1400 audit(1792156570.241:51377): avc:  denied  { read } for  pid=27645 comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=9295 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0 SEPF_SM-A525F_12_0001 audit_filtered
+10-16 18:46:10.247 27645 27645 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+10-16 18:46:10.247 27645 27645 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-16 18:46:10.252 27645 27645 D UiAutomationConnection: Created on user UserHandle{0}
+10-16 18:46:10.252 27645 27645 I UiAutomation: Initialized for user 0 on display 0
+10-16 18:46:10.252 27645 27645 W UiAutomation: Created with deprecatead constructor, assumes DEFAULT_DISPLAY
+--------- beginning of system
+10-16 18:46:10.255  1628  2105 D AccessibilityManagerService: changeCurrentUserForTestAutomationIfNeededLocked(0): ignoring because device doesn't support visible background users
+10-16 18:46:10.255  1628  2105 I UiAutomationManager: Registering UiTestAutomationService (id=com.android.server.accessibility/UiAutomation) when called by user 0
+10-16 18:46:10.256  1132  1182 I SurfaceFlinger: id=2517 createSurf, flag=84004, WindowToken{abf87bf type=2032 android.os.Binder@6ab89de}#2517
+10-16 18:46:10.258  1628  2105 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = accessibility_enabled
+10-16 18:46:10.258  1628  2105 D WindowMagnificationMgr: requestConnection :false mConnectionState : 3
+10-16 18:46:10.258  1628  2105 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-16 18:46:10.269  1628  2105 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = accessibility_enabled
+10-16 18:46:10.270  1628  2105 D WindowMagnificationMgr: requestConnection :false mConnectionState : 3
+10-16 18:46:10.270  1628  2105 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-16 18:46:10.277  1132  1132 I Layer   : Layer [WindowToken{abf87bf type=2032 android.os.Binder@6ab89de}#2517] hidden!! flag(0)
+10-16 18:46:10.307  7338  7338 I SAMSUNGWALLET[IN]: [WalletStartup] Screen reader is disabled
+10-16 18:46:10.308 20367 20367 I SafetyCenterAccessibilityListener: accessibility event occurred, safety center feature not enabled.
+10-16 18:46:10.308  1628  1628 I AccessibilityManagerService: semIsAccessibilityServiceEnabled()
+10-16 18:46:10.308  1628  1628 I AccessibilityManagerService: accesibilityService is null
+10-16 18:46:10.308  1628  1628 I AccessibilityManagerService: semIsAccessibilityServiceEnabled()
+10-16 18:46:10.308  1628  1628 I AccessibilityManagerService: accesibilityService is null
+10-16 18:46:10.308  1628  1628 D AS.AudioService: Accessibility volume enabled = false
+10-16 18:46:10.308  1628  1628 D BatterySaverPolicy: accessibility changed to true, updating policy.
+10-16 18:46:10.308  2428  2428 D Navbar.Store: ----handleEvent(0) OnUpdateRemoteViewContainer(leftContainer=android.widget.LinearLayout{5cd4f15 I.E...... ......I. 0,0-118,126 #7f0a0597 app:id/left_remoteview}, rightContainer=android.widget.LinearLayout{5c1422a I.E...... ......I. 962,0-1080,126 #7f0a08aa app:id/right_remoteview}, contextualButtonVisible=false, darkIntensity=0.0, displayId=0) [Module] SamsungNavigationBarView
+10-16 18:46:10.308  2428  2428 D Navbar.Store: ------[Band]REMOTE_VIEW_PACK_SET_REMOTEVIEW_CONTAINER
+10-16 18:46:10.308  2428  2428 D Navbar.Store: --------apply(0) NavBarStoreAction$UpdateRemoteViewContainer
+10-16 18:46:10.309  2428  2428 D Navbar.Store: --------apply(0) NavBarStoreAction$UpdateRemoteViewDarkIntensity
+10-16 18:46:10.309  2428  2428 D Navbar.Store: handleEvent(0) OnNavBarUpdateA11YService(clickable=false, longClickable=false) [Module] NavigationBar
+10-16 18:46:10.309  2428  2428 D Navbar.Store: --[Band]SETUPWIZARD_PACK_UPDATE_A11Y_SERVICE
+10-16 18:46:10.414  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-16 18:46:10.414  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-16 18:46:10.415  1033  3178 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+10-16 18:46:10.415  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-16 18:46:10.416  1628  2013 D PowerManagerService: UserActivityStateListenerState: 0
+10-16 18:46:10.421  2787  3187 D BtGatt.GattService: onScanResult to scannerId: 3- eventType=0x1b, addressType=1, address=XX:XX:XX:XX:F9:D8, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-49, periodicAdvInt=0x0
+10-16 18:46:10.458  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-16 18:46:10.458  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-16 18:46:10.493  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-16 18:46:10.493  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-16 18:46:10.493  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-16 18:46:10.497  2787  3187 D BtGatt.GattService: onScanResult to scannerId: 3- eventType=0x1b, addressType=1, address=XX:XX:XX:XX:C7:40, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-91, periodicAdvInt=0x0
+10-16 18:46:10.500  6985  7235 I NearbyDiscovery: (REDACTED) BloomFilterAdvManager: Detected bloom filter but too far away, ignoring. %sm, %s
+10-16 18:46:10.503  1363  1936 V NuPlayerDriver: getCurrentPosition(0xf3ac9a40) 0 (msec), at state 6
+10-16 18:46:10.535  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-16 18:46:10.535  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-16 18:46:10.543  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-16 18:46:10.543  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-16 18:46:10.543  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-16 18:46:10.546  2787  3187 D BtGatt.GattService: onScanResult to scannerId: 8- eventType=0x0, addressType=1, address=XX:XX:XX:XX:D8:EF, primaryPhy=1, secondaryPhy=1, advertisingSid=0x2, txPower=127, rssi=-67, periodicAdvInt=0x0
+10-16 18:46:10.549  2787  3187 D BtGatt.GattService: onScanResult to scannerId: 8- eventType=0x10, addressType=1, address=XX:XX:XX:XX:66:4E, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-68, periodicAdvInt=0x0
+10-16 18:46:10.587  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-16 18:46:10.587  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-16 18:46:10.737  1033  2943 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+10-16 18:46:11.185   669   669 D io_stats: !@   8,0 r 5463440 90748452 w 5193431 166438364 d 0 0 f 0 0 iot 2311200 0 th 0 0 0 pt 0 inp 0 0 43029.755
+10-16 18:46:11.320 27645 27645 D SemCscFeature: Encoded
+10-16 18:46:11.343 27645 27645 W AccessibilityNodeInfoDumper: Fetch time: 12ms
+10-16 18:46:11.346  1628  5889 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = accessibility_enabled
+10-16 18:46:11.347  1628  5889 D WindowMagnificationMgr: requestConnection :false mConnectionState : 3
+10-16 18:46:11.347  1628  5889 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-16 18:46:11.348  1628  5889 D AccessibilityManagerService: restoreCurrentUserForTestAutomationIfNeededLocked(): ignoring because device doesn't support visible background users
+10-16 18:46:11.349  1628  5889 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = accelerometer_rotation
+10-16 18:46:11.349  1628  5889 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = user_rotation
+10-16 18:46:11.350  1628  5889 V WindowManager: rotationForOrientation(orient=SCREEN_ORIENTATION_UNSPECIFIED (-1), last=ROTATION_0 (0)); user=ROTATION_0 (0) 
+10-16 18:46:11.350  1628  5889 D WindowManager: rotationForOrientation, orientationSource=ActivityRecord{305efd2 u0 app.w3dev.mergerelay.debug/app.w3dev.mergerelay.MainActivity t44169}
+10-16 18:46:11.350  1628  5889 V WindowManager: Computed rotation=ROTATION_0 (0) for display id=0 based on lastOrientation=SCREEN_ORIENTATION_UNSPECIFIED (-1) and oldRotation=ROTATION_0 (0), caller=com.android.server.wm.DisplayContent.updateRotationUnchecked:2674 com.android.server.wm.WindowManagerService.updateRotationUnchecked:4907 com.android.server.wm.WindowManagerService.thawDisplayRotation:4848 com.android.server.wm.WindowManagerService.thawRotation:4812 android.view.IWindowManager$Stub.onTransact:2718 com.android.server.wm.WindowManagerService.onTransact:1540 
+10-16 18:46:11.353 27645 27645 D AndroidRuntime: Shutting down VM
+10-16 18:46:11.361  1132  1132 I Layer   : Layer::reparent [WindowToken{abf87bf type=2032 android.os.Binder@6ab89de}#2517] newParentHandle : null -------------------------
+10-16 18:46:11.361  1132  1132 I Layer   : id=2517 removeFromCurrentState WindowToken{abf87bf type=2032 android.os.Binder@6ab89de}#2517 (155)
+10-16 18:46:11.361  1132  1132 I Layer   : Layer::reparent [WindowToken{abf87bf type=2032 android.os.Binder@6ab89de}#2517] End -------------------------
+10-16 18:46:11.363  1132  1132 I SurfaceFlinger: id=2517 Removed WindowToken{abf87bf type=2032 android.os.Binder@6ab89de}#2517 (155)
+10-16 18:46:11.370  1628  2270 D UsbStatsMonitor: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+10-16 18:46:11.373  1132  1132 I Layer   : id=2517 Destroyed WindowToken{abf87bf type=2032 android.os.Binder@6ab89de}#2517
+10-16 18:46:11.386  1628  1628 D BatterySaverPolicy: accessibility changed to false, updating policy.
+10-16 18:46:11.508  1363  1936 V NuPlayerDriver: getCurrentPosition(0xf3ac9a40) 0 (msec), at state 6
+10-16 18:46:11.515  1043 18948 I sensors-hal: handle_sns_std_sensor_event:296, [SSC_LIGHT] P: 25(25),als:103,green:29,ir:0,delta_avg:3,delta_max:65,stdev:10,stdev_per_4sample:14,magig_code or itime:384
+10-16 18:46:12.260  3776  3776 I adbd    : adbd service requested 'sync:'
+10-16 18:46:12.300  3776  3776 I adbd    : adbd service requested 'shell,v2,TERM=xterm-256color,raw:input tap 200 1738'
+10-16 18:46:12.312  1628  4218 D SemWifiUsabilityStatsMonitor: onWifiUsabilityStats - seqNum 7819, isSameBssidAndFreq true
+10-16 18:46:12.320  2428  2428 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+10-16 18:46:12.320  2428  2529 D Tile.WifiTile: handleUpdateState isTransient=false transientEnabling =false cb.isTransient=false state.state = 2 mStateBeforeClick.value =false enabled =true
+10-16 18:46:12.376  4842  4842 I SDHMS:LOAD: type: LoadsFreqs, value: 0:91:77:1343616:2323200:979200:1092480:1708800:1017600:636:750:267
+10-16 18:46:12.396  1628  5887 D InputDispatcher: Inject motion (27668/2000): action=0x0, time=43030966000000, f=0x0, d=0 dsdx=1.000000 dtdx=0.000000
+10-16 18:46:12.397  1628  2153 I InputDispatcher: Delivering touch to (2428): action: 0x4, f=0x0, d=0, 'd6286db', t=1 
+10-16 18:46:12.397  1628  2153 I InputDispatcher: Delivering touch to (26247): action: 0x0, f=0x0, d=0, 'c4e1d1 ', t=1 
+10-16 18:46:12.397  1628  2153 D PowerManagerService: [api] userActivityFromNative : touch displayId=0 eventTime=43030966
+10-16 18:46:12.398 26247 26247 I ViewRootImpl@74ca6aa[MainActivity]: ViewPostIme pointer 0
+10-16 18:46:12.398  1628  1949 I GestureDetector: obtain mCurrentDownEvent. id: -828977151 caller: com.android.server.wm.SystemGesturesPointerEventListener.onPointerEvent:204 com.android.server.wm.PointerEventDispatcher.onInputEvent:53 android.view.InputEventReceiver.dispatchInputEvent:337 
+10-16 18:46:12.398  1628  2153 D PowerManagerService: UserActivityStateListenerState: 1
+10-16 18:46:12.398  1628  1949 I GestureDetector: obtain mCurrentDownEvent. id: -828977151 caller: com.android.server.wm.SystemPerformancePointerEventListener.onPointerEvent:89 com.android.server.wm.PointerEventDispatcher.onInputEvent:53 android.view.InputEventReceiver.dispatchInputEvent:337 
+10-16 18:46:12.399  1628  5887 D InputDispatcher: Inject motion (27668/2000): action=0x1, time=43030966000000, f=0x0, d=0 dsdx=1.000000 dtdx=0.000000
+10-16 18:46:12.400  1628  2153 I InputDispatcher: Delivering touch to (26247): action: 0x1, f=0x0, d=0, 'c4e1d1 ', t=1 
+10-16 18:46:12.401  1628  1949 I GestureDetector: obtain mCurrentMotionEventRaw. action: 1 id: -646650173
+10-16 18:46:12.401  1628  1949 I GestureDetector: obtain mCurrentMotionEventRaw. action: 1 id: -646650173
+10-16 18:46:12.402 26247 26247 I ViewRootImpl@74ca6aa[MainActivity]: ViewPostIme pointer 1
+10-16 18:46:12.520  1363  1936 V NuPlayerDriver: getCurrentPosition(0xf3ac9a40) 0 (msec), at state 6
+10-16 18:46:12.556  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-16 18:46:12.556  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-16 18:46:12.557  1033  3178 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+10-16 18:46:12.557  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-16 18:46:12.563  2787  3187 D BtGatt.GattService: onScanResult to scannerId: 8- eventType=0x0, addressType=1, address=XX:XX:XX:XX:D8:EF, primaryPhy=1, secondaryPhy=1, advertisingSid=0x2, txPower=127, rssi=-65, periodicAdvInt=0x0
+10-16 18:46:12.564  2787  3187 D BtGatt.GattService: onScanResult to scannerId: 8- eventType=0x10, addressType=1, address=XX:XX:XX:XX:66:4E, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-66, periodicAdvInt=0x0
+10-16 18:46:12.601  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-16 18:46:12.601  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-16 18:46:12.698  1628  1628 I GestureDetector: handleMessage TAP
+10-16 18:46:12.698  1628  1949 I GestureDetector: handleMessage TAP
+10-16 18:46:12.752  1033  2943 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+10-16 18:46:12.762  2387  2387 I wpa_supplicant: Heartbeat 11476
+10-16 18:46:13.186   669   669 D io_stats: !@   8,0 r 5463440 90748452 w 5193446 166438688 d 0 0 f 0 0 iot 2311212 0 th 0 0 0 pt 0 inp 0 0 43031.755
+10-16 18:46:13.531  1363  1936 V NuPlayerDriver: getCurrentPosition(0xf3ac9a40) 0 (msec), at state 6
+10-16 18:46:14.120  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-16 18:46:14.120  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-16 18:46:14.121  1033  3178 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+10-16 18:46:14.121  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-16 18:46:14.127  2787  3187 D ScanFilter: manu data matches
+10-16 18:46:14.127  2787  3187 D BtGatt.GattService: onScanResult to scannerId: 6- eventType=0x1b, addressType=1, address=XX:XX:XX:XX:2F:9B, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-82, periodicAdvInt=0x0
+10-16 18:46:14.164  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-16 18:46:14.164  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-16 18:46:14.245  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-16 18:46:14.245  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-16 18:46:14.245  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-16 18:46:14.248  2787  3187 D BtGatt.GattService: onScanResult to scannerId: 8- eventType=0x10, addressType=1, address=XX:XX:XX:XX:66:4E, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-65, periodicAdvInt=0x0
+10-16 18:46:14.260  2787  3187 D BtGatt.GattService: onScanResult to scannerId: 8- eventType=0x0, addressType=1, address=XX:XX:XX:XX:D8:EF, primaryPhy=1, secondaryPhy=1, advertisingSid=0x2, txPower=127, rssi=-67, periodicAdvInt=0x0
+10-16 18:46:14.299  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-16 18:46:14.299  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-16 18:46:14.427  3776  3776 I adbd    : adbd service requested 'exec:screencap '-p''
+10-16 18:46:14.449  1033  2943 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+10-16 18:46:14.520  6985  6985 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.scheduler.ACTION_PROXY_SCHEDULE dat=chimera-action:/... cmp=com.google.android.gms/.chimera.PersistentDirectBootAwareApiService }
+10-16 18:46:14.536  1363  1936 V NuPlayerDriver: getCurrentPosition(0xf3ac9a40) 0 (msec), at state 6
+10-16 18:46:14.554  1043 18948 I sensors-hal: handle_sns_std_sensor_event:296, [SSC_LIGHT] P: 23(23),als:97,green:26,ir:0,delta_avg:3,delta_max:63,stdev:13,stdev_per_4sample:15,magig_code or itime:384
+10-16 18:46:14.595 27673 27673 W BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+10-16 18:46:14.595  1628  5889 I EDMNativeHelperService: isScreenCaptureEnabled
+10-16 18:46:14.595  1628  5889 D RestrictionPolicy: isScreenCaptureEnabled : ret=true userId=0
+10-16 18:46:14.596 27673 27673 W ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+10-16 18:46:14.977  1043 19054 I sensors-hal: handle_sns_client_event:125, auto_rotation_event_2: mode:255, type:1:0/0.460,0.043,9.792, ar:0
+10-16 18:46:15.201  7043  7115 V CpEventLog(u0): cp_state: [                 contacts = {contacts=4384, raw_contacts=6442, data=37660, account={secphone(1)=0, google(2)=3986, google(3)=8, google(4)=0, mobileservice(8)=0, samsung(9)=191, com.microsoft.skydrive(12)=0, sim(13)=24, sim2(14)=24, agg(15)=0, google(19)=0, google(21)=0, google(24)=0, google(29)=1, com.samsung.android.spay.coreapps.contacts(33)=0, google(38)=0, google(49)=168, com.microsoft.skydrive(114)=0, google(115)=50, com.whatsapp.w4b(116)=1630, google(125)=1, duo(126)=0, duo(127)=359, whatsapp(128)=0, com.twitter.android.auth.login(129)=0}, trash=0, trash_acc={}, trash_sync=0, database=contacts2.db} ]
+10-16 18:46:15.201  7043  7115 V CpEventLog(u0): cp_state: [               aggregated = {[115,116,127]=5, [115,116]=36, [115]=1, [116,127]=1, [116]=8, [125,116]=1, [127]=89, [13,14]=5, [13]=7, [14]=13, [2,115,116]=5, [2,115]=2, [2,116,116,116,127]=1, [2,116,116,127]=3, [2,116,116]=28, [2,116,127]=160, [2,116]=1052, [2,127,116]=1, [2,127,127]=1, [2,127]=63, [2,13,14]=4, [2,13]=8, [2,14]=2, [2,2,116,116]=2, [2,2,116]=7, [2,2,2,116]=1, [2,2]=3, [2,49,116,127]=1, [2,49,116]=22, [2,49,127]=1, [2,49,49,116]=1, [2,49]=7, [29]=1, [2]=2597, [3,116]=6, [3]=2, [49,115,116]=1, [49,116,116]=3, [49,116,127]=10, [49,116]=75, [49,127]=2, [49]=44, [9,116,116]=1, [9,116,127]=18, [9,116]=142, [9,127]=2, [9]=28} ]
+10-16 18:46:15.201  7043  7115 V CpEventLog(u0): cp_state: [                  request = {} ]
+10-16 18:46:15.201  7043  7115 V CpEventLog(u0): cp_state: [                    calls = {types={[100]=32, [300]=1, [500]=1, [1000]=1604, [1150]=363}, database=calllog.db} ]
+10-16 18:46:15.201  7043  7115 V CpEventLog(u0): cp_state: [                  profile = {contacts=0, raw_contacts=0, data=0, account={secphone(1)=0, google(2)=0, sim(3)=0, sim2(4)=0, agg(5)=0, samsung(7)=0, mobileservice(8)=0, google(9)=0, com.microsoft.skydrive(11)=0, google(14)=0, google(17)=0, google(18)=0, google(20)=0, google(25)=0, com.samsung.android.spay.coreapps.contacts(29)=0, google(34)=0, google(45)=0, com.microsoft.skydrive(78)=0, google(79)=0, com.whatsapp.w4b(80)=0, google(88)=0, duo(89)=0, duo(90)=0, whatsapp(91)=0, com.twitter.android.auth.login(92)=0}, trash=0, trash_acc={}, trash_sync=0, database=profile.db} ]
+10-16 18:46:15.201  7043  7115 V CpEventLog(u0): cp_state: [               sa_profile = {contacts=1, raw_contacts=1, data=0, account={secphone(1)=1, google(2)=0, sim(3)=0, sim2(4)=0, agg(5)=0, samsung(7)=0, mobileservice(8)=0, google(9)=0, com.microsoft.skydrive(11)=0, google(14)=0, google(17)=0, google(18)=0, google(20)=0, google(25)=0, com.samsung.android.spay.coreapps.contacts(29)=0, google(34)=0, google(45)=0, com.microsoft.skydrive(78)=0, google(79)=0, com.whatsapp.w4b(80)=0, google(88)=0, duo(89)=0, duo(90)=0, whatsapp(91)=0, com.twitter.android.auth.login(92)=0}, trash=0, trash_acc={}, trash_sync=0, database=profile_sa.db} ]
+10-16 18:46:15.201  7043  7115 V CpEventLog(u0): cp_state: [                      etc = {binders=0, country_iso=IN, version=15.0.65, db_version=1708, csc=/INS} ]
+10-16 18:46:15.201  7043  7115 V CpEventLog(u0): cp_state: ------------------------------------------------------------------------------
+10-16 18:46:15.334  1628  4218 D SemWifiUsabilityStatsMonitor: onWifiUsabilityStats - seqNum 7820, isSameBssidAndFreq true
+10-16 18:46:15.338  2428  2428 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+10-16 18:46:15.339  2428  2529 D Tile.WifiTile: handleUpdateState isTransient=false transientEnabling =false cb.isTransient=false state.state = 2 mStateBeforeClick.value =false enabled =true
+10-16 18:46:15.398  1628  2013 D PowerManagerService: UserActivityStateListenerState: 0
+10-16 18:46:15.541  1363  1936 V NuPlayerDriver: getCurrentPosition(0xf3ac9a40) 0 (msec), at state 6
+10-16 18:46:16.548  1363  1936 V NuPlayerDriver: getCurrentPosition(0xf3ac9a40) 0 (msec), at state 6
+10-16 18:46:17.186   669   669 D io_stats: !@   8,0 r 5463450 90748576 w 5193541 166439396 d 0 0 f 0 0 iot 2311232 0 th 0 0 0 pt 0 inp 0 0 43035.756
+10-16 18:46:17.263   949   949 E audit   : type=1400 audit(1792156577.261:51378): avc:  denied  { kill } for  pid=0 comm="swapper/3" capability=5  scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0 SEPF_SM-A525F_12_0001 audit_filtered
+10-16 18:46:17.553  1363  1936 V NuPlayerDriver: getCurrentPosition(0xf3ac9a40) 0 (msec), at state 6
+10-16 18:46:17.595  1043 18948 I sensors-hal: handle_sns_std_sensor_event:296, [SSC_LIGHT] P: 24(24),als:98,green:27,ir:0,delta_avg:2,delta_max:62,stdev:14,stdev_per_4sample:14,magig_code or itime:384
+10-16 18:46:17.718  4842  5669 I SDHMS:C : SIOP:: AP:443 BAT:345 USB:0 CHG:394 PA:400 WIFI:388 BLK:0 SUBBAT:0 SKIN:380 SKINF:371 SKINB:376 LRP:376 LRP2:380 LRF:371 LRB:376 LRF2:369 LRB2:380 AP2:380 CHG2:366 WIFI2:379 SPK2:341 
+10-16 18:46:18.102  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-16 18:46:18.102  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-16 18:46:18.103  1033  3178 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+10-16 18:46:18.103  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-16 18:46:18.111  2787  3187 D BtGatt.GattService: onScanResult to scannerId: 3- eventType=0x1b, addressType=1, address=XX:XX:XX:XX:C7:40, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-94, periodicAdvInt=0x0
+10-16 18:46:18.114  6985  7235 I NearbyDiscovery: (REDACTED) BloomFilterAdvManager: Detected bloom filter but too far away, ignoring. %sm, %s
+10-16 18:46:18.130  6985 20254 I NearbyMediums: Found Fast Ble Advertisements :
+10-16 18:46:18.130  6985 20254 I NearbyMediums: BleAdvertisement { version=2, socketVersion=2, isFast=true, serviceIdHash=null, data=[ 0x23 0x46 0x47 0x51 0x54 0x11 0x32 0xd7 0x57 0x56 0x8b 0xe3 0xb1 0x21 0x72 0xf4 0xfc 0x19 0xc4 0x0c 0x0f 0x14 0x85 ], deviceToken=[ 0x90 0xcb ], rxAdvertisement=[ 0xa0 0x17 0xb8 0xd5 0xaf 0x0d 0xe7 0x64 0xc5 0x7e 0x37 0x31 0x78 0x49 0x31 0x85 0x89 0x52 0xe2 0xfd 0x78 0xbf 0xa0 0x17 0x28 0x66 0x4b 0x6d 0xa4 0xa6 0x92 0x4e 0x48 0x3c 0x84 0x15 0x05 0x7f 0x00 0x00 0x84 0x15 0x06 0x61 0x00 0x00 0x84 0x15 0x04 0x7f 0x00 0x00 0x83 0x15 0x01 0x14 0x64 ] } : 7 times.
+10-16 18:46:18.130  6985 20254 I NearbyMediums: Total 7 fast advertisements from 1 unique advertisers.
+10-16 18:46:18.131  6985 20254 I NearbyMediums: Current Tracked Scanning Clients are : {NearbyConnections.EnvironmentMonitor, NearbySharing}
+10-16 18:46:18.148  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-16 18:46:18.148  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-16 18:46:18.223  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-16 18:46:18.223  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-16 18:46:18.223  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-16 18:46:18.227  2787  3187 D ScanFilter: manu data matches
+10-16 18:46:18.227  2787  3187 D BtGatt.GattService: onScanResult to scannerId: 6- eventType=0x1b, addressType=1, address=XX:XX:XX:XX:2F:9B, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-90, periodicAdvInt=0x0
+10-16 18:46:18.265  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-16 18:46:18.265  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-16 18:46:18.353  1628  4218 D SemWifiUsabilityStatsMonitor: onWifiUsabilityStats - seqNum 7821, isSameBssidAndFreq true
+10-16 18:46:18.415  1033  2943 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+10-16 18:46:18.559  1363  1936 V NuPlayerDriver: getCurrentPosition(0xf3ac9a40) 0 (msec), at state 6
+10-16 18:46:19.311  1628  2236 D ConnectivityService: reportNetworkActive, notify 2 listeners
+10-16 18:46:19.564  1363  1936 V NuPlayerDriver: getCurrentPosition(0xf3ac9a40) 0 (msec), at state 6
+10-16 18:46:19.927  3776  3776 I adbd    : adbd service requested 'shell,v2,TERM=xterm-256color,raw:uiautomator dump /sdcard/ui.xml'
+10-16 18:46:19.971  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-16 18:46:19.971  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-16 18:46:19.971  1033  3178 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+10-16 18:46:19.972  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-16 18:46:19.976  2787  3187 D BtGatt.GattService: onScanResult to scannerId: 8- eventType=0x10, addressType=1, address=XX:XX:XX:XX:66:4E, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-63, periodicAdvInt=0x0
+10-16 18:46:19.980  2787  3187 D BtGatt.GattService: onScanResult to scannerId: 8- eventType=0x0, addressType=1, address=XX:XX:XX:XX:D8:EF, primaryPhy=1, secondaryPhy=1, advertisingSid=0x2, txPower=127, rssi=-65, periodicAdvInt=0x0
+10-16 18:46:20.015  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-16 18:46:20.015  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-16 18:46:20.082 27679 27679 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+10-16 18:46:20.088 27679 27679 I AndroidRuntime: Using default boot image
+10-16 18:46:20.088 27679 27679 I AndroidRuntime: Leaving lock profiling enabled
+10-16 18:46:20.089 27679 27679 D SecNativeFeatureCppIf: encoded
+10-16 18:46:20.089 27679 27679 D SecNativeFeatureCppIf: decoding and unzip finish
+10-16 18:46:20.089 27679 27679 D SecNativeFeatureCppIf: use unCompDataBuff. encoded
+10-16 18:46:20.089 27679 27679 D SecNativeFeatureCppIf: Free unCompDataBuff
+10-16 18:46:20.089 27679 27679 D AndroidRuntime: addProductProperty not brand or 7
+10-16 18:46:20.092 27679 27679 I app_process: Core platform API enforcement reporting only by runtime option
+10-16 18:46:20.093 27679 27679 I app_process: Using non-generational CollectorTypeCC GC.
+10-16 18:46:20.141  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-16 18:46:20.141  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-16 18:46:20.141  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-16 18:46:20.148  2787  3187 D BtGatt.GattService: onScanResult to scannerId: 3- eventType=0x1b, addressType=1, address=XX:XX:XX:XX:F9:D8, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-50, periodicAdvInt=0x0
+10-16 18:46:20.163 27679 27679 D nativeloader: InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+10-16 18:46:20.181 27679 27679 D nativeloader: Load libicu_jni.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+10-16 18:46:20.181 27679 27679 D app_process: Time zone APEX ICU file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+10-16 18:46:20.182 27679 27679 D app_process: I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt72l.dat
+10-16 18:46:20.183 27679 27679 D nativeloader: Load libjavacore.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+10-16 18:46:20.184  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-16 18:46:20.184  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-16 18:46:20.184 27679 27679 D nativeloader: Load libopenjdk.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+10-16 18:46:20.186 27679 27679 I app_process: Priority-to-niceness mapping: 19, 16, 13, 10, 0, -2, -4, -5, -6, -8
+10-16 18:46:20.211 27679 27679 E SemDvfsManager_JNI: SemDvfsManager: registerfunction enter
+10-16 18:46:20.211 27679 27679 E SemAffinityControl: SemAffinityControl: registerfunction enter
+10-16 18:46:20.225 27679 27679 W libc    : Access denied finding property "ro.product.name_for_attestation"
+10-16 18:46:20.225   949   949 E audit   : type=1400 audit(1792156580.221:51379): avc:  denied  { read } for  pid=27679 comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=9295 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0 SEPF_SM-A525F_12_0001 audit_filtered
+10-16 18:46:20.225 27679 27679 W libc    : Access denied finding property "ro.product.brand_for_attestation"
+10-16 18:46:20.225 27679 27679 W libc    : Access denied finding property "ro.product.model_for_attestation"
+10-16 18:46:20.225   949   949 E audit   : type=1400 audit(1792156580.221:51380): avc:  denied  { read } for  pid=27679 comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=9295 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0 SEPF_SM-A525F_12_0001 audit_filtered
+10-16 18:46:20.225   949   949 E audit   : type=1400 audit(1792156580.221:51381): avc:  denied  { read } for  pid=27679 comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=9295 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0 SEPF_SM-A525F_12_0001 audit_filtered
+10-16 18:46:20.227 27679 27679 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+10-16 18:46:20.227 27679 27679 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+10-16 18:46:20.233 27679 27679 D UiAutomationConnection: Created on user UserHandle{0}
+10-16 18:46:20.233 27679 27679 I UiAutomation: Initialized for user 0 on display 0
+10-16 18:46:20.233 27679 27679 W UiAutomation: Created with deprecatead constructor, assumes DEFAULT_DISPLAY
+10-16 18:46:20.237  1628  5889 D AccessibilityManagerService: changeCurrentUserForTestAutomationIfNeededLocked(0): ignoring because device doesn't support visible background users
+10-16 18:46:20.237  1628  5889 I UiAutomationManager: Registering UiTestAutomationService (id=com.android.server.accessibility/UiAutomation) when called by user 0
+10-16 18:46:20.238  1132  2027 I SurfaceFlinger: id=2518 createSurf, flag=84004, WindowToken{925b6cb type=2032 android.os.Binder@9d81d9a}#2518
+10-16 18:46:20.239  1628  5889 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = accessibility_enabled
+10-16 18:46:20.240  1628  5889 D WindowMagnificationMgr: requestConnection :false mConnectionState : 3
+10-16 18:46:20.240  1628  5889 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-16 18:46:20.247  1628  5889 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = accessibility_enabled
+10-16 18:46:20.249  1628  5889 D WindowMagnificationMgr: requestConnection :false mConnectionState : 3
+10-16 18:46:20.251  1628  5889 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-16 18:46:20.255  1132  1132 I Layer   : Layer [WindowToken{925b6cb type=2032 android.os.Binder@9d81d9a}#2518] hidden!! flag(0)
+10-16 18:46:20.289 20367 20367 I SafetyCenterAccessibilityListener: accessibility event occurred, safety center feature not enabled.
+10-16 18:46:20.289  7338  7338 I SAMSUNGWALLET[IN]: [WalletStartup] Screen reader is disabled
+10-16 18:46:20.290  1628  1628 I AccessibilityManagerService: semIsAccessibilityServiceEnabled()
+10-16 18:46:20.290  1628  1628 I AccessibilityManagerService: accesibilityService is null
+10-16 18:46:20.290  1628  1628 I AccessibilityManagerService: semIsAccessibilityServiceEnabled()
+10-16 18:46:20.290  1628  1628 I AccessibilityManagerService: accesibilityService is null
+10-16 18:46:20.291  1628  1628 D AS.AudioService: Accessibility volume enabled = false
+10-16 18:46:20.291  1628  1628 D BatterySaverPolicy: accessibility changed to true, updating policy.
+10-16 18:46:20.302  2428  2428 D Navbar.Store: ----handleEvent(0) OnUpdateRemoteViewContainer(leftContainer=android.widget.LinearLayout{5cd4f15 I.E...... ......I. 0,0-118,126 #7f0a0597 app:id/left_remoteview}, rightContainer=android.widget.LinearLayout{5c1422a I.E...... ......I. 962,0-1080,126 #7f0a08aa app:id/right_remoteview}, contextualButtonVisible=false, darkIntensity=0.0, displayId=0) [Module] SamsungNavigationBarView
+10-16 18:46:20.302  2428  2428 D Navbar.Store: ------[Band]REMOTE_VIEW_PACK_SET_REMOTEVIEW_CONTAINER
+10-16 18:46:20.302  2428  2428 D Navbar.Store: --------apply(0) NavBarStoreAction$UpdateRemoteViewContainer
+10-16 18:46:20.302  2428  2428 D Navbar.Store: --------apply(0) NavBarStoreAction$UpdateRemoteViewDarkIntensity
+10-16 18:46:20.303  2428  2428 D Navbar.Store: handleEvent(0) OnNavBarUpdateA11YService(clickable=false, longClickable=false) [Module] NavigationBar
+10-16 18:46:20.303  2428  2428 D Navbar.Store: --[Band]SETUPWIZARD_PACK_UPDATE_A11Y_SERVICE
+10-16 18:46:20.334  1033  2943 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+10-16 18:46:20.570  1363  1936 V NuPlayerDriver: getCurrentPosition(0xf3ac9a40) 0 (msec), at state 6
+10-16 18:46:20.634  1043 18948 I sensors-hal: handle_sns_std_sensor_event:296, [SSC_LIGHT] P: 24(25),als:103,green:29,ir:0,delta_avg:3,delta_max:68,stdev:8,stdev_per_4sample:14,magig_code or itime:384
+10-16 18:46:21.188   669   669 D io_stats: !@   8,0 r 5463451 90748580 w 5193546 166439456 d 0 0 f 0 0 iot 2311236 0 th 0 0 0 pt 0 inp 0 0 43039.758
+10-16 18:46:21.318 27679 27679 D SemCscFeature: Encoded
+10-16 18:46:21.356 27679 27679 W AccessibilityNodeInfoDumper: Fetch time: 35ms
+10-16 18:46:21.359  1628  5887 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = accessibility_enabled
+10-16 18:46:21.360  1628  5887 D WindowMagnificationMgr: requestConnection :false mConnectionState : 3
+10-16 18:46:21.360  1628  5887 W WindowMagnificationMgr: requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+10-16 18:46:21.360  1628  5887 D AccessibilityManagerService: restoreCurrentUserForTestAutomationIfNeededLocked(): ignoring because device doesn't support visible background users
+10-16 18:46:21.363  1628  5887 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = accelerometer_rotation
+10-16 18:46:21.363  1628  5887 D KNOX_MDM_SettingsProvider: isChangeAllowed() : name = user_rotation
+10-16 18:46:21.364  1628  5887 V WindowManager: rotationForOrientation(orient=SCREEN_ORIENTATION_UNSPECIFIED (-1), last=ROTATION_0 (0)); user=ROTATION_0 (0) 
+10-16 18:46:21.364  1628  5887 D WindowManager: rotationForOrientation, orientationSource=ActivityRecord{305efd2 u0 app.w3dev.mergerelay.debug/app.w3dev.mergerelay.MainActivity t44169}
+10-16 18:46:21.364  1628  5887 V WindowManager: Computed rotation=ROTATION_0 (0) for display id=0 based on lastOrientation=SCREEN_ORIENTATION_UNSPECIFIED (-1) and oldRotation=ROTATION_0 (0), caller=com.android.server.wm.DisplayContent.updateRotationUnchecked:2674 com.android.server.wm.WindowManagerService.updateRotationUnchecked:4907 com.android.server.wm.WindowManagerService.thawDisplayRotation:4848 com.android.server.wm.WindowManagerService.thawRotation:4812 android.view.IWindowManager$Stub.onTransact:2718 com.android.server.wm.WindowManagerService.onTransact:1540 
+10-16 18:46:21.367 27679 27679 D AndroidRuntime: Shutting down VM
+10-16 18:46:21.372  1132  1132 I Layer   : Layer::reparent [WindowToken{925b6cb type=2032 android.os.Binder@9d81d9a}#2518] newParentHandle : null -------------------------
+10-16 18:46:21.372  1132  1132 I Layer   : id=2518 removeFromCurrentState WindowToken{925b6cb type=2032 android.os.Binder@9d81d9a}#2518 (155)
+10-16 18:46:21.372  1132  1132 I Layer   : Layer::reparent [WindowToken{925b6cb type=2032 android.os.Binder@9d81d9a}#2518] End -------------------------
+10-16 18:46:21.373  1132  1132 I SurfaceFlinger: id=2518 Removed WindowToken{925b6cb type=2032 android.os.Binder@9d81d9a}#2518 (155)
+10-16 18:46:21.383  1628  4218 D SemWifiUsabilityStatsMonitor: onWifiUsabilityStats - seqNum 7822, isSameBssidAndFreq true
+10-16 18:46:21.383  1132  1132 I Layer   : id=2518 Destroyed WindowToken{925b6cb type=2032 android.os.Binder@9d81d9a}#2518
+10-16 18:46:21.396  1628  1628 D BatterySaverPolicy: accessibility changed to false, updating policy.
+10-16 18:46:21.396  2428  2428 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+10-16 18:46:21.397  2428  2529 D Tile.WifiTile: handleUpdateState isTransient=false transientEnabling =false cb.isTransient=false state.state = 2 mStateBeforeClick.value =false enabled =true
+10-16 18:46:21.575  1363  1936 V NuPlayerDriver: getCurrentPosition(0xf3ac9a40) 0 (msec), at state 6
+10-16 18:46:21.940  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_WAKE_IND: 0xFD
+10-16 18:46:21.941  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK ON
+10-16 18:46:21.941  1033  3178 D vendor.qti.bluetooth@1.0-wake_lock: Acquire wakelock is acquired 
+10-16 18:46:21.941  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Writing IBS_WAKE_ACK
+10-16 18:46:21.945  2787  3187 D ScanFilter: manu data matches
+10-16 18:46:21.946  2787  3187 D BtGatt.GattService: onScanResult to scannerId: 6- eventType=0x1b, addressType=1, address=XX:XX:XX:XX:2F:9B, primaryPhy=1, secondaryPhy=0, advertisingSid=0xff, txPower=127, rssi=-86, periodicAdvInt=0x0
+10-16 18:46:21.983  1033  3178 I vendor.qti.bluetooth@1.0-ibs_handler: ProcessIbsCmd: Received IBS_SLEEP_IND: 0xFE
+10-16 18:46:21.983  1033  3178 D vendor.qti.bluetooth@1.0-ibs_handler: SerialClockVote: vote for UART CLK OFF
+10-16 18:46:22.133  1033  2943 D vendor.qti.bluetooth@1.0-wake_lock: Release wakelock is released 
+10-16 18:46:22.285  3776  3776 I adbd    : adbd service requested 'sync:'
+10-16 18:46:22.353  3776  3776 I adbd    : adbd service requested 'shell,v2,TERM=xterm-256color:export ANDROID_LOG_TAGS="''"; exec logcat '-d' '-t' '300''
