@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "d2-m03",
+  "district": "district-2",
+  "type": "time_trial",
+  "title": "Breakwater Blast",
+  "brief": "Along the north quay, down the east side and back along the docks. Long straights reward a steady foot.",
+  "start": {
+    "lane_point": {
+      "edgeId": "e:11,1:WE",
+      "s": 10
+    }
+  },
+  "params": {
+    "checkpoints": [
+      {
+        "lane_point": {
+          "edgeId": "e:14,4:NS",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:14,9:NS",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:9,12:EW",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:5,12:EW",
+          "s": 10
+        }
+      }
+    ],
+    "time_limit_s": 160
+  },
+  "stars": {
+    "1": {
+      "max_time_s": 160
+    },
+    "2": {
+      "max_time_s": 92
+    },
+    "3": {
+      "max_time_s": 65.5
+    }
+  },
+  "reward_coins": {
+    "1": 80,
+    "2": 128,
+    "3": 192
+  },
+  "difficulty": 0.3119,
+  "validation": {
+    "traffic_seed": 1,
+    "traffic_agents": 12,
+    "autopilot_stars": 2,
+    "autopilot_time_s": 70.65,
+    "autopilot_damage": 0,
+    "route_length_m": 441.9,
+    "intersections": 3,
+    "ticks": 4240
+  }
+}

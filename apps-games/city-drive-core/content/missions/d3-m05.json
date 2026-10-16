@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "id": "d3-m05",
+  "district": "district-3",
+  "type": "delivery",
+  "title": "Rush Hour Special",
+  "brief": "Three drops across downtown, one lunch order each. Everybody is hungry and nobody is patient.",
+  "start": {
+    "lane_point": {
+      "edgeId": "e:1,8:SN",
+      "s": 10
+    }
+  },
+  "params": {
+    "pickup": {
+      "edgeId": "e:6,7:WE",
+      "s": 10
+    },
+    "drops": [
+      {
+        "edgeId": "e:7,3:SN",
+        "s": 10
+      },
+      {
+        "edgeId": "e:10,3:NS",
+        "s": 10
+      },
+      {
+        "edgeId": "e:9,4:EW",
+        "s": 10
+      }
+    ],
+    "time_limit_s": 230,
+    "max_damage": 3
+  },
+  "stars": {
+    "1": {
+      "min_time_left_s": 0,
+      "max_damage": 3
+    },
+    "2": {
+      "min_time_left_s": 95,
+      "max_damage": 2
+    },
+    "3": {
+      "min_time_left_s": 133.5,
+      "max_damage": 1
+    }
+  },
+  "reward_coins": {
+    "1": 120,
+    "2": 192,
+    "3": 288
+  },
+  "difficulty": 0.382,
+  "validation": {
+    "traffic_seed": 1,
+    "traffic_agents": 16,
+    "autopilot_stars": 2,
+    "autopilot_time_s": 103.783,
+    "autopilot_damage": 0,
+    "route_length_m": 364.3,
+    "intersections": 6,
+    "ticks": 6228
+  }
+}

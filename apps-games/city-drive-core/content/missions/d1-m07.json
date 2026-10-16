@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "id": "d1-m07",
+  "district": "district-1",
+  "type": "taxi",
+  "title": "Cautious Cabbie",
+  "brief": "Your fare is carrying a very full cup of tea. Cross the whole old town without spilling it.",
+  "start": {
+    "lane_point": {
+      "edgeId": "e:5,3:SN",
+      "s": 10
+    }
+  },
+  "params": {
+    "pickup": {
+      "edgeId": "e:10,3:NS",
+      "s": 10
+    },
+    "drop": {
+      "edgeId": "e:1,8:NS",
+      "s": 10
+    },
+    "time_limit_s": 90
+  },
+  "stars": {
+    "1": {
+      "min_time_left_s": 0,
+      "min_comfort": 20
+    },
+    "2": {
+      "min_time_left_s": 26,
+      "min_comfort": 50
+    },
+    "3": {
+      "min_time_left_s": 44.5,
+      "min_comfort": 85
+    }
+  },
+  "reward_coins": {
+    "1": 64,
+    "2": 102,
+    "3": 154
+  },
+  "difficulty": 0.3983,
+  "validation": {
+    "traffic_seed": 1,
+    "traffic_agents": 8,
+    "autopilot_stars": 2,
+    "autopilot_time_s": 49.2,
+    "autopilot_damage": 0,
+    "route_length_m": 433.3,
+    "intersections": 6,
+    "ticks": 2953
+  }
+}

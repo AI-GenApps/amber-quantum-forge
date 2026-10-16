@@ -9,9 +9,11 @@ import {
   MISSION_TYPES,
   type MissionDef,
   type MissionType,
+  type MissionValidation,
   type ParkingParams,
   type ParkingStar,
   STAR_KEYS,
+  type Stars,
   type TaxiParams,
   type TaxiStar,
   type Tiers,
@@ -124,6 +126,22 @@ const parkingStar = (r: Reader, v: unknown): ParkingStar => {
 };
 const coins = (r: Reader, v: unknown): number => r.number({ coins: v }, "coins", 0);
 
+function parseValidation(r: Reader, raw: unknown): MissionValidation {
+  const t = obj(r, raw);
+  const stars = r.number(t, "autopilot_stars", 0);
+  if (![0, 1, 2, 3].includes(stars)) r.fail("autopilot_stars must be 0, 1, 2 or 3");
+  return {
+    traffic_seed: r.number(t, "traffic_seed", 0),
+    traffic_agents: r.number(t, "traffic_agents", 0),
+    autopilot_stars: stars as Stars,
+    autopilot_time_s: r.number(t, "autopilot_time_s", 0),
+    autopilot_damage: r.number(t, "autopilot_damage", 0),
+    route_length_m: r.number(t, "route_length_m", 0),
+    intersections: r.number(t, "intersections", 0),
+    ticks: r.number(t, "ticks", 0),
+  };
+}
+
 function isMissionType(value: unknown): value is MissionType {
   return typeof value === "string" && (MISSION_TYPES as readonly string[]).includes(value);
 }
@@ -191,7 +209,16 @@ export function parseMission(input: unknown): MissionDef {
     start: { lane_point: r.lanePoint(start.lane_point, "start.lane_point") },
     reward_coins: tiers(r, input, "reward_coins", coins),
   };
-  const mission = parseBody(r, input, type, base);
+  const difficulty = r.optionalNumber(input, "difficulty", 0);
+  const validation =
+    input.validation === undefined
+      ? undefined
+      : parseValidation(r.at("validation"), input.validation);
+  const mission = parseBody(r, input, type, {
+    ...base,
+    ...(difficulty === undefined ? {} : { difficulty }),
+    ...(validation === undefined ? {} : { validation }),
+  });
   if (issues.length > 0) throw new MissionError(id, issues);
   return mission;
 }

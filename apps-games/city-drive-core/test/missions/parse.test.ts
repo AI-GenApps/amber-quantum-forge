@@ -68,4 +68,41 @@ describe("parseMission", () => {
     p.drops = [p.drops[0], p.drops[0], p.drops[0], p.drops[0]];
     expect(issuesOf(raw)).toContain("1..3");
   });
+
+  const metrics = {
+    traffic_seed: 1,
+    traffic_agents: 8,
+    autopilot_stars: 2,
+    autopilot_time_s: 31.5,
+    autopilot_damage: 0,
+    route_length_m: 210,
+    intersections: 3,
+    ticks: 2000,
+  };
+
+  it("keeps the optional difficulty and validation block the tool writes", () => {
+    const raw = cloneMission(readMissionFiles()[0]?.raw);
+    raw.difficulty = 0.31;
+    raw.validation = metrics;
+    const mission = parseMission(raw);
+    expect(mission.difficulty).toBe(0.31);
+    expect(mission.validation).toEqual(metrics);
+  });
+
+  it("leaves them off when the file has none", () => {
+    const mission = parseMission(cloneMission(readMissionFiles()[0]?.raw));
+    expect(mission.difficulty).toBeUndefined();
+    expect(mission.validation).toBeUndefined();
+  });
+
+  it("rejects a malformed validation block and a negative difficulty", () => {
+    const raw = cloneMission(readMissionFiles()[0]?.raw);
+    raw.validation = { ...metrics, autopilot_stars: 5, ticks: "many" };
+    const message = issuesOf(raw);
+    expect(message).toContain("autopilot_stars must be 0, 1, 2 or 3");
+    expect(message).toContain("ticks");
+    raw.validation = metrics;
+    raw.difficulty = -1;
+    expect(issuesOf(raw)).toContain("difficulty");
+  });
 });

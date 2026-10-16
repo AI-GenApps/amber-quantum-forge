@@ -3,26 +3,26 @@
   "id": "d1-m01",
   "district": "district-1",
   "type": "delivery",
-  "title": "Corner Shop Run",
-  "brief": "Collect the parcel on the west avenue and drop it at the south-side depot. Keep the car in one piece for three stars.",
+  "title": "Parcel Hop",
+  "brief": "Grab the parcel past the crossing and drop it by the east lights. The clock is generous, so enjoy the ride.",
   "start": {
     "lane_point": {
-      "edgeId": "e:4,5:EW",
+      "edgeId": "e:2,5:WE",
       "s": 10
     }
   },
   "params": {
     "pickup": {
-      "edgeId": "e:1,6:NS",
+      "edgeId": "e:6,5:WE",
       "s": 10
     },
     "drops": [
       {
-        "edgeId": "e:5,9:SN",
+        "edgeId": "e:9,5:WE",
         "s": 10
       }
     ],
-    "time_limit_s": 100,
+    "time_limit_s": 80,
     "max_damage": 3
   },
   "stars": {
@@ -31,17 +31,28 @@
       "max_damage": 3
     },
     "2": {
-      "min_time_left_s": 40,
+      "min_time_left_s": 59,
       "max_damage": 2
     },
     "3": {
-      "min_time_left_s": 60,
+      "min_time_left_s": 62.5,
       "max_damage": 1
     }
   },
   "reward_coins": {
-    "1": 50,
-    "2": 80,
-    "3": 120
+    "1": 40,
+    "2": 64,
+    "3": 96
+  },
+  "difficulty": 0.2047,
+  "validation": {
+    "traffic_seed": 1,
+    "traffic_agents": 8,
+    "autopilot_stars": 3,
+    "autopilot_time_s": 15.883,
+    "autopilot_damage": 0,
+    "route_length_m": 140,
+    "intersections": 2,
+    "ticks": 954
   }
 }

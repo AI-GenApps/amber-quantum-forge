@@ -29,7 +29,7 @@ and unlock new cars. Solo, offline, landscape, no ads, no IAP.
 | Time trial | Drive a checkpoint route against the clock | Finish time against par times |
 | Parking | Park inside a marked bay | Accuracy and time |
 
-Star thresholds and par times are **TBD (task 10 / task 11)**.
+Star thresholds and par times are per mission, in `apps-games/city-drive-core/content/missions/` (task 11; the table under "Content (task 11)" lists them).
 
 ## Numbers owned by later tasks
 
@@ -37,10 +37,60 @@ Star thresholds and par times are **TBD (task 10 / task 11)**.
 |---|---|
 | Car roster and prices | TBD (task 12) |
 | Mission payouts (coins per star) | TBD (task 12) |
-| Star thresholds that unlock each district | TBD (task 11) |
-| Mission count per district | 24 total across 3 districts; split TBD (task 11) |
+| Star thresholds that unlock each district | District 2 at 10 total stars, district 3 at 24 (`content/progression.json`, task 11) |
+| Mission count per district | 8 per district, 2 of each type (24 total, task 11) |
 | Draw-call and triangle budgets | Fixed in `STATUS.md`: at most 100 draw calls (target below 60), at most 150k visible triangles |
 | Adaptive hardware scaling range | 1.0 to 2.0 (task 15) |
+
+## Content (task 11)
+
+Three districts, each its own map loaded one at a time. Names are placeholders until the naming task.
+
+| District | Map | Traffic cars | Unlocks at | Character |
+|---|---|---|---|---|
+| `district-1` "Old Town" | 12x12 | 8 | open | suburban and small commercial, tight corners |
+| `district-2` "Harbor" | 16x14 | 12 | 10 total stars | commercial and plazas, long straights |
+| `district-3` "Downtown" | 12x12 | 16 | 24 total stars | dense commercial grid, many junctions |
+
+Every mission of an unlocked district is visible in free roam; there are no per-mission locks. With a
+2-star average every district opens (district 1 alone gives 16 stars).
+
+Difficulty is `0.4 x route/time ratio + 0.25 x junctions/12 + 0.2 x traffic/16 + 0.15 x parking
+tightness`, each term 0..1 (`missionDifficulty()`, weights in `progression.json`). It never drops within
+a district, and each district opens easier than the last one ended. The autopilot (test support) clears
+all 24 with 0 damage and at least 1 star with traffic on; 15 have a 3-star time it misses, and no
+3-star time is below 85% of the autopilot's.
+
+| id | type | title | difficulty | autopilot (s / stars) | 3 stars by (s) |
+|---|---|---|---|---|---|
+| d1-m01 | delivery | Parcel Hop | 0.205 | 15.883 / 3 | 17.5 |
+| d1-m02 | taxi | Market Morning | 0.241 | 47.05 / 3 | 51 |
+| d1-m03 | parking | Kerbside Park | 0.268 | 17.017 / 3 | 18.5 |
+| d1-m04 | time trial | Round the Block | 0.283 | 41.95 / 2 | 39 |
+| d1-m05 | delivery | Two Stops Before Tea | 0.333 | 61.65 / 2 | 57 |
+| d1-m06 | parking | Squeeze at Number Nine | 0.349 | 27.967 / 2 | 26 |
+| d1-m07 | taxi | Cautious Cabbie | 0.398 | 49.2 / 2 | 45.5 |
+| d1-m08 | time trial | Old Town Sprint | 0.432 | 77.05 / 2 | 71.5 |
+| d2-m01 | delivery | Harbour Hello | 0.276 | 17.717 / 3 | 19.5 |
+| d2-m02 | taxi | Seagull Shuttle | 0.312 | 21.333 / 3 | 23.5 |
+| d2-m03 | time trial | Breakwater Blast | 0.312 | 70.65 / 2 | 65.5 |
+| d2-m04 | parking | Between the Crates | 0.348 | 18.833 / 3 | 20.5 |
+| d2-m05 | delivery | Fish Market Rush | 0.361 | 62.633 / 2 | 58 |
+| d2-m06 | taxi | Captain's Car | 0.363 | 93.167 / 2 | 86.5 |
+| d2-m07 | time trial | Container Circuit | 0.428 | 83.8 / 2 | 77.5 |
+| d2-m08 | parking | Dock Door Squeeze | 0.474 | 51.633 / 2 | 48 |
+| d3-m01 | delivery | Lobby Pick-Up | 0.338 | 14.1 / 3 | 15.5 |
+| d3-m02 | taxi | Elevator Music | 0.338 | 14.517 / 3 | 16 |
+| d3-m03 | time trial | Rooftop Rush | 0.353 | 34.8 / 2 | 32 |
+| d3-m04 | taxi | Penthouse Pickup | 0.376 | 58.417 / 2 | 54 |
+| d3-m05 | delivery | Rush Hour Special | 0.382 | 103.783 / 2 | 96.5 |
+| d3-m06 | parking | Valet Practice | 0.406 | 20.717 / 3 | 22.5 |
+| d3-m07 | time trial | Downtown Derby | 0.439 | 89.217 / 2 | 82.5 |
+| d3-m08 | parking | Rush-hour Parallel | 0.468 | 39.2 / 2 | 36 |
+
+Stars come from the time (and, per type, damage, comfort or touches) as in the task 10 rules. All
+metrics in the mission files are written by `tool/validate-missions.ts`, never by hand; evidence in
+`.agents/resources/2026-10-15/city-drive-qa/11/README.md`.
 
 ## Controls
 

@@ -1,0 +1,274 @@
+{
+  "method": "NullEngine; for each district the player car (body, 4 wheels, blob shadow) is parked at each pose and the district's traffic density of AI cars (InstancedMesh body + 4 wheels each, 4 models) fills the view ahead of it; scene.render() once per pose; draw calls = sum over active meshes of sub-mesh counts (a thin-instance host or InstancedMesh source counts once per sub-mesh); triangles = sub-mesh triangles x thin-instance count over active meshes. Overlays: free-roam shows 8 start-marker beams; mission shows a 41-point route ribbon, the objective beam, a bay pad and the parked cars of two bays.",
+  "budgets": {
+    "maxDrawCalls": 100,
+    "targetDrawCalls": 60,
+    "maxTriangles": 150000
+  },
+  "districts": [
+    {
+      "district": "district-1",
+      "trafficCars": 8,
+      "map": {
+        "id": "district-1",
+        "width": 12,
+        "height": 12
+      },
+      "poses": [
+        {
+          "name": "edge-N",
+          "activeMeshes": 71,
+          "drawCalls": 54,
+          "triangles": 133131
+        },
+        {
+          "name": "edge-NE",
+          "activeMeshes": 70,
+          "drawCalls": 53,
+          "triangles": 127887
+        },
+        {
+          "name": "edge-E",
+          "activeMeshes": 71,
+          "drawCalls": 54,
+          "triangles": 133131
+        },
+        {
+          "name": "edge-SE",
+          "activeMeshes": 71,
+          "drawCalls": 54,
+          "triangles": 133131
+        },
+        {
+          "name": "edge-S",
+          "activeMeshes": 70,
+          "drawCalls": 53,
+          "triangles": 127887
+        },
+        {
+          "name": "edge-SW",
+          "activeMeshes": 71,
+          "drawCalls": 54,
+          "triangles": 133131
+        },
+        {
+          "name": "edge-W",
+          "activeMeshes": 70,
+          "drawCalls": 53,
+          "triangles": 127887
+        },
+        {
+          "name": "edge-NW",
+          "activeMeshes": 71,
+          "drawCalls": 54,
+          "triangles": 133131
+        },
+        {
+          "name": "centre",
+          "activeMeshes": 62,
+          "drawCalls": 39,
+          "triangles": 80338
+        }
+      ],
+      "worst": {
+        "drawCalls": 54,
+        "triangles": 133131
+      },
+      "sweepWorst": {
+        "drawCalls": 54,
+        "triangles": 133131,
+        "at": "grid(-10,-110)-S"
+      },
+      "overlays": {
+        "worst": {
+          "drawCalls": 57,
+          "triangles": 137007
+        },
+        "sweepWorstMission": {
+          "drawCalls": 57,
+          "triangles": 137007
+        }
+      },
+      "camera": {
+        "fov": 0.8,
+        "maxZ": 240
+      }
+    },
+    {
+      "district": "district-2",
+      "trafficCars": 12,
+      "map": {
+        "id": "district-2",
+        "width": 16,
+        "height": 14
+      },
+      "poses": [
+        {
+          "name": "edge-N",
+          "activeMeshes": 97,
+          "drawCalls": 52,
+          "triangles": 112440
+        },
+        {
+          "name": "edge-NE",
+          "activeMeshes": 97,
+          "drawCalls": 53,
+          "triangles": 112370
+        },
+        {
+          "name": "edge-E",
+          "activeMeshes": 99,
+          "drawCalls": 56,
+          "triangles": 123778
+        },
+        {
+          "name": "edge-SE",
+          "activeMeshes": 97,
+          "drawCalls": 53,
+          "triangles": 118286
+        },
+        {
+          "name": "edge-S",
+          "activeMeshes": 96,
+          "drawCalls": 52,
+          "triangles": 120663
+        },
+        {
+          "name": "edge-SW",
+          "activeMeshes": 94,
+          "drawCalls": 49,
+          "triangles": 114322
+        },
+        {
+          "name": "edge-W",
+          "activeMeshes": 99,
+          "drawCalls": 56,
+          "triangles": 123778
+        },
+        {
+          "name": "edge-NW",
+          "activeMeshes": 93,
+          "drawCalls": 49,
+          "triangles": 120039
+        },
+        {
+          "name": "centre",
+          "activeMeshes": 80,
+          "drawCalls": 31,
+          "triangles": 65999
+        }
+      ],
+      "worst": {
+        "drawCalls": 56,
+        "triangles": 123778
+      },
+      "sweepWorst": {
+        "drawCalls": 56,
+        "triangles": 123778,
+        "at": "grid(-150,-10)-E"
+      },
+      "overlays": {
+        "worst": {
+          "drawCalls": 59,
+          "triangles": 127654
+        },
+        "sweepWorstMission": {
+          "drawCalls": 59,
+          "triangles": 127654
+        }
+      },
+      "camera": {
+        "fov": 0.8,
+        "maxZ": 240
+      }
+    },
+    {
+      "district": "district-3",
+      "trafficCars": 16,
+      "map": {
+        "id": "district-3",
+        "width": 12,
+        "height": 12
+      },
+      "poses": [
+        {
+          "name": "edge-N",
+          "activeMeshes": 112,
+          "drawCalls": 45,
+          "triangles": 124618
+        },
+        {
+          "name": "edge-NE",
+          "activeMeshes": 112,
+          "drawCalls": 45,
+          "triangles": 124618
+        },
+        {
+          "name": "edge-E",
+          "activeMeshes": 112,
+          "drawCalls": 45,
+          "triangles": 124618
+        },
+        {
+          "name": "edge-SE",
+          "activeMeshes": 112,
+          "drawCalls": 45,
+          "triangles": 124618
+        },
+        {
+          "name": "edge-S",
+          "activeMeshes": 112,
+          "drawCalls": 45,
+          "triangles": 124618
+        },
+        {
+          "name": "edge-SW",
+          "activeMeshes": 112,
+          "drawCalls": 45,
+          "triangles": 124618
+        },
+        {
+          "name": "edge-W",
+          "activeMeshes": 112,
+          "drawCalls": 45,
+          "triangles": 124618
+        },
+        {
+          "name": "edge-NW",
+          "activeMeshes": 112,
+          "drawCalls": 45,
+          "triangles": 124618
+        },
+        {
+          "name": "centre",
+          "activeMeshes": 102,
+          "drawCalls": 32,
+          "triangles": 83928
+        }
+      ],
+      "worst": {
+        "drawCalls": 45,
+        "triangles": 124618
+      },
+      "sweepWorst": {
+        "drawCalls": 45,
+        "triangles": 124618,
+        "at": "grid(-110,-10)-E"
+      },
+      "overlays": {
+        "worst": {
+          "drawCalls": 48,
+          "triangles": 128494
+        },
+        "sweepWorstMission": {
+          "drawCalls": 48,
+          "triangles": 128494
+        }
+      },
+      "camera": {
+        "fov": 0.8,
+        "maxZ": 240
+      }
+    }
+  ]
+}

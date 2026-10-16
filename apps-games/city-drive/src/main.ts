@@ -3,14 +3,15 @@ import type { Camera } from "@babylonjs/core/Cameras/camera.js";
 import { Engine } from "@babylonjs/core/Engines/engine.js";
 import { SceneInstrumentation } from "@babylonjs/core/Instrumentation/sceneInstrumentation.js";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
+import { districtInfo, parseProgression } from "@city-drive/core";
 import { mapHalfExtents, parseCityManifest } from "@city-drive/core/city";
 import type { AssetManifest } from "./assets/manifest";
 import { FpsOverlay } from "./game/fpsOverlay";
 import { GameLoop } from "./game/loop";
-import { DISTRICT_1_MISSIONS } from "./game/missions";
+import { DISTRICT_MISSIONS, isDistrictId, PROGRESSION_RAW } from "./game/missions";
 import { GameSession, type SessionOptions } from "./game/session";
 import { CombinedInput, GamepadInput, KeyboardInput, TouchInput } from "./input";
-import { applyViewDistance, createCityScene, loadDistrict1 } from "./render";
+import { applyViewDistance, createCityScene, loadDistrict } from "./render";
 import { createCarVisual } from "./render/carVisual";
 import { ChaseCamera } from "./render/chaseCamera";
 import { createMissionVisual } from "./render/missionVisual";
@@ -62,7 +63,11 @@ async function start(): Promise<void> {
   if (!(canvas instanceof HTMLCanvasElement)) throw new Error("City Drive: #game is not a canvas");
   const params = new URLSearchParams(window.location.search);
   const manifest = (await (await fetchChecked("manifest.json")).json()) as AssetManifest;
-  const map = loadDistrict1(manifest);
+  const requested = params.get("district") ?? "district-1";
+  if (!isDistrictId(requested)) throw new Error(`City Drive: unknown district "${requested}"`);
+  const districtId = requested;
+  const traffic = districtInfo(parseProgression(PROGRESSION_RAW), districtId).traffic_agents;
+  const map = loadDistrict(districtId, manifest);
 
   const engine = new Engine(canvas, true, { stencil: false }, true);
   const city = await createCityScene(engine, map, manifest, loadBytes);
@@ -74,8 +79,10 @@ async function start(): Promise<void> {
     new GamepadInput(() => navigator.getGamepads?.() ?? []),
   ]);
   const sessionOptions: SessionOptions = {};
-  if (!params.has("notraffic")) sessionOptions.traffic = { seed: TRAFFIC_SEED };
-  if (!params.has("nomissions")) sessionOptions.missions = DISTRICT_1_MISSIONS;
+  if (!params.has("notraffic")) {
+    sessionOptions.traffic = { seed: TRAFFIC_SEED, maxAgents: traffic };
+  }
+  if (!params.has("nomissions")) sessionOptions.missions = DISTRICT_MISSIONS[districtId];
   const session = await GameSession.create(
     map,
     parseCityManifest(manifest),

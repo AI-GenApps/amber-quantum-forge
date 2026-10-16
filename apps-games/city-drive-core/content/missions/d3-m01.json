@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "id": "d3-m01",
+  "district": "district-3",
+  "type": "delivery",
+  "title": "Lobby Pick-Up",
+  "brief": "A briefcase waits at the lobby on Fifth. Bring it to the tower two blocks east. Easy start for a busy town.",
+  "start": {
+    "lane_point": {
+      "edgeId": "e:2,4:WE",
+      "s": 10
+    }
+  },
+  "params": {
+    "pickup": {
+      "edgeId": "e:5,4:WE",
+      "s": 10
+    },
+    "drops": [
+      {
+        "edgeId": "e:8,4:WE",
+        "s": 10
+      }
+    ],
+    "time_limit_s": 45,
+    "max_damage": 3
+  },
+  "stars": {
+    "1": {
+      "min_time_left_s": 0,
+      "max_damage": 3
+    },
+    "2": {
+      "min_time_left_s": 26.5,
+      "max_damage": 2
+    },
+    "3": {
+      "min_time_left_s": 29.5,
+      "max_damage": 1
+    }
+  },
+  "reward_coins": {
+    "1": 104,
+    "2": 166,
+    "3": 250
+  },
+  "difficulty": 0.3377,
+  "validation": {
+    "traffic_seed": 1,
+    "traffic_agents": 16,
+    "autopilot_stars": 3,
+    "autopilot_time_s": 14.1,
+    "autopilot_damage": 0,
+    "route_length_m": 120,
+    "intersections": 2,
+    "ticks": 847
+  }
+}

@@ -10,6 +10,7 @@ import {
   rotateVec,
   toBayFrame,
 } from "../../src/index";
+import type { Other, TrafficWatch } from "./traffic-watch";
 
 interface Pt {
   x: number;
@@ -27,6 +28,8 @@ export interface AutopilotOptions {
   cornerAccel?: number;
   /** Deceleration (m/s2) the speed profile plans with. */
   planBrake?: number;
+  /** Look out for other cars: follow safely and wait for a clear junction. */
+  watch?: TrafficWatch;
 }
 
 const SAMPLE_STEP_M = 1;
@@ -41,7 +44,6 @@ const BAY_BLEND_SPAN_M = 10;
 const BAY_STOP_M = 0.25;
 /** Speed (m/s) the car should have on reaching the bay entry. */
 const BAY_ENTRY_MS = 3;
-
 /** Point at arc length `s` along a polyline (clamped to its ends). */
 export function pointAlong(points: readonly Pt[], s: number): Pt {
   let left = s;
@@ -96,6 +98,7 @@ export class Autopilot {
   private readonly maxBrake: number;
   private readonly cornerAccel: number;
   private readonly planBrake: number;
+  private readonly watch: TrafficWatch | undefined;
 
   constructor(options: AutopilotOptions = {}) {
     this.spec = options.spec ?? BASELINE_CAR;
@@ -104,6 +107,7 @@ export class Autopilot {
     this.maxBrake = options.maxBrake ?? 0.28;
     this.cornerAccel = options.cornerAccel ?? 2.4;
     this.planBrake = options.planBrake ?? 1.8;
+    this.watch = options.watch;
   }
 
   drive(
@@ -112,6 +116,7 @@ export class Autopilot {
     objective: Objective | undefined,
     bay?: BayGeometry,
     bayLateral = 3,
+    others: readonly Other[] = [],
   ): CarInput {
     if (bay && objective?.kind === "bay") {
       const frame = toBayFrame(bay, state.position.x, state.position.z);
@@ -123,6 +128,7 @@ export class Autopilot {
       const toEntry = Math.max(0, route.length - BAY_ENTRY_M);
       allowed = Math.min(allowed, Math.sqrt(BAY_ENTRY_MS ** 2 + 2 * this.planBrake * toEntry));
     }
+    if (this.watch) allowed = Math.min(allowed, this.watch.limit(state, route.points, others));
     return this.follow(state, route.points, allowed);
   }
 

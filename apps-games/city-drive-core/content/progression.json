@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "difficulty": {
+    "weights": {
+      "route_ratio": 0.4,
+      "intersections": 0.25,
+      "traffic": 0.2,
+      "parking": 0.15
+    },
+    "reference_speed_mps": 11.11,
+    "max_intersections": 12,
+    "max_traffic_agents": 16,
+    "parking_margin_tight_m": 0.2,
+    "parking_margin_loose_m": 1.5
+  },
+  "validation": {
+    "traffic_seed": 1,
+    "three_star_min_ratio": 0.85,
+    "strict_fraction": 0.5,
+    "max_inversions": 1
+  },
+  "districts": [
+    { "id": "district-1", "name": "Old Town", "traffic_agents": 8, "unlock_stars": 0 },
+    { "id": "district-2", "name": "Harbor", "traffic_agents": 12, "unlock_stars": 10 },
+    { "id": "district-3", "name": "Downtown", "traffic_agents": 16, "unlock_stars": 24 }
+  ]
+}

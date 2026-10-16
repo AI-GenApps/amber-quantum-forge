@@ -86,6 +86,18 @@ export interface ParkingStar {
   max_touches: number;
 }
 
+/** What the validation tool measured by running the autopilot on a mission. Only the tool writes it. */
+export interface MissionValidation {
+  traffic_seed: number;
+  traffic_agents: number;
+  autopilot_stars: Stars;
+  autopilot_time_s: number;
+  autopilot_damage: number;
+  route_length_m: number;
+  intersections: number;
+  ticks: number;
+}
+
 interface MissionBase {
   schema_version: number;
   /** `d{n}-m{nn}`, for example `d1-m01`. */
@@ -96,6 +108,9 @@ interface MissionBase {
   /** Where the free-roam marker sits. */
   start: { lane_point: LanePointRef };
   reward_coins: Tiers<number>;
+  /** Scalar from `missionDifficulty()`. Written by the validation tool, never by hand. */
+  difficulty?: number;
+  validation?: MissionValidation;
 }
 
 export interface DeliveryMission extends MissionBase {

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "id": "d2-m05",
+  "district": "district-2",
+  "type": "delivery",
+  "title": "Fish Market Rush",
+  "brief": "Collect the morning catch at the south docks, then drop it at two stalls before the ice melts.",
+  "start": {
+    "lane_point": {
+      "edgeId": "e:2,12:WE",
+      "s": 10
+    }
+  },
+  "params": {
+    "pickup": {
+      "edgeId": "e:9,12:WE",
+      "s": 10
+    },
+    "drops": [
+      {
+        "edgeId": "e:11,9:SN",
+        "s": 10
+      },
+      {
+        "edgeId": "e:3,6:EW",
+        "s": 10
+      }
+    ],
+    "time_limit_s": 155,
+    "max_damage": 3
+  },
+  "stars": {
+    "1": {
+      "min_time_left_s": 0,
+      "max_damage": 3
+    },
+    "2": {
+      "min_time_left_s": 73.5,
+      "max_damage": 2
+    },
+    "3": {
+      "min_time_left_s": 97,
+      "max_damage": 1
+    }
+  },
+  "reward_coins": {
+    "1": 88,
+    "2": 141,
+    "3": 211
+  },
+  "difficulty": 0.3612,
+  "validation": {
+    "traffic_seed": 1,
+    "traffic_agents": 12,
+    "autopilot_stars": 2,
+    "autopilot_time_s": 62.633,
+    "autopilot_damage": 0,
+    "route_length_m": 460.8,
+    "intersections": 5,
+    "ticks": 3759
+  }
+}

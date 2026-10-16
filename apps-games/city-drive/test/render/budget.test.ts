@@ -3,9 +3,15 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { UniversalCamera } from "@babylonjs/core/Cameras/universalCamera.js";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
-import { BASELINE_CAR, quatFromForward, type TrafficPose } from "@city-drive/core";
+import {
+  BASELINE_CAR,
+  parseProgression,
+  quatFromForward,
+  type TrafficPose,
+} from "@city-drive/core";
 import { mapHalfExtents } from "@city-drive/core/city";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { PROGRESSION_RAW } from "../../src/game/missions";
 import { type CarVisual, createCarVisual } from "../../src/render/carVisual";
 import { applyViewDistance } from "../../src/render/city";
 import { RENDER_BUDGETS } from "../../src/render/constants";
@@ -18,43 +24,54 @@ import {
 import { type FrameStats, frameStats } from "../../src/render/stats";
 import { createTrafficVisual, type TrafficVisual } from "../../src/render/traffic";
 import { readManifest } from "../assets/helpers";
-import { buildDistrict1, readBytes } from "./helpers";
+import { buildDistrict, readBytes } from "./helpers";
 import { budgetPoses, type Pose, sweepPoses, trafficCrowd } from "./poses";
 
 const REPORT_PATH = join(
   __dirname,
-  "../../../../.agents/resources/2026-10-15/city-drive-qa/09/budget-report.json",
+  "../../../../.agents/resources/2026-10-15/city-drive-qa/11/budget-report.json",
 );
 
-type Built = Awaited<ReturnType<typeof buildDistrict1>>;
+/** Free-roam start markers a district shows at once: one per mission. */
+const MARKERS_IN_VIEW = 8;
+/** Parked cars beside the two parking bays of a district. */
+const PARKED_BAYS = 2;
+
+const progression = parseProgression(PROGRESSION_RAW);
+type Built = Awaited<ReturnType<typeof buildDistrict>>;
 let built: Built;
 let camera: UniversalCamera;
 let carVisual: CarVisual;
 let trafficVisual: TrafficVisual;
 let missionVisual: MissionVisual;
 let overlay: "none" | "free-roam" | "mission" = "none";
+let crowd = 16;
 
-const MISSION_REPORT_PATH = join(
-  __dirname,
-  "../../../../.agents/resources/2026-10-15/city-drive-qa/10/budget-report.json",
-);
+const districtReports: Record<string, unknown>[] = [];
+const round = (v: number) => Math.round(v * 1000) / 1000;
 
-/** The two static cars beside a parking bay, drawn by the traffic renderer, during a mission. */
+/** The two static cars beside each parking bay, drawn by the traffic renderer, during a mission. */
 function parkedCars(pose: Pose): TrafficPose[] {
   if (overlay !== "mission") return [];
   const { car, forward } = pose;
-  return [-1, 1].map((side, i) => ({
-    id: -(i + 1),
-    modelIndex: 3,
-    position: {
-      x: car.x + forward.x * (30 + side * 10.9) - forward.z * 3,
-      y: 0.87,
-      z: car.z + forward.z * (30 + side * 10.9) + forward.x * 3,
-    },
-    rotation: quatFromForward(forward.x, forward.z),
-    wheelRotation: 0,
-    speedKmh: 0,
-  }));
+  const out: TrafficPose[] = [];
+  for (let bay = 0; bay < PARKED_BAYS; bay++) {
+    for (const [i, side] of [-1, 1].entries()) {
+      out.push({
+        id: -(bay * 2 + i + 1),
+        modelIndex: 3,
+        position: {
+          x: car.x + forward.x * (30 + bay * 24 + side * 10.9) - forward.z * 3,
+          y: 0.87,
+          z: car.z + forward.z * (30 + bay * 24 + side * 10.9) + forward.x * 3,
+        },
+        rotation: quatFromForward(forward.x, forward.z),
+        wheelRotation: 0,
+        speedKmh: 0,
+      });
+    }
+  }
+  return out;
 }
 
 /** Everything the mission renderer can show at once, around the pose's car. */
@@ -67,10 +84,10 @@ function missionView(pose: Pose): MissionView {
     z: car.z + forward.z * ahead + side.z * across,
   });
   if (overlay === "free-roam") {
-    return {
-      ...EMPTY_MISSION_VIEW,
-      markers: [at(25, 0), at(45, 18), at(60, -18), at(80, 6)],
-    };
+    const spots = Array.from({ length: MARKERS_IN_VIEW }, (_, i) =>
+      at(20 + i * 9, (i % 2 === 0 ? 1 : -1) * (6 + i * 2)),
+    );
+    return { ...EMPTY_MISSION_VIEW, markers: spots };
   }
   const route = Array.from({ length: 41 }, (_, i) => at(i * 4, 0));
   const centre = at(30, 3);
@@ -102,7 +119,7 @@ function placeCar(pose: Pose): void {
 
 function measure(pose: Pose): FrameStats {
   placeCar(pose);
-  trafficVisual.sync([...trafficCrowd(pose), ...parkedCars(pose)]);
+  trafficVisual.sync([...trafficCrowd(pose, crowd), ...parkedCars(pose)]);
   missionVisual.sync(missionView(pose));
   camera.position = new Vector3(pose.position.x, pose.position.y, pose.position.z);
   camera.setTarget(new Vector3(pose.target.x, pose.target.y, pose.target.z));
@@ -110,144 +127,123 @@ function measure(pose: Pose): FrameStats {
   return frameStats(built.city.scene);
 }
 
-const round = (v: number) => Math.round(v * 1000) / 1000;
-
-beforeAll(async () => {
-  built = await buildDistrict1();
-  camera = new UniversalCamera("budget-cam", Vector3.Zero(), built.city.scene);
-  applyViewDistance(camera);
-  built.city.scene.activeCamera = camera;
-  carVisual = await createCarVisual(built.city.scene, readManifest(), readBytes, BASELINE_CAR);
-  trafficVisual = await createTrafficVisual(built.city.scene, readManifest(), readBytes);
-  missionVisual = createMissionVisual(built.city.scene);
-});
-
 afterAll(() => {
-  built.city.dispose();
-  built.engine.dispose();
+  if (process.env.BUDGET_REPORT !== "1") return;
+  const report = {
+    method:
+      "NullEngine; for each district the player car (body, 4 wheels, blob shadow) is parked at each pose and the district's traffic density of AI cars (InstancedMesh body + 4 wheels each, 4 models) fills the view ahead of it; scene.render() once per pose; draw calls = sum over active meshes of sub-mesh counts (a thin-instance host or InstancedMesh source counts once per sub-mesh); triangles = sub-mesh triangles x thin-instance count over active meshes. Overlays: free-roam shows 8 start-marker beams; mission shows a 41-point route ribbon, the objective beam, a bay pad and the parked cars of two bays.",
+    budgets: RENDER_BUDGETS,
+    districts: districtReports,
+  };
+  mkdirSync(dirname(REPORT_PATH), { recursive: true });
+  writeFileSync(REPORT_PATH, `${JSON.stringify(report, null, 2)}\n`);
 });
 
-describe("district-1 render budget", () => {
-  it("stays inside the draw-call and triangle budgets at all 9 poses", () => {
-    const half = mapHalfExtents(built.city.map);
-    const poses = budgetPoses(half.x, half.z);
-    expect(poses).toHaveLength(9);
-    const rows = poses.map((pose) => ({ pose, stats: measure(pose) }));
-    for (const { pose, stats } of rows) {
-      expect(stats.activeMeshes, pose.name).toBeGreaterThan(0);
-      expect(stats.drawCalls, `${pose.name} draw calls`).toBeLessThanOrEqual(
-        RENDER_BUDGETS.maxDrawCalls,
-      );
-      expect(stats.triangles, `${pose.name} triangles`).toBeLessThanOrEqual(
-        RENDER_BUDGETS.maxTriangles,
-      );
-    }
-    const worstDraw = Math.max(...rows.map((r) => r.stats.drawCalls));
-    const worstTri = Math.max(...rows.map((r) => r.stats.triangles));
-    expect(worstDraw, "draw-call target").toBeLessThan(RENDER_BUDGETS.targetDrawCalls);
+for (const info of progression.districts) {
+  describe(`${info.id} render budget at ${info.traffic_agents} traffic cars`, () => {
+    beforeAll(async () => {
+      crowd = info.traffic_agents;
+      overlay = "none";
+      built = await buildDistrict(info.id);
+      camera = new UniversalCamera("budget-cam", Vector3.Zero(), built.city.scene);
+      applyViewDistance(camera);
+      built.city.scene.activeCamera = camera;
+      carVisual = await createCarVisual(built.city.scene, readManifest(), readBytes, BASELINE_CAR);
+      trafficVisual = await createTrafficVisual(built.city.scene, readManifest(), readBytes);
+      missionVisual = createMissionVisual(built.city.scene);
+    });
 
-    if (process.env.BUDGET_REPORT === "1") {
-      const report = {
-        map: built.city.map.id,
-        withPlayerCar: true,
-        trafficCarsInView: 16,
-        method:
-          "NullEngine; the player car (body, 4 wheels, blob shadow) is parked at each pose and 16 traffic cars (InstancedMesh body + 4 wheels each, 4 models) fill the view ahead of it; scene.render() once per pose; draw calls = sum over active meshes of sub-mesh counts (a thin-instance host or InstancedMesh source counts once per sub-mesh); triangles = sub-mesh triangles x thin-instance count over active meshes; SceneInstrumentation is not meaningful under NullEngine",
-        budgets: RENDER_BUDGETS,
-        camera: { fov: round(camera.fov), minZ: camera.minZ, maxZ: camera.maxZ },
-        poses: rows.map(({ pose, stats }) => ({
-          name: pose.name,
-          camera: {
-            x: round(pose.position.x),
-            y: round(pose.position.y),
-            z: round(pose.position.z),
-          },
-          target: { x: round(pose.target.x), y: round(pose.target.y), z: round(pose.target.z) },
-          ...stats,
-        })),
-        worst: { drawCalls: worstDraw, triangles: worstTri },
+    afterAll(() => {
+      built.city.dispose();
+      built.engine.dispose();
+    });
+
+    const summary: Record<string, unknown> = {
+      district: info.id,
+      trafficCars: info.traffic_agents,
+    };
+
+    it("stays inside the draw-call and triangle budgets at all 9 poses", () => {
+      const half = mapHalfExtents(built.city.map);
+      const poses = budgetPoses(half.x, half.z);
+      expect(poses).toHaveLength(9);
+      const rows = poses.map((pose) => ({ pose, stats: measure(pose) }));
+      for (const { pose, stats } of rows) {
+        expect(stats.activeMeshes, pose.name).toBeGreaterThan(0);
+        expect(stats.drawCalls, `${pose.name} draw calls`).toBeLessThanOrEqual(
+          RENDER_BUDGETS.maxDrawCalls,
+        );
+        expect(stats.triangles, `${pose.name} triangles`).toBeLessThanOrEqual(
+          RENDER_BUDGETS.maxTriangles,
+        );
+      }
+      const worstDraw = Math.max(...rows.map((r) => r.stats.drawCalls));
+      const worstTri = Math.max(...rows.map((r) => r.stats.triangles));
+      expect(worstDraw, "draw-call target").toBeLessThan(RENDER_BUDGETS.targetDrawCalls);
+      summary.map = {
+        id: built.city.map.id,
+        width: built.city.map.width,
+        height: built.city.map.height,
       };
-      mkdirSync(dirname(REPORT_PATH), { recursive: true });
-      writeFileSync(REPORT_PATH, `${JSON.stringify(report, null, 2)}\n`);
-    }
-  });
+      summary.poses = rows.map(({ pose, stats }) => ({ name: pose.name, ...stats }));
+      summary.worst = { drawCalls: worstDraw, triangles: worstTri };
+    });
 
-  it("sweep over a grid of car positions and headings stays within the hard budgets", () => {
-    const half = mapHalfExtents(built.city.map);
-    let worstDraw = 0;
-    let worstTri = 0;
-    let worstDrawAt = "";
-    let worstTriAt = "";
-    for (const pose of sweepPoses(half.x, half.z, 20)) {
-      const stats = measure(pose);
-      if (stats.drawCalls > worstDraw) {
-        worstDraw = stats.drawCalls;
-        worstDrawAt = pose.name;
+    it("sweep over a grid of car positions and headings stays within the hard budgets", () => {
+      const half = mapHalfExtents(built.city.map);
+      let worstDraw = 0;
+      let worstTri = 0;
+      let worstDrawAt = "";
+      for (const pose of sweepPoses(half.x, half.z, 20)) {
+        const stats = measure(pose);
+        if (stats.drawCalls > worstDraw) {
+          worstDraw = stats.drawCalls;
+          worstDrawAt = pose.name;
+        }
+        worstTri = Math.max(worstTri, stats.triangles);
       }
-      if (stats.triangles > worstTri) {
-        worstTri = stats.triangles;
-        worstTriAt = pose.name;
+      console.log(`${info.id} sweep worst: ${worstDraw} draws at ${worstDrawAt}; ${worstTri} tris`);
+      expect(worstDraw).toBeLessThanOrEqual(RENDER_BUDGETS.maxDrawCalls);
+      expect(worstTri).toBeLessThanOrEqual(RENDER_BUDGETS.maxTriangles);
+      summary.sweepWorst = { drawCalls: worstDraw, triangles: worstTri, at: worstDrawAt };
+    });
+
+    it("stays inside the budgets with the markers, route ribbon, objective beam and bays visible", () => {
+      const half = mapHalfExtents(built.city.map);
+      const poses = budgetPoses(half.x, half.z);
+      const rows: { overlay: string; pose: Pose; stats: FrameStats }[] = [];
+      for (const kind of ["free-roam", "mission"] as const) {
+        overlay = kind;
+        for (const pose of poses) rows.push({ overlay: kind, pose, stats: measure(pose) });
       }
-    }
-    console.log(
-      `sweep worst: ${worstDraw} draws at ${worstDrawAt}; ${worstTri} tris at ${worstTriAt}`,
-    );
-    expect(worstDraw).toBeLessThanOrEqual(RENDER_BUDGETS.maxDrawCalls);
-    expect(worstTri).toBeLessThanOrEqual(RENDER_BUDGETS.maxTriangles);
-  });
+      for (const { overlay: kind, pose, stats } of rows) {
+        expect(stats.drawCalls, `${kind} ${pose.name} draw calls`).toBeLessThanOrEqual(
+          RENDER_BUDGETS.maxDrawCalls,
+        );
+        expect(stats.triangles, `${kind} ${pose.name} triangles`).toBeLessThanOrEqual(
+          RENDER_BUDGETS.maxTriangles,
+        );
+      }
+      const worstDraw = Math.max(...rows.map((r) => r.stats.drawCalls));
+      const worstTri = Math.max(...rows.map((r) => r.stats.triangles));
+      expect(worstDraw, "draw-call target").toBeLessThan(RENDER_BUDGETS.targetDrawCalls);
 
-  it("stays inside the budgets with the markers, route ribbon, objective beam and bay visible", () => {
-    const half = mapHalfExtents(built.city.map);
-    const poses = budgetPoses(half.x, half.z);
-    const rows: { overlay: string; pose: Pose; stats: FrameStats }[] = [];
-    for (const kind of ["free-roam", "mission"] as const) {
-      overlay = kind;
-      for (const pose of poses) rows.push({ overlay: kind, pose, stats: measure(pose) });
-    }
-    for (const { overlay: kind, pose, stats } of rows) {
-      expect(stats.drawCalls, `${kind} ${pose.name} draw calls`).toBeLessThanOrEqual(
-        RENDER_BUDGETS.maxDrawCalls,
-      );
-      expect(stats.triangles, `${kind} ${pose.name} triangles`).toBeLessThanOrEqual(
-        RENDER_BUDGETS.maxTriangles,
-      );
-    }
-    const worstDraw = Math.max(...rows.map((r) => r.stats.drawCalls));
-    const worstTri = Math.max(...rows.map((r) => r.stats.triangles));
-    expect(worstDraw, "draw-call target").toBeLessThan(RENDER_BUDGETS.targetDrawCalls);
-
-    overlay = "mission";
-    let sweepDraw = 0;
-    let sweepTri = 0;
-    for (const pose of sweepPoses(half.x, half.z, 20)) {
-      const stats = measure(pose);
-      sweepDraw = Math.max(sweepDraw, stats.drawCalls);
-      sweepTri = Math.max(sweepTri, stats.triangles);
-    }
-    expect(sweepDraw).toBeLessThanOrEqual(RENDER_BUDGETS.maxDrawCalls);
-    expect(sweepTri).toBeLessThanOrEqual(RENDER_BUDGETS.maxTriangles);
-    overlay = "none";
-
-    if (process.env.BUDGET_REPORT === "1") {
-      const report = {
-        map: built.city.map.id,
-        withPlayerCar: true,
-        trafficCarsInView: 16,
-        missionVisuals:
-          "free-roam: 4 start-marker beams; mission: 41-point route ribbon (40 arrows), objective beam and a bay pad, all in view of every pose",
-        method:
-          "NullEngine; same cost model as task 09 (sub-mesh counts of active meshes, thin-instance counts for triangles); mission overlays are the thin-instance beam and arrow hosts and the bay pad",
-        budgets: RENDER_BUDGETS,
-        poses: rows.map(({ overlay: kind, pose, stats }) => ({
-          overlay: kind,
-          name: pose.name,
-          ...stats,
-        })),
+      overlay = "mission";
+      let sweepDraw = 0;
+      let sweepTri = 0;
+      for (const pose of sweepPoses(half.x, half.z, 20)) {
+        const stats = measure(pose);
+        sweepDraw = Math.max(sweepDraw, stats.drawCalls);
+        sweepTri = Math.max(sweepTri, stats.triangles);
+      }
+      expect(sweepDraw).toBeLessThanOrEqual(RENDER_BUDGETS.maxDrawCalls);
+      expect(sweepTri).toBeLessThanOrEqual(RENDER_BUDGETS.maxTriangles);
+      overlay = "none";
+      summary.overlays = {
         worst: { drawCalls: worstDraw, triangles: worstTri },
         sweepWorstMission: { drawCalls: sweepDraw, triangles: sweepTri },
       };
-      mkdirSync(dirname(MISSION_REPORT_PATH), { recursive: true });
-      writeFileSync(MISSION_REPORT_PATH, `${JSON.stringify(report, null, 2)}\n`);
-    }
+      districtReports.push({ ...summary, camera: { fov: round(camera.fov), maxZ: camera.maxZ } });
+    });
   });
-});
+}

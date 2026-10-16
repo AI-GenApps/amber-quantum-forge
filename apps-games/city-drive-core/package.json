@@ -7,14 +7,17 @@
     ".": "./src/index.ts",
     "./city": "./src/city/index.ts",
     "./maps/*": "./content/maps/*",
-    "./missions/*": "./content/missions/*"
+    "./missions/*": "./content/missions/*",
+    "./progression.json": "./content/progression.json"
   },
   "types": "./src/index.ts",
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "build": "tsc -p tsconfig.build.json",
-    "fixture:determinism": "bun run tool/gen-determinism-fixture.ts"
+    "fixture:determinism": "bun run tool/gen-determinism-fixture.ts",
+    "missions:validate": "bun run tool/validate-missions.ts",
+    "missions:check": "bun run tool/validate-missions.ts --check"
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "0.21.0"

@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "id": "d2-m06",
+  "district": "district-2",
+  "type": "taxi",
+  "title": "Captain's Car",
+  "brief": "The captain insists on a gentle ride from the east pier to the old lighthouse road. Mind the corners.",
+  "start": {
+    "lane_point": {
+      "edgeId": "e:14,3:NS",
+      "s": 10
+    }
+  },
+  "params": {
+    "pickup": {
+      "edgeId": "e:14,9:NS",
+      "s": 10
+    },
+    "drop": {
+      "edgeId": "e:1,4:SN",
+      "s": 10
+    },
+    "time_limit_s": 190
+  },
+  "stars": {
+    "1": {
+      "min_time_left_s": 0,
+      "min_comfort": 20
+    },
+    "2": {
+      "min_time_left_s": 68.5,
+      "min_comfort": 50
+    },
+    "3": {
+      "min_time_left_s": 103.5,
+      "min_comfort": 85
+    }
+  },
+  "reward_coins": {
+    "1": 92,
+    "2": 147,
+    "3": 221
+  },
+  "difficulty": 0.3628,
+  "validation": {
+    "traffic_seed": 1,
+    "traffic_agents": 12,
+    "autopilot_stars": 2,
+    "autopilot_time_s": 93.167,
+    "autopilot_damage": 0,
+    "route_length_m": 573.3,
+    "intersections": 5,
+    "ticks": 5591
+  }
+}

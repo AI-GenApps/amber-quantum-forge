@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "id": "d3-m07",
+  "district": "district-3",
+  "type": "time_trial",
+  "title": "Downtown Derby",
+  "brief": "The big loop: up the west side, across the middle and round the east. Six gates and a lot of junctions.",
+  "start": {
+    "lane_point": {
+      "edgeId": "e:2,10:WE",
+      "s": 10
+    }
+  },
+  "params": {
+    "checkpoints": [
+      {
+        "lane_point": {
+          "edgeId": "e:4,8:SN",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:6,4:WE",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:10,6:NS",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:10,9:NS",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:8,10:EW",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:7,5:SN",
+          "s": 10
+        }
+      }
+    ],
+    "time_limit_s": 165
+  },
+  "stars": {
+    "1": {
+      "max_time_s": 165
+    },
+    "2": {
+      "max_time_s": 116
+    },
+    "3": {
+      "max_time_s": 82.5
+    }
+  },
+  "reward_coins": {
+    "1": 128,
+    "2": 205,
+    "3": 307
+  },
+  "difficulty": 0.4394,
+  "validation": {
+    "traffic_seed": 1,
+    "traffic_agents": 16,
+    "autopilot_stars": 2,
+    "autopilot_time_s": 89.217,
+    "autopilot_damage": 0,
+    "route_length_m": 524.3,
+    "intersections": 6,
+    "ticks": 5354
+  }
+}

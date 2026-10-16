@@ -5,6 +5,7 @@ import {
   buildRoadGraph,
   type Car,
   type CarState,
+  type CityMap,
   createCar,
   createPhysicsWorld,
   installColliders,
@@ -13,12 +14,15 @@ import {
   type MissionResult,
   MissionSystem,
   type PhysicsWorld,
+  playerFromCar,
   pointOnEdge,
   quatFromForward,
   type RoadGraph,
+  TrafficManager,
 } from "../../src/index";
 import { loadDistrict1, loadManifest } from "../city/helpers";
 import { Autopilot, type AutopilotOptions } from "./autopilot";
+import { junctionBoxes, TrafficWatch } from "./traffic-watch";
 
 const SETTLE_TICKS = 45;
 const DROP_HEIGHT_M = 1.1;
@@ -28,19 +32,27 @@ export interface MissionRig {
   car: Car;
   graph: RoadGraph;
   system: MissionSystem;
+  /** The AI traffic, when the rig was created with `traffic`. */
+  traffic: TrafficManager | undefined;
   ticks: number;
   /** Every state of the car, one per step, when `record` was set. */
   trail: CarState[];
+  /** Junction rectangles for the autopilot's road sense. */
+  watch: TrafficWatch;
 }
 
 export interface RigOptions {
   /** Place the car on this mission's start marker (default: yes). */
   at?: MissionDef;
   missions: readonly MissionDef[];
+  /** The district map (default: district-1). */
+  map?: CityMap;
+  /** Run AI traffic with this seed and agent count. Omit for an empty city. */
+  traffic?: { seed: number; maxAgents: number };
 }
 
 export async function createMissionRig(options: RigOptions): Promise<MissionRig> {
-  const map = loadDistrict1();
+  const map = options.map ?? loadDistrict1();
   const physics = await createPhysicsWorld();
   installColliders(physics, buildColliders(map, loadManifest()));
   const graph = buildRoadGraph(map);
@@ -64,14 +76,33 @@ export async function createMissionRig(options: RigOptions): Promise<MissionRig>
     carCollider: car.colliderHandle,
   });
   system.installParkedCars(physics);
-  return { physics, car, graph, system, ticks: 0, trail: [] };
+  const traffic = options.traffic
+    ? new TrafficManager(physics, graph, {
+        seed: options.traffic.seed,
+        maxAgents: options.traffic.maxAgents,
+        player: () => playerFromCar(car.state(), BASELINE_CAR.chassisHalfExtents.z),
+        playerColliderHandle: car.colliderHandle,
+      })
+    : undefined;
+  return {
+    physics,
+    car,
+    graph,
+    system,
+    traffic,
+    ticks: 0,
+    trail: [],
+    watch: new TrafficWatch(junctionBoxes(map, graph)),
+  };
 }
 
 export function stepRig(rig: MissionRig, input?: Parameters<Car["applyInput"]>[0]): void {
   if (input) rig.car.applyInput(input);
   rig.physics.step();
   rig.ticks++;
-  rig.system.step(rig.car.state(), rig.physics.drainCollisionImpulses());
+  const impulses = rig.physics.drainCollisionImpulses();
+  rig.traffic?.processCollisions(impulses);
+  rig.system.step(rig.car.state(), impulses);
 }
 
 export interface DriveOutcome {
@@ -95,8 +126,13 @@ export function driveMission(
       `expected the briefing to open on the start marker, phase is ${rig.system.run.phase}`,
     );
   }
+  if (rig.system.run.mission?.id !== mission.id) {
+    throw new Error(
+      `the briefing that opened is ${rig.system.run.mission?.id}, not ${mission.id}: two start markers overlap`,
+    );
+  }
   rig.system.accept();
-  const pilot = new Autopilot(options);
+  const pilot = new Autopilot({ ...(rig.traffic ? { watch: rig.watch } : {}), ...options });
   const bay = mission.type === "parking" ? bayGeometry(rig.graph, mission.params.bay) : undefined;
   const lateral = mission.type === "parking" ? mission.params.bay.lateral_offset_m : 3;
   const limit = options.maxTicks ?? 60 * 200;
@@ -107,6 +143,7 @@ export function driveMission(
       rig.system.objective,
       bay,
       lateral,
+      rig.traffic?.list.map((a) => ({ x: a.x, z: a.z, speed: a.speed })),
     );
     stepRig(rig, input);
   }

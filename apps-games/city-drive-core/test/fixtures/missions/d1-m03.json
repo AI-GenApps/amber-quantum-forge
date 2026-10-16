@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "id": "d1-m03",
+  "district": "district-1",
+  "type": "time_trial",
+  "title": "Block Loop",
+  "brief": "Hit every checkpoint in order and cross the finish line as fast as you can.",
+  "start": {
+    "lane_point": {
+      "edgeId": "e:6,5:WE",
+      "s": 10
+    }
+  },
+  "params": {
+    "checkpoints": [
+      {
+        "lane_point": {
+          "edgeId": "e:7,5:WE",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:8,4:SN",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:6,1:EW",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:5,4:NS",
+          "s": 10
+        }
+      }
+    ],
+    "time_limit_s": 100
+  },
+  "stars": {
+    "1": {
+      "max_time_s": 90
+    },
+    "2": {
+      "max_time_s": 60
+    },
+    "3": {
+      "max_time_s": 40
+    }
+  },
+  "reward_coins": {
+    "1": 70,
+    "2": 110,
+    "3": 160
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "id": "d3-m02",
+  "district": "district-3",
+  "type": "taxi",
+  "title": "Elevator Music",
+  "brief": "Your passenger likes calm roads and calmer drivers. A short hop between two blocks with traffic all around.",
+  "start": {
+    "lane_point": {
+      "edgeId": "e:1,2:NS",
+      "s": 10
+    }
+  },
+  "params": {
+    "pickup": {
+      "edgeId": "e:1,5:NS",
+      "s": 10
+    },
+    "drop": {
+      "edgeId": "e:2,7:WE",
+      "s": 10
+    },
+    "time_limit_s": 45
+  },
+  "stars": {
+    "1": {
+      "min_time_left_s": 0,
+      "min_comfort": 20
+    },
+    "2": {
+      "min_time_left_s": 26,
+      "min_comfort": 50
+    },
+    "3": {
+      "min_time_left_s": 29,
+      "min_comfort": 80
+    }
+  },
+  "reward_coins": {
+    "1": 108,
+    "2": 173,
+    "3": 259
+  },
+  "difficulty": 0.338,
+  "validation": {
+    "traffic_seed": 1,
+    "traffic_agents": 16,
+    "autopilot_stars": 3,
+    "autopilot_time_s": 14.517,
+    "autopilot_damage": 0,
+    "route_length_m": 120.4,
+    "intersections": 2,
+    "ticks": 872
+  }
+}

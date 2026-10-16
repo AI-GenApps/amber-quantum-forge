@@ -13,7 +13,8 @@ import {
 } from "../../src/index";
 import { loadDistrict1 } from "../city/helpers";
 
-export const MISSIONS_DIR = join(import.meta.dirname, "..", "..", "content", "missions");
+/** The four task-10 sample missions: stable fixtures for the engine tests (not shipped content). */
+export const MISSIONS_DIR = join(import.meta.dirname, "..", "fixtures", "missions");
 
 export const CAR_FOOTPRINT: CarFootprint = {
   halfLength: BASELINE_CAR.chassisHalfExtents.z,

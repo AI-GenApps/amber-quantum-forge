@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "id": "d2-m01",
+  "district": "district-2",
+  "type": "delivery",
+  "title": "Harbour Hello",
+  "brief": "A crate of postcards needs to get from the ferry steps to the lighthouse shop. Straight roads, no fuss.",
+  "start": {
+    "lane_point": {
+      "edgeId": "e:2,1:WE",
+      "s": 10
+    }
+  },
+  "params": {
+    "pickup": {
+      "edgeId": "e:5,1:WE",
+      "s": 10
+    },
+    "drops": [
+      {
+        "edgeId": "e:10,1:WE",
+        "s": 10
+      }
+    ],
+    "time_limit_s": 55,
+    "max_damage": 3
+  },
+  "stars": {
+    "1": {
+      "min_time_left_s": 0,
+      "max_damage": 3
+    },
+    "2": {
+      "min_time_left_s": 31.5,
+      "max_damage": 2
+    },
+    "3": {
+      "min_time_left_s": 35.5,
+      "max_damage": 1
+    }
+  },
+  "reward_coins": {
+    "1": 72,
+    "2": 115,
+    "3": 173
+  },
+  "difficulty": 0.2756,
+  "validation": {
+    "traffic_seed": 1,
+    "traffic_agents": 12,
+    "autopilot_stars": 3,
+    "autopilot_time_s": 17.717,
+    "autopilot_damage": 0,
+    "route_length_m": 160,
+    "intersections": 1,
+    "ticks": 1064
+  }
+}

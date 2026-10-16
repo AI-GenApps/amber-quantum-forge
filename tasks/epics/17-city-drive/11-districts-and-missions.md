@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 11-districts-and-missions
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/10-mission-engine]
 estimate: L
@@ -66,14 +66,14 @@ star-based district unlocks.
 
 ## Implementation Checklist
 
-- [ ] Author `district-2` and `district-3` maps; revise `district-1` if needed
+- [x] Author `district-2` and `district-3` maps; revise `district-1` if needed
       for 8 missions. All validate.
-- [ ] Author 24 missions, replacing the 4 samples from task 10 or folding them
+- [x] Author 24 missions, replacing the 4 samples from task 10 or folding them
       in.
-- [ ] Mission validation tool plus suite; write the metrics.
-- [ ] Add `progression.json` and its tests.
-- [ ] Budget test over the 3 districts.
-- [ ] Print an ASCII render of each district and a mission table (id, type,
+- [x] Mission validation tool plus suite; write the metrics.
+- [x] Add `progression.json` and its tests.
+- [x] Budget test over the 3 districts.
+- [x] Print an ASCII render of each district and a mission table (id, type,
       title, difficulty, autopilot time, star thresholds) into the evidence
       README. Update `.agents/games/city-drive/product.md` with the content
       table.
@@ -121,3 +121,35 @@ These come from the read-only dry-run review of this epic. **Where they conflict
   Missions without parking get 0 for that term. The weights live in `content/progression.json`.
 - **Mission ids:** `d{1..3}-m{01..08}`.
 - **Tool output:** the validation tool writes canonical JSON (2-space `JSON.stringify` plus a trailing newline) into `content/`, which Biome excludes.
+
+## Implementation notes (2026-10-16)
+
+Additions beyond Files Touched, all needed by the checklist or the amendments:
+
+- `apps-games/city-drive-core/src/missions/{difficulty,progression,ramp,stops}.ts` and small edits to
+  `types.ts`, `parse.ts`, `validate.ts`, `index.ts`: `missionDifficulty()` (amendment: a function in
+  core, with its own unit test), the `progression.json` parser and unlock helpers, the ramp checker,
+  and the optional `difficulty` / `validation` mission fields the tool writes. `objectives()` moved out
+  of `validate.ts` into `stops.ts` (`missionStops`).
+- `apps-games/city-drive-core/package.json`: exports `./progression.json`, scripts `missions:validate`
+  and `missions:check`.
+- `apps-games/city-drive-core/tool/{content,measure,table}.ts` beside `validate-missions.ts`
+  (`--check`, `--report`, `--json`, `--table`, `--ascii`).
+- `apps-games/city-drive-core/test/support/{autopilot,harness,traffic-watch}.ts`: the harness takes a
+  district map and traffic; the autopilot learned to follow and to wait at busy junctions (it
+  collided with crossing cars before). Fixtures: the 4 task-10 samples moved from `content/missions/`
+  to `test/fixtures/missions/` and still drive the engine tests.
+- `apps-games/city-drive/src/{game/missions.ts,main.ts,render/district.ts,render/index.ts}`: the three
+  districts' missions and maps, traffic density from `progression.json`, and a dev-only
+  `?district=district-2` URL switch (the real switch is task 13). `test/game/{districts,missions}.test.ts`.
+- `.agents/games/city-drive/decisions-log.md`: Task 11 decisions.
+
+Deviations worth knowing:
+
+- District 3 is 12x12, not 16x16: a 16x16 grid costs 65 to 69 draw calls and the budget test asserts
+  the target below 60. See the QA README.
+- "Normalised against 1.0" for the route/time term is read as route length over (time limit x 11.11 m/s)
+  capped at 1; the reference speed is in `progression.json`.
+- Mission ids are assigned in measured difficulty order (the ramp holds with 0 inversions).
+- Verification run: see `.agents/resources/2026-10-15/city-drive-qa/11/README.md`.
+

@@ -2,45 +2,69 @@
   "schema_version": 1,
   "id": "d1-m04",
   "district": "district-1",
-  "type": "parking",
-  "title": "Kerbside Park",
-  "brief": "Pull into the bay between the two parked cars. Stop straight and still for one second, without touching anything.",
+  "type": "time_trial",
+  "title": "Round the Block",
+  "brief": "Four gates around one block, all right turns. Nothing a morning commuter could not do.",
   "start": {
     "lane_point": {
-      "edgeId": "e:10,4:NS",
+      "edgeId": "e:6,1:WE",
       "s": 10
     }
   },
   "params": {
-    "bay": {
-      "lane_point": {
-        "edgeId": "e:10,7:NS",
-        "s": 20
+    "checkpoints": [
+      {
+        "lane_point": {
+          "edgeId": "e:8,3:NS",
+          "s": 10
+        }
       },
-      "lateral_offset_m": 3,
-      "length_m": 5.6,
-      "width_m": 2.6
-    },
-    "time_limit_s": 60,
-    "max_touches": 2
+      {
+        "lane_point": {
+          "edgeId": "e:6,5:EW",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:5,3:SN",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:7,1:WE",
+          "s": 10
+        }
+      }
+    ],
+    "time_limit_s": 95
   },
   "stars": {
     "1": {
-      "max_time_s": 55,
-      "max_touches": 2
+      "max_time_s": 95
     },
     "2": {
-      "max_time_s": 40,
-      "max_touches": 1
+      "max_time_s": 55
     },
     "3": {
-      "max_time_s": 28,
-      "max_touches": 0
+      "max_time_s": 39
     }
   },
   "reward_coins": {
-    "1": 60,
-    "2": 100,
-    "3": 150
+    "1": 52,
+    "2": 83,
+    "3": 125
+  },
+  "difficulty": 0.2833,
+  "validation": {
+    "traffic_seed": 1,
+    "traffic_agents": 8,
+    "autopilot_stars": 2,
+    "autopilot_time_s": 41.95,
+    "autopilot_damage": 0,
+    "route_length_m": 263.9,
+    "intersections": 4,
+    "ticks": 2518
   }
 }

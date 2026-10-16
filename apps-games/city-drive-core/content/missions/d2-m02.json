@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "id": "d2-m02",
+  "district": "district-2",
+  "type": "taxi",
+  "title": "Seagull Shuttle",
+  "brief": "Two tourists, one very loud seagull. Drive the long quay smoothly and nobody loses a sandwich.",
+  "start": {
+    "lane_point": {
+      "edgeId": "e:3,6:WE",
+      "s": 10
+    }
+  },
+  "params": {
+    "pickup": {
+      "edgeId": "e:9,6:WE",
+      "s": 10
+    },
+    "drop": {
+      "edgeId": "e:13,6:WE",
+      "s": 10
+    },
+    "time_limit_s": 60
+  },
+  "stars": {
+    "1": {
+      "min_time_left_s": 0,
+      "min_comfort": 20
+    },
+    "2": {
+      "min_time_left_s": 32,
+      "min_comfort": 50
+    },
+    "3": {
+      "min_time_left_s": 36.5,
+      "min_comfort": 80
+    }
+  },
+  "reward_coins": {
+    "1": 76,
+    "2": 122,
+    "3": 182
+  },
+  "difficulty": 0.3117,
+  "validation": {
+    "traffic_seed": 1,
+    "traffic_agents": 12,
+    "autopilot_stars": 3,
+    "autopilot_time_s": 21.333,
+    "autopilot_damage": 0,
+    "route_length_m": 200,
+    "intersections": 2,
+    "ticks": 1281
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "id": "d1-m01",
+  "district": "district-1",
+  "type": "delivery",
+  "title": "Corner Shop Run",
+  "brief": "Collect the parcel on the west avenue and drop it at the south-side depot. Keep the car in one piece for three stars.",
+  "start": {
+    "lane_point": {
+      "edgeId": "e:4,5:EW",
+      "s": 10
+    }
+  },
+  "params": {
+    "pickup": {
+      "edgeId": "e:1,6:NS",
+      "s": 10
+    },
+    "drops": [
+      {
+        "edgeId": "e:5,9:SN",
+        "s": 10
+      }
+    ],
+    "time_limit_s": 100,
+    "max_damage": 3
+  },
+  "stars": {
+    "1": {
+      "min_time_left_s": 0,
+      "max_damage": 3
+    },
+    "2": {
+      "min_time_left_s": 40,
+      "max_damage": 2
+    },
+    "3": {
+      "min_time_left_s": 60,
+      "max_damage": 1
+    }
+  },
+  "reward_coins": {
+    "1": 50,
+    "2": 80,
+    "3": 120
+  }
+}

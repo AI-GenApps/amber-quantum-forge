@@ -3,6 +3,7 @@ import type { LaneIndex } from "../city/lane-index";
 import { bayReach, PARKED_CAR_HALF, resolveLanePoint } from "./bay";
 import { MissionError, type MissionIssue } from "./errors";
 import { RoutePlanner } from "./route";
+import { missionStops } from "./stops";
 import { type LanePointRef, type MissionDef, STAR_KEYS, type Tiers } from "./types";
 
 export interface ValidationContext {
@@ -117,28 +118,6 @@ function checkTiers(mission: MissionDef, add: Add): void {
   }
 }
 
-function objectives(mission: MissionDef): { label: string; ref: LanePointRef }[] {
-  switch (mission.type) {
-    case "delivery":
-      return [
-        { label: "pickup", ref: mission.params.pickup },
-        ...mission.params.drops.map((ref, i) => ({ label: `drops[${i}]`, ref })),
-      ];
-    case "taxi":
-      return [
-        { label: "pickup", ref: mission.params.pickup },
-        { label: "drop", ref: mission.params.drop },
-      ];
-    case "time_trial":
-      return mission.params.checkpoints.map((c, i) => ({
-        label: `checkpoints[${i}]`,
-        ref: c.lane_point,
-      }));
-    case "parking":
-      return [{ label: "bay", ref: mission.params.bay.lane_point }];
-  }
-}
-
 function checkBay(ctx: ValidationContext, mission: MissionDef, add: Add): void {
   if (mission.type !== "parking") return;
   const bay = mission.params.bay;
@@ -173,7 +152,7 @@ function checkBay(ctx: ValidationContext, mission: MissionDef, add: Add): void {
 function checkRoutes(ctx: ValidationContext, mission: MissionDef, add: Add): void {
   const planner = new RoutePlanner(ctx.graph, ctx.laneIndex);
   let from: LanePointRef = mission.start.lane_point;
-  for (const { label, ref } of objectives(mission)) {
+  for (const { label, ref } of missionStops(mission)) {
     const start = ctx.graph.edges.get(from.edgeId);
     const goal = ctx.graph.edges.get(ref.edgeId);
     if (!start || !goal) return;
@@ -202,7 +181,7 @@ export function validateMission(mission: MissionDef, ctx: ValidationContext): Mi
     });
   }
   let lanesOk = checkLane(ctx.graph, "start.lane_point", mission.start.lane_point, add);
-  for (const { label, ref } of objectives(mission)) {
+  for (const { label, ref } of missionStops(mission)) {
     lanesOk = checkLane(ctx.graph, label, ref, add) && lanesOk;
   }
   checkTiers(mission, add);

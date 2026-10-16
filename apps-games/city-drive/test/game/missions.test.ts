@@ -62,21 +62,18 @@ describe("session missions", () => {
     expect(session.parkedPoses()).toEqual([]);
   });
 
-  it("loads the four district-1 missions and their markers", async () => {
+  it("loads the eight district-1 missions and their markers", async () => {
     const { session } = await make();
-    expect(session.missions?.markers().map((m) => m.missionId)).toEqual([
-      "d1-m01",
-      "d1-m02",
-      "d1-m03",
-      "d1-m04",
-    ]);
+    expect(session.missions?.markers().map((m) => m.missionId)).toEqual(
+      Array.from({ length: 8 }, (_, i) => `d1-m0${i + 1}`),
+    );
     expect(session.missions?.run.phase).toBe("idle");
   });
 
   it("offers the parked cars to the renderer with negative ids", async () => {
     const { session } = await make();
     const poses = session.parkedPoses();
-    expect(poses.map((p) => p.id)).toEqual([-1, -2]);
+    expect(poses.map((p) => p.id)).toEqual([-1, -2, -3, -4]);
     expect(session.parkedPoses()).toBe(poses);
   });
 

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "id": "d1-m05",
+  "district": "district-1",
+  "type": "delivery",
+  "title": "Two Stops Before Tea",
+  "brief": "Pick up the cake on the west avenue, then make two drops on the east side before it gets cold.",
+  "start": {
+    "lane_point": {
+      "edgeId": "e:4,10:WE",
+      "s": 10
+    }
+  },
+  "params": {
+    "pickup": {
+      "edgeId": "e:5,7:SN",
+      "s": 10
+    },
+    "drops": [
+      {
+        "edgeId": "e:8,3:NS",
+        "s": 10
+      },
+      {
+        "edgeId": "e:10,6:NS",
+        "s": 10
+      }
+    ],
+    "time_limit_s": 125,
+    "max_damage": 3
+  },
+  "stars": {
+    "1": {
+      "min_time_left_s": 0,
+      "max_damage": 3
+    },
+    "2": {
+      "min_time_left_s": 44.5,
+      "max_damage": 2
+    },
+    "3": {
+      "min_time_left_s": 68,
+      "max_damage": 1
+    }
+  },
+  "reward_coins": {
+    "1": 56,
+    "2": 90,
+    "3": 134
+  },
+  "difficulty": 0.3326,
+  "validation": {
+    "traffic_seed": 1,
+    "traffic_agents": 8,
+    "autopilot_stars": 2,
+    "autopilot_time_s": 61.65,
+    "autopilot_damage": 0,
+    "route_length_m": 373.7,
+    "intersections": 6,
+    "ticks": 3700
+  }
+}

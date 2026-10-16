@@ -199,3 +199,29 @@ Baseline car values live in `apps-games/city-drive-core/src/cars/specs.ts`
 - **Test autopilot** (`test/support/autopilot.ts`): pure pursuit on the route polyline with a
   curvature-limited speed profile and a smooth lane-to-bay approach. It completes all four district-1
   missions deterministically with three stars.
+
+## Task 11: districts, missions, progression (2026-10-16)
+
+- **Content is data, metrics are tool output.** `content/missions/*.json` hold the authored fields
+  (route, limits, star thresholds, rewards) plus `difficulty` and a `validation` block that only
+  `tool/validate-missions.ts` writes (canonical JSON, two-space indent, trailing newline). `--check`
+  fails when a stored number differs from a fresh autopilot run; the Vitest suite does the same check
+  on Node, and both runtimes agree to the last digit.
+- **Difficulty** is `missionDifficulty()` in core with the weights and maxima in
+  `content/progression.json`. The route/time term is route length over (time limit x 11.11 m/s,
+  the autopilot's 40 km/h cruise), capped at 1. A route's junctions are passes through tiles with
+  three or more open sides. Ids are assigned in difficulty order, so the ramp holds by construction.
+- **Districts** are separate maps: Old Town 12x12 (8 cars), Harbor 16x14 (12), Downtown 12x12 (16).
+  Downtown stays 12x12 because a 16x16 grid needs 65+ draw calls (target 60): the renderer pays about
+  four draw calls per 4x4 chunk, so the chunk count in view is the budget. Districts 2 and 3 also keep
+  an empty outer ring, use the lighter commercial models, and rotate models inside each chunk so none
+  repeats three times (that would add a thin-instance host and its draw calls).
+- **Unlocks**: district 2 at 10 total stars, district 3 at 24 (`progression.json`). The unlock helpers
+  (`isDistrictUnlocked`, `unlockedDistricts`) are pure core code for task 12/13.
+- **Autopilot with traffic.** The task-10 autopilot ignored other cars. The traffic does not yield to
+  the player inside a junction, so it hit crossing cars. `TrafficWatch` (test support) makes the
+  autopilot follow with a gap and wait for a busy junction. Stored autopilot times include those waits.
+- **Task-10 samples** moved to `test/fixtures/missions/` as engine-test fixtures.
+- **Dev switch**: `?district=district-2` (or `-3`) in the app URL loads that district with its own
+  missions and traffic density. The real switch lives on the map screen (task 13).
+

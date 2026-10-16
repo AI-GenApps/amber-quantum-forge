@@ -32,6 +32,11 @@ export function loadDistrict1(): CityMap {
   return loadCityMap(readJson(DISTRICT_1_PATH), loadManifest());
 }
 
+/** Load and validate `content/maps/<id>.json` (id is `district-1`, `district-2`, ...). */
+export function loadDistrict(id: string): CityMap {
+  return loadCityMap(readJson(join(CORE_DIR, "content", "maps", `${id}.json`)), loadManifest());
+}
+
 /** Road tiles of district-1 where the road ends in a cap (traffic U-turns here). */
 export const DISTRICT_1_ROAD_ENDS = [
   { x: 3, y: 0 },

@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "id": "d1-m08",
+  "district": "district-1",
+  "type": "time_trial",
+  "title": "Old Town Sprint",
+  "brief": "Five gates, plenty of left turns and a long run down the middle. Cut it fine and the clock is yours.",
+  "start": {
+    "lane_point": {
+      "edgeId": "e:2,10:WE",
+      "s": 10
+    }
+  },
+  "params": {
+    "checkpoints": [
+      {
+        "lane_point": {
+          "edgeId": "e:7,10:WE",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:10,8:SN",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:9,5:EW",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:8,3:SN",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:6,1:EW",
+          "s": 10
+        }
+      },
+      {
+        "lane_point": {
+          "edgeId": "e:5,8:NS",
+          "s": 10
+        }
+      }
+    ],
+    "time_limit_s": 125
+  },
+  "stars": {
+    "1": {
+      "max_time_s": 125
+    },
+    "2": {
+      "max_time_s": 100.5
+    },
+    "3": {
+      "max_time_s": 71.5
+    }
+  },
+  "reward_coins": {
+    "1": 68,
+    "2": 109,
+    "3": 163
+  },
+  "difficulty": 0.4316,
+  "validation": {
+    "traffic_seed": 1,
+    "traffic_agents": 8,
+    "autopilot_stars": 2,
+    "autopilot_time_s": 77.05,
+    "autopilot_damage": 0,
+    "route_length_m": 572.5,
+    "intersections": 8,
+    "ticks": 4624
+  }
+}
