@@ -1,0 +1,53 @@
+{
+  "autopilot": "test/support/autopilot.ts, defaults",
+  "missions": [
+    {
+      "id": "d1-m01",
+      "success": true,
+      "stars": 3,
+      "time": 31.099999999999998,
+      "damage": 0,
+      "comfort": null,
+      "coins": 120,
+      "type": "delivery",
+      "ticks": 1867,
+      "carHash": "421d5d0d"
+    },
+    {
+      "id": "d1-m02",
+      "success": true,
+      "stars": 3,
+      "time": 27.8,
+      "damage": 0,
+      "comfort": 96.98221095716211,
+      "coins": 150,
+      "type": "taxi",
+      "ticks": 1669,
+      "carHash": "e5af4c5f"
+    },
+    {
+      "id": "d1-m03",
+      "success": true,
+      "stars": 3,
+      "time": 29.816666666666666,
+      "damage": 0,
+      "comfort": null,
+      "coins": 160,
+      "type": "time_trial",
+      "ticks": 1790,
+      "carHash": "e7fa52d4"
+    },
+    {
+      "id": "d1-m04",
+      "success": true,
+      "stars": 3,
+      "time": 15.216666666666667,
+      "damage": 0,
+      "comfort": null,
+      "coins": 150,
+      "type": "parking",
+      "ticks": 914,
+      "carHash": "8ba29a3b"
+    }
+  ]
+}

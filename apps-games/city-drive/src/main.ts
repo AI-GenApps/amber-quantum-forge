@@ -7,14 +7,17 @@ import { mapHalfExtents, parseCityManifest } from "@city-drive/core/city";
 import type { AssetManifest } from "./assets/manifest";
 import { FpsOverlay } from "./game/fpsOverlay";
 import { GameLoop } from "./game/loop";
-import { GameSession } from "./game/session";
+import { DISTRICT_1_MISSIONS } from "./game/missions";
+import { GameSession, type SessionOptions } from "./game/session";
 import { CombinedInput, GamepadInput, KeyboardInput, TouchInput } from "./input";
 import { applyViewDistance, createCityScene, loadDistrict1 } from "./render";
 import { createCarVisual } from "./render/carVisual";
 import { ChaseCamera } from "./render/chaseCamera";
+import { createMissionVisual } from "./render/missionVisual";
 import { frameStats } from "./render/stats";
 import { createTrafficVisual } from "./render/traffic";
 import { mountControls, wantsTouchControls } from "./ui/controls/mount";
+import { mountMissionPanel } from "./ui/mission-debug/mount";
 
 /** Fixed seed: the same city traffic every run (a per-run seed can come with missions). */
 const TRAFFIC_SEED = 1;
@@ -70,16 +73,40 @@ async function start(): Promise<void> {
     touch,
     new GamepadInput(() => navigator.getGamepads?.() ?? []),
   ]);
+  const sessionOptions: SessionOptions = {};
+  if (!params.has("notraffic")) sessionOptions.traffic = { seed: TRAFFIC_SEED };
+  if (!params.has("nomissions")) sessionOptions.missions = DISTRICT_1_MISSIONS;
   const session = await GameSession.create(
     map,
     parseCityManifest(manifest),
     input,
     undefined,
-    params.has("notraffic") ? {} : { traffic: { seed: TRAFFIC_SEED } },
+    sessionOptions,
   );
   const carVisual = await createCarVisual(city.scene, manifest, loadBytes, session.car.spec);
   const trafficVisual = await createTrafficVisual(city.scene, manifest, loadBytes);
   const chase = new ChaseCamera(city.scene, session.plan.boxes);
+  const missionVisual = createMissionVisual(city.scene);
+  const missions = session.missions;
+  const missionPanel = missions
+    ? mountMissionPanel(
+        requireElement("ui"),
+        {
+          snapshot: () => ({
+            hud: missions.hud(),
+            mission: missions.run.mission,
+            result: missions.run.result,
+            parkHold: missions.parkHold,
+          }),
+          accept: () => missions.accept(),
+          decline: () => missions.decline(),
+          quit: () => missions.quit(),
+          next: () => session.advanceMission(),
+        },
+        window,
+      )
+    : undefined;
+  document.addEventListener("visibilitychange", () => session.setPaused(document.hidden));
 
   let camera: Camera = chase.camera;
   if (params.has("debugcam")) camera = createOrbitCamera(city, canvas);
@@ -102,7 +129,16 @@ async function start(): Promise<void> {
     render: (alpha, frameSeconds) => {
       const pose = session.pose(alpha);
       carVisual.sync(pose);
-      trafficVisual.sync(session.trafficPoses(alpha));
+      trafficVisual.sync([...session.trafficPoses(alpha), ...session.parkedPoses()]);
+      if (missions) {
+        missionVisual.sync({
+          markers: missions.run.phase === "idle" ? missions.markers() : [],
+          route: missions.route?.points,
+          objective: missions.objective,
+          bay: missions.bay,
+        });
+        missionPanel?.update();
+      }
       if (session.respawns.length !== seenRespawns) {
         seenRespawns = session.respawns.length;
         chase.snap();

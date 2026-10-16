@@ -9,6 +9,7 @@ export { DEFAULT_RESPAWN_RULES, RespawnDetector } from "./cars/respawn";
 export type { CarSpec, WheelSpec } from "./cars/specs";
 export { BASELINE_CAR } from "./cars/specs";
 export * from "./city/index";
+export * from "./missions/index";
 export { FIXED_DT, SimClock } from "./physics/clock";
 export { KinematicBox } from "./physics/kinematic";
 export type { Pose, Quat, Vec3 } from "./physics/math";

@@ -1,0 +1,148 @@
+{
+  "map": "district-1",
+  "withPlayerCar": true,
+  "trafficCarsInView": 16,
+  "missionVisuals": "free-roam: 4 start-marker beams; mission: 41-point route ribbon (40 arrows), objective beam and a bay pad, all in view of every pose",
+  "method": "NullEngine; same cost model as task 09 (sub-mesh counts of active meshes, thin-instance counts for triangles); mission overlays are the thin-instance beam and arrow hosts and the bay pad",
+  "budgets": {
+    "maxDrawCalls": 100,
+    "targetDrawCalls": 60,
+    "maxTriangles": 150000
+  },
+  "poses": [
+    {
+      "overlay": "free-roam",
+      "name": "edge-N",
+      "activeMeshes": 112,
+      "drawCalls": 55,
+      "triangles": 141075
+    },
+    {
+      "overlay": "free-roam",
+      "name": "edge-NE",
+      "activeMeshes": 111,
+      "drawCalls": 54,
+      "triangles": 135831
+    },
+    {
+      "overlay": "free-roam",
+      "name": "edge-E",
+      "activeMeshes": 112,
+      "drawCalls": 55,
+      "triangles": 141075
+    },
+    {
+      "overlay": "free-roam",
+      "name": "edge-SE",
+      "activeMeshes": 112,
+      "drawCalls": 55,
+      "triangles": 141075
+    },
+    {
+      "overlay": "free-roam",
+      "name": "edge-S",
+      "activeMeshes": 111,
+      "drawCalls": 54,
+      "triangles": 135831
+    },
+    {
+      "overlay": "free-roam",
+      "name": "edge-SW",
+      "activeMeshes": 112,
+      "drawCalls": 55,
+      "triangles": 141075
+    },
+    {
+      "overlay": "free-roam",
+      "name": "edge-W",
+      "activeMeshes": 111,
+      "drawCalls": 54,
+      "triangles": 135831
+    },
+    {
+      "overlay": "free-roam",
+      "name": "edge-NW",
+      "activeMeshes": 112,
+      "drawCalls": 55,
+      "triangles": 141075
+    },
+    {
+      "overlay": "free-roam",
+      "name": "centre",
+      "activeMeshes": 103,
+      "drawCalls": 40,
+      "triangles": 88282
+    },
+    {
+      "overlay": "mission",
+      "name": "edge-N",
+      "activeMeshes": 124,
+      "drawCalls": 57,
+      "triangles": 142983
+    },
+    {
+      "overlay": "mission",
+      "name": "edge-NE",
+      "activeMeshes": 123,
+      "drawCalls": 56,
+      "triangles": 137739
+    },
+    {
+      "overlay": "mission",
+      "name": "edge-E",
+      "activeMeshes": 124,
+      "drawCalls": 57,
+      "triangles": 142983
+    },
+    {
+      "overlay": "mission",
+      "name": "edge-SE",
+      "activeMeshes": 124,
+      "drawCalls": 57,
+      "triangles": 142983
+    },
+    {
+      "overlay": "mission",
+      "name": "edge-S",
+      "activeMeshes": 123,
+      "drawCalls": 56,
+      "triangles": 137739
+    },
+    {
+      "overlay": "mission",
+      "name": "edge-SW",
+      "activeMeshes": 124,
+      "drawCalls": 57,
+      "triangles": 142983
+    },
+    {
+      "overlay": "mission",
+      "name": "edge-W",
+      "activeMeshes": 123,
+      "drawCalls": 56,
+      "triangles": 137739
+    },
+    {
+      "overlay": "mission",
+      "name": "edge-NW",
+      "activeMeshes": 124,
+      "drawCalls": 57,
+      "triangles": 142983
+    },
+    {
+      "overlay": "mission",
+      "name": "centre",
+      "activeMeshes": 115,
+      "drawCalls": 42,
+      "triangles": 90190
+    }
+  ],
+  "worst": {
+    "drawCalls": 57,
+    "triangles": 142983
+  },
+  "sweepWorstMission": {
+    "drawCalls": 57,
+    "triangles": 142983
+  }
+}

@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 10-mission-engine
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/09-ai-traffic]
 estimate: L
@@ -69,18 +69,18 @@ playable. Task 13 restyles the UI.
 
 ## Implementation Checklist
 
-- [ ] Mission schema types, parser, and validator (references to map anchors
+- [x] Mission schema types, parser, and validator (references to map anchors
       checked, star thresholds monotonic, rewards monotonic).
-- [ ] State machine plus the four type evaluators, each with unit tests that
+- [x] State machine plus the four type evaluators, each with unit tests that
       use scripted car-state streams (no physics needed). Cover each
       success/fail path and each star boundary.
-- [ ] One integration test per type: the real core sim with an autopilot
+- [x] One integration test per type: the real core sim with an autopilot
       driving the A\* route. Add a simple autopilot in `test/support/` that
       follows lane polylines with steering control. It must complete the
       sample mission with ≥ 1 star.
-- [ ] Renderer: route ribbon, objective beam, start markers, and a minimal
+- [x] Renderer: route ribbon, objective beam, start markers, and a minimal
       HUD text (timer, objective).
-- [ ] Author 4 sample missions on `district-1` (one per type).
+- [x] Author 4 sample missions on `district-1` (one per type).
 
 ## Files Touched
 
@@ -114,3 +114,26 @@ These come from the read-only dry-run review of this epic. **Where they conflict
 - **Files Touched:** also includes `apps-games/city-drive-core/src/physics/**`. The damage and comfort inputs come from task 03's extended `Car.state()` and impulse queue; extend those only if something is missing. Contacts against **static buildings** count as collisions too.
 - **Mission ids** use the scheme `d{n}-m{nn}` (for example `d1-m01`). Lane points are stored as `{ edgeId, s }` from task 05.
 - **Files Touched:** add `.agents/resources/2026-10-15/city-drive-qa/10/README.md`.
+
+## Implementation notes (2026-10-16)
+
+Additions beyond Files Touched, all small and needed to make missions playable:
+
+- `apps-games/city-drive-core/package.json`: export `./missions/*` (the JSON content).
+- `apps-games/city-drive-core/src/index.ts`: re-export `missions/index`.
+- `apps-games/city-drive/src/game/{session.ts,missions.ts}` and `src/main.ts`: the session owns a
+  `MissionSystem` (pause, parked cars, result log) and `main.ts` draws and mounts it.
+- `apps-games/city-drive/test/{game,render,ui}/`: session, visual, route-math and panel tests; the
+  budget test now also measures every mission visual.
+- `.agents/games/city-drive/decisions-log.md`: Task 10 decisions.
+- `.agents/resources/2026-10-15/city-drive-qa/10/`: README, `autopilot-report.json`, `budget-report.json`.
+
+Deviations worth knowing:
+
+- Parking bays are parallel to the lane and flanked by parked cars `flank_gap_m` away (default 6 m)
+  along the lane, not 0.5 m: a car cannot pull forward into a tight in-line gap without reversing.
+  `flank_gap_m` is an optional bay field; task 11 can tighten it for harder missions.
+- The star-1 thresholds are kept in the data, but a completed mission is always worth at least one
+  star (success is "objective reached before a fail condition").
+- `src/physics/**` needed no change: the car state and the impulse queue from task 03 already carry
+  what damage and comfort need.

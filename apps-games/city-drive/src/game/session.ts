@@ -14,21 +14,28 @@ import {
   installColliders,
   LaneIndex,
   laneRespawn,
+  loadMissionCatalog,
+  type MissionResult,
+  MissionSystem,
   type PhysicsWorld,
   type Pose,
   playerFromCar,
+  quatFromForward,
   RespawnDetector,
   type RespawnReason,
   spawnPose,
   type TrafficCollision,
   TrafficManager,
   type TrafficPose,
+  trafficConstants,
 } from "@city-drive/core";
 import { type InputSource, toCarInput } from "../input";
 import { type CarPose, interpolateCar } from "./interpolate";
 
 /** Chassis centre height used when the car is placed on the road. */
 const DROP_HEIGHT_M = 1.1;
+/** Which traffic car model the parked cars use (index into the traffic visual). */
+const PARKED_MODEL_INDEX = 3;
 
 /** Traffic settings. Omit them and the city has no AI cars (the default for tests and tools). */
 interface TrafficSettings {
@@ -39,6 +46,8 @@ interface TrafficSettings {
 
 export interface SessionOptions {
   traffic?: TrafficSettings;
+  /** Raw mission JSON files. Omit them and the city has no missions (the default for tests). */
+  missions?: readonly unknown[];
 }
 
 export type RespawnCause = RespawnReason | "manual";
@@ -57,6 +66,12 @@ export class GameSession {
   /** Every time the player's car hit an AI car, in order. Missions (task 10) read this. */
   readonly trafficHits: TrafficCollision[] = [];
   readonly traffic: TrafficManager | undefined;
+  /** The mission system, when the session was created with missions. */
+  readonly missions: MissionSystem | undefined;
+  /** Results of missions the player has closed, oldest first. Task 12 turns these into coins. */
+  readonly missionResults: MissionResult[] = [];
+  private pausedValue = false;
+  private parkedPosesCache: TrafficPose[] | undefined;
   private prev: CarState;
   private curr: CarState;
   private readonly detector = new RespawnDetector();
@@ -75,6 +90,19 @@ export class GameSession {
     this.laneIndex = new LaneIndex(graph);
     this.curr = car.state();
     this.prev = this.curr;
+    if (options.missions) {
+      this.missions = new MissionSystem({
+        graph,
+        laneIndex: this.laneIndex,
+        missions: loadMissionCatalog(options.missions, { graph, laneIndex: this.laneIndex }),
+        car: {
+          halfLength: car.spec.chassisHalfExtents.z,
+          halfWidth: car.spec.chassisHalfExtents.x,
+        },
+        carCollider: car.colliderHandle,
+      });
+      this.missions.installParkedCars(physics);
+    }
     if (options.traffic) {
       this.traffic = new TrafficManager(physics, graph, {
         seed: options.traffic.seed,
@@ -103,8 +131,19 @@ export class GameSession {
     return this.curr;
   }
 
+  get paused(): boolean {
+    return this.pausedValue;
+  }
+
+  /** Pausing stops the whole simulation, so the mission clock stops with it. */
+  setPaused(paused: boolean): void {
+    this.pausedValue = paused;
+    this.missions?.setPaused(paused);
+  }
+
   /** One fixed step: read input, apply it, step the world, watch for flips and stuck cars. */
   step(): void {
+    if (this.pausedValue) return;
     const input = this.input.read(FIXED_DT);
     this.lastThrottle = input.throttle;
     this.car.applyInput(toCarInput(input));
@@ -113,6 +152,7 @@ export class GameSession {
     if (this.traffic) this.trafficHits.push(...this.traffic.processCollisions(impulses));
     this.prev = this.curr;
     this.curr = this.car.state();
+    this.missions?.step(this.curr, impulses);
     if (input.reset) {
       this.respawn("manual");
       return;
@@ -145,6 +185,27 @@ export class GameSession {
   /** The AI cars blended between their last two states, for drawing. */
   trafficPoses(alpha: number): TrafficPose[] {
     return this.traffic ? this.traffic.poses(alpha) : [];
+  }
+
+  /** Static parked cars beside parking bays, as poses for the traffic car renderer. */
+  parkedPoses(): TrafficPose[] {
+    if (!this.missions) return [];
+    this.parkedPosesCache ??= this.missions.parkedCars().map((car, i) => ({
+      id: -(i + 1),
+      modelIndex: PARKED_MODEL_INDEX,
+      position: { x: car.center.x, y: trafficConstants.AGENT_CENTRE_Y_M, z: car.center.z },
+      rotation: quatFromForward(car.forward.x, car.forward.z),
+      wheelRotation: 0,
+      speedKmh: 0,
+    }));
+    return this.parkedPosesCache;
+  }
+
+  /** Leave the end screens: success or fail, then results. Logs the result when it is closed. */
+  advanceMission(): MissionResult | undefined {
+    const result = this.missions?.advance();
+    if (result) this.missionResults.push(result);
+    return result;
   }
 
   dispose(): void {

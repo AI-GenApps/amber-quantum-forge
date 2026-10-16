@@ -108,7 +108,7 @@ with `startAt` set to the next task ID.
 | 08 | HUMAN: first-drive checkpoint (browser, desktop + phone) | human | [ ] |
 | 08a | Fix: render the scene right-handed (no mirrored world) | agent | [x] |
 | 09 | AI traffic on the road graph | agent | [x] |
-| 10 | Mission engine (delivery, taxi, time trial, parking; stars) | agent | [ ] |
+| 10 | Mission engine (delivery, taxi, time trial, parking; stars) | agent | [x] |
 | 11 | Three districts + 24 validated missions + free-roam markers | agent | [ ] |
 | 12 | Economy: coins, car roster + unlocks, versioned local save | agent | [ ] |
 | 13 | UI screens + HUD (home, map, garage, results, pause, settings) + fonts | agent | [ ] |

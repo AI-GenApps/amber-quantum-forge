@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "d1-m02",
+  "district": "district-1",
+  "type": "taxi",
+  "title": "Gentle Fare",
+  "brief": "Pick up the passenger on the east avenue and take them across town. They hate sudden braking and sharp turns.",
+  "start": {
+    "lane_point": {
+      "edgeId": "e:7,1:WE",
+      "s": 10
+    }
+  },
+  "params": {
+    "pickup": {
+      "edgeId": "e:10,3:NS",
+      "s": 10
+    },
+    "drop": {
+      "edgeId": "e:8,8:NS",
+      "s": 10
+    },
+    "time_limit_s": 100
+  },
+  "stars": {
+    "1": {
+      "min_time_left_s": 0,
+      "min_comfort": 20
+    },
+    "2": {
+      "min_time_left_s": 30,
+      "min_comfort": 50
+    },
+    "3": {
+      "min_time_left_s": 55,
+      "min_comfort": 80
+    }
+  },
+  "reward_coins": {
+    "1": 60,
+    "2": 100,
+    "3": 150
+  }
+}

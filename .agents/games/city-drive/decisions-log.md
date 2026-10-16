@@ -165,3 +165,37 @@ Baseline car values live in `apps-games/city-drive-core/src/cars/specs.ts`
 - **Not changed.** The `?debugcam` orbit camera keeps its start angle (it now looks from the north
   edge, so east is on its left); visual polish is for the human checkpoint.
 
+
+## Task 10 — Mission engine (2026-10-16)
+
+- **Where it lives.** Pure rules in `apps-games/city-drive-core/src/missions/` (no Babylon, no DOM,
+  nothing reads a clock). The app only draws (`render/mission*.ts`) and shows a minimal DOM panel
+  (`ui/mission-debug/`). Task 13 restyles the UI; the `MissionHud` and `MissionResult` shapes stay.
+- **State machine.** `idle -> briefing -> active -> success | fail -> results -> idle`. `MissionRun`
+  throws on any other transition. Pausing (`GameSession.setPaused`) stops the whole simulation, so
+  the mission clock stops too. Fail reasons: `time_out`, `damage_limit` (delivery damage or parking
+  touches), `comfort_zero`, `quit`.
+- **Stars.** A completed mission is worth at least one star; tiers 2 and 3 are tested from three down.
+  Time thresholds are compared in whole 1/60 s steps, so a boundary is exact. Reaching the goal on
+  the last allowed step still succeeds (time out is `ticks > limit`).
+- **Hits (damage / touches).** `HitDetector` counts a contact-force event on the player's chassis when
+  its impulse is at least 400 N*s (force x 1/60 s), then ignores the rest of that crash for 30 steps.
+  Buildings, boundary walls, parked cars and AI cars all count (every contact with the chassis
+  collider is reported by Rapier).
+- **Taxi comfort.** Starts at 100 once the passenger is aboard. Loses 100 per g per second above 0.35 g
+  (longitudinal) and 0.4 g (lateral), and 25 per hit. 0 ends the ride.
+- **Parking.** All four corners of the car inside the bay (0.15 m tolerance), within 15 degrees of the
+  bay axis (either direction), under 1 km/h, for 60 steps in a row. The bay sits to the right of its
+  lane point (`lateral_offset_m`) and is flanked by two static parked cars `flank_gap_m` (default 6 m)
+  away along the lane. A forward pull-in needs about 6 m of swing room, so smaller gaps are a harder
+  mission. Validation requires a plain two-way straight road along the bay and its parked cars.
+- **Routing.** `RoutePlanner` plans A* over lane edges from the car's nearest lane point and keeps
+  following the same edge list while the car stays near it, so a car crossing a junction does not flip
+  between look-alike lanes. The renderer anchors route arrows a whole spacing back from the route end,
+  so they hold still in the world.
+- **Rendering cost.** Beams (start markers or the objective), route arrows and the bay pad are three
+  meshes, at most three draw calls. Worst pose with everything on: 57 draw calls (target below 60),
+  143k triangles.
+- **Test autopilot** (`test/support/autopilot.ts`): pure pursuit on the route polyline with a
+  curvature-limited speed profile and a smooth lane-to-bay approach. It completes all four district-1
+  missions deterministically with three stars.
