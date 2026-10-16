@@ -15,6 +15,7 @@ import {
   LaneIndex,
   laneRespawn,
   loadMissionCatalog,
+  type MissionDef,
   type MissionPayoutInfo,
   type MissionResult,
   MissionSystem,
@@ -79,6 +80,7 @@ export class GameSession {
   /** Results of missions the player has closed, oldest first. Coins are paid when a mission ends. */
   readonly missionResults: MissionResult[] = [];
   private readonly credit: MissionCredit | undefined;
+  private readonly catalog: readonly MissionDef[] = [];
   private pausedValue = false;
   private parkedPosesCache: TrafficPose[] | undefined;
   private prev: CarState;
@@ -101,6 +103,7 @@ export class GameSession {
     this.prev = this.curr;
     if (options.missions) {
       const catalog = loadMissionCatalog(options.missions, { graph, laneIndex: this.laneIndex });
+      this.catalog = catalog;
       if (options.profile) this.credit = new MissionCredit(options.profile, catalog);
       this.missions = new MissionSystem({
         graph,
@@ -224,6 +227,52 @@ export class GameSession {
     const result = this.missions?.advance();
     if (result) this.missionResults.push(result);
     return result;
+  }
+
+  /**
+   * Bring the mission system back to free roam from any phase: a running mission is abandoned and
+   * the end screens are skipped. Finished missions have already paid their coins.
+   */
+  leaveMission(): void {
+    const missions = this.missions;
+    if (!missions) return;
+    if (missions.run.phase === "briefing") missions.decline();
+    if (missions.run.phase === "active") missions.quit();
+    while (missions.run.phase !== "idle") this.advanceMission();
+  }
+
+  /**
+   * Drive-to-start shortcut for the map, retry and next: leave any mission, put the car on the
+   * lane at the mission's start marker and open its briefing (or start it at once).
+   */
+  openMission(missionId: string, start: boolean): void {
+    const missions = this.missions;
+    const mission = this.catalog.find((m) => m.id === missionId);
+    const marker = missions?.markers().find((m) => m.missionId === missionId);
+    if (!missions || !mission || !marker) {
+      throw new Error(`session: cannot open unknown mission "${missionId}"`);
+    }
+    this.leaveMission();
+    const lane = laneRespawn(
+      this.graph,
+      this.laneIndex,
+      { x: marker.x, z: marker.z },
+      DROP_HEIGHT_M,
+    );
+    if (lane) {
+      this.car.respawn(lane);
+      this.detector.reset();
+      this.curr = this.car.state();
+      this.prev = this.curr;
+      this.respawns.push({ cause: "manual", tick: this.physics.tick });
+    }
+    missions.run.open(mission);
+    if (start) missions.accept();
+  }
+
+  /** The mission definition with this id, if the city has it. */
+  missionDef(missionId: string): MissionDef | undefined {
+    return this.catalog.find((m) => m.id === missionId);
   }
 
   dispose(): void {

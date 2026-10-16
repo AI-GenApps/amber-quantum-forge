@@ -15,7 +15,7 @@ describe("showSaveNotice", () => {
     expect(toast.getAttribute("role")).toBe("status");
     expect(toast.textContent).toContain("restored an earlier backup");
     expect(toast.dataset.kind).toBe("recovered-backup");
-    expect(toast.style.pointerEvents).toBe("none");
+    expect(toast.className).toBe("cd-save-notice");
     expect(document.body.contains(toast)).toBe(true);
     vi.advanceTimersByTime(1000);
     expect(document.body.contains(toast)).toBe(false);

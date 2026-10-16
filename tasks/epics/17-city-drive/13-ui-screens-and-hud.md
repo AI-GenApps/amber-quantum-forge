@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 13-ui-screens-and-hud
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/12-economy-garage-save]
 estimate: L
@@ -81,16 +81,16 @@ bundled custom fonts; nothing renders in the platform default font.
 
 ## Implementation Checklist
 
-- [ ] Tokens, fonts, OFL files, preload, and the font test.
-- [ ] The screen-stack navigator plus tests.
-- [ ] Each screen as components plus tests (locked/unlocked districts,
+- [x] Tokens, fonts, OFL files, preload, and the font test.
+- [x] The screen-stack navigator plus tests.
+- [x] Each screen as components plus tests (locked/unlocked districts,
       affordable/unaffordable cars, and results star states).
-- [ ] HUD with minimap, objective arrow maths (pure, tested), and the
+- [x] HUD with minimap, objective arrow maths (pure, tested), and the
       type-specific meters.
-- [ ] Garage 3D preview, with an extended budget test: the garage scene is at
+- [x] Garage 3D preview, with an extended budget test: the garage scene is at
       most 20 draw calls.
-- [ ] Remove the debug panels from tasks 07 and 10 (keep `?debug` overlays).
-- [ ] Update `.agents/games/city-drive/product.md` (screens, fonts).
+- [x] Remove the debug panels from tasks 07 and 10 (keep `?debug` overlays).
+- [x] Update `.agents/games/city-drive/product.md` (screens, fonts).
 
 ## Files Touched
 

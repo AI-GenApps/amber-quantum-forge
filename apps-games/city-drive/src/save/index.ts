@@ -1,3 +1,4 @@
+export { LastDistrict } from "./lastDistrict";
 export { showSaveNotice } from "./noticeToast";
 export { PreferencesSaveStore } from "./preferencesStore";
 export { Profile } from "./profile";

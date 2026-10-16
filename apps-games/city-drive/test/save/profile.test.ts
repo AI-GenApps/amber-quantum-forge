@@ -78,4 +78,39 @@ describe("Profile", () => {
     expect(second.profile.save.owned_cars).toEqual(["sedan"]);
     expect(second.profile.selectedEntry().id).toBe("sedan");
   });
+
+  it("changes settings, keeps the others, and saves them", async () => {
+    const { profile, manager, store } = await load();
+    profile.updateSettings({ audio: false, graphics_quality: "low" });
+    expect(profile.save.settings).toEqual({
+      audio: false,
+      haptics: true,
+      control_layout: "standard",
+      graphics_quality: "low",
+    });
+    profile.updateSettings({ control_layout: "mirrored" });
+    expect(profile.save.settings.audio).toBe(false);
+    await manager.flush();
+    expect((await load(store)).profile.save.settings.control_layout).toBe("mirrored");
+  });
+
+  it("rejects an invalid setting loudly instead of saving it", async () => {
+    const { profile } = await load();
+    expect(() => profile.updateSettings({ graphics_quality: "ultra" as never })).toThrow();
+    expect(profile.save.settings.graphics_quality).toBe("auto");
+  });
+
+  it("reset erases coins, stars, extra cars and settings but keeps the starter", async () => {
+    const { profile, manager, store } = await load();
+    profile.recordResult(result(3), MISSION);
+    profile.updateSettings({ haptics: false });
+    expect(profile.coins).toBeGreaterThan(0);
+    profile.reset();
+    expect(profile.coins).toBe(0);
+    expect(profile.stars).toBe(0);
+    expect(profile.save.owned_cars).toEqual(["sedan"]);
+    expect(profile.save.settings.haptics).toBe(true);
+    await manager.flush();
+    expect((await load(store)).profile.coins).toBe(0);
+  });
 });

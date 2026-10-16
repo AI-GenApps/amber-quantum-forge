@@ -111,7 +111,7 @@ with `startAt` set to the next task ID.
 | 10 | Mission engine (delivery, taxi, time trial, parking; stars) | agent | [x] |
 | 11 | Three districts + 24 validated missions + free-roam markers | agent | [x] |
 | 12 | Economy: coins, car roster + unlocks, versioned local save | agent | [x] |
-| 13 | UI screens + HUD (home, map, garage, results, pause, settings) + fonts | agent | [ ] |
+| 13 | UI screens + HUD (home, map, garage, results, pause, settings) + fonts | agent | [x] |
 | 14 | Audio, haptics, first-drive onboarding | agent | [ ] |
 | 15 | Performance pass (adaptive scaling, freezing, LOD, budget gate) | agent | [ ] |
 | 16 | HUMAN: full browser playtest checkpoint | human | [ ] |

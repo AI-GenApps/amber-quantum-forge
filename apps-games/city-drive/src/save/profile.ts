@@ -3,6 +3,7 @@ import {
   type CarRoster,
   type CarSpec,
   carSpecOf,
+  defaultSave,
   findCar,
   type MissionPayoutInfo,
   type MissionResult,
@@ -12,6 +13,7 @@ import {
   recordMission,
   type SaveData,
   type SaveManager,
+  type SaveSettings,
   type SelectResult,
   selectCar,
   type Tiers,
@@ -85,5 +87,15 @@ export class Profile {
     const result = selectCar(this.save, carId);
     if (result.ok) this.manager.commit(result.save);
     return result;
+  }
+
+  /** Change some settings (audio, haptics, controls, graphics) and save. */
+  updateSettings(change: Partial<SaveSettings>): void {
+    this.manager.commit({ ...this.save, settings: { ...this.save.settings, ...change } });
+  }
+
+  /** Erase all progress: coins, cars, mission records and settings go back to a new player's. */
+  reset(): void {
+    this.manager.commit(defaultSave(this.roster.starter));
   }
 }

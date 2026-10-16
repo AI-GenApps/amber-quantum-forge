@@ -1,28 +1,21 @@
-import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera.js";
-import type { Camera } from "@babylonjs/core/Cameras/camera.js";
 import { Engine } from "@babylonjs/core/Engines/engine.js";
 import { SceneInstrumentation } from "@babylonjs/core/Instrumentation/sceneInstrumentation.js";
-import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
-import { districtInfo, parseProgression, SaveManager } from "@city-drive/core";
-import { mapHalfExtents, parseCityManifest } from "@city-drive/core/city";
+import type { Scene } from "@babylonjs/core/scene.js";
+import { parseProgression, SaveManager } from "@city-drive/core";
 import type { AssetManifest } from "./assets/manifest";
 import { FpsOverlay } from "./game/fpsOverlay";
+import { GameHost } from "./game/gameHost";
 import { GameLoop } from "./game/loop";
-import { DISTRICT_MISSIONS, isDistrictId, PROGRESSION_RAW } from "./game/missions";
-import { GameSession, type SessionOptions } from "./game/session";
+import { DISTRICT_MISSIONS, PROGRESSION_RAW } from "./game/missions";
 import { CombinedInput, GamepadInput, KeyboardInput, TouchInput } from "./input";
-import { applyViewDistance, createCityScene, loadDistrict } from "./render";
-import { createCarVisual } from "./render/carVisual";
-import { ChaseCamera } from "./render/chaseCamera";
-import { createMissionVisual } from "./render/missionVisual";
+import { createGarage } from "./render/garage";
 import { frameStats } from "./render/stats";
-import { createTrafficVisual } from "./render/traffic";
-import { PreferencesSaveStore, Profile, ROSTER, showSaveNotice } from "./save";
-import { mountControls, wantsTouchControls } from "./ui/controls/mount";
-import { mountMissionPanel } from "./ui/mission-debug/mount";
-
-/** Fixed seed: the same city traffic every run (a per-run seed can come with missions). */
-const TRAFFIC_SEED = 1;
+import { LastDistrict, PreferencesSaveStore, Profile, ROSTER, showSaveNotice } from "./save";
+import { AppController } from "./ui/controller";
+import { wantsTouchControls } from "./ui/controls/wantsTouch";
+import { summarizeMission } from "./ui/model/districts";
+import { mountUi } from "./ui/mount";
+import { EscapeBackSource } from "./ui/nav/back";
 
 function requireElement(id: string): HTMLElement {
   const element = document.getElementById(id);
@@ -41,143 +34,119 @@ async function fetchChecked(path: string): Promise<Response> {
 const loadBytes = async (file: string): Promise<Uint8Array> =>
   new Uint8Array(await (await fetchChecked(file)).arrayBuffer());
 
-function createOrbitCamera(city: Awaited<ReturnType<typeof createCityScene>>, canvas: HTMLElement) {
-  const half = mapHalfExtents(city.map);
-  const orbit = new ArcRotateCamera(
-    "orbit",
-    -Math.PI / 2,
-    Math.PI / 3.2,
-    Math.max(half.x, half.z) * 1.1,
-    Vector3.Zero(),
-    city.scene,
-  );
-  orbit.lowerRadiusLimit = 15;
-  orbit.upperRadiusLimit = Math.max(half.x, half.z) * 1.6;
-  orbit.upperBetaLimit = Math.PI / 2 - 0.03;
-  orbit.wheelDeltaPercentage = 0.01;
-  orbit.attachControl(canvas, true);
-  return orbit;
-}
-
 async function start(): Promise<void> {
   const canvas = requireElement("game");
   if (!(canvas instanceof HTMLCanvasElement)) throw new Error("City Drive: #game is not a canvas");
+  const ui = requireElement("ui");
   const params = new URLSearchParams(window.location.search);
   const manifest = (await (await fetchChecked("manifest.json")).json()) as AssetManifest;
-  const requested = params.get("district") ?? "district-1";
-  if (!isDistrictId(requested)) throw new Error(`City Drive: unknown district "${requested}"`);
-  const districtId = requested;
-  const traffic = districtInfo(parseProgression(PROGRESSION_RAW), districtId).traffic_agents;
-  const map = loadDistrict(districtId, manifest);
+  const progression = parseProgression(PROGRESSION_RAW);
 
   const engine = new Engine(canvas, true, { stencil: false }, true);
-  const city = await createCityScene(engine, map, manifest, loadBytes);
-
   const touch = new TouchInput();
   const input = new CombinedInput([
     new KeyboardInput(window),
     touch,
     new GamepadInput(() => navigator.getGamepads?.() ?? []),
   ]);
-  const saveManager = new SaveManager(new PreferencesSaveStore(), {
+  const store = new PreferencesSaveStore();
+  const saveManager = new SaveManager(store, {
     starterCarId: ROSTER.starter,
-    onNotice: (notice) => showSaveNotice(requireElement("ui"), notice),
+    onNotice: (notice) => showSaveNotice(ui, notice),
   });
   const profile = await Profile.load(saveManager, ROSTER);
-  const sessionOptions: SessionOptions = { profile };
-  if (!params.has("notraffic")) {
-    sessionOptions.traffic = { seed: TRAFFIC_SEED, maxAgents: traffic };
-  }
-  if (!params.has("nomissions")) sessionOptions.missions = DISTRICT_MISSIONS[districtId];
-  const session = await GameSession.create(
-    map,
-    parseCityManifest(manifest),
-    input,
-    undefined,
-    sessionOptions,
+
+  const host = new GameHost(
+    {
+      engine,
+      canvas,
+      manifest,
+      loadBytes,
+      profile,
+      progression,
+      input,
+      flags: {
+        traffic: !params.has("notraffic"),
+        missions: !params.has("nomissions"),
+        debugCamera: params.has("debugcam"),
+      },
+    },
+    engine,
+    () => createGarage(engine, manifest, loadBytes, ROSTER),
   );
-  const carVisual = await createCarVisual(
-    city.scene,
-    manifest,
-    loadBytes,
-    session.car.spec,
-    profile.selectedEntry().model_id,
+  const missions = Object.fromEntries(
+    Object.entries(DISTRICT_MISSIONS).map(([id, files]) => [id, files.map(summarizeMission)]),
   );
-  const trafficVisual = await createTrafficVisual(city.scene, manifest, loadBytes);
-  const chase = new ChaseCamera(city.scene, session.plan.boxes);
-  const missionVisual = createMissionVisual(city.scene);
-  const missions = session.missions;
-  const missionPanel = missions
-    ? mountMissionPanel(
-        requireElement("ui"),
-        {
-          snapshot: () => ({
-            hud: missions.hud(),
-            mission: missions.run.mission,
-            result: missions.run.result,
-            parkHold: missions.parkHold,
-          }),
-          accept: () => missions.accept(),
-          decline: () => missions.decline(),
-          quit: () => missions.quit(),
-          next: () => session.advanceMission(),
-        },
-        window,
-      )
-    : undefined;
+  const controller = new AppController({
+    game: host,
+    profile,
+    roster: ROSTER,
+    progression,
+    missions,
+    lastDistrict: new LastDistrict(store, progression.districts[0]?.id ?? "district-1"),
+  });
+  mountUi(
+    ui,
+    {
+      controller,
+      content: {
+        roster: ROSTER,
+        progression,
+        missions,
+        showTouch: wantsTouchControls(window),
+      },
+      touch,
+      minimap: () => host.minimapModel(),
+    },
+    new EscapeBackSource(window),
+    window,
+  );
+
   document.addEventListener("visibilitychange", () => {
-    session.setPaused(document.hidden);
+    controller.setHidden(document.hidden);
     if (document.hidden) void saveManager.flush();
   });
   window.addEventListener("pagehide", () => void saveManager.flush());
 
-  let camera: Camera = chase.camera;
-  if (params.has("debugcam")) camera = createOrbitCamera(city, canvas);
-  applyViewDistance(camera);
-  city.scene.activeCamera = camera;
-  mountControls(requireElement("ui"), touch, wantsTouchControls(window));
-
-  const instrumentation = new SceneInstrumentation(city.scene);
+  let instrumented: { scene: Scene; instrumentation: SceneInstrumentation } | undefined;
   const fps = params.has("fps")
-    ? new FpsOverlay(requireElement("ui"), () => ({
-        fps: engine.getFps(),
-        drawCalls: instrumentation.drawCallsCounter.current,
-        triangles: frameStats(city.scene).triangles,
-      }))
+    ? new FpsOverlay(ui, () => {
+        const scene = host.current?.city.scene;
+        if (!scene) return { fps: engine.getFps(), drawCalls: 0, triangles: 0 };
+        const cached =
+          instrumented?.scene === scene
+            ? instrumented
+            : { scene, instrumentation: new SceneInstrumentation(scene) };
+        instrumented = cached;
+        return {
+          fps: engine.getFps(),
+          drawCalls: cached.instrumentation.drawCallsCounter.current,
+          triangles: frameStats(scene).triangles,
+        };
+      })
     : undefined;
 
-  let seenRespawns = 0;
   const loop = new GameLoop({
-    step: () => session.step(),
+    step: () => host.step(),
     render: (alpha, frameSeconds) => {
-      const pose = session.pose(alpha);
-      carVisual.sync(pose);
-      trafficVisual.sync([...session.trafficPoses(alpha), ...session.parkedPoses()]);
-      if (missions) {
-        missionVisual.sync({
-          markers: missions.run.phase === "idle" ? missions.markers() : [],
-          route: missions.route?.points,
-          objective: missions.objective,
-          bay: missions.bay,
-        });
-        missionPanel?.update();
-      }
-      if (session.respawns.length !== seenRespawns) {
-        seenRespawns = session.respawns.length;
-        chase.snap();
-      }
-      chase.update(frameSeconds, pose);
-      city.scene.render();
-      fps?.update(performance.now());
+      host.render(alpha, frameSeconds);
+      const now = performance.now();
+      controller.tick(now);
+      fps?.update(now);
     },
   });
-
-  await city.scene.whenReadyAsync();
   engine.runRenderLoop(() => loop.frame(performance.now()));
   window.addEventListener("resize", () => engine.resize());
 
-  if (import.meta.env.DEV && params.has("inspector")) {
-    void import("./devInspector").then(({ showInspector }) => showInspector(city.scene));
+  // `?district=district-2` skips the menus and drops straight into that district (dev shortcut).
+  const direct = params.get("district");
+  if (!direct || !(await controller.enterDistrict(direct))) await controller.boot();
+
+  if (import.meta.env.DEV && params.has("inspector") && host.current) {
+    void import("./devInspector").then(({ showInspector }) => {
+      const scene = host.current?.city.scene;
+      if (scene) showInspector(scene);
+    });
   }
 }
 

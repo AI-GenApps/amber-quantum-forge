@@ -133,9 +133,19 @@ describe("portrait guard and safe areas", () => {
     render(null, guard);
   });
 
+  it("mirrors the layout when asked", () => {
+    render(<TouchControls input={touch} layout="mirrored" />, host);
+    expect(host.querySelector("[data-testid=touch-controls]")?.getAttribute("data-layout")).toBe(
+      "mirrored",
+    );
+    expect(CSS).toContain('[data-layout="mirrored"]');
+  });
+
   it("positions all clusters from the safe-area insets", () => {
+    const tokens = readFileSync(join(import.meta.dirname, "../../src/ui/tokens.css"), "utf8");
     for (const inset of ["left", "right", "bottom", "top"]) {
-      expect(CSS).toContain(`env(safe-area-inset-${inset})`);
+      expect(tokens).toContain(`--inset-${inset}: env(safe-area-inset-${inset}`);
+      expect(CSS).toContain(`var(--inset-${inset})`);
     }
   });
 });

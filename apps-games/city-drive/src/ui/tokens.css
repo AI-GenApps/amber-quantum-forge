@@ -1,0 +1,281 @@
+/* Design tokens, bundled fonts and the base look of every screen. Fonts: Russo One (display) and
+   Saira (body), both OFL, files and licences under public/fonts. */
+
+@font-face {
+  font-family: "Russo One";
+  src: url("/fonts/russo-one/RussoOne-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Saira";
+  src: url("/fonts/saira/Saira.ttf") format("truetype");
+  font-weight: 100 900;
+  font-stretch: 75% 125%;
+  font-style: normal;
+  font-display: block;
+}
+
+:root {
+  /* Colour. One accent (amber); the state colours are only for meters and lock states. */
+  --color-bg: #0b1020;
+  --color-surface: #151c33;
+  --color-surface-2: #1f2850;
+  --color-line: #6573b3;
+  --color-text: #f5f7ff;
+  --color-text-dim: #b9c2e3;
+  --color-accent: #ffc21a;
+  --color-on-accent: #1a1300;
+  --color-ok: #3ddc97;
+  --color-warn: #ffb347;
+  --color-bad: #ff6b7a;
+  --color-scrim: rgba(7, 10, 22, 0.78);
+  --color-road: #5d6a99;
+
+  /* Type. */
+  --font-display: "Russo One", sans-serif;
+  --font-body: "Saira", sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --text-xxl: 2.5rem;
+
+  /* Space and shape. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2.25rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.9rem;
+  --radius-lg: 1.4rem;
+  --tap: 3.5rem;
+
+  /* Safe-area insets, so notches never cover the UI. */
+  --inset-top: env(safe-area-inset-top, 0px);
+  --inset-right: env(safe-area-inset-right, 0px);
+  --inset-bottom: env(safe-area-inset-bottom, 0px);
+  --inset-left: env(safe-area-inset-left, 0px);
+
+  /* Scales with the screen from 640x360 up to 1920x1080, and with the user's font setting. */
+  font-size: clamp(14px, calc(6px + 1.9vmin), 22px);
+  font-family: var(--font-body);
+  color: var(--color-text);
+  color-scheme: dark;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: 1.35;
+  color: var(--color-text);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+
+h1 {
+  font-size: var(--text-xxl);
+}
+
+h2 {
+  font-size: var(--text-xl);
+}
+
+h3 {
+  font-size: var(--text-lg);
+}
+
+p {
+  margin: 0;
+}
+
+button,
+input,
+select {
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+}
+
+#ui {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+#ui button,
+#ui [role="switch"],
+#ui [role="radio"] {
+  pointer-events: auto;
+}
+
+/* ---- Primitives ---------------------------------------------------------------------------- */
+
+.cd-button {
+  min-height: var(--tap);
+  min-width: var(--tap);
+  padding: 0 var(--space-5);
+  border: 2px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-2);
+  color: var(--color-text);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 80ms ease-out, background-color 120ms;
+}
+
+.cd-button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.cd-button:focus-visible,
+.cd-card:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.cd-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.cd-button-primary {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+.cd-button-danger {
+  border-color: var(--color-bad);
+  color: var(--color-bad);
+}
+
+.cd-panel {
+  background: var(--color-surface);
+  border: 2px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+}
+
+.cd-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-radius: 999px;
+  background: var(--color-surface);
+  border: 2px solid var(--color-line);
+  font-weight: 700;
+}
+
+.cd-chip svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+
+/* Text for screen readers only. */
+.cd-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.cd-dim {
+  color: var(--color-text-dim);
+}
+
+.cd-bar {
+  height: 0.7rem;
+  border-radius: 999px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-line);
+  overflow: hidden;
+}
+
+.cd-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--color-accent);
+  transition: width 200ms ease-out;
+}
+
+.cd-bar-fill[data-tone="ok"] {
+  background: var(--color-ok);
+}
+
+.cd-bar-fill[data-tone="warn"] {
+  background: var(--color-warn);
+}
+
+.cd-bar-fill[data-tone="bad"] {
+  background: var(--color-bad);
+}
+
+.cd-star {
+  width: 1.5em;
+  height: 1.5em;
+  fill: var(--color-bg);
+  stroke: var(--color-line);
+  stroke-width: 2;
+}
+
+.cd-star[data-earned="true"] {
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
+}
+
+.cd-save-notice {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--space-4) + var(--inset-bottom));
+  transform: translateX(-50%);
+  max-width: min(90vw, 30rem);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-2);
+  border: 2px solid var(--color-line);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  text-align: center;
+  pointer-events: none;
+  z-index: 50;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+  }
+}

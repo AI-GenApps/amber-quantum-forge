@@ -102,10 +102,42 @@ metrics in the mission files are written by `tool/validate-missions.ts`, never b
 Final layout and sensitivity are judged by the owner at the human first-drive
 checkpoint (task 08).
 
-## Screens (task 13)
+## Screens and fonts (task 13)
 
-Home, city map, garage, mission results, pause, settings, and an in-drive
-HUD. All UI is a DOM overlay (HTML/CSS + Preact) above the canvas.
+All UI is a DOM overlay (HTML/CSS + Preact) above the canvas, in `apps-games/city-drive/src/ui/`.
+Style: dark navy, high contrast, rounded panels, **one accent colour (amber `#ffc21a`)**; the green,
+orange and red are only meter and lock states. No Material look, no platform default font, no emoji
+(icons are inline SVG). Sizes are `rem` from a root that scales with the screen (`clamp(14px, ..., 22px)`)
+and with the user's font setting; landscape 640x360 up to 1920x1080; safe-area insets are kept.
+
+**Fonts** (both OFL, bundled as TrueType under `public/fonts/`, each with its `OFL.txt`; licence records
+in `assets-src/LICENSES/fonts-*.txt`, `font-display: block`, preloaded in `index.html`):
+
+| Role | Family | File |
+|---|---|---|
+| Display (headings, buttons that matter, timer, speed) | Russo One | `russo-one/RussoOne-Regular.ttf` |
+| Body | Saira (variable, weight 100-900, width 75-125%) | `saira/Saira.ttf` |
+
+**Screens**
+
+| Screen | What it has |
+|---|---|
+| Home | Title (one constant, `src/ui/brand.ts`), coin balance and total stars, Play (continue free roam in the last district), Map, Garage, Settings |
+| Map | One card per district: lock state with the stars still missing, star progress bar, and the mission list (type icon, stars earned, best time). Drive loads the district; a mission row loads it and opens that mission's briefing at its start |
+| Garage | Turntable 3D preview (a second scene on the shared engine, at most 20 draw calls; the city is not drawn while it is open), car carousel, speed / acceleration / grip bars derived from `CarSpec` and scaled across the roster, and one action: Selected / Select / Buy for N / Need N more coins |
+| Briefing | Type icon, title, brief, time limit, the three star targets with their coin rewards, Start / Not now |
+| HUD | Minimap (2D canvas of the road tiles, redrawn at 10 Hz), speed, pause button; during a mission also the timer (red under 10 s), objective line and a type-specific meter (delivery: damage, taxi: comfort, parking: touches plus the hold bar, time trial: checkpoints), and an arrow at the screen edge when the objective is off-screen |
+| Results | Stars pop in one after another, then the coins credited (with "First clear" / "New best stars"), time, best time, Retry / Next mission / Free roam |
+| Pause | Resume, Restart mission and Abandon mission (only during a mission), Settings, Quit to home. Hiding the page while driving opens it |
+| Settings | Sound and vibration switches (wired to the engine in task 14), control layout (Standard / Mirrored), graphics Auto / Low / Medium / High, Reset progress with a confirmation |
+
+**Graphics quality** (task 15 finalizes the numbers): Low = hardware scaling 1.5, fog 55-130; Medium =
+1.25, fog 72-175; High and Auto = 1.0, fog 90-220.
+
+**Navigation**: a screen stack (home, map, garage, settings, play, pause). Back (Escape on the web; the
+`BackSource` interface is what task 17 implements with `@capacitor/app`) closes a menu, pauses a drive,
+resumes from pause, declines a briefing and leaves the end screens. Briefing and results are not stack
+screens: they follow the mission phase.
 
 ## Audio, haptics, onboarding (task 14)
 

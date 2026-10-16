@@ -36,7 +36,9 @@ cd apps-games/city-drive && bunx vitest run test/render/budget.test.ts
 
 URL flags (all optional): `?inspector` opens the Babylon Inspector (dev builds only), `?debugcam` swaps
 the chase camera for the orbit camera, `?fps` shows an fps / draw-call / triangle overlay, and `?touch`
-shows the on-screen touch buttons on a desktop (they appear by default on touch devices). The Vite dev
+shows the on-screen touch buttons on a desktop (they appear by default on touch devices). `?district=district-2`
+skips the menus and drops straight into that district (dev shortcut; a locked district falls back to the
+home screen), and `?notraffic` / `?nomissions` leave out the AI cars or the missions. The Vite dev
 server listens on all interfaces (`host: true`) so a phone on the LAN can open it.
 
 Controls: WASD or arrow keys drive, Space is the handbrake, R respawns. On touch, steer with the left
@@ -54,3 +56,13 @@ shows a rotate message.
   for render, physics, and core tests; `happy-dom` only for UI tests.
 - Rendering is verified headlessly with Babylon `NullEngine`; visual judgement
   belongs to the owner checkpoints (tasks 08, 16, 22).
+
+## UI (task 13)
+
+Everything the player sees is a Preact DOM overlay in `src/ui/`: `tokens.css` (design tokens and the
+bundled Russo One / Saira fonts, files and `OFL.txt` under `public/fonts/`), `nav/` (the screen stack and
+the back handler), `model/` (pure, tested logic: district and garage cards, meters, objective arrow,
+minimap, graphics profile), `screens/` (home, map, garage, settings, pause, briefing, results, HUD) and
+`controller.ts` (the stack plus every action, talking to the game only through the `UiGame` interface).
+`src/game/gameHost.ts` is the real `UiGame`; component tests use a fake. The game's name lives in one
+constant, `src/ui/brand.ts`.

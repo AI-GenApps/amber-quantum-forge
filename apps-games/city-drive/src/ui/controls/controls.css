@@ -6,23 +6,35 @@
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
-  font-family: system-ui, sans-serif;
+  font-family: var(--font-body);
 }
 
 .cd-cluster {
   position: absolute;
-  bottom: max(16px, env(safe-area-inset-bottom));
+  bottom: max(var(--space-4), var(--inset-bottom));
   display: flex;
   align-items: flex-end;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 .cd-cluster-left {
-  left: max(16px, env(safe-area-inset-left));
+  left: max(var(--space-4), var(--inset-left));
 }
 
 .cd-cluster-right {
-  right: max(16px, env(safe-area-inset-right));
+  right: max(var(--space-4), var(--inset-right));
+}
+
+/* "Mirrored" layout: steering on the right hand, pedals on the left. */
+.cd-controls[data-layout="mirrored"] .cd-cluster-left {
+  left: auto;
+  right: max(var(--space-4), var(--inset-right));
+}
+
+.cd-controls[data-layout="mirrored"] .cd-cluster-right {
+  right: auto;
+  left: max(var(--space-4), var(--inset-left));
+  flex-direction: row-reverse;
 }
 
 .cd-btn {
@@ -30,18 +42,20 @@
   touch-action: none;
   min-width: 56px;
   min-height: 56px;
-  border: 2px solid rgba(255, 255, 255, 0.55);
-  border-radius: 16px;
-  background: rgba(20, 24, 32, 0.45);
-  color: #fff;
-  font-size: 15px;
-  font-weight: 700;
-  padding: 0 12px;
+  border: 2px solid var(--color-text-dim);
+  border-radius: var(--radius-md);
+  background: rgba(11, 16, 32, 0.55);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  letter-spacing: 0.04em;
+  padding: 0 var(--space-3);
   -webkit-tap-highlight-color: transparent;
 }
 
 .cd-btn.cd-down {
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 194, 26, 0.55);
+  border-color: var(--color-accent);
   transform: scale(0.96);
 }
 
@@ -57,32 +71,41 @@
 }
 
 .cd-small {
-  font-size: 13px;
+  font-size: var(--text-xs);
 }
 
 .cd-reset {
   position: absolute;
-  top: max(12px, env(safe-area-inset-top));
-  right: max(12px, env(safe-area-inset-right));
-  font-size: 13px;
+  top: calc(max(var(--space-3), var(--inset-top)) + 4.2rem);
+  right: max(var(--space-3), var(--inset-right));
+  font-size: var(--text-xs);
 }
 
 .cd-rotate {
   display: none;
   position: fixed;
   inset: 0;
-  z-index: 10;
+  z-index: 60;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #10141c;
-  color: #fff;
-  font-family: system-ui, sans-serif;
+  gap: var(--space-4);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
   text-align: center;
+  pointer-events: auto;
 }
 
 .cd-rotate-icon {
-  font-size: 64px;
+  width: 4rem;
+  height: 4rem;
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 @media (orientation: portrait) {

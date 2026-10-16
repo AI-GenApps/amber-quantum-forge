@@ -21,6 +21,9 @@ export interface CarModelParts {
   length: number;
 }
 
+/** The four driven wheels. Any other `wheel-*` node (the SUV's spare) is fixed bodywork. */
+const DRIVEN_WHEEL = /^wheel-(front|back)-(left|right)$/;
+
 function bakedCopy(scene: Scene, name: string, source: Mesh, matrix: Matrix): Mesh {
   const part = new Mesh(name, scene);
   VertexData.ExtractFromMesh(source, false, true).applyToMesh(part);
@@ -49,16 +52,20 @@ function verticalRadius(mesh: Mesh): number {
  * Splits a Kenney car GLB into a body mesh and four wheel meshes, as authored (the scene is
  * right-handed, so the loader adds no flip). Wheels are re-centred on their axle.
  * Kenney names the wheel nodes `wheel-<front|back>-<left|right>`; a car without them is rejected.
+ * A fifth wheel such as the SUV's rear-door spare is merged into the body so it still draws.
  */
 export function buildCarParts(scene: Scene, cache: AssetCache, id: string): CarModelParts {
   let body: Mesh | undefined;
+  const spares: Mesh[] = [];
   const wheels: CarWheelPart[] = [];
   for (const node of cache.container(id).meshes) {
     if (!(node instanceof Mesh || node instanceof InstancedMesh)) continue;
     const geometry = geometryOf(node);
     if (geometry.getTotalVertices() === 0) continue;
     const world = node.computeWorldMatrix(true).clone();
-    if (node.name.startsWith("wheel-")) {
+    if (node.name.startsWith("wheel-") && !DRIVEN_WHEEL.test(node.name)) {
+      spares.push(bakedCopy(scene, `${id}:${node.name}`, geometry, world));
+    } else if (node.name.startsWith("wheel-")) {
       const centre = world.getTranslation().clone();
       world.setTranslation(Vector3.Zero());
       const mesh = bakedCopy(scene, `${id}:${node.name}`, geometry, world);
@@ -68,6 +75,16 @@ export function buildCarParts(scene: Scene, cache: AssetCache, id: string): CarM
     }
   }
   if (!body) throw new Error(`car model "${id}": no node named "body"`);
+  if (spares.length > 0) {
+    const sideOrientation = body.sideOrientation;
+    const merged = Mesh.MergeMeshes([body, ...spares], true, true);
+    if (!merged)
+      throw new Error(`car model "${id}": could not merge its spare wheel into the body`);
+    merged.name = body.name;
+    merged.sideOrientation = sideOrientation;
+    merged.setEnabled(false);
+    body = merged;
+  }
   if (wheels.length !== 4) {
     throw new Error(`car model "${id}": expected 4 wheel nodes, found ${wheels.length}`);
   }

@@ -1,0 +1,45 @@
+{
+  "method": "NullEngine; the garage scene (floor disc, turntable car with body, 4 wheels and blob shadow) is rendered once per roster car after every car has been loaded (so the hidden cars are in the scene but disabled); draw calls and triangles use the same cost model as the city budget test (frameStats).",
+  "budget": {
+    "maxDrawCalls": 20,
+    "maxTriangles": 150000
+  },
+  "cars": [
+    {
+      "car": "sedan",
+      "activeMeshes": 7,
+      "drawCalls": 7,
+      "triangles": 2100
+    },
+    {
+      "car": "hatch",
+      "activeMeshes": 7,
+      "drawCalls": 7,
+      "triangles": 2156
+    },
+    {
+      "car": "suv",
+      "activeMeshes": 7,
+      "drawCalls": 7,
+      "triangles": 2542
+    },
+    {
+      "car": "patrol",
+      "activeMeshes": 7,
+      "drawCalls": 7,
+      "triangles": 2132
+    },
+    {
+      "car": "cab",
+      "activeMeshes": 7,
+      "drawCalls": 7,
+      "triangles": 2140
+    },
+    {
+      "car": "racer",
+      "activeMeshes": 7,
+      "drawCalls": 7,
+      "triangles": 2020
+    }
+  ]
+}
