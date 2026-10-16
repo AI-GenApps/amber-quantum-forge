@@ -4,6 +4,17 @@ import 'package:merge_rules/merge_rules.dart';
 import 'merge_relay_app.dart';
 import 'merge_relay_theme.dart';
 
+/// Height reserved for the Play screen's status row ("Chain +4", "Board
+/// shifted."). The row always occupies exactly this much space — whether a
+/// message is showing or not — so the board below it never moves when a
+/// message appears or clears (device-QA defect D3: the row used to be a
+/// 20 px placeholder that grew to about 24 px with a message, jolting the
+/// board and the tray on every merge).
+const double mergeFeedbackRowHeight = 20;
+
+/// The status message itself. It is sized to fit inside
+/// [mergeFeedbackRowHeight] (one line, no outer padding) so it can never
+/// push its neighbours around.
 final class MergeFeedback extends StatelessWidget {
   const MergeFeedback({required this.text, required this.theme, super.key});
 
@@ -12,8 +23,8 @@ final class MergeFeedback extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 5),
+    return SizedBox(
+      height: mergeFeedbackRowHeight,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -22,8 +33,14 @@ final class MergeFeedback extends StatelessWidget {
           Flexible(
             child: Text(
               text,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              style: TextStyle(color: theme.ink, fontWeight: FontWeight.w800),
+              style: TextStyle(
+                color: theme.ink,
+                fontWeight: FontWeight.w800,
+                height: 1.2,
+              ),
             ),
           ),
         ],

@@ -295,7 +295,7 @@ final class _DailyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final subtitle = switch (result?.outcome) {
       null => "Today's board",
-      MergeRelayOutcome.completed => 'Cleared today',
+      MergeRelayOutcome.completed => 'Completed today',
       _ => 'Try again today',
     };
     return _HomeCard(

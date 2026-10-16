@@ -2,6 +2,10 @@ import 'package:merge_rules/merge_rules.dart';
 
 const mergeRelayTutorialVersion = 1;
 
+/// How many moves a Daily chain lasts: the Daily completes as soon as
+/// `moveCount >= mergeRelayDailyMoves` (see `_updateCompletion`).
+const mergeRelayDailyMoves = 3;
+
 enum MergeRelayRoute { home, tutorial, play, result, relay, chapterMap }
 
 enum MergeRelayOutcome { completed, missed, terminal, earlyFinish }
@@ -112,8 +116,36 @@ final class MergeRelayResult {
   final String objective;
   final String? rescueId;
 
+  /// The Result screen's headline. Rescue keeps the campaign wording; the
+  /// Daily has its own copy (device-QA defect D1) because a Daily "completes"
+  /// by playing its three moves, not by clearing a path.
+  String get title =>
+      mode == MergeRelayMode.daily && outcome == MergeRelayOutcome.completed
+      ? 'Daily complete'
+      : outcome.title;
+
+  bool get isDailyComplete =>
+      mode == MergeRelayMode.daily && outcome == MergeRelayOutcome.completed;
+
+  /// The follow-up line under the objective on the Result screen.
+  String get hint => switch (outcome) {
+    MergeRelayOutcome.completed =>
+      mode == MergeRelayMode.daily
+          ? 'A fresh board arrives tomorrow. Replay today\'s any time.'
+          : 'Keep the chain moving into the next path.',
+    MergeRelayOutcome.missed =>
+      'Read the open lanes, then try a different first move.',
+    MergeRelayOutcome.terminal =>
+      'The board is full. A new run starts only when you choose it.',
+    MergeRelayOutcome.earlyFinish =>
+      'Come back from Continue when you are ready to play again.',
+  };
+
   String get message => switch (outcome) {
-    MergeRelayOutcome.completed => 'Every tile found its place.',
+    MergeRelayOutcome.completed =>
+      mode == MergeRelayMode.daily
+          ? 'You played all three moves of today\'s chain.'
+          : 'Every tile found its place.',
     MergeRelayOutcome.missed => 'The pair stayed apart this time.',
     MergeRelayOutcome.terminal => 'Every lane is full. The chain ends here.',
     MergeRelayOutcome.earlyFinish => 'Your board is safe where you left it.',

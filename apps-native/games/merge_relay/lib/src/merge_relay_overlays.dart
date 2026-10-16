@@ -5,6 +5,7 @@ import 'merge_relay_theme.dart';
 import 'platform/merge_relay_pgs_account.dart';
 import 'screens/merge_relay_how_to_play.dart';
 import 'ui/mr_button.dart';
+import 'ui/mr_switch_palette.dart';
 import 'ui/mr_tokens.dart';
 
 Future<void> showMergeRelaySettings(
@@ -43,6 +44,7 @@ Future<void> showMergeRelaySettings(
               const SizedBox(height: 10),
               _MrSwitchRow(
                 theme: theme,
+                highContrast: game.preferences.value.highContrast,
                 title: 'Board controls',
                 subtitle: 'Tap to move instead of swiping.',
                 value: game.preferences.value.accessibleControls,
@@ -53,6 +55,7 @@ Future<void> showMergeRelaySettings(
               ),
               _MrSwitchRow(
                 theme: theme,
+                highContrast: game.preferences.value.highContrast,
                 title: 'Reduce motion',
                 subtitle: 'Use calmer tile transitions.',
                 value: game.preferences.value.reducedMotion,
@@ -63,6 +66,7 @@ Future<void> showMergeRelaySettings(
               ),
               _MrSwitchRow(
                 theme: theme,
+                highContrast: game.preferences.value.highContrast,
                 title: 'High contrast',
                 subtitle: 'Firmer tile and slot outlines.',
                 value: game.preferences.value.highContrast,
@@ -73,6 +77,7 @@ Future<void> showMergeRelaySettings(
               ),
               _MrSwitchRow(
                 theme: theme,
+                highContrast: game.preferences.value.highContrast,
                 title: 'Sound',
                 value: game.preferences.value.audioEnabled,
                 onChanged: (value) {
@@ -82,6 +87,7 @@ Future<void> showMergeRelaySettings(
               ),
               _MrSwitchRow(
                 theme: theme,
+                highContrast: game.preferences.value.highContrast,
                 title: 'Music',
                 value: game.preferences.value.musicEnabled,
                 onChanged: (value) {
@@ -91,6 +97,7 @@ Future<void> showMergeRelaySettings(
               ),
               _MrSwitchRow(
                 theme: theme,
+                highContrast: game.preferences.value.highContrast,
                 title: 'Vibration',
                 value: game.preferences.value.hapticsEnabled,
                 onChanged: (value) {
@@ -152,17 +159,33 @@ Future<void> showMergeRelaySettings(
                 },
               ),
               const SizedBox(height: 4),
-              // The Settings version line (task 11's checklist item) reads
-              // the loaded content catalog's own version tag — there's no
-              // `package_info_plus` (or similar) dependency wired up to read
-              // the app's own build number, and adding one is out of this
-              // task's scope — so this is the most honest "version" this
-              // screen has on hand, and it does track what's actually
-              // shipped, unlike a hand-typed constant.
+              // Defect D2 (device QA): the footer used to show only the
+              // content catalog tag ("Content MR-CONTENT-1"), which is an
+              // internal identifier, not an app version. The app line now
+              // reads the public title and the semantic version from the
+              // app context (`APP_VERSION`, which `games:build` fills from
+              // the registry release version that `games:validate` keeps
+              // equal to pubspec.yaml), the repo's existing version source —
+              // `package_info_plus` is not a dependency of any game. The
+              // content tag stays as a smaller, muted second line because
+              // support needs it to tell which board catalog a player has.
+              Text(
+                '${game.context.identity.publicTitle} '
+                '${game.context.appVersion}',
+                key: const ValueKey('settings-app-version'),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: theme.muted,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 2),
               Text(
                 'Content ${game.content.contentVersion}',
+                key: const ValueKey('settings-content-version'),
                 textAlign: TextAlign.center,
-                style: TextStyle(color: theme.muted, fontSize: 11),
+                style: TextStyle(color: theme.muted, fontSize: 10),
               ),
             ],
           ),
@@ -182,9 +205,11 @@ final class _MrSwitchRow extends StatelessWidget {
     required this.value,
     required this.onChanged,
     this.subtitle,
+    this.highContrast = false,
   });
 
   final MergeRelayTheme theme;
+  final bool highContrast;
   final String title;
   final String? subtitle;
   final bool value;
@@ -218,11 +243,10 @@ final class _MrSwitchRow extends StatelessWidget {
               ],
             ),
           ),
-          Switch.adaptive(
-            value: value,
-            onChanged: onChanged,
-            activeThumbColor: theme.ink,
-          ),
+          MrSwitchPalette.of(
+            theme,
+            highContrast: highContrast,
+          ).build(value: value, onChanged: onChanged),
         ],
       ),
     );

@@ -181,6 +181,9 @@ final class MergeRelayScoreStrip extends StatelessWidget {
       (max, value) => value > max ? value : max,
     );
     final budget = game.movesRemaining;
+    final bestScore = game.bestEndlessScore.value > game.state.value.score
+        ? game.bestEndlessScore.value
+        : game.state.value.score;
     // Reduced motion follows either source: the Settings toggle, or the
     // platform's own accessibility signal, regardless of the in-app
     // toggle — matching the board widget's `_reducedMotion`.
@@ -198,12 +201,26 @@ final class MergeRelayScoreStrip extends StatelessWidget {
           reducedMotion: reducedMotion,
         ),
         const SizedBox(width: 8),
-        _Score(
-          label: 'Best',
-          value: '$highest',
-          theme: theme,
-          compact: compact,
-        ),
+        // One coherent "best" per mode (defect D4): Endless is a score
+        // chase, so its pill is the best *score* — live, i.e. the all-time
+        // best or the current run if that is already higher, never "-" —
+        // and the lower tray no longer repeats it. Rescue and Daily have no
+        // score record, so their pill is the highest tile on the board and
+        // is labelled as such instead of a bare "Best".
+        if (game.mode.value == MergeRelayMode.endless)
+          _Score(
+            label: 'Best',
+            value: '$bestScore',
+            theme: theme,
+            compact: compact,
+          )
+        else
+          _Score(
+            label: 'Top tile',
+            value: '$highest',
+            theme: theme,
+            compact: compact,
+          ),
         const SizedBox(width: 8),
         _Score(
           label: budget == null ? 'Moves' : 'Moves left',

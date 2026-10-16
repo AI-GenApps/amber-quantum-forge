@@ -24,7 +24,9 @@ void main() {
         .setMockMethodCallHandler(channel, (call) async {
           expect(call.method, 'share');
           final arguments = (call.arguments as Map).cast<String, Object?>();
-          expect(arguments['title'], 'Merge Relay');
+          expect(arguments['title'], 'Glow Rescue');
+          expect(arguments['message'], contains('Glow Rescue'));
+          expect(arguments['message'], isNot(contains('Merge Relay')));
           expect(arguments['message'], payload.message);
           return {'status': 'opened'};
         });

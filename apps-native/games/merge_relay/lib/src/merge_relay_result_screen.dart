@@ -68,10 +68,7 @@ final class MergeRelayResultScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          Text(
-            _resultHint(outcome),
-            style: TextStyle(color: theme.muted, height: 1.3),
-          ),
+          Text(outcome.hint, style: TextStyle(color: theme.muted, height: 1.3)),
           const SizedBox(height: 20),
           MrButton(
             label: _primaryLabel(outcome),
@@ -103,13 +100,20 @@ final class MergeRelayResultScreen extends StatelessWidget {
             ),
           ],
           const SizedBox(height: 18),
-          MergeRelayCampaignProgressPanel(
-            theme: theme,
-            cleared: game.completedRescueIds.value.length,
-            total: game.content.rescues.length,
-          ),
-          const SizedBox(height: 12),
-          MergeRelayChapterStrip(game: game, theme: theme),
+          // The Daily is not part of the Rescue campaign (defect D1), so its
+          // result shows today's chain instead of the campaign panel and
+          // chapter strip.
+          if (outcome.mode == MergeRelayMode.daily)
+            _DailyChainPanel(result: outcome, theme: theme)
+          else ...[
+            MergeRelayCampaignProgressPanel(
+              theme: theme,
+              cleared: game.completedRescueIds.value.length,
+              total: game.content.rescues.length,
+            ),
+            const SizedBox(height: 12),
+            MergeRelayChapterStrip(game: game, theme: theme),
+          ],
         ],
       ),
     );
@@ -141,16 +145,6 @@ final class MergeRelayResultScreen extends StatelessWidget {
       game.newRound();
     }
   }
-
-  String _resultHint(MergeRelayResult result) => switch (result.outcome) {
-    MergeRelayOutcome.completed => 'Keep the chain moving into the next path.',
-    MergeRelayOutcome.missed =>
-      'Read the open lanes, then try a different first move.',
-    MergeRelayOutcome.terminal =>
-      'The board is full. A new run starts only when you choose it.',
-    MergeRelayOutcome.earlyFinish =>
-      'Come back from Continue when you are ready to play again.',
-  };
 }
 
 /// The result card's dark hero panel: the run's best tile painted as a real
@@ -187,7 +181,7 @@ final class _ResultHero extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      outcome.outcome.title,
+                      outcome.title,
                       style: TextStyle(
                         color: theme.paper,
                         fontSize: 28,
@@ -255,21 +249,46 @@ final class _ResultHero extends StatelessWidget {
           const SizedBox(height: 18),
           Row(
             children: [
-              _ResultStat(
-                label: 'Score',
-                value: '${outcome.score}',
-                theme: theme,
-              ),
-              _ResultStat(
-                label: 'Best tile',
-                value: '${outcome.maxTile}',
-                theme: theme,
-              ),
-              _ResultStat(
-                label: 'Moves',
-                value: '${outcome.movesUsed}',
-                theme: theme,
-              ),
+              if (outcome.mode == MergeRelayMode.daily) ...[
+                // Daily completes after three moves whatever the score (the
+                // rule in `_updateCompletion`), so a 0-point Daily is a
+                // legitimate result. The headline stat is therefore the move
+                // count ("3 of 3"); Score is shown only when the chain
+                // actually earned points, rather than as a confusing "0"
+                // beside "Daily complete".
+                _ResultStat(
+                  label: 'Moves',
+                  value: '${outcome.movesUsed} of $mergeRelayDailyMoves',
+                  theme: theme,
+                ),
+                _ResultStat(
+                  label: 'Best tile',
+                  value: '${outcome.maxTile}',
+                  theme: theme,
+                ),
+                if (outcome.score > 0)
+                  _ResultStat(
+                    label: 'Score',
+                    value: '${outcome.score}',
+                    theme: theme,
+                  ),
+              ] else ...[
+                _ResultStat(
+                  label: 'Score',
+                  value: '${outcome.score}',
+                  theme: theme,
+                ),
+                _ResultStat(
+                  label: 'Best tile',
+                  value: '${outcome.maxTile}',
+                  theme: theme,
+                ),
+                _ResultStat(
+                  label: 'Moves',
+                  value: '${outcome.movesUsed}',
+                  theme: theme,
+                ),
+              ],
             ],
           ),
           if (isNewEndlessBest) ...[
@@ -364,4 +383,66 @@ final class _ResultTilePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _ResultTilePainter oldDelegate) =>
       oldDelegate.value != value || oldDelegate.theme != theme;
+}
+
+/// The Daily result's footer (defect D1), standing in for the Rescue
+/// campaign panel: one dot per move of today's three-move chain, filled for
+/// every move played, with the count beside it.
+final class _DailyChainPanel extends StatelessWidget {
+  const _DailyChainPanel({required this.result, required this.theme});
+
+  final MergeRelayResult result;
+  final MergeRelayTheme theme;
+
+  @override
+  Widget build(BuildContext context) {
+    final played = result.movesUsed.clamp(0, mergeRelayDailyMoves);
+    return MrPanel(
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+      border: Border.all(color: theme.ink.withValues(alpha: 0.1)),
+      shadow: false,
+      child: Semantics(
+        container: true,
+        label: "Today's chain: $played of $mergeRelayDailyMoves moves",
+        child: ExcludeSemantics(
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  "Today's chain",
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: theme.ink,
+                    fontFamily: 'Fredoka',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ),
+              for (var move = 0; move < mergeRelayDailyMoves; move++)
+                Padding(
+                  padding: const EdgeInsets.only(left: 6),
+                  child: Icon(
+                    move < played
+                        ? Icons.check_circle_rounded
+                        : Icons.radio_button_unchecked_rounded,
+                    size: 22,
+                    color: move < played ? theme.blue : theme.muted,
+                  ),
+                ),
+              const SizedBox(width: 10),
+              Text(
+                '$played / $mergeRelayDailyMoves moves',
+                style: TextStyle(
+                  color: theme.muted,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

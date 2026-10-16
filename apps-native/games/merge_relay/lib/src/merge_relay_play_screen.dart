@@ -52,14 +52,26 @@ final class MergeRelayPlayScreen extends StatelessWidget {
           SizedBox(height: compact ? 4 : 8),
           _CompactHud(game: game, theme: theme, compact: compact),
           SizedBox(height: compact ? 4 : 8),
+          // The status row's slot is a fixed-height box, so the board below
+          // never moves when a message fades in or out (defect D3).
           if (!compact)
-            AnimatedSwitcher(
-              duration: game.preferences.value.reducedMotion
-                  ? Duration.zero
-                  : const Duration(milliseconds: 180),
-              child: game.feedback.value == null
-                  ? const SizedBox(height: 20)
-                  : MergeFeedback(text: game.feedback.value!, theme: theme),
+            SizedBox(
+              height: mergeFeedbackRowHeight,
+              child: AnimatedSwitcher(
+                duration: game.preferences.value.reducedMotion
+                    ? Duration.zero
+                    : const Duration(milliseconds: 180),
+                child: game.feedback.value == null
+                    ? const SizedBox(
+                        key: ValueKey('merge-feedback-empty'),
+                        height: mergeFeedbackRowHeight,
+                      )
+                    : MergeFeedback(
+                        key: ValueKey(game.feedback.value),
+                        text: game.feedback.value!,
+                        theme: theme,
+                      ),
+              ),
             ),
           Expanded(
             child: LayoutBuilder(

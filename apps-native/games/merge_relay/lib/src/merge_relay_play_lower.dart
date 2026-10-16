@@ -208,8 +208,9 @@ final class _GoalProgressInsight extends StatelessWidget {
 
 /// Endless: the best tile reached this run, the next milestone tile
 /// (simply double the current best — every merge doubles a tile's value,
-/// so this is the literal next rung, not a new mechanic), and the
-/// player's all-time best score.
+/// so this is the literal next rung, not a new mechanic). The best *score*
+/// lives only in the HUD's "Best" pill (device-QA defect D4: a second,
+/// differently-defined "best" here used to sit next to it).
 final class _EndlessInsight extends StatelessWidget {
   const _EndlessInsight({
     required this.game,
@@ -229,7 +230,6 @@ final class _EndlessInsight extends StatelessWidget {
     );
     final currentTile = bestTile < 2 ? 2 : bestTile;
     final nextMilestone = currentTile * 2;
-    final bestScore = game.bestEndlessScore.value;
     final tileSize = compact ? 34.0 : 40.0;
     return Row(
       children: [
@@ -257,30 +257,6 @@ final class _EndlessInsight extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              'BEST SCORE',
-              style: TextStyle(
-                color: theme.muted,
-                fontSize: 9,
-                fontFamily: 'Fredoka',
-                fontWeight: FontWeight.w900,
-                letterSpacing: 0.8,
-              ),
-            ),
-            Text(
-              bestScore > 0 ? '$bestScore' : '—',
-              style: TextStyle(
-                color: theme.ink,
-                fontSize: compact ? 15 : 17,
-                fontFamily: 'Fredoka',
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-          ],
         ),
       ],
     );

@@ -55,7 +55,7 @@ final class MergeRelaySharePayload {
 
   String get preferredLink => httpsLink ?? appLink;
 
-  String get message => 'Join $creatorAlias in Merge Relay: $preferredLink';
+  String get message => 'Join $creatorAlias in Glow Rescue: $preferredLink';
 }
 
 bool _isAcceptedOrigin(Uri value) =>
@@ -85,7 +85,7 @@ final class MethodChannelMergeRelayShareProvider
   Future<MergeRelayShareStatus> share(MergeRelaySharePayload payload) async {
     try {
       final value = await _channel.invokeMethod<Object?>('share', {
-        'title': 'Merge Relay',
+        'title': 'Glow Rescue',
         'message': payload.message,
       });
       return _statusFromPlatform(value);
