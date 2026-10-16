@@ -14,7 +14,8 @@
     "cap:sync": "vite build && cap sync",
     "android:debug": "bun scripts/android-debug.ts",
     "brand:art": "bun scripts/build-brand-art.ts",
-    "brand:assets": "bun scripts/brand-assets.ts"
+    "brand:assets": "bun scripts/brand-assets.ts",
+    "sync-version": "bun scripts/sync-version.ts"
   },
   "dependencies": {
     "@babylonjs/core": "9.31.0",

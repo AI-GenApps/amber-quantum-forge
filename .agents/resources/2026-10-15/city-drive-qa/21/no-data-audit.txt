@@ -1,0 +1,28 @@
+# no-data audit, 2026-10-16
+## network APIs in src (city-drive, city-drive-core)
+city-drive/src/main.ts:45:  const response = await fetch(`${import.meta.env.BASE_URL}assets/${path}`);
+## analytics / ads SDK names in package.json files and src
+city-drive-core/src/city/lane-index.ts:31:/** Uniform-grid index over every lane segment. */
+## http(s) URLs in src and index.html
+(no matches)
+## cdn references in src and index.html
+(no matches)
+## android manifest permissions
+41:    <uses-permission android:name="android.permission.INTERNET" />
+## android gradle deps (app/build.gradle + capacitor.build.gradle)
+city-drive/android/app/build.gradle:38:    implementation fileTree(include: ['*.jar'], dir: 'libs')
+city-drive/android/app/build.gradle:39:    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+city-drive/android/app/build.gradle:40:    implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
+city-drive/android/app/build.gradle:41:    implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+city-drive/android/app/build.gradle:42:    implementation project(':capacitor-android')
+city-drive/android/app/build.gradle:46:    implementation project(':capacitor-cordova-android-plugins')
+city-drive/android/app/capacitor.build.gradle:12:    implementation project(':capacitor-community-keep-awake')
+city-drive/android/app/capacitor.build.gradle:13:    implementation project(':capacitor-app')
+city-drive/android/app/capacitor.build.gradle:14:    implementation project(':capacitor-haptics')
+city-drive/android/app/capacitor.build.gradle:15:    implementation project(':capacitor-preferences')
+city-drive/android/app/capacitor.build.gradle:16:    implementation project(':capacitor-screen-orientation')
+city-drive/android/app/capacitor.build.gradle:17:    implementation project(':capacitor-status-bar')
+## ios Info.plist usage-description keys
+(none)
+## ios capacitor config / ATS
+(no ATS exceptions)

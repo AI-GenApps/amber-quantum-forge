@@ -27,6 +27,7 @@ import {
 import { createGarage } from "./render/garage";
 import { frameStats } from "./render/stats";
 import { LastDistrict, PreferencesSaveStore, Profile, ROSTER, showSaveNotice } from "./save";
+import { ensureWebGl2 } from "./support/guard";
 import { GAME_TITLE } from "./ui/brand";
 import { AppController } from "./ui/controller";
 import { wantsTouchControls } from "./ui/controls/wantsTouch";
@@ -67,6 +68,7 @@ async function start(): Promise<void> {
   if (!(canvas instanceof HTMLCanvasElement))
     throw new Error(`${GAME_TITLE}: #game is not a canvas`);
   const ui = requireElement("ui");
+  if (!ensureWebGl2(document, ui)) return;
   const params = new URLSearchParams(window.location.search);
   const manifest = (await (await fetchChecked("manifest.json")).json()) as AssetManifest;
   const progression = parseProgression(PROGRESSION_RAW);

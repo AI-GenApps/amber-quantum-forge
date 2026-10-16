@@ -1,0 +1,86 @@
+# Web deploy for Street Royale (apps-games/city-drive) to its own Vercel project. Manual only.
+# Deployments go through this workflow, never the Vercel CLI from a laptop.
+#
+# One-time setup (human, task 22): create the Vercel project with Root Directory
+# apps-games/city-drive and "Include source files outside of the Root Directory" on, then add the
+# repository secret or variable CITY_DRIVE_VERCEL_PROJECT_ID (and the existing VERCEL_TOKEN secret).
+# Steps and settings: docs-internal/gaming/city-drive-release.md.
+name: Deploy City Drive Web
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: false
+        default: 'preview'
+        type: choice
+        options:
+          - preview
+          - production
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-city-drive-web-${{ github.event.inputs.environment }}
+  cancel-in-progress: false
+
+env:
+  BUN_VERSION: '1.3.3'
+  NODE_VERSION: '24'
+
+jobs:
+  deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.event.inputs.environment }}
+    env:
+      CITY_DRIVE_VERCEL_PROJECT_ID: ${{ secrets.CITY_DRIVE_VERCEL_PROJECT_ID || vars.CITY_DRIVE_VERCEL_PROJECT_ID }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+    steps:
+      - name: Require the Vercel project id and token
+        run: |
+          missing=0
+          if [ -z "$CITY_DRIVE_VERCEL_PROJECT_ID" ]; then
+            echo "::error title=Missing CITY_DRIVE_VERCEL_PROJECT_ID::Set the repository secret or variable CITY_DRIVE_VERCEL_PROJECT_ID to the City Drive Vercel project id (Vercel project > Settings > General). See docs-internal/gaming/city-drive-release.md."
+            missing=1
+          fi
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error title=Missing VERCEL_TOKEN::Set the repository secret VERCEL_TOKEN."
+            missing=1
+          fi
+          exit "$missing"
+
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: oven-sh/setup-bun@3d267786b128fe76c2f16a390aa2448b815359f3
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Test
+        run: bun run city-drive:test
+
+      - name: Build apps-games/city-drive (dist/)
+        run: bun run city-drive:build
+
+      - name: Deploy to Vercel
+        uses: W3Dev/vercel-deploy@main
+        with:
+          vercel_token: ${{ secrets.VERCEL_TOKEN }}
+          vercel_org_id: 'team_bhbVYR6BqVYMXKwAp7F1k5ib'
+          vercel_project_id: ${{ env.CITY_DRIVE_VERCEL_PROJECT_ID }}
+          package_manager: 'bun'
+          node_version: '22'
+          deploy_args: '--archive=tgz'
+          environment: ${{ github.event.inputs.environment }}

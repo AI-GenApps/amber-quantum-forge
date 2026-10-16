@@ -1,0 +1,2 @@
+triggers: ['workflow_dispatch']
+steps: ['Require the Vercel project id and token', 'Checkout code', 'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020', 'oven-sh/setup-bun@3d267786b128fe76c2f16a390aa2448b815359f3', 'Install dependencies', 'Test', 'Build apps-games/city-drive (dist/)', 'Deploy to Vercel']

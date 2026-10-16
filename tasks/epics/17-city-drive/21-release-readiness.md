@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 21-release-readiness
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/20-apply-name-and-brand]
 estimate: M
@@ -64,15 +64,15 @@ without consoles or devices.
 
 ## Implementation Checklist
 
-- [ ] No-data audit (record the grep output in evidence) and the privacy
+- [x] No-data audit (record the grep output in evidence) and the privacy
       policy page.
-- [ ] `store-listing.md`, completed.
-- [ ] Screenshot plan.
-- [ ] `deploy-city-drive-web.yml` (dispatch only, fail-fast on the missing
+- [x] `store-listing.md`, completed.
+- [x] Screenshot plan.
+- [x] `deploy-city-drive-web.yml` (dispatch only, fail-fast on the missing
       project id) plus the app `vercel.json`.
-- [ ] The WebGL2-unsupported fallback, with a test.
-- [ ] Version sync script, tested.
-- [ ] Release doc; update `.agents/games/city-drive/open-questions.md`.
+- [x] The WebGL2-unsupported fallback, with a test.
+- [x] Version sync script, tested.
+- [x] Release doc; update `.agents/games/city-drive/open-questions.md`.
 
 ## Files Touched
 
@@ -122,3 +122,12 @@ These come from the read-only dry-run review of this epic. **Where they conflict
   - Install command run from the repo root (`cd ../.. && bun install --frozen-lockfile`), because `@city-drive/core` is a workspace dependency
   - Build command `bun run build`, output `dist`
 - **Tooling tests:** after any `games:test:tooling` run, run `git checkout -- apps-native/`.
+
+## Implementation notes (2026-10-16)
+
+Small additions beyond Files Touched: `docs-public/docs.json` and `docs-internal/docs.json`
+(navigation), `apps-games/city-drive/package.json` (`sync-version` script),
+`apps-games/city-drive/scripts/syncVersion.ts` (logic split from the CLI),
+`apps-games/city-drive/src/support/` (WebGL2 guard), the native version lines in
+`android/app/build.gradle` and `ios/App/App.xcodeproj/project.pbxproj` (first sync), and
+`.agents/resources/2026-10-15/city-drive-qa/21/` evidence. Evidence and NOT RUN list: that folder's README.

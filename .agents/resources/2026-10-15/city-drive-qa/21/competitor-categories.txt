@@ -1,0 +1,6 @@
+# Play category of the research competitors, read from the store pages on 2026-10-16 (schema.org applicationCategory)
+com.ansangha.drdriving "applicationCategory":"GAME_RACING"
+com.aim.racing "applicationCategory":"GAME_RACING"
+com.olzhas.carparking.multyplayer "applicationCategory":"GAME_SIMULATION"
+com.drivezone.car.race.game "applicationCategory":"GAME_RACING"
+com.ovilex.taxisim2019 "applicationCategory":"GAME_SIMULATION"

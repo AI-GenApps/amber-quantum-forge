@@ -35,7 +35,8 @@
         "tab": "Legal",
         "icon": "scale",
         "pages": [
-          "legal/glow-rescue-privacy-policy"
+          "legal/glow-rescue-privacy-policy",
+          "legal/street-royale-privacy-policy"
         ]
       }
     ]
