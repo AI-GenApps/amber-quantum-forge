@@ -11,7 +11,7 @@
         "test/**"
       ],
       "project": ["src/**", "scripts/**", "tool/**", "test/**"],
-      "ignoreDependencies": ["@gltf-transform/cli"]
+      "ignoreDependencies": ["@gltf-transform/cli", "@capacitor/assets"]
     },
     "apps-games/city-drive-core": {
       "entry": [

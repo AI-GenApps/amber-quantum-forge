@@ -1,11 +1,11 @@
 ---
-title: City Drive native build
-description: How City Drive is packaged for Android and iOS with Capacitor 8, the Android toolchain under /data/tools, and what is left for signing.
+title: Street Royale native build
+description: How Street Royale is packaged for Android and iOS with Capacitor 8, the Android toolchain under /data/tools, and what is left for signing.
 ---
 
-# City Drive native build
+# Street Royale native build
 
-City Drive (working title) is a Babylon.js web game. Capacitor 8 wraps the
+Street Royale (internal id `city_drive`) is a Babylon.js web game. Capacitor 8 wraps the
 Vite build (`apps-games/city-drive/dist`) as native Android and iOS projects.
 The same build also runs in desktop and mobile browsers, where every native
 feature below is a no-op.

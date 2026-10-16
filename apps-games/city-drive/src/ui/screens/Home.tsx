@@ -1,6 +1,7 @@
 import { totalStars } from "@city-drive/core";
 import { GAME_TITLE } from "../brand";
 import { Wallet } from "../components/ScreenFrame";
+import { Wordmark } from "../components/Wordmark";
 import type { AppController, AppView } from "../controller";
 import type { UiContent } from "../types";
 
@@ -17,7 +18,7 @@ export function Home({
   return (
     <section class="cd-screen cd-home" aria-label="Home">
       <div class="cd-home-top">
-        <h1 data-testid="game-title">{GAME_TITLE}</h1>
+        <Wordmark title={GAME_TITLE} />
         <Wallet coins={view.save.coins} stars={totalStars(view.save)} />
       </div>
       <nav class="cd-home-menu" aria-label="Main menu">

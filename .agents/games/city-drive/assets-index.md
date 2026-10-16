@@ -1,4 +1,4 @@
-# City Drive — assets and evidence index
+# Street Royale — assets and evidence index
 
 ## Research and planning
 
@@ -17,7 +17,10 @@
 | Kenney City Kit and Car Kit licence table, budget report, model list | `.agents/resources/2026-10-15/city-drive-qa/04/` (`README.md`, `budget-report.json`) | done (task 04) |
 | Per-pack licence records (URL, date, SHA-256, verbatim `License.txt`) | `apps-games/city-drive/assets-src/LICENSES/<pack>.txt` | done (task 04) |
 | Name candidates and uniqueness evidence | `.agents/resources/2026-10-15/city-drive-qa/18/` | planned (task 18) |
-| Icon dry run and art masters | `.agents/resources/2026-10-15/city-drive-art/<set>/` | planned (tasks 18, 20) |
+| Icon dry run (six drafts, prompts) | `.agents/resources/2026-10-15/city-drive-qa/18/icons/` | done (task 18) |
+| Final icon masters, adaptive pair, splash, source art and prompt log | `.agents/resources/2026-10-15/city-drive-art/icon/` | done (task 20) |
+| Brand art builder and generated platform assets | `apps-games/city-drive/{scripts/build-brand-art.ts,scripts/brand-assets.ts,resources/,public/icons/,android/**/res/,ios/**/Assets.xcassets/}` | done (task 20) |
+| Task 20 verification logs | `.agents/resources/2026-10-15/city-drive-qa/20/` | done (task 20) |
 
 ## Code and shipped assets
 

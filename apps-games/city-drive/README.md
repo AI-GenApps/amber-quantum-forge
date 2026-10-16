@@ -1,4 +1,4 @@
-# City Drive (working title)
+# Street Royale (internal id `city-drive`)
 
 A 3D low-poly city-driving game built with Babylon.js and TypeScript. It runs in
 desktop and mobile browsers, and is packaged for Android and iOS with Capacitor

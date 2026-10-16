@@ -42,6 +42,8 @@ test("city_drive registers identity, namespaces, and a capability-free concept e
   const game = city();
   expect(isWebGame(game)).toBe(true);
   expect(game.rendering).toBe("babylon");
+  expect(game.publicTitle).toBe("Street Royale");
+  expect(game.canonicalName).toBe("Street Royale");
   expect(game.lifecycle).toBe("concept");
   expect(game.platforms).toEqual(["android", "ios"]);
   expect(game.identity.androidApplicationId).toBe("app.w3dev.citydrive");

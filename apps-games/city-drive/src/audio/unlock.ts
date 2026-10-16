@@ -1,3 +1,5 @@
+import { GAME_TITLE } from "../ui/brand";
+
 /** Browsers start audio contexts suspended; the first real gesture is what lets them run. */
 const GESTURES = ["pointerdown", "touchend", "keydown", "mousedown"] as const;
 
@@ -19,7 +21,7 @@ export function unlockOnFirstGesture(
   const onGesture = (): void => {
     remove();
     target.unlock().catch((error: unknown) => {
-      console.warn("City Drive: audio could not start; it will retry on the next tap", error);
+      console.warn(`${GAME_TITLE}: audio could not start; it will retry on the next tap`, error);
       add();
     });
   };

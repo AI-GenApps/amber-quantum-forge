@@ -1,0 +1,3 @@
+package: name='app.w3dev.citydrive.debug' versionCode='1' versionName='1.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'
+application-label:'Street Royale'
+launchable-activity: name='app.w3dev.citydrive.MainActivity'  label='Street Royale' icon=''

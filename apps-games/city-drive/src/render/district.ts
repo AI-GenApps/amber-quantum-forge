@@ -2,6 +2,7 @@ import { type CityMap, loadCityMap, parseCityManifest } from "@city-drive/core/c
 import district1 from "@city-drive/core/maps/district-1.json";
 import district2 from "@city-drive/core/maps/district-2.json";
 import district3 from "@city-drive/core/maps/district-3.json";
+import { GAME_TITLE } from "../ui/brand";
 
 const DISTRICT_MAPS: Readonly<Record<string, unknown>> = {
   "district-1": district1,
@@ -12,7 +13,7 @@ const DISTRICT_MAPS: Readonly<Record<string, unknown>> = {
 /** Parses and validates a district map against the shipped asset manifest. Throws with tile coordinates. */
 export function loadDistrict(id: string, rawManifest: unknown): CityMap {
   const raw = DISTRICT_MAPS[id];
-  if (raw === undefined) throw new Error(`City Drive: unknown district "${id}"`);
+  if (raw === undefined) throw new Error(`${GAME_TITLE}: unknown district "${id}"`);
   return loadCityMap(raw, parseCityManifest(rawManifest));
 }
 

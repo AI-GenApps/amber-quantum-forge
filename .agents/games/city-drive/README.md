@@ -1,8 +1,9 @@
-# City Drive — game knowledge base
+# Street Royale — game knowledge base
 
-Single source of truth for what City Drive **is** and the answers needed for
-store listings, reviews, support, and future work. "City Drive" is a **working
-title**; the public name is picked at task 19 (`tasks/epics/17-city-drive/`).
+Single source of truth for what Street Royale **is** and the answers needed for
+store listings, reviews, support, and future work. "Street Royale" is the public
+name (picked at task 19, applied at task 20); the epic's working title was "City
+Drive" and the internal ids still use it (`tasks/epics/17-city-drive/`).
 Keep this folder current: every product decision, number, or listing answer
 that changes must be updated here in the same commit. Evidence (research,
 budget reports, licence records, art masters) lives in dated folders under
@@ -21,7 +22,7 @@ budget reports, licence records, art masters) lives in dated folders under
 
 | | |
 |---|---|
-| Working title | **City Drive** (public name picked at task 19; this folder and the ids below stay `city-drive` / `city_drive`) |
+| Public name | **Street Royale** (was the working title "City Drive"; this folder and the ids below stay `city-drive` / `city_drive`) |
 | Registry id | `city_drive` (games registry, `engine: "web"` from task 02) |
 | Knowledge-base slug | `city-drive` |
 | Planned bundle / package id | `app.w3dev.citydrive` (production); debug suffix decided in task 17 |

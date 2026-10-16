@@ -1,3 +1,5 @@
+import { GAME_TITLE } from "../ui/brand";
+
 /** The moments that buzz. Anything else stays still. */
 export type HapticEvent = "collision" | "checkpoint" | "pickup" | "success" | "fail";
 
@@ -52,6 +54,6 @@ export class HapticsService implements HapticsPort {
   private report(event: HapticEvent, error: unknown): void {
     if (this.reported) return;
     this.reported = true;
-    console.warn(`City Drive: haptic "${event}" failed; further failures are not logged`, error);
+    console.warn(`${GAME_TITLE}: haptic "${event}" failed; further failures are not logged`, error);
   }
 }

@@ -27,6 +27,7 @@ import {
 import { createGarage } from "./render/garage";
 import { frameStats } from "./render/stats";
 import { LastDistrict, PreferencesSaveStore, Profile, ROSTER, showSaveNotice } from "./save";
+import { GAME_TITLE } from "./ui/brand";
 import { AppController } from "./ui/controller";
 import { wantsTouchControls } from "./ui/controls/wantsTouch";
 import { summarizeMission } from "./ui/model/districts";
@@ -36,14 +37,14 @@ import { OnboardingFlow } from "./ui/onboarding";
 
 function requireElement(id: string): HTMLElement {
   const element = document.getElementById(id);
-  if (!element) throw new Error(`City Drive: #${id} element is missing from index.html`);
+  if (!element) throw new Error(`${GAME_TITLE}: #${id} element is missing from index.html`);
   return element;
 }
 
 async function fetchChecked(path: string): Promise<Response> {
   const response = await fetch(`${import.meta.env.BASE_URL}assets/${path}`);
   if (!response.ok) {
-    throw new Error(`City Drive: could not load assets/${path} (HTTP ${response.status})`);
+    throw new Error(`${GAME_TITLE}: could not load assets/${path} (HTTP ${response.status})`);
   }
   return response;
 }
@@ -56,14 +57,15 @@ async function loadAudioManifest(): Promise<AudioManifest> {
   try {
     return (await (await fetchChecked("audio/manifest.json")).json()) as AudioManifest;
   } catch (error) {
-    console.error("City Drive: audio could not be loaded; the game will be silent", error);
+    console.error(`${GAME_TITLE}: audio could not be loaded; the game will be silent`, error);
     return { version: 1, totalBytes: 0, sounds: [], procedural: [] };
   }
 }
 
 async function start(): Promise<void> {
   const canvas = requireElement("game");
-  if (!(canvas instanceof HTMLCanvasElement)) throw new Error("City Drive: #game is not a canvas");
+  if (!(canvas instanceof HTMLCanvasElement))
+    throw new Error(`${GAME_TITLE}: #game is not a canvas`);
   const ui = requireElement("ui");
   const params = new URLSearchParams(window.location.search);
   const manifest = (await (await fetchChecked("manifest.json")).json()) as AssetManifest;
@@ -117,7 +119,8 @@ async function start(): Promise<void> {
   );
   const firstDistrict = progression.districts[0]?.id ?? "district-1";
   const firstMissionId = missions[firstDistrict]?.[0]?.id;
-  if (!firstMissionId) throw new Error(`City Drive: district "${firstDistrict}" has no missions`);
+  if (!firstMissionId)
+    throw new Error(`${GAME_TITLE}: district "${firstDistrict}" has no missions`);
   const onboarding = new OnboardingFlow({
     flag: (name) => profile.flag(name),
     setFlag: (name, value) => profile.setFlag(name, value),
@@ -240,6 +243,6 @@ async function start(): Promise<void> {
 }
 
 start().catch((error: unknown) => {
-  console.error("City Drive failed to start", error);
+  console.error(`${GAME_TITLE} failed to start`, error);
   throw error;
 });

@@ -12,7 +12,9 @@
     "build-assets": "bun scripts/build-assets.ts",
     "build-audio": "bun scripts/build-audio.ts",
     "cap:sync": "vite build && cap sync",
-    "android:debug": "bun scripts/android-debug.ts"
+    "android:debug": "bun scripts/android-debug.ts",
+    "brand:art": "bun scripts/build-brand-art.ts",
+    "brand:assets": "bun scripts/brand-assets.ts"
   },
   "dependencies": {
     "@babylonjs/core": "9.31.0",
@@ -31,6 +33,7 @@
   },
   "devDependencies": {
     "@babylonjs/inspector": "9.31.0",
+    "@capacitor/assets": "3.0.5",
     "@capacitor/cli": "8.5.3",
     "@gltf-transform/cli": "4.5.1",
     "@gltf-transform/core": "4.5.1",

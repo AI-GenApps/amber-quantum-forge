@@ -1,4 +1,4 @@
-# City Drive — store listing answer bank
+# Street Royale — store listing answer bank
 
 Draft answers for Google Play Console (first) and App Store Connect (later).
 This is a **skeleton written at task 00**; task 21 (release readiness) fills
@@ -12,7 +12,7 @@ calls. Listing copy must stay truthful to that.
 
 | Field | Answer |
 |---|---|
-| App name (30 chars max) | **TBD (task 19 pick, task 20 applied)**; working title "City Drive" |
+| App name (30 chars max) | **Street Royale** (13 chars; picked at task 19, applied at task 20; trademark clearance still to do) |
 | Package / bundle id | `app.w3dev.citydrive` (planned; confirmed in task 17) |
 | Developer name / account | **TBD (human, task 22)** |
 | Default language | **TBD (human)**; English (United States) expected |

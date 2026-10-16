@@ -1,4 +1,4 @@
-# City Drive — decisions log
+# Street Royale — decisions log (internal id `city-drive`)
 
 All decisions below come from `tasks/epics/17-city-drive/STATUS.md`
 (user decisions and the 2026-10-15 research). Research facts and URLs are
@@ -8,7 +8,7 @@ also in `.agents/resources/2026-10-15/city-drive-qa/00/README.md`.
 
 | Date | Decision | Rationale / notes |
 |---|---|---|
-| 2026-10-15 | Engine: **Babylon.js** (TypeScript, Vite). **Unity is forbidden.** | Unity is ruled out by the user. Flutter has no production-ready 3D stack, so City Drive is the portfolio's first non-Flutter game. |
+| 2026-10-15 | Engine: **Babylon.js** (TypeScript, Vite). **Unity is forbidden.** | Unity is ruled out by the user. Flutter has no production-ready 3D stack, so Street Royale is the portfolio's first non-Flutter game. |
 | 2026-10-15 | Packaging: **Capacitor 8** for Android and iOS; the same build runs in browsers | One web codebase for three targets. Capacitor 8 needs Node 22+, minSdk 24 / targetSdk 36, iOS 15+ (see research below). |
 | 2026-10-15 | Core loop (v1): **free roam plus missions**; missions are grouped into districts that unlock by stars | Missions/career is the top retention driver for the genre (see research below). |
 | 2026-10-15 | Economy (v1): **coins and car unlocks only**. Coins come from missions; coins unlock cars. **No ads, no IAP, no accounts, no real money.** | Clean offline first release; commerce is deferred (`economy.md`). |
@@ -48,7 +48,7 @@ also in `.agents/resources/2026-10-15/city-drive-qa/00/README.md`.
 | Drive Zone | 100M+ | 4.5 | https://play.google.com/store/apps/details?id=com.drivezone.car.race.game |
 | Taxi Car Simulator: EVO | 10M+ | 4.5 | https://play.google.com/store/apps/details?id=com.ovilex.taxisim2019 |
 
-All of them ship ads and IAP. City Drive's v1 differentiator is an offline,
+All of them ship ads and IAP. Street Royale's v1 differentiator is an offline,
 no-ads, no-IAP mission game.
 
 ### Genre data and retention
@@ -234,3 +234,35 @@ Baseline car values live in `apps-games/city-drive-core/src/cars/specs.ts`
   Evidence: `.agents/resources/2026-10-15/city-drive-qa/18/round-2/`.
 - **Icon: 1b** (teal coupe at sunset), unchanged.
 - Registry id `city_drive` and bundle id `app.w3dev.citydrive` stay as they are.
+
+
+## 2026-10-16 — Name, icon and splash applied (task 20)
+
+- **Name applied everywhere user-facing:** the single `GAME_TITLE` constant (`src/ui/brand.ts`), the static
+  `<title>` in `index.html`, the web manifest, Capacitor `appName`, Android `app_name` and
+  `title_activity_main`, iOS `CFBundleDisplayName`, the registry `publicTitle`, the console and error
+  prefixes (they now interpolate `GAME_TITLE`), and this knowledge base.
+- **Internal ids unchanged, on purpose** (the way Merge Relay kept `merge_relay`): registry id `city_drive`,
+  slug and folders `city-drive` / `city-drive-core`, package names `@city-drive/*`, bundle and application id
+  `app.w3dev.citydrive` (debug `.debug`). Changing the bundle id would orphan nothing yet, but it also buys
+  nothing: the id is never shown to players and renaming it touches Gradle, Xcode, CI and the registry.
+- **Registry `canonicalName` changes with the brand** (to "Street Royale"), as Merge Relay's did. Nothing
+  reads it for identity: ids, namespaces and application ids come from `identity()` and `namespaces()`.
+- **Final icon = the 1b master, unchanged** (owner asked for no changes): resized to 1024x1024, flattened,
+  RGB with no alpha (iOS requirement). **Adaptive foreground:** the owner's 1b art is a full scene, so it
+  cannot be split. A new foreground was generated with the generate-image skill (smoke test = the real
+  asset): the same teal low-poly coupe from the rear three-quarter view, alone on flat `#FF00FF`, then keyed
+  out with sharp (`scripts/brand-art/key.ts`, with despill), trimmed and centred inside the safe zone.
+  It is the same car idea, not the same pixels, and a human should look at it. **Adaptive background:**
+  solid `#1b2a55` (dusk navy). Prompt, model and params are in
+  `.agents/resources/2026-10-15/city-drive-art/icon/README.md`.
+- **Splash:** the hero car and the name in Russo One ("STREET" cream, "ROYALE" amber) centred on `#1b2a55`
+  (`splash.png`) and `#0b1020` (`splash-dark.png`), 2732x2732 with everything inside the centre band so a
+  landscape crop never cuts it.
+- **Generation:** `bun run --filter @city-drive/app brand:assets` rebuilds the art (`scripts/build-brand-art.ts`)
+  and runs `@capacitor/assets` 3.0.5 (exact dev dependency). The tool also reformats `AndroidManifest.xml`;
+  `scripts/brand-assets.ts` puts that file back byte for byte. The tool's adaptive XML insets the layers by
+  16.7%, so the foreground is drawn larger (820 px car) to land at about 58 dp of the 108 dp canvas.
+- **Web:** `favicon.png` (48), `apple-touch-icon.png` (180), `icons/icon-{192,512}.png`,
+  `icons/icon-512-maskable.png` and `manifest.webmanifest`, all from the same master.
+- **Home wordmark:** `Wordmark.tsx`, HTML and CSS in Russo One with the 192 px icon as a small mark.

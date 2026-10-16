@@ -1,0 +1,156 @@
+$ bun run --filter @city-drive/app cap:sync
+@city-drive/app cap:sync: vite v8.3.4 building client environment for production...
+@city-drive/app cap:sync: transforming...
+@city-drive/app cap:sync: ✓ 934 modules transformed.
+@city-drive/app cap:sync: rendering chunks...
+@city-drive/app cap:sync: computing gzip size...
+@city-drive/app cap:sync: dist/index.html                                            2.99 kB │ gzip:     0.97 kB
+@city-drive/app cap:sync: dist/assets/index-C9Km5kMP.css                            18.59 kB │ gzip:     4.07 kB
+@city-drive/app cap:sync: dist/assets/typeStore-Cu_sj2zM.js                          0.08 kB │ gzip:     0.08 kB
+@city-drive/app cap:sync: dist/assets/pass.fragment-Cvd2TCWC.js                      0.31 kB │ gzip:     0.25 kB
+@city-drive/app cap:sync: dist/assets/bumpVertexDeclaration-Cb04kLz9.js              0.34 kB │ gzip:     0.25 kB
+@city-drive/app cap:sync: dist/assets/sceneUboDeclaration-B5VhSG0v.js                0.36 kB │ gzip:     0.26 kB
+@city-drive/app cap:sync: dist/assets/bumpVertexDeclaration-I4Guxw_q.js              0.39 kB │ gzip:     0.26 kB
+@city-drive/app cap:sync: dist/assets/sceneUboDeclaration-B96Tfx7b.js                0.43 kB │ gzip:     0.27 kB
+@city-drive/app cap:sync: dist/assets/postprocess.vertex-DJCmMhI8.js                 0.46 kB │ gzip:     0.30 kB
+@city-drive/app cap:sync: dist/assets/shaderStore-D-XQlhUT.js                        0.46 kB │ gzip:     0.17 kB
+@city-drive/app cap:sync: dist/assets/procedural.vertex-C47TVAon.js                  0.47 kB │ gzip:     0.29 kB
+@city-drive/app cap:sync: dist/assets/performanceConfigurator-UtxC_Odd.js            0.50 kB │ gzip:     0.25 kB
+@city-drive/app cap:sync: dist/assets/rgbdEncode.fragment-CVg4Fcse.js                0.51 kB │ gzip:     0.33 kB
+@city-drive/app cap:sync: dist/assets/rgbdDecode.fragment-Cdz2Tveq.js                0.52 kB │ gzip:     0.34 kB
+@city-drive/app cap:sync: dist/assets/bumpVertex-CWhdIpqj.js                         0.52 kB │ gzip:     0.32 kB
+@city-drive/app cap:sync: dist/assets/postprocess.vertex-CmVXXq2T.js                 0.58 kB │ gzip:     0.35 kB
+@city-drive/app cap:sync: dist/assets/procedural.vertex-D3o6xkF2.js                  0.61 kB │ gzip:     0.34 kB
+@city-drive/app cap:sync: dist/assets/rgbdEncode.fragment-CxPSfrvR.js                0.65 kB │ gzip:     0.37 kB
+@city-drive/app cap:sync: dist/assets/rgbdDecode.fragment-DXl2fYur.js                0.66 kB │ gzip:     0.38 kB
+@city-drive/app cap:sync: dist/assets/logDepthDeclaration-Bl7gNenU.js                0.67 kB │ gzip:     0.39 kB
+@city-drive/app cap:sync: dist/assets/bumpVertex-DRq4BZvD.js                         0.69 kB │ gzip:     0.38 kB
+@city-drive/app cap:sync: dist/assets/math.scalar.functions-Bcxiuh2E.js              0.70 kB │ gzip:     0.39 kB
+@city-drive/app cap:sync: dist/assets/logDepthDeclaration-wCvYk_Kr.js                0.72 kB │ gzip:     0.40 kB
+@city-drive/app cap:sync: dist/assets/web-DeWbyjr8.js                                0.84 kB │ gzip:     0.40 kB
+@city-drive/app cap:sync: dist/assets/web-tMwVdeDI.js                                0.89 kB │ gzip:     0.45 kB
+@city-drive/app cap:sync: dist/assets/mesh.vertexData.functions-CD4JOR2q.js          0.93 kB │ gzip:     0.48 kB
+@city-drive/app cap:sync: dist/assets/web-CIbEWNr9.js                                1.05 kB │ gzip:     0.34 kB
+@city-drive/app cap:sync: dist/assets/harmonicsFunctions-QSz_WdsQ.js                 1.12 kB │ gzip:     0.49 kB
+@city-drive/app cap:sync: dist/assets/web-DK9nHz9p.js                                1.15 kB │ gzip:     0.46 kB
+@city-drive/app cap:sync: dist/assets/smartArray-BRfcgNbX.js                         1.18 kB │ gzip:     0.44 kB
+@city-drive/app cap:sync: dist/assets/web-Bsa0evaj.js                                1.19 kB │ gzip:     0.54 kB
+@city-drive/app cap:sync: dist/assets/ddsTextureLoader-C2AEDWtO.js                   1.25 kB │ gzip:     0.62 kB
+@city-drive/app cap:sync: dist/assets/defaultUboDeclaration-COomfCG5.js              1.26 kB │ gzip:     0.55 kB
+@city-drive/app cap:sync: dist/assets/halfFloat-Ce77JD5z.js                          1.29 kB │ gzip:     0.60 kB
+@city-drive/app cap:sync: dist/assets/harmonicsFunctions-CMr56qfT.js                 1.42 kB │ gzip:     0.52 kB
+@city-drive/app cap:sync: dist/assets/defaultUboDeclaration-Dcpskzb_.js              1.62 kB │ gzip:     0.53 kB
+@city-drive/app cap:sync: dist/assets/glTFLoaderAnimation.pure-BRcig5JM.js           1.78 kB │ gzip:     0.81 kB
+@city-drive/app cap:sync: dist/assets/pbrUboDeclaration-C3goPwfE.js                  1.80 kB │ gzip:     0.68 kB
+@city-drive/app cap:sync: dist/assets/math.plane-BQUaK-MF.js                         1.81 kB │ gzip:     0.77 kB
+@city-drive/app cap:sync: dist/assets/logger-CuBYPcDK.js                             1.88 kB │ gzip:     0.82 kB
+@city-drive/app cap:sync: dist/assets/drawWrapper-CMkenNCt.js                        2.25 kB │ gzip:     1.14 kB
+@city-drive/app cap:sync: dist/assets/hdrTextureLoader-BQVwkxK1.js                   2.31 kB │ gzip:     1.13 kB
+@city-drive/app cap:sync: dist/assets/pbrUboDeclaration-DjrvFIJp.js                  2.40 kB │ gzip:     0.66 kB
+@city-drive/app cap:sync: dist/assets/iesTextureLoader-DkRm2YN5.js                   2.47 kB │ gzip:     1.08 kB
+@city-drive/app cap:sync: dist/assets/pbrIBLFunctions-CSlJv7qb.js                    2.52 kB │ gzip:     0.88 kB
+@city-drive/app cap:sync: dist/assets/pbrIBLFunctions-b8fwQKtH.js                    2.71 kB │ gzip:     0.88 kB
+@city-drive/app cap:sync: dist/assets/tgaTextureLoader-CqhhocF6.js                   3.40 kB │ gzip:     1.35 kB
+@city-drive/app cap:sync: dist/assets/textureProcessor.fragment-D-awtrDP.js          3.49 kB │ gzip:     1.00 kB
+@city-drive/app cap:sync: dist/assets/engineStore-Bn2tApal.js                        3.51 kB │ gzip:     1.21 kB
+@city-drive/app cap:sync: dist/assets/cubemapToSphericalPolynomial-CdRidJ2m.js       3.65 kB │ gzip:     1.61 kB
+@city-drive/app cap:sync: dist/assets/decorators-D5uwmq6c.js                         3.80 kB │ gzip:     1.56 kB
+@city-drive/app cap:sync: dist/assets/openpbrUboDeclaration-dcWCwMT2.js              3.87 kB │ gzip:     1.03 kB
+@city-drive/app cap:sync: dist/assets/dumpTools.pure-tfL66F1h.js                     3.95 kB │ gzip:     1.86 kB
+@city-drive/app cap:sync: dist/assets/textureProcessor.fragment-B-hqHgey.js          4.37 kB │ gzip:     1.18 kB
+@city-drive/app cap:sync: dist/assets/openpbrUboDeclaration-CnVubd7S.js              5.22 kB │ gzip:     1.05 kB
+@city-drive/app cap:sync: dist/assets/decorators.serialization-RIKpxdFG.js           5.62 kB │ gzip:     2.07 kB
+@city-drive/app cap:sync: dist/assets/clipPlaneFragment-DflTcbc3.js                  6.21 kB │ gzip:     1.52 kB
+@city-drive/app cap:sync: dist/assets/helperFunctions-BH8P-eyq.js                    6.48 kB │ gzip:     2.18 kB
+@city-drive/app cap:sync: dist/assets/helperFunctions-gEnZbjN3.js                    6.81 kB │ gzip:     2.31 kB
+@city-drive/app cap:sync: dist/assets/clipPlaneFragment-CzdMqoUV.js                  6.85 kB │ gzip:     1.58 kB
+@city-drive/app cap:sync: dist/assets/bumpFragment-C4ZFODnM.js                       6.86 kB │ gzip:     2.41 kB
+@city-drive/app cap:sync: dist/assets/dds.pure-D6Nr0Cvp.js                           6.93 kB │ gzip:     2.53 kB
+@city-drive/app cap:sync: dist/assets/buffer.pure-3pAP6ZuR.js                        7.38 kB │ gzip:     2.42 kB
+@city-drive/app cap:sync: dist/assets/geometry.vertex-DMGBcdYA.js                    7.75 kB │ gzip:     1.91 kB
+@city-drive/app cap:sync: dist/assets/logDepthVertex-DDWeeEV_.js                     7.79 kB │ gzip:     1.98 kB
+@city-drive/app cap:sync: dist/assets/internalTexture-B3djGrls.js                    7.87 kB │ gzip:     2.04 kB
+@city-drive/app cap:sync: dist/assets/default.vertex-BZHlxzDq.js                     7.91 kB │ gzip:     2.21 kB
+@city-drive/app cap:sync: dist/assets/envTextureLoader-ADQzEJNs.js                   7.98 kB │ gzip:     3.19 kB
+@city-drive/app cap:sync: dist/assets/bumpFragment-wDGAwN7K.js                       8.06 kB │ gzip:     2.52 kB
+@city-drive/app cap:sync: dist/assets/effectRenderer.pure-CeKPi96P.js                8.12 kB │ gzip:     2.37 kB
+@city-drive/app cap:sync: dist/assets/basisTextureLoader-B6WOAeNv.js                 8.14 kB │ gzip:     3.17 kB
+@city-drive/app cap:sync: dist/assets/geometry.vertex-DoVnCDjT.js                    8.95 kB │ gzip:     1.99 kB
+@city-drive/app cap:sync: dist/assets/default.vertex-ju7dFdIq.js                     9.24 kB │ gzip:     2.37 kB
+@city-drive/app cap:sync: dist/assets/geometry.fragment-ChGxxFbR.js                 11.22 kB │ gzip:     3.11 kB
+@city-drive/app cap:sync: dist/assets/geometry.fragment-CAvzJ0Za.js                 11.72 kB │ gzip:     3.00 kB
+@city-drive/app cap:sync: dist/assets/pbrBRDFFunctions-BCNINF-p.js                  11.93 kB │ gzip:     4.14 kB
+@city-drive/app cap:sync: dist/assets/pbrMaterialLoadingAdapter-gITW1jqs.js         12.46 kB │ gzip:     2.40 kB
+@city-drive/app cap:sync: dist/assets/pbrBRDFFunctions-DxfbxN23.js                  12.76 kB │ gzip:     4.32 kB
+@city-drive/app cap:sync: dist/assets/sceneInstrumentation-nSWKUzCa.js              12.97 kB │ gzip:     1.73 kB
+@city-drive/app cap:sync: dist/assets/exrTextureLoader-BIqkYjyC.js                  13.13 kB │ gzip:     4.83 kB
+@city-drive/app cap:sync: dist/assets/precisionDate-DgO8bWsc.js                     13.86 kB │ gzip:     4.89 kB
+@city-drive/app cap:sync: dist/assets/clipPlaneVertex-_VpYGhbL.js                   14.02 kB │ gzip:     2.67 kB
+@city-drive/app cap:sync: dist/assets/pbr.vertex-DLijaBbk.js                        14.25 kB │ gzip:     3.02 kB
+@city-drive/app cap:sync: dist/assets/ktxTextureLoader-WcVVActJ.js                  16.37 kB │ gzip:     4.79 kB
+@city-drive/app cap:sync: dist/assets/pbr.vertex-B_qPwtbi.js                        16.78 kB │ gzip:     3.52 kB
+@city-drive/app cap:sync: dist/assets/openpbr.vertex-BtH5E8TL.js                    17.12 kB │ gzip:     3.29 kB
+@city-drive/app cap:sync: dist/assets/clipPlaneVertex-jHbs7Zzz.js                   17.12 kB │ gzip:     2.83 kB
+@city-drive/app cap:sync: dist/assets/openpbrTransmissionLayerData-BRi1vGnu.js      17.35 kB │ gzip:     4.01 kB
+@city-drive/app cap:sync: dist/assets/renderingManager-ClgmDYW4.js                  17.90 kB │ gzip:     4.85 kB
+@city-drive/app cap:sync: dist/assets/lightConstants-BcmBTkkY.js                    18.24 kB │ gzip:     4.02 kB
+@city-drive/app cap:sync: dist/assets/postProcess.pure-DwFGam5u.js                  18.38 kB │ gzip:     5.05 kB
+@city-drive/app cap:sync: dist/assets/openpbrTransmissionLayerData-CbssVoWF.js      18.46 kB │ gzip:     4.15 kB
+@city-drive/app cap:sync: dist/assets/openpbr.vertex-DGp2BpzS.js                    20.47 kB │ gzip:     3.95 kB
+@city-drive/app cap:sync: dist/assets/lightFragment-x7Xpl9uU.js                     20.56 kB │ gzip:     3.35 kB
+@city-drive/app cap:sync: dist/assets/lightFragment-DY7jBbrD.js                     22.58 kB │ gzip:     3.36 kB
+@city-drive/app cap:sync: dist/assets/logDepthVertex-fyiD32AJ.js                    22.88 kB │ gzip:     3.76 kB
+@city-drive/app cap:sync: dist/assets/default.fragment-DiM6ORKs.js                  25.26 kB │ gzip:     5.94 kB
+@city-drive/app cap:sync: dist/assets/default.fragment-DUUPgMIz.js                  26.20 kB │ gzip:     5.86 kB
+@city-drive/app cap:sync: dist/assets/tools.pure-B70w-hnh.js                        30.44 kB │ gzip:    10.16 kB
+@city-drive/app cap:sync: dist/assets/renderTargetTexture.pure-BoJb1A6H.js          32.16 kB │ gzip:     7.90 kB
+@city-drive/app cap:sync: dist/assets/openpbrMaterialLoadingAdapter-D66tJkOH.js     33.52 kB │ gzip:     7.98 kB
+@city-drive/app cap:sync: dist/assets/pbrDebug-s-xc2uxY.js                          38.05 kB │ gzip:     8.54 kB
+@city-drive/app cap:sync: dist/assets/animationGroup.pure-CwOUeHQw.js               42.02 kB │ gzip:    10.27 kB
+@city-drive/app cap:sync: dist/assets/pbrDebug-DDJVpqrh.js                          45.34 kB │ gzip:    10.08 kB
+@city-drive/app cap:sync: dist/assets/oitFragment-XVAFopJI.js                       54.43 kB │ gzip:    11.37 kB
+@city-drive/app cap:sync: dist/assets/oitFragment-D7Vhdz5x.js                       54.61 kB │ gzip:    11.40 kB
+@city-drive/app cap:sync: dist/assets/brdfTextureTools-CQXtYqFY.js                  61.27 kB │ gzip:    44.77 kB
+@city-drive/app cap:sync: dist/assets/math.color.pure-DJT7yC3Y.js                   76.92 kB │ gzip:    18.42 kB
+@city-drive/app cap:sync: dist/assets/material.pure-CxkC9f1y.js                     78.91 kB │ gzip:    20.25 kB
+@city-drive/app cap:sync: dist/assets/openpbr.fragment-Df1pwkYo.js                  88.56 kB │ gzip:    17.64 kB
+@city-drive/app cap:sync: dist/assets/openpbr.fragment-dkANobCW.js                  90.28 kB │ gzip:    17.63 kB
+@city-drive/app cap:sync: dist/assets/pbr.fragment-C2ZWQ6aR.js                      93.42 kB │ gzip:    16.64 kB
+@city-drive/app cap:sync: dist/assets/pbr.fragment-BEZ30aNp.js                      97.26 kB │ gzip:    18.11 kB
+@city-drive/app cap:sync: dist/assets/thinEngine.pure-Ci1gr3qi.js                  127.92 kB │ gzip:    30.99 kB
+@city-drive/app cap:sync: dist/assets/pbrMaterial.pure-Gj_q3RoP.js                 134.92 kB │ gzip:    25.13 kB
+@city-drive/app cap:sync: dist/assets/openpbrMaterial.pure-B1yAaAp_.js             139.97 kB │ gzip:    31.29 kB
+@city-drive/app cap:sync: dist/assets/index-CLdM2Lna.js                          1,168.84 kB │ gzip:   288.79 kB
+@city-drive/app cap:sync: dist/assets/rapier-BR_-CEU_.js                         4,332.81 kB │ gzip: 1,669.30 kB
+@city-drive/app cap:sync: 
+@city-drive/app cap:sync: ✓ built in 579ms
+@city-drive/app cap:sync: ✔ Copying web assets from dist to android/app/src/main/assets/public in 24.29ms
+@city-drive/app cap:sync: ✔ Creating capacitor.config.json in android/app/src/main/assets in 514.02μs
+@city-drive/app cap:sync: ✔ copy android in 36.24ms
+@city-drive/app cap:sync: ✔ Updating Android plugins in 2.66ms
+@city-drive/app cap:sync: [info] Found 6 Capacitor plugins for android:
+@city-drive/app cap:sync:        @capacitor-community/keep-awake@8.0.1
+@city-drive/app cap:sync:        @capacitor/app@8.1.2
+@city-drive/app cap:sync:        @capacitor/haptics@8.0.2
+@city-drive/app cap:sync:        @capacitor/preferences@8.0.1
+@city-drive/app cap:sync:        @capacitor/screen-orientation@8.0.2
+@city-drive/app cap:sync:        @capacitor/status-bar@8.0.4
+@city-drive/app cap:sync: ✔ update android in 32.53ms
+@city-drive/app cap:sync: ✔ Copying web assets from dist to ios/App/App/public in 17.12ms
+@city-drive/app cap:sync: ✔ Creating capacitor.config.json in ios/App/App in 207.25μs
+@city-drive/app cap:sync: ✔ copy ios in 31.45ms
+@city-drive/app cap:sync: ✔ Updating iOS plugins in 2.23ms
+@city-drive/app cap:sync: [info] All Capacitor plugins have a Package.swift file and will be included in Package.swift
+@city-drive/app cap:sync: [info] Writing Package.swift
+@city-drive/app cap:sync: [info] Found 6 Capacitor plugins for ios:
+@city-drive/app cap:sync:        @capacitor-community/keep-awake@8.0.1
+@city-drive/app cap:sync:        @capacitor/app@8.1.2
+@city-drive/app cap:sync:        @capacitor/haptics@8.0.2
+@city-drive/app cap:sync:        @capacitor/preferences@8.0.1
+@city-drive/app cap:sync:        @capacitor/screen-orientation@8.0.2
+@city-drive/app cap:sync:        @capacitor/status-bar@8.0.4
+@city-drive/app cap:sync: ✔ update ios in 15.74ms
+@city-drive/app cap:sync: ✔ copy web in 4.65ms
+@city-drive/app cap:sync: ✔ update web in 5.49ms
+@city-drive/app cap:sync: [info] Sync finished in 0.164s
+@city-drive/app cap:sync: Exited with code 0

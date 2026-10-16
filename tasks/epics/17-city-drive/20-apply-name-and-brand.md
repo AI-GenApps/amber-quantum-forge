@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 20-apply-name-and-brand
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/19-human-pick-name-and-icon]
 estimate: M
@@ -49,12 +49,12 @@ splash asset.
 
 ## Implementation Checklist
 
-- [ ] Apply the name across all user-facing surfaces and the registry
+- [x] Apply the name across all user-facing surfaces and the registry
       `publicTitle`.
-- [ ] Final icon masters, then `@capacitor/assets` generation and `cap sync`.
-- [ ] Favicon and PWA icons; the home wordmark.
-- [ ] Tests for the name usage and the icon sizes and alpha.
-- [ ] Update the knowledge base: `README.md` quick facts, `assets-index.md`,
+- [x] Final icon masters, then `@capacitor/assets` generation and `cap sync`.
+- [x] Favicon and PWA icons; the home wordmark.
+- [x] Tests for the name usage and the icon sizes and alpha.
+- [x] Update the knowledge base: `README.md` quick facts, `assets-index.md`,
       `decisions-log.md`.
 
 ## Files Touched
@@ -94,3 +94,20 @@ These come from the read-only dry-run review of this epic. **Where they conflict
 - **Wider name grep:** the "no leftover working title" grep also covers `docs-public/` and the registry.
 - **Tooling tests:** after `games:test:tooling`, run `git checkout -- apps-native/`; nothing may change under `apps-native/`.
 - **Files Touched:** add `.agents/resources/2026-10-15/city-drive-qa/20/README.md`.
+
+## Implementation notes (2026-10-16)
+
+- Added beyond Files Touched: `knip.json` (`@capacitor/assets` is used only as a binary, so it joins the
+  app workspace's `ignoreDependencies`), `apps-games/city-drive/scripts/{build-brand-art.ts,brand-assets.ts,brand-art/*}`
+  (the reproducible art builder and the `brand:art` / `brand:assets` scripts), `docs-internal/gaming/{app-source-registry,city-drive-native-build}.md`
+  (name only), `scripts/games/registry-web.test.ts` (asserts the new `publicTitle` and `canonicalName`),
+  `apps-games/city-drive/README.md`, `.agents/resources/2026-10-15/city-drive-art/icon/**` and
+  `.agents/resources/2026-10-15/city-drive-qa/20/**`.
+- Console and error prefixes in `src/` now interpolate `GAME_TITLE` so `grep -rni "city drive" src` is empty.
+- `canonicalName` was changed with the brand (decision recorded in `.agents/games/city-drive/decisions-log.md`).
+- `@capacitor/assets` 3.0.5 reformats `AndroidManifest.xml`; `brand-assets.ts` restores it byte for byte.
+- Verification: `city-drive:test` pass (603 passed, 1 pre-existing skip); `city-drive:cap:sync` pass;
+  `games:test:tooling` 58 pass and 3 fail, all pre-existing (Bun pin, dart, flutter; reproduced on HEAD);
+  `city-drive:typecheck` and `biome check` pass; debug APK builds and reports `Street Royale`.
+  Evidence: `.agents/resources/2026-10-15/city-drive-qa/20/README.md`.
+- NOT RUN: any visual check of the icon, splash or home wordmark on a device or in a browser (owner), iOS build.

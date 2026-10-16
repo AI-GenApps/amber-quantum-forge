@@ -9,7 +9,7 @@ The executable registry is [`scripts/games/registry.ts`](../../scripts/games/reg
 | `sixty_second_heist` | Sixty-Second Heist | `apps-native/games/sixty_second_heist` | `heist_rules` | `app.w3dev.sixtysecondheist` | `app.w3dev.sixtysecondheist.debug` | [`sources/sixty-second-heist.json`](sources/sixty-second-heist.json) |
 | `meme_court` | Meme Court | `apps-native/games/meme_court` | `court_rules` | `app.w3dev.memecourt` | `app.w3dev.memecourt.debug` | [`sources/meme-court.json`](sources/meme-court.json) |
 | `snapquest` | Peeklings | `apps-native/games/snapquest` | `snapquest_rules` | `app.w3dev.snapquest` | `app.w3dev.snapquest.debug` | [`sources/snapquest.json`](sources/snapquest.json) |
-| `city_drive` | City Drive (working title) | `apps-games/city-drive` | `apps-games/city-drive-core` (TypeScript) | `app.w3dev.citydrive` | `app.w3dev.citydrive.debug` | [`.agents/games/city-drive/`](../../.agents/games/city-drive/README.md) |
+| `city_drive` | Street Royale (was the working title City Drive) | `apps-games/city-drive` | `apps-games/city-drive-core` (TypeScript) | `app.w3dev.citydrive` | `app.w3dev.citydrive.debug` | [`.agents/games/city-drive/`](../../.agents/games/city-drive/README.md) |
 
 ## Engine field
 

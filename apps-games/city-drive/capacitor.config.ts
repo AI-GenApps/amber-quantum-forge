@@ -1,13 +1,13 @@
 import type { CapacitorConfig } from "@capacitor/cli";
 
 /**
- * The working-title constants are duplicated from `src/ui/brand.ts` on purpose: this file is read
- * by the Capacitor CLI in Node and must not import app code (which pulls in the DOM and Babylon).
- * A test in `test/native/config.test.ts` keeps the two in sync. Task 20 renames both.
+ * The public name is duplicated from `src/ui/brand.ts` on purpose: this file is read by the
+ * Capacitor CLI in Node and must not import app code (which pulls in the DOM and Babylon). A test
+ * in `test/native/config.test.ts` keeps the two in sync. `appId` keeps the internal id.
  */
 const config: CapacitorConfig = {
   appId: "app.w3dev.citydrive",
-  appName: "City Drive",
+  appName: "Street Royale",
   webDir: "dist",
   // No `server.url` and no live reload: the committed config always loads the bundled build.
   android: {

@@ -236,8 +236,8 @@ export const GAME_REGISTRY: readonly GameRegistration[] = [
   },
   {
     id: "city_drive",
-    canonicalName: "City Drive",
-    publicTitle: "City Drive",
+    canonicalName: "Street Royale",
+    publicTitle: "Street Royale",
     subtitle: "Free-roam the city and take on missions",
     engine: "web",
     lifecycle: "concept",

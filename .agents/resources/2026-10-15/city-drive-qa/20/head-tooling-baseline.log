@@ -1,0 +1,5 @@
+bun test v1.4.2 (744846f84)
+SKIP city_drive uses the web engine: use `bun run city-drive:build`, `bun run city-drive:cap:sync` or `bun run city-drive:android:debug` (Flutter games:* commands do not apply).
+city_drive uses the web engine: use `bun run city-drive:build`, `bun run city-drive:cap:sync` or `bun run city-drive:android:debug` (Flutter games:* commands do not apply).
+Game registry unchanged (6 Flutter entries) at /data/tools/tmp/head-20/apps-native/games/packages/platform_core/lib/src/generated/game_app_registry.dart
+Game registry unchanged (6 Flutter entries) at /data/tools/tmp/head-20/apps-native/games/packages/platform_core/lib/src/generated/game_app_registry.dart

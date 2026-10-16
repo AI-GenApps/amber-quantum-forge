@@ -1,0 +1,24 @@
+$ bun run --filter '@city-drive/*' test
+@city-drive/core test: 
+@city-drive/core test:  RUN  v5.0.5 /data/PROJECTS/games/amber-quantum-forge/apps-games/city-drive-core
+@city-drive/core test: 
+@city-drive/core test: 
+@city-drive/core test:  Test Files  53 passed (53)
+@city-drive/core test:       Tests  483 passed (483)
+@city-drive/core test:    Start at  09:50:47
+@city-drive/core test:    Duration  26.86s (tests 76%, transform 15%, import 9%)
+@city-drive/core test: 
+@city-drive/core test: Exited with code 0
+@city-drive/app test: 
+@city-drive/app test:  RUN  v5.0.5 /data/PROJECTS/games/amber-quantum-forge/apps-games/city-drive
+@city-drive/app test: 
+@city-drive/app test: 
+@city-drive/app test:  Test Files  68 passed (68)
+@city-drive/app test:       Tests  603 passed | 1 skipped (604)
+@city-drive/app test:    Start at  09:51:14
+@city-drive/app test:    Duration  7.14s (tests 52%, transform 26%, import 17%, environment 5%)
+@city-drive/app test: 
+@city-drive/app test:     Isolate  68 workers spawned · ~255ms startup each (spawn + environment, per file)
+@city-drive/app test:              at least ~498ms faster with isolate: false — reuses workers across files instead of one per file
+@city-drive/app test: 
+@city-drive/app test: Exited with code 0

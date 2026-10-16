@@ -118,7 +118,7 @@ with `startAt` set to the next task ID.
 | 17 | Capacitor packaging (Android/iOS), Android toolchain, debug APK | agent | [x] |
 | 18 | Name candidates (strict uniqueness) + icon dry run | agent | [x] |
 | 19 | HUMAN: pick the name + icon direction | human | [x] |
-| 20 | Apply the name, final icon, splash | agent | [ ] |
+| 20 | Apply the name, final icon, splash | agent | [x] |
 | 21 | Release readiness (privacy, data safety, listing, web deploy workflow) | agent | [ ] |
 | 22 | HUMAN: device checkpoint, Vercel project, store provisioning | human | [ ] |
 

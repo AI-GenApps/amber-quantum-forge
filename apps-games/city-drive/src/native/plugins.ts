@@ -3,6 +3,7 @@ import { Capacitor } from "@capacitor/core";
 import { ScreenOrientation } from "@capacitor/screen-orientation";
 import { StatusBar } from "@capacitor/status-bar";
 import { KeepAwake } from "@capacitor-community/keep-awake";
+import { GAME_TITLE } from "../ui/brand";
 
 /**
  * The slices of each Capacitor plugin the game calls. Everything in `src/native` talks to these
@@ -54,5 +55,5 @@ export function isNativePlatform(): boolean {
 
 /** Logs a failed plugin call. Native features are best effort: a failure never stops the game. */
 export function reportNativeError(what: string, error: unknown): void {
-  console.error(`City Drive: ${what} failed`, error);
+  console.error(`${GAME_TITLE}: ${what} failed`, error);
 }

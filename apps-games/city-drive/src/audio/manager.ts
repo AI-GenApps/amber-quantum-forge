@@ -1,3 +1,4 @@
+import { GAME_TITLE } from "../ui/brand";
 import type { AudioManifest, SoundId } from "./manifest";
 import { type EngineParams, MUSIC_LEVEL, musicTarget } from "./mapping";
 import { ALL_ON, Mixer, type MixerToggles } from "./mixer";
@@ -128,7 +129,7 @@ export class AudioManager implements AudioPort {
   private async start(): Promise<void> {
     const ctx = this.deps.createContext();
     if (!ctx) {
-      console.warn("City Drive: Web Audio is not available; the game stays silent");
+      console.warn(`${GAME_TITLE}: Web Audio is not available; the game stays silent`);
       return;
     }
     if (ctx.state !== "running") await ctx.resume();
@@ -150,7 +151,7 @@ export class AudioManager implements AudioPort {
       this.buffers.set(id, await ctx.decodeAudioData(exactBuffer(bytes)));
     } catch (error) {
       this.failed.add(id);
-      console.warn(`City Drive: sound "${id}" (${file}) could not load and stays silent`, error);
+      console.warn(`${GAME_TITLE}: sound "${id}" (${file}) could not load and stays silent`, error);
     }
   }
 

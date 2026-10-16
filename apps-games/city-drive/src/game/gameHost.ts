@@ -3,6 +3,7 @@ import type { GraphicsQuality } from "@city-drive/core";
 import { QualityGovernor } from "../perf/governor";
 import { hardwareScalingLevel, QUALITY_TIERS, tierRange } from "../perf/tiers";
 import type { GarageScene } from "../render/garage";
+import { GAME_TITLE } from "../ui/brand";
 import { buildMinimapModel, type MinimapModel } from "../ui/model/minimap";
 import { graphicsProfile } from "../ui/model/quality";
 import type { PlayState, UiGame } from "../ui/types";
@@ -60,7 +61,7 @@ export class GameHost implements UiGame {
   }
 
   async loadDistrict(id: string): Promise<void> {
-    if (!isDistrictId(id)) throw new Error(`City Drive: unknown district "${id}"`);
+    if (!isDistrictId(id)) throw new Error(`${GAME_TITLE}: unknown district "${id}"`);
     const token = ++this.loadToken;
     const old = this.runtime;
     this.runtime = undefined;
@@ -127,7 +128,7 @@ export class GameHost implements UiGame {
 
   private applyTier(): void {
     const tier = QUALITY_TIERS[this.governor.tier];
-    if (!tier) throw new Error(`City Drive: quality tier ${this.governor.tier} does not exist`);
+    if (!tier) throw new Error(`${GAME_TITLE}: quality tier ${this.governor.tier} does not exist`);
     const profile = graphicsProfile(this.quality);
     this.engine.setHardwareScalingLevel(
       hardwareScalingLevel(tier.scaling, this.devicePixelRatio()),
