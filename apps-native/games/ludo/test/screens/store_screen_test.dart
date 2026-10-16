@@ -8,6 +8,8 @@ import 'package:ludo/src/net/ludo_purchases_gateway.dart';
 import 'package:ludo/src/screens/store_screen.dart';
 import 'package:ludo/src/state/ludo_inventory_state.dart';
 import 'package:ludo/src/theme/ludo_theme.dart';
+import 'package:ludo/src/widgets/ludo_store_theme_art.dart';
+import 'package:ludo/src/widgets/ludo_theme_preview_sheet.dart';
 
 import '../net/ludo_test_support.dart';
 import '../state/ludo_store_test_support.dart';
@@ -195,6 +197,73 @@ void main() {
     );
   });
 
+  testWidgets('the confirm dialog does not draw the theme\'s gold dialog '
+      'border behind its own panel', (tester) async {
+    final harness = StoreHarness.create();
+    await _pumpStore(tester, harness);
+
+    await tester.tap(_buy('Gold', 1500, 'coins'));
+    await tester.pumpAndSettle();
+
+    // buildLudoTheme()'s DialogThemeData.shape is a gold-bordered rect that
+    // Dialog applies by default; LudoDialogFrame's Center stretches it into
+    // a huge outline behind the panel unless the Dialog overrides it.
+    final dialog = tester.widget<Dialog>(find.byType(Dialog));
+    expect(dialog.elevation, 0);
+    final shape = dialog.shape;
+    expect(shape, isA<RoundedRectangleBorder>());
+    expect((shape! as RoundedRectangleBorder).side, BorderSide.none);
+    final material = tester.widget<Material>(
+      find.descendant(of: find.byType(Dialog), matching: find.byType(Material)),
+    );
+    expect(material.shape, isNot(buildLudoTheme().dialogTheme.shape));
+  });
+
+  testWidgets('the status banner is cleared when switching tabs', (
+    tester,
+  ) async {
+    final harness = StoreHarness.create(
+      script: {
+        'POST inventory/purchase': [apiError('ludo_insufficient_balance', 422)],
+      },
+      purchases: FakePurchasesGateway(
+        packages: fakePackages,
+        purchaseStatus: LudoStorePurchaseStatus.cancelled,
+      ),
+    );
+    await harness.wallet.refresh();
+    await _pumpStore(tester, harness);
+    await _openTab(tester, 'Tokens');
+
+    await tester.tap(_buy('Gem Tokens', 2500, 'coins'));
+    await tester.pumpAndSettle();
+    await _confirm(tester);
+    expect(find.text('Not enough coins for Gem Tokens.'), findsOneWidget);
+
+    await _openTab(tester, 'Currency Packs');
+    expect(find.byKey(const Key('store-message')), findsNothing);
+
+    await tester.tap(find.byKey(const Key('store-offer-ludo_coins_small-buy')));
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Purchase cancelled. Nothing was charged.'),
+      findsOneWidget,
+    );
+
+    // Stale cancellation must not read as the Pass tab's result.
+    await _openTab(tester, 'Pass');
+    expect(find.byKey(const Key('store-message')), findsNothing);
+
+    // A swipe between tabs clears it too.
+    await _openTab(tester, 'Currency Packs');
+    await tester.tap(find.byKey(const Key('store-offer-ludo_coins_small-buy')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('store-message')), findsOneWidget);
+    await tester.fling(find.byType(TabBarView), const Offset(-600, 0), 1500);
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('store-message')), findsNothing);
+  });
+
   testWidgets('a real-money pack purchase syncs and reports success', (
     tester,
   ) async {
@@ -327,6 +396,32 @@ void main() {
       find.byKey(const Key('store-item-dice_gold-buy-coins')),
       findsNWidgets(2),
     );
+  });
+
+  testWidgets('the preview die tumbles through several faces in under a '
+      'second and settles on 6', (tester) async {
+    final harness = StoreHarness.create();
+    await _pumpStore(tester, harness);
+    await tester.tap(find.byKey(const Key('store-item-dice_gold-preview')));
+    await tester.pumpAndSettle();
+
+    int face() => tester
+        .widget<LudoStoreThemeArt>(find.byKey(const Key('store-preview-dice')))
+        .diceFace;
+    expect(face(), 6);
+    expect(ludoThemePreviewRollDuration, lessThan(const Duration(seconds: 1)));
+
+    await tester.tap(find.byKey(const Key('store-preview-roll')));
+    await tester.pump();
+    final seen = <int>{face()};
+    for (var i = 0; i < 6; i++) {
+      await tester.pump(const Duration(milliseconds: 100));
+      seen.add(face());
+    }
+    expect(seen.length, greaterThan(2), reason: 'faces seen: $seen');
+
+    await tester.pumpAndSettle();
+    expect(face(), 6);
   });
 
   testWidgets('a failed catalog load shows a retry state', (tester) async {

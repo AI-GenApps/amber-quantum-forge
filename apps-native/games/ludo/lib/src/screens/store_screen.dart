@@ -71,14 +71,42 @@ class StoreScreen extends StatefulWidget {
   State<StoreScreen> createState() => _StoreScreenState();
 }
 
-class _StoreScreenState extends State<StoreScreen> {
+class _StoreScreenState extends State<StoreScreen>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabController;
+  int _lastTabIndex = 0;
   String? _message;
   bool _messageIsError = false;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: storeTabLabels.length, vsync: this)
+      ..addListener(_onTabChanged);
     if (widget.autoLoad) unawaited(_load());
+  }
+
+  @override
+  void dispose() {
+    _tabController
+      ..removeListener(_onTabChanged)
+      ..dispose();
+    super.dispose();
+  }
+
+  /// The status banner describes the last action on the tab it happened on,
+  /// so it must not follow the player to another tab (a stale "Not enough
+  /// coins" or "Purchase cancelled" would otherwise read as that tab's
+  /// result). Covers taps and swipes: the controller index changes in both.
+  void _onTabChanged() {
+    final index = _tabController.index;
+    if (index == _lastTabIndex) return;
+    _lastTabIndex = index;
+    if (_message == null) return;
+    setState(() {
+      _message = null;
+      _messageIsError = false;
+    });
   }
 
   Future<void> _load() async {
@@ -105,6 +133,12 @@ class _StoreScreenState extends State<StoreScreen> {
       context: context,
       builder: (context) => Dialog(
         backgroundColor: Colors.transparent,
+        elevation: 0,
+        // Overrides `buildLudoTheme()`'s gold-bordered `DialogThemeData.shape`,
+        // which `Dialog` otherwise applies to its Material: stretched by
+        // `LudoDialogFrame`'s Center it draws a second, much larger gold
+        // outline behind the panel (same fix as `PauseQuitDialog`).
+        shape: const RoundedRectangleBorder(),
         child: LudoDialogFrame(
           title: 'Confirm purchase',
           child: Column(
@@ -240,72 +274,71 @@ class _StoreScreenState extends State<StoreScreen> {
   @override
   Widget build(BuildContext context) {
     final inventory = widget.inventory;
-    return DefaultTabController(
-      length: storeTabLabels.length,
-      child: Scaffold(
-        appBar: AppBar(title: const Text('Store')),
-        body: LudoBackground(
-          child: SafeArea(
-            child: inventory == null
-                ? const LudoStoreNotice(
-                    title: 'Store unavailable',
-                    message:
-                        'The store needs an online connection, which is not '
-                        'available in this build.',
-                  )
-                : Column(
-                    children: [
-                      if (widget.walletState != null)
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                            LudoThemeTokens.spaceMd,
-                            LudoThemeTokens.spaceSm,
-                            LudoThemeTokens.spaceMd,
-                            0,
-                          ),
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: LudoWalletHud(
-                              wallet: widget.walletState!,
-                              reducedMotion: widget.reducedMotion,
-                            ),
-                          ),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Store')),
+      body: LudoBackground(
+        child: SafeArea(
+          child: inventory == null
+              ? const LudoStoreNotice(
+                  title: 'Store unavailable',
+                  message:
+                      'The store needs an online connection, which is not '
+                      'available in this build.',
+                )
+              : Column(
+                  children: [
+                    if (widget.walletState != null)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          LudoThemeTokens.spaceMd,
+                          LudoThemeTokens.spaceSm,
+                          LudoThemeTokens.spaceMd,
+                          0,
                         ),
-                      if (widget.onOpenRewards != null) _freeCoinsButton(),
-                      TabBar(
-                        isScrollable: true,
-                        tabAlignment: TabAlignment.start,
-                        indicatorColor: LudoThemeTokens.gold,
-                        labelColor: LudoThemeTokens.gold,
-                        unselectedLabelColor: LudoThemeTokens.textOnDark,
-                        labelPadding: const EdgeInsets.symmetric(
-                          horizontal: LudoThemeTokens.spaceSm,
-                        ),
-                        labelStyle: LudoTextStyles.bodyStrong.copyWith(
-                          fontSize: 14,
-                        ),
-                        tabs: [
-                          for (final label in storeTabLabels) Tab(text: label),
-                        ],
-                      ),
-                      if (_message != null) _messageBanner(),
-                      Expanded(
-                        child: AnimatedBuilder(
-                          animation: Listenable.merge([inventory, ?widget.iap]),
-                          builder: (context, _) => TabBarView(
-                            children: [
-                              _themeTab(inventory, LudoThemeCategory.dice),
-                              _themeTab(inventory, LudoThemeCategory.token),
-                              _themeTab(inventory, LudoThemeCategory.board),
-                              _packsTab(),
-                              _passTab(),
-                            ],
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: LudoWalletHud(
+                            wallet: widget.walletState!,
+                            reducedMotion: widget.reducedMotion,
                           ),
                         ),
                       ),
-                    ],
-                  ),
-          ),
+                    if (widget.onOpenRewards != null) _freeCoinsButton(),
+                    TabBar(
+                      controller: _tabController,
+                      isScrollable: true,
+                      tabAlignment: TabAlignment.start,
+                      indicatorColor: LudoThemeTokens.gold,
+                      labelColor: LudoThemeTokens.gold,
+                      unselectedLabelColor: LudoThemeTokens.textOnDark,
+                      labelPadding: const EdgeInsets.symmetric(
+                        horizontal: LudoThemeTokens.spaceSm,
+                      ),
+                      labelStyle: LudoTextStyles.bodyStrong.copyWith(
+                        fontSize: 14,
+                      ),
+                      tabs: [
+                        for (final label in storeTabLabels) Tab(text: label),
+                      ],
+                    ),
+                    if (_message != null) _messageBanner(),
+                    Expanded(
+                      child: AnimatedBuilder(
+                        animation: Listenable.merge([inventory, ?widget.iap]),
+                        builder: (context, _) => TabBarView(
+                          controller: _tabController,
+                          children: [
+                            _themeTab(inventory, LudoThemeCategory.dice),
+                            _themeTab(inventory, LudoThemeCategory.token),
+                            _themeTab(inventory, LudoThemeCategory.board),
+                            _packsTab(),
+                            _passTab(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
         ),
       ),
     );

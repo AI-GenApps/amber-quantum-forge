@@ -90,11 +90,21 @@ are absent.
   for the new `inventory/purchase` route.
 - [x] Add goldens for the store screen (each tab, owned vs. purchasable
   states, RevenueCat-absent fallback): `test/goldens/store_screen_*.png`.
-- device evidence pending: run ludo-economy-device-pass
-- [ ] Capture device evidence on the physical device (serial `RZ8R32EAB7T`)
-  of a full coin-purchase-then-equip flow. NOT RUN (deferred to the device
-  workflow); the flow is written in
-  `.agents/resources/2026-09-25/ludo-vortex-economy/device-evidence/26g/device-flow.md`.
+- [x] Capture device evidence on the physical device (serial `RZ8R32EAB7T`)
+  of a full coin-purchase-then-equip flow. Device review passed; two device
+  fixes applied (status banner cleared on tab change, confirm-dialog shape).
+  Evidence under
+  `.agents/resources/2026-09-25/ludo-vortex-economy/device-evidence/26g/`:
+  - `device-flow.md` (flow script), `logcat.txt`
+  - `A0`-`A3`: fresh launch, lobby store button, offline "Store unavailable"
+  - `B0`-`B1`: lobby and preview armed
+  - `B2`-`B6b`: dice tab, gold preview, confirm dialog, purchase, equip
+  - `B7`: insufficient coins; `B8`-`B9`: tokens tab, diamond purchase
+  - `B10`-`B10c`: boards tab, insufficient diamonds, cosmic preview
+  - `B11`-`B11c`: currency packs, cancelled pack, restore
+  - `B12`-`B12b`: pass tab and cancelled purchase
+  - `B13`-`B13b`: equip persisted after reopen
+  - `*-rerun1.png`: re-run after fixes
 
 ## Implementation Notes
 

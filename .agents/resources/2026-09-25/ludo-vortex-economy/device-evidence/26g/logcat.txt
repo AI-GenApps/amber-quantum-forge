@@ -1,0 +1,62 @@
+10-16 12:24:08.694 23760 23760 I FlutterActivityAndFragmentDelegate: If you are attempting to set --enable-dart-profiling via Intent extras to launch a Flutter component outside of using the Flutter CLI, note that support for setting engine flags on Android via Intent will soon be dropped; see https://github.com/flutter/flutter/issues/180686 for more information on this breaking change. To migrate, set --enable-dart-profiling or any other flags specified via Intent extras on the command line instead or see https://github.com/flutter/flutter/blob/main/docs/engine/Flutter-Android-Engine-Flags.md for alternative methods.
+10-16 12:24:08.706 23760 23789 D FlutterJNI: Beginning load of flutter...
+10-16 12:24:08.732 23760 23789 D nativeloader: Load /data/app/~~gMlJIN7WY5tkBWGmWz1ciQ==/app.w3dev.ludo.debug-_3ApvS76LMAyC4X702OB1Q==/base.apk!/lib/arm64-v8a/libflutter.so using class loader ns clns-4 (caller=/data/app/~~gMlJIN7WY5tkBWGmWz1ciQ==/app.w3dev.ludo.debug-_3ApvS76LMAyC4X702OB1Q==/base.apk): ok
+10-16 12:24:08.733 23760 23789 D FlutterJNI: flutter (null) was loaded normally!
+10-16 12:24:09.213 23760 23790 I ResourceExtractor: Extracted baseline resource assets/flutter_assets/kernel_blob.bin
+10-16 12:24:09.214 23760 23790 I ResourceExtractor: Extracted baseline resource assets/flutter_assets/vm_snapshot_data
+10-16 12:24:09.296 23760 23790 I ResourceExtractor: Extracted baseline resource assets/flutter_assets/isolate_snapshot_data
+10-16 12:24:09.496 23760 23795 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+10-16 12:24:09.508 23760 23795 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_gl_impeller.cc(104)] Using the Impeller rendering backend (OpenGLES).
+10-16 12:24:09.514 23760 23807 I flutter : The Dart VM service is listening on http://127.0.0.1:44575/Ih8U9IeO0Ko=/
+10-16 12:24:09.895 23760 23760 I 3dev.ludo.debug: hiddenapi: Accessing hidden method Landroid/view/accessibility/AccessibilityNodeInfo;->getSourceNodeId()J (runtime_flags=0, domain=platform, api=unsupported,test-api) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+10-16 12:24:09.895 23760 23760 I 3dev.ludo.debug: hiddenapi: Accessing hidden method Landroid/view/accessibility/AccessibilityRecord;->getSourceNodeId()J (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+10-16 12:24:09.895 23760 23760 I 3dev.ludo.debug: hiddenapi: Accessing hidden field Landroid/view/accessibility/AccessibilityNodeInfo;->mChildNodeIds:Landroid/util/LongArray; (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+10-16 12:24:09.896 23760 23760 I 3dev.ludo.debug: hiddenapi: Accessing hidden method Landroid/util/LongArray;->get(I)J (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+10-16 12:24:09.923 23760 23760 D FlutterRenderer: Width is zero. 0,0
+10-16 12:24:12.111 23760 23760 I SurfaceView@7340e5a: onWindowVisibilityChanged(0) true io.flutter.embedding.android.FlutterSurfaceView{7340e5a V.E...... ......I. 0,0-0,0} of ViewRootImpl@3a1a357[MainActivity]
+10-16 12:24:12.112 23760 23760 D FlutterRenderer: Width is zero. 0,0
+10-16 12:24:12.141 23760 23760 D FlutterJNI: Sending viewport metrics to the engine.
+10-16 12:24:12.148 23760 23760 I SurfaceView@7340e5a: windowStopped(false) true io.flutter.embedding.android.FlutterSurfaceView{7340e5a V.E...... ......ID 0,0-1080,2274} of ViewRootImpl@3a1a357[MainActivity]
+10-16 12:24:12.160 23760 23760 I SurfaceView@7340e5a: surfaceCreated 1 #8 io.flutter.embedding.android.FlutterSurfaceView{7340e5a V.E...... ......ID 0,0-1080,2274}
+10-16 12:24:13.023 23760 23760 I SurfaceView@7340e5a: surfaceChanged (1080,2274) 1 #8 io.flutter.embedding.android.FlutterSurfaceView{7340e5a V.E...... ......ID 0,0-1080,2274}
+10-16 12:24:13.515 23760 23760 D FlutterJNI: Sending viewport metrics to the engine.
+10-16 12:32:56.313 24769 24793 D FlutterJNI: Beginning load of flutter...
+10-16 12:32:56.335 24769 24793 D nativeloader: Load /data/app/~~gMlJIN7WY5tkBWGmWz1ciQ==/app.w3dev.ludo.debug-_3ApvS76LMAyC4X702OB1Q==/base.apk!/lib/arm64-v8a/libflutter.so using class loader ns clns-4 (caller=/data/app/~~gMlJIN7WY5tkBWGmWz1ciQ==/app.w3dev.ludo.debug-_3ApvS76LMAyC4X702OB1Q==/base.apk): ok
+10-16 12:32:56.337 24769 24793 D FlutterJNI: flutter (null) was loaded normally!
+10-16 12:32:56.517 24769 24796 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+10-16 12:32:56.531 24769 24796 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_gl_impeller.cc(104)] Using the Impeller rendering backend (OpenGLES).
+10-16 12:32:56.651 24769 24807 I flutter : The Dart VM service is listening on http://127.0.0.1:36177/PZG4wOr8yY8=/
+10-16 12:32:57.037 24769 24769 I 3dev.ludo.debug: hiddenapi: Accessing hidden method Landroid/view/accessibility/AccessibilityNodeInfo;->getSourceNodeId()J (runtime_flags=0, domain=platform, api=unsupported,test-api) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+10-16 12:32:57.037 24769 24769 I 3dev.ludo.debug: hiddenapi: Accessing hidden method Landroid/view/accessibility/AccessibilityRecord;->getSourceNodeId()J (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+10-16 12:32:57.037 24769 24769 I 3dev.ludo.debug: hiddenapi: Accessing hidden field Landroid/view/accessibility/AccessibilityNodeInfo;->mChildNodeIds:Landroid/util/LongArray; (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+10-16 12:32:57.037 24769 24769 I 3dev.ludo.debug: hiddenapi: Accessing hidden method Landroid/util/LongArray;->get(I)J (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+10-16 12:32:57.060 24769 24769 D FlutterRenderer: Width is zero. 0,0
+10-16 12:32:59.824 24769 24769 I SurfaceView@eaa1450: onWindowVisibilityChanged(0) true io.flutter.embedding.android.FlutterSurfaceView{eaa1450 V.E...... ......I. 0,0-0,0} of ViewRootImpl@7696275[MainActivity]
+10-16 12:32:59.826 24769 24769 D FlutterRenderer: Width is zero. 0,0
+10-16 12:32:59.861 24769 24769 D FlutterJNI: Sending viewport metrics to the engine.
+10-16 12:32:59.869 24769 24769 I SurfaceView@eaa1450: windowStopped(false) true io.flutter.embedding.android.FlutterSurfaceView{eaa1450 V.E...... ......ID 0,0-1080,2274} of ViewRootImpl@7696275[MainActivity]
+10-16 12:32:59.875 24769 24769 I SurfaceView@eaa1450: surfaceCreated 1 #8 io.flutter.embedding.android.FlutterSurfaceView{eaa1450 V.E...... ......ID 0,0-1080,2274}
+10-16 12:32:59.955 24769 24769 I SurfaceView@eaa1450: surfaceChanged (1080,2274) 1 #8 io.flutter.embedding.android.FlutterSurfaceView{eaa1450 V.E...... ......ID 0,0-1080,2274}
+10-16 12:33:00.580 24769 24769 D FlutterJNI: Sending viewport metrics to the engine.
+10-16 12:44:26.329 29856 29856 I FlutterActivityAndFragmentDelegate: If you are attempting to set --enable-dart-profiling via Intent extras to launch a Flutter component outside of using the Flutter CLI, note that support for setting engine flags on Android via Intent will soon be dropped; see https://github.com/flutter/flutter/issues/180686 for more information on this breaking change. To migrate, set --enable-dart-profiling or any other flags specified via Intent extras on the command line instead or see https://github.com/flutter/flutter/blob/main/docs/engine/Flutter-Android-Engine-Flags.md for alternative methods.
+10-16 12:44:26.339 29856 29906 D FlutterJNI: Beginning load of flutter...
+10-16 12:44:26.355 29856 29906 D nativeloader: Load /data/app/~~0-NHR3aQK5QAK_CINwgGUg==/app.w3dev.ludo.debug-Hi86euQwOzMrMTQCmfO8sA==/base.apk!/lib/arm64-v8a/libflutter.so using class loader ns clns-4 (caller=/data/app/~~0-NHR3aQK5QAK_CINwgGUg==/app.w3dev.ludo.debug-Hi86euQwOzMrMTQCmfO8sA==/base.apk): ok
+10-16 12:44:26.356 29856 29906 D FlutterJNI: flutter (null) was loaded normally!
+10-16 12:44:26.828 29856 29907 I ResourceExtractor: Extracted baseline resource assets/flutter_assets/kernel_blob.bin
+10-16 12:44:26.829 29856 29907 I ResourceExtractor: Extracted baseline resource assets/flutter_assets/vm_snapshot_data
+10-16 12:44:26.906 29856 29907 I ResourceExtractor: Extracted baseline resource assets/flutter_assets/isolate_snapshot_data
+10-16 12:44:26.991 29856 29909 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+10-16 12:44:27.008 29856 29909 I flutter : [IMPORTANT:flutter/shell/platform/android/android_context_gl_impeller.cc(104)] Using the Impeller rendering backend (OpenGLES).
+10-16 12:44:27.124 29856 29923 I flutter : The Dart VM service is listening on http://127.0.0.1:33007/yxTrwzwzY9A=/
+10-16 12:44:27.479 29856 29856 I 3dev.ludo.debug: hiddenapi: Accessing hidden method Landroid/view/accessibility/AccessibilityNodeInfo;->getSourceNodeId()J (runtime_flags=0, domain=platform, api=unsupported,test-api) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+10-16 12:44:27.479 29856 29856 I 3dev.ludo.debug: hiddenapi: Accessing hidden method Landroid/view/accessibility/AccessibilityRecord;->getSourceNodeId()J (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+10-16 12:44:27.480 29856 29856 I 3dev.ludo.debug: hiddenapi: Accessing hidden field Landroid/view/accessibility/AccessibilityNodeInfo;->mChildNodeIds:Landroid/util/LongArray; (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+10-16 12:44:27.480 29856 29856 I 3dev.ludo.debug: hiddenapi: Accessing hidden method Landroid/util/LongArray;->get(I)J (runtime_flags=0, domain=platform, api=unsupported) from Lio/flutter/view/AccessibilityViewEmbedder$ReflectionAccessors; (domain=app, TargetSdkVersion=36) using reflection: allowed
+10-16 12:44:27.501 29856 29856 D FlutterRenderer: Width is zero. 0,0
+10-16 12:44:29.552 29856 29856 I SurfaceView@7340e5a: onWindowVisibilityChanged(0) true io.flutter.embedding.android.FlutterSurfaceView{7340e5a V.E...... ......I. 0,0-0,0} of ViewRootImpl@3a1a357[MainActivity]
+10-16 12:44:29.554 29856 29856 D FlutterRenderer: Width is zero. 0,0
+10-16 12:44:29.600 29856 29856 D FlutterJNI: Sending viewport metrics to the engine.
+10-16 12:44:29.610 29856 29856 I SurfaceView@7340e5a: windowStopped(false) true io.flutter.embedding.android.FlutterSurfaceView{7340e5a V.E...... ......ID 0,0-1080,2274} of ViewRootImpl@3a1a357[MainActivity]
+10-16 12:44:29.619 29856 29856 I SurfaceView@7340e5a: surfaceCreated 1 #8 io.flutter.embedding.android.FlutterSurfaceView{7340e5a V.E...... ......ID 0,0-1080,2274}
+10-16 12:44:29.709 29856 29856 I SurfaceView@7340e5a: surfaceChanged (1080,2274) 1 #8 io.flutter.embedding.android.FlutterSurfaceView{7340e5a V.E...... ......ID 0,0-1080,2274}
+10-16 12:44:30.181 29856 29856 D FlutterJNI: Sending viewport metrics to the engine.
