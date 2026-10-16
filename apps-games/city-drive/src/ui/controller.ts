@@ -6,13 +6,15 @@ import type {
   SaveData,
   SaveSettings,
 } from "@city-drive/core";
-import { isDistrictUnlocked, totalStars } from "@city-drive/core";
+import { FIXED_DT, isDistrictUnlocked, totalStars } from "@city-drive/core";
+import type { StepReport } from "../game/stepReport";
 import type { LastDistrict } from "../save/lastDistrict";
 import type { Profile } from "../save/profile";
 import { objectiveArrow } from "./model/arrow";
 import { type MissionSummary, nextMissionId } from "./model/districts";
 import { backAction } from "./nav/back";
 import { type ScreenId, ScreenStack } from "./nav/screenStack";
+import type { OnboardingFlow, OnboardingView } from "./onboarding";
 import type { PlayState, UiGame } from "./types";
 
 /** Everything the screens read. A new object is built whenever something visible changes. */
@@ -29,6 +31,8 @@ export interface AppView {
   /** The car shown in the garage carousel. */
   garageCar: string;
   confirmingReset: boolean;
+  /** The first-drive tutorial, while it has something to show. */
+  onboarding: OnboardingView | undefined;
 }
 
 export interface ControllerDeps {
@@ -39,6 +43,10 @@ export interface ControllerDeps {
   /** Mission list per district id, in play order. */
   missions: Readonly<Record<string, readonly MissionSummary[]>>;
   lastDistrict: LastDistrict;
+  /** First-drive tutorial. Omit it and the game has none. */
+  onboarding?: OnboardingFlow | undefined;
+  /** Plays the horn. Omit it and the horn button is silent. */
+  horn?: (() => void) | undefined;
 }
 
 export type FrameListener = (play: PlayState | undefined, nowMs: number) => void;
@@ -114,8 +122,9 @@ export class AppController {
   /** Call once per rendered frame. Re-renders the screens only when something visible changed. */
   tick(nowMs: number): void {
     this.lastPlay = this.deps.game.snapshot();
+    this.deps.onboarding?.observe(this.lastPlay?.hud);
     for (const listener of [...this.frameListeners]) listener(this.lastPlay, nowMs);
-    const print = fingerprint(this.lastPlay);
+    const print = `${fingerprint(this.lastPlay)}#${this.deps.onboarding?.signature ?? ""}`;
     if (print === this.lastPrint) return;
     this.lastPrint = print;
     this.refresh();
@@ -161,6 +170,40 @@ export class AppController {
       totalStars(this.deps.profile.save),
       districtId,
     );
+  }
+
+  /** One simulated step: the tutorial watches the player's input. */
+  onStep(report: StepReport): void {
+    if (this.stack.top === "play" && this.deps.onboarding?.feed(report.input, FIXED_DT)) {
+      this.refresh();
+    }
+  }
+
+  horn(): void {
+    this.deps.horn?.();
+  }
+
+  // ---- first-drive tutorial ----------------------------------------------------------------
+
+  skipOnboarding(): void {
+    this.deps.onboarding?.skip();
+    this.refresh();
+  }
+
+  dismissOnboarding(): void {
+    this.deps.onboarding?.dismiss();
+    this.refresh();
+  }
+
+  /** Settings, "How to play": back to free roam in the first district with the tutorial running. */
+  async replayOnboarding(): Promise<void> {
+    const flow = this.deps.onboarding;
+    const first = this.deps.progression.districts[0]?.id;
+    if (!flow || first === undefined) return;
+    this.deps.game.mission.leave();
+    if (!(await this.enterDistrict(first))) return;
+    flow.replay();
+    this.refresh();
   }
 
   // ---- menus -------------------------------------------------------------------------------
@@ -323,6 +366,7 @@ export class AppController {
   async confirmReset(): Promise<void> {
     this.confirmingReset = false;
     this.deps.game.mission.leave();
+    this.deps.onboarding?.stop();
     this.deps.profile.reset();
     await this.deps.lastDistrict.clear();
     this.applyGraphics();
@@ -374,6 +418,9 @@ export class AppController {
     if (top !== "settings") this.confirmingReset = false;
     this.deps.game.setGarageOpen(top === "garage");
     this.syncPause();
+    if (top === "play" && this.deps.game.districtId() === this.deps.progression.districts[0]?.id) {
+      this.deps.onboarding?.enter();
+    }
     this.refresh();
     // Leaving the garage with a different car selected rebuilds the city with that car.
     if (top !== "garage" && this.carChanged && this.deps.game.districtId() !== undefined) {
@@ -399,6 +446,7 @@ export class AppController {
       play: this.lastPlay,
       garageCar: this.garageCar,
       confirmingReset: this.confirmingReset,
+      onboarding: this.deps.onboarding?.view,
     };
   }
 

@@ -6,6 +6,7 @@ import { graphicsProfile } from "../ui/model/quality";
 import type { PlayState, UiGame } from "../ui/types";
 import { isDistrictId } from "./missions";
 import { DistrictRuntime, type RuntimeEnv } from "./runtime";
+import type { StepReport } from "./stepReport";
 
 /** Builds the garage scene on demand (the first time the garage opens). */
 export type GarageFactory = () => Promise<GarageScene>;
@@ -22,6 +23,7 @@ export class GameHost implements UiGame {
   private quality: GraphicsQuality = "auto";
   private loadToken = 0;
   private minimap: { id: string; model: MinimapModel } | undefined;
+  private readonly stepListeners = new Set<(report: StepReport) => void>();
 
   constructor(
     private readonly env: RuntimeEnv,
@@ -89,9 +91,19 @@ export class GameHost implements UiGame {
     open: (id, start) => this.runtime?.session.openMission(id, start),
   };
 
+  /** Called with the report of every simulated step (never while paused). */
+  onStep(listener: (report: StepReport) => void): () => void {
+    this.stepListeners.add(listener);
+    return () => this.stepListeners.delete(listener);
+  }
+
   /** One fixed simulation step. The session ignores it while paused. */
   step(): void {
-    this.runtime?.session.step();
+    const session = this.runtime?.session;
+    if (!session || session.paused) return;
+    session.step();
+    const report = session.lastReport;
+    if (report) for (const listener of this.stepListeners) listener(report);
   }
 
   /** Draws the garage while it is open, otherwise the city. */

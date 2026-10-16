@@ -17,7 +17,7 @@ export function TouchControls({ input, layout = "standard" }: Props) {
   // Hiding the buttons while a finger is down must not leave the car steering or accelerating.
   useLayoutEffect(() => () => input.releaseAll(), [input]);
   return (
-    <div class="cd-controls" data-testid="touch-controls" data-layout={layout}>
+    <div class="cd-controls" data-testid="touch-controls" data-layout={layout} data-no-tap="true">
       <div class="cd-cluster cd-cluster-left">
         <HoldButton input={input} button="left" label="Left" />
         <HoldButton input={input} button="right" label="Right" />

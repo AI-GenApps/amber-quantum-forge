@@ -35,6 +35,7 @@ import { type InputSource, toCarInput } from "../input";
 import type { Profile } from "../save";
 import { type CarPose, interpolateCar } from "./interpolate";
 import { MissionCredit } from "./sessionCredit";
+import { makeStepReport, playerImpactNs, type StepReport } from "./stepReport";
 
 /** Chassis centre height used when the car is placed on the road. */
 const DROP_HEIGHT_M = 1.1;
@@ -79,6 +80,8 @@ export class GameSession {
   readonly missions: MissionSystem | undefined;
   /** Results of missions the player has closed, oldest first. Coins are paid when a mission ends. */
   readonly missionResults: MissionResult[] = [];
+  /** What the last fixed step did (input, speed, slip, hardest hit). Undefined before the first step. */
+  lastReport: StepReport | undefined;
   private readonly credit: MissionCredit | undefined;
   private readonly catalog: readonly MissionDef[] = [];
   private pausedValue = false;
@@ -172,6 +175,8 @@ export class GameSession {
     if (this.traffic) this.trafficHits.push(...this.traffic.processCollisions(impulses));
     this.prev = this.curr;
     this.curr = this.car.state();
+    const impact = playerImpactNs(impulses, this.car.colliderHandle);
+    this.lastReport = makeStepReport(input, this.curr, impact, this.car.spec.topSpeedKmh);
     this.missions?.step(this.curr, impulses);
     this.credit?.check(this.missions?.run.result);
     if (input.reset) {

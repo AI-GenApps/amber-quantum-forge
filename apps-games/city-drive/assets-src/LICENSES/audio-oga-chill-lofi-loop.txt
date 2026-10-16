@@ -1,0 +1,14 @@
+Source: Chill lofi inspired [loop edit] (OpenGameArt)
+Licence id: audio-oga-chill-lofi-loop
+Author: qubodup (loop edit of a piece by omfgdude)
+Licence: Creative Commons Zero 1.0 (CC0), http://creativecommons.org/publicdomain/zero/1.0/
+Source URL: https://opengameart.org/content/chill-lofi-inspired-loop-edit
+Download date: 2026-10-16
+Download URL: https://opengameart.org/sites/default/files/chilllofir-loop.ogg
+Download file: chilllofir-loop.ogg
+SHA-256: ccaa02bb60310146f1fa3b1c70be0a5a57f0674b9c4944a22b85b0c03e932cdb
+Sounds used here: chilllofir-loop.ogg
+
+Licence statement: the OpenGameArt page https://opengameart.org/content/chill-lofi-inspired-loop-edit lists "License(s): CC0"
+(read 2026-10-16). OpenGameArt has no licence file inside the download, so the page is the
+record. The page text is not copied here.

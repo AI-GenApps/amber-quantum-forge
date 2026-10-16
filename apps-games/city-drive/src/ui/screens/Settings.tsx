@@ -111,6 +111,16 @@ export function Settings({ view, controller }: { view: AppView; controller: AppC
           value={settings.graphics_quality}
           onChange={(v) => controller.setSetting("graphics_quality", v)}
         />
+        <div class="cd-setting">
+          <span>How to play</span>
+          <button
+            type="button"
+            class="cd-button"
+            onClick={() => void controller.replayOnboarding()}
+          >
+            Replay tutorial
+          </button>
+        </div>
         {view.confirmingReset ? (
           <div class="cd-panel cd-confirm" role="alertdialog" aria-label="Erase progress">
             <p>Erase all coins, cars and stars? This cannot be undone.</p>

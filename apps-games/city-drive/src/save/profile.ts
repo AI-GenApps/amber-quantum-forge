@@ -94,6 +94,22 @@ export class Profile {
     this.manager.commit({ ...this.save, settings: { ...this.save.settings, ...change } });
   }
 
+  /** Whether a named one-time hint or tutorial step has been seen. */
+  flag(name: string): boolean {
+    return this.save.onboarding[name] === true;
+  }
+
+  /** Remember (or forget) a one-time hint. Saves only when the value changes. */
+  setFlag(name: string, value: boolean): void {
+    if (this.flag(name) === value) return;
+    this.manager.commit({ ...this.save, onboarding: { ...this.save.onboarding, [name]: value } });
+  }
+
+  /** True once any mission has been played, so a returning player skips the tutorial. */
+  hasMissionRecords(): boolean {
+    return Object.keys(this.save.missions).length > 0;
+  }
+
   /** Erase all progress: coins, cars, mission records and settings go back to a new player's. */
   reset(): void {
     this.manager.commit(defaultSave(this.roster.starter));

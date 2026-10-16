@@ -1,0 +1,14 @@
+Source: Lofi Hip Hop Loop (OpenGameArt)
+Licence id: audio-oga-lofi-hip-hop-loop
+Author: omfgdude
+Licence: Creative Commons Zero 1.0 (CC0), http://creativecommons.org/publicdomain/zero/1.0/
+Source URL: https://opengameart.org/content/lofi-hip-hop-loop
+Download date: 2026-10-16
+Download URL: https://opengameart.org/sites/default/files/LofiLoop_2.ogg
+Download file: LofiLoop_2.ogg
+SHA-256: e57ba821d4db8d66783ca984a2778ec68d1439e862239ec36407344ef3bd1eab
+Sounds used here: LofiLoop_2.ogg
+
+Licence statement: the OpenGameArt page https://opengameart.org/content/lofi-hip-hop-loop lists "License(s): CC0"
+(read 2026-10-16). OpenGameArt has no licence file inside the download, so the page is the
+record. The page text is not copied here.

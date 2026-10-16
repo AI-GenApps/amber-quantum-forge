@@ -14,3 +14,18 @@ bun run --filter @city-drive/app build-assets -- --raw <dir with the extracted p
 ```
 
 Without `raw/` the script only verifies the committed manifest, budgets and licence records.
+
+## Audio (task 14)
+
+- `LICENSES/audio-*.txt`: one record per audio source (URL, author, CC0, date, SHA-256 of each
+  download; Kenney packs embed their `License.txt`, OpenGameArt sources name the page that states CC0).
+- Rebuild after downloading the sources listed in `scripts/audio/catalog.ts` into one folder per source
+  id (`<raw>/audio-kenney-impact-sounds/Audio/...`) and the downloads into `<zips>`:
+
+```bash
+bun run --filter @city-drive/app build-audio -- --raw <raw dir> --zips <zips dir>
+```
+
+Needs `ffmpeg` (`FFMPEG` / `FFPROBE` env vars override `/home/linuxbrew/.linuxbrew/bin`). Without `--raw`
+the script only verifies the committed manifest, the 3 MB budget and the licence records. The downloads
+are untrusted data: they are only read and decoded by ffmpeg.

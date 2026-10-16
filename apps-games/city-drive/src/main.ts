@@ -3,10 +3,19 @@ import { SceneInstrumentation } from "@babylonjs/core/Instrumentation/sceneInstr
 import type { Scene } from "@babylonjs/core/scene.js";
 import { parseProgression, SaveManager } from "@city-drive/core";
 import type { AssetManifest } from "./assets/manifest";
+import {
+  AudioManager,
+  type AudioManifest,
+  createBrowserContext,
+  FeelDirector,
+  soundButtonTaps,
+  unlockOnFirstGesture,
+} from "./audio";
 import { FpsOverlay } from "./game/fpsOverlay";
 import { GameHost } from "./game/gameHost";
 import { GameLoop } from "./game/loop";
 import { DISTRICT_MISSIONS, PROGRESSION_RAW } from "./game/missions";
+import { createDriver, HapticsService } from "./haptics";
 import { CombinedInput, GamepadInput, KeyboardInput, TouchInput } from "./input";
 import { createGarage } from "./render/garage";
 import { frameStats } from "./render/stats";
@@ -16,6 +25,7 @@ import { wantsTouchControls } from "./ui/controls/wantsTouch";
 import { summarizeMission } from "./ui/model/districts";
 import { mountUi } from "./ui/mount";
 import { EscapeBackSource } from "./ui/nav/back";
+import { OnboardingFlow } from "./ui/onboarding";
 
 function requireElement(id: string): HTMLElement {
   const element = document.getElementById(id);
@@ -33,6 +43,16 @@ async function fetchChecked(path: string): Promise<Response> {
 
 const loadBytes = async (file: string): Promise<Uint8Array> =>
   new Uint8Array(await (await fetchChecked(file)).arrayBuffer());
+
+/** The audio manifest, or an empty one (silent game) when it cannot be loaded. */
+async function loadAudioManifest(): Promise<AudioManifest> {
+  try {
+    return (await (await fetchChecked("audio/manifest.json")).json()) as AudioManifest;
+  } catch (error) {
+    console.error("City Drive: audio could not be loaded; the game will be silent", error);
+    return { version: 1, totalBytes: 0, sounds: [], procedural: [] };
+  }
+}
 
 async function start(): Promise<void> {
   const canvas = requireElement("game");
@@ -77,14 +97,52 @@ async function start(): Promise<void> {
   const missions = Object.fromEntries(
     Object.entries(DISTRICT_MISSIONS).map(([id, files]) => [id, files.map(summarizeMission)]),
   );
+  const audio = new AudioManager({
+    createContext: createBrowserContext,
+    loadBytes: (file) => loadBytes(`audio/${file}`),
+    manifest: await loadAudioManifest(),
+  });
+  const feel = new FeelDirector(
+    audio,
+    new HapticsService(createDriver(), () => profile.save.settings.haptics),
+  );
+  const firstDistrict = progression.districts[0]?.id ?? "district-1";
+  const firstMissionId = missions[firstDistrict]?.[0]?.id;
+  if (!firstMissionId) throw new Error(`City Drive: district "${firstDistrict}" has no missions`);
+  const onboarding = new OnboardingFlow({
+    flag: (name) => profile.flag(name),
+    setFlag: (name, value) => profile.setFlag(name, value),
+    hasProgress: () => profile.hasMissionRecords(),
+    openMission: (id) => host.mission.open(id, false),
+    firstMissionId,
+  });
   const controller = new AppController({
     game: host,
     profile,
     roster: ROSTER,
     progression,
     missions,
-    lastDistrict: new LastDistrict(store, progression.districts[0]?.id ?? "district-1"),
+    lastDistrict: new LastDistrict(store, firstDistrict),
+    onboarding,
+    horn: () => feel.horn(),
   });
+  const applySound = (): void =>
+    audio.setToggles({ master: profile.save.settings.audio, sfx: true, music: true });
+  applySound();
+  controller.subscribe(applySound);
+  controller.onFrame((play) => {
+    const { screen, loading } = controller.view;
+    feel.onFrame(play, {
+      driving: screen === "play" || screen === "pause",
+      engineOn: screen === "play" && !loading,
+      missionActive: play?.hud.phase === "active",
+    });
+  });
+  host.onStep((report) => {
+    feel.onStep(report);
+    controller.onStep(report);
+  });
+  unlockOnFirstGesture(window, audio);
   mountUi(
     ui,
     {
@@ -102,6 +160,7 @@ async function start(): Promise<void> {
     window,
   );
 
+  soundButtonTaps(ui, () => feel.uiTap());
   document.addEventListener("visibilitychange", () => {
     controller.setHidden(document.hidden);
     if (document.hidden) void saveManager.flush();

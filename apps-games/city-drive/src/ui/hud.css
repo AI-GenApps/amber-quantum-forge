@@ -1,4 +1,4 @@
-/* In-drive overlay. It never takes pointer events except on the pause button. */
+/* In-drive overlay. It never takes pointer events except on the pause and horn buttons. */
 
 .cd-hud {
   position: absolute;
@@ -21,6 +21,14 @@
 .cd-pause-button {
   position: absolute;
   top: max(var(--space-3), var(--inset-top));
+  right: max(var(--space-3), var(--inset-right));
+  pointer-events: auto;
+  background: rgba(11, 16, 32, 0.78);
+}
+
+.cd-horn-button {
+  position: absolute;
+  top: calc(max(var(--space-3), var(--inset-top)) + var(--tap) + var(--space-2));
   right: max(var(--space-3), var(--inset-right));
   pointer-events: auto;
   background: rgba(11, 16, 32, 0.78);

@@ -1,0 +1,17 @@
+Source: racing car engine sound loops (OpenGameArt)
+Licence id: audio-oga-racing-car-engine-loops
+Author: domasx2
+Licence: Creative Commons Zero 1.0 (CC0), http://creativecommons.org/publicdomain/zero/1.0/
+Source URL: https://opengameart.org/content/racing-car-engine-sound-loops
+Download date: 2026-10-16
+Download URL: https://opengameart.org/sites/default/files/loop_0.wav
+Download file: loop_0.wav
+SHA-256: 69d74b106509037ce547429e4c3f9ae906b0fffe88d0bb8b3b5a8b0cfc239048
+Download URL: https://opengameart.org/sites/default/files/loop_4_0.wav
+Download file: loop_4_0.wav
+SHA-256: fadf4420104d9273e6cc0a1c4583d863937af382382866251fc2b8dc005f9369
+Sounds used here: loop_0.wav, loop_4_0.wav
+
+Licence statement: the OpenGameArt page https://opengameart.org/content/racing-car-engine-sound-loops lists "License(s): CC0"
+(read 2026-10-16). OpenGameArt has no licence file inside the download, so the page is the
+record. The page text is not copied here.

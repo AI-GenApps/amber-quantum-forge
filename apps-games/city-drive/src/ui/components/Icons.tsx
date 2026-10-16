@@ -55,6 +55,21 @@ export function PauseIcon({ class: cls = "" }: IconProps) {
   );
 }
 
+export function HornIcon({ class: cls = "" }: IconProps) {
+  return (
+    <svg class={cls} viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4 9h4l6-4v14l-6-4H4z" fill="currentColor" />
+      <path
+        d="M17 9a4.5 4.5 0 0 1 0 6M19.5 6.5a8 8 0 0 1 0 11"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      />
+    </svg>
+  );
+}
+
 export function BackIcon({ class: cls = "" }: IconProps) {
   return (
     <svg class={cls} viewBox="0 0 24 24" aria-hidden="true">

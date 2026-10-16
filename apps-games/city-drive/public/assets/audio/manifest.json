@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "totalBytes": 1174351,
+  "sounds": [
+    {
+      "id": "engine_idle",
+      "file": "engine_idle.mp3",
+      "kind": "loop",
+      "bytes": 7542,
+      "sha256": "d65e376a1a1bebbe19ad396e7ea3b6432b7be8cd3170b16064ccc5e620968734",
+      "durationS": 0.864,
+      "source": "audio-oga-racing-car-engine-loops"
+    },
+    {
+      "id": "engine_rev",
+      "file": "engine_rev.mp3",
+      "kind": "loop",
+      "bytes": 5661,
+      "sha256": "11ec77ad12a8e492f93ac188d68ee777711836d1d95c7654331380e301231a3a",
+      "durationS": 0.631,
+      "source": "audio-oga-racing-car-engine-loops"
+    },
+    {
+      "id": "collision_light",
+      "file": "collision_light.mp3",
+      "kind": "sfx",
+      "bytes": 3571,
+      "sha256": "c08b727b726308bd7aa02b7e66de84e18c6b314da5c3750b2dffe4f9ba8fc9d3",
+      "durationS": 0.373,
+      "source": "audio-kenney-impact-sounds"
+    },
+    {
+      "id": "collision_medium",
+      "file": "collision_medium.mp3",
+      "kind": "sfx",
+      "bytes": 2735,
+      "sha256": "82fe88fbc23247909979f070ab84635adda7ca3921afcabd99017a10eb3bd9ef",
+      "durationS": 0.269,
+      "source": "audio-kenney-impact-sounds"
+    },
+    {
+      "id": "collision_heavy",
+      "file": "collision_heavy.mp3",
+      "kind": "sfx",
+      "bytes": 1899,
+      "sha256": "12e6adf99ae460377dc984effe5751b38b91b1d788bf8d068cc4a2dee899d45b",
+      "durationS": 0.165,
+      "source": "audio-kenney-impact-sounds"
+    },
+    {
+      "id": "horn",
+      "file": "horn.mp3",
+      "kind": "sfx",
+      "bytes": 4407,
+      "sha256": "6899e6c69960def11798fe4766761bcde2cb4c3df35e6af3b14ff63b7b16feed",
+      "durationS": 0.481,
+      "source": "audio-oga-car-sound-effects-pack"
+    },
+    {
+      "id": "checkpoint",
+      "file": "checkpoint.mp3",
+      "kind": "sfx",
+      "bytes": 4825,
+      "sha256": "74c4372ffc2bda50ed3344740e6359de4745685674ec210b9b871690799dad83",
+      "durationS": 0.539,
+      "source": "audio-kenney-interface-sounds"
+    },
+    {
+      "id": "pickup",
+      "file": "pickup.mp3",
+      "kind": "sfx",
+      "bytes": 1272,
+      "sha256": "0542bb1ae6d27e563ab488bf2402a1702e8802fc0bf9b107ca0ae744d0c7ecef",
+      "durationS": 0.1,
+      "source": "audio-kenney-interface-sounds"
+    },
+    {
+      "id": "ui_tap",
+      "file": "ui_tap.mp3",
+      "kind": "sfx",
+      "bytes": 1272,
+      "sha256": "ab0787fafe9466f7d37df20a7f3ec11343461bfe57a2a3f0198ef441f2c174cd",
+      "durationS": 0.097,
+      "source": "audio-kenney-interface-sounds"
+    },
+    {
+      "id": "success",
+      "file": "success.mp3",
+      "kind": "sting",
+      "bytes": 7124,
+      "sha256": "59f7768aac71128a15996134871c264422a9b2ac56bb397201552061005d64d2",
+      "durationS": 0.825,
+      "source": "audio-kenney-music-jingles"
+    },
+    {
+      "id": "fail",
+      "file": "fail.mp3",
+      "kind": "sting",
+      "bytes": 7542,
+      "sha256": "186d92e5b52cce6b5e81529afa241e60ccd81996a090387ce8b4ac6f3a120725",
+      "durationS": 0.881,
+      "source": "audio-kenney-music-jingles"
+    },
+    {
+      "id": "music_menu",
+      "file": "music_menu.mp3",
+      "kind": "music",
+      "bytes": 486560,
+      "sha256": "5842a16bcd3ce4258198d57f6fc0284ba4dcaefb93d54d216e90ea69b670a2d3",
+      "durationS": 97.216,
+      "source": "audio-oga-chill-lofi-loop"
+    },
+    {
+      "id": "music_drive",
+      "file": "music_drive.mp3",
+      "kind": "music",
+      "bytes": 639941,
+      "sha256": "3567cccab10f651f77ffa3fbb86b6da15dc711f4ddf3838fbdb291f654b37dbf",
+      "durationS": 127.887,
+      "source": "audio-oga-lofi-hip-hop-loop"
+    }
+  ],
+  "procedural": []
+}

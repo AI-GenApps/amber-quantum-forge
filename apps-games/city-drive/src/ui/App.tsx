@@ -4,6 +4,7 @@ import type { AppController, AppView } from "./controller";
 import { RotateOverlay } from "./controls/RotateOverlay";
 import { TouchControls } from "./controls/TouchControls";
 import type { MinimapModel } from "./model/minimap";
+import { OnboardingOverlay } from "./onboarding";
 import { Briefing } from "./screens/Briefing";
 import { Garage } from "./screens/Garage";
 import { Home } from "./screens/Home";
@@ -52,6 +53,13 @@ function PlayLayer({ view, controller, content, touch, minimap }: AppProps & { v
             .flat()
             .find((m) => m.id === play.result?.id)}
           controller={controller}
+        />
+      ) : null}
+      {view.screen === "play" && view.onboarding ? (
+        <OnboardingOverlay
+          view={view.onboarding}
+          onSkip={() => controller.skipOnboarding()}
+          onDismiss={() => controller.dismissOnboarding()}
         />
       ) : null}
       {content.showTouch && driving && phase !== "briefing" && !ended ? (

@@ -12,6 +12,7 @@ import { LastDistrict, Profile, ROSTER } from "../../src/save";
 import { AppController } from "../../src/ui/controller";
 import { type MissionSummary, summarizeMission } from "../../src/ui/model/districts";
 import type { MinimapModel } from "../../src/ui/model/minimap";
+import { OnboardingFlow } from "../../src/ui/onboarding";
 import type { PlayState, UiContent, UiGame } from "../../src/ui/types";
 
 export const progression = parseProgression(PROGRESSION_RAW);
@@ -137,7 +138,9 @@ export class FakeGame implements UiGame {
   };
 }
 
-export async function makeApp(options: { coins?: number; stars?: number } = {}) {
+export async function makeApp(
+  options: { coins?: number; stars?: number; onboarding?: boolean } = {},
+) {
   const store = new MemorySaveStore();
   const manager = new SaveManager(store, { starterCarId: ROSTER.starter, debounceMs: 1 });
   const profile = await Profile.load(manager, ROSTER);
@@ -159,6 +162,17 @@ export async function makeApp(options: { coins?: number; stars?: number } = {}) 
   }
   const game = new FakeGame();
   const lastDistrict = new LastDistrict(store, "district-1");
+  const horns = { count: 0 };
+  const firstMissionId = missionSummaries["district-1"]?.[0]?.id ?? "d1-m01";
+  const onboarding = options.onboarding
+    ? new OnboardingFlow({
+        flag: (name) => profile.flag(name),
+        setFlag: (name, value) => profile.setFlag(name, value),
+        hasProgress: () => profile.hasMissionRecords(),
+        openMission: (id) => game.mission.open(id, false),
+        firstMissionId,
+      })
+    : undefined;
   const controller = new AppController({
     game,
     profile,
@@ -166,6 +180,8 @@ export async function makeApp(options: { coins?: number; stars?: number } = {}) 
     progression,
     missions: missionSummaries,
     lastDistrict,
+    onboarding,
+    horn: () => void horns.count++,
   });
   const content: UiContent = {
     roster: ROSTER,
@@ -173,7 +189,7 @@ export async function makeApp(options: { coins?: number; stars?: number } = {}) 
     missions: missionSummaries,
     showTouch: true,
   };
-  return { controller, game, profile, manager, store, lastDistrict, content };
+  return { controller, game, profile, manager, store, lastDistrict, content, onboarding, horns };
 }
 
 /** Lets Preact flush its queued renders and any pending promises. */

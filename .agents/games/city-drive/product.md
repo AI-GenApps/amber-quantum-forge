@@ -144,6 +144,20 @@ screens: they follow the mission phase.
 Audio is CC0 only, with a licence record per source; haptics via the Capacitor
 haptics plugin; a short first-drive onboarding.
 
+Shipped in task 14 (1.17 MB of audio, all MP3):
+
+- **Sounds**: engine (two CC0 loops crossfaded and pitched by speed and throttle), collision thuds
+  (light, medium, heavy by impulse), horn (HUD button), checkpoint, pickup, success and fail stings, UI tap,
+  one menu and one driving music loop (ducked during missions). No tyre-skid sound ships (no CC0 sample).
+- **Web Audio** is unlocked on the first tap or key. Settings, Sound switches everything off.
+- **Haptics**: collision medium impact, checkpoint and pickup light, success and fail notifications.
+  Settings, Vibration turns them off. Browsers use `navigator.vibrate` where it exists.
+- **First drive** (new players only, nothing for a save that already has mission records): a 3-step
+  overlay on free roam (hold gas, steer, brake or handbrake, each completed by sustained input), then the
+  first mission's briefing opens with a tip about markers, the route ribbon and stars, and its results
+  carry a tip about coins and the garage. "Skip tutorial" is always visible; Settings has "Replay
+  tutorial".
+
 ## Tech
 
 | Area | Choice |

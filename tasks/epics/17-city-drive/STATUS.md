@@ -112,7 +112,7 @@ with `startAt` set to the next task ID.
 | 11 | Three districts + 24 validated missions + free-roam markers | agent | [x] |
 | 12 | Economy: coins, car roster + unlocks, versioned local save | agent | [x] |
 | 13 | UI screens + HUD (home, map, garage, results, pause, settings) + fonts | agent | [x] |
-| 14 | Audio, haptics, first-drive onboarding | agent | [ ] |
+| 14 | Audio, haptics, first-drive onboarding | agent | [x] |
 | 15 | Performance pass (adaptive scaling, freezing, LOD, budget gate) | agent | [ ] |
 | 16 | HUMAN: full browser playtest checkpoint | human | [ ] |
 | 17 | Capacitor packaging (Android/iOS), Android toolchain, debug APK | agent | [ ] |

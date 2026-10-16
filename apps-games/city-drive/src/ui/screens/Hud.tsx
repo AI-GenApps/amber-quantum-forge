@@ -1,4 +1,4 @@
-import { ArrowIcon, PauseIcon } from "../components/Icons";
+import { ArrowIcon, HornIcon, PauseIcon } from "../components/Icons";
 import { Meter } from "../components/Meter";
 import type { AppController } from "../controller";
 import { arrowAnchor, objectiveArrow } from "../model/arrow";
@@ -79,6 +79,15 @@ export function Hud({
         onClick={() => controller.pause()}
       >
         <PauseIcon />
+      </button>
+      <button
+        type="button"
+        class="cd-button cd-icon-button cd-horn-button"
+        aria-label="Horn"
+        data-no-tap="true"
+        onClick={() => controller.horn()}
+      >
+        <HornIcon />
       </button>
       <p class="cd-speed">
         <span class="cd-sr">Speed</span>

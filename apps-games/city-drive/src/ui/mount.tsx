@@ -6,6 +6,7 @@ import "./tokens.css";
 import "./controls/controls.css";
 import "./screens.css";
 import "./hud.css";
+import "./onboarding/onboarding.css";
 
 export interface MountedUi {
   dispose(): void;

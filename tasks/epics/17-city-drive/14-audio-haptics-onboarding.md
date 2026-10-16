@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 14-audio-haptics-onboarding
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/13-ui-screens-and-hud]
 estimate: M
@@ -64,14 +64,14 @@ mission that teaches the controls.
 
 ## Implementation Checklist
 
-- [ ] Source and licence the audio, then convert and encode with a script.
-- [ ] Audio manager (mixer, ducking, settings) plus tests with a mocked
+- [x] Source and licence the audio, then convert and encode with a script.
+- [x] Audio manager (mixer, ducking, settings) plus tests with a mocked
       AudioContext.
-- [ ] Engine and skid parameter mapping as pure functions, tested.
-- [ ] Haptics service plus tests (mocked plugin; the web fallback).
-- [ ] Onboarding flow, input detectors, persistence flags, and skip and
+- [x] Engine and skid parameter mapping as pure functions, tested.
+- [x] Haptics service plus tests (mocked plugin; the web fallback).
+- [x] Onboarding flow, input detectors, persistence flags, and skip and
       replay, with tests.
-- [ ] Update `.agents/games/city-drive/assets-index.md` with the audio table.
+- [x] Update `.agents/games/city-drive/assets-index.md` with the audio table.
 
 ## Files Touched
 

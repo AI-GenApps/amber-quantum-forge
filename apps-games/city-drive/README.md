@@ -66,3 +66,24 @@ minimap, graphics profile), `screens/` (home, map, garage, settings, pause, brie
 `controller.ts` (the stack plus every action, talking to the game only through the `UiGame` interface).
 `src/game/gameHost.ts` is the real `UiGame`; component tests use a fake. The game's name lives in one
 constant, `src/ui/brand.ts`.
+
+## Audio, haptics, onboarding (task 14)
+
+- `src/audio/`: plain Web Audio (no Babylon audio engine: the app code is about 6.7 KB minified against
+  about 170 KB for Babylon's `AudioV2` engine alone). `mapping.ts` holds the pure functions (engine
+  pitch and crossfade from speed and throttle, skid gain from lateral slip, collision sample and gain
+  from impulse, music ducking). `manager.ts` is the mixer: master, effects and music buses, one-shots,
+  two engine loops, music loops, nothing audible until the first user gesture (`unlock.ts`). `director.ts`
+  turns step reports and mission changes into sounds and buzzes. A sound that fails to load is logged
+  and stays silent.
+- `src/game/stepReport.ts`: what each fixed step tells the audio, haptics and tutorial (input, speed,
+  lateral slip, hardest hit). The session produces it, `GameHost.onStep` hands it out. It is read-only
+  and does not touch the simulation, so determinism is unchanged.
+- `src/haptics/`: `HapticsService` behind a driver interface. On a device it uses `@capacitor/haptics`;
+  in a browser it uses `navigator.vibrate` when present, otherwise nothing. Respects Settings, Vibration.
+- `src/ui/onboarding/`: the first-drive tutorial (three control steps, the first mission's briefing, the
+  results tip), pure `OnboardingFlow` plus a Preact overlay. Flags live in `save.onboarding`
+  (`first_drive_done`, `controls_taught`, `first_briefing_seen`, `results_explained`). Skippable;
+  Settings, "Replay tutorial" runs it again.
+- Settings, Sound switches the master bus. Audio files, manifest and licences: see
+  `assets-src/README.md` and `.agents/games/city-drive/assets-index.md`.

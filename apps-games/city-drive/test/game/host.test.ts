@@ -73,6 +73,21 @@ describe("GameHost", () => {
     expect(host.current?.session.physics.tick).toBe((tick ?? 0) + 1);
   });
 
+  it("reports every simulated step to listeners, and none while paused", () => {
+    const reports: number[] = [];
+    const stop = host.onStep((report) => void reports.push(report.topSpeedKmh));
+    for (let i = 0; i < 5; i++) host.step();
+    expect(reports).toHaveLength(5);
+    expect(reports[0]).toBe(host.current?.session.car.spec.topSpeedKmh);
+    host.setPaused(true);
+    for (let i = 0; i < 5; i++) host.step();
+    expect(reports).toHaveLength(5);
+    host.setPaused(false);
+    stop();
+    host.step();
+    expect(reports).toHaveLength(5);
+  });
+
   it("opens a mission from the menu and reports it in the snapshot", () => {
     host.mission.open("d1-m02", false);
     const play = host.snapshot();
