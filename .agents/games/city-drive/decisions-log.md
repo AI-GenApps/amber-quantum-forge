@@ -266,3 +266,11 @@ Baseline car values live in `apps-games/city-drive-core/src/cars/specs.ts`
 - **Web:** `favicon.png` (48), `apple-touch-icon.png` (180), `icons/icon-{192,512}.png`,
   `icons/icon-512-maskable.png` and `manifest.webmanifest`, all from the same master.
 - **Home wordmark:** `Wordmark.tsx`, HTML and CSS in Russo One with the 192 px icon as a small mark.
+
+## 2026-10-16 — Owner playtest sign-off (tasks 08 and 16)
+
+- Verdict: "The game looks good". One defect reported: roads not continuous. Root cause: thin-instance
+  chunk hosts shared one geometry, so most straight roads were not drawn. Fixed in task 16a (57f7396);
+  the owner confirmed "roads look continuous now".
+- Kenney look kept as-is; no palette/material pass requested.
+- No other fix items. Device performance numbers are collected at task 22.

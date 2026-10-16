@@ -105,7 +105,7 @@ with `startAt` set to the next task ID.
 | 05 | City map format, road graph, static colliders | agent | [x] |
 | 06 | Babylon city renderer + headless draw-call/triangle budget test | agent | [x] |
 | 07 | Player car, touch/keyboard controls, chase camera | agent | [x] |
-| 08 | HUMAN: first-drive checkpoint (browser, desktop + phone) | human | [ ] |
+| 08 | HUMAN: first-drive checkpoint (browser, desktop + phone) | human | [x] |
 | 08a | Fix: render the scene right-handed (no mirrored world) | agent | [x] |
 | 09 | AI traffic on the road graph | agent | [x] |
 | 10 | Mission engine (delivery, taxi, time trial, parking; stars) | agent | [x] |
@@ -114,7 +114,7 @@ with `startAt` set to the next task ID.
 | 13 | UI screens + HUD (home, map, garage, results, pause, settings) + fonts | agent | [x] |
 | 14 | Audio, haptics, first-drive onboarding | agent | [x] |
 | 15 | Performance pass (adaptive scaling, freezing, LOD, budget gate) | agent | [x] |
-| 16 | HUMAN: full browser playtest checkpoint | human | [ ] |
+| 16 | HUMAN: full browser playtest checkpoint | human | [x] |
 | 16a | Fix: most roads not drawn (thin-instance hosts shared one geometry) | agent | [x] |
 | 17 | Capacitor packaging (Android/iOS), Android toolchain, debug APK | agent | [x] |
 | 18 | Name candidates (strict uniqueness) + icon dry run | agent | [x] |
