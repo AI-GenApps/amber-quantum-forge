@@ -10,6 +10,7 @@ library;
 import 'dart:async';
 import 'dart:io' show Platform;
 
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'ludo_ads_service.dart';
@@ -67,7 +68,15 @@ final class GoogleLudoRewardedAdSdk implements LudoRewardedAdSdk {
 
   @override
   Future<void> initialize() async {
-    await MobileAds.instance.initialize();
+    final status = await MobileAds.instance.initialize();
+    final adapters = status.adapterStatuses.entries
+        .map(
+          (e) =>
+              '${e.key}=${e.value.state.name} '
+              '(latency=${e.value.latency}ms, "${e.value.description}")',
+        )
+        .join(', ');
+    debugPrint('[LudoAds] sdk initialized adapters: $adapters');
   }
 
   @override
@@ -100,7 +109,15 @@ final class GoogleLudoRewardedAdSdk implements LudoRewardedAdSdk {
             );
           },
           onAdFailedToLoad: (error) {
-            if (!completer.isCompleted) completer.complete(null);
+            if (!completer.isCompleted) {
+              completer.completeError(
+                LudoAdLoadException(
+                  code: error.code,
+                  domain: error.domain,
+                  message: error.message,
+                ),
+              );
+            }
           },
         ),
       ),

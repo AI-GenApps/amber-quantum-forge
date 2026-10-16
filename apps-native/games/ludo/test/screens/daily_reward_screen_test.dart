@@ -8,6 +8,8 @@ import 'package:ludo/src/net/ludo_ads_config.dart';
 import 'package:ludo/src/screens/daily_reward_screen.dart';
 import 'package:ludo/src/theme/ludo_theme.dart';
 
+import 'package:ludo/src/net/ludo_ads_service.dart' show LudoAdLoadException;
+
 import '../net/ludo_ads_test_support.dart';
 import '../state/ludo_rewards_test_support.dart';
 import '../state/ludo_store_test_support.dart';
@@ -196,6 +198,55 @@ void main() {
     expect(harness.base.wallet.coins, 2000);
   });
 
+  testWidgets('opening the screen from a lobby that listens to the same '
+      'state never marks it dirty during build (device evidence: '
+      '"setState() or markNeedsBuild() called during build")', (tester) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.75;
+    addTearDown(tester.view.reset);
+    final h = RewardsHarness.create();
+    await h.base.wallet.refresh();
+    await h.daily.load();
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: buildLudoTheme(),
+        home: Builder(
+          builder: (context) => Scaffold(
+            body: Column(
+              children: [
+                // Stands in for the lobby's reward button.
+                AnimatedBuilder(
+                  animation: h.daily,
+                  builder: (_, _) =>
+                      Text(h.daily.isLoading ? 'lobby-loading' : 'lobby-idle'),
+                ),
+                TextButton(
+                  key: const Key('open-rewards'),
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => DailyRewardScreen(
+                        dailyReward: h.daily,
+                        ads: h.ads,
+                        walletState: h.base.wallet,
+                      ),
+                    ),
+                  ),
+                  child: const Text('open'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.byKey(const Key('open-rewards')));
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('Daily Rewards'), findsOneWidget);
+    expect(find.text('Day 3 is ready to claim.'), findsOneWidget);
+  });
+
   testWidgets('offline shows a retry that loads the calendar', (tester) async {
     final harness = RewardsHarness.create();
     harness.transport.failingKeys.add('GET daily-reward');
@@ -268,6 +319,116 @@ void main() {
         findsOneWidget,
       );
       expect(harness.base.wallet.coins, 2000);
+    });
+
+    testWidgets('a failed ad load names the cause: network versus no fill, '
+        'with the SDK code in debug builds', (tester) async {
+      final harness = RewardsHarness.create(
+        sdk: FakeRewardedAdSdk()
+          ..loadFailure = const LudoAdLoadException(
+            code: 2,
+            domain: 'com.google.android.gms.ads',
+            message: 'Network error',
+          ),
+      );
+      await _pump(tester, harness: harness);
+      await tester.tap(find.byKey(const Key('watch-ad-coins')));
+      await tester.pumpAndSettle();
+      expect(
+        find.textContaining('Could not reach the ad network.'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('code=2'), findsOneWidget);
+
+      harness.sdk.loadFailure = const LudoAdLoadException(
+        code: 3,
+        domain: 'com.google.android.gms.ads',
+        message: 'No fill',
+      );
+      await tester.tap(find.byKey(const Key('watch-ad-coins')));
+      await tester.pumpAndSettle();
+      expect(
+        find.textContaining('No ad is available right now.'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('code=3'), findsOneWidget);
+    });
+
+    testWidgets('the device engine failure (code=0, JavascriptEngine) tells '
+        'the player to update WebView and Play services, not "no ad"', (
+      tester,
+    ) async {
+      final harness = RewardsHarness.create(
+        sdk: FakeRewardedAdSdk()
+          ..loadFailure = const LudoAdLoadException(
+            code: 0,
+            domain: 'com.google.android.gms.ads',
+            message: 'Unable to obtain a JavascriptEngine.',
+          ),
+      );
+      await _pump(tester, harness: harness);
+      await tester.tap(find.byKey(const Key('watch-ad-coins')));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.textContaining('Ads cannot start on this device.'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('Android System WebView'), findsOneWidget);
+      expect(find.textContaining('No ad is available'), findsNothing);
+      // Debug builds append the SDK's own code for the device log reader.
+      expect(find.textContaining('code=0'), findsOneWidget);
+      expect(harness.base.wallet.coins, 2000);
+    });
+
+    testWidgets('after two diamond ads the diamond row hits its limit, the '
+        'wallet shows 70 and the disabled button opens no third ad', (
+      tester,
+    ) async {
+      final harness = RewardsHarness.create(
+        script: {
+          // autoLoad, then per watch: the load at its start and one poll.
+          'GET ads/rewarded/status': [
+            jsonOk(adsStatusBody()),
+            jsonOk(adsStatusBody()),
+            jsonOk(adsStatusBody(diamondsClaimed: 1)),
+            jsonOk(adsStatusBody(diamondsClaimed: 1)),
+            jsonOk(adsStatusBody(diamondsClaimed: 2)),
+          ],
+          'GET wallet': [
+            jsonOk({'coins': 2700, 'diamonds': 60}),
+            jsonOk({'coins': 2700, 'diamonds': 65}),
+            jsonOk({'coins': 2700, 'diamonds': 70}),
+          ],
+        },
+      );
+      await _pump(tester, harness: harness);
+      expect(find.text('2 of 2 left today'), findsOneWidget);
+
+      await tester.tap(find.byKey(const Key('watch-ad-diamonds')));
+      await tester.pumpAndSettle();
+      expect(harness.base.wallet.diamonds, 65);
+      expect(find.text('1 of 2 left today'), findsOneWidget);
+      expect(
+        find.text('Reward received! Your diamonds balance is updated.'),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.byKey(const Key('watch-ad-diamonds')));
+      await tester.pumpAndSettle();
+      expect(harness.base.wallet.diamonds, 70);
+      expect(
+        find.text('Daily limit reached. Come back tomorrow.'),
+        findsOneWidget,
+      );
+      // The coin row is untouched and still watchable.
+      expect(find.text('5 of 5 left today'), findsOneWidget);
+
+      final calls = harness.sdk.calls.length;
+      await tester.tap(find.byKey(const Key('watch-ad-diamonds')));
+      await tester.pumpAndSettle();
+      expect(harness.sdk.calls.length, calls);
+      expect(harness.base.wallet.diamonds, 70);
     });
 
     testWidgets('a type at its daily limit disables its button', (

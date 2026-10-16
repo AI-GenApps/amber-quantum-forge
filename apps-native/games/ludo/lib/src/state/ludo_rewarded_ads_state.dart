@@ -25,6 +25,14 @@ enum LudoAdWatchOutcome {
   rewardPending,
   dismissedNoReward,
   noAdAvailable,
+
+  /// The ad network could not be reached (no connection to Google's ad
+  /// servers, or the load never answered), as opposed to no fill.
+  adNetworkError,
+
+  /// The device's ad runtime (Android System WebView / Google Play services)
+  /// could not start, so no ad can load until the player updates them.
+  adEngineUnavailable,
   consentRequired,
   dailyLimitReached,
   unavailable,
@@ -58,12 +66,17 @@ class LudoRewardedAdsState extends ChangeNotifier {
   LudoRewardedAdsStatus? _status;
   LudoCurrency? _watching;
   bool _isOffline = false;
+  String? _lastFailureDetail;
 
   LudoRewardedAdsStatus? get status => _status;
 
   /// The reward type whose ad is loading/showing or awaiting its credit.
   LudoCurrency? get watching => _watching;
   bool get isOffline => _isOffline;
+
+  /// The SDK's error code, domain and message from the last failed ad load,
+  /// or `null`. Shown only in debug builds.
+  String? get lastFailureDetail => _lastFailureDetail;
 
   /// `true` when ads can be requested in this build at all.
   bool get isAvailable => ads.isAvailable;
@@ -97,6 +110,7 @@ class LudoRewardedAdsState extends ChangeNotifier {
       final before = unit(type)!;
       if (before.remaining <= 0) return LudoAdWatchOutcome.dailyLimitReached;
 
+      _lastFailureDetail = null;
       final result = await ads.watch(
         rewardType: type.wire,
         ssvUserId: status.ssvUserId,
@@ -109,7 +123,14 @@ class LudoRewardedAdsState extends ChangeNotifier {
         case LudoAdWatchStatus.busy:
           return LudoAdWatchOutcome.busy;
         case LudoAdWatchStatus.loadFailed:
-          return LudoAdWatchOutcome.noAdAvailable;
+          _lastFailureDetail = result.message;
+          return switch (result.failureKind) {
+            LudoAdFailureKind.network => LudoAdWatchOutcome.adNetworkError,
+            LudoAdFailureKind.engineUnavailable =>
+              LudoAdWatchOutcome.adEngineUnavailable,
+            LudoAdFailureKind.noFill ||
+            LudoAdFailureKind.other => LudoAdWatchOutcome.noAdAvailable,
+          };
         case LudoAdWatchStatus.dismissedNoReward:
           return LudoAdWatchOutcome.dismissedNoReward;
         case LudoAdWatchStatus.earnedReward:

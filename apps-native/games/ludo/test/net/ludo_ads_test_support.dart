@@ -39,6 +39,12 @@ final class FakeRewardedAdSdk implements LudoRewardedAdSdk {
   bool hasAd;
   bool throwsOnLoad = false;
 
+  /// When set, `load` throws it (the SDK's onAdFailedToLoad).
+  LudoAdLoadException? loadFailure;
+
+  /// When set, `load` never answers until this completes.
+  Completer<void>? loadHold;
+
   /// Ordered log: `consent(form)`, `consent(no form)`, `initialize`,
   /// `load:<adUnit>|<userId>|<customData>`.
   final calls = <String>[];
@@ -62,6 +68,9 @@ final class FakeRewardedAdSdk implements LudoRewardedAdSdk {
   }) async {
     calls.add('load:$adUnitId|$ssvUserId|$customData');
     if (throwsOnLoad) throw StateError('load failed');
+    await loadHold?.future;
+    final failure = loadFailure;
+    if (failure != null) throw failure;
     return hasAd ? ad : null;
   }
 }

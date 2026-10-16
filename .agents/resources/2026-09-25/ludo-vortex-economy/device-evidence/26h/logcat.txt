@@ -1,0 +1,78 @@
+10-16 17:45:58.252 13631 13631 W BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+10-16 17:45:58.253 13631 13631 W ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+10-16 17:46:39.816 13808 13808 W BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+10-16 17:46:39.818 13808 13808 W ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+10-16 17:46:41.049 13105 13818 I Ads     : Updating ad debug logging enablement.
+10-16 17:46:41.078 13105 13829 W Ads     : Update ad debug logging enablement as false
+10-16 17:46:51.123 13105 13105 I flutter : [LudoAds] sdk initialized adapters: com.google.android.gms.ads.MobileAds=notReady
+10-16 17:46:51.126 13105 13105 I flutter : [LudoAds] request reward=coins unit=ca-app-pub-3940256099942544/5224354917
+10-16 17:46:51.180 13105 13899 I Ads     : Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("5249ED073D812DCFD361C231126C4297")) to get test ads on this device.
+10-16 17:46:51.325 13105 13912 W Ads     : Invoke Firebase method getInstance error.
+10-16 17:46:51.325 13105 13912 W Ads     : The Google Mobile Ads SDK will not integrate with Firebase. Admob/Firebase integration requires the latest Firebase SDK jar, but Firebase SDK is either missing or out of date
+10-16 17:46:51.761  6985 13932 E Ads     : Error waiting for future.
+10-16 17:46:51.761  6985 13932 E Ads     : java.util.concurrent.TimeoutException
+10-16 17:46:51.761  6985 13932 E Ads     : 	at java.util.concurrent.FutureTask.get(FutureTask.java:206)
+10-16 17:46:51.761  6985 13932 E Ads     : 	at com.google.android.gms.ads.nonagon.signals.gmscore.p.call(:com.google.android.gms@264032029@26.40.32 (190400-995630914):47)
+10-16 17:46:51.761  6985 13932 E Ads     : 	at idsh.a(:com.google.android.gms@264032029@26.40.32 (190400-995630914):3)
+10-16 17:46:51.761  6985 13932 E Ads     : 	at idrh.run(:com.google.android.gms@264032029@26.40.32 (190400-995630914):18)
+10-16 17:46:51.761  6985 13932 E Ads     : 	at idsi.run(:com.google.android.gms@264032029@26.40.32 (190400-995630914):5)
+10-16 17:46:51.761  6985 13932 E Ads     : 	at bqht.d(:com.google.android.gms@264032029@26.40.32 (190400-995630914):40)
+10-16 17:46:51.761  6985 13932 E Ads     : 	at bqht.c(:com.google.android.gms@264032029@26.40.32 (190400-995630914):5)
+10-16 17:46:51.761  6985 13932 E Ads     : 	at bqht.run(:com.google.android.gms@264032029@26.40.32 (190400-995630914):33)
+10-16 17:46:51.761  6985 13932 E Ads     : 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1100)
+10-16 17:46:51.761  6985 13932 E Ads     : 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+10-16 17:46:51.761  6985 13932 E Ads     : 	at bqnu.run(:com.google.android.gms@264032029@26.40.32 (190400-995630914):8)
+10-16 17:46:51.761  6985 13932 E Ads     : 	at java.lang.Thread.run(Thread.java:1571)
+10-16 17:46:54.412 10994 11017 I Finsky  : [750] Stats for Executor: LightweightExecutor yap@571d0af[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 2198]
+10-16 17:46:54.412 10994 11017 I Finsky  : [750] Stats for Executor: BlockingExecutor yap@9ca3366[Running, pool size = 2, active threads = 0, queued tasks = 0, completed tasks = 101]
+10-16 17:46:54.508 10994 11017 I Finsky  : [750] Stats for Executor: bgExecutor yap@545e91c[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 693]
+10-16 17:47:01.900 13105 13105 I Ads     : Ad failed to load : 0
+10-16 17:47:01.916 13105 13105 I flutter : [LudoAds] load failed code=0 domain=com.google.android.gms.ads message=Unable to obtain a JavascriptEngine.
+10-16 17:47:04.756 10994 11017 I Finsky  : [750] Stats for Executor: GrpcBackgroundExecutor yap@54ed2ba[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 5]
+10-16 17:47:12.075 13984 13984 W BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+10-16 17:47:12.076 13984 13984 W ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+10-16 17:47:25.774 14042 14042 W BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+10-16 17:47:25.775 14042 14042 W ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+10-16 17:47:31.632 13735 13749 I Finsky:quick_launch: [758] Stats for Executor: bgExecutor yap@3d1f445[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 4]
+10-16 17:47:31.663 13735 13749 I Finsky:quick_launch: [758] Stats for Executor: LightweightExecutor yap@ba0cf04[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 4]
+10-16 17:47:56.649 14074 14074 W BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+10-16 17:47:56.651 14074 14074 W ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+10-16 17:48:06.215 14115 14115 W BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+10-16 17:48:06.216 14115 14115 W ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+10-16 17:48:09.614 13105 13105 I flutter : [LudoAds] request reward=coins unit=ca-app-pub-3940256099942544/5224354917
+10-16 17:48:09.635 13105 13899 I Ads     : Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("5249ED073D812DCFD361C231126C4297")) to get test ads on this device.
+10-16 17:48:10.053  6985 14150 E Ads     : Error waiting for future.
+10-16 17:48:10.053  6985 14150 E Ads     : java.util.concurrent.TimeoutException
+10-16 17:48:10.053  6985 14150 E Ads     : 	at java.util.concurrent.FutureTask.get(FutureTask.java:206)
+10-16 17:48:10.053  6985 14150 E Ads     : 	at com.google.android.gms.ads.nonagon.signals.gmscore.p.call(:com.google.android.gms@264032029@26.40.32 (190400-995630914):47)
+10-16 17:48:10.053  6985 14150 E Ads     : 	at idsh.a(:com.google.android.gms@264032029@26.40.32 (190400-995630914):3)
+10-16 17:48:10.053  6985 14150 E Ads     : 	at idrh.run(:com.google.android.gms@264032029@26.40.32 (190400-995630914):18)
+10-16 17:48:10.053  6985 14150 E Ads     : 	at idsi.run(:com.google.android.gms@264032029@26.40.32 (190400-995630914):5)
+10-16 17:48:10.053  6985 14150 E Ads     : 	at bqht.d(:com.google.android.gms@264032029@26.40.32 (190400-995630914):40)
+10-16 17:48:10.053  6985 14150 E Ads     : 	at bqht.c(:com.google.android.gms@264032029@26.40.32 (190400-995630914):5)
+10-16 17:48:10.053  6985 14150 E Ads     : 	at bqht.run(:com.google.android.gms@264032029@26.40.32 (190400-995630914):33)
+10-16 17:48:10.053  6985 14150 E Ads     : 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1100)
+10-16 17:48:10.053  6985 14150 E Ads     : 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+10-16 17:48:10.053  6985 14150 E Ads     : 	at bqnu.run(:com.google.android.gms@264032029@26.40.32 (190400-995630914):8)
+10-16 17:48:10.053  6985 14150 E Ads     : 	at java.lang.Thread.run(Thread.java:1571)
+10-16 17:48:20.167 13105 13105 I Ads     : Ad failed to load : 0
+10-16 17:48:20.173 13105 13105 I flutter : [LudoAds] load failed code=0 domain=com.google.android.gms.ads message=Unable to obtain a JavascriptEngine.
+10-16 17:48:39.454 14356 14356 W BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+10-16 17:48:39.455 14356 14356 W ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+10-16 17:48:47.207 13105 13105 I flutter : [LudoAds] request reward=coins unit=ca-app-pub-3940256099942544/5224354917
+10-16 17:48:47.222 13105 13899 I Ads     : Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("5249ED073D812DCFD361C231126C4297")) to get test ads on this device.
+10-16 17:48:57.745 13105 13105 I Ads     : Ad failed to load : 0
+10-16 17:48:57.747 13105 13105 I flutter : [LudoAds] load failed code=0 domain=com.google.android.gms.ads message=Unable to obtain a JavascriptEngine.
+10-16 17:49:11.620  3505  3521 I Finsky:background: [673] Stats for Executor: bgExecutor yap@b30379a[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 2616]
+10-16 17:49:11.621  3505  3521 I Finsky:background: [673] Stats for Executor: LightweightExecutor yap@3a38ced[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 2961]
+10-16 17:49:11.696  3505  3521 I Finsky:background: [673] Stats for Executor: BlockingExecutor yap@7ddab92[Running, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 399]
+10-16 17:49:16.755 14543 14543 W BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+10-16 17:49:16.756 14543 14543 W ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+10-16 17:49:23.474 14562 14562 W BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+10-16 17:49:23.475 14562 14562 W ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+10-16 17:49:32.054 14640 14640 W BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+10-16 17:49:32.055 14640 14640 W ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+10-16 17:49:40.976 14668 14668 W BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+10-16 17:49:40.977 14668 14668 W ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+10-16 17:49:47.496 14702 14702 W BpBinder: Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+10-16 17:49:47.497 14702 14702 W ProcessState: Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.

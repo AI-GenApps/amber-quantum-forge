@@ -9,6 +9,7 @@ library;
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 
 import '../net/ludo_gateway.dart' show LudoDailyRewardClaimResult;
@@ -63,8 +64,16 @@ class _DailyRewardScreenState extends State<DailyRewardScreen> {
   void initState() {
     super.initState();
     if (widget.autoLoad) {
-      unawaited(widget.dailyReward.load());
-      unawaited(widget.ads?.load());
+      // load() notifies its listeners synchronously (it flips isLoading), and
+      // the lobby's reward button listens to the same state. Notifying from
+      // initState would mark that button dirty in the middle of this route's
+      // build ("setState() or markNeedsBuild() called during build", seen on
+      // the device), so the first load starts after the first frame.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        unawaited(widget.dailyReward.load());
+        unawaited(widget.ads?.load());
+      });
     }
   }
 
@@ -99,6 +108,14 @@ class _DailyRewardScreenState extends State<DailyRewardScreen> {
         '$bonus.';
   }
 
+  /// The SDK's error code in debug builds only, so a device run shows why a
+  /// load failed without a logcat; release builds show nothing extra.
+  String _debugDetail(LudoRewardedAdsState ads) {
+    final detail = ads.lastFailureDetail;
+    if (!kDebugMode || detail == null) return '';
+    return ' ($detail)';
+  }
+
   Future<void> _watch(LudoCurrency type) async {
     final ads = widget.ads;
     if (ads == null) return;
@@ -115,7 +132,22 @@ class _DailyRewardScreenState extends State<DailyRewardScreen> {
       case LudoAdWatchOutcome.dismissedNoReward:
         _say('Watch the whole ad to earn the reward.', error: true);
       case LudoAdWatchOutcome.noAdAvailable:
-        _say('No ad is available right now. Try again soon.', error: true);
+        _say(
+          'No ad is available right now. Try again soon.${_debugDetail(ads)}',
+          error: true,
+        );
+      case LudoAdWatchOutcome.adNetworkError:
+        _say(
+          'Could not reach the ad network. Check your connection and try '
+          'again.${_debugDetail(ads)}',
+          error: true,
+        );
+      case LudoAdWatchOutcome.adEngineUnavailable:
+        _say(
+          'Ads cannot start on this device. Update Google Play services and '
+          'Android System WebView, then try again.${_debugDetail(ads)}',
+          error: true,
+        );
       case LudoAdWatchOutcome.consentRequired:
         _say('Ads need your privacy choice before they can show.', error: true);
       case LudoAdWatchOutcome.dailyLimitReached:

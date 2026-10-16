@@ -117,6 +117,7 @@ final class RewardsHarness {
     final adsService = LudoAdsService(
       sdk: fakeSdk,
       config: config ?? LudoAdsConfig.resolve(isAndroid: true),
+      log: (_) {},
     );
     return RewardsHarness._(
       base: base,

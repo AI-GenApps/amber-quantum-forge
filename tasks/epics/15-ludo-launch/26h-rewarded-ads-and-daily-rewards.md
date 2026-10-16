@@ -91,11 +91,12 @@ this monorepo per research.md section 3.
   (Also `test/net/ludo_ads_service_test.dart`,
   `test/state/ludo_rewarded_ads_state_test.dart`, goldens
   `test/goldens/daily_reward_screen_*.png`.)
-- device evidence pending: run ludo-economy-device-pass
-- [ ] Capture device evidence (physical device, serial `RZ8R32EAB7T`) of a
-  full rewarded-ad watch using AdMob **test ads** in debug, and the daily
-  reward calendar claim flow. NOT RUN (deferred to the device workflow); the
-  flow is written in
+- [x] Capture device evidence (physical device, serial `RZ8R32EAB7T`) of the
+  daily reward calendar claim flow. Passed on the Samsung A52; evidence in
+  `.agents/resources/2026-09-25/ludo-vortex-economy/device-evidence/26h/`
+  (see `device-flow.md`).
+- [ ] Capture device evidence of a full rewarded-ad watch using AdMob **test
+  ads** in debug. NOT RUN: user skipped the ad-watch device test (2026-10-16); the debug phone could not load test ads ('Unable to obtain a JavascriptEngine', device Play services/WebView). Code paths are covered by unit/widget tests with a fake ad SDK. Re-run Part C of device-flow.md on a phone with working Google Play services before release (see task 29). The flow is written in
   `.agents/resources/2026-09-25/ludo-vortex-economy/device-evidence/26h/device-flow.md`.
 - [x] Rewarded-ad daily caps (coins 5/day, diamonds 2/day) and the online
   free-play coin win cap (10/day) must be enforced with an atomic
@@ -167,6 +168,7 @@ this monorepo per research.md section 3.
 - Device evidence of a real rewarded-ad watch (test ads) and a daily
   reward claim exists under
   `.agents/resources/2026-09-25/ludo-vortex-economy/device-evidence/`.
+  Daily reward claim: captured. Rewarded-ad watch: NOT RUN: user skipped the ad-watch device test (2026-10-16); the debug phone could not load test ads ('Unable to obtain a JavascriptEngine', device Play services/WebView). Code paths are covered by unit/widget tests with a fake ad SDK. Re-run Part C of device-flow.md on a phone with working Google Play services before release (see task 29).
 - Rewarded-ad daily caps (coins 5/day, diamonds 2/day) and the online
   free-play coin win cap (10/day) are enforced with an atomic
   check-and-write in the economy store — the same pattern as

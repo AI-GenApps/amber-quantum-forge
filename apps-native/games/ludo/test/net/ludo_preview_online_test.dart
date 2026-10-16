@@ -6,12 +6,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:ludo/src/net/ludo_match_models.dart' show LudoMode;
 import 'package:ludo/src/net/ludo_match_state_source.dart';
+import 'package:ludo/src/net/ludo_ads_config.dart';
 import 'package:ludo/src/net/ludo_ads_service.dart';
 import 'package:ludo/src/net/ludo_preview_online.dart';
 import 'package:ludo/src/net/ludo_preview_rewards.dart';
 import 'package:ludo/src/net/ludo_preview_store.dart';
 import 'package:ludo/src/net/ludo_purchases_gateway.dart';
 import 'package:ludo/src/net/ludo_wire_json.dart';
+import 'package:ludo/src/state/ludo_daily_reward_state.dart';
+import 'package:ludo/src/state/ludo_inventory_state.dart' show LudoCurrency;
+import 'package:ludo/src/state/ludo_rewarded_ads_state.dart';
+import 'package:ludo/src/state/ludo_wallet_state.dart';
 
 const _fastDelay = Duration(milliseconds: 30);
 
@@ -309,7 +314,97 @@ void main() {
         start + 500,
       );
     });
+
+    test(
+      'the device walkthrough through the real states: claim day 3 '
+      '(2400 to 2700), a coin ad (2800), two diamond ads (60 to 65 to 70) '
+      'then the diamond limit blocks a third ad without opening the SDK '
+      '(task 26h device defect: counters after ads were never verified)',
+      () async {
+        final client = createLudoPreviewOnlineClient();
+        final wallet = LudoWalletState(
+          gateway: client.gateway,
+          authController: client.authController,
+        );
+        final daily = LudoDailyRewardState(
+          gateway: client.gateway,
+          authController: client.authController,
+          walletState: wallet,
+        );
+        final sdk = _CountingEarningSdk();
+        final ads = LudoRewardedAdsState(
+          gateway: client.gateway,
+          authController: client.authController,
+          walletState: wallet,
+          ads: LudoAdsService(
+            sdk: PreviewServerCreditAdSdk(sdk),
+            config: LudoAdsConfig.resolve(isDebug: true, isAndroid: true),
+            log: (_) {},
+          ),
+          pollAttempts: 3,
+          delay: (_) async {},
+        );
+
+        await wallet.refresh();
+        expect((wallet.coins, wallet.diamonds), (2400, 60));
+        await daily.load();
+        expect(await daily.claim(), isTrue);
+        expect((wallet.coins, wallet.diamonds), (2700, 60));
+
+        await ads.load();
+        expect(ads.unit(LudoCurrency.coins)!.remaining, 5);
+        expect(ads.unit(LudoCurrency.diamonds)!.remaining, 2);
+
+        expect(
+          await ads.watch(LudoCurrency.coins),
+          LudoAdWatchOutcome.credited,
+        );
+        expect((wallet.coins, wallet.diamonds), (2800, 60));
+        expect(ads.unit(LudoCurrency.coins)!.remaining, 4);
+
+        expect(
+          await ads.watch(LudoCurrency.diamonds),
+          LudoAdWatchOutcome.credited,
+        );
+        expect((wallet.coins, wallet.diamonds), (2800, 65));
+        expect(ads.unit(LudoCurrency.diamonds)!.remaining, 1);
+
+        expect(
+          await ads.watch(LudoCurrency.diamonds),
+          LudoAdWatchOutcome.credited,
+        );
+        expect((wallet.coins, wallet.diamonds), (2800, 70));
+        expect(ads.unit(LudoCurrency.diamonds)!.remaining, 0);
+        expect(ads.unit(LudoCurrency.coins)!.remaining, 4);
+
+        final loadsBefore = sdk.loads;
+        expect(
+          await ads.watch(LudoCurrency.diamonds),
+          LudoAdWatchOutcome.dailyLimitReached,
+        );
+        expect(sdk.loads, loadsBefore, reason: 'no ad is requested at the cap');
+        expect((wallet.coins, wallet.diamonds), (2800, 70));
+      },
+    );
   });
+}
+
+final class _CountingEarningSdk extends _EarningSdk {
+  int loads = 0;
+
+  @override
+  Future<LudoRewardedAdHandle?> load({
+    required String adUnitId,
+    required String ssvUserId,
+    required String customData,
+  }) {
+    loads += 1;
+    return super.load(
+      adUnitId: adUnitId,
+      ssvUserId: ssvUserId,
+      customData: customData,
+    );
+  }
 }
 
 final class _EarningSdk implements LudoRewardedAdSdk {

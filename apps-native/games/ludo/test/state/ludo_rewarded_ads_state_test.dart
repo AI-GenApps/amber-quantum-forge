@@ -64,6 +64,59 @@ void main() {
     expect(harness.sdk.calls.last, endsWith('|diamonds'));
   });
 
+  test('a network load failure is its own outcome and keeps the SDK detail, '
+      'while no fill stays noAdAvailable', () async {
+    final network = RewardsHarness.create(
+      sdk: FakeRewardedAdSdk()
+        ..loadFailure = const LudoAdLoadException(
+          code: 2,
+          domain: 'com.google.android.gms.ads',
+          message: 'Network error',
+        ),
+    );
+    expect(
+      await network.ads.watch(LudoCurrency.coins),
+      LudoAdWatchOutcome.adNetworkError,
+    );
+    expect(network.ads.lastFailureDetail, contains('code=2'));
+    expect(network.ads.watching, isNull);
+
+    final noFill = RewardsHarness.create(
+      sdk: FakeRewardedAdSdk()
+        ..loadFailure = const LudoAdLoadException(
+          code: 3,
+          domain: 'com.google.android.gms.ads',
+          message: 'No fill',
+        ),
+    );
+    expect(
+      await noFill.ads.watch(LudoCurrency.coins),
+      LudoAdWatchOutcome.noAdAvailable,
+    );
+  });
+
+  test('the device JavascriptEngine failure is adEngineUnavailable and '
+      'keeps the SDK detail', () async {
+    final harness = RewardsHarness.create(
+      sdk: FakeRewardedAdSdk()
+        ..loadFailure = const LudoAdLoadException(
+          code: 0,
+          domain: 'com.google.android.gms.ads',
+          message: 'Unable to obtain a JavascriptEngine.',
+        ),
+    );
+    expect(
+      await harness.ads.watch(LudoCurrency.coins),
+      LudoAdWatchOutcome.adEngineUnavailable,
+    );
+    expect(harness.ads.lastFailureDetail, contains('JavascriptEngine'));
+    expect(harness.ads.watching, isNull);
+    // A later success clears the stale detail.
+    harness.sdk.loadFailure = null;
+    await harness.ads.watch(LudoCurrency.coins);
+    expect(harness.ads.lastFailureDetail, isNull);
+  });
+
   test('closing the ad early earns nothing and does not poll for a '
       'credit', () async {
     final harness = RewardsHarness.create(

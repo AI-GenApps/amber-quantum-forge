@@ -25,7 +25,17 @@ below are only approximate (dp x 2.75).
 - Do not tap Quit/Reset/Delete-data controls.
 - The phone needs internet for the ad steps. If no ad ever loads
   ("No ad is available right now. Try again soon."), mark the ad steps
-  `BLOCKED (no network or no fill)`, not FAIL, and still finish Part B.
+  `BLOCKED (no network or no fill)`, not FAIL, and still finish Part B. The
+  same applies to "Ads cannot start on this device" (code=0 JavascriptEngine):
+  `BLOCKED (device ad runtime)` after the full C0 preflight.
+
+- Every screenshot must show the app unobstructed. A system heads-up
+  notification (for example "Your saved device is available") that overlaps the
+  header or a banner makes the screenshot unusable as evidence: before each
+  screenshot run `adb shell cmd statusbar collapse`, wait for any heads-up to
+  time out (about 6 s) or swipe it away, and retake the screenshot if any
+  overlay is visible. Name a rejected shot `*-overlay-rejected.png` and keep
+  the retake under the step's normal name.
 
 ## What is and is not covered
 
@@ -80,7 +90,10 @@ B2. Tap `Daily rewards, reward ready to claim`. Expected: a screen titled
     `+5 diamonds` / `2 of 2 left today`, each with a gold `Watch` button.
     Screenshot `B2-rewards-screen-day3-ready.png` (top) and, after scrolling
     down if the Free rewards panel is cut off, `B2b-rewards-screen-free-rewards.png`.
-B3. Tap `Claim daily reward` (the `Claim day 3 reward` button). Expected: a
+B3. Tap the claim button. Its visible text is `Claim day 3 reward`; in the
+    accessibility tree its content description is `Claim daily reward` (on the
+    container node, not the text node), and after the claim it becomes
+    `Daily reward already claimed today`. Find it by either string. Expected: a
     green banner `Day 3 reward claimed: +300 coins.`, the coin chip changes
     from `2400` to `2700` (diamonds stay `60`), the panel text becomes
     `Claimed for today. Come back tomorrow for day 4.`, the Day 3 tile is
@@ -91,14 +104,68 @@ B4. Tap the disabled `Claimed today` button once. Expected: nothing happens
 
 ## Part C: preview mode, rewarded test ads (stay on the Daily Rewards screen)
 
+C0. Ad preflight, BEFORE C1. ALL of these are mandatory; a preflight with a
+    skipped item is incomplete and Part C must then be reported
+    `BLOCKED (preflight incomplete)`, never as an ad failure. History: re-run
+    #1 and #3 failed every load with `code=0 ... Unable to obtain a
+    JavascriptEngine.` (the Google ads SDK in Google Play services could not
+    start its WebView-based engine); private DNS, proxy and WebView provider
+    were clean, so the cause is on the device or its Google apps, not in the
+    app. Record the output of each command in the report (`adb` is used by the
+    device agent only):
+    1. `adb shell settings get global private_dns_mode`,
+       `adb shell settings get global private_dns_specifier` (an ad blocking
+       private DNS such as AdGuard or NextDNS refuses ad hosts: turn it off or
+       set Automatic), `adb shell settings get global http_proxy`.
+    2. `adb shell dumpsys webviewupdate | head -20` (a valid current WebView
+       provider) and the installed versions:
+       `adb shell dumpsys package com.google.android.gms | grep versionName | head -1`,
+       `adb shell dumpsys package com.google.android.webview | grep versionName | head -1`,
+       `adb shell dumpsys package com.android.chrome | grep versionName | head -1`.
+       Also `adb shell pm list packages -d | grep -E "gms|webview|chrome"`
+       (anything listed there is DISABLED and must be re-enabled in Settings,
+       Apps).
+    3. Open `https://googleads.g.doubleclick.net` in Chrome:
+       `adb shell am start -a android.intent.action.VIEW -d https://googleads.g.doubleclick.net`
+       and screenshot `C0-chrome-googleads.png` (any HTTP answer, even a 404 or
+       an empty page, means the host is reachable; "connection refused" or
+       "site can't be reached" means ad hosts are blocked on this network: try
+       another Wi-Fi or mobile data, no VPN or ad blocker).
+    4. Play Store update check for BOTH apps, one screenshot each:
+       `adb shell am start -a android.intent.action.VIEW -d "market://details?id=com.google.android.gms"`
+       -> `C0-playstore-gms.png`, and the same with
+       `id=com.google.android.webview` -> `C0-playstore-webview.png`. If either
+       page offers `Update`, tap it, wait for the install to finish, then
+       force-stop and relaunch the Ludo app and redo the preflight versions.
+       If the Play Store shows neither button (managed or restricted device),
+       say so.
+    5. If the load still fails after 1 to 4, repeat C1 once on a SECOND
+       physical device (`adb devices -l`) when one is attached. If no second
+       device exists, keep C1 to C6 `BLOCKED (ad SDK cannot load on this
+       device)` and say that a human must retry on another phone; do not report
+       PASS without a full-screen test ad on screen.
+C0b. Before C1 start an UNFILTERED capture: `adb logcat -c` then
+    `adb logcat -v time > logcat-ad-attempt.txt` (or at least `adb logcat -s flutter:V Ads:V`;
+    the app's `debugPrint` output is tagged `flutter`). After the attempt grep for
+    `LudoAds`: expect `[LudoAds] sdk initialized adapters: <name>=<state> (latency=Nms, "<description>")` (copy the whole line into the report), `[LudoAds] request reward=coins unit=ca-app-pub-3940256099942544/...`
+    and then either `[LudoAds] ad loaded, showing` or `[LudoAds] load failed code=N domain=... message=...`
+    (code 2 = network error, 3 = no fill, code 0 with `Unable to obtain a JavascriptEngine.` = the
+    device's ad runtime is broken) or `load timed out`. In a debug build the red banner also
+    shows the code in brackets: `Could not reach the ad network ... (code=2 ...)` (network),
+    `No ad is available right now ... (code=3 ...)` (no fill) or
+    `Ads cannot start on this device. Update Google Play services and Android System WebView, then try again. (code=0 ... Unable to obtain a JavascriptEngine.)`
+    (device engine failure: an environment BLOCKER for Part C, not an app FAIL); screenshot it. If zero `LudoAds` lines
+    appear the build is stale: rebuild before reporting.
 C1. Tap `Watch ad for 100 coins`. Expected: the Watch button shows a small
     spinner, then (within a few seconds) a FULL-SCREEN Google test ad opens.
     If a Google privacy / consent form appears first (only in some regions;
     titles like "Privacy and cookie settings" or "Manage your choices"), screenshot
     `C1a-consent-form.png` and choose the option that agrees / allows ads
     (button text such as "Consent" or "Agree"), then the ad continues. Once the
-    ad is on screen screenshot `C1b-test-ad-playing.png` (it must show a test
-    marker). Do not tap inside the ad.
+    ad is on screen screenshot `C1b-test-ad-playing.png` ONLY if the screenshot really
+    shows the full-screen ad with a test marker; a screenshot of the Daily
+    Rewards screen (spinner on Watch) is not evidence of an ad and must be
+    named `C1b-watch-spinner-no-ad-shown.png`. Do not tap inside the ad.
 C2. Wait for the ad's countdown to finish (typically 5 to 30 s; a "Reward in N"
     style counter or a progress bar, then an "X" close button appears). Tap the
     close "X". Expected: back on `Daily Rewards`; within a few seconds a green
@@ -133,8 +200,10 @@ D2. Tap `Store`. Expected: the `Store` screen with a gold `Free coins` button
     Screenshot `D2-store-free-coins-button.png`. Tap it. Expected: the same
     `Daily Rewards` screen with `Claimed today` and the diamond limit still
     shown. Screenshot `D2b-rewards-from-store.png`. Press Back twice to the lobby.
-D3. Capture `adb logcat -d | grep -i -E "flutter|ads|admob"` into `logcat.txt`
-    in this folder. In the report note whether the log shows any ad unit id and
+D3. Capture `adb logcat -d | grep -i -E "LudoAds|flutter|Ads |admob"` into `logcat.txt`
+    in this folder. In the report note whether the log shows the `[LudoAds] request reward=... unit=...` line
+    (the app logs the requested ad unit id and, on a failure, the SDK error
+    code, domain and message as `[LudoAds] load failed ...`) and
     that it is Google's sample publisher `ca-app-pub-3940256099942544` (expected)
     and never another publisher id.
 

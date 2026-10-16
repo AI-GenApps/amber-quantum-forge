@@ -146,6 +146,116 @@ void main() {
       expect(result.status, LudoAdWatchStatus.loadFailed);
     });
 
+    test('a failed load reports the SDK code and what kind of failure it '
+        'was, and logs it', () async {
+      final lines = <String>[];
+      LudoAdsService serviceWith(FakeRewardedAdSdk sdk) =>
+          LudoAdsService(sdk: sdk, config: _debug(), log: lines.add);
+
+      final network = FakeRewardedAdSdk()
+        ..loadFailure = const LudoAdLoadException(
+          code: 2,
+          domain: 'com.google.android.gms.ads',
+          message: 'Unable to obtain a JavascriptEngine.',
+        );
+      final r = await serviceWith(network)
+          .watch(rewardType: 'coins', ssvUserId: 's');
+      expect(r.status, LudoAdWatchStatus.loadFailed);
+      expect(r.failureKind, LudoAdFailureKind.network);
+      expect(
+        r.message,
+        'code=2 domain=com.google.android.gms.ads '
+        'message=Unable to obtain a JavascriptEngine.',
+      );
+      // The two lines the device flow greps for (task 26h, defect: the log had
+      // no [LudoAds] line at all, so the failure was undiagnosable).
+      expect(
+        lines,
+        contains(
+          '[LudoAds] request reward=coins unit=$ludoAdMobTestRewardedAndroid',
+        ),
+      );
+      expect(
+        lines.any((l) => l.startsWith('[LudoAds] load failed code=2')),
+        isTrue,
+      );
+      expect(lines.join(), isNot(contains('s|')));
+
+      final noFill = FakeRewardedAdSdk()
+        ..loadFailure = const LudoAdLoadException(
+          code: 3,
+          domain: 'com.google.android.gms.ads',
+          message: 'No fill',
+        );
+      final r2 = await serviceWith(noFill)
+          .watch(rewardType: 'coins', ssvUserId: 's');
+      expect(r2.failureKind, LudoAdFailureKind.noFill);
+
+      final internal = FakeRewardedAdSdk()
+        ..loadFailure = const LudoAdLoadException(
+          code: 0,
+          domain: 'x',
+          message: 'boom',
+        );
+      expect(
+        (await serviceWith(
+          internal,
+        ).watch(rewardType: 'coins', ssvUserId: 's')).failureKind,
+        LudoAdFailureKind.other,
+      );
+    });
+
+    test(
+      'the device log line "code=0 ... Unable to obtain a JavascriptEngine." '
+      'is an engine failure, not a generic one (device 26h)',
+      () async {
+        final lines = <String>[];
+        final sdk = FakeRewardedAdSdk()
+          ..loadFailure = const LudoAdLoadException(
+            code: 0,
+            domain: 'com.google.android.gms.ads',
+            message: 'Unable to obtain a JavascriptEngine.',
+          );
+        final r = await LudoAdsService(
+          sdk: sdk,
+          config: _debug(),
+          log: lines.add,
+        ).watch(rewardType: 'coins', ssvUserId: 's');
+        expect(r.status, LudoAdWatchStatus.loadFailed);
+        expect(r.failureKind, LudoAdFailureKind.engineUnavailable);
+        expect(
+          r.message,
+          'code=0 domain=com.google.android.gms.ads '
+          'message=Unable to obtain a JavascriptEngine.',
+        );
+        expect(lines.any((l) => l.contains('load failed code=0')), isTrue);
+        // Same text under another code is not an engine failure.
+        expect(
+          const LudoAdLoadException(
+            code: 2,
+            domain: 'd',
+            message: 'Unable to obtain a JavascriptEngine.',
+          ).kind,
+          LudoAdFailureKind.network,
+        );
+      },
+    );
+
+    test('a load that never answers times out as a network failure and '
+        'frees the service', () async {
+      final sdk = FakeRewardedAdSdk()..loadHold = Completer<void>();
+      final ads = LudoAdsService(
+        sdk: sdk,
+        config: _debug(),
+        loadTimeout: const Duration(milliseconds: 20),
+        log: (_) {},
+      );
+      final r = await ads.watch(rewardType: 'coins', ssvUserId: 's');
+      expect(r.status, LudoAdWatchStatus.loadFailed);
+      expect(r.failureKind, LudoAdFailureKind.network);
+      expect(ads.isBusy, isFalse);
+    });
+
     test('SDK exceptions never escape and the ad is still disposed', () async {
       final loadThrows = FakeRewardedAdSdk()..throwsOnLoad = true;
       expect(
