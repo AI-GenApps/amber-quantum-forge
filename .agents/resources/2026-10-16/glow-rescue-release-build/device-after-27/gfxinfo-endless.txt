@@ -1,0 +1,9 @@
+== window endless: gfxinfo returned 0 frames (see gfxinfo-rescue.txt; same build, HWUI not counting this SurfaceView) ==
+== SurfaceFlinger present timeline (substitute) ==
+present_frames=24213 intervals=24190
+p50_interval_ms=11.11
+p90_interval_ms=11.55
+p95_interval_ms=22.21
+p99_interval_ms=33.45
+over_16.7ms=2325 (9.6%)  over_11.1ms=14609 (60.4%)
+swipes=199 (approx), result screens advanced=1 (New run)
