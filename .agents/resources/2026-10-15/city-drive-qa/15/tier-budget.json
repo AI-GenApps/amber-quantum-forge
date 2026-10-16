@@ -1,0 +1,178 @@
+{
+  "method": "NullEngine; per district and quality tier, worst case over the 9 budget poses with the tier's far plane, fog and traffic count (AI cars as InstancedMesh); same cost model as the task 06 budget test",
+  "budgets": {
+    "maxDrawCalls": 100,
+    "targetDrawCalls": 60,
+    "maxTriangles": 150000
+  },
+  "tiers": [
+    {
+      "scaling": 1,
+      "view": 1,
+      "traffic": 1
+    },
+    {
+      "scaling": 1.25,
+      "view": 1,
+      "traffic": 1
+    },
+    {
+      "scaling": 1.5,
+      "view": 1,
+      "traffic": 1
+    },
+    {
+      "scaling": 2,
+      "view": 1,
+      "traffic": 1
+    },
+    {
+      "scaling": 2,
+      "view": 0.8,
+      "traffic": 1
+    },
+    {
+      "scaling": 2,
+      "view": 0.6,
+      "traffic": 1
+    },
+    {
+      "scaling": 2,
+      "view": 0.6,
+      "traffic": 0.6
+    },
+    {
+      "scaling": 2,
+      "view": 0.6,
+      "traffic": 0.3
+    }
+  ],
+  "districts": {
+    "district-1": [
+      {
+        "activeMeshes": 65,
+        "drawCalls": 48,
+        "triangles": 131079
+      },
+      {
+        "activeMeshes": 65,
+        "drawCalls": 48,
+        "triangles": 131079
+      },
+      {
+        "activeMeshes": 65,
+        "drawCalls": 48,
+        "triangles": 131079
+      },
+      {
+        "activeMeshes": 65,
+        "drawCalls": 48,
+        "triangles": 131079
+      },
+      {
+        "activeMeshes": 65,
+        "drawCalls": 48,
+        "triangles": 131079
+      },
+      {
+        "activeMeshes": 62,
+        "drawCalls": 45,
+        "triangles": 125483
+      },
+      {
+        "activeMeshes": 47,
+        "drawCalls": 45,
+        "triangles": 122551
+      },
+      {
+        "activeMeshes": 32,
+        "drawCalls": 43,
+        "triangles": 119613
+      }
+    ],
+    "district-2": [
+      {
+        "activeMeshes": 93,
+        "drawCalls": 50,
+        "triangles": 121726
+      },
+      {
+        "activeMeshes": 93,
+        "drawCalls": 50,
+        "triangles": 121726
+      },
+      {
+        "activeMeshes": 93,
+        "drawCalls": 50,
+        "triangles": 121726
+      },
+      {
+        "activeMeshes": 93,
+        "drawCalls": 50,
+        "triangles": 121726
+      },
+      {
+        "activeMeshes": 89,
+        "drawCalls": 45,
+        "triangles": 118435
+      },
+      {
+        "activeMeshes": 85,
+        "drawCalls": 39,
+        "triangles": 104935
+      },
+      {
+        "activeMeshes": 60,
+        "drawCalls": 39,
+        "triangles": 100059
+      },
+      {
+        "activeMeshes": 45,
+        "drawCalls": 39,
+        "triangles": 97071
+      }
+    ],
+    "district-3": [
+      {
+        "activeMeshes": 106,
+        "drawCalls": 39,
+        "triangles": 122566
+      },
+      {
+        "activeMeshes": 106,
+        "drawCalls": 39,
+        "triangles": 122566
+      },
+      {
+        "activeMeshes": 106,
+        "drawCalls": 39,
+        "triangles": 122566
+      },
+      {
+        "activeMeshes": 106,
+        "drawCalls": 39,
+        "triangles": 122566
+      },
+      {
+        "activeMeshes": 106,
+        "drawCalls": 39,
+        "triangles": 122566
+      },
+      {
+        "activeMeshes": 103,
+        "drawCalls": 36,
+        "triangles": 122034
+      },
+      {
+        "activeMeshes": 73,
+        "drawCalls": 36,
+        "triangles": 116164
+      },
+      {
+        "activeMeshes": 48,
+        "drawCalls": 36,
+        "triangles": 111238
+      }
+    ]
+  }
+}

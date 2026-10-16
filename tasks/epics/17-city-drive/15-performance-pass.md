@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 15-performance-pass
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/14-audio-haptics-onboarding]
 estimate: M
@@ -61,11 +61,11 @@ and CPU-side profiling in Node.
 
 ## Implementation Checklist
 
-- [ ] `QualityGovernor` plus tests, wired into the loop and settings.
-- [ ] DPR cap, freeze audit, LOD or a hide-distance, and the autoClear decision.
-- [ ] CPU benchmark test, leak test, and bundle-size report script.
-- [ ] Evidence README: all numbers, before and after.
-- [ ] Update `.agents/games/city-drive/open-questions.md` with what can only
+- [x] `QualityGovernor` plus tests, wired into the loop and settings.
+- [x] DPR cap, freeze audit, LOD or a hide-distance, and the autoClear decision.
+- [x] CPU benchmark test, leak test, and bundle-size report script.
+- [x] Evidence README: all numbers, before and after.
+- [x] Update `.agents/games/city-drive/open-questions.md` with what can only
       be verified on a device (task 22).
 
 ## Files Touched

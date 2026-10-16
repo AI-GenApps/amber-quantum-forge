@@ -1,0 +1,94 @@
+{
+  "method": "Median of 5 runs; each is 3600 timed fixed steps (after 300 warm-up steps) of GameSession on district-3 with 16 traffic agents, the mission evaluator running a delivery mission, and a scripted driver that resets every 7 s. Rendering excluded.",
+  "runtime": "node 24.22.0",
+  "baseline": {
+    "note": "Median of 5 runs of 3600 fixed steps on district-3 (player car, 16 traffic agents, delivery mission accepted). Written only by scripts/record-perf-baseline.ts.",
+    "district": "district-3",
+    "steps": 3600,
+    "runs": 5,
+    "agents": 16,
+    "meanStepMs": 0.1312,
+    "p99StepMs": 0.2672,
+    "calibrationMs": 153.79,
+    "recordedAt": "2026-10-16T01:48:54.134Z",
+    "runtime": "node 24.22.0",
+    "allRunsMeanMs": [
+      0.1604,
+      0.1352,
+      0.1312,
+      0.1281,
+      0.1258
+    ]
+  },
+  "thisMachine": {
+    "calibrationMs": 162.46008100000017,
+    "slowdownVsBaseline": 1.05637610377788,
+    "allowedMs": 0.2771930896313157
+  },
+  "gate": {
+    "regressionFactor": 2,
+    "serverCeilingMs": 2,
+    "deviceTargetMs": 4
+  },
+  "median": {
+    "meanMs": 0.15658898666666018,
+    "maxMs": 0.751444000000447,
+    "p99Ms": 0.3709930000004533,
+    "respawns": 13,
+    "agents": 16,
+    "activeSteps": 3597,
+    "travelledM": 506.02201399233235
+  },
+  "runs": [
+    {
+      "meanMs": 0.4734314966666654,
+      "maxMs": 21.718853999999965,
+      "p99Ms": 4.850273000000016,
+      "respawns": 13,
+      "agents": 16,
+      "activeSteps": 3597,
+      "travelledM": 506.02201399233235
+    },
+    {
+      "meanMs": 0.2087203322222135,
+      "maxMs": 14.193370999999843,
+      "p99Ms": 0.5791070000000218,
+      "respawns": 13,
+      "agents": 16,
+      "activeSteps": 3597,
+      "travelledM": 506.02201399233235
+    },
+    {
+      "meanMs": 0.15658898666666018,
+      "maxMs": 0.751444000000447,
+      "p99Ms": 0.3709930000004533,
+      "respawns": 13,
+      "agents": 16,
+      "activeSteps": 3597,
+      "travelledM": 506.02201399233235
+    },
+    {
+      "meanMs": 0.13545568111110848,
+      "maxMs": 0.47518099999979313,
+      "p99Ms": 0.27231600000050094,
+      "respawns": 13,
+      "agents": 16,
+      "activeSteps": 3597,
+      "travelledM": 506.02201399233235
+    },
+    {
+      "meanMs": 0.13335503083333936,
+      "maxMs": 0.4806010000002061,
+      "p99Ms": 0.2369699999999284,
+      "respawns": 13,
+      "agents": 16,
+      "activeSteps": 3597,
+      "travelledM": 506.02201399233235
+    }
+  ],
+  "deviceEstimate": {
+    "note": "A phone is 5 to 10x slower than this server, so the simulation share of a frame is estimated as below; the target is at most 4 ms.",
+    "lowMs": 0.783,
+    "highMs": 1.566
+  }
+}

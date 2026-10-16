@@ -1,0 +1,19 @@
+{
+  "note": "Median of 5 runs of 3600 fixed steps on district-3 (player car, 16 traffic agents, delivery mission accepted). Written only by scripts/record-perf-baseline.ts.",
+  "district": "district-3",
+  "steps": 3600,
+  "runs": 5,
+  "agents": 16,
+  "meanStepMs": 0.1312,
+  "p99StepMs": 0.2672,
+  "calibrationMs": 153.79,
+  "recordedAt": "2026-10-16T01:48:54.134Z",
+  "runtime": "node 24.22.0",
+  "allRunsMeanMs": [
+    0.1604,
+    0.1352,
+    0.1312,
+    0.1281,
+    0.1258
+  ]
+}

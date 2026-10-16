@@ -1,0 +1,97 @@
+{
+  "note": "Rapier's wasm is inlined in its JS chunk (compat build), so 'rapier' is the wasm. Models load per district on demand; the payload total counts every file of the build, the worst case.",
+  "budgets": {
+    "appJsMinifiedBytes": 1572864,
+    "totalPayloadBytes": 20971520
+  },
+  "appJsInitial": {
+    "files": 22,
+    "bytes": 1567122,
+    "gzip": 394959
+  },
+  "appJsLazy": {
+    "files": 90,
+    "bytes": 1556767,
+    "gzip": 381368
+  },
+  "appJs": {
+    "files": 112,
+    "bytes": 3123889,
+    "gzip": 776327
+  },
+  "rapier": {
+    "files": 1,
+    "bytes": 4332815,
+    "gzip": 1669301
+  },
+  "models": {
+    "files": 42,
+    "bytes": 2470860,
+    "gzip": 1050755
+  },
+  "audio": {
+    "files": 14,
+    "bytes": 1177951,
+    "gzip": 1156205
+  },
+  "fonts": {
+    "files": 4,
+    "bytes": 531600,
+    "gzip": 247808
+  },
+  "other": {
+    "files": 3,
+    "bytes": 38934,
+    "gzip": 6415
+  },
+  "total": {
+    "files": 176,
+    "bytes": 11676049,
+    "gzip": 4906811
+  },
+  "largest": {
+    "appJsInitial": [
+      {
+        "file": "assets/index-DX4vDuIP.js",
+        "bytes": 1164512,
+        "gzip": 287323
+      },
+      {
+        "file": "assets/thinEngine.pure-Ci1gr3qi.js",
+        "bytes": 127924,
+        "gzip": 30999
+      },
+      {
+        "file": "assets/material.pure-CxkC9f1y.js",
+        "bytes": 78919,
+        "gzip": 20257
+      },
+      {
+        "file": "assets/math.color.pure-DJT7yC3Y.js",
+        "bytes": 76929,
+        "gzip": 18424
+      },
+      {
+        "file": "assets/tools.pure-B70w-hnh.js",
+        "bytes": 30443,
+        "gzip": 10166
+      },
+      {
+        "file": "assets/lightConstants-BcmBTkkY.js",
+        "bytes": 18242,
+        "gzip": 4028
+      }
+    ],
+    "rapier": [
+      {
+        "file": "assets/rapier-BR_-CEU_.js",
+        "bytes": 4332815,
+        "gzip": 1669301
+      }
+    ]
+  },
+  "checks": {
+    "appJsInitialWithinBudget": true,
+    "totalPayloadWithinBudget": true
+  }
+}

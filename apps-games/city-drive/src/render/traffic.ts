@@ -7,6 +7,7 @@ import type { Scene } from "@babylonjs/core/scene.js";
 import { type TrafficPose, trafficConstants } from "@city-drive/core";
 import type { AssetManifest } from "../assets/manifest";
 import { AssetCache, type LoadBytes } from "./assetCache";
+import { markKeepUnfrozen } from "./freeze";
 import { createPackMaterials, requirePackMaterial } from "./materials";
 import { buildTrafficModel, type TrafficModel } from "./trafficModel";
 import { buildTrafficWheel } from "./trafficWheel";
@@ -65,6 +66,7 @@ export async function createTrafficVisual(
 ): Promise<TrafficVisual> {
   const cache = await AssetCache.load(scene, manifest, modelIds, loadBytes);
   const materials = createPackMaterials(scene, cache, modelIds);
+  for (const material of materials.values()) markKeepUnfrozen(material);
   const models = modelIds.map((id) =>
     buildTrafficModel(scene, cache, id, requirePackMaterial(materials, cache.entry(id).pack)),
   );

@@ -10,6 +10,7 @@ import type { AssetManifest } from "../assets/manifest";
 import { AssetCache, type LoadBytes } from "./assetCache";
 import { type BuiltChunk, buildChunks } from "./chunkBuilder";
 import { CAMERA_MAX_Z, GRASS_COLOR, GROUND_MARGIN_M, GROUND_Y } from "./constants";
+import { freezeStatics } from "./freeze";
 import { setupLighting } from "./lighting";
 import { createPackMaterials, flatMaterial } from "./materials";
 import { buildPads } from "./pads";
@@ -26,17 +27,6 @@ export interface RenderedCity {
   /** Every static mesh the city owns (ground, pads, chunk hosts and merged meshes). */
   statics: Mesh[];
   dispose(): void;
-}
-
-function freezeStatics(scene: Scene, statics: readonly Mesh[]): void {
-  for (const mesh of statics) {
-    mesh.isPickable = false;
-    mesh.alwaysSelectAsActiveMesh = false;
-    mesh.doNotSyncBoundingInfo = true;
-    mesh.freezeWorldMatrix();
-  }
-  for (const material of scene.materials) material.freeze();
-  scene.skipPointerMovePicking = true;
 }
 
 /** Limits what the camera draws so the fog hides the far edge. Call for every camera. */

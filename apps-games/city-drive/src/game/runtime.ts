@@ -11,6 +11,7 @@ import type { LoadBytes } from "../render/assetCache";
 import { createCarVisual } from "../render/carVisual";
 import { ChaseCamera } from "../render/chaseCamera";
 import type { RenderedCity } from "../render/city";
+import { freezeMaterials } from "../render/freeze";
 import { createMissionVisual } from "../render/missionVisual";
 import { createTrafficVisual } from "../render/traffic";
 import type { Profile } from "../save";
@@ -80,6 +81,7 @@ export class DistrictRuntime {
     private readonly chase: ChaseCamera,
     private readonly sync: (alpha: number) => void,
     readonly camera: Camera,
+    private readonly trafficAgents: number,
   ) {}
 
   static async create(env: RuntimeEnv, districtId: DistrictId): Promise<DistrictRuntime> {
@@ -87,12 +89,8 @@ export class DistrictRuntime {
     const map = loadDistrict(districtId, manifest);
     const city = await createCityScene(env.engine, map, manifest, loadBytes);
     const options: SessionOptions = { profile };
-    if (env.flags.traffic) {
-      options.traffic = {
-        seed: TRAFFIC_SEED,
-        maxAgents: districtInfo(env.progression, districtId).traffic_agents,
-      };
-    }
+    const trafficAgents = districtInfo(env.progression, districtId).traffic_agents;
+    if (env.flags.traffic) options.traffic = { seed: TRAFFIC_SEED, maxAgents: trafficAgents };
     if (env.flags.missions) options.missions = DISTRICT_MISSIONS[districtId];
     // The session disposes its input when it ends; the input outlives districts, so it is shielded.
     const shared = env.input;
@@ -117,6 +115,7 @@ export class DistrictRuntime {
     const camera: Camera = env.flags.debugCamera ? orbitCamera(city, env.canvas) : chase.camera;
     applyViewDistance(camera);
     city.scene.activeCamera = camera;
+    freezeMaterials(city.scene);
     await city.scene.whenReadyAsync();
 
     const sync = (alpha: number): void => {
@@ -132,7 +131,7 @@ export class DistrictRuntime {
         });
       }
     };
-    return new DistrictRuntime(districtId, city, session, chase, sync, camera);
+    return new DistrictRuntime(districtId, city, session, chase, sync, camera, trafficAgents);
   }
 
   /** Draws one frame. `alpha` is the share of the next fixed step that has already passed. */
@@ -151,6 +150,11 @@ export class DistrictRuntime {
     this.camera.maxZ = maxZ;
     this.city.scene.fogStart = fogStart;
     this.city.scene.fogEnd = fogEnd;
+  }
+
+  /** Scales the district's AI car count (1 = full). Used by the quality governor. */
+  setTrafficDensity(scale: number): void {
+    this.session.traffic?.setMaxAgents(Math.max(1, Math.round(this.trafficAgents * scale)));
   }
 
   /** What the HUD and menus read this frame. */

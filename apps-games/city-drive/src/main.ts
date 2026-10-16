@@ -1,5 +1,5 @@
 import { Engine } from "@babylonjs/core/Engines/engine.js";
-import { SceneInstrumentation } from "@babylonjs/core/Instrumentation/sceneInstrumentation.js";
+import type { SceneInstrumentation } from "@babylonjs/core/Instrumentation/sceneInstrumentation.js";
 import type { Scene } from "@babylonjs/core/scene.js";
 import { parseProgression, SaveManager } from "@city-drive/core";
 import type { AssetManifest } from "./assets/manifest";
@@ -62,7 +62,9 @@ async function start(): Promise<void> {
   const manifest = (await (await fetchChecked("manifest.json")).json()) as AssetManifest;
   const progression = parseProgression(PROGRESSION_RAW);
 
-  const engine = new Engine(canvas, true, { stencil: false }, true);
+  // The host sets the render resolution (device pixel ratio capped at 2), so Babylon's own
+  // adaptToDeviceRatio is off.
+  const engine = new Engine(canvas, true, { stencil: false }, false);
   const touch = new TouchInput();
   const input = new CombinedInput([
     new KeyboardInput(window),
@@ -168,14 +170,18 @@ async function start(): Promise<void> {
   window.addEventListener("pagehide", () => void saveManager.flush());
 
   let instrumented: { scene: Scene; instrumentation: SceneInstrumentation } | undefined;
-  const fps = params.has("fps")
+  // Only the ?fps overlay counts draw calls, so the instrumentation code is loaded on demand.
+  const instrumentationModule = params.has("fps")
+    ? await import("@babylonjs/core/Instrumentation/sceneInstrumentation.js")
+    : undefined;
+  const fps = instrumentationModule
     ? new FpsOverlay(ui, () => {
         const scene = host.current?.city.scene;
         if (!scene) return { fps: engine.getFps(), drawCalls: 0, triangles: 0 };
         const cached =
           instrumented?.scene === scene
             ? instrumented
-            : { scene, instrumentation: new SceneInstrumentation(scene) };
+            : { scene, instrumentation: new instrumentationModule.SceneInstrumentation(scene) };
         instrumented = cached;
         return {
           fps: engine.getFps(),
@@ -185,6 +191,7 @@ async function start(): Promise<void> {
       })
     : undefined;
 
+  let lastFrameMs: number | undefined;
   const loop = new GameLoop({
     step: () => host.step(),
     render: (alpha, frameSeconds) => {
@@ -194,8 +201,16 @@ async function start(): Promise<void> {
       fps?.update(now);
     },
   });
-  engine.runRenderLoop(() => loop.frame(performance.now()));
-  window.addEventListener("resize", () => engine.resize());
+  engine.runRenderLoop(() => {
+    const now = performance.now();
+    if (lastFrameMs !== undefined && !document.hidden) host.recordFrame(now - lastFrameMs);
+    lastFrameMs = now;
+    loop.frame(now);
+  });
+  window.addEventListener("resize", () => {
+    host.refreshScaling();
+    engine.resize();
+  });
 
   // `?district=district-2` skips the menus and drops straight into that district (dev shortcut).
   const direct = params.get("district");

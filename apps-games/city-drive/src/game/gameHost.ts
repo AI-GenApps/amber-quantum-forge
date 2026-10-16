@@ -1,5 +1,7 @@
 import type { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine.js";
 import type { GraphicsQuality } from "@city-drive/core";
+import { QualityGovernor } from "../perf/governor";
+import { hardwareScalingLevel, QUALITY_TIERS, tierRange } from "../perf/tiers";
 import type { GarageScene } from "../render/garage";
 import { buildMinimapModel, type MinimapModel } from "../ui/model/minimap";
 import { graphicsProfile } from "../ui/model/quality";
@@ -10,6 +12,15 @@ import type { StepReport } from "./stepReport";
 
 /** Builds the garage scene on demand (the first time the garage opens). */
 export type GarageFactory = () => Promise<GarageScene>;
+
+function governorFor(quality: GraphicsQuality): QualityGovernor {
+  const { start, ceiling } = tierRange(quality);
+  return new QualityGovernor({ tiers: QUALITY_TIERS.length, start, ceiling });
+}
+
+function deviceRatio(): number {
+  return typeof window === "undefined" ? 1 : window.devicePixelRatio;
+}
 
 /**
  * The real `UiGame`: owns the current district runtime and the garage scene, decides which one
@@ -24,12 +35,21 @@ export class GameHost implements UiGame {
   private loadToken = 0;
   private minimap: { id: string; model: MinimapModel } | undefined;
   private readonly stepListeners = new Set<(report: StepReport) => void>();
+  private governor = governorFor("auto");
 
   constructor(
     private readonly env: RuntimeEnv,
     private readonly engine: AbstractEngine,
     private readonly makeGarage: GarageFactory,
-  ) {}
+    private readonly devicePixelRatio: () => number = deviceRatio,
+  ) {
+    this.applyTier();
+  }
+
+  /** The quality tier the governor is in now (0 is the best). */
+  get tier(): number {
+    return this.governor.tier;
+  }
 
   get paused(): boolean {
     return this.runtime?.session.paused ?? true;
@@ -52,7 +72,8 @@ export class GameHost implements UiGame {
     }
     this.runtime = next;
     this.minimap = { id, model: buildMinimapModel(next.city.map) };
-    this.applyGraphics(this.quality);
+    this.governor.restartWindow();
+    this.applyTier();
   }
 
   snapshot(): PlayState | undefined {
@@ -77,11 +98,46 @@ export class GameHost implements UiGame {
     await this.garage.show(carId);
   }
 
+  /**
+   * A different quality setting restarts the governor at that setting's starting tier. Applying the
+   * same setting again (the controller does after every district load) keeps the tier it learned.
+   */
   applyGraphics(quality: GraphicsQuality): void {
-    this.quality = quality;
-    const profile = graphicsProfile(quality);
-    this.engine.setHardwareScalingLevel(profile.hardwareScaling);
-    this.runtime?.setView(profile.maxZ, profile.fogStart, profile.fogEnd);
+    if (quality !== this.quality) {
+      this.quality = quality;
+      this.governor = governorFor(quality);
+    }
+    this.applyTier();
+  }
+
+  /**
+   * Feeds the time one frame took (ms between animation frames) to the quality governor, which
+   * moves one tier at a time. Returns true when the tier changed.
+   */
+  recordFrame(frameMs: number): boolean {
+    if (!this.governor.record(frameMs)) return false;
+    this.applyTier();
+    return true;
+  }
+
+  /** Re-applies the render resolution, e.g. after the window moved to a screen with another pixel ratio. */
+  refreshScaling(): void {
+    this.applyTier();
+  }
+
+  private applyTier(): void {
+    const tier = QUALITY_TIERS[this.governor.tier];
+    if (!tier) throw new Error(`City Drive: quality tier ${this.governor.tier} does not exist`);
+    const profile = graphicsProfile(this.quality);
+    this.engine.setHardwareScalingLevel(
+      hardwareScalingLevel(tier.scaling, this.devicePixelRatio()),
+    );
+    this.runtime?.setView(
+      profile.maxZ * tier.view,
+      profile.fogStart * tier.view,
+      profile.fogEnd * tier.view,
+    );
+    this.runtime?.setTrafficDensity(tier.traffic);
   }
 
   readonly mission: UiGame["mission"] = {

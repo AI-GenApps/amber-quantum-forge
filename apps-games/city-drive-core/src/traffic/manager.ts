@@ -31,6 +31,7 @@ import {
   STUN_TICKS,
   VIEW_HALF_COS,
 } from "./constants";
+import { surplusAgent } from "./density";
 import { drive, noseToLine, unreservedTurn } from "./driving";
 import { DEFAULT_IDM, type IdmParams } from "./idm";
 import { reserveTurns } from "./intersections";
@@ -59,7 +60,7 @@ export class TrafficManager implements SteppedBody {
   private nextId = 0;
   private readonly rng: Rng;
   private readonly idm: IdmParams;
-  private readonly maxAgents: number;
+  private maxAgents: number;
   private readonly modelCount: number;
   private readonly player: PlayerProbe;
   private readonly playerCollider: number | undefined;
@@ -85,6 +86,17 @@ export class TrafficManager implements SteppedBody {
 
   get list(): readonly TrafficAgent[] {
     return this.agents;
+  }
+
+  /**
+   * Changes how many agents may be alive at once. Lowering it removes one surplus car per tick
+   * (unseen and far ones first); raising it lets the normal spawner refill, one car per interval.
+   */
+  setMaxAgents(count: number): void {
+    if (!Number.isInteger(count) || count < 0) {
+      throw new Error(`traffic: maxAgents must be a non-negative integer, got ${count}`);
+    }
+    this.maxAgents = count;
   }
 
   preStep(dt: number): void {
@@ -128,6 +140,11 @@ export class TrafficManager implements SteppedBody {
       if (gone) this.remove(agent);
       return !gone;
     });
+    const surplus = surplusAgent(this.agents, player, this.maxAgents);
+    if (surplus) {
+      this.remove(surplus);
+      this.agents = this.agents.filter((agent) => agent !== surplus);
+    }
   }
 
   private remove(agent: TrafficAgent): void {
