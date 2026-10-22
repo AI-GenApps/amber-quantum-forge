@@ -28,16 +28,16 @@ attempt, result, reward, and PGS artifacts remain separate records.
 - [x] Migrate receipt records with guest save upgrades without crossing
   account or environment boundaries.
 - [x] Add focused service and HTTP regression tests.
-- [ ] Run the receipt path through the isolated PostgreSQL service suite and
-  complete independent review before marking this task complete.
+- [x] Run the receipt path through the isolated PostgreSQL service suite.
+- [ ] Complete independent review before marking this task complete.
 
 ## Verification
 
 Current focused run: 7 receipt service tests and 3 HTTP tests pass in memory,
 including malformed unsafe-number rejection, and 5 PostgreSQL receipt tests
 pass against an isolated PostgreSQL 16.15 cluster. API typecheck, root Biome,
-max-lines, and Knip checks pass. Independent review and the final task commit
-remain open.
+max-lines, and Knip checks pass. On 2026-10-22 the 5 receipt tests passed again on Docker postgres:16 with
+all migrations applied. Independent review remains open.
 
 ## Acceptance boundary
 
