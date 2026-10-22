@@ -60,6 +60,27 @@ class MergeRelayPlayGamesConfigurationTest {
     }
 
     @Test
+    fun numericOnlyAndApplicationIdFeatureIdsAreRejected() {
+        val configuration = MergeRelayPlayGamesConfiguration(
+            applicationId = "1234567890",
+            serverClientId = "",
+            achievementId = "9876543210",
+            leaderboardId = "1234567890",
+        )
+
+        assertNull(configuration.resourceId(MergeRelayPlayGamesFeature.ACHIEVEMENTS))
+        assertNull(configuration.resourceId(MergeRelayPlayGamesFeature.LEADERBOARD))
+        assertEquals(
+            "feature_id_invalid",
+            configuration.resourceIdDiagnostic(MergeRelayPlayGamesFeature.ACHIEVEMENTS),
+        )
+        assertEquals(
+            "feature_id_invalid",
+            configuration.resourceIdDiagnostic(MergeRelayPlayGamesFeature.LEADERBOARD),
+        )
+    }
+
+    @Test
     fun actionResultsExposeOnlyBoundedStatusAndDiagnostic() {
         val result = MergeRelayPlayGamesActionResult(
             MergeRelayPlayGamesActionStatus.CANCELLED,

@@ -14,7 +14,7 @@ data class MergeRelayPlayGamesConfiguration(
             MergeRelayPlayGamesFeature.ACHIEVEMENTS -> achievementId
             MergeRelayPlayGamesFeature.LEADERBOARD -> leaderboardId
         }
-        return value.takeIf(::isValidResourceId)
+        return value.takeIf { isValidResourceId(it) && it != applicationId }
     }
 
     fun resourceIdDiagnostic(kind: MergeRelayPlayGamesFeature): String? {
@@ -24,7 +24,7 @@ data class MergeRelayPlayGamesConfiguration(
         }
         return when {
             value.isBlank() -> "feature_id_missing"
-            !isValidResourceId(value) -> "feature_id_invalid"
+            !isValidResourceId(value) || value == applicationId -> "feature_id_invalid"
             else -> null
         }
     }
@@ -40,6 +40,7 @@ data class MergeRelayPlayGamesConfiguration(
         fun isValidResourceId(value: String): Boolean =
             value.isNotBlank() &&
                 value.length <= 256 &&
+                !value.all { character -> character.isDigit() } &&
                 value.none { character -> character.isWhitespace() || character.isISOControl() }
     }
 }
