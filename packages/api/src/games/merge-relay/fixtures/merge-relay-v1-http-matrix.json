@@ -122,11 +122,11 @@
           "origin_mode": "daily",
           "config_revision": 1,
           "checkpoint": {
-            "board": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "board": [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
             "score": 0,
             "move_count": 0,
-            "seed": 7,
-            "rng_state": 123,
+            "seed": 678263699,
+            "rng_state": 3487586716,
             "rule_version": "MR-2D-1",
             "max_legal_moves": 3,
             "content_id": "daily_20260101",
@@ -134,8 +134,8 @@
             "spawn_two_weight": 90,
             "spawn_four_weight": 10
           },
-          "checkpoint_hash": "4958db1a3980078b5a74ad03f82378dc32d33052b44b0902b08a3be2381f96b1",
-          "payload_hash": "0e31240918ea595af17ffb11aac552bb8f2d9d559c5d5310d2dd18464dec300d",
+          "checkpoint_hash": "ffa9dcb93818135336afe934668863a8ee5cbe37da23d692a4d60726ccca12f8",
+          "payload_hash": "083532e7ac133493fbaf57e04b7dbffb5e090b05b38e25f445ab95755c7e2250",
           "parent_challenge_id": null,
           "status": "open",
           "created_at": "2026-01-01T00:00:00.000Z"
@@ -242,11 +242,11 @@
           "origin_mode": "daily",
           "config_revision": 1,
           "checkpoint": {
-            "board": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "board": [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
             "score": 0,
             "move_count": 0,
-            "seed": 7,
-            "rng_state": 123,
+            "seed": 678263699,
+            "rng_state": 3487586716,
             "rule_version": "MR-2D-1",
             "max_legal_moves": 3,
             "content_id": "daily_20260101",
@@ -254,8 +254,8 @@
             "spawn_two_weight": 90,
             "spawn_four_weight": 10
           },
-          "checkpoint_hash": "4958db1a3980078b5a74ad03f82378dc32d33052b44b0902b08a3be2381f96b1",
-          "payload_hash": "0e31240918ea595af17ffb11aac552bb8f2d9d559c5d5310d2dd18464dec300d",
+          "checkpoint_hash": "ffa9dcb93818135336afe934668863a8ee5cbe37da23d692a4d60726ccca12f8",
+          "payload_hash": "083532e7ac133493fbaf57e04b7dbffb5e090b05b38e25f445ab95755c7e2250",
           "parent_challenge_id": null,
           "status": "retired",
           "created_at": "2026-01-01T00:00:00.000Z"

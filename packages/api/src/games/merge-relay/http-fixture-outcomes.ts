@@ -30,6 +30,8 @@ export async function collectOutcomes(): Promise<Record<string, unknown>> {
     201,
     await call(h, "POST", "/daily/2026-01-01/provision", admin),
   );
+  const daily = await call(h, "GET", "/daily/2026-01-01", { as: null });
+  const dailyCheckpoint = dataOf(daily).checkpoint;
   const root = await call(h, "POST", "/challenges", { body: createBody("outcome-root") });
   record("create_rescue", 201, root);
   record(
@@ -42,7 +44,11 @@ export async function collectOutcomes(): Promise<Record<string, unknown>> {
     "create_daily_origin",
     201,
     await call(h, "POST", "/challenges", {
-      body: createBody("outcome-daily", { mode: "daily", content_id: "daily_20260101" }),
+      body: createBody("outcome-daily", {
+        mode: "daily",
+        content_id: "daily_20260101",
+        checkpoint: dailyCheckpoint,
+      }),
     }),
   );
   record(

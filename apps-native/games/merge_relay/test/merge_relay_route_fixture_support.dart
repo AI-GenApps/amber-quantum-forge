@@ -47,6 +47,11 @@ String _id(Json body, String key, [String? nested]) {
   return source[key]! as String;
 }
 
+MergeCheckpoint _provisioned(Json body) => MergeCheckpoint.fromJson(
+  (((body['data']! as Json)['challenge']! as Json)['checkpoint']! as Map)
+      .cast<String, Object?>(),
+);
+
 MergeCheckpoint _checkpoint([List<int>? board]) => MergeCheckpoint.fromState(
   MergeGameState(
     board: MergeBoard(board ?? [2, 2, ...List<int>.filled(14, 0)]),
@@ -64,12 +69,15 @@ GatewayCall _create(
   MergeRelayMode mode, {
   String? parent,
   List<int>? board,
+  Json? provisioned,
 }) =>
     (gateway) => gateway.createChallenge(
       MergeRelayChallengeRequest(
         idempotencyKey: key,
         creatorAlias: 'Ada',
-        checkpoint: _checkpoint(board),
+        checkpoint: provisioned == null
+            ? _checkpoint(board)
+            : _provisioned(provisioned),
         mode: mode,
         parentChallengeId: parent,
       ),
@@ -109,7 +117,11 @@ List<RouteCase> routeCases() {
     'create_challenge',
     201,
     http['create_challenge']! as Json,
-    _create('fixture-create', MergeRelayMode.daily),
+    _create(
+      'fixture-create',
+      MergeRelayMode.daily,
+      provisioned: http['create_challenge']! as Json,
+    ),
   );
   add(
     'resolve_challenge',
@@ -153,7 +165,13 @@ List<RouteCase> routeCases() {
       name,
       201,
       outcomes[name]!,
-      _create(name, spec.$1, parent: spec.$2, board: spec.$3),
+      _create(
+        name,
+        spec.$1,
+        parent: spec.$2,
+        board: spec.$3,
+        provisioned: name == 'create_daily_origin' ? outcomes[name] : null,
+      ),
     ),
   );
   add(
