@@ -4,6 +4,7 @@ import 'merge_relay_models.dart';
 import 'merge_relay_pending_create.dart';
 import 'merge_relay_relay_share.dart';
 import 'merge_relay_replay.dart';
+import 'merge_relay_service_outcome.dart';
 import 'network/merge_relay_models.dart';
 
 const mergeRelayDefaultReturnAlias = 'You';
@@ -269,6 +270,7 @@ final class MergeRelayRelaySnapshot {
   MergeDirection? pendingMove;
   String? errorCode;
   String? message;
+  MergeRelayServiceOutcome? outcome;
   bool guestReady;
   int saveVersion;
   MergeRelaySharePayload? sharePayload;
@@ -293,5 +295,6 @@ final class MergeRelayRelaySnapshot {
   void clearError() {
     errorCode = null;
     message = null;
+    outcome = null;
   }
 }

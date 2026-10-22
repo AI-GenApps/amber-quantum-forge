@@ -193,14 +193,20 @@ extension on _MergeRelayRelayScreenState {
     );
   }
 
-  Widget _error(MergeRelayRelaySnapshot snapshot) => _message(
-    'The relay paused.',
-    snapshot.message ?? 'Try again when you are ready.',
-    snapshot.errorCode == 'preview_failed' ? 'Back' : 'Retry',
-    snapshot.errorCode == 'preview_failed'
-        ? widget.game.openHome
-        : widget.controller.retry,
-  );
+  Widget _error(MergeRelayRelaySnapshot snapshot) {
+    final outcome = snapshot.outcome;
+    final goHome =
+        snapshot.errorCode == 'preview_failed' ||
+        (outcome != null &&
+            (outcome.action == MergeRelayOutcomeAction.home ||
+                outcome.action == MergeRelayOutcomeAction.updateApp));
+    return _message(
+      outcome?.title ?? 'The relay paused.',
+      snapshot.message ?? 'Try again when you are ready.',
+      outcome?.actionLabel ?? (goHome ? 'Back' : 'Retry'),
+      goHome ? widget.game.openHome : widget.controller.retry,
+    );
+  }
 
   Widget _loading() => const Center(child: CircularProgressIndicator());
 

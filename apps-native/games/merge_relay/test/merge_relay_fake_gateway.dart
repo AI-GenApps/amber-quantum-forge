@@ -14,6 +14,9 @@ final class FakeRelayGateway implements MergeRelayGateway {
   var getAttemptCalls = 0;
   var failNextMove = false;
   var failNextCreate = false;
+  Object? resolveError;
+  Object? configError;
+  Object? guestError;
   var finalizeCalls = 0;
   var failFinalizeAfterCommit = false;
   var stripReturnChallengeOnGetResult = false;
@@ -38,6 +41,7 @@ final class FakeRelayGateway implements MergeRelayGateway {
   @override
   Future<MergeRelayGuestSession> createGuest() async {
     createGuestCalls += 1;
+    if (guestError != null) throw guestError!;
     return _guest();
   }
 
@@ -62,6 +66,7 @@ final class FakeRelayGateway implements MergeRelayGateway {
 
   @override
   Future<MergeRelayChallenge> resolveChallenge(String challengeId) async {
+    if (resolveError != null) throw resolveError!;
     if (resolveQueue.isNotEmpty) return resolveQueue.removeAt(0);
     return challenge;
   }
@@ -223,7 +228,10 @@ final class FakeRelayGateway implements MergeRelayGateway {
       throw UnimplementedError();
 
   @override
-  Future<MergeRelayConfigRevision> getConfig() async => _testConfig();
+  Future<MergeRelayConfigRevision> getConfig() async {
+    if (configError != null) throw configError!;
+    return _testConfig();
+  }
 
   @override
   Future<MergeRelaySave?> getSave(String saveId) async => null;

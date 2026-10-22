@@ -25,7 +25,7 @@ app_id, score, or role field.
   finalize, daily, sync-conflict, retirement, and offline retry states.
 - [x] Consume the deterministic create/resolve/reserve/submit/finalize/daily
   fixtures unchanged in a Dart client test and exercise signed role failures.
-- [ ] Record real service, missing-config, expired-token, and provider-disabled
+- [x] Record real service, missing-config, expired-token, and provider-disabled
   states as actionable UI outcomes.
 
 ## Acceptance
@@ -33,3 +33,12 @@ app_id, score, or role field.
 The gateway can run against a configured local service and never presents a
 client-only relay as ranked or server-authoritative. Full multi-device proof
 and external deployment remain open in tasks 03–05.
+
+## Evidence note (client lane)
+
+`mergeRelayOutcomeFor` maps transport, protocol, token-expired, missing-config,
+provider-disabled, retired, window-closed, conflict and 5xx failures to a title,
+message and action, rendered on the relay screen. Verified only against the
+fake gateway and route fixtures; no real service was run. The wiring item stays
+open because the server-issued daily challenge (`getDaily`) is not surfaced in
+the UI.

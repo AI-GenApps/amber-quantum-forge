@@ -12,6 +12,7 @@ import 'merge_relay_relay_models.dart';
 import 'merge_relay_relay_persistence.dart';
 import 'merge_relay_relay_share.dart';
 import 'merge_relay_replay.dart';
+import 'merge_relay_service_outcome.dart';
 
 part 'merge_relay_relay_actions.dart';
 part 'merge_relay_relay_moves.dart';
@@ -103,11 +104,12 @@ final class MergeRelayRelayController extends ChangeNotifier {
 
   void _setError(Object error, {String? fallbackCode}) {
     if (_disposed) return;
-    final details = _errorDetails(error, fallbackCode: fallbackCode);
+    final outcome = mergeRelayOutcomeFor(error, fallbackCode: fallbackCode);
     snapshot
-      ..phase = details.phase
-      ..errorCode = details.code
-      ..message = details.message;
+      ..phase = outcome.phase
+      ..errorCode = outcome.code
+      ..message = outcome.message
+      ..outcome = outcome;
     notifyListeners();
   }
 
@@ -132,46 +134,6 @@ final class MergeRelayRelayController extends ChangeNotifier {
     if (supplied != null && supplied.isNotEmpty) return supplied;
     _keyCount += 1;
     return '$prefix-${clock.now().microsecondsSinceEpoch}-$_keyCount';
-  }
-
-  ({MergeRelayRelayPhase phase, String code, String message}) _errorDetails(
-    Object error, {
-    String? fallbackCode,
-  }) {
-    if (error is MergeRelayApiException) {
-      if (error.code == 'reservation_expired' ||
-          error.code == 'attempt_not_playable') {
-        return (
-          phase: MergeRelayRelayPhase.expired,
-          code: error.code,
-          message: 'This relay window has closed.',
-        );
-      }
-      if (error.isConflict) {
-        return (
-          phase: MergeRelayRelayPhase.conflict,
-          code: error.code,
-          message: 'This relay changed. Reconnect before playing again.',
-        );
-      }
-      return (
-        phase: MergeRelayRelayPhase.error,
-        code: error.code,
-        message: error.message,
-      );
-    }
-    if (error is MergeRelayTransportException) {
-      return (
-        phase: MergeRelayRelayPhase.offline,
-        code: 'offline',
-        message: 'Connection lost. Your checkpoint is waiting to retry.',
-      );
-    }
-    return (
-      phase: MergeRelayRelayPhase.error,
-      code: fallbackCode ?? 'relay_error',
-      message: 'The relay could not continue.',
-    );
   }
 
   @override

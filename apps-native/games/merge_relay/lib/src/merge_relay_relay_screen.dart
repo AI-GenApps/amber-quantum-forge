@@ -7,6 +7,7 @@ import 'merge_relay_app.dart';
 import 'merge_relay_board_painter.dart';
 import 'merge_relay_board_accessibility.dart';
 import 'merge_relay_relay_controller.dart';
+import 'merge_relay_service_outcome.dart';
 import 'merge_relay_relay_models.dart';
 import 'merge_relay_relay_share_panel.dart';
 import 'merge_relay_theme.dart';
