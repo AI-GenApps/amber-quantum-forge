@@ -122,6 +122,7 @@ with `startAt` set to the next task ID.
 | 20 | Apply the name, final icon, splash | agent | [x] |
 | 21 | Release readiness (privacy, data safety, listing, web deploy workflow) | agent | [x] |
 | 22 | HUMAN: device checkpoint, Vercel project, store provisioning | human | [ ] |
+| 23 | Daily challenge + car upgrades (post-v1, does not block 22) | agent | [ ] |
 
 ## Evidence
 
