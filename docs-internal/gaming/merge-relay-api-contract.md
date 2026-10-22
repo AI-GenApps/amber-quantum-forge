@@ -13,7 +13,16 @@ internal model and validates every checkpoint before persistence or replay.
 The route-produced deterministic exchange fixture is
 `packages/api/src/games/merge-relay/fixtures/merge-relay-v1-http.json`; its
 create, resolve, reserve, submit, finalize, daily, and error cases are checked
-by `http-fixture.test.ts`.
+by `http-fixture.test.ts`. The companion
+`merge-relay-v1-http-matrix.json` holds route-produced private challenge,
+attempt, and result views plus idempotent replay, daily, endless, child,
+terminal, early-finish, and return-challenge outcomes, and one error response
+per reachable relay, daily, guest, save, and route-guard code. It is verified
+by `http-fixture-matrix.test.ts`; regenerate it with
+`MERGE_RELAY_FIXTURE_UPDATE=1` and review the diff. The Flutter client's
+strict codecs decode both fixtures in `merge_relay_route_fixture_test.dart`.
+Provider, commerce, Google Play Games, rewarded-ad, RTDN, and config-admin
+error codes are not in this matrix.
 
 ## Checkpoints and replay
 
