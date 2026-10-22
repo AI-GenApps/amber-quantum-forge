@@ -3,6 +3,7 @@ import type { MergeCommerceRuntime } from "./commerce-contracts";
 import type { MergeEnvironment } from "./contracts";
 import type { MergePgsRuntime } from "./pgs-contracts";
 import type { MergeRewardProvider } from "./provider";
+import type { MergeRetentionPolicy } from "./retention-config";
 import type { MergeRelayStore } from "./store";
 
 export interface MergeRelayClock {
@@ -22,6 +23,7 @@ export interface MergeRelayServiceDependencies {
   pgsRuntimeForEnvironment?: (environment: MergeEnvironment) => MergePgsRuntime | null;
   commerceRuntimeForEnvironment?: (environment: MergeEnvironment) => MergeCommerceRuntime | null;
   adSsvRuntimeForEnvironment?: (environment: MergeEnvironment) => AdSsvRuntime | null;
+  retention?: Partial<MergeRetentionPolicy>;
 }
 
 export function configuredPgsRuntime(

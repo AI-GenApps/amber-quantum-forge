@@ -22,6 +22,7 @@ import { asMergeError } from "./errors";
 import { effectiveSubject } from "./identity-service";
 import { InMemoryMergeRelayStore } from "./memory-store";
 import { createPgsRuntimeFromEnvironment } from "./pgs-runtime";
+import { retentionPolicyFromEnvironment } from "./retention-config";
 import { registerCallbackRoutes } from "./route-callbacks";
 import { registerCommerceRoutes } from "./route-commerce";
 import {
@@ -31,6 +32,7 @@ import {
   type MergeRoutes,
 } from "./route-context";
 import { registerDataRoutes } from "./route-data";
+import { registerMaintenanceRoutes } from "./route-maintenance";
 import { registerPlatformRoutes } from "./route-platform";
 import { registerPublicRoutes } from "./route-public";
 import { registerRelayRoutes } from "./route-relay";
@@ -110,6 +112,7 @@ export function createMergeRelayRoutes(dependencies: MergeRelayRouteDependencies
   registerCommerceRoutes(routes, dependencies);
   registerCallbackRoutes(routes, dependencies);
   registerPlatformRoutes(routes, dependencies);
+  registerMaintenanceRoutes(routes, dependencies);
   routes.onError((error, c) => {
     const mapped = asMergeError(error);
     if (error instanceof MergeRelayStorageError)
@@ -131,6 +134,7 @@ export function createConfiguredMergeRelayRoutes(): MergeRoutes {
     pgsRuntimeForEnvironment: createPgsRuntimeFromEnvironment,
     commerceRuntimeForEnvironment: createCommerceRuntimeFromEnvironment,
     tokenVerifier: new EnvironmentGameTokenVerifier(),
+    retention: retentionPolicyFromEnvironment(process.env),
     issueGuestToken: issueConfiguredGuestToken,
   });
 }

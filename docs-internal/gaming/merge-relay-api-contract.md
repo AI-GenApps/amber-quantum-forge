@@ -84,6 +84,7 @@ checkpoints so both runtimes replay the same rules.
 | `POST /:environment/social/block` | player | `target_subject`, `target_alias` or `target_challenge_id`, `reason` | block record used by challenge reservation |
 | `PUT /:environment/config` | game admin | revision, weights, feature flags | new active config revision |
 | `POST /:environment/config/rollback` | game admin | target and expected revision | selected prior config revision |
+| `POST /:environment/maintenance/prune` | service | optional `dry_run`, `cursors` | per-category scanned, deleted and next cursor; see [retention](merge-relay-retention) |
 
 Every relay attempt has a frozen `max_legal_moves` value from its challenge;
 the current relay cap is three legal moves. A challenge may originate from a
