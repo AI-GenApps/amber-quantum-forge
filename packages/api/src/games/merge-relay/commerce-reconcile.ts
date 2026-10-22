@@ -38,6 +38,7 @@ export async function applyKnownPurchaseState(
   environment: MergeEnvironment,
   purchaseId: string,
   state: MergeCommercePurchaseState,
+  acknowledgedNow = false,
 ): Promise<MergeCommerceSettlement | null> {
   return dependencies.store.transactArtifacts(environment, async (transaction) => {
     const current = await transaction.read(
@@ -46,7 +47,7 @@ export async function applyKnownPurchaseState(
     );
     if (!current) return null;
     const next = nextState(current.state, state);
-    if (next === current.state) {
+    if (next === current.state && !(acknowledgedNow && !current.acknowledged)) {
       const entitlement = await transaction.read(
         { recordType: "commerce_entitlement", recordId: entitlementRecordId(current.subject) },
         parseCommerceEntitlement,
@@ -57,7 +58,7 @@ export async function applyKnownPurchaseState(
     const purchase = {
       ...current,
       state: next,
-      acknowledged: current.acknowledged || next !== "purchased",
+      acknowledged: current.acknowledged || acknowledgedNow || next !== "purchased",
       updatedAt: now,
     };
     await transaction.put("commerce_purchase", purchase.purchaseId, purchase, {
@@ -86,15 +87,21 @@ export async function requeryPurchase(
   const request = { productId: runtime.config.productId, purchaseToken };
   try {
     const attestation = await runtime.provider.verifyPurchase(request);
-    if (attestation.state === "purchased" && !attestation.acknowledged)
-      await runtime.provider.acknowledgePurchase(request);
+    const acknowledgedNow = attestation.state === "purchased" && !attestation.acknowledged;
+    if (acknowledgedNow) await runtime.provider.acknowledgePurchase(request);
     if (attestation.productId !== request.productId)
       throw new MergeRelayError(
         422,
         "purchase_product_mismatch",
         "The purchase product is invalid",
       );
-    return await applyKnownPurchaseState(dependencies, environment, purchaseId, attestation.state);
+    return await applyKnownPurchaseState(
+      dependencies,
+      environment,
+      purchaseId,
+      attestation.state,
+      acknowledgedNow || attestation.acknowledged,
+    );
   } catch (error) {
     throw error instanceof MergeRelayError ? error : mapProviderError(error);
   }

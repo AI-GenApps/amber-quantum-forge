@@ -10,7 +10,10 @@ export function createAdMobKeySource(fetchImpl: typeof fetch = fetch): AdSsvKeyS
   let fetchedAt = 0;
   async function refresh(): Promise<void> {
     const response = await fetchImpl(verifierKeysUrl, { signal: AbortSignal.timeout(5000) });
-    if (!response.ok) return;
+    if (!response.ok) {
+      fetchedAt = Date.now();
+      return;
+    }
     const body: unknown = await response.json();
     const list =
       typeof body === "object" && body !== null ? (body as { keys?: unknown }).keys : null;

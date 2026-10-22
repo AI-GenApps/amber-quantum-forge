@@ -170,7 +170,7 @@ export async function writeEntitlement(
     parseCommerceEntitlement,
   );
   if (purchase.state !== "purchased") {
-    if (current && current.status !== "revoked") {
+    if (current && current.status !== "revoked" && current.purchaseId === purchase.purchaseId) {
       const revoked = { ...current, status: "revoked" as const, updatedAt: now };
       await transaction.put("commerce_entitlement", recordId, revoked, {
         ownerSubject: revoked.subject,

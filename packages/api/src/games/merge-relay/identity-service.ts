@@ -118,6 +118,12 @@ export async function upgradeGuest(
         "guest_self_upgrade",
         "A guest identity cannot be upgraded to itself",
       );
+    if (session.subject.startsWith("guest_"))
+      throw new MergeRelayError(
+        409,
+        "guest_upgrade_target_invalid",
+        "A guest identity cannot be the upgrade target",
+      );
     if (guest.upgradedSubject && guest.upgradedSubject !== session.subject)
       throw new MergeRelayError(
         409,

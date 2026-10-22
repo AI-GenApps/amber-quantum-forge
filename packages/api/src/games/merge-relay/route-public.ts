@@ -34,9 +34,10 @@ export function registerPublicRoutes(
     const input = parseGuestRecovery(await readBody(c));
     if (!input) return fail(c, 422, "invalid_guest_recovery", "Guest recovery payload is invalid");
     const recovery = await recoverGuest(dependencies, c.get("environment"), input);
-    const accessToken = dependencies.issueGuestToken
-      ? await dependencies.issueGuestToken(c.get("environment"), recovery.subject)
-      : null;
+    const accessToken =
+      dependencies.issueGuestToken && !recovery.upgradedSubject
+        ? await dependencies.issueGuestToken(c.get("environment"), recovery.subject)
+        : null;
     return respond(c, {
       guest_id: recovery.guestId,
       subject: recovery.subject,

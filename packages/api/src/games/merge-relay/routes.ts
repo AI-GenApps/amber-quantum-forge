@@ -78,6 +78,7 @@ export function createMergeRelayRoutes(dependencies: MergeRelayRouteDependencies
     const header = c.req.header("Authorization");
     if (!header?.startsWith("Bearer ") || header.slice(7).trim().length === 0)
       return fail(c, 401, "game_token_required", "A verified game token is required");
+    let verified: Awaited<ReturnType<typeof dependencies.tokenVerifier.verify>>;
     try {
       const session = await dependencies.tokenVerifier.verify(header.slice(7).trim(), {
         appId: MERGE_RELAY_APP_ID,
@@ -85,17 +86,22 @@ export function createMergeRelayRoutes(dependencies: MergeRelayRouteDependencies
       });
       if (session.appId !== MERGE_RELAY_APP_ID || session.environment !== environment)
         return fail(c, 401, "invalid_game_token", "The game token scope is invalid");
-      c.set("environment", environment);
-      c.set("session", {
-        ...(session as import("./contracts").MergeSession),
-        subject: await effectiveSubject(dependencies, environment, session.subject),
-      });
-      return next();
+      verified = session;
     } catch (error) {
       if (error instanceof GameTokenConfigurationError)
         return fail(c, 503, error.code, error.message);
       return fail(c, 401, "invalid_game_token", "The game token could not be verified");
     }
+    try {
+      c.set("environment", environment);
+      c.set("session", {
+        ...(verified as import("./contracts").MergeSession),
+        subject: await effectiveSubject(dependencies, environment, verified.subject),
+      });
+    } catch {
+      return fail(c, 503, "merge_relay_unavailable", "Merge Relay service is unavailable");
+    }
+    return next();
   });
 
   registerPublicRoutes(routes, dependencies);
