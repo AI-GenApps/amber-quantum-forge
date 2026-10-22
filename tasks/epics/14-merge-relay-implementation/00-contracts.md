@@ -43,7 +43,12 @@ telemetry contract.
 
 The client owner can implement against the route-produced `merge-relay.v1`
 fixture and canonical snake_case codecs. The current fixture covers
-create/resolve/reserve/submit/finalize/daily and error responses. Cross-runtime
-Dart consumption, complete outcome coverage, and independent service review
-remain open; every authorization decision still uses the verified app,
+create/resolve/reserve/submit/finalize/daily and error responses. A companion
+route-produced matrix fixture adds replay, origin, terminal, early-finish,
+return-challenge, private-view outcomes and 47 error codes, and the Dart
+strict gateway codecs decode both fixtures and reject extra, missing, and
+mistyped fields (evidence: `http-fixture-matrix.test.ts`,
+`merge_relay_route_fixture_test.dart`). Error codes for provider, commerce,
+Google Play Games, rewarded-ad, RTDN, and config-admin routes, and independent
+service review, remain open; every authorization decision still uses the verified app,
 environment, subject, and role.

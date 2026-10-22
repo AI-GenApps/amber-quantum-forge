@@ -1,19 +1,7 @@
 import { readFileSync } from "node:fs";
-import { Hono } from "hono";
 import { describe, expect, it } from "vitest";
-import { type GameTokenConfig, SignedGameTokenVerifier, signGameToken } from "../tokens";
-import type { MergeRelayServiceDependencies } from "./dependencies";
-import { InMemoryMergeRelayStore } from "./memory-store";
-import { createMergeRelayRoutes } from "./routes";
-import { emptyMergeRelayState } from "./store";
-
-const tokenConfig: GameTokenConfig = {
-  appId: "merge_relay",
-  environment: "debug",
-  secret: "merge-relay-fixture-secret-with-at-least-32-characters",
-  issuer: "https://issuer.test/games",
-  audience: "merge-relay-fixture",
-};
+import { signGameToken } from "../tokens";
+import { createFixtureApp, tokenConfig } from "./http-fixture-support";
 
 const fixture = JSON.parse(
   readFileSync(new URL("./fixtures/merge-relay-v1-http.json", import.meta.url), "utf8"),
@@ -21,7 +9,7 @@ const fixture = JSON.parse(
 
 describe("Merge Relay v1 HTTP fixture", () => {
   it("captures actual route-produced create and resolve responses", async () => {
-    const app = createFixtureApp();
+    const { app } = createFixtureApp();
     const token = await signGameToken(tokenConfig, { subject: "owner", role: "player" });
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -120,31 +108,3 @@ describe("Merge Relay v1 HTTP fixture", () => {
     expect(invalidBody).toEqual(fixture.invalid_request);
   });
 });
-
-function createFixtureApp(): Hono {
-  const initial = emptyMergeRelayState();
-  const config = initial.configs[0];
-  if (!config) throw new Error("test config missing");
-  config.features.rankedRelay = true;
-  const dependencies: MergeRelayServiceDependencies & {
-    tokenVerifier: SignedGameTokenVerifier;
-  } = {
-    store: new InMemoryMergeRelayStore({ debug: initial }),
-    clock: { now: () => new Date("2026-01-01T00:00:00.000Z") },
-    rewardProvider: null,
-    tokenVerifier: new SignedGameTokenVerifier(tokenConfig),
-    idFactory: fixtureIdFactory(),
-  };
-  const app = new Hono();
-  app.route("/games/merge_relay", createMergeRelayRoutes(dependencies));
-  return app;
-}
-
-function fixtureIdFactory(): (prefix: string) => string {
-  const counters = new Map<string, number>();
-  return (prefix) => {
-    const next = (counters.get(prefix) ?? 0) + 1;
-    counters.set(prefix, next);
-    return `${prefix}_fixture_${next}`;
-  };
-}

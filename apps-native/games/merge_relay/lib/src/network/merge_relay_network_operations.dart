@@ -98,9 +98,13 @@ base mixin _MergeRelayGatewayOperations on _MergeRelayHttpGatewayBase
       path: 'challenges/${_pathId(challengeId, 'challengeId')}/attempts',
       body: {'reservation_key': _requestKey(reservationKey, 'reservationKey')},
       authenticated: true,
-      parser: (data) => parseAttempt(
-        _nested(data, 'attempt', {'attempt', 'idempotent'})['attempt'],
-      ),
+      parser: (data) {
+        final json = _nested(data, 'attempt', {'attempt', 'idempotent'});
+        if (json['idempotent'] is! bool) {
+          throw const MergeRelayProtocolException('Invalid idempotent result');
+        }
+        return parseAttempt(json['attempt']);
+      },
     );
     validateReservedAttempt(attempt, challengeId, reservationKey);
     return attempt;

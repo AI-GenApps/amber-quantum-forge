@@ -1,0 +1,1169 @@
+{
+  "outcomes": {
+    "daily_provision": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "daily": {
+          "date": "2026-01-01",
+          "mode": "daily",
+          "max_legal_moves": 3,
+          "checkpoint": {
+            "board": [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+            "score": 0,
+            "move_count": 0,
+            "seed": 678263699,
+            "rng_state": 3487586716,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_id": "daily_20260101",
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "content_revision": "MR-CONTENT-1",
+          "generated": true,
+          "updated_at": "2026-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    "daily_provision_replay": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "daily": {
+          "date": "2026-01-01",
+          "mode": "daily",
+          "max_legal_moves": 3,
+          "checkpoint": {
+            "board": [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+            "score": 0,
+            "move_count": 0,
+            "seed": 678263699,
+            "rng_state": 3487586716,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_id": "daily_20260101",
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "content_revision": "MR-CONTENT-1",
+          "generated": true,
+          "updated_at": "2026-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    "create_rescue": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "challenge": {
+          "challenge_id": "ch_fixture_1",
+          "creator_alias": "Ada",
+          "mode": "rescue",
+          "origin_mode": "rescue",
+          "config_revision": 1,
+          "checkpoint": {
+            "board": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "score": 0,
+            "move_count": 0,
+            "seed": 7,
+            "rng_state": 123,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "checkpoint_hash": "4958db1a3980078b5a74ad03f82378dc32d33052b44b0902b08a3be2381f96b1",
+          "payload_hash": "27493a5193e78183d466cb1ed91e2c80c42111ea53201f2c42c1524195c09161",
+          "parent_challenge_id": null,
+          "status": "open",
+          "created_at": "2026-01-01T00:00:00.000Z"
+        },
+        "idempotent": false
+      }
+    },
+    "create_replay": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "challenge": {
+          "challenge_id": "ch_fixture_1",
+          "creator_alias": "Ada",
+          "mode": "rescue",
+          "origin_mode": "rescue",
+          "config_revision": 1,
+          "checkpoint": {
+            "board": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "score": 0,
+            "move_count": 0,
+            "seed": 7,
+            "rng_state": 123,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "checkpoint_hash": "4958db1a3980078b5a74ad03f82378dc32d33052b44b0902b08a3be2381f96b1",
+          "payload_hash": "27493a5193e78183d466cb1ed91e2c80c42111ea53201f2c42c1524195c09161",
+          "parent_challenge_id": null,
+          "status": "open",
+          "created_at": "2026-01-01T00:00:00.000Z"
+        },
+        "idempotent": true
+      }
+    },
+    "create_daily_origin": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "challenge": {
+          "challenge_id": "ch_fixture_2",
+          "creator_alias": "Ada",
+          "mode": "rescue",
+          "origin_mode": "daily",
+          "config_revision": 1,
+          "checkpoint": {
+            "board": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "score": 0,
+            "move_count": 0,
+            "seed": 7,
+            "rng_state": 123,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_id": "daily_20260101",
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "checkpoint_hash": "4958db1a3980078b5a74ad03f82378dc32d33052b44b0902b08a3be2381f96b1",
+          "payload_hash": "0e31240918ea595af17ffb11aac552bb8f2d9d559c5d5310d2dd18464dec300d",
+          "parent_challenge_id": null,
+          "status": "open",
+          "created_at": "2026-01-01T00:00:00.000Z"
+        },
+        "idempotent": false
+      }
+    },
+    "create_endless_origin": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "challenge": {
+          "challenge_id": "ch_fixture_3",
+          "creator_alias": "Ada",
+          "mode": "rescue",
+          "origin_mode": "endless",
+          "config_revision": 1,
+          "checkpoint": {
+            "board": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "score": 0,
+            "move_count": 0,
+            "seed": 7,
+            "rng_state": 123,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "checkpoint_hash": "4958db1a3980078b5a74ad03f82378dc32d33052b44b0902b08a3be2381f96b1",
+          "payload_hash": "dfe9f695e6667b332bc77a4026f84e2e4931d0d4c3f7a55c8989ba2061e77ad0",
+          "parent_challenge_id": null,
+          "status": "open",
+          "created_at": "2026-01-01T00:00:00.000Z"
+        },
+        "idempotent": false
+      }
+    },
+    "create_child": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "challenge": {
+          "challenge_id": "ch_fixture_4",
+          "creator_alias": "Ada",
+          "mode": "rescue",
+          "origin_mode": "rescue",
+          "config_revision": 1,
+          "checkpoint": {
+            "board": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "score": 0,
+            "move_count": 0,
+            "seed": 7,
+            "rng_state": 123,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "checkpoint_hash": "4958db1a3980078b5a74ad03f82378dc32d33052b44b0902b08a3be2381f96b1",
+          "payload_hash": "f5b66f80086c56d4edc593df18b7849b4eb5f7d9b5122dfabc1ef59d85061d0b",
+          "parent_challenge_id": "ch_fixture_1",
+          "status": "open",
+          "created_at": "2026-01-01T00:00:00.000Z"
+        },
+        "idempotent": false
+      }
+    },
+    "challenge_private": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "challenge": {
+          "challenge_id": "ch_fixture_1",
+          "creator_alias": "Ada",
+          "mode": "rescue",
+          "origin_mode": "rescue",
+          "config_revision": 1,
+          "checkpoint": {
+            "board": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "score": 0,
+            "move_count": 0,
+            "seed": 7,
+            "rng_state": 123,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "checkpoint_hash": "4958db1a3980078b5a74ad03f82378dc32d33052b44b0902b08a3be2381f96b1",
+          "payload_hash": "27493a5193e78183d466cb1ed91e2c80c42111ea53201f2c42c1524195c09161",
+          "parent_challenge_id": null,
+          "status": "open",
+          "created_at": "2026-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    "challenge_retired": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "challenge": {
+          "challenge_id": "ch_fixture_2",
+          "creator_alias": "Ada",
+          "mode": "rescue",
+          "origin_mode": "daily",
+          "config_revision": 1,
+          "checkpoint": {
+            "board": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "score": 0,
+            "move_count": 0,
+            "seed": 7,
+            "rng_state": 123,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_id": "daily_20260101",
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "checkpoint_hash": "4958db1a3980078b5a74ad03f82378dc32d33052b44b0902b08a3be2381f96b1",
+          "payload_hash": "0e31240918ea595af17ffb11aac552bb8f2d9d559c5d5310d2dd18464dec300d",
+          "parent_challenge_id": null,
+          "status": "retired",
+          "created_at": "2026-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    "reserve_attempt": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "attempt": {
+          "attempt_id": "att_fixture_1",
+          "challenge_id": "ch_fixture_1",
+          "environment": "debug",
+          "recipient_subject": "player",
+          "checkpoint": {
+            "board": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "score": 0,
+            "move_count": 0,
+            "seed": 7,
+            "rng_state": 123,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "moves": [],
+          "max_legal_moves": 3,
+          "status": "reserved",
+          "reservation_key": "outcome-reserve",
+          "reserved_at": "2026-01-01T00:00:00.000Z",
+          "expires_at": "2026-01-02T00:00:00.000Z",
+          "version": 0,
+          "result_id": null,
+          "updated_at": "2026-01-01T00:00:00.000Z"
+        },
+        "idempotent": false
+      }
+    },
+    "reserve_replay": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "attempt": {
+          "attempt_id": "att_fixture_1",
+          "challenge_id": "ch_fixture_1",
+          "environment": "debug",
+          "recipient_subject": "player",
+          "checkpoint": {
+            "board": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            "score": 0,
+            "move_count": 0,
+            "seed": 7,
+            "rng_state": 123,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "moves": [],
+          "max_legal_moves": 3,
+          "status": "reserved",
+          "reservation_key": "outcome-reserve",
+          "reserved_at": "2026-01-01T00:00:00.000Z",
+          "expires_at": "2026-01-02T00:00:00.000Z",
+          "version": 0,
+          "result_id": null,
+          "updated_at": "2026-01-01T00:00:00.000Z"
+        },
+        "idempotent": true
+      }
+    },
+    "submit_three_moves": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "attempt": {
+          "attempt_id": "att_fixture_1",
+          "challenge_id": "ch_fixture_1",
+          "environment": "debug",
+          "recipient_subject": "player",
+          "checkpoint": {
+            "board": [0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 2],
+            "score": 4,
+            "move_count": 3,
+            "seed": 7,
+            "rng_state": 1875546790,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "moves": ["left", "down", "right"],
+          "max_legal_moves": 3,
+          "status": "reserved",
+          "reservation_key": "outcome-reserve",
+          "reserved_at": "2026-01-01T00:00:00.000Z",
+          "expires_at": "2026-01-02T00:00:00.000Z",
+          "version": 1,
+          "result_id": null,
+          "updated_at": "2026-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    "attempt_private": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "attempt": {
+          "attempt_id": "att_fixture_1",
+          "challenge_id": "ch_fixture_1",
+          "environment": "debug",
+          "recipient_subject": "player",
+          "checkpoint": {
+            "board": [0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 2],
+            "score": 4,
+            "move_count": 3,
+            "seed": 7,
+            "rng_state": 1875546790,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "moves": ["left", "down", "right"],
+          "max_legal_moves": 3,
+          "status": "reserved",
+          "reservation_key": "outcome-reserve",
+          "reserved_at": "2026-01-01T00:00:00.000Z",
+          "expires_at": "2026-01-02T00:00:00.000Z",
+          "version": 1,
+          "result_id": null,
+          "updated_at": "2026-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    "finalize_complete_with_return": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "result": {
+          "result_id": "res_fixture_1",
+          "attempt_id": "att_fixture_1",
+          "challenge_id": "ch_fixture_1",
+          "recipient_subject": "player",
+          "environment": "debug",
+          "score_delta": 4,
+          "final_score": 4,
+          "max_tile": 4,
+          "moves_used": 3,
+          "outcome": "complete",
+          "mode": "rescue",
+          "origin_mode": "rescue",
+          "config_revision": 1,
+          "challenge_payload_hash": "27493a5193e78183d466cb1ed91e2c80c42111ea53201f2c42c1524195c09161",
+          "return_challenge_id": "ch_fixture_5",
+          "created_at": "2026-01-01T00:00:00.000Z"
+        },
+        "return_challenge": {
+          "challenge_id": "ch_fixture_5",
+          "creator_alias": "Bea",
+          "mode": "rescue",
+          "origin_mode": "rescue",
+          "config_revision": 1,
+          "checkpoint": {
+            "board": [0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 2],
+            "score": 4,
+            "move_count": 3,
+            "seed": 7,
+            "rng_state": 1875546790,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "checkpoint_hash": "ca5951235a759d60af86af3cdc0d26eca2dd8166c80cf0a36bb5d647a40bf414",
+          "payload_hash": "16252684b9d3f302e0539ebf4f0c4aae538e1a29419679f8585ba5ae939e10c5",
+          "parent_challenge_id": "ch_fixture_1",
+          "status": "open",
+          "created_at": "2026-01-01T00:00:00.000Z"
+        },
+        "idempotent": false
+      }
+    },
+    "finalize_replay": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "result": {
+          "result_id": "res_fixture_1",
+          "attempt_id": "att_fixture_1",
+          "challenge_id": "ch_fixture_1",
+          "recipient_subject": "player",
+          "environment": "debug",
+          "score_delta": 4,
+          "final_score": 4,
+          "max_tile": 4,
+          "moves_used": 3,
+          "outcome": "complete",
+          "mode": "rescue",
+          "origin_mode": "rescue",
+          "config_revision": 1,
+          "challenge_payload_hash": "27493a5193e78183d466cb1ed91e2c80c42111ea53201f2c42c1524195c09161",
+          "return_challenge_id": "ch_fixture_5",
+          "created_at": "2026-01-01T00:00:00.000Z"
+        },
+        "return_challenge": {
+          "challenge_id": "ch_fixture_5",
+          "creator_alias": "Bea",
+          "mode": "rescue",
+          "origin_mode": "rescue",
+          "config_revision": 1,
+          "checkpoint": {
+            "board": [0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 2],
+            "score": 4,
+            "move_count": 3,
+            "seed": 7,
+            "rng_state": 1875546790,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "checkpoint_hash": "ca5951235a759d60af86af3cdc0d26eca2dd8166c80cf0a36bb5d647a40bf414",
+          "payload_hash": "16252684b9d3f302e0539ebf4f0c4aae538e1a29419679f8585ba5ae939e10c5",
+          "parent_challenge_id": "ch_fixture_1",
+          "status": "open",
+          "created_at": "2026-01-01T00:00:00.000Z"
+        },
+        "idempotent": true
+      }
+    },
+    "result_private": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "result": {
+          "result_id": "res_fixture_1",
+          "attempt_id": "att_fixture_1",
+          "challenge_id": "ch_fixture_1",
+          "recipient_subject": "player",
+          "environment": "debug",
+          "score_delta": 4,
+          "final_score": 4,
+          "max_tile": 4,
+          "moves_used": 3,
+          "outcome": "complete",
+          "mode": "rescue",
+          "origin_mode": "rescue",
+          "config_revision": 1,
+          "challenge_payload_hash": "27493a5193e78183d466cb1ed91e2c80c42111ea53201f2c42c1524195c09161",
+          "return_challenge_id": "ch_fixture_5",
+          "created_at": "2026-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    "result_owner_view": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "result": {
+          "result_id": "res_fixture_1",
+          "attempt_id": "att_fixture_1",
+          "challenge_id": "ch_fixture_1",
+          "recipient_subject": "player",
+          "environment": "debug",
+          "score_delta": 4,
+          "final_score": 4,
+          "max_tile": 4,
+          "moves_used": 3,
+          "outcome": "complete",
+          "mode": "rescue",
+          "origin_mode": "rescue",
+          "config_revision": 1,
+          "challenge_payload_hash": "27493a5193e78183d466cb1ed91e2c80c42111ea53201f2c42c1524195c09161",
+          "return_challenge_id": "ch_fixture_5",
+          "created_at": "2026-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    "create_near_terminal": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "challenge": {
+          "challenge_id": "ch_fixture_6",
+          "creator_alias": "Ada",
+          "mode": "rescue",
+          "origin_mode": "rescue",
+          "config_revision": 1,
+          "checkpoint": {
+            "board": [4, 8, 4, 8, 8, 4, 8, 4, 4, 8, 4, 8, 8, 4, 16, 16],
+            "score": 0,
+            "move_count": 0,
+            "seed": 7,
+            "rng_state": 123,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "checkpoint_hash": "d11ab31e60c086e36ab8206a5bc12f2e32f39bef56387c4a113927e381288231",
+          "payload_hash": "9df2d54c776502650040617793e0f328dd6485c4492965dc6fe1521635241322",
+          "parent_challenge_id": null,
+          "status": "open",
+          "created_at": "2026-01-01T00:00:00.000Z"
+        },
+        "idempotent": false
+      }
+    },
+    "submit_to_terminal": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "attempt": {
+          "attempt_id": "att_fixture_2",
+          "challenge_id": "ch_fixture_6",
+          "environment": "debug",
+          "recipient_subject": "player",
+          "checkpoint": {
+            "board": [4, 8, 4, 8, 8, 4, 8, 4, 4, 8, 4, 8, 8, 4, 32, 2],
+            "score": 32,
+            "move_count": 1,
+            "seed": 7,
+            "rng_state": 4018661298,
+            "rule_version": "MR-2D-1",
+            "max_legal_moves": 3,
+            "content_version": "MR-CONTENT-1",
+            "spawn_two_weight": 90,
+            "spawn_four_weight": 10
+          },
+          "moves": ["left"],
+          "max_legal_moves": 3,
+          "status": "reserved",
+          "reservation_key": "outcome-terminal",
+          "reserved_at": "2026-01-01T00:00:00.000Z",
+          "expires_at": "2026-01-02T00:00:00.000Z",
+          "version": 1,
+          "result_id": null,
+          "updated_at": "2026-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    "finalize_terminal": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "result": {
+          "result_id": "res_fixture_2",
+          "attempt_id": "att_fixture_2",
+          "challenge_id": "ch_fixture_6",
+          "recipient_subject": "player",
+          "environment": "debug",
+          "score_delta": 32,
+          "final_score": 32,
+          "max_tile": 32,
+          "moves_used": 1,
+          "outcome": "terminal",
+          "mode": "rescue",
+          "origin_mode": "rescue",
+          "config_revision": 1,
+          "challenge_payload_hash": "9df2d54c776502650040617793e0f328dd6485c4492965dc6fe1521635241322",
+          "return_challenge_id": null,
+          "created_at": "2026-01-01T00:00:00.000Z"
+        },
+        "return_challenge": null,
+        "idempotent": false
+      }
+    },
+    "finalize_early_finish": {
+      "contract_version": "merge-relay.v1",
+      "data": {
+        "result": {
+          "result_id": "res_fixture_3",
+          "attempt_id": "att_fixture_3",
+          "challenge_id": "ch_fixture_1",
+          "recipient_subject": "early",
+          "environment": "debug",
+          "score_delta": 0,
+          "final_score": 0,
+          "max_tile": 2,
+          "moves_used": 0,
+          "outcome": "early_finish",
+          "mode": "rescue",
+          "origin_mode": "rescue",
+          "config_revision": 1,
+          "challenge_payload_hash": "27493a5193e78183d466cb1ed91e2c80c42111ea53201f2c42c1524195c09161",
+          "return_challenge_id": null,
+          "created_at": "2026-01-01T00:00:00.000Z"
+        },
+        "return_challenge": null,
+        "idempotent": false
+      }
+    }
+  },
+  "errors": {
+    "game_token_required": {
+      "status": 401,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "game_token_required",
+          "message": "A verified game token is required",
+          "diagnostic_id": "route"
+        }
+      }
+    },
+    "invalid_game_token": {
+      "status": 401,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "invalid_game_token",
+          "message": "The game token could not be verified",
+          "diagnostic_id": "route"
+        }
+      }
+    },
+    "client_app_scope_mismatch": {
+      "status": 400,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "client_app_scope_mismatch",
+          "message": "The client app scope does not match Merge Relay",
+          "diagnostic_id": "route"
+        }
+      }
+    },
+    "environment_not_found": {
+      "status": 404,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "environment_not_found",
+          "message": "Environment was not found",
+          "diagnostic_id": "route"
+        }
+      }
+    },
+    "body_too_large": {
+      "status": 413,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "body_too_large",
+          "message": "Request body is too large",
+          "diagnostic_id": "body-limit"
+        }
+      }
+    },
+    "invalid_challenge_payload": {
+      "status": 422,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "invalid_challenge_payload",
+          "message": "Challenge payload is invalid",
+          "diagnostic_id": "route"
+        }
+      }
+    },
+    "invalid_reservation": {
+      "status": 422,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "invalid_reservation",
+          "message": "Reservation payload is invalid",
+          "diagnostic_id": "route"
+        }
+      }
+    },
+    "invalid_moves": {
+      "status": 422,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "invalid_moves",
+          "message": "Move payload is invalid",
+          "diagnostic_id": "route"
+        }
+      }
+    },
+    "invalid_finalize": {
+      "status": 422,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "invalid_finalize",
+          "message": "Finalize payload is invalid",
+          "diagnostic_id": "route"
+        }
+      }
+    },
+    "invalid_challenge_id": {
+      "status": 400,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "invalid_challenge_id",
+          "message": "Challenge ID is invalid",
+          "diagnostic_id": "route"
+        }
+      }
+    },
+    "invalid_attempt_id": {
+      "status": 400,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "invalid_attempt_id",
+          "message": "Attempt ID is invalid",
+          "diagnostic_id": "route"
+        }
+      }
+    },
+    "invalid_result_id": {
+      "status": 400,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "invalid_result_id",
+          "message": "Result ID is invalid",
+          "diagnostic_id": "route"
+        }
+      }
+    },
+    "invalid_daily_date": {
+      "status": 400,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "invalid_daily_date",
+          "message": "Daily date must use YYYY-MM-DD",
+          "diagnostic_id": "route"
+        }
+      }
+    },
+    "invalid_guest_recovery": {
+      "status": 422,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "invalid_guest_recovery",
+          "message": "Guest recovery payload is invalid",
+          "diagnostic_id": "route"
+        }
+      }
+    },
+    "invalid_guest_upgrade": {
+      "status": 422,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "invalid_guest_upgrade",
+          "message": "Guest upgrade payload is invalid",
+          "diagnostic_id": "route"
+        }
+      }
+    },
+    "guest_recovery_not_found": {
+      "status": 404,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "guest_recovery_not_found",
+          "message": "Guest recovery token was not found",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "invalid_save_id": {
+      "status": 400,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "invalid_save_id",
+          "message": "Save ID is invalid",
+          "diagnostic_id": "route"
+        }
+      }
+    },
+    "save_not_found": {
+      "status": 404,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "save_not_found",
+          "message": "Save was not found",
+          "diagnostic_id": "route"
+        }
+      }
+    },
+    "player_role_required": {
+      "status": 403,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "player_role_required",
+          "message": "The player role is required",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "game_admin_role_required": {
+      "status": 403,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "game_admin_role_required",
+          "message": "The game_admin role is required",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "daily_provision_role_required": {
+      "status": 403,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "daily_provision_role_required",
+          "message": "A game administrator or service role is required",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "challenge_not_found": {
+      "status": 404,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "challenge_not_found",
+          "message": "Challenge was not found",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "attempt_not_found": {
+      "status": 404,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "attempt_not_found",
+          "message": "Attempt was not found",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "result_not_found": {
+      "status": 404,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "result_not_found",
+          "message": "Result was not found",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "daily_unavailable": {
+      "status": 404,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "daily_unavailable",
+          "message": "The requested daily challenge has not been provisioned",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "challenge_membership_required": {
+      "status": 403,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "challenge_membership_required",
+          "message": "Challenge membership is required",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "attempt_owner_required": {
+      "status": 403,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "attempt_owner_required",
+          "message": "Only the reserved player may submit moves",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "reservation_exists": {
+      "status": 409,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "reservation_exists",
+          "message": "This challenge already has a reservation",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "attempt_version_conflict": {
+      "status": 409,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "attempt_version_conflict",
+          "message": "Attempt changed on another device",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "illegal_move": {
+      "status": 422,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "illegal_move",
+          "message": "Move is not legal for this checkpoint",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "attempt_incomplete": {
+      "status": 409,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "attempt_incomplete",
+          "message": "Use all legal moves or explicitly finish early",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "move_budget_exceeded": {
+      "status": 422,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "move_budget_exceeded",
+          "message": "An attempt may contain at most three legal moves",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "idempotency_conflict": {
+      "status": 409,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "idempotency_conflict",
+          "message": "The attempt was finalized with another request",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "attempt_not_playable": {
+      "status": 409,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "attempt_not_playable",
+          "message": "Attempt is no longer playable",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "result_access_denied": {
+      "status": 403,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "result_access_denied",
+          "message": "Result access is denied",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "attempt_terminal": {
+      "status": 422,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "attempt_terminal",
+          "message": "Move is not legal for this checkpoint",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "reservation_expired": {
+      "status": 409,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "reservation_expired",
+          "message": "Attempt reservation has expired",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "challenge_retired": {
+      "status": 409,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "challenge_retired",
+          "message": "Challenge is no longer playable",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "player_blocked": {
+      "status": 403,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "player_blocked",
+          "message": "This challenge is unavailable",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "checkpoint_terminal": {
+      "status": 422,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "checkpoint_terminal",
+          "message": "A terminal board cannot become a challenge",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "parent_challenge_not_found": {
+      "status": 404,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "parent_challenge_not_found",
+          "message": "Parent challenge was not found",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "daily_reference_required": {
+      "status": 422,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "daily_reference_required",
+          "message": "Daily challenges must reference a provisioned daily record",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "daily_config_mismatch": {
+      "status": 422,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "daily_config_mismatch",
+          "message": "Daily spawn rules are not frozen",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "content_version_mismatch": {
+      "status": 422,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "content_version_mismatch",
+          "message": "Requested content is not current",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "content_id_mismatch": {
+      "status": 422,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "content_id_mismatch",
+          "message": "Content identifiers do not match",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "feature_disabled": {
+      "status": 503,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "feature_disabled",
+          "message": "Relay feature rankedRelay is disabled",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    },
+    "merge_relay_unavailable": {
+      "status": 503,
+      "body": {
+        "contract_version": "merge-relay.v1",
+        "error": {
+          "code": "merge_relay_unavailable",
+          "message": "Merge Relay service is unavailable",
+          "diagnostic_id": "diagnostic-id"
+        }
+      }
+    }
+  }
+}
