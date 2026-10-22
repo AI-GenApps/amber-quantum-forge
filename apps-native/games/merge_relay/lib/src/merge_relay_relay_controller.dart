@@ -96,6 +96,15 @@ final class MergeRelayRelayController extends ChangeNotifier {
     await bootstrap();
   }
 
+  void editCode() {
+    if (isDisposed || _local.hasAttempt) return;
+    snapshot
+      ..preview = null
+      ..clearError()
+      ..phase = MergeRelayRelayPhase.ready;
+    _emit();
+  }
+
   void _setPhase(MergeRelayRelayPhase phase) {
     if (_disposed) return;
     snapshot.phase = phase;

@@ -16,15 +16,21 @@ estimate: XL
   2026-10-22: `flutter analyze` reports no issues; `flutter test` passes 310
   tests with only the 8 known golden pixel failures; gateway seam in
   `lib/src/merge_relay_gateway.dart`, rules in the `merge_rules` package.
-- [ ] Add challenge-first routing, manual-code fallback, guest recovery,
+- [x] Add challenge-first routing, manual-code fallback, guest recovery,
   offline practice, reconnect conflict UI, and ranked reservation states.
-  NOT MET 2026-10-22: routing, guest recovery, reconnect and reservation
-  states exist behind the `MERGE_RELAY_SOCIAL` gate (off by default); no
-  manual-code entry UI was found.
-- [ ] Add rescue/daily/endless content, progression/themes, and truthful
+  Evidence 2026-10-22: manual code entry (`merge_relay_manual_code.dart`)
+  with inline validation and offline, not-found, retired and unsupported
+  states via `mergeRelayOutcomeFor`, covered by
+  `test/merge_relay_manual_code_ui_test.dart`; everything stays behind
+  `MERGE_RELAY_SOCIAL` (off by default, `solo_v1_scope_test` passes). Also
+  added report/block (`merge_relay_safety_sheet.dart`).
+- [x] Add rescue/daily/endless content, progression/themes, and truthful
   feature gates for rewards, ads, and remote tuning.
-  NOT MET 2026-10-22: no client reward, ad, or remote-tuning gate surface
-  was found beyond the parsed feature flags; content and progression tests pass.
+  Evidence 2026-10-22: `merge_relay_feature_gates.dart` shows rewards, ads,
+  themes/purchases and remote tuning as off or not available yet from
+  `gateway.getConfig`, never a grant or purchase action, covered by
+  `test/merge_relay_feature_gates_test.dart`; no billing or ad SDK added;
+  content and progression tests pass.
 - [ ] Exercise the complete local service loop with integration fixtures and
   one connected physical Android device. NOT RUN: no physical device here.
 

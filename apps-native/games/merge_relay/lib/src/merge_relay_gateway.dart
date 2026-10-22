@@ -6,6 +6,7 @@ import 'network/merge_relay_events.dart';
 import 'network/merge_relay_models.dart';
 import 'network/merge_relay_pgs_models.dart';
 import 'network/merge_relay_save_receipts.dart';
+import 'network/merge_relay_social_models.dart';
 
 export 'network/merge_relay_events.dart';
 export 'network/merge_relay_http.dart';
@@ -14,6 +15,7 @@ export 'network/merge_relay_network.dart';
 export 'network/merge_relay_pgs_models.dart';
 export 'network/merge_relay_save_receipts.dart';
 export 'network/merge_relay_secure_auth.dart';
+export 'network/merge_relay_social_models.dart';
 export 'platform/merge_relay_challenge_links.dart';
 
 const mergeRelayContractVersion = 'merge-relay.v1';
@@ -70,6 +72,8 @@ abstract interface class MergeRelayGateway {
   Future<MergeRelayPgsIdentity> linkPgsIdentity(String serverAuthCode);
 
   Future<MergeRelayPgsIdentitySnapshot> getPgsIdentityStatus();
+
+  Future<MergeRelaySocialRecord> submitSocial(MergeRelaySocialRequest request);
 }
 
 final class MergeRelayChallengeRequest {

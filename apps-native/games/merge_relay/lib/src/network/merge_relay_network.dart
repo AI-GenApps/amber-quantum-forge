@@ -21,6 +21,7 @@ export 'merge_relay_save_receipts.dart'
 
 part 'merge_relay_network_operations.dart';
 part 'merge_relay_network_pgs.dart';
+part 'merge_relay_network_social.dart';
 
 abstract base class _MergeRelayHttpGatewayBase {
   _MergeRelayHttpGatewayBase({
@@ -114,7 +115,10 @@ abstract base class _MergeRelayHttpGatewayBase {
 }
 
 final class MergeRelayHttpGateway extends _MergeRelayHttpGatewayBase
-    with _MergeRelayGatewayOperations, _MergeRelayPgsOperations
+    with
+        _MergeRelayGatewayOperations,
+        _MergeRelayPgsOperations,
+        _MergeRelaySocialOperations
     implements MergeRelayGateway {
   MergeRelayHttpGateway({
     required super.config,

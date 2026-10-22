@@ -6,7 +6,12 @@ import 'package:merge_rules/merge_rules.dart';
 import 'merge_relay_app.dart';
 import 'merge_relay_board_painter.dart';
 import 'merge_relay_board_accessibility.dart';
+import 'merge_relay_feature_gates.dart';
+import 'merge_relay_gateway.dart';
+import 'merge_relay_relay_link.dart';
+import 'merge_relay_manual_code.dart';
 import 'merge_relay_relay_controller.dart';
+import 'merge_relay_safety_sheet.dart';
 import 'merge_relay_service_outcome.dart';
 import 'merge_relay_relay_models.dart';
 import 'merge_relay_relay_share_panel.dart';
@@ -34,19 +39,13 @@ final class MergeRelayRelayScreen extends StatefulWidget {
 }
 
 final class _MergeRelayRelayScreenState extends State<MergeRelayRelayScreen> {
-  late final TextEditingController _link;
+  var _lastCode = '';
 
-  @override
-  void initState() {
-    super.initState();
-    _link = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _link.dispose();
-    super.dispose();
-  }
+  String? _parseCode(String raw) => MergeRelayChallengeLink.parse(
+    raw,
+    publicOrigin: widget.controller.publicOrigin,
+    environment: widget.controller.context.environment.name,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +56,9 @@ final class _MergeRelayRelayScreenState extends State<MergeRelayRelayScreen> {
         return Padding(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
           child: switch (snapshot.phase) {
+            MergeRelayRelayPhase.offline || MergeRelayRelayPhase.conflict
+                when snapshot.attempt == null =>
+              _error(snapshot),
             MergeRelayRelayPhase.preview => _preview(snapshot),
             MergeRelayRelayPhase.creator => _creator(snapshot),
             MergeRelayRelayPhase.creating => _loading(),
@@ -83,34 +85,30 @@ final class _MergeRelayRelayScreenState extends State<MergeRelayRelayScreen> {
     );
   }
 
-  Widget _entry() => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      _header('Join a relay', 'Bring a challenge code or link.'),
-      const SizedBox(height: 26),
-      TextField(
-        controller: _link,
-        maxLength: 512,
-        textInputAction: TextInputAction.go,
-        onSubmitted: (_) => _openLink(),
-        decoration: const InputDecoration(
-          labelText: 'Challenge code or link',
-          hintText: 'ch_… or mergerelay://challenge/…',
-          border: OutlineInputBorder(),
+  Widget _entry() => SingleChildScrollView(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _header('Join a relay', 'Bring a challenge code or link.'),
+        const SizedBox(height: 26),
+        MergeRelayManualCodeEntry(
+          theme: widget.theme,
+          initialCode: _lastCode,
+          parse: _parseCode,
+          onSubmit: _openLink,
         ),
-      ),
-      const SizedBox(height: 8),
-      FilledButton.icon(
-        onPressed: _openLink,
-        icon: const Icon(Icons.route_rounded),
-        label: const Text('See challenge'),
-      ),
-      const SizedBox(height: 14),
-      Text(
-        'A relay starts only after you review the board and accept it.',
-        style: TextStyle(color: widget.theme.muted, fontSize: 13),
-      ),
-    ],
+        const SizedBox(height: 14),
+        Text(
+          'A relay starts only after you review the board and accept it.',
+          style: TextStyle(color: widget.theme.muted, fontSize: 13),
+        ),
+        const SizedBox(height: 22),
+        MergeRelayFeatureGatePanel(
+          gateway: widget.controller.gateway,
+          theme: widget.theme,
+        ),
+      ],
+    ),
   );
 
   Widget _preview(MergeRelayRelaySnapshot snapshot) {
@@ -150,6 +148,7 @@ final class _MergeRelayRelayScreenState extends State<MergeRelayRelayScreen> {
                   : 'Challenge closed',
             ),
           ),
+          _safetyButton(challenge.challengeId, challenge.creatorAlias),
         ],
       ),
     );
@@ -159,13 +158,15 @@ final class _MergeRelayRelayScreenState extends State<MergeRelayRelayScreen> {
     String title,
     String body,
     String action,
-    VoidCallback onTap,
-  ) => Column(
+    VoidCallback onTap, {
+    List<Widget> extra = const [],
+  }) => Column(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       _header(title, body),
       const Spacer(),
       FilledButton(onPressed: onTap, child: Text(action)),
+      ...extra,
     ],
   );
   Widget _header(String title, String subtitle) => Column(
@@ -187,9 +188,9 @@ final class _MergeRelayRelayScreenState extends State<MergeRelayRelayScreen> {
       Text(subtitle, style: TextStyle(color: widget.theme.muted, fontSize: 14)),
     ],
   );
-  Future<void> _openLink() async {
-    FocusManager.instance.primaryFocus?.unfocus();
-    await widget.controller.openLink(_link.text);
+  Future<void> _openLink(String code) async {
+    _lastCode = code;
+    await widget.controller.openLink(code);
   }
 
   static String _resultLabel(MergeRelayResultOutcome outcome) =>

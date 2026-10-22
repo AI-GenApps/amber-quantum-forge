@@ -20,6 +20,9 @@ final class FakeRelayGateway implements MergeRelayGateway {
   Object? eventError;
   final postedEvents = <MergeRelayEventRequest>[];
   var getConfigCalls = 0;
+  Object? socialError;
+  MergeRelayFeatureFlags? featureOverride;
+  final socialRequests = <MergeRelaySocialRequest>[];
   Object? dailyError;
   Future<MergeRelayDailyChallenge>? dailyFuture;
   MergeRelayDailyChallenge? dailyResult;
@@ -243,13 +246,32 @@ final class FakeRelayGateway implements MergeRelayGateway {
   Future<MergeRelayConfigRevision> getConfig() async {
     getConfigCalls += 1;
     if (configError != null) throw configError!;
-    return configOverride ?? _testConfig();
+    final config = configOverride ?? _testConfig();
+    if (featureOverride == null) return config;
+    return MergeRelayConfigRevision(
+      revision: config.revision,
+      rulesVersion: config.rulesVersion,
+      contentRevision: config.contentRevision,
+      spawnWeights: config.spawnWeights,
+      features: featureOverride!,
+      active: config.active,
+      createdAt: config.createdAt,
+    );
   }
 
   @override
   Future<void> postEvent(MergeRelayEventRequest request) async {
     if (eventError != null) throw eventError!;
     postedEvents.add(request);
+  }
+
+  @override
+  Future<MergeRelaySocialRecord> submitSocial(
+    MergeRelaySocialRequest request,
+  ) async {
+    socialRequests.add(request);
+    if (socialError != null) throw socialError!;
+    return MergeRelaySocialRecord(recordId: 'social_1', action: request.action);
   }
 
   @override

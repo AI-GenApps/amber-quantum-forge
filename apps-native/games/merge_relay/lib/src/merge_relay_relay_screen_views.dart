@@ -184,12 +184,33 @@ extension on _MergeRelayRelayScreenState {
               icon: const Icon(Icons.reply_rounded),
               label: const Text('Share return relay'),
             ),
+          _safetyButton(
+            result.challengeId,
+            snapshot.preview?.challengeId == result.challengeId
+                ? snapshot.preview?.creatorAlias
+                : null,
+          ),
           OutlinedButton(
             onPressed: widget.game.openHome,
             child: const Text('Home'),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _safetyButton(String? challengeId, String? alias) {
+    if (challengeId == null) return const SizedBox.shrink();
+    return TextButton.icon(
+      key: const ValueKey('mr-report-block'),
+      onPressed: () => showMergeRelaySafetySheet(
+        context,
+        gateway: widget.controller.gateway,
+        challengeId: challengeId,
+        alias: alias,
+      ),
+      icon: const Icon(Icons.flag_outlined),
+      label: const Text('Report or block'),
     );
   }
 
@@ -205,6 +226,14 @@ extension on _MergeRelayRelayScreenState {
       snapshot.message ?? 'Try again when you are ready.',
       outcome?.actionLabel ?? (goHome ? 'Back' : 'Retry'),
       goHome ? widget.game.openHome : widget.controller.retry,
+      extra: [
+        if (snapshot.attempt == null && snapshot.result == null)
+          TextButton(
+            key: const ValueKey('mr-enter-another-code'),
+            onPressed: widget.controller.editCode,
+            child: const Text('Enter a different code'),
+          ),
+      ],
     );
   }
 
