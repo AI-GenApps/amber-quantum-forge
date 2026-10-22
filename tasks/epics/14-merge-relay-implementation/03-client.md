@@ -11,14 +11,22 @@ estimate: XL
 
 ## Implementation Checklist
 
-- [ ] Add an injected HTTP gateway using the published DTOs and game token
-  provider; keep pure rules independent of Flutter and HTTP.
+- [x] Add an injected HTTP gateway using the published DTOs and game token
+  provider; keep pure rules independent of Flutter and HTTP. Evidence
+  2026-10-22: `flutter analyze` reports no issues; `flutter test` passes 310
+  tests with only the 8 known golden pixel failures; gateway seam in
+  `lib/src/merge_relay_gateway.dart`, rules in the `merge_rules` package.
 - [ ] Add challenge-first routing, manual-code fallback, guest recovery,
   offline practice, reconnect conflict UI, and ranked reservation states.
+  NOT MET 2026-10-22: routing, guest recovery, reconnect and reservation
+  states exist behind the `MERGE_RELAY_SOCIAL` gate (off by default); no
+  manual-code entry UI was found.
 - [ ] Add rescue/daily/endless content, progression/themes, and truthful
   feature gates for rewards, ads, and remote tuning.
+  NOT MET 2026-10-22: no client reward, ad, or remote-tuning gate surface
+  was found beyond the parsed feature flags; content and progression tests pass.
 - [ ] Exercise the complete local service loop with integration fixtures and
-  one connected physical Android device.
+  one connected physical Android device. NOT RUN: no physical device here.
 
 ## Verification
 
