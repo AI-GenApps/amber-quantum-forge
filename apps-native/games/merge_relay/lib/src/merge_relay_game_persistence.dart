@@ -18,6 +18,7 @@ extension MergeRelayGamePersistence on MergeRelayGame {
         hydrated.value = true;
         unawaited(initializePlayGames());
         unawaited(refreshDaily());
+        unawaited(refreshTuning());
         unawaited(audio.startMusicLoop());
       }
     }

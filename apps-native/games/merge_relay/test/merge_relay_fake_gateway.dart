@@ -16,6 +16,10 @@ final class FakeRelayGateway implements MergeRelayGateway {
   var failNextCreate = false;
   Object? resolveError;
   Object? configError;
+  MergeRelayConfigRevision? configOverride;
+  Object? eventError;
+  final postedEvents = <MergeRelayEventRequest>[];
+  var getConfigCalls = 0;
   Object? dailyError;
   Future<MergeRelayDailyChallenge>? dailyFuture;
   MergeRelayDailyChallenge? dailyResult;
@@ -237,8 +241,15 @@ final class FakeRelayGateway implements MergeRelayGateway {
 
   @override
   Future<MergeRelayConfigRevision> getConfig() async {
+    getConfigCalls += 1;
     if (configError != null) throw configError!;
-    return _testConfig();
+    return configOverride ?? _testConfig();
+  }
+
+  @override
+  Future<void> postEvent(MergeRelayEventRequest request) async {
+    if (eventError != null) throw eventError!;
+    postedEvents.add(request);
   }
 
   @override

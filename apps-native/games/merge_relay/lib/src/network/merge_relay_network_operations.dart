@@ -205,6 +205,17 @@ base mixin _MergeRelayGatewayOperations on _MergeRelayHttpGatewayBase
       _request(method: 'GET', path: 'config', parser: parseConfig);
 
   @override
+  Future<void> postEvent(MergeRelayEventRequest request) => _request<void>(
+    method: 'POST',
+    path: 'events',
+    body: request.toWireJson(),
+    authenticated: true,
+    parser: (data) {
+      _nested(data, 'event', {'event'});
+    },
+  );
+
+  @override
   Future<MergeRelaySave?> getSave(String saveId) async {
     try {
       final save = await _request<MergeRelaySave>(

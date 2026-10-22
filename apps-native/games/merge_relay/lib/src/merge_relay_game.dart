@@ -8,17 +8,20 @@ import 'package:platform_core/platform_core.dart';
 import 'audio/merge_relay_audio.dart';
 import 'audio/merge_relay_audio_service.dart';
 import 'merge_relay_board_art.dart';
+import 'merge_relay_config_tuning.dart';
 import 'merge_relay_content.dart';
 import 'merge_relay_content_validation.dart';
 import 'merge_relay_daily_status.dart';
 import 'merge_relay_features.dart';
 import 'merge_relay_haptics.dart';
 import 'merge_relay_models.dart';
+import 'network/merge_relay_events.dart';
 import 'merge_relay_relay_controller.dart';
 import 'merge_relay_service_outcome.dart';
 import 'network/merge_relay_wire.dart';
 import 'platform/merge_relay_pgs_account.dart';
 import 'platform/merge_relay_play_games.dart';
+import 'telemetry/merge_relay_event_outbox.dart';
 
 part 'merge_relay_daily_actions.dart';
 part 'merge_relay_game_actions.dart';
@@ -31,6 +34,7 @@ part 'merge_relay_platform_actions.dart';
 part 'merge_relay_game_relay_actions.dart';
 part 'merge_relay_save_state.dart';
 part 'merge_relay_seed.dart';
+part 'merge_relay_tuning_actions.dart';
 
 final class MergeRelayGame extends FlameGame {
   MergeRelayGame({
@@ -41,6 +45,7 @@ final class MergeRelayGame extends FlameGame {
     MergeRelayPlayGamesProvider? playGames,
     MergeRelayContentCatalog? content,
     this.features = const MergeRelayFeatures(),
+    this.eventOutbox,
     Clock? clock,
   }) : _providedPgsAccount = pgsAccount,
        content = content ?? MergeRelayContentCatalog.fallback,
@@ -97,6 +102,8 @@ final class MergeRelayGame extends FlameGame {
   final SaveStore saveStore;
   final MergeRelayRelayController? relayController;
   final MergeRelayFeatures features;
+  final MergeRelayEventOutbox? eventOutbox;
+  MergeRelayTuning _tuning = const MergeRelayTuning.legacy();
   final Clock clock;
   final MergeRelayPlayGamesProvider playGames;
   late final MergeRelayPgsAccountController? pgsAccountController;

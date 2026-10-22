@@ -5,6 +5,8 @@ import 'merge_relay_gateway.dart';
 import 'merge_relay_relay_controller.dart';
 import 'merge_relay_relay_persistence.dart';
 import 'merge_relay_relay_share.dart';
+import 'telemetry/merge_relay_event_outbox.dart';
+import 'telemetry/merge_relay_outbox_store.dart';
 
 const mergeRelayApiBaseUrl = String.fromEnvironment('MERGE_RELAY_API_BASE_URL');
 const mergeRelayPublicOrigin = String.fromEnvironment(
@@ -22,8 +24,13 @@ final class MergeRelayClientConfig {
 }
 
 final class MergeRelayClient {
-  const MergeRelayClient({required this.saveStore, required this.controller});
+  const MergeRelayClient({
+    required this.saveStore,
+    required this.controller,
+    this.eventOutbox,
+  });
 
+  final MergeRelayEventOutbox? eventOutbox;
   final SaveStore saveStore;
   final MergeRelayRelayController controller;
 }
@@ -52,6 +59,7 @@ MergeRelayClient? createMergeRelayClient({
   required SaveStore saveStore,
   MergeRelayFeatures features = const MergeRelayFeatures(),
   MergeRelayGatewayFactory gatewayFactory = _defaultMergeRelayGatewayFactory,
+  MergeRelayOutboxStore? outboxStore,
 }) {
   if (!features.socialEnabled) return null;
   final clientConfig = mergeRelayClientConfig();
@@ -70,6 +78,14 @@ MergeRelayClient? createMergeRelayClient({
       authStore: authStore,
     );
     return MergeRelayClient(
+      eventOutbox: outboxStore == null
+          ? null
+          : MergeRelayEventOutbox(
+              gateway: gateway,
+              store: outboxStore,
+              clock: const SystemClock(),
+              socialEnabled: features.socialEnabled,
+            ),
       saveStore: composite,
       controller: MergeRelayRelayController(
         context: context,

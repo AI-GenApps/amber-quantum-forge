@@ -7,6 +7,10 @@ extension MergeRelayGameRelayActions on MergeRelayGame {
         relayController == null) {
       return;
     }
+    if (!_tuning.rankedRelayEnabled) {
+      _announce('Relays are paused right now.');
+      return;
+    }
     try {
       final checkpoint = MergeCheckpoint.fromState(
         state.value,
@@ -17,7 +21,7 @@ extension MergeRelayGameRelayActions on MergeRelayGame {
             ? _dailyDate
             : null,
         contentVersion: mergeRelayContentVersion,
-        spawnWeights: const MergeSpawnWeights.legacy(),
+        spawnWeights: _tuning.relaySpawnWeights,
       );
       route.value = MergeRelayRoute.relay;
       unawaited(

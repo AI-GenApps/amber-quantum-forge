@@ -53,6 +53,8 @@ extension MergeRelayGameActions on MergeRelayGame {
     isPaused.value = false;
     route.value = MergeRelayRoute.home;
     unawaited(refreshDaily());
+    unawaited(refreshTuning());
+    unawaited(eventOutbox?.flush());
     _queueWrite();
   }
 
@@ -190,6 +192,10 @@ extension MergeRelayGameActions on MergeRelayGame {
 
   void startDaily() {
     if (!_readyForAction) return;
+    if (!_newRunAllowed(MergeRelayMode.daily)) {
+      _announce('Daily is paused right now.');
+      return;
+    }
     final date = _mergeRelayUtcDate(clock.now());
     _setState(
       _dailyStartState(date),
@@ -202,6 +208,10 @@ extension MergeRelayGameActions on MergeRelayGame {
 
   void startEndless() {
     if (!_readyForAction) return;
+    if (!_newRunAllowed(MergeRelayMode.endless)) {
+      _announce('Endless is paused right now.');
+      return;
+    }
     final seed = mode.value == MergeRelayMode.endless
         ? (state.value.seed + 1) & maxMergeSeed
         : 0x4d52;
@@ -271,7 +281,7 @@ extension MergeRelayGameActions on MergeRelayGame {
             (item) => item.id == nextRescue,
             orElse: () => content.firstRescue,
           );
-    _activeRuleConfig = content.ruleConfig;
+    _activeRuleConfig = _ruleConfigForNewRun(nextMode, dailyDate);
     _activeContentVersion = nextRescue == null ? null : content.contentVersion;
     _activeGoalRevision = rescue?.goalRevision;
     _activeObjective = rescue?.objective;
@@ -361,6 +371,7 @@ extension MergeRelayGameActions on MergeRelayGame {
       bestEndlessScore.value = state.value.score;
     }
     route.value = MergeRelayRoute.result;
+    _recordRunComplete(outcome);
     _queueWrite();
   }
 }

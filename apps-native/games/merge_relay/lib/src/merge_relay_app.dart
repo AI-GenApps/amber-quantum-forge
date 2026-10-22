@@ -12,6 +12,7 @@ import 'merge_relay_ui.dart';
 import 'platform/merge_relay_challenge_links.dart';
 import 'platform/merge_relay_pgs_account.dart';
 import 'platform/merge_relay_play_games.dart';
+import 'telemetry/merge_relay_event_outbox.dart';
 
 export 'merge_relay_game.dart';
 
@@ -30,8 +31,11 @@ final class MergeRelayApp extends StatefulWidget {
     this.pgsAccount,
     this.playGames,
     this.features = const MergeRelayFeatures(),
+    this.eventOutbox,
     super.key,
   });
+
+  final MergeRelayEventOutbox? eventOutbox;
 
   final MergeRelayContentCatalog? content;
   final String? contentError;
@@ -62,6 +66,7 @@ final class _MergeRelayAppState extends State<MergeRelayApp>
       pgsAccount: widget.pgsAccount,
       playGames: widget.playGames,
       features: widget.features,
+      eventOutbox: widget.eventOutbox,
     );
     if (widget.contentError != null) return;
     game.hydrated.addListener(_onRestoreStateChanged);

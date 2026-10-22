@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:merge_rules/merge_rules.dart';
 
+import 'network/merge_relay_events.dart';
 import 'network/merge_relay_models.dart';
 import 'network/merge_relay_pgs_models.dart';
 import 'network/merge_relay_save_receipts.dart';
 
+export 'network/merge_relay_events.dart';
 export 'network/merge_relay_http.dart';
 export 'network/merge_relay_models.dart';
 export 'network/merge_relay_network.dart';
@@ -53,6 +55,8 @@ abstract interface class MergeRelayGateway {
   Future<MergeRelayDailyChallenge> getDaily(String date);
 
   Future<MergeRelayConfigRevision> getConfig();
+
+  Future<void> postEvent(MergeRelayEventRequest request);
 
   Future<MergeRelaySave?> getSave(String saveId);
 

@@ -58,6 +58,9 @@ Future<void> main() async {
           context: context,
           saveStore: saveStore,
           features: features,
+          outboxStore: features.socialEnabled
+              ? await createMergeRelayOutboxStore()
+              : null,
         )
       : null;
   runApp(
@@ -67,6 +70,7 @@ Future<void> main() async {
       saveStore: relayClient?.saveStore ?? saveStore,
       relayController: relayClient?.controller,
       features: features,
+      eventOutbox: relayClient?.eventOutbox,
     ),
   );
 }
