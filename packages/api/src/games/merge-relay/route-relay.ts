@@ -3,6 +3,7 @@ import { getAttempt, getChallengeForSubject, getResult, retireChallenge } from "
 import { createChallenge, finalizeAttempt, reserveAttempt, submitMoves } from "./relay-service";
 import type { MergeRelayRouteDependencies, MergeRoutes } from "./route-context";
 import { fail, readBody, respond } from "./route-context";
+import { rateLimited } from "./route-rate-limit";
 import {
   isSafeId,
   parseCreateChallenge,
@@ -34,6 +35,13 @@ export function registerRelayRoutes(
   });
 
   routes.post("/:environment/challenges", async (c) => {
+    const blocked = await rateLimited(
+      c,
+      dependencies,
+      "challenge_create",
+      c.get("session").subject,
+    );
+    if (blocked) return blocked;
     const input = parseCreateChallenge(await readBody(c));
     if (!input) return fail(c, 422, "invalid_challenge_payload", "Challenge payload is invalid");
     const created = await createChallenge(
@@ -77,6 +85,8 @@ export function registerRelayRoutes(
   });
 
   routes.post("/:environment/challenges/:challengeId/attempts", async (c) => {
+    const blocked = await rateLimited(c, dependencies, "attempt_reserve", c.get("session").subject);
+    if (blocked) return blocked;
     const challengeId = c.req.param("challengeId");
     const input = parseReserveAttempt(await readBody(c));
     if (!isSafeId(challengeId) || !input)

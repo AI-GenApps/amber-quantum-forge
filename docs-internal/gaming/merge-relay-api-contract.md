@@ -165,5 +165,7 @@ Errors use the same contract version and return:
 
 The client should handle `401` token failures, `403` role or ownership
 failures, `409` idempotency/version/expiry conflicts, `422` validation errors,
-and `503` missing configuration or storage. Diagnostic IDs are safe to show to
+`429` with code `rate_limited` and a `Retry-After` header (see
+[rate limits](merge-relay-rate-limits)), and `503` missing configuration or
+storage. Diagnostic IDs are safe to show to
 support; request payloads, recovery tokens, and raw captures are not logged.

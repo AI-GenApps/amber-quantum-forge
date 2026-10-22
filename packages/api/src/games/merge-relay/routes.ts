@@ -22,6 +22,7 @@ import { asMergeError } from "./errors";
 import { effectiveSubject } from "./identity-service";
 import { InMemoryMergeRelayStore } from "./memory-store";
 import { createPgsRuntimeFromEnvironment } from "./pgs-runtime";
+import { createStoreRateLimiter, rateLimitRulesFromEnvironment } from "./rate-limit";
 import { retentionPolicyFromEnvironment } from "./retention-config";
 import { registerCallbackRoutes } from "./route-callbacks";
 import { registerCommerceRoutes } from "./route-commerce";
@@ -135,6 +136,8 @@ export function createConfiguredMergeRelayRoutes(): MergeRoutes {
     commerceRuntimeForEnvironment: createCommerceRuntimeFromEnvironment,
     tokenVerifier: new EnvironmentGameTokenVerifier(),
     retention: retentionPolicyFromEnvironment(process.env),
+    rateLimiter: createStoreRateLimiter(store, systemMergeRelayClock),
+    rateLimits: rateLimitRulesFromEnvironment(process.env),
     issueGuestToken: issueConfiguredGuestToken,
   });
 }

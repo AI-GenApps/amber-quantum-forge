@@ -1,6 +1,6 @@
 ---
 title: Merge Relay retention policy
-description: Bounded, idempotent, service-only pruning for Merge Relay telemetry, inactive attempts, ad callbacks, delivered outbox rows and old config revisions.
+description: Bounded, idempotent, service-only pruning for Merge Relay telemetry, inactive attempts, ad callbacks, delivered outbox rows, rate limit counters and old config revisions.
 ---
 
 # Merge Relay retention policy
@@ -37,6 +37,7 @@ fails closed.
 | `attempts` | `INACTIVE_ATTEMPT_DAYS` | 30 | Cancelled, abandoned or expired-reserved attempts with no result, last updated before the window, **whose challenge is retired**. |
 | `ad_ssv` | `AD_SSV_DAYS` | 90 | Ad SSV callback records with `receivedAt` older than the window. |
 | `pgs_outbox` | `DELIVERED_OUTBOX_DAYS` | 30 | Outbox rows with status `succeeded` and `updatedAt` older than the window. Pending, leased, retryable, disabled and failed rows are kept. |
+| `rate_limits` | `RATE_LIMIT_DAYS` | 1 | Rate limit counter windows that ended before the window. |
 | `configs` | `CONFIG_REVISIONS_KEEP` | 50 | Revisions beyond the newest N that are not active and not referenced by any challenge or daily record. |
 | all | `BATCH_LIMIT` / `SCAN_LIMIT` | 500 / 5000 | Max deletions and rows examined per category per call. |
 

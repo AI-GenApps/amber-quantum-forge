@@ -10,6 +10,7 @@ import {
 import { grantReward } from "./reward-service";
 import type { MergeRelayRouteDependencies, MergeRoutes } from "./route-context";
 import { fail, readBody, respond } from "./route-context";
+import { rateLimited } from "./route-rate-limit";
 import {
   isSafeId,
   parseConfigRollback,
@@ -70,6 +71,8 @@ export function registerDataRoutes(
   });
 
   routes.post("/:environment/events", async (c) => {
+    const blocked = await rateLimited(c, dependencies, "event_post", c.get("session").subject);
+    if (blocked) return blocked;
     const input = parseEvent(await readBody(c));
     if (!input) return fail(c, 422, "invalid_event", "Event payload is invalid");
     return respond(c, {
@@ -83,6 +86,8 @@ export function registerDataRoutes(
     const action = c.req.param("action");
     if (action !== "report" && action !== "block")
       return fail(c, 404, "social_action_not_found", "Social action was not found");
+    const blocked = await rateLimited(c, dependencies, "social_post", c.get("session").subject);
+    if (blocked) return blocked;
     const input = parseSocial(await readBody(c));
     if (!input) return fail(c, 422, "invalid_social", "Social payload is invalid");
     return respond(

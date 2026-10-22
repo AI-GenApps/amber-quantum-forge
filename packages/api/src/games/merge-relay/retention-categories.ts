@@ -9,6 +9,7 @@ import {
 import type { MergeRelayArtifactTransaction } from "./artifact-store";
 import type { MergeAttempt, MergeChallenge } from "./contracts";
 import { parsePgsOutboxArtifact } from "./pgs-parsers";
+import { parseRateLimitRecord } from "./rate-limit";
 import type { MergeRetentionPolicy } from "./retention-config";
 import { cutoffIso, type RetentionCategoryReport, scanAndDelete } from "./retention-scan";
 
@@ -134,5 +135,16 @@ export async function pruneConfigRevisions(
         !referenced.revisions.has(item.revision)
       );
     },
+  });
+}
+
+export function pruneRateLimits(context: CategoryContext): Promise<RetentionCategoryReport> {
+  const cutoffMs = context.now.getTime() - context.policy.rateLimitDays * 86_400_000;
+  return scanAndDelete({
+    ...context,
+    recordType: "rate_limit",
+    parse: parseRateLimitRecord,
+    idOf: (item) => item.recordId,
+    eligible: (item) => item.windowEndMs < cutoffMs,
   });
 }

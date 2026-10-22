@@ -3,6 +3,7 @@ export interface MergeRetentionPolicy {
   inactiveAttemptDays: number;
   adSsvDays: number;
   deliveredOutboxDays: number;
+  rateLimitDays: number;
   configRevisionsKeep: number;
   batchLimit: number;
   scanLimit: number;
@@ -13,6 +14,7 @@ export const DEFAULT_MERGE_RETENTION_POLICY: MergeRetentionPolicy = {
   inactiveAttemptDays: 30,
   adSsvDays: 90,
   deliveredOutboxDays: 30,
+  rateLimitDays: 1,
   configRevisionsKeep: 50,
   batchLimit: 500,
   scanLimit: 5000,
@@ -27,6 +29,7 @@ const environmentKeys: Record<keyof MergeRetentionPolicy, string> = {
   inactiveAttemptDays: "MERGE_RELAY_RETENTION_INACTIVE_ATTEMPT_DAYS",
   adSsvDays: "MERGE_RELAY_RETENTION_AD_SSV_DAYS",
   deliveredOutboxDays: "MERGE_RELAY_RETENTION_DELIVERED_OUTBOX_DAYS",
+  rateLimitDays: "MERGE_RELAY_RETENTION_RATE_LIMIT_DAYS",
   configRevisionsKeep: "MERGE_RELAY_RETENTION_CONFIG_REVISIONS_KEEP",
   batchLimit: "MERGE_RELAY_RETENTION_BATCH_LIMIT",
   scanLimit: "MERGE_RELAY_RETENTION_SCAN_LIMIT",
@@ -37,6 +40,7 @@ const upperBounds: Record<keyof MergeRetentionPolicy, number> = {
   inactiveAttemptDays: MAX_DAYS,
   adSsvDays: MAX_DAYS,
   deliveredOutboxDays: MAX_DAYS,
+  rateLimitDays: MAX_DAYS,
   configRevisionsKeep: 100000,
   batchLimit: MAX_BATCH,
   scanLimit: MAX_SCAN,

@@ -4,6 +4,7 @@ import type { GameTokenVerifier } from "../tokens";
 import type { MergeEnvironment, MergeSession } from "./contracts";
 import { MERGE_RELAY_CONTRACT_VERSION } from "./contracts";
 import type { MergeRelayServiceDependencies } from "./dependencies";
+import type { MergeRateLimiter, RateLimitRules } from "./rate-limit";
 
 interface MergeVariables {
   environment: MergeEnvironment;
@@ -12,6 +13,8 @@ interface MergeVariables {
 
 export interface MergeRelayRouteDependencies extends MergeRelayServiceDependencies {
   tokenVerifier: GameTokenVerifier;
+  rateLimiter?: MergeRateLimiter | null;
+  rateLimits?: Partial<RateLimitRules>;
   issueGuestToken?: (environment: MergeEnvironment, subject: string) => Promise<string>;
 }
 
@@ -24,7 +27,7 @@ export function respond(c: MergeContext, data: unknown, status: 200 | 201 = 200)
 
 export function fail(
   c: MergeContext,
-  status: 400 | 401 | 403 | 404 | 409 | 413 | 422 | 503,
+  status: 400 | 401 | 403 | 404 | 409 | 413 | 422 | 429 | 503,
   code: string,
   message: string,
 ): Response {

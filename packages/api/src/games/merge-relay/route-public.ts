@@ -3,6 +3,7 @@ import { createGuest, recoverGuest } from "./identity-service";
 import { resolveChallenge } from "./relay-queries";
 import type { MergeRelayRouteDependencies, MergeRoutes } from "./route-context";
 import { fail, readBody, respond } from "./route-context";
+import { rateLimited } from "./route-rate-limit";
 import { isSafeId, isValidDailyDate, parseGuestRecovery } from "./validation";
 import { configToWire, dailyToWire, guestToWire, publicChallengeToWire } from "./wire";
 
@@ -11,6 +12,8 @@ export function registerPublicRoutes(
   dependencies: MergeRelayRouteDependencies,
 ): void {
   routes.post("/:environment/guest", async (c) => {
+    const blocked = await rateLimited(c, dependencies, "guest_create", null);
+    if (blocked) return blocked;
     const environment = c.get("environment");
     const guest = await createGuest(dependencies, environment);
     const accessToken = dependencies.issueGuestToken
@@ -31,6 +34,8 @@ export function registerPublicRoutes(
   });
 
   routes.post("/:environment/guest/recover", async (c) => {
+    const blocked = await rateLimited(c, dependencies, "guest_recover", null);
+    if (blocked) return blocked;
     const input = parseGuestRecovery(await readBody(c));
     if (!input) return fail(c, 422, "invalid_guest_recovery", "Guest recovery payload is invalid");
     const recovery = await recoverGuest(dependencies, c.get("environment"), input);

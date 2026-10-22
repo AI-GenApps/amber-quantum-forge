@@ -5,6 +5,7 @@ import type { MergeRelayRecordType } from "./artifact-store";
 import type { MergeEnvironment } from "./contracts";
 import { getConfig, updateConfig } from "./data-service";
 import type { MergeRelayServiceDependencies } from "./dependencies";
+import { createStoreRateLimiter, rateLimitRecordId, windowFor } from "./rate-limit";
 import { retireChallenge } from "./relay-queries";
 import { createChallenge, reserveAttempt } from "./relay-service";
 import { rankedDependencies, testCheckpoint, testSession, testStores } from "./relay-test-support";
@@ -155,6 +156,27 @@ for (const [name, factory] of testStores) {
 
       const again = await pruneRetention(base, environment, service, noCursors);
       for (const category of Object.values(again.categories)) expect(category.deleted).toBe(0);
+    });
+
+    it("prunes expired rate limit windows only", async () => {
+      if (!factory) return;
+      const base = await rankedDependencies(factory(), environment);
+      const suffix = Date.now().toString(36);
+      const rule = { limit: 5, windowSeconds: 60 };
+      const ancientMs = new Date(ANCIENT).getTime();
+      const nowMs = new Date("2026-01-01T00:00:00.000Z").getTime();
+      const request = { environment, action: "event_post" as const, key: `rl_${suffix}`, rule };
+      await createStoreRateLimiter(base.store, { now: () => new Date(ancientMs) }).consume(request);
+      await createStoreRateLimiter(base.store, { now: () => new Date(nowMs) }).consume(request);
+      const oldId = rateLimitRecordId(
+        "event_post",
+        request.key,
+        windowFor(ancientMs, rule).startMs,
+      );
+      const newId = rateLimitRecordId("event_post", request.key, windowFor(nowMs, rule).startMs);
+      await pruneRetention(base, environment, service, noCursors);
+      expect(await exists(base, "rate_limit", oldId)).toBe(false);
+      expect(await exists(base, "rate_limit", newId)).toBe(true);
     });
 
     it("pages through a backlog with cursors and a batch limit", async () => {

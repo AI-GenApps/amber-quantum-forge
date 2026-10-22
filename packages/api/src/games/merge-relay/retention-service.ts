@@ -8,6 +8,7 @@ import {
   pruneDeliveredOutbox,
   pruneEvents,
   pruneInactiveAttempts,
+  pruneRateLimits,
 } from "./retention-categories";
 import { resolveRetentionPolicy } from "./retention-config";
 import type { RetentionCategoryReport } from "./retention-scan";
@@ -17,6 +18,7 @@ export const RETENTION_CATEGORIES = [
   "attempts",
   "ad_ssv",
   "pgs_outbox",
+  "rate_limits",
   "configs",
 ] as const;
 
@@ -40,6 +42,7 @@ const runners: Record<
   attempts: pruneInactiveAttempts,
   ad_ssv: pruneAdSsv,
   pgs_outbox: pruneDeliveredOutbox,
+  rate_limits: pruneRateLimits,
   configs: pruneConfigRevisions,
 };
 

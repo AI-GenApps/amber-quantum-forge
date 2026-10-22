@@ -22,6 +22,7 @@ export const mergeRelayPlatformRecordTypes = [
   "commerce_purchase",
   "commerce_entitlement",
   "ad_ssv",
+  "rate_limit",
 ] as const;
 
 export type MergeRelayRecordType =
