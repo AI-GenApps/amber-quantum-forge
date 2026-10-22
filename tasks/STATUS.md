@@ -22,6 +22,13 @@ Last updated: manually — update when each epic is fully completed.
 - [ ] 15 — Ludo Launch (Flutter + Flame rebuild, sixth game)
 - [ ] 16 — Games portfolio wave 2 (Merge Relay solo launch + custom fonts in every game)
 - [ ] 17 — City Drive (Babylon.js + Capacitor 3D city-driving game)
+- [ ] 18 — Web games kit (shared @web-games/kit, six game skeletons, registry, CI)
+- [ ] 19 — Lantern Loops (web game, full v1)
+- [ ] 20 — Floodplain Dispatch (web game, full v1)
+- [ ] 21 — Cloud Observatory (web game, full v1)
+- [ ] 22 — The Last Window (web game, full v1)
+- [ ] 23 — Dress Rehearsal (web game, full v1)
+- [ ] 24 — Lost Parcel Desk (web game, full v1)
 
 ## How to read this file
 
