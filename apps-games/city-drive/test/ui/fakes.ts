@@ -1,4 +1,5 @@
 import {
+  type DailyChallenge,
   type GraphicsQuality,
   MemorySaveStore,
   type MissionDef,
@@ -7,6 +8,7 @@ import {
   parseProgression,
   SaveManager,
 } from "@city-drive/core";
+import { allMissionDefs } from "../../src/game/daily";
 import { DISTRICT_MISSIONS, PROGRESSION_RAW } from "../../src/game/missions";
 import { LastDistrict, Profile, ROSTER } from "../../src/save";
 import { AppController } from "../../src/ui/controller";
@@ -65,6 +67,8 @@ export function playState(over: Partial<PlayState> = {}): PlayState {
     mission: undefined,
     result: undefined,
     payout: undefined,
+    daily: undefined,
+    dailyPayout: undefined,
     parkHold: undefined,
     player: { position: { x: 0, z: 0 }, forward: { x: 0, z: 1 } },
     markers: [],
@@ -135,12 +139,18 @@ export class FakeGame implements UiGame {
     decline: () => void this.calls.push("decline"),
     leave: () => void this.calls.push("leave"),
     open: (id: string, start: boolean) => void this.calls.push(`open:${id}:${start}`),
+    openDaily: (challenge: DailyChallenge, start: boolean) => {
+      this.calls.push(`daily:${challenge.missionId}:${start}`);
+      this.dailyOpened.push(challenge);
+    },
   };
+  dailyOpened: DailyChallenge[] = [];
 }
 
 export async function makeApp(
-  options: { coins?: number; stars?: number; onboarding?: boolean } = {},
+  options: { coins?: number; stars?: number; onboarding?: boolean; today?: string } = {},
 ) {
+  const clock = { date: options.today ?? "2026-10-15" };
   const store = new MemorySaveStore();
   const manager = new SaveManager(store, { starterCarId: ROSTER.starter, debounceMs: 1 });
   const profile = await Profile.load(manager, ROSTER);
@@ -182,6 +192,7 @@ export async function makeApp(
     lastDistrict,
     onboarding,
     horn: () => void horns.count++,
+    daily: { missions: allMissionDefs(), today: () => clock.date },
   });
   const content: UiContent = {
     roster: ROSTER,
@@ -189,7 +200,18 @@ export async function makeApp(
     missions: missionSummaries,
     showTouch: true,
   };
-  return { controller, game, profile, manager, store, lastDistrict, content, onboarding, horns };
+  return {
+    controller,
+    game,
+    profile,
+    manager,
+    store,
+    lastDistrict,
+    content,
+    onboarding,
+    horns,
+    clock,
+  };
 }
 
 /** Lets Preact flush its queued renders and any pending promises. */

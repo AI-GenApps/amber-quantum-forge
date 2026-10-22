@@ -173,5 +173,5 @@ Shipped in task 14 (1.17 MB of audio, all MP3):
 ## Out of scope for v1
 
 Multiplayer, accounts, leaderboards, ads, IAP, WebGPU, procedural cities,
-car customization, daily challenges, login streaks. See `economy.md` for the
-deferred commerce ideas.
+car customization. A daily challenge and car upgrades shipped after v1 (task 23, see
+`economy.md`). See `economy.md` for the deferred commerce ideas.

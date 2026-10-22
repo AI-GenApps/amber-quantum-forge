@@ -1,4 +1,31 @@
 export {
+  claimDaily,
+  DAILY_REWARDS,
+  type DailyChallenge,
+  type DailyClaim,
+  type DailyClaimFailure,
+  type DailyStatus,
+  dailyChallenge,
+  dailyReward,
+  dailyStatus,
+  dateSeed,
+  pickDailyMission,
+  STREAK_BONUS_CAP,
+  STREAK_BONUS_PER_DAY,
+  streakBonus,
+  streakIfClaimed,
+} from "./daily";
+export {
+  applyDailyVariant,
+  type DailyVariant,
+  dailyTrafficAgents,
+  dailyVariantFor,
+  hashText,
+  PAR_TIGHTEN_FRACTION,
+  TRAFFIC_AGENTS_PER_STEP,
+  type VariantStep,
+} from "./dailyVariant";
+export {
   bestStars,
   type MissionPayoutInfo,
   type PurchaseFailure,
@@ -23,3 +50,19 @@ export {
   RosterError,
   type SpecOverrides,
 } from "./roster";
+export {
+  fullUpgradeCost,
+  levelsOf,
+  MAX_LEVELS,
+  purchaseUpgrade,
+  STARTER_UPGRADE_BASE_PRICE,
+  STOCK_LEVELS,
+  trackHasEffect,
+  UPGRADE_COST_FRACTIONS,
+  UPGRADE_GAINS,
+  UPGRADE_LIMITS,
+  type UpgradeFailure,
+  type UpgradeResult,
+  upgradeCost,
+  upgradedSpec,
+} from "./upgrades";

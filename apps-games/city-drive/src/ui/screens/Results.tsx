@@ -1,4 +1,5 @@
 import type { MissionResult } from "@city-drive/core";
+import type { DailyPayout } from "../../game/sessionCredit";
 import { CoinIcon } from "../components/Icons";
 import { Stars } from "../components/Stars";
 import type { AppController, AppView } from "../controller";
@@ -9,6 +10,33 @@ function detailLine(result: MissionResult): string {
   const parts = [`Damage ${Math.round(result.damage)}`];
   if (result.comfort !== null) parts.push(`Comfort ${Math.round(result.comfort)}%`);
   return parts.join("  ");
+}
+
+const DAILY_UNPAID: Readonly<Record<string, string>> = {
+  "no-stars": "No daily reward yet. Retry today to earn it.",
+  "already-claimed": "Today's daily is already claimed.",
+  "clock-backwards": "The clock is behind your last daily, so nothing was paid.",
+  "bad-date": "The date could not be read, so nothing was paid.",
+};
+
+function DailyPayoutLine({ payout }: { payout: DailyPayout | undefined }) {
+  if (!payout?.claimed) {
+    return (
+      <p class="cd-payout cd-daily-payout" data-testid="daily-payout" aria-live="polite">
+        <span>{DAILY_UNPAID[payout?.reason ?? "no-stars"]}</span>
+      </p>
+    );
+  }
+  return (
+    <p class="cd-payout cd-daily-payout" data-testid="daily-payout" aria-live="polite">
+      <CoinIcon />
+      <span>+{formatCoins(payout.coins)} coins</span>
+      <small>
+        Daily reward, streak {payout.streak}
+        {payout.bonus > 0 ? ` (+${formatCoins(payout.bonus)} bonus)` : ""}
+      </small>
+    </p>
+  );
 }
 
 export function Results({
@@ -25,6 +53,7 @@ export function Results({
   const payout = view.play?.payout;
   const paid = payout && payout.missionId === result.id ? payout : undefined;
   const best = view.save.missions[result.id]?.best_time_s ?? null;
+  const isDaily = view.play?.daily?.missionId === result.id;
   const hasNext = controller.nextMission() !== undefined;
   return (
     <section class="cd-screen cd-results" aria-label="Mission result" role="dialog">
@@ -46,12 +75,16 @@ export function Results({
             <dd>{detailLine(result)}</dd>
           </div>
         </dl>
-        <p class="cd-payout" data-testid="payout" aria-live="polite">
-          <CoinIcon />
-          <span>+{formatCoins(paid?.coins ?? 0)} coins</span>
-          {paid?.firstClear ? <small>First clear</small> : null}
-          {paid && !paid.firstClear && paid.improved ? <small>New best stars</small> : null}
-        </p>
+        {isDaily ? (
+          <DailyPayoutLine payout={view.play?.dailyPayout} />
+        ) : (
+          <p class="cd-payout" data-testid="payout" aria-live="polite">
+            <CoinIcon />
+            <span>+{formatCoins(paid?.coins ?? 0)} coins</span>
+            {paid?.firstClear ? <small>First clear</small> : null}
+            {paid && !paid.firstClear && paid.improved ? <small>New best stars</small> : null}
+          </p>
+        )}
         <div class="cd-row">
           <button
             type="button"

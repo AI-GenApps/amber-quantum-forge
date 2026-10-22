@@ -15,7 +15,9 @@ export function readFixture(name: string): unknown {
   return JSON.parse(readFileSync(join(import.meta.dirname, "../fixtures/save", name), "utf8"));
 }
 
-export const v1Fixture = (): SaveData => readFixture("v1.json") as SaveData;
+export const v1Fixture = (): Record<string, unknown> =>
+  readFixture("v1.json") as Record<string, unknown>;
+export const v2Fixture = (): SaveData => readFixture("v2.json") as SaveData;
 
 /** A scheduler the test fires by hand: `fire()` runs the pending debounce timer, if any. */
 export class ManualScheduler {

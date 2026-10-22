@@ -275,3 +275,21 @@ Baseline car values live in `apps-games/city-drive-core/src/cars/specs.ts`
   the owner confirmed "roads look continuous now".
 - Kenney look kept as-is; no palette/material pass requested.
 - No other fix items. Device performance numbers are collected at task 22.
+
+## 2026-10-22 — Daily challenge and car upgrades (task 23, post-v1)
+
+- **Shipped offline and local.** One daily mission per UTC date (hashed date seed, unlocked districts
+  only), a seeded variant (tighter par times, busier roads), flat coins by stars (40, 80, 150) and a
+  streak bonus of +10% per day capped at +50%. Car upgrades: power, grip and brakes, levels 0 to 3,
+  +6% a level (top speed +3%, side stiffness +2%), cost 15%, 25% and 40% of the car's price per level.
+  Save schema is now v2 with `MIGRATIONS[1]`.
+- **No anti-tamper**, same as task 12: the device clock is the only clock, setting it backwards cannot
+  re-claim (last claim date stored), setting it forward is accepted.
+- **Ceilings, not raw multipliers.** Upgraded specs are clamped to the largest values any stock
+  roster car already passes the handling sanity suite with. The Apex Racer is already at the power and
+  brake ceilings, so those two tracks are not sold for it. Widening the ceilings needs the physics
+  suite run on a machine with Rapier installed (it could not run in the authoring environment).
+- **Suggested numbers kept.** The affordability simulation did not need them changed (3-star total
+  4954 against 4200 of prices, bill 9120, 14 perfect dailies 2925).
+- No new network, analytics or permission. `noData.test.ts` is unchanged.
+

@@ -1,8 +1,16 @@
 // @vitest-environment node
-import { MemorySaveStore, quatFromForward, SaveManager } from "@city-drive/core";
+import {
+  dailyChallenge,
+  MAX_LEVELS,
+  MemorySaveStore,
+  quatFromForward,
+  SaveManager,
+  upgradedSpec,
+} from "@city-drive/core";
 import { parseCityManifest } from "@city-drive/core/city";
 import { afterEach, describe, expect, it } from "vitest";
 import { Autopilot } from "../../../city-drive-core/test/support/autopilot";
+import { allMissionDefs } from "../../src/game/daily";
 import { DISTRICT_1_MISSIONS } from "../../src/game/missions";
 import { GameSession } from "../../src/game/session";
 import { loadDistrict1 } from "../../src/render/district";
@@ -63,6 +71,30 @@ describe("session economy", () => {
   it("spawns the selected car with its own handling", async () => {
     const { session } = await make(undefined, "racer");
     expect(session.car.spec).toMatchObject({ id: "racer", mass: 1000 });
+  });
+
+  it("spawns the selected car with its upgrades applied", async () => {
+    const store = new MemorySaveStore();
+    const manager = new SaveManager(store, { starterCarId: ROSTER.starter, debounceMs: 1 });
+    const profile = await Profile.load(manager, ROSTER);
+    manager.commit({ ...manager.data, upgrades: { sedan: { power: 3, grip: 3, brakes: 3 } } });
+    const manifest = readManifest();
+    const session = await GameSession.create(
+      loadDistrict1(manifest),
+      parseCityManifest(manifest),
+      new ScriptedInput(),
+      undefined,
+      { profile },
+    );
+    active = session;
+    const stock = profile.roster.cars[0];
+    if (!stock) throw new Error("empty roster");
+    expect(session.car.spec).toMatchObject({
+      id: "sedan",
+      engineForce: upgradedSpec(stock, MAX_LEVELS).engineForce,
+      brakeForce: upgradedSpec(stock, MAX_LEVELS).brakeForce,
+    });
+    expect(session.car.spec.engineForce).toBeGreaterThan(6000);
   });
 
   it("an explicit spec still wins over the profile", async () => {
@@ -147,5 +179,67 @@ describe("session economy", () => {
     expect(session.car.spec.id).toBe("baseline");
     expect(session.lastPayout).toBeUndefined();
     for (let i = 0; i < 10; i++) session.step();
+  });
+
+  describe("daily challenge", () => {
+    const mission = allMissionDefs().find((m) => m.id === "d1-m01");
+
+    function challengeFor(date: string, daily: { last_claim_date: string | null; streak: number }) {
+      if (!mission) throw new Error("no d1-m01");
+      return dailyChallenge(date, [mission], daily);
+    }
+
+    function drive(session: GameSession, input: ScriptedInput) {
+      const sys = session.missions;
+      if (!sys) throw new Error("no missions");
+      for (let i = 0; i < 60; i++) session.step();
+      const pilot = new Autopilot();
+      for (let i = 0; i < 60 * 100 && sys.run.phase === "active"; i++) {
+        const move = pilot.drive(session.state, sys.route, sys.objective);
+        input.set({ throttle: move.throttle, steer: move.steer, handbrake: move.handbrake });
+        session.step();
+      }
+    }
+
+    it("pays the daily reward for the stars earned and leaves the mission record alone", async () => {
+      const { session, input, profile } = await make();
+      session.openDaily(challengeFor("2026-10-15", profile.save.daily), true);
+      expect(session.dailyRun).toEqual({ date: "2026-10-15", missionId: "d1-m01" });
+      drive(session, input);
+      expect(session.missions?.run.phase).toBe("success");
+      const stars = session.missions?.run.result?.stars ?? 0;
+      expect(stars).toBeGreaterThan(0);
+      expect(session.lastDaily).toMatchObject({ claimed: true, streak: 1, stars });
+      expect(profile.coins).toBe(session.lastDaily?.coins);
+      expect(profile.coins).toBe([0, 40, 80, 150][stars]);
+      expect(profile.save.missions["d1-m01"]).toBeUndefined();
+      expect(profile.save.daily).toEqual({ last_claim_date: "2026-10-15", streak: 1 });
+      expect(session.lastPayout).toBeUndefined();
+    });
+
+    it("a quit daily pays nothing and leaves the day open", async () => {
+      const { session, profile } = await make();
+      session.openDaily(challengeFor("2026-10-15", profile.save.daily), true);
+      for (let i = 0; i < 30; i++) session.step();
+      session.leaveMission();
+      expect(session.dailyRun).toBeUndefined();
+      expect(profile.coins).toBe(0);
+      expect(profile.save.daily.last_claim_date).toBeNull();
+    });
+
+    it("opening the plain mission afterwards ends the daily run", async () => {
+      const { session, profile } = await make();
+      session.openDaily(challengeFor("2026-10-15", profile.save.daily), false);
+      session.openMission("d1-m01", false);
+      expect(session.dailyRun).toBeUndefined();
+    });
+
+    it("refuses a daily mission from another district", async () => {
+      const { session, profile } = await make();
+      const other = allMissionDefs().find((m) => m.district === "district-2");
+      if (!other) throw new Error("no district-2 mission");
+      const challenge = dailyChallenge("2026-10-15", [other], profile.save.daily);
+      expect(() => session.openDaily(challenge, false)).toThrow(/not in this district/);
+    });
   });
 });

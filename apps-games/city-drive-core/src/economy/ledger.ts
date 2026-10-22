@@ -78,6 +78,12 @@ export function reconcileWithRoster(save: SaveData, roster: CarRoster): SaveData
   const owned = save.owned_cars.filter((id) => known.has(id));
   if (!owned.includes(roster.starter)) owned.unshift(roster.starter);
   const selected = owned.includes(save.selected_car) ? save.selected_car : roster.starter;
-  if (owned.length === save.owned_cars.length && selected === save.selected_car) return save;
-  return { ...save, owned_cars: owned, selected_car: selected };
+  const upgrades = Object.fromEntries(
+    Object.entries(save.upgrades).filter(([id]) => owned.includes(id)),
+  );
+  const same = Object.keys(upgrades).length === Object.keys(save.upgrades).length;
+  if (owned.length === save.owned_cars.length && selected === save.selected_car && same) {
+    return save;
+  }
+  return { ...save, owned_cars: owned, selected_car: selected, upgrades };
 }

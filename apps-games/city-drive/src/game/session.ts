@@ -10,6 +10,7 @@ import {
   type ColliderPlan,
   createCar,
   createPhysicsWorld,
+  type DailyChallenge,
   FIXED_DT,
   installColliders,
   LaneIndex,
@@ -22,25 +23,22 @@ import {
   type PhysicsWorld,
   type Pose,
   playerFromCar,
-  quatFromForward,
   RespawnDetector,
   type RespawnReason,
   spawnPose,
   type TrafficCollision,
   TrafficManager,
   type TrafficPose,
-  trafficConstants,
 } from "@city-drive/core";
 import { type InputSource, toCarInput } from "../input";
 import type { Profile } from "../save";
 import { type CarPose, interpolateCar } from "./interpolate";
-import { MissionCredit } from "./sessionCredit";
+import { parkedCarPoses } from "./parked";
+import { type DailyPayout, type DailyRun, MissionCredit } from "./sessionCredit";
 import { makeStepReport, playerImpactNs, type StepReport } from "./stepReport";
 
 /** Chassis centre height used when the car is placed on the road. */
 const DROP_HEIGHT_M = 1.1;
-/** Which traffic car model the parked cars use (index into the traffic visual). */
-const PARKED_MODEL_INDEX = 3;
 
 /** Traffic settings. Omit them and the city has no AI cars (the default for tests and tools). */
 interface TrafficSettings {
@@ -154,6 +152,14 @@ export class GameSession {
     return this.credit?.lastPayout;
   }
 
+  get dailyRun(): DailyRun | undefined {
+    return this.credit?.dailyRun;
+  }
+
+  get lastDaily(): DailyPayout | undefined {
+    return this.credit?.lastDaily;
+  }
+
   get paused(): boolean {
     return this.pausedValue;
   }
@@ -193,9 +199,14 @@ export class GameSession {
 
   /** Put the car on the nearest lane point, facing the lane direction, at rest. */
   respawn(cause: RespawnCause): void {
-    const here = this.curr.position;
-    const lane = laneRespawn(this.graph, this.laneIndex, { x: here.x, z: here.z }, DROP_HEIGHT_M);
-    const pose: Pose = lane ?? spawnPose(this.map, DROP_HEIGHT_M);
+    this.placeOnLane(this.curr.position, true, cause);
+  }
+
+  private placeOnLane(at: { x: number; z: number }, fallback: boolean, cause: RespawnCause): void {
+    const lane = laneRespawn(this.graph, this.laneIndex, at, DROP_HEIGHT_M);
+    const pose: Pose | undefined =
+      lane ?? (fallback ? spawnPose(this.map, DROP_HEIGHT_M) : undefined);
+    if (!pose) return;
     this.car.respawn(pose);
     this.detector.reset();
     this.curr = this.car.state();
@@ -216,14 +227,7 @@ export class GameSession {
   /** Static parked cars beside parking bays, as poses for the traffic car renderer. */
   parkedPoses(): TrafficPose[] {
     if (!this.missions) return [];
-    this.parkedPosesCache ??= this.missions.parkedCars().map((car, i) => ({
-      id: -(i + 1),
-      modelIndex: PARKED_MODEL_INDEX,
-      position: { x: car.center.x, y: trafficConstants.AGENT_CENTRE_Y_M, z: car.center.z },
-      rotation: quatFromForward(car.forward.x, car.forward.z),
-      wheelRotation: 0,
-      speedKmh: 0,
-    }));
+    this.parkedPosesCache ??= parkedCarPoses(this.missions.parkedCars());
     return this.parkedPosesCache;
   }
 
@@ -244,6 +248,7 @@ export class GameSession {
     if (missions.run.phase === "briefing") missions.decline();
     if (missions.run.phase === "active") missions.quit();
     while (missions.run.phase !== "idle") this.advanceMission();
+    this.credit?.endDaily();
   }
 
   /**
@@ -251,26 +256,28 @@ export class GameSession {
    * lane at the mission's start marker and open its briefing (or start it at once).
    */
   openMission(missionId: string, start: boolean): void {
-    const missions = this.missions;
     const mission = this.catalog.find((m) => m.id === missionId);
-    const marker = missions?.markers().find((m) => m.missionId === missionId);
-    if (!missions || !mission || !marker) {
-      throw new Error(`session: cannot open unknown mission "${missionId}"`);
+    if (!mission) throw new Error(`session: cannot open unknown mission "${missionId}"`);
+    this.launch(mission, start);
+  }
+
+  /** Today's challenge: the catalog mission with the day's par times, paid as the daily. */
+  openDaily(challenge: DailyChallenge, start: boolean): void {
+    if (!this.catalog.some((m) => m.id === challenge.missionId)) {
+      throw new Error(`session: daily mission "${challenge.missionId}" is not in this district`);
+    }
+    this.launch(challenge.mission, start);
+    this.credit?.beginDaily({ date: challenge.date, missionId: challenge.missionId });
+  }
+
+  private launch(mission: MissionDef, start: boolean): void {
+    const missions = this.missions;
+    const marker = missions?.markers().find((m) => m.missionId === mission.id);
+    if (!missions || !marker) {
+      throw new Error(`session: cannot open unknown mission "${mission.id}"`);
     }
     this.leaveMission();
-    const lane = laneRespawn(
-      this.graph,
-      this.laneIndex,
-      { x: marker.x, z: marker.z },
-      DROP_HEIGHT_M,
-    );
-    if (lane) {
-      this.car.respawn(lane);
-      this.detector.reset();
-      this.curr = this.car.state();
-      this.prev = this.curr;
-      this.respawns.push({ cause: "manual", tick: this.physics.tick });
-    }
+    this.placeOnLane(marker, false, "manual");
     missions.run.open(mission);
     if (start) missions.accept();
   }

@@ -8,7 +8,7 @@ import {
   SAVE_SCHEMA_VERSION,
   SaveCorruptError,
 } from "../../src/index";
-import { v1Fixture } from "./support";
+import { v1Fixture, v2Fixture } from "./support";
 
 const V0_TO_V1: MigrationTable = {
   0: (raw) => {
@@ -31,20 +31,49 @@ const V0_TO_V1: MigrationTable = {
 };
 
 describe("migrateSave", () => {
-  it("the real table is empty while v1 is the first release", () => {
-    expect(SAVE_SCHEMA_VERSION).toBe(1);
-    expect(Object.keys(MIGRATIONS)).toEqual([]);
+  it("the real table has one step per released version below the current one", () => {
+    expect(SAVE_SCHEMA_VERSION).toBe(2);
+    expect(Object.keys(MIGRATIONS)).toEqual(["1"]);
   });
 
   it("leaves a current-version save untouched", () => {
-    expect(migrateSave(v1Fixture())).toEqual(v1Fixture());
+    expect(migrateSave(v2Fixture())).toEqual(v2Fixture());
+  });
+
+  it("migrates the v1 fixture to v2 without losing any v1 data", () => {
+    const v1 = v1Fixture();
+    const migrated = migrateSave(v1) as Record<string, unknown>;
+    expect(migrated).toEqual({
+      ...v1,
+      schema_version: 2,
+      upgrades: {},
+      daily: { last_claim_date: null, streak: 0 },
+    });
+    const parsed = parseSave(migrated);
+    expect(parsed.coins).toBe(812);
+    expect(parsed.owned_cars).toEqual(["sedan", "hatch"]);
+    expect(parsed.missions).toEqual((v1 as { missions: unknown }).missions);
+    expect(parsed.settings).toEqual((v1 as { settings: unknown }).settings);
+    expect(parsed.onboarding).toEqual((v1 as { onboarding: unknown }).onboarding);
+  });
+
+  it("does not change the v1 input object", () => {
+    const v1 = v1Fixture();
+    migrateSave(v1);
+    expect(v1).toEqual(v1Fixture());
+  });
+
+  it("chains the synthetic v0 step and the real v1 step", () => {
+    const v0 = { schema_version: 0, money: 9, cars: ["sedan"], car: "sedan" };
+    const migrated = parseSave(migrateSave(v0, { ...V0_TO_V1, ...MIGRATIONS }));
+    expect(migrated).toMatchObject({ schema_version: 2, coins: 9, upgrades: {} });
   });
 
   it("migrates a synthetic v0 save to v1 and the result passes validation", () => {
     const v0 = { schema_version: 0, money: 120, cars: ["sedan"], car: "sedan" };
     const migrated = migrateSave(v0, V0_TO_V1, 1);
     expect(migrated).toMatchObject({ schema_version: 1, coins: 120, owned_cars: ["sedan"] });
-    expect(parseSave(migrated).selected_car).toBe("sedan");
+    expect(parseSave(migrateSave(migrated, MIGRATIONS)).selected_car).toBe("sedan");
   });
 
   it("chains several migrations in order", () => {
@@ -97,14 +126,18 @@ describe("migrateSave", () => {
 
 describe("decodeSave", () => {
   it("decodes valid text and reports whether it was migrated", () => {
-    const text = JSON.stringify(v1Fixture());
-    expect(decodeSave(text)).toEqual({ data: v1Fixture(), migrated: false });
+    const text = JSON.stringify(v2Fixture());
+    expect(decodeSave(text)).toEqual({ data: v2Fixture(), migrated: false });
+    const v1 = decodeSave(JSON.stringify(v1Fixture()));
+    expect(v1?.migrated).toBe(true);
+    expect(v1?.data.upgrades).toEqual({});
     const v0 = JSON.stringify({ schema_version: 0, money: 5, cars: ["sedan"], car: "sedan" });
-    expect(decodeSave(v0, V0_TO_V1)?.migrated).toBe(true);
+    expect(decodeSave(v0, { ...V0_TO_V1, ...MIGRATIONS })?.migrated).toBe(true);
   });
 
   it("returns undefined for truncated, wrong or unmigratable text", () => {
-    expect(decodeSave('{"schema_version":1,"coins":')).toBeUndefined();
+    expect(decodeSave('{"schema_version":2,"coins":')).toBeUndefined();
+    expect(decodeSave(JSON.stringify({ ...v2Fixture(), schema_version: 3 }))).toBeUndefined();
     expect(decodeSave("[]")).toBeUndefined();
     expect(decodeSave(JSON.stringify({ schema_version: 0 }))).toBeUndefined();
     expect(decodeSave("")).toBeUndefined();

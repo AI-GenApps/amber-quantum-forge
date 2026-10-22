@@ -1,16 +1,21 @@
 import type {
   CarRoster,
+  DailyChallenge,
   GraphicsQuality,
+  MissionDef,
   Progression,
   PurchaseResult,
   SaveData,
   SaveSettings,
+  UpgradeResult,
+  UpgradeTrack,
 } from "@city-drive/core";
-import { FIXED_DT, isDistrictUnlocked, totalStars } from "@city-drive/core";
+import { dailyChallenge, FIXED_DT, isDistrictUnlocked, totalStars } from "@city-drive/core";
 import type { StepReport } from "../game/stepReport";
 import type { LastDistrict } from "../save/lastDistrict";
 import type { Profile } from "../save/profile";
 import { objectiveArrow } from "./model/arrow";
+import { type DailyCard, dailyCard } from "./model/daily";
 import { type MissionSummary, nextMissionId } from "./model/districts";
 import { backAction } from "./nav/back";
 import { type ScreenId, ScreenStack } from "./nav/screenStack";
@@ -33,6 +38,8 @@ export interface AppView {
   confirmingReset: boolean;
   /** The first-drive tutorial, while it has something to show. */
   onboarding: OnboardingView | undefined;
+  /** Today's challenge, or undefined when the game has no daily. */
+  daily: DailyCard | undefined;
 }
 
 export interface ControllerDeps {
@@ -47,6 +54,14 @@ export interface ControllerDeps {
   onboarding?: OnboardingFlow | undefined;
   /** Plays the horn. Omit it and the horn button is silent. */
   horn?: (() => void) | undefined;
+  /** Every mission definition and the clock. Omit it and the game has no daily challenge. */
+  daily?: DailySource | undefined;
+}
+
+export interface DailySource {
+  missions: readonly MissionDef[];
+  /** Today's UTC date as `YYYY-MM-DD`. The device clock is the only clock. */
+  today(): string;
 }
 
 export type FrameListener = (play: PlayState | undefined, nowMs: number) => void;
@@ -72,6 +87,9 @@ function fingerprint(play: PlayState | undefined): string {
     result?.stars,
     result?.coins,
     play.payout?.coins,
+    play.daily?.missionId,
+    play.dailyPayout?.coins,
+    play.dailyPayout?.claimed,
     Math.round(play.speedKmh),
     arrow ? Math.round(arrow.angle * 20) : "",
     arrow ? Math.round(arrow.distanceM / 3) : "",
@@ -266,7 +284,7 @@ export class AppController {
   restartMission(): void {
     const id = this.lastPlay?.mission?.id;
     if (id === undefined) return;
-    this.deps.game.mission.open(id, true);
+    this.openRun(id, true);
     this.resume();
   }
 
@@ -298,7 +316,40 @@ export class AppController {
 
   retry(): void {
     const id = this.lastPlay?.result?.id;
-    if (id !== undefined) this.deps.game.mission.open(id, true);
+    if (id !== undefined) this.openRun(id, true);
+  }
+
+  // ---- daily challenge ---------------------------------------------------------------------
+
+  /** Today's challenge from the missions the player has unlocked, or undefined without a daily. */
+  dailyChallenge(): DailyChallenge | undefined {
+    const source = this.deps.daily;
+    if (!source) return undefined;
+    const save = this.deps.profile.save;
+    const stars = totalStars(save);
+    const pool = source.missions.filter((m) =>
+      isDistrictUnlocked(this.deps.progression, stars, m.district),
+    );
+    return pool.length === 0 ? undefined : dailyChallenge(source.today(), pool, save.daily);
+  }
+
+  /** Home screen: load the daily mission's district and open its briefing. */
+  async playDaily(): Promise<boolean> {
+    const challenge = this.dailyChallenge();
+    if (challenge?.status !== "available") return false;
+    if (!(await this.enterDistrict(challenge.mission.district))) return false;
+    this.deps.game.mission.openDaily(challenge, false);
+    this.refresh();
+    return true;
+  }
+
+  /** Reopens a mission; a daily run that can still pay is reopened as the daily. */
+  private openRun(missionId: string, start: boolean): void {
+    const challenge =
+      this.lastPlay?.daily?.missionId === missionId ? this.dailyChallenge() : undefined;
+    if (challenge?.status === "available" && challenge.missionId === missionId) {
+      this.deps.game.mission.openDaily(challenge, start);
+    } else this.deps.game.mission.open(missionId, start);
   }
 
   /** The mission after the one just played, if its district has one. */
@@ -329,6 +380,14 @@ export class AppController {
 
   buy(carId: string): PurchaseResult {
     const result = this.deps.profile.purchase(carId);
+    this.refresh();
+    return result;
+  }
+
+  /** Buy the next level of an upgrade track. Upgrading the selected car rebuilds the city on leaving. */
+  buyUpgrade(carId: string, track: UpgradeTrack): UpgradeResult {
+    const result = this.deps.profile.purchaseUpgrade(carId, track);
+    if (result.ok && carId === this.deps.profile.save.selected_car) this.carChanged = true;
     this.refresh();
     return result;
   }
@@ -447,7 +506,13 @@ export class AppController {
       garageCar: this.garageCar,
       confirmingReset: this.confirmingReset,
       onboarding: this.deps.onboarding?.view,
+      daily: this.currentDailyCard(),
     };
+  }
+
+  private currentDailyCard(): DailyCard | undefined {
+    const challenge = this.dailyChallenge();
+    return challenge ? dailyCard(challenge) : undefined;
   }
 
   private refresh(): void {

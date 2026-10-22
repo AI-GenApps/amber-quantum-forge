@@ -26,6 +26,9 @@ output in `.agents/resources/2026-10-15/city-drive-qa/21/no-data-audit.txt`) pin
   WebView needs it; the game makes no request with it. `Info.plist` has no usage-description
   strings. `capacitor.config.ts` has no `server.url`.
 
+The post-v1 daily challenge (task 23) adds no allowance to this list: it reads only the device clock
+(`Date.now()` as a UTC date) and stores its state in the same local save.
+
 If a change makes the test fail, the privacy policy, the Play Data safety form and the App Store
 label must be revisited before shipping it.
 

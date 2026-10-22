@@ -144,8 +144,9 @@ export class GameHost implements UiGame {
   readonly mission: UiGame["mission"] = {
     accept: () => this.runtime?.session.missions?.accept(),
     decline: () => this.runtime?.session.missions?.decline(),
-    leave: () => this.runtime?.session.leaveMission(),
-    open: (id, start) => this.runtime?.session.openMission(id, start),
+    leave: () => this.runtime?.leaveMission(),
+    open: (id, start) => this.runtime?.openMission(id, start),
+    openDaily: (challenge, start) => this.runtime?.openDaily(challenge, start),
   };
 
   /** Called with the report of every simulated step (never while paused). */

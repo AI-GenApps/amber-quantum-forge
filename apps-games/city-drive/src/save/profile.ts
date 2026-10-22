@@ -2,22 +2,30 @@ import {
   type CarEntry,
   type CarRoster,
   type CarSpec,
-  carSpecOf,
+  claimDaily,
+  type DailyClaim,
   defaultSave,
   findCar,
+  levelsOf,
   type MissionPayoutInfo,
   type MissionResult,
   type PurchaseResult,
   purchaseCar,
+  purchaseUpgrade,
   reconcileWithRoster,
   recordMission,
   type SaveData,
   type SaveManager,
   type SaveSettings,
   type SelectResult,
+  type Stars,
   selectCar,
   type Tiers,
   totalStars,
+  type UpgradeLevels,
+  type UpgradeResult,
+  type UpgradeTrack,
+  upgradedSpec,
 } from "@city-drive/core";
 
 /** What the profile needs to know about a mission to pay for it. */
@@ -61,9 +69,27 @@ export class Profile {
     return findCar(this.roster, this.save.selected_car);
   }
 
-  /** The physics spec of the selected car, used when the car spawns. */
+  /** The physics spec of the selected car with its upgrades applied, used when the car spawns. */
   selectedSpec(): CarSpec {
-    return carSpecOf(this.selectedEntry());
+    const entry = this.selectedEntry();
+    return upgradedSpec(entry, levelsOf(this.save, entry.id));
+  }
+
+  upgradeLevels(carId: string): UpgradeLevels {
+    return levelsOf(this.save, carId);
+  }
+
+  purchaseUpgrade(carId: string, track: UpgradeTrack): UpgradeResult {
+    const result = purchaseUpgrade(this.save, this.roster, carId, track);
+    if (result.ok) this.manager.commit(result.save);
+    return result;
+  }
+
+  /** Pay the daily for a UTC date. A run with no stars, or a date already claimed, changes nothing. */
+  claimDaily(date: string, stars: Stars): DailyClaim {
+    const claim = claimDaily(this.save, date, stars);
+    if (claim.ok) this.manager.commit(claim.save);
+    return claim;
   }
 
   owns(carId: string): boolean {

@@ -2,7 +2,13 @@ import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera.js";
 import type { Camera } from "@babylonjs/core/Cameras/camera.js";
 import type { AbstractEngine } from "@babylonjs/core/Engines/abstractEngine.js";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector.js";
-import { districtInfo, type Progression, rotateVec } from "@city-drive/core";
+import {
+  type DailyChallenge,
+  dailyTrafficAgents,
+  districtInfo,
+  type Progression,
+  rotateVec,
+} from "@city-drive/core";
 import { mapHalfExtents, parseCityManifest } from "@city-drive/core/city";
 import type { AssetManifest } from "../assets/manifest";
 import type { InputSource } from "../input";
@@ -73,6 +79,8 @@ function orbitCamera(city: RenderedCity, canvas: HTMLElement): ArcRotateCamera {
  */
 export class DistrictRuntime {
   private seenRespawns = 0;
+  private trafficScale = 1;
+  private extraAgents = 0;
 
   private constructor(
     readonly districtId: string,
@@ -154,7 +162,35 @@ export class DistrictRuntime {
 
   /** Scales the district's AI car count (1 = full). Used by the quality governor. */
   setTrafficDensity(scale: number): void {
-    this.session.traffic?.setMaxAgents(Math.max(1, Math.round(this.trafficAgents * scale)));
+    this.trafficScale = scale;
+    this.applyTraffic();
+  }
+
+  private applyTraffic(): void {
+    const base = Math.max(1, Math.round(this.trafficAgents * this.trafficScale));
+    this.session.traffic?.setMaxAgents(base + this.extraAgents);
+  }
+
+  /** Leaves any running mission; the daily's extra traffic goes with it. */
+  leaveMission(): void {
+    this.session.leaveMission();
+    this.setExtraAgents(0);
+  }
+
+  openMission(missionId: string, start: boolean): void {
+    this.session.openMission(missionId, start);
+    this.setExtraAgents(0);
+  }
+
+  /** Opens today's challenge with its seeded traffic step on top of the district's cars. */
+  openDaily(challenge: DailyChallenge, start: boolean): void {
+    this.session.openDaily(challenge, start);
+    this.setExtraAgents(dailyTrafficAgents(0, challenge.variant));
+  }
+
+  private setExtraAgents(extra: number): void {
+    this.extraAgents = extra;
+    this.applyTraffic();
   }
 
   /** What the HUD and menus read this frame. */
@@ -171,6 +207,8 @@ export class DistrictRuntime {
       mission: missions?.run.mission,
       result: missions?.run.result,
       payout: session.lastPayout,
+      daily: session.dailyRun,
+      dailyPayout: session.lastDaily,
       parkHold: missions?.parkHold,
       player: {
         position: { x: state.position.x, z: state.position.z },

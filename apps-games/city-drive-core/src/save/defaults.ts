@@ -17,5 +17,7 @@ export function defaultSave(starterCarId: string): SaveData {
     missions: {},
     settings: { ...DEFAULT_SETTINGS },
     onboarding: {},
+    upgrades: {},
+    daily: { last_claim_date: null, streak: 0 },
   };
 }

@@ -1,11 +1,16 @@
+import { isDateKey } from "./dateKey";
 import {
   CONTROL_LAYOUTS,
+  type DailyState,
   GRAPHICS_QUALITIES,
+  MAX_UPGRADE_LEVEL,
   type MissionRecord,
   SAVE_SCHEMA_VERSION,
   SaveCorruptError,
   type SaveData,
   type SaveSettings,
+  UPGRADE_TRACKS,
+  type UpgradeLevels,
 } from "./types";
 
 type Raw = Record<string, unknown>;
@@ -91,8 +96,60 @@ function parseCars(raw: Raw, problems: string[]): { owned: string[]; selected: s
   return { owned: ids, selected };
 }
 
+function parseUpgrades(
+  raw: unknown,
+  owned: readonly string[],
+  problems: string[],
+): Record<string, UpgradeLevels> {
+  const out: Record<string, UpgradeLevels> = {};
+  if (!isRecord(raw)) {
+    problems.push("upgrades must be an object");
+    return out;
+  }
+  for (const [id, value] of Object.entries(raw)) {
+    if (!owned.includes(id)) {
+      problems.push(`upgrades.${id} is not an owned car`);
+      continue;
+    }
+    const levels = isRecord(value) ? value : {};
+    const clean = { power: 0, grip: 0, brakes: 0 };
+    let valid = isRecord(value);
+    for (const track of UPGRADE_TRACKS) {
+      const level = levels[track];
+      if (
+        Number.isInteger(level) &&
+        (level as number) >= 0 &&
+        (level as number) <= MAX_UPGRADE_LEVEL
+      ) {
+        clean[track] = level as number;
+      } else valid = false;
+    }
+    if (valid) out[id] = clean;
+    else problems.push(`upgrades.${id} needs levels 0 to ${MAX_UPGRADE_LEVEL} for every track`);
+  }
+  return out;
+}
+
+function parseDaily(raw: unknown, problems: string[]): DailyState {
+  const fallback: DailyState = { last_claim_date: null, streak: 0 };
+  if (!isRecord(raw)) {
+    problems.push("daily must be an object");
+    return fallback;
+  }
+  const { last_claim_date: date, streak } = raw;
+  if (date !== null && !isDateKey(date)) {
+    problems.push("daily.last_claim_date must be a YYYY-MM-DD date or null");
+    return fallback;
+  }
+  if (!isCount(streak) || (date === null) !== (streak === 0)) {
+    problems.push("daily.streak must be 0 with no claim date, otherwise a positive integer");
+    return fallback;
+  }
+  return { last_claim_date: date, streak };
+}
+
 /**
- * Check untrusted JSON against SaveData v1 and return a clean copy. Throws SaveCorruptError that
+ * Check untrusted JSON against SaveData and return a clean copy. Throws SaveCorruptError that
  * lists every problem, so a truncated or hand-edited save is rejected instead of half-used.
  */
 export function parseSave(input: unknown): SaveData {
@@ -111,6 +168,8 @@ export function parseSave(input: unknown): SaveData {
     missions: parseMissions(input.missions, problems),
     settings: parseSettings(input.settings, problems),
     onboarding: parseOnboarding(input.onboarding, problems),
+    upgrades: parseUpgrades(input.upgrades, cars.owned, problems),
+    daily: parseDaily(input.daily, problems),
   };
   if (problems.length > 0) throw new SaveCorruptError(problems);
   return save;

@@ -15,6 +15,8 @@ can be bought with real money and nothing has to be watched.
 | Spend | Coins unlock cars from a fixed roster. Prices and roster: see *Car roster* below (task 12) |
 | Gate | Districts unlock by total stars, not by coins. Star thresholds: 0, 10 and 24 stars (`progression.json`, task 11) |
 | Save | Local only, versioned with migrations (task 12). Uninstalling deletes it. |
+| Daily | One daily mission per UTC date, flat coins by stars and a capped streak bonus (task 23, post-v1) |
+| Upgrades | Three upgrade tracks per owned car, a coin sink after every car is bought (task 23, post-v1) |
 
 Numbers in this file are final for v1 as of task 12. Change `cars.json` or a mission's
 `reward_coins` and the economy tests tell you which table here to refresh
@@ -129,12 +131,70 @@ Total car prices: 4200. 3-star total / prices = 1.180 (needs >= 1.150).
 ## Save (task 12)
 
 Local only. Capacitor Preferences on a device, browser local storage on the web (`Capacitor.isNativePlatform()`
-decides). `SaveData v1` holds coins, owned cars, the selected car, best stars and best time per
+decides). `SaveData` (v2 since task 23) holds coins, owned cars, the selected car, best stars and best time per
 mission, settings (audio, haptics, control layout, graphics quality), onboarding flags and
 `schema_version`. Writes are debounced (500 ms) and atomic: the new copy goes to a pending key, the
 last good copy to a backup key, then the main key is replaced and the pending key removed. Loading
 tries main, then pending, then backup, then defaults; a damaged main file is kept under a `.corrupt`
 key, and the player sees a non-blocking notice. `migrations[n]` turns version n into n+1.
+
+Schema v2 (task 23) adds `upgrades` (levels 0 to 3 per track for owned cars, empty for a migrated
+save) and `daily` (`last_claim_date`, `streak`). `MIGRATIONS[1]` adds both fields and nothing else is
+changed. A save from a newer app is still refused, never guessed.
+
+## Daily challenge (task 23, post-v1)
+
+Pure logic in `@city-drive/core/src/economy/daily.ts` and `dailyVariant.ts`. Offline, no accounts, no
+network.
+
+| Rule | Value |
+|---|---|
+| One mission per UTC date | the date string `YYYY-MM-DD` is hashed (FNV-1a) into a seed; the seed picks one mission from the missions of the districts the player has unlocked. Same date and same unlocked set give the same mission. |
+| Variant, not new content | a seeded par step (0 to 2) tightens time-trial and delivery star bars by 0%, 4% or 8% of the limit, never past what the validation autopilot achieved; a seeded traffic step adds 0, 2 or 4 AI cars on top of the district's count |
+| Reward | flat coins by stars: 1 star 40, 2 stars 80, 3 stars 150. Replaces the mission's own payout and leaves the mission's best stars alone. |
+| Paid once per date | a failed run (0 stars) pays nothing and the day stays open for retries until a star is earned |
+| Streak | consecutive UTC days with a paid daily. Bonus +10% per streak day after the first, capped at +50% (reached on day 6). A missed day resets the streak to 1, with no other penalty. |
+| Clock | the device clock is the only clock. `daily.last_claim_date` is stored and a date that is not strictly after it is refused, so setting the clock backwards cannot re-claim. |
+
+Daily earnings by streak day (the claim is made every day, same stars each day):
+
+| Day | 1 star | 2 stars | 3 stars |
+|---|---|---|---|
+| 1 | 40 | 80 | 150 |
+| 2 | 44 | 88 | 165 |
+| 3 | 48 | 96 | 180 |
+| 4 | 52 | 104 | 195 |
+| 5 | 56 | 112 | 210 |
+| 6 and later | 60 | 120 | 225 |
+
+Fourteen perfect days pay 2925 coins (1560 at 2 stars, 780 at 1 star).
+
+## Car upgrades (task 23, post-v1)
+
+Pure logic in `@city-drive/core/src/economy/upgrades.ts`. Three tracks per owned car, levels 0 to 3.
+
+| Track | Fields changed | Gain per level |
+|---|---|---|
+| `power` | `engineForce`, `topSpeedKmh` | +6%, +3% |
+| `grip` | `frictionSlip`, `sideFrictionStiffness` | +6%, +2% |
+| `brakes` | `brakeForce` | +6% |
+
+Gains are multipliers over the car's roster spec, using only fields in `OVERRIDABLE_FIELDS`, and each
+field is clamped to a ceiling so an upgraded car stays inside what the handling sanity suite accepts:
+top speed 119 km/h, engine force at most 6.2 N per kg of mass, brake force at most 12.8 N per kg,
+friction slip 3.3, side stiffness 1.06. The ceilings are the largest values any stock roster car
+already passes with. A stock value above a ceiling is never lowered. A track that cannot improve a
+car at all (the Apex Racer's power and brakes) is not sold.
+
+Cost per level is 15%, 25% and 40% of the car's price, rounded to 5 coins. The free starter is priced
+as if it cost 400. The full bill for every useful track of every car is 9120 coins: more than three
+times what 14 perfect dailies pay, and more than the 754 coins that 3-starring every mission leaves
+after buying every car. Proven by `test/economy/affordability-upgrades.test.ts`; the unlock rule
+(3-star total at least 15% above car prices, upgrades excluded) is unchanged and still asserted by
+`test/economy/affordability.test.ts`. Evidence:
+`.agents/resources/2026-10-15/city-drive-qa/23/README.md`.
+
+Both features are **not yet judged by a human** for feel and balance; see open question 21.
 
 ## Anti-tamper (task 12 decision)
 
@@ -142,13 +202,19 @@ key, and the player sees a non-blocking notice. `migrations[n]` turns version n 
 edits their own save only changes their own game. Revisit if cloud save, leaderboards or any paid
 item is ever added.
 
+**Task 23 repeats the decision for the daily challenge.** Setting the device clock forward is accepted
+(it skips ahead and resets the streak to 1 unless it is exactly the next day, and pays the same flat
+rewards); setting it backwards cannot re-claim because the last claim date is stored. There is no
+server time and no tamper check, consistent with task 12. Nothing is at stake: no real money, no
+leaderboards.
+
 ## Deferred (v1.1+), explicitly out of scope for this epic
 
 | Idea | Why it is out of scope |
 |---|---|
 | Rewarded ads for payout multipliers | Needs an ad SDK (AdMob), consent flow, and data-safety changes. The epic ships a clean offline game first. |
 | One-time ad-free IAP | Pointless until ads exist. Needs RevenueCat or native billing and store provisioning. |
-| Daily challenges, login streaks | Retention levers, but they need a clock/anti-cheat story. Candidates for v1.1. |
+| ~~Daily challenges, login streaks~~ | Shipped post-v1 in task 23 (see *Daily challenge* below), local and offline, with no anti-tamper. |
 | Car customization (paint, wheels) | Retention lever; needs more art and UI. v1.1 candidate. |
 
 **Rationale (CrazyGames driving-genre guidance, 2026-10-15):** the driving genre

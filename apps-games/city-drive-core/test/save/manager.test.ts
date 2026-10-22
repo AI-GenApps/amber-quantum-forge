@@ -3,9 +3,10 @@ import {
   DEFAULT_DEBOUNCE_MS,
   defaultSave,
   MemorySaveStore,
+  MIGRATIONS,
   type SaveNotice,
 } from "../../src/index";
-import { FlakyStore, KEYS, makeManager, v1Fixture } from "./support";
+import { FlakyStore, KEYS, makeManager, v2Fixture } from "./support";
 
 const bump = (coins: number) => ({ ...defaultSave("sedan"), coins });
 
@@ -23,14 +24,14 @@ describe("SaveManager round trip", () => {
     const store = new MemorySaveStore();
     const a = makeManager(store).manager;
     await a.load();
-    a.commit(v1Fixture());
+    a.commit(v2Fixture());
     expect(await a.flush()).toBe(true);
     expect(a.hasUnsavedChanges).toBe(false);
 
     const b = makeManager(store).manager;
     const loaded = await b.load();
     expect(loaded.source).toBe("main");
-    expect(b.data).toEqual(v1Fixture());
+    expect(b.data).toEqual(v2Fixture());
     expect(b.notices).toEqual([]);
   });
 
@@ -232,7 +233,7 @@ describe("corruption recovery", () => {
 
   it("treats a save from a newer app as unusable and keeps it for diagnosis", async () => {
     const store = new MemorySaveStore();
-    const future = JSON.stringify({ ...v1Fixture(), schema_version: 7 });
+    const future = JSON.stringify({ ...v2Fixture(), schema_version: 7 });
     store.entries.set(KEYS.main, future);
     const { manager } = makeManager(store);
     await manager.load();
@@ -260,6 +261,7 @@ describe("corruption recovery", () => {
           ...defaultSave("sedan"),
           coins: (raw as { money: number }).money,
         }),
+        1: MIGRATIONS[1] as (raw: Record<string, unknown>) => unknown,
       },
     });
     const loaded = await manager.load();
@@ -267,7 +269,7 @@ describe("corruption recovery", () => {
     expect(manager.data.coins).toBe(77);
     expect(manager.hasUnsavedChanges).toBe(true);
     await manager.flush();
-    expect(JSON.parse(store.entries.get(KEYS.main) as string).schema_version).toBe(1);
+    expect(JSON.parse(store.entries.get(KEYS.main) as string).schema_version).toBe(2);
     expect(manager.notices).toEqual([]);
   });
 });

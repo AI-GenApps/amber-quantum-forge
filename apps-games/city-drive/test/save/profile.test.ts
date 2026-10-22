@@ -113,4 +113,55 @@ describe("Profile", () => {
     await manager.flush();
     expect((await load(store)).profile.coins).toBe(0);
   });
+
+  it("keeps upgrades and the daily across a reload, and reset clears them", async () => {
+    const { profile, manager, store } = await load();
+    manager.commit({ ...manager.data, coins: 500 });
+    expect(profile.purchaseUpgrade("sedan", "power")).toMatchObject({ ok: true });
+    expect(profile.claimDaily("2026-10-15", 3)).toMatchObject({ ok: true, coins: 150 });
+    await manager.flush();
+    const again = (await load(store)).profile;
+    expect(again.upgradeLevels("sedan")).toEqual({ power: 1, grip: 0, brakes: 0 });
+    expect(again.save.daily).toEqual({ last_claim_date: "2026-10-15", streak: 1 });
+    expect(again.coins).toBe(500 - 60 + 150);
+    again.reset();
+    expect(again.save.upgrades).toEqual({});
+    expect(again.save.daily).toEqual({ last_claim_date: null, streak: 0 });
+  });
+
+  it("a refused daily claim changes nothing and saves nothing", async () => {
+    const { profile, manager } = await load();
+    await manager.flush();
+    expect(profile.claimDaily("2026-10-15", 0)).toEqual({ ok: false, reason: "no-stars" });
+    expect(manager.hasUnsavedChanges).toBe(false);
+    profile.claimDaily("2026-10-15", 1);
+    expect(profile.claimDaily("2026-10-14", 3)).toEqual({ ok: false, reason: "clock-backwards" });
+    expect(profile.coins).toBe(40);
+  });
+
+  it("a v1 save on disk loads as v2 with its coins and cars intact", async () => {
+    const store = new MemorySaveStore();
+    const v1 = {
+      schema_version: 1,
+      coins: 321,
+      owned_cars: ["sedan", "hatch"],
+      selected_car: "hatch",
+      missions: { "d1-m01": { stars: 2, best_time_s: 30 } },
+      settings: {
+        audio: true,
+        haptics: true,
+        control_layout: "standard",
+        graphics_quality: "auto",
+      },
+      onboarding: {},
+    };
+    store.entries.set("city-drive.save", JSON.stringify(v1));
+    const manager = new SaveManager(store, { starterCarId: ROSTER.starter, debounceMs: 1 });
+    const profile = await Profile.load(manager, ROSTER);
+    expect(profile.coins).toBe(321);
+    expect(profile.save.selected_car).toBe("hatch");
+    expect(profile.save.upgrades).toEqual({});
+    expect(profile.save.daily).toEqual({ last_claim_date: null, streak: 0 });
+    expect(profile.stars).toBe(2);
+  });
 });

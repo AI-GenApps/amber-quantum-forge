@@ -1,5 +1,6 @@
 import type {
   CarRoster,
+  DailyChallenge,
   GraphicsQuality,
   MissionDef,
   MissionHud,
@@ -7,6 +8,7 @@ import type {
   MissionResult,
   Progression,
 } from "@city-drive/core";
+import type { DailyPayout, DailyRun } from "../game/sessionCredit";
 import type { Point2 } from "./model/arrow";
 import type { MissionSummary } from "./model/districts";
 import type { MinimapModel } from "./model/minimap";
@@ -20,6 +22,10 @@ export interface PlayState {
   result: MissionResult | undefined;
   /** What the last finished mission paid. */
   payout: MissionPayoutInfo | undefined;
+  /** Set while the open mission is today's challenge. */
+  daily: DailyRun | undefined;
+  /** What the last finished daily run paid. */
+  dailyPayout: DailyPayout | undefined;
   /** 0..1 while parking, otherwise undefined. */
   parkHold: number | undefined;
   player: { position: Point2; forward: Point2 };
@@ -51,6 +57,8 @@ export interface UiGame {
     leave(): void;
     /** Drive-to-start shortcut: opens the briefing, or starts the mission at once. */
     open(missionId: string, start: boolean): void;
+    /** Opens today's challenge in the loaded district, paid as the daily. */
+    openDaily(challenge: DailyChallenge, start: boolean): void;
   };
 }
 

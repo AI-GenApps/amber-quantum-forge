@@ -636,3 +636,67 @@
   flex: 1;
   font-size: var(--text-sm);
 }
+
+/* ---- Daily challenge and upgrades ---------------------------------------------------------- */
+
+.cd-daily {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: min(22rem, 45vw);
+}
+
+.cd-daily h2 {
+  margin: 0;
+  font-size: var(--text-md);
+}
+
+.cd-daily p {
+  margin: 0;
+}
+
+.cd-daily-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.cd-daily-title {
+  font-weight: 700;
+}
+
+.cd-daily-rewards {
+  display: flex;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cd-daily-rewards li {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--text-sm);
+}
+
+.cd-daily[data-status="claimed"] .cd-daily-rewards {
+  opacity: 0.6;
+}
+
+.cd-upgrades {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.cd-upgrade-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: var(--space-2);
+}
+
+.cd-upgrade-row .cd-button {
+  min-width: 7.5rem;
+}

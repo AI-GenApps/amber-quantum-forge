@@ -3,8 +3,10 @@ import { SAVE_SCHEMA_VERSION, SaveCorruptError } from "./types";
 /** `migrations[n]` turns a version-n save into a version-n+1 save. Inputs are untrusted JSON. */
 export type MigrationTable = Readonly<Record<number, (raw: Record<string, unknown>) => unknown>>;
 
-/** Real migrations. Version 1 is the first release, so the table starts empty. */
-export const MIGRATIONS: MigrationTable = {};
+/** Real migrations. Version 2 adds car upgrades and the daily challenge. */
+export const MIGRATIONS: MigrationTable = {
+  1: (raw) => ({ ...raw, upgrades: {}, daily: { last_claim_date: null, streak: 0 } }),
+};
 
 const isRecord = (v: unknown): v is Record<string, unknown> =>
   typeof v === "object" && v !== null && !Array.isArray(v);

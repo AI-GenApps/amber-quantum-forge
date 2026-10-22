@@ -5,6 +5,7 @@ import { ScreenFrame } from "../components/ScreenFrame";
 import type { AppController, AppView } from "../controller";
 import { formatCoins } from "../model/format";
 import { type CarCard, garageCards } from "../model/garage";
+import { upgradeRows } from "../model/upgrades";
 import type { UiContent } from "../types";
 
 const STAT_LABELS = [
@@ -48,6 +49,48 @@ function Actions({ card, controller }: { card: CarCard; controller: AppControlle
         </button>
       );
   }
+}
+
+function UpgradePanel({
+  card,
+  view,
+  content,
+  controller,
+}: {
+  card: CarCard;
+  view: AppView;
+  content: UiContent;
+  controller: AppController;
+}) {
+  const entry = content.roster.cars.find((c) => c.id === card.id);
+  const rows = entry ? upgradeRows(entry, view.save) : [];
+  if (rows.length === 0) return null;
+  return (
+    <section class="cd-upgrades" aria-label="Upgrades" data-testid="upgrades">
+      {rows.map((row) => (
+        <div class="cd-upgrade-row" key={row.track} data-testid={`upgrade-${row.track}`}>
+          <Meter
+            label={row.label}
+            text={row.useful ? `Level ${row.level}/${row.maxLevel}` : "At the limit"}
+            fraction={row.level / row.maxLevel}
+          />
+          <button
+            type="button"
+            class="cd-button"
+            disabled={!row.canBuy}
+            aria-label={`${row.label} upgrade`}
+            onClick={() => controller.buyUpgrade(card.id, row.track)}
+          >
+            {row.cost === undefined
+              ? row.useful
+                ? "Max"
+                : "Stock max"
+              : `Upgrade ${formatCoins(row.cost)}`}
+          </button>
+        </div>
+      ))}
+    </section>
+  );
 }
 
 export function Garage({
@@ -124,6 +167,7 @@ export function Garage({
             )}
           </p>
           <Actions card={card} controller={controller} />
+          <UpgradePanel card={card} view={view} content={content} controller={controller} />
         </div>
       </div>
     </ScreenFrame>

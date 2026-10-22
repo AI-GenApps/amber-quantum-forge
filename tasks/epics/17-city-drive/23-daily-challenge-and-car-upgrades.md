@@ -1,7 +1,7 @@
 ---
 epic: 17-city-drive
 task: 23-daily-challenge-and-car-upgrades
-status: pending
+status: completed
 commit_scope: city-drive
 depends_on: [17-city-drive/11-districts-and-missions, 17-city-drive/12-economy-garage-save, 17-city-drive/13-ui-screens-and-hud]
 estimate: L
@@ -88,26 +88,33 @@ Existing code this builds on:
 
 ## Implementation Checklist
 
-- [ ] Pure daily module in core (`economy/daily.ts`): date to seed, mission
+- [x] Pure daily module in core (`economy/daily.ts`): date to seed, mission
       pick, variant modifiers, reward, streak, clock-backwards guard. Unit
       tests including month/year boundaries and determinism.
-- [ ] Pure upgrade module in core (`economy/upgrades.ts`): levels, costs,
+- [x] Pure upgrade module in core (`economy/upgrades.ts`): levels, costs,
       purchase rules (no negative balance, no level above 3, car must be
       owned), spec application with caps. Unit tests.
-- [ ] Save schema v2, `MIGRATIONS[1]`, validation, defaults, and migration
+- [x] Save schema v2, `MIGRATIONS[1]`, validation, defaults, and migration
       fixtures. Corrupt-save recovery still works.
-- [ ] Extend the affordability simulation and the parameterized handling
+- [x] Extend the affordability simulation and the parameterized handling
       sanity suite (max upgrades) as described above.
-- [ ] Session wiring in `apps-games/city-drive/src/game/session.ts`: the
+- [x] Session wiring in `apps-games/city-drive/src/game/session.ts`: the
       selected car's upgraded spec is used on spawn; a daily result credits
       coins and updates the streak, then saves.
-- [ ] UI: Home daily card (mission, today's reward, streak, "claimed" state),
+- [x] UI: Home daily card (mission, today's reward, streak, "claimed" state),
       Garage upgrade panel (three tracks, level, cost, buy), Results shows the
       daily payout. DOM overlay and Preact only, bundled fonts, no new network.
       Cover with Vitest and happy-dom.
-- [ ] Docs: update `docs-internal/gaming/city-drive-*` economy notes and the
+- [x] Docs: update `docs-internal/gaming/city-drive-*` economy notes and the
       knowledge base; record the no-anti-tamper decision.
-- [ ] Add an owner-human checkpoint note for feel and balance (see below).
+- [x] Add an owner-human checkpoint note for feel and balance (see below).
+
+> Verified after installing the workspace dependencies: core 601 tests (including the 108-test
+> max-upgrade handling suite) and app 707 tests pass, `bun run check` and both City Drive typechecks
+> are clean, and the no-data audit passes unchanged. The minimap drawing-rate test is time-dependent:
+> it fails in some full runs on HEAD and on this change alike, and passes alone. Visual, feel and
+> device checks are NOT RUN (human checkpoint below). See
+> `.agents/resources/2026-10-15/city-drive-qa/23/README.md`.
 
 ## Verification
 

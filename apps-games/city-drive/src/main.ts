@@ -11,6 +11,7 @@ import {
   soundButtonTaps,
   unlockOnFirstGesture,
 } from "./audio";
+import { allMissionDefs, deviceToday } from "./game/daily";
 import { FpsOverlay } from "./game/fpsOverlay";
 import { GameHost } from "./game/gameHost";
 import { GameLoop } from "./game/loop";
@@ -139,6 +140,7 @@ async function start(): Promise<void> {
     lastDistrict: new LastDistrict(store, firstDistrict),
     onboarding,
     horn: () => feel.horn(),
+    daily: { missions: allMissionDefs(), today: deviceToday },
   });
   const applySound = (): void =>
     audio.setToggles({ master: profile.save.settings.audio, sfx: true, music: true });

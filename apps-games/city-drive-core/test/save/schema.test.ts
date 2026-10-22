@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { defaultSave, parseSave, SAVE_SCHEMA_VERSION, SaveCorruptError } from "../../src/index";
-import { v1Fixture } from "./support";
+import { v2Fixture } from "./support";
 
 describe("parseSave", () => {
   it("accepts the v1 fixture unchanged", () => {
-    expect(parseSave(v1Fixture())).toEqual(v1Fixture());
+    expect(parseSave(v2Fixture())).toEqual(v2Fixture());
   });
 
   it("accepts a brand-new player's defaults", () => {
@@ -15,7 +15,7 @@ describe("parseSave", () => {
   });
 
   it("round-trips through JSON", () => {
-    const save = v1Fixture();
+    const save = v2Fixture();
     expect(parseSave(JSON.parse(JSON.stringify(save)))).toEqual(save);
   });
 
@@ -40,12 +40,69 @@ describe("parseSave", () => {
       /settings.audio/,
     ],
     ["onboarding flag type", (s) => (s.onboarding = { a: "yes" }), /onboarding.a/],
-    ["wrong version", (s) => (s.schema_version = 2), /schema_version must be 1/],
+    ["wrong version", (s) => (s.schema_version = 3), /schema_version must be 2/],
+    ["upgrades not an object", (s) => (s.upgrades = []), /upgrades must be an object/],
+    [
+      "upgrade for an unowned car",
+      (s) => (s.upgrades = { racer: { power: 1, grip: 0, brakes: 0 } }),
+      /upgrades.racer is not an owned car/,
+    ],
+    [
+      "upgrade for an unknown car",
+      (s) => (s.upgrades = { ghost: { power: 0, grip: 0, brakes: 0 } }),
+      /upgrades.ghost is not an owned car/,
+    ],
+    [
+      "upgrade level above 3",
+      (s) => (s.upgrades = { sedan: { power: 4, grip: 0, brakes: 0 } }),
+      /upgrades.sedan needs levels 0 to 3/,
+    ],
+    [
+      "negative upgrade level",
+      (s) => (s.upgrades = { sedan: { power: 0, grip: -1, brakes: 0 } }),
+      /upgrades.sedan needs levels/,
+    ],
+    [
+      "fractional upgrade level",
+      (s) => (s.upgrades = { sedan: { power: 0.5, grip: 0, brakes: 0 } }),
+      /upgrades.sedan needs levels/,
+    ],
+    [
+      "upgrade track missing",
+      (s) => (s.upgrades = { sedan: { power: 1, grip: 0 } }),
+      /upgrades.sedan needs levels/,
+    ],
+    ["daily not an object", (s) => (s.daily = null), /daily must be an object/],
+    [
+      "daily date not real",
+      (s) => (s.daily = { last_claim_date: "2026-02-30", streak: 1 }),
+      /daily.last_claim_date/,
+    ],
+    [
+      "daily date wrong shape",
+      (s) => (s.daily = { last_claim_date: "10/14/2026", streak: 1 }),
+      /daily.last_claim_date/,
+    ],
+    [
+      "daily streak without a date",
+      (s) => (s.daily = { last_claim_date: null, streak: 2 }),
+      /daily.streak/,
+    ],
+    [
+      "daily date with a zero streak",
+      (s) => (s.daily = { last_claim_date: "2026-10-14", streak: 0 }),
+      /daily.streak/,
+    ],
+    [
+      "daily negative streak",
+      (s) => (s.daily = { last_claim_date: "2026-10-14", streak: -1 }),
+      /daily.streak/,
+    ],
   ];
 
   for (const [name, mutate, message] of broken) {
     it(`rejects ${name}`, () => {
-      const save = JSON.parse(JSON.stringify(v1Fixture())) as Record<string, unknown>;
+      const save = JSON.parse(JSON.stringify(v2Fixture())) as Record<string, unknown>;
       mutate(save);
       expect(() => parseSave(save)).toThrow(SaveCorruptError);
       expect(() => parseSave(save)).toThrow(message);
@@ -57,14 +114,14 @@ describe("parseSave", () => {
       expect(() => parseSave(input)).toThrow(SaveCorruptError);
     }
     try {
-      parseSave({ schema_version: 1, coins: -1, owned_cars: [], selected_car: "", missions: 3 });
+      parseSave({ schema_version: 2, coins: -1, owned_cars: [], selected_car: "", missions: 3 });
     } catch (error) {
       expect((error as SaveCorruptError).problems.length).toBeGreaterThanOrEqual(5);
     }
   });
 
   it("does not carry unknown fields into the clean copy", () => {
-    const parsed = parseSave({ ...v1Fixture(), cheat: true }) as unknown as Record<string, unknown>;
+    const parsed = parseSave({ ...v2Fixture(), cheat: true }) as unknown as Record<string, unknown>;
     expect(parsed.cheat).toBeUndefined();
   });
 });
