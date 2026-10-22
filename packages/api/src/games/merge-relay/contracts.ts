@@ -259,6 +259,7 @@ export interface EventRequest {
 export interface SocialRequest {
   targetSubject?: string;
   targetAlias?: string;
+  targetChallengeId?: string;
   reason: string;
 }
 

@@ -59,10 +59,17 @@ export function parseSocial(value: unknown): SocialRequest | null {
   if (value.target_subject !== undefined && !isSafeText(value.target_subject, 128)) return null;
   if (value.target_alias !== undefined && !isSafeText(value.target_alias, maxAliasLength))
     return null;
-  if (value.target_subject === undefined && value.target_alias === undefined) return null;
+  if (value.target_challenge_id !== undefined && !isSafeId(value.target_challenge_id)) return null;
+  if (
+    value.target_subject === undefined &&
+    value.target_alias === undefined &&
+    value.target_challenge_id === undefined
+  )
+    return null;
   return {
     targetSubject: value.target_subject,
     targetAlias: value.target_alias,
+    targetChallengeId: value.target_challenge_id,
     reason: value.reason,
   };
 }

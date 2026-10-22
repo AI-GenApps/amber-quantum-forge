@@ -1,3 +1,4 @@
+import { registerAliasArtifact } from "./alias-artifact-service";
 import {
   parseAttemptArtifact,
   parseChallengeArtifact,
@@ -103,6 +104,13 @@ export async function finalizeAttempt(
       throw new MergeRelayError(404, "challenge_not_found", "Challenge was not found");
     let returnChallenge: MergeChallenge | null = null;
     if (input.returnAlias && hasLegalMove(attempt.checkpoint.board)) {
+      await registerAliasArtifact(
+        transaction,
+        input.returnAlias,
+        session.subject,
+        now.toISOString(),
+        dependencies.idFactory,
+      );
       returnChallenge = {
         challengeId: createId(dependencies.idFactory, "ch"),
         environment,

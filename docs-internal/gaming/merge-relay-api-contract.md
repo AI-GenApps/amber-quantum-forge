@@ -71,8 +71,8 @@ checkpoints so both runtimes replay the same rules.
 | `GET /:environment/commerce/entitlements` | player | none | signed-subject entitlements only |
 | `POST /:environment/commerce/google-play/purchases` | player | `product_id`, `purchase_token`, optional `client_request_id` | verified and idempotently settled purchase |
 | `POST /:environment/commerce/google-play/restore` | player | `product_id`, `purchase_token`, optional `client_request_id` | reverified entitlement restore, including authorized revocation |
-| `POST /:environment/social/report` | player | `target_subject` or `target_alias`, `reason` | moderation report record |
-| `POST /:environment/social/block` | player | `target_subject` or `target_alias`, `reason` | block record used by challenge reservation |
+| `POST /:environment/social/report` | player | `target_subject`, `target_alias` or `target_challenge_id`, `reason` | moderation report record; aliases are not unique, so send `target_challenge_id` (resolves to the challenge creator) to avoid `ambiguous_target_alias` |
+| `POST /:environment/social/block` | player | `target_subject`, `target_alias` or `target_challenge_id`, `reason` | block record used by challenge reservation |
 | `PUT /:environment/config` | game admin | revision, weights, feature flags | new active config revision |
 | `POST /:environment/config/rollback` | game admin | target and expected revision | selected prior config revision |
 
