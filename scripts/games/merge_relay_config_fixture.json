@@ -1,0 +1,1441 @@
+{
+  "fixture_version": "merge-relay-config.v1",
+  "rule_version": "MR-2D-1",
+  "seed_derivation": {
+    "initial": 17,
+    "multiplier": 31,
+    "modulus": 4294967296,
+    "zero_replacement": 1
+  },
+  "configs": {
+    "legacy": {
+      "revision": 1,
+      "rules_version": "MR-2D-1",
+      "spawn_two_weight": 90,
+      "spawn_four_weight": 10,
+      "content_revision": "MR-CONTENT-1"
+    },
+    "custom": {
+      "revision": 2,
+      "rules_version": "MR-2D-1",
+      "spawn_two_weight": 60,
+      "spawn_four_weight": 40,
+      "content_revision": "MR-CONTENT-1"
+    },
+    "all_fours": {
+      "revision": 4,
+      "rules_version": "MR-2D-1",
+      "spawn_two_weight": 0,
+      "spawn_four_weight": 100,
+      "content_revision": "MR-CONTENT-1"
+    },
+    "rolled_back": {
+      "revision": 3,
+      "rules_version": "MR-2D-1",
+      "spawn_two_weight": 90,
+      "spawn_four_weight": 10,
+      "content_revision": "MR-CONTENT-1"
+    }
+  },
+  "daily": [
+    {
+      "utc_date": "2026-10-22",
+      "config": "legacy",
+      "seed": 679157492,
+      "initial_checkpoint": {
+        "board": [0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 679157492,
+        "rng_state": 770011197,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "checkpoint_hash": "edc9f199b9a2256362196cb2d2a2ff678b0edeaf5e28ce2e5ad7758fbe8140c5"
+    },
+    {
+      "utc_date": "2026-10-22",
+      "config": "custom",
+      "seed": 679157492,
+      "initial_checkpoint": {
+        "board": [0, 0, 0, 0, 0, 0, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 679157492,
+        "rng_state": 770011197,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "spawn_two_weight": 60,
+        "spawn_four_weight": 40
+      },
+      "checkpoint_hash": "6187c20dccb7ce3ee2a13ed6077b38f28e7b52feb8547353ffc5f1e46674ef1e"
+    },
+    {
+      "utc_date": "2026-01-01",
+      "config": "legacy",
+      "seed": 678263699,
+      "initial_checkpoint": {
+        "board": [0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 678263699,
+        "rng_state": 3487586716,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "checkpoint_hash": "ffa9dcb93818135336afe934668863a8ee5cbe37da23d692a4d60726ccca12f8"
+    },
+    {
+      "utc_date": "2026-01-01",
+      "config": "custom",
+      "seed": 678263699,
+      "initial_checkpoint": {
+        "board": [0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 678263699,
+        "rng_state": 3487586716,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "spawn_two_weight": 60,
+        "spawn_four_weight": 40
+      },
+      "checkpoint_hash": "4beed668b2e7e1c57cd11628543d3b34e17172e066f81ccd89c5addd8a5d30b4"
+    },
+    {
+      "utc_date": "2026-12-31",
+      "config": "legacy",
+      "seed": 679217104,
+      "initial_checkpoint": {
+        "board": [0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 679217104,
+        "rng_state": 3486349827,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "checkpoint_hash": "64c357e35b9cdaabcdd1702df5ef36349cc29441100b728bc820aa9b850cdd7a"
+    },
+    {
+      "utc_date": "2026-12-31",
+      "config": "custom",
+      "seed": 679217104,
+      "initial_checkpoint": {
+        "board": [0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 679217104,
+        "rng_state": 3486349827,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "spawn_two_weight": 60,
+        "spawn_four_weight": 40
+      },
+      "checkpoint_hash": "85526f5fb53781f7be006a588c91e9a6500d88092e520e3adc2b9fd0e7cd7c83"
+    },
+    {
+      "utc_date": "2028-02-29",
+      "config": "legacy",
+      "seed": 2453300922,
+      "initial_checkpoint": {
+        "board": [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 2453300922,
+        "rng_state": 114694150,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "checkpoint_hash": "39954ad62e2d50680712567327e02cea35a84cc1e498f26288b90f76da1b7956"
+    },
+    {
+      "utc_date": "2028-02-29",
+      "config": "custom",
+      "seed": 2453300922,
+      "initial_checkpoint": {
+        "board": [2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 2453300922,
+        "rng_state": 114694150,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "spawn_two_weight": 60,
+        "spawn_four_weight": 40
+      },
+      "checkpoint_hash": "0cad7de615b83531114b844629e6d9f8d551c6187ac81c4570e7944b56c11253"
+    }
+  ],
+  "origins": [
+    {
+      "id": "practice",
+      "kind": "practice",
+      "mode": "endless",
+      "origin_mode": "endless",
+      "ranked": false,
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 4242,
+        "rng_state": 1338923481,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "content_id": "endless-4242",
+        "content_version": "MR-CONTENT-1"
+      },
+      "payload_hash": "960379b1099cbb450dc51ca23c952a468ed144ed76ad5995e91ebf7c8ce33f46"
+    },
+    {
+      "id": "daily",
+      "kind": "daily",
+      "mode": "daily",
+      "origin_mode": "daily",
+      "ranked": true,
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 679157492,
+        "rng_state": 770011197,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "content_id": "daily-2026-10-22",
+        "content_version": "MR-CONTENT-1"
+      },
+      "payload_hash": "426ef40bc9b04a70b4b8e32a5e8063fdadee8409b876067e373331e392de192a"
+    },
+    {
+      "id": "daily_rolled_back",
+      "kind": "daily",
+      "mode": "daily",
+      "origin_mode": "daily",
+      "ranked": true,
+      "config": "rolled_back",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 679157492,
+        "rng_state": 770011197,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "content_id": "daily-2026-10-22",
+        "content_version": "MR-CONTENT-1"
+      },
+      "payload_hash": "f12fdae40d31a1fde92cd99db48ff8302c0b803d3af7ba2b5a9f090065e566b3",
+      "differs_from": "daily"
+    },
+    {
+      "id": "endless",
+      "kind": "endless",
+      "mode": "endless",
+      "origin_mode": "endless",
+      "ranked": true,
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 4242,
+        "rng_state": 1338923481,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "content_id": "endless-4242",
+        "content_version": "MR-CONTENT-1"
+      },
+      "payload_hash": "960379b1099cbb450dc51ca23c952a468ed144ed76ad5995e91ebf7c8ce33f46"
+    },
+    {
+      "id": "rescue",
+      "kind": "rescue",
+      "mode": "rescue",
+      "origin_mode": "rescue",
+      "ranked": true,
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 99,
+        "rng_state": 2028006716,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "content_id": "rescue-099",
+        "content_version": "MR-CONTENT-1"
+      },
+      "payload_hash": "6684f4d548b7140abfbbdefed4ead89ebfabd57022e8d06d7250dd74449b7e5e"
+    },
+    {
+      "id": "relay_from_daily",
+      "kind": "relay_from_daily",
+      "mode": "rescue",
+      "origin_mode": "daily",
+      "ranked": true,
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 679157492,
+        "rng_state": 770011197,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "content_id": "daily-2026-10-22",
+        "content_version": "MR-CONTENT-1"
+      },
+      "payload_hash": "490a6bdea593c21ade88cc6d2b4ecf801d8c5a1ad84684512d7efd03f0350242",
+      "differs_from": "daily"
+    }
+  ],
+  "attempts": [
+    {
+      "id": "ordinary_completed",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left", "up", "right"],
+      "finish": false,
+      "expected": {
+        "outcome": "completed",
+        "legal_moves": 3,
+        "score_gained": 12,
+        "max_tile": 8,
+        "final": {
+          "board": [2, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0],
+          "score": 12,
+          "move_count": 3,
+          "seed": 12345,
+          "rng_state": 2188185676,
+          "rule_version": "MR-2D-1"
+        }
+      }
+    },
+    {
+      "id": "ordinary_in_progress",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left", "up"],
+      "finish": false,
+      "expected": {
+        "outcome": "in_progress",
+        "legal_moves": 2,
+        "score_gained": 4,
+        "max_tile": 4,
+        "final": {
+          "board": [4, 0, 0, 4, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0],
+          "score": 4,
+          "move_count": 2,
+          "seed": 12345,
+          "rng_state": 3680911160,
+          "rule_version": "MR-2D-1"
+        }
+      }
+    },
+    {
+      "id": "early_finish",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left"],
+      "finish": true,
+      "expected": {
+        "outcome": "early_finish",
+        "legal_moves": 1,
+        "score_gained": 0,
+        "max_tile": 4,
+        "final": {
+          "board": [0, 0, 0, 4, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+          "score": 0,
+          "move_count": 1,
+          "seed": 12345,
+          "rng_state": 3283620450,
+          "rule_version": "MR-2D-1"
+        }
+      }
+    },
+    {
+      "id": "early_finish_two_moves",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 679157492,
+        "rng_state": 770011197,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "content_id": "daily-2026-10-22",
+        "content_version": "MR-CONTENT-1"
+      },
+      "moves": ["left", "right"],
+      "finish": true,
+      "expected": {
+        "outcome": "early_finish",
+        "legal_moves": 2,
+        "score_gained": 4,
+        "max_tile": 4,
+        "final": {
+          "board": [0, 0, 0, 2, 0, 0, 0, 4, 2, 0, 0, 0, 0, 0, 0, 0],
+          "score": 4,
+          "move_count": 2,
+          "seed": 679157492,
+          "rng_state": 629488874,
+          "rule_version": "MR-2D-1"
+        }
+      }
+    },
+    {
+      "id": "rescue_completed",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 99,
+        "rng_state": 2028006716,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "content_id": "rescue-099",
+        "content_version": "MR-CONTENT-1"
+      },
+      "moves": ["left", "up", "right"],
+      "finish": false,
+      "expected": {
+        "outcome": "completed",
+        "legal_moves": 3,
+        "score_gained": 4,
+        "max_tile": 4,
+        "final": {
+          "board": [0, 0, 4, 2, 0, 0, 0, 2, 0, 0, 0, 4, 0, 0, 0, 0],
+          "score": 4,
+          "move_count": 3,
+          "seed": 99,
+          "rng_state": 3444257550,
+          "rule_version": "MR-2D-1"
+        }
+      }
+    },
+    {
+      "id": "rescue_budget_two",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 99,
+        "rng_state": 2028006716,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 2,
+        "content_id": "rescue-099",
+        "content_version": "MR-CONTENT-1"
+      },
+      "moves": ["left", "up"],
+      "finish": false,
+      "expected": {
+        "outcome": "completed",
+        "legal_moves": 2,
+        "score_gained": 4,
+        "max_tile": 4,
+        "final": {
+          "board": [4, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+          "score": 4,
+          "move_count": 2,
+          "seed": 99,
+          "rng_state": 2902822866,
+          "rule_version": "MR-2D-1"
+        }
+      }
+    },
+    {
+      "id": "terminal",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [2, 4, 2, 4, 4, 2, 4, 2, 8, 16, 8, 16, 8, 16, 8, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 7,
+        "rng_state": 12345,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["right"],
+      "finish": false,
+      "expected": {
+        "outcome": "terminal",
+        "legal_moves": 1,
+        "score_gained": 0,
+        "max_tile": 16,
+        "final": {
+          "board": [2, 4, 2, 4, 4, 2, 4, 2, 8, 16, 8, 16, 2, 8, 16, 8],
+          "score": 0,
+          "move_count": 1,
+          "seed": 7,
+          "rng_state": 1697253807,
+          "rule_version": "MR-2D-1"
+        }
+      }
+    },
+    {
+      "id": "custom_weights_completed",
+      "config": "custom",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "spawn_two_weight": 60,
+        "spawn_four_weight": 40
+      },
+      "moves": ["left", "up", "right"],
+      "finish": false,
+      "expected": {
+        "outcome": "completed",
+        "legal_moves": 3,
+        "score_gained": 4,
+        "max_tile": 4,
+        "final": {
+          "board": [0, 0, 0, 4, 0, 2, 0, 4, 0, 0, 0, 0, 0, 0, 0, 2],
+          "score": 4,
+          "move_count": 3,
+          "seed": 12345,
+          "rng_state": 2188185676,
+          "rule_version": "MR-2D-1"
+        }
+      }
+    },
+    {
+      "id": "custom_all_fours",
+      "config": "all_fours",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "spawn_two_weight": 0,
+        "spawn_four_weight": 100
+      },
+      "moves": ["left", "up", "right"],
+      "finish": false,
+      "expected": {
+        "outcome": "completed",
+        "legal_moves": 3,
+        "score_gained": 8,
+        "max_tile": 8,
+        "final": {
+          "board": [0, 0, 8, 4, 0, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0],
+          "score": 8,
+          "move_count": 3,
+          "seed": 12345,
+          "rng_state": 2188185676,
+          "rule_version": "MR-2D-1"
+        }
+      }
+    },
+    {
+      "id": "tile_cap_partial_merge",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [1073741824, 1073741824, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 7,
+        "rng_state": 12345,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left"],
+      "finish": false,
+      "expected": {
+        "outcome": "in_progress",
+        "legal_moves": 1,
+        "score_gained": 4,
+        "max_tile": 1073741824,
+        "final": {
+          "board": [1073741824, 1073741824, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0],
+          "score": 4,
+          "move_count": 1,
+          "seed": 7,
+          "rng_state": 1697253807,
+          "rule_version": "MR-2D-1"
+        }
+      }
+    },
+    {
+      "id": "explicit_legacy_weights",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "spawn_two_weight": 90,
+        "spawn_four_weight": 10
+      },
+      "moves": ["left", "up", "right"],
+      "finish": false,
+      "expected": {
+        "outcome": "completed",
+        "legal_moves": 3,
+        "score_gained": 12,
+        "max_tile": 8,
+        "final": {
+          "board": [2, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0],
+          "score": 12,
+          "move_count": 3,
+          "seed": 12345,
+          "rng_state": 2188185676,
+          "rule_version": "MR-2D-1"
+        }
+      }
+    }
+  ],
+  "negative": [
+    {
+      "id": "score_over_limit",
+      "category": "numeric_limit",
+      "op": "checkpoint",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 1000000000001,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      }
+    },
+    {
+      "id": "move_count_over_limit",
+      "category": "numeric_limit",
+      "op": "checkpoint",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 100001,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      }
+    },
+    {
+      "id": "seed_over_uint32",
+      "category": "numeric_limit",
+      "op": "checkpoint",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 4294967296,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      }
+    },
+    {
+      "id": "negative_seed",
+      "category": "numeric_limit",
+      "op": "checkpoint",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": -1,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      }
+    },
+    {
+      "id": "rng_state_zero",
+      "category": "numeric_limit",
+      "op": "checkpoint",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 0,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      }
+    },
+    {
+      "id": "rng_state_over_uint32",
+      "category": "numeric_limit",
+      "op": "checkpoint",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 4294967296,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      }
+    },
+    {
+      "id": "budget_four",
+      "category": "numeric_limit",
+      "op": "checkpoint",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 4
+      }
+    },
+    {
+      "id": "budget_zero",
+      "category": "numeric_limit",
+      "op": "checkpoint",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 0
+      }
+    },
+    {
+      "id": "fractional_score",
+      "category": "numeric_limit",
+      "op": "checkpoint",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 1.5,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      }
+    },
+    {
+      "id": "tile_over_cap",
+      "category": "numeric_limit",
+      "op": "checkpoint",
+      "checkpoint": {
+        "board": [2147483648, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      }
+    },
+    {
+      "id": "tile_not_power_of_two",
+      "category": "numeric_limit",
+      "op": "checkpoint",
+      "checkpoint": {
+        "board": [3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      }
+    },
+    {
+      "id": "board_length_fifteen",
+      "category": "numeric_limit",
+      "op": "checkpoint",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      }
+    },
+    {
+      "id": "weights_sum_not_100",
+      "category": "numeric_limit",
+      "op": "checkpoint",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "spawn_two_weight": 80,
+        "spawn_four_weight": 30
+      }
+    },
+    {
+      "id": "weight_negative",
+      "category": "numeric_limit",
+      "op": "checkpoint",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "spawn_two_weight": 110,
+        "spawn_four_weight": -10
+      }
+    },
+    {
+      "id": "weight_unpaired",
+      "category": "numeric_limit",
+      "op": "checkpoint",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "spawn_four_weight": 10
+      }
+    },
+    {
+      "id": "terminal_checkpoint",
+      "category": "numeric_limit",
+      "op": "checkpoint",
+      "checkpoint": {
+        "board": [2, 4, 2, 4, 4, 2, 4, 2, 2, 4, 2, 4, 4, 2, 4, 2],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      }
+    },
+    {
+      "id": "date_feb_30",
+      "category": "numeric_limit",
+      "op": "daily_date",
+      "utc_date": "2026-02-30"
+    },
+    {
+      "id": "date_not_padded",
+      "category": "numeric_limit",
+      "op": "daily_date",
+      "utc_date": "2026-1-1"
+    },
+    {
+      "id": "move_limit",
+      "category": "numeric_limit",
+      "op": "attempt",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 100000,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left"],
+      "finish": false,
+      "error_code": "move_limit"
+    },
+    {
+      "id": "score_limit",
+      "category": "numeric_limit",
+      "op": "attempt",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 999999999998,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left"],
+      "finish": false,
+      "error_code": "score_limit"
+    },
+    {
+      "id": "tile_cap_no_op",
+      "category": "numeric_limit",
+      "op": "attempt",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [1073741824, 1073741824, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left"],
+      "finish": false,
+      "error_code": "no_op"
+    },
+    {
+      "id": "rules_version_foreign",
+      "category": "foreign_config",
+      "op": "config",
+      "config": {
+        "revision": 1,
+        "rules_version": "MR-3D-1",
+        "spawn_two_weight": 90,
+        "spawn_four_weight": 10,
+        "content_revision": "MR-CONTENT-1"
+      }
+    },
+    {
+      "id": "config_weights_invalid",
+      "category": "foreign_config",
+      "op": "config",
+      "config": {
+        "revision": 1,
+        "rules_version": "MR-2D-1",
+        "spawn_two_weight": 70,
+        "spawn_four_weight": 20,
+        "content_revision": "MR-CONTENT-1"
+      }
+    },
+    {
+      "id": "config_revision_zero",
+      "category": "foreign_config",
+      "op": "config",
+      "config": {
+        "revision": 0,
+        "rules_version": "MR-2D-1",
+        "spawn_two_weight": 90,
+        "spawn_four_weight": 10,
+        "content_revision": "MR-CONTENT-1"
+      }
+    },
+    {
+      "id": "config_extra_field",
+      "category": "foreign_config",
+      "op": "config",
+      "config": {
+        "revision": 1,
+        "rules_version": "MR-2D-1",
+        "spawn_two_weight": 90,
+        "spawn_four_weight": 10,
+        "content_revision": "MR-CONTENT-1",
+        "bonus": 1
+      }
+    },
+    {
+      "id": "weights_foreign_to_config",
+      "category": "foreign_config",
+      "op": "attempt",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "spawn_two_weight": 60,
+        "spawn_four_weight": 40
+      },
+      "moves": ["left"],
+      "finish": false,
+      "error_code": "config_mismatch"
+    },
+    {
+      "id": "weights_missing_for_custom",
+      "category": "foreign_config",
+      "op": "attempt",
+      "config": "custom",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left"],
+      "finish": false,
+      "error_code": "config_mismatch"
+    },
+    {
+      "id": "legacy_weights_under_custom",
+      "category": "foreign_config",
+      "op": "attempt",
+      "config": "custom",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "spawn_two_weight": 90,
+        "spawn_four_weight": 10
+      },
+      "moves": ["left"],
+      "finish": false,
+      "error_code": "config_mismatch"
+    },
+    {
+      "id": "content_version_foreign",
+      "category": "foreign_content",
+      "op": "attempt",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "content_id": "rescue-099",
+        "content_version": "MR-CONTENT-0"
+      },
+      "moves": ["left"],
+      "finish": false,
+      "error_code": "content_version_mismatch"
+    },
+    {
+      "id": "hash_flipped_char",
+      "category": "hash_mismatch",
+      "op": "payload_hash",
+      "kind": "daily",
+      "config_revision": 1,
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 679157492,
+        "rng_state": 770011197,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "content_id": "daily-2026-10-22",
+        "content_version": "MR-CONTENT-1"
+      },
+      "claimed_hash": "026ef40bc9b04a70b4b8e32a5e8063fdadee8409b876067e373331e392de192a",
+      "error_code": "hash_mismatch"
+    },
+    {
+      "id": "hash_other_revision",
+      "category": "hash_mismatch",
+      "op": "payload_hash",
+      "kind": "daily",
+      "config_revision": 3,
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 679157492,
+        "rng_state": 770011197,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "content_id": "daily-2026-10-22",
+        "content_version": "MR-CONTENT-1"
+      },
+      "claimed_hash": "426ef40bc9b04a70b4b8e32a5e8063fdadee8409b876067e373331e392de192a",
+      "error_code": "hash_mismatch"
+    },
+    {
+      "id": "hash_other_origin",
+      "category": "hash_mismatch",
+      "op": "payload_hash",
+      "kind": "relay_from_daily",
+      "config_revision": 1,
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 679157492,
+        "rng_state": 770011197,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "content_id": "daily-2026-10-22",
+        "content_version": "MR-CONTENT-1"
+      },
+      "claimed_hash": "426ef40bc9b04a70b4b8e32a5e8063fdadee8409b876067e373331e392de192a",
+      "error_code": "hash_mismatch"
+    },
+    {
+      "id": "hash_other_mode",
+      "category": "hash_mismatch",
+      "op": "payload_hash",
+      "kind": "endless",
+      "config_revision": 1,
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 679157492,
+        "rng_state": 770011197,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3,
+        "content_id": "daily-2026-10-22",
+        "content_version": "MR-CONTENT-1"
+      },
+      "claimed_hash": "426ef40bc9b04a70b4b8e32a5e8063fdadee8409b876067e373331e392de192a",
+      "error_code": "hash_mismatch"
+    },
+    {
+      "id": "trailing_move_after_terminal",
+      "category": "inconsistent_result",
+      "op": "attempt",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [2, 4, 2, 4, 4, 2, 4, 2, 8, 16, 8, 16, 8, 16, 8, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["right", "left"],
+      "finish": false,
+      "error_code": "trailing_move"
+    },
+    {
+      "id": "no_op_move",
+      "category": "inconsistent_result",
+      "op": "attempt",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [2, 4, 2, 4, 4, 2, 4, 2, 8, 16, 8, 16, 8, 16, 8, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left"],
+      "finish": false,
+      "error_code": "no_op"
+    },
+    {
+      "id": "over_budget",
+      "category": "inconsistent_result",
+      "op": "attempt",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 1
+      },
+      "moves": ["left", "up"],
+      "finish": false,
+      "error_code": "over_budget"
+    },
+    {
+      "id": "claim_score_gained",
+      "category": "inconsistent_result",
+      "op": "result",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left"],
+      "finish": true,
+      "claim": {
+        "outcome": "early_finish",
+        "legal_moves": 1,
+        "score_gained": 1,
+        "max_tile": 4,
+        "final": {
+          "board": [0, 0, 0, 4, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+          "score": 0,
+          "move_count": 1,
+          "seed": 12345,
+          "rng_state": 3283620450,
+          "rule_version": "MR-2D-1"
+        }
+      },
+      "error_code": "inconsistent_result"
+    },
+    {
+      "id": "claim_outcome_completed",
+      "category": "inconsistent_result",
+      "op": "result",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left"],
+      "finish": true,
+      "claim": {
+        "outcome": "completed",
+        "legal_moves": 1,
+        "score_gained": 0,
+        "max_tile": 4,
+        "final": {
+          "board": [0, 0, 0, 4, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+          "score": 0,
+          "move_count": 1,
+          "seed": 12345,
+          "rng_state": 3283620450,
+          "rule_version": "MR-2D-1"
+        }
+      },
+      "error_code": "inconsistent_result"
+    },
+    {
+      "id": "claim_outcome_terminal",
+      "category": "inconsistent_result",
+      "op": "result",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left"],
+      "finish": true,
+      "claim": {
+        "outcome": "terminal",
+        "legal_moves": 1,
+        "score_gained": 0,
+        "max_tile": 4,
+        "final": {
+          "board": [0, 0, 0, 4, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+          "score": 0,
+          "move_count": 1,
+          "seed": 12345,
+          "rng_state": 3283620450,
+          "rule_version": "MR-2D-1"
+        }
+      },
+      "error_code": "inconsistent_result"
+    },
+    {
+      "id": "claim_legal_moves",
+      "category": "inconsistent_result",
+      "op": "result",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left"],
+      "finish": true,
+      "claim": {
+        "outcome": "early_finish",
+        "legal_moves": 2,
+        "score_gained": 0,
+        "max_tile": 4,
+        "final": {
+          "board": [0, 0, 0, 4, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+          "score": 0,
+          "move_count": 1,
+          "seed": 12345,
+          "rng_state": 3283620450,
+          "rule_version": "MR-2D-1"
+        }
+      },
+      "error_code": "inconsistent_result"
+    },
+    {
+      "id": "claim_max_tile",
+      "category": "inconsistent_result",
+      "op": "result",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left"],
+      "finish": true,
+      "claim": {
+        "outcome": "early_finish",
+        "legal_moves": 1,
+        "score_gained": 0,
+        "max_tile": 1024,
+        "final": {
+          "board": [0, 0, 0, 4, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+          "score": 0,
+          "move_count": 1,
+          "seed": 12345,
+          "rng_state": 3283620450,
+          "rule_version": "MR-2D-1"
+        }
+      },
+      "error_code": "inconsistent_result"
+    },
+    {
+      "id": "claim_final_score",
+      "category": "inconsistent_result",
+      "op": "result",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left"],
+      "finish": true,
+      "claim": {
+        "outcome": "early_finish",
+        "legal_moves": 1,
+        "score_gained": 0,
+        "max_tile": 4,
+        "final": {
+          "board": [0, 0, 0, 4, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+          "score": 99,
+          "move_count": 1,
+          "seed": 12345,
+          "rng_state": 3283620450,
+          "rule_version": "MR-2D-1"
+        }
+      },
+      "error_code": "inconsistent_result"
+    },
+    {
+      "id": "claim_final_rng",
+      "category": "inconsistent_result",
+      "op": "result",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left"],
+      "finish": true,
+      "claim": {
+        "outcome": "early_finish",
+        "legal_moves": 1,
+        "score_gained": 0,
+        "max_tile": 4,
+        "final": {
+          "board": [0, 0, 0, 4, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+          "score": 0,
+          "move_count": 1,
+          "seed": 12345,
+          "rng_state": 5,
+          "rule_version": "MR-2D-1"
+        }
+      },
+      "error_code": "inconsistent_result"
+    },
+    {
+      "id": "claim_final_move_count",
+      "category": "inconsistent_result",
+      "op": "result",
+      "config": "legacy",
+      "checkpoint": {
+        "board": [0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
+        "score": 0,
+        "move_count": 0,
+        "seed": 12345,
+        "rng_state": 1955480042,
+        "rule_version": "MR-2D-1",
+        "max_legal_moves": 3
+      },
+      "moves": ["left"],
+      "finish": true,
+      "claim": {
+        "outcome": "early_finish",
+        "legal_moves": 1,
+        "score_gained": 0,
+        "max_tile": 4,
+        "final": {
+          "board": [0, 0, 0, 4, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+          "score": 0,
+          "move_count": 7,
+          "seed": 12345,
+          "rng_state": 3283620450,
+          "rule_version": "MR-2D-1"
+        }
+      },
+      "error_code": "inconsistent_result"
+    }
+  ]
+}

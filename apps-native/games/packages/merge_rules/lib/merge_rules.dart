@@ -2,6 +2,8 @@ export 'src/merge_board.dart';
 export 'src/merge_attempt.dart';
 export 'src/merge_codec.dart';
 export 'src/merge_config.dart';
+export 'src/merge_config_domain.dart';
+export 'src/merge_config_fixture.dart';
 export 'src/merge_content.dart';
 export 'src/merge_game.dart';
 export 'src/merge_models.dart';

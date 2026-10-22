@@ -81,7 +81,7 @@ export function parseCheckpoint(value: unknown): MergeCheckpoint | null {
     seed < 0 ||
     seed > 0xffffffff ||
     rngState === null ||
-    rngState < 0 ||
+    rngState < 1 ||
     rngState > 0xffffffff ||
     value.ruleVersion !== MERGE_RELAY_RULE_VERSION ||
     (maxLegalMoves !== undefined &&
@@ -95,6 +95,7 @@ export function parseCheckpoint(value: unknown): MergeCheckpoint | null {
       (spawnTwoWeight === null || spawnTwoWeight < 0 || spawnTwoWeight > 100)) ||
     (spawnFourWeight !== undefined &&
       (spawnFourWeight === null || spawnFourWeight < 0 || spawnFourWeight > 100)) ||
+    (spawnTwoWeight === undefined) !== (spawnFourWeight === undefined) ||
     (typeof spawnTwoWeight === "number" &&
       typeof spawnFourWeight === "number" &&
       spawnTwoWeight + spawnFourWeight !== 100)
@@ -115,7 +116,7 @@ export function parseCheckpoint(value: unknown): MergeCheckpoint | null {
   };
 }
 
-function parseWireCheckpoint(value: unknown): MergeCheckpoint | null {
+export function parseWireCheckpoint(value: unknown): MergeCheckpoint | null {
   if (!isObject(value)) return null;
   return parseCheckpoint({
     board: value.board,

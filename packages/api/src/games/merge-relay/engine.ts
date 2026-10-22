@@ -1,9 +1,18 @@
 import { createHash } from "node:crypto";
 import type { MergeCheckpoint, MergeDirection, MergeMode } from "./contracts";
 import { MERGE_RELAY_RULE_VERSION } from "./contracts";
+import {
+  MERGE_MAX_MOVE_COUNT,
+  MERGE_MAX_SCORE,
+  MERGE_MAX_TILE,
+  moveBoard,
+  Rng,
+  sameBoard,
+  spawnValue,
+} from "./engine-core";
 import { parseCheckpoint } from "./validation";
 
-class MergeEngineError extends Error {
+export class MergeEngineError extends Error {
   constructor(
     readonly code: string,
     message: string,
@@ -24,7 +33,8 @@ export function validateCheckpoint(checkpoint: MergeCheckpoint): void {
     throw new MergeEngineError("invalid_checkpoint", "Checkpoint payload is invalid");
   if (
     checkpoint.board.some(
-      (value) => value < 0 || value > 1_073_741_824 || (value !== 0 && (value & (value - 1)) !== 0),
+      (value) =>
+        value < 0 || value > MERGE_MAX_TILE || (value !== 0 && (value & (value - 1)) !== 0),
     )
   )
     throw new MergeEngineError("invalid_checkpoint", "Checkpoint contains an invalid tile");
@@ -35,6 +45,7 @@ export function hasLegalMove(board: readonly number[]): boolean {
   for (let row = 0; row < 4; row += 1) {
     for (let column = 0; column < 4; column += 1) {
       const index = row * 4 + column;
+      if (board[index] >= MERGE_MAX_TILE) continue;
       if (row < 3 && board[index] === board[index + 4]) return true;
       if (column < 3 && board[index] === board[index + 1]) return true;
     }
@@ -53,19 +64,16 @@ export function applyMove(checkpoint: MergeCheckpoint, direction: MergeDirection
   const moved = moveBoard(checkpoint.board, direction);
   if (sameBoard(checkpoint.board, moved.board))
     return { checkpoint, changed: false, scoreDelta: 0, reason: "no_op" };
+  if (checkpoint.moveCount >= MERGE_MAX_MOVE_COUNT)
+    throw new MergeEngineError("move_limit", "Merge move limit exceeded");
+  if (checkpoint.score + moved.scoreDelta > MERGE_MAX_SCORE)
+    throw new MergeEngineError("score_limit", "Merge score limit exceeded");
   const rng = new Rng(checkpoint.rngState);
   const empty = moved.board.flatMap((value, index) => (value === 0 ? [index] : []));
   let board = moved.board;
   if (empty.length > 0) {
     const index = empty[rng.nextInt(empty.length)];
-    const value =
-      checkpoint.spawnFourWeight === undefined
-        ? rng.nextInt(10) === 0
-          ? 4
-          : 2
-        : rng.nextInt(100) < checkpoint.spawnFourWeight
-          ? 4
-          : 2;
+    const value = spawnValue(rng, checkpoint.spawnFourWeight);
     board = [...board];
     board[index] = value;
   }
@@ -162,6 +170,7 @@ function stableJson(value: unknown): string {
 }
 
 export function dailySeed(date: string): number {
+  if (!isUtcDate(date)) throw new MergeEngineError("invalid_date", "Daily date must be a UTC date");
   let hash = 17;
   for (const character of date) {
     hash = (Math.imul(hash, 31) + (character.codePointAt(0) ?? 0)) >>> 0;
@@ -174,35 +183,18 @@ export function initialCheckpoint(
   spawnTwoWeight?: number,
   spawnFourWeight?: number,
 ): MergeCheckpoint {
-  let state = seed >>> 0 || 0x6d2b79f5;
+  const rng = new Rng(seed);
   const board = Array<number>(16).fill(0);
-  const next = (): number => {
-    state ^= (state << 13) >>> 0;
-    state >>>= 0;
-    state ^= state >>> 17;
-    state >>>= 0;
-    state ^= (state << 5) >>> 0;
-    state >>>= 0;
-    state = state || 0x6d2b79f5;
-    return state;
-  };
   for (let count = 0; count < 2; count += 1) {
     const empty = board.flatMap((value, index) => (value === 0 ? [index] : []));
-    board[empty[next() % empty.length]] =
-      spawnFourWeight === undefined
-        ? next() % 10 === 0
-          ? 4
-          : 2
-        : next() % 100 < spawnFourWeight
-          ? 4
-          : 2;
+    board[empty[rng.nextInt(empty.length)]] = spawnValue(rng, spawnFourWeight);
   }
   return {
     board,
     score: 0,
     moveCount: 0,
     seed,
-    rngState: state,
+    rngState: rng.state,
     ruleVersion: MERGE_RELAY_RULE_VERSION,
     ...(spawnTwoWeight === undefined || spawnFourWeight === undefined
       ? {}
@@ -210,81 +202,8 @@ export function initialCheckpoint(
   };
 }
 
-class Rng {
-  private value: number;
-
-  constructor(state: number) {
-    this.value = state >>> 0 || 0x6d2b79f5;
-  }
-
-  get state(): number {
-    return this.value >>> 0;
-  }
-
-  nextInt(maximum: number): number {
-    return this.nextUint32() % maximum;
-  }
-
-  private nextUint32(): number {
-    this.value ^= (this.value << 13) >>> 0;
-    this.value >>>= 0;
-    this.value ^= this.value >>> 17;
-    this.value >>>= 0;
-    this.value ^= (this.value << 5) >>> 0;
-    this.value >>>= 0;
-    this.value = this.value || 0x6d2b79f5;
-    return this.value;
-  }
-}
-
-function moveBoard(
-  cells: readonly number[],
-  direction: MergeDirection,
-): { board: number[]; scoreDelta: number } {
-  const result = [...cells];
-  let scoreDelta = 0;
-  for (let line = 0; line < 4; line += 1) {
-    // `lineIndexes` already returns each line's indexes in anchor-first
-    // order for the requested direction (e.g. "right" starts at the
-    // rightmost cell), so that single order is both the correct
-    // compaction/merge scan order and the correct placement order for the
-    // result -- it's used directly for both.
-    //
-    // Fix (task 13, round 2): the previous code additionally reversed the
-    // scan order into `oriented`, then reversed the merged output again
-    // into `output`, which cancels out and makes "right"/"down" silently
-    // behave exactly like "left"/"up". That's the same bug found and
-    // fixed in the Dart engine
-    // (apps-native/games/packages/merge_rules/lib/src/merge_rules.dart) --
-    // left as-is, the server would validate right/down client moves
-    // against a different (wrong) board than the client actually computed.
-    const indexes = lineIndexes(direction, line);
-    const values = indexes.map((index) => cells[index]);
-    const compact = values.filter((value) => value !== 0);
-    const merged: number[] = [];
-    for (let index = 0; index < compact.length; index += 1) {
-      if (index + 1 < compact.length && compact[index] === compact[index + 1]) {
-        const value = compact[index] * 2;
-        merged.push(value);
-        scoreDelta += value;
-        index += 1;
-      } else merged.push(compact[index]);
-    }
-    while (merged.length < 4) merged.push(0);
-    indexes.forEach((index, position) => {
-      result[index] = merged[position];
-    });
-  }
-  return { board: result, scoreDelta };
-}
-
-function lineIndexes(direction: MergeDirection, line: number): number[] {
-  if (direction === "left") return [line * 4, line * 4 + 1, line * 4 + 2, line * 4 + 3];
-  if (direction === "right") return [line * 4 + 3, line * 4 + 2, line * 4 + 1, line * 4];
-  if (direction === "up") return [line, line + 4, line + 8, line + 12];
-  return [line + 12, line + 8, line + 4, line];
-}
-
-function sameBoard(first: readonly number[], second: readonly number[]): boolean {
-  return first.every((value, index) => value === second[index]);
+function isUtcDate(value: string): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const parsed = new Date(`${value}T00:00:00Z`);
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().startsWith(`${value}T`);
 }
