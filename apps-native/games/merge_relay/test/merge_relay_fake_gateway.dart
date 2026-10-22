@@ -16,6 +16,10 @@ final class FakeRelayGateway implements MergeRelayGateway {
   var failNextCreate = false;
   Object? resolveError;
   Object? configError;
+  Object? dailyError;
+  Future<MergeRelayDailyChallenge>? dailyFuture;
+  MergeRelayDailyChallenge? dailyResult;
+  var dailyCalls = 0;
   Object? guestError;
   var finalizeCalls = 0;
   var failFinalizeAfterCommit = false;
@@ -224,8 +228,12 @@ final class FakeRelayGateway implements MergeRelayGateway {
   }
 
   @override
-  Future<MergeRelayDailyChallenge> getDaily(String date) async =>
-      throw UnimplementedError();
+  Future<MergeRelayDailyChallenge> getDaily(String date) async {
+    dailyCalls += 1;
+    if (dailyFuture != null) return dailyFuture!;
+    if (dailyError != null) throw dailyError!;
+    return dailyResult ?? _testDaily(date);
+  }
 
   @override
   Future<MergeRelayConfigRevision> getConfig() async {
@@ -350,4 +358,16 @@ MergeRelayAttempt testAttempt(
   version: version,
   resultId: resultId,
   updatedAt: DateTime.utc(2026),
+);
+
+MergeRelayDailyChallenge _testDaily(String date) => MergeRelayDailyChallenge(
+  date: date,
+  checkpoint: MergeRelayCheckpoint(
+    state: MergeGameState.newGame(seed: 4242),
+    maxLegalMoves: 3,
+  ),
+  maxLegalMoves: 3,
+  contentRevision: 'MR-CONTENT-1',
+  generated: true,
+  updatedAt: DateTime.utc(2026, 9, 17),
 );

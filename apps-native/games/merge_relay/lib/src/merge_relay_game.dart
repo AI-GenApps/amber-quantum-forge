@@ -10,13 +10,17 @@ import 'audio/merge_relay_audio_service.dart';
 import 'merge_relay_board_art.dart';
 import 'merge_relay_content.dart';
 import 'merge_relay_content_validation.dart';
+import 'merge_relay_daily_status.dart';
 import 'merge_relay_features.dart';
 import 'merge_relay_haptics.dart';
 import 'merge_relay_models.dart';
 import 'merge_relay_relay_controller.dart';
+import 'merge_relay_service_outcome.dart';
+import 'network/merge_relay_wire.dart';
 import 'platform/merge_relay_pgs_account.dart';
 import 'platform/merge_relay_play_games.dart';
 
+part 'merge_relay_daily_actions.dart';
 part 'merge_relay_game_actions.dart';
 part 'merge_relay_game_preferences.dart';
 part 'merge_relay_lifecycle.dart';
@@ -121,6 +125,9 @@ final class MergeRelayGame extends FlameGame {
   /// persisted.
   final ValueNotifier<int> bestEndlessScore;
   final ValueNotifier<bool> roundComplete;
+  final ValueNotifier<MergeRelayDailyStatus> dailyStatus = ValueNotifier(
+    const MergeRelayDailyStatus.local(),
+  );
   final ValueNotifier<bool> restoreFailed;
   final ValueNotifier<MergeRelayPlayGamesState> playGamesState;
 
@@ -232,6 +239,7 @@ final class MergeRelayGame extends FlameGame {
     completedRescueIds.dispose();
     bestEndlessScore.dispose();
     roundComplete.dispose();
+    dailyStatus.dispose();
     restoreFailed.dispose();
     playGamesState.dispose();
     blockedMoveSignal.dispose();

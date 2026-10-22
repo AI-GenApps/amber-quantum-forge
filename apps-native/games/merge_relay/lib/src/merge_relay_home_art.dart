@@ -29,8 +29,29 @@ final class _HomeHeader extends StatelessWidget {
         final logoWidth = constraints.maxWidth * 0.6;
         return Row(
           children: [
-            SizedBox(width: logoWidth, child: MergeRelayArtManifest.logoWide()),
-            const Spacer(),
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: logoWidth),
+                  child: MergeRelayArtManifest.logoWide(),
+                ),
+              ),
+            ),
+            if (game.pgsAccountController != null) ...[
+              MrIconButton(
+                icon: Icons.account_circle_outlined,
+                tooltip: 'Profile',
+                onPressed: () => showMergeRelayProfile(context, game, theme),
+              ),
+              const SizedBox(width: 6),
+              MrIconButton(
+                icon: Icons.emoji_events_outlined,
+                tooltip: 'Achievements',
+                onPressed: game.showPlayGamesAchievements,
+              ),
+              const SizedBox(width: 6),
+            ],
             MrIconButton(
               icon: Icons.tune_rounded,
               tooltip: 'Settings',

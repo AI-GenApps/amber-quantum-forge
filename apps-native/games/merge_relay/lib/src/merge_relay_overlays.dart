@@ -108,7 +108,7 @@ Future<void> showMergeRelaySettings(
               if (game.features.socialEnabled &&
                   game.tutorialComplete.value &&
                   game.pgsAccountController != null)
-                _PgsSettings(game: game, theme: theme),
+                MergeRelayPgsSettings(game: game, theme: theme),
               const SizedBox(height: 6),
               Text(
                 'Choose a palette',
@@ -253,8 +253,12 @@ final class _MrSwitchRow extends StatelessWidget {
   }
 }
 
-final class _PgsSettings extends StatelessWidget {
-  const _PgsSettings({required this.game, required this.theme});
+final class MergeRelayPgsSettings extends StatelessWidget {
+  const MergeRelayPgsSettings({
+    required this.game,
+    required this.theme,
+    super.key,
+  });
 
   final MergeRelayGame game;
   final MergeRelayTheme theme;

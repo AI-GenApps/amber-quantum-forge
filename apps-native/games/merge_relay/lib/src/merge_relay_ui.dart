@@ -38,6 +38,7 @@ final class MergeRelayScreen extends StatelessWidget {
         game.roundComplete,
         game.playGamesState,
         game.restoreFailed,
+        game.dailyStatus,
       ]),
       builder: (context, _) {
         final theme = relayThemeFor(game.preferences.value.themeId);

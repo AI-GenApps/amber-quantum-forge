@@ -52,6 +52,7 @@ extension MergeRelayGameActions on MergeRelayGame {
     if (!_readyForAction) return;
     isPaused.value = false;
     route.value = MergeRelayRoute.home;
+    unawaited(refreshDaily());
     _queueWrite();
   }
 
@@ -191,7 +192,7 @@ extension MergeRelayGameActions on MergeRelayGame {
     if (!_readyForAction) return;
     final date = _mergeRelayUtcDate(clock.now());
     _setState(
-      MergeGameState.newGame(seed: _mergeRelayDailySeed(date)),
+      _dailyStartState(date),
       MergeRelayMode.daily,
       null,
       dailyDate: date,

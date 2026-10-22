@@ -7,6 +7,7 @@ import 'merge_relay_campaign_progress_panel.dart';
 import 'merge_relay_chapter_strip.dart';
 import 'merge_relay_models.dart';
 import 'merge_relay_overlays.dart';
+import 'merge_relay_profile_sheet.dart';
 import 'merge_relay_theme.dart';
 import 'ui/mr_button.dart';
 import 'ui/mr_icon_button.dart';
@@ -14,6 +15,7 @@ import 'ui/mr_panel.dart';
 import 'ui/mr_tokens.dart';
 
 part 'merge_relay_home_art.dart';
+part 'merge_relay_home_daily.dart';
 part 'merge_relay_home_widgets.dart';
 
 /// Merge Relay's Home screen (restyled task 11): a wordmark header, a hero
@@ -78,6 +80,7 @@ final class MergeRelayHome extends StatelessWidget {
               ],
             ),
           ),
+          _DailyStatusNote(game: game, theme: theme),
           const SizedBox(height: 16),
           MergeRelayCampaignProgressPanel(
             theme: theme,

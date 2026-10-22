@@ -72,7 +72,13 @@ extension MergeRelayGamePlatformActions on MergeRelayGame {
   }
 
   Future<void> showPlayGamesAchievements() async {
-    if (!canShowPlayGamesActions) return;
+    if (_disposed) return;
+    if (!canShowPlayGamesActions) {
+      if (features.socialEnabled) {
+        _announce('Link Play Games in your profile to see achievements.');
+      }
+      return;
+    }
     final result = await pgsAccountController!.showAchievements();
     if (_disposed ||
         result.status == MergeRelayPlayGamesActionStatus.cancelled) {

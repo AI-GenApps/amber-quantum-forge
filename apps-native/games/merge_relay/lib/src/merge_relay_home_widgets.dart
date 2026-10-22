@@ -97,9 +97,6 @@ final class _RestoreFailure extends StatelessWidget {
   }
 }
 
-/// A full-width tappable row opening the chapter map — restyled task 11
-/// from a plain "Rescue paths" action tile into one that also states
-/// campaign progress, matching the Daily/Endless cards below it.
 final class _RescueAction extends StatelessWidget {
   const _RescueAction({
     required this.game,
@@ -225,8 +222,6 @@ final class _RelayAction extends StatelessWidget {
   }
 }
 
-/// A compact home card: an icon, a title, and a one-line status — the
-/// shared shape for [_DailyCard] and [_EndlessCard].
 final class _HomeCard extends StatelessWidget {
   const _HomeCard({
     required this.icon,
@@ -280,31 +275,6 @@ final class _HomeCard extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-final class _DailyCard extends StatelessWidget {
-  const _DailyCard({required this.game, required this.theme, this.result});
-
-  final MergeRelayGame game;
-  final MergeRelayTheme theme;
-  final MergeRelayResult? result;
-
-  @override
-  Widget build(BuildContext context) {
-    final subtitle = switch (result?.outcome) {
-      null => "Today's board",
-      MergeRelayOutcome.completed => 'Completed today',
-      _ => 'Try again today',
-    };
-    return _HomeCard(
-      icon: Icons.today_rounded,
-      accent: theme.coral,
-      title: 'Daily',
-      subtitle: subtitle,
-      theme: theme,
-      onTap: () => game.openPlay(requestedMode: MergeRelayMode.daily),
     );
   }
 }
