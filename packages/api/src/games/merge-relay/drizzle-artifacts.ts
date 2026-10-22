@@ -120,7 +120,9 @@ async function upsertArtifact(
         ),
       )
       .limit(1);
-    assertArtifactImmutable(recordType, recordId, existing[0]?.payload, payload);
+    assertArtifactImmutable(recordType, recordId, existing[0]?.payload, payload, {
+      rebindIdentity: metadata.rebindIdentity === true,
+    });
   }
   await transaction
     .insert(mergeRelayRecords)

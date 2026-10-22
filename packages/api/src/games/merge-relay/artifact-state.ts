@@ -99,12 +99,13 @@ export function putStateArtifact(
   recordType: MergeRelayRecordType,
   recordId: string,
   payload: unknown,
+  options: { rebindIdentity?: boolean } = {},
 ): void {
   if (recordType === "challenge" || recordType === "result") {
     const existing = collectionForType(state, recordType).find(
       (value) => recordIdFor(recordType, value) === recordId,
     );
-    assertArtifactImmutable(recordType, recordId, existing, payload);
+    assertArtifactImmutable(recordType, recordId, existing, payload, options);
   }
   removeStateArtifact(state, recordType, recordId);
   if (recordType === "challenge") state.challenges.push(payload as MergeChallenge);

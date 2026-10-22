@@ -82,6 +82,7 @@ export async function migrateGuestArtifacts(
         idempotencyKey: result.idempotencyKey,
         parentRecordType: "attempt",
         parentRecordId: result.attemptId,
+        rebindIdentity: true,
       },
     );
 
@@ -265,6 +266,7 @@ async function putChallenge(
     idempotencyKey: challenge.idempotencyKey,
     parentRecordType: challenge.parentChallengeId ? "challenge" : null,
     parentRecordId: challenge.parentChallengeId,
+    rebindIdentity: true,
   });
 }
 

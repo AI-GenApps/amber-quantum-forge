@@ -33,7 +33,7 @@ export class InMemoryMergeRelayStore implements MergeRelayStore {
 
   async transact<T>(
     environment: MergeEnvironment,
-    operation: (state: MergeRelayState) => Promise<T>,
+    operation: (state: MergeRelayState, rebound: Set<string>) => Promise<T>,
   ): Promise<T> {
     const previous = this.tails.get(environment) ?? Promise.resolve();
     let result!: T;
@@ -48,8 +48,9 @@ export class InMemoryMergeRelayStore implements MergeRelayStore {
           environment,
         );
         const working = cloneMergeState(original);
-        result = await operation(working);
-        assertStateImmutable(original, working);
+        const rebound = new Set<string>();
+        result = await operation(working, rebound);
+        assertStateImmutable(original, working, rebound);
         this.states.set(environment, parseMergeRelayState(working, environment));
       });
     const tail: Promise<void> = current.then(() => undefined).catch(() => Promise.resolve());
@@ -88,7 +89,7 @@ export class InMemoryMergeRelayStore implements MergeRelayStore {
     environment: MergeEnvironment,
     operation: (transaction: MergeRelayArtifactTransaction) => Promise<T>,
   ): Promise<T> {
-    return this.transact(environment, async (state) => {
+    return this.transact(environment, async (state, rebound) => {
       const workingPlatform = new Map(
         Array.from(this.platformStates.get(environment) ?? new Map()).map(([key, value]) => [
           key,
@@ -116,7 +117,9 @@ export class InMemoryMergeRelayStore implements MergeRelayStore {
             );
             return;
           }
-          putStateArtifact(state, recordType, recordId, payload);
+          const rebindIdentity = metadata?.rebindIdentity === true;
+          if (rebindIdentity) rebound.add(`${recordType}:${recordId}`);
+          putStateArtifact(state, recordType, recordId, payload, { rebindIdentity });
         },
         remove: async (recordType, recordId) => {
           if (isPlatformRecordType(recordType)) {

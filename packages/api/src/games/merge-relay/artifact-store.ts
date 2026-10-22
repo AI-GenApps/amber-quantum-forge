@@ -58,6 +58,7 @@ export interface MergeRelayArtifactMetadata {
   lookupKey?: string | null;
   parentRecordType?: MergeRelayRecordType | null;
   parentRecordId?: string | null;
+  rebindIdentity?: boolean;
 }
 
 export interface MergeRelayArtifactTransaction {

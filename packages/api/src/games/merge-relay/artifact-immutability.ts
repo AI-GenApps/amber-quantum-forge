@@ -13,11 +13,14 @@ function canonical(value: unknown): string {
   return JSON.stringify(value);
 }
 
-function withoutStatus(value: unknown): unknown {
+function withoutFields(value: unknown, fields: readonly string[]): unknown {
   if (typeof value !== "object" || value === null) return value;
-  const { status: _status, ...rest } = value as Record<string, unknown>;
+  const rest: Record<string, unknown> = { ...(value as Record<string, unknown>) };
+  for (const field of fields) delete rest[field];
   return rest;
 }
+
+const identityFields = ["ownerSubject", "recipientSubject"] as const;
 
 function statusOf(value: unknown): unknown {
   return typeof value === "object" && value !== null
@@ -30,25 +33,39 @@ export function assertArtifactImmutable(
   recordId: string,
   before: unknown,
   after: unknown,
+  options: { rebindIdentity?: boolean } = {},
 ): void {
   const type = recordType as MergeRelayRecordType;
   if (type !== "challenge" && type !== "result") return;
   if (before === undefined || before === null) return;
-  const frozenBefore = type === "challenge" ? withoutStatus(before) : before;
-  const frozenAfter = type === "challenge" ? withoutStatus(after) : after;
+  const ignored: string[] = [];
+  if (type === "challenge") ignored.push("status");
+  if (options.rebindIdentity) ignored.push(...identityFields);
+  const frozenBefore = withoutFields(before, ignored);
+  const frozenAfter = withoutFields(after, ignored);
   if (canonical(frozenBefore) !== canonical(frozenAfter))
     throw new MergeRelayStorageError(`Merge Relay ${type} ${recordId} is immutable`);
   if (type === "challenge" && statusOf(before) === "retired" && statusOf(after) !== "retired")
     throw new MergeRelayStorageError(`Merge Relay challenge ${recordId} cannot be reopened`);
 }
 
-export function assertStateImmutable(before: MergeRelayState, after: MergeRelayState): void {
+export function assertStateImmutable(
+  before: MergeRelayState,
+  after: MergeRelayState,
+  rebound: ReadonlySet<string> = new Set(),
+): void {
   for (const challenge of before.challenges) {
     const next = after.challenges.find((value) => value.challengeId === challenge.challengeId);
-    if (next) assertArtifactImmutable("challenge", challenge.challengeId, challenge, next);
+    if (next)
+      assertArtifactImmutable("challenge", challenge.challengeId, challenge, next, {
+        rebindIdentity: rebound.has(`challenge:${challenge.challengeId}`),
+      });
   }
   for (const result of before.results) {
     const next = after.results.find((value) => value.resultId === result.resultId);
-    if (next) assertArtifactImmutable("result", result.resultId, result, next);
+    if (next)
+      assertArtifactImmutable("result", result.resultId, result, next, {
+        rebindIdentity: rebound.has(`result:${result.resultId}`),
+      });
   }
 }
