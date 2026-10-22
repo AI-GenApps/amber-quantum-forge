@@ -46,6 +46,10 @@ full authored MR content or ranked product is complete.
   `apps-native/games/packages/merge_rules`, then formatted by Biome.
 - Dart VM and compiled Dart: `cd apps-native/games/packages/merge_rules && dart test`.
 - Bun service runtime: `cd packages/api && bun --bun vitest run src/games/merge-relay/config-fixture.test.ts`.
-- Known strictness gaps left open: TS wire parsing ignores unknown checkpoint
-  fields (Dart rejects them), and a TS challenge without `max_legal_moves`
-  hashes `null` while Dart hashes the default 3.
+- Strictness gaps closed: TS `parseWireCheckpoint` rejects unknown checkpoint
+  fields (same set as Dart), and a TS challenge without `max_legal_moves`
+  hashes the frozen default 3. Fixture bytes were unchanged.
+- Storage immutability: `artifact-immutability.ts` makes stored challenge
+  (except `open` to `retired`) and result records immutable in the Drizzle
+  upsert, Drizzle whole-state sync, and in-memory store; no migration needed.
+  PostgreSQL run on postgres:16 via `MERGE_RELAY_TEST_DATABASE_URL`.

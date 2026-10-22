@@ -1,4 +1,5 @@
 import { and, db, eq, mergeRelayRecords, mergeRelayScopes } from "@repo/db";
+import { assertArtifactImmutable } from "./artifact-immutability";
 import {
   type MergeRelayArtifactFilter,
   type MergeRelayArtifactPage,
@@ -146,6 +147,7 @@ export class DrizzleMergeRelayStore implements MergeRelayStore {
           rowKey(candidate.recordType, candidate.recordId) === rowKey(row.recordType, row.recordId),
       );
       if (before && JSON.stringify(before.payload) === JSON.stringify(row.payload)) continue;
+      assertArtifactImmutable(row.recordType, row.recordId, before?.payload, row.payload);
       await transaction
         .insert(mergeRelayRecords)
         .values([row])

@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import type { MergeCheckpoint, MergeDirection, MergeMode } from "./contracts";
-import { MERGE_RELAY_RULE_VERSION } from "./contracts";
+import { MERGE_RELAY_MAX_MOVES, MERGE_RELAY_RULE_VERSION } from "./contracts";
 import {
   MERGE_MAX_MOVE_COUNT,
   MERGE_MAX_SCORE,
@@ -142,7 +142,7 @@ export function challengePayloadHash(input: {
       board: input.checkpoint.board,
       content_id: input.checkpoint.contentId ?? null,
       content_version: input.checkpoint.contentVersion ?? null,
-      max_legal_moves: input.checkpoint.maxLegalMoves ?? null,
+      max_legal_moves: input.checkpoint.maxLegalMoves ?? MERGE_RELAY_MAX_MOVES,
       move_count: input.checkpoint.moveCount,
       rng_state: input.checkpoint.rngState,
       rule_version: input.checkpoint.ruleVersion,

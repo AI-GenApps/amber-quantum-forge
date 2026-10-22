@@ -1,4 +1,5 @@
 import { and, asc, type db, desc, eq, gt, lt, mergeRelayRecords, mergeRelayScopes } from "@repo/db";
+import { assertArtifactImmutable } from "./artifact-immutability";
 import {
   type MergeRelayArtifactFilter,
   type MergeRelayArtifactMetadata,
@@ -106,6 +107,21 @@ async function upsertArtifact(
   metadata: MergeRelayArtifactMetadata = {},
 ): Promise<void> {
   const values = artifactRow(environment, recordType, recordId, payload, metadata);
+  if (recordType === "challenge" || recordType === "result") {
+    const existing = await transaction
+      .select({ payload: mergeRelayRecords.payload })
+      .from(mergeRelayRecords)
+      .where(
+        and(
+          eq(mergeRelayRecords.appId, MERGE_RELAY_APP_ID),
+          eq(mergeRelayRecords.environment, environment),
+          eq(mergeRelayRecords.recordType, recordType),
+          eq(mergeRelayRecords.recordId, recordId),
+        ),
+      )
+      .limit(1);
+    assertArtifactImmutable(recordType, recordId, existing[0]?.payload, payload);
+  }
   await transaction
     .insert(mergeRelayRecords)
     .values(values)

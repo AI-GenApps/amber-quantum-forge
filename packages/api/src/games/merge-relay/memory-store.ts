@@ -1,3 +1,4 @@
+import { assertStateImmutable } from "./artifact-immutability";
 import {
   type MemoryArtifact,
   pageStateArtifacts,
@@ -48,6 +49,7 @@ export class InMemoryMergeRelayStore implements MergeRelayStore {
         );
         const working = cloneMergeState(original);
         result = await operation(working);
+        assertStateImmutable(original, working);
         this.states.set(environment, parseMergeRelayState(working, environment));
       });
     const tail: Promise<void> = current.then(() => undefined).catch(() => Promise.resolve());

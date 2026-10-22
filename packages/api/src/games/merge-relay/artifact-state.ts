@@ -1,3 +1,4 @@
+import { assertArtifactImmutable } from "./artifact-immutability";
 import { clone, matches } from "./artifact-state-helpers";
 import {
   artifactRecordId,
@@ -99,6 +100,12 @@ export function putStateArtifact(
   recordId: string,
   payload: unknown,
 ): void {
+  if (recordType === "challenge" || recordType === "result") {
+    const existing = collectionForType(state, recordType).find(
+      (value) => recordIdFor(recordType, value) === recordId,
+    );
+    assertArtifactImmutable(recordType, recordId, existing, payload);
+  }
   removeStateArtifact(state, recordType, recordId);
   if (recordType === "challenge") state.challenges.push(payload as MergeChallenge);
   else if (recordType === "attempt") state.attempts.push(payload as MergeAttempt);

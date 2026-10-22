@@ -116,8 +116,24 @@ export function parseCheckpoint(value: unknown): MergeCheckpoint | null {
   };
 }
 
+const WIRE_CHECKPOINT_FIELDS: ReadonlySet<string> = new Set([
+  "board",
+  "score",
+  "move_count",
+  "seed",
+  "rng_state",
+  "rule_version",
+  "max_legal_moves",
+  "content_id",
+  "content_version",
+  "parent_challenge_id",
+  "spawn_two_weight",
+  "spawn_four_weight",
+]);
+
 export function parseWireCheckpoint(value: unknown): MergeCheckpoint | null {
   if (!isObject(value)) return null;
+  if (Object.keys(value).some((key) => !WIRE_CHECKPOINT_FIELDS.has(key))) return null;
   return parseCheckpoint({
     board: value.board,
     score: value.score,
