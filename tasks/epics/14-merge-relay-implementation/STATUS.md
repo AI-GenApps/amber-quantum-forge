@@ -7,7 +7,7 @@ Status: in-progress
 | Task | Owner | Scope | Status |
 |---|---|---|---|
 | 00 | Integration lead | Versioned HTTP contracts, auth/session, clocks and errors | [~] v1 DTOs, route-produced matrix fixture (21 outcomes, 47 error codes) consumed by strict Dart codecs; provider/PGS/commerce route codes and guest/config success fixtures not covered |
-| 01 | Merge service | Challenge, attempt, result, relay, daily, guest, social and telemetry service foundation | [~] service foundation plus independent-review fixes (guest-upgrade rebind, owner-scoped idempotency, self-play and daily-checkpoint guards, commerce migration on upgrade, alias); re-review and production gates open |
+| 01 | Merge service | Challenge, attempt, result, relay, daily, guest, social and telemetry service foundation | [~] service foundation, review fixes, retention prune, route rate limiting, 446-case role matrix and retirement timing matrix tested; re-review and production prune/limit tuning open |
 | 02 | Database owner | Drizzle normalized adapter and unapplied migration | [~] Drizzle adapter, migrations 0000-0011 (0011 unapplied), Postgres 16 tests pass; production migration and retention policy open |
 | 03 | Client owner | Flutter gateway and end-to-end device wiring | [~] gateway, manual-code entry, truthful feature-gate panel and report/block sheet done behind MERGE_RELAY_SOCIAL (off); physical-device and two-device run NOT RUN |
 | 04 | Release owner | Sandbox commerce, remote gates, Android review and service deployment checks | [~] providers disabled by default (tested), deploy-workflow secret scope tested, debug APK builds (not installed); device smoke and two-device NOT RUN |
