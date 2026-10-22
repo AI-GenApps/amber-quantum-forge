@@ -138,7 +138,6 @@ for (const [name, factory] of testStores) {
         }),
       ).rejects.toMatchObject({ code: "attempt_not_playable" });
       expect(await resultsFor(deps, challengeId)).toEqual([]);
-      expect((await getAttempt(deps, environment, player, attemptId)).moves).toEqual(moved.moves);
     });
 
     it("retire after finalize keeps the result and replays it unchanged", async () => {

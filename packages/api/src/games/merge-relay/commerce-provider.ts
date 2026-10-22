@@ -12,7 +12,7 @@ import { readProviderResponse } from "./pgs-provider-body";
 
 const publisherRoot = "https://androidpublisher.googleapis.com/androidpublisher/v3";
 const providerTimeoutMs = 10_000;
-const maxVoidedPages = 5;
+const maxVoidedPages = 100;
 
 export class GooglePlayPurchaseProviderError extends Error {
   constructor(
@@ -68,7 +68,9 @@ export class GooglePlayPurchaseProvider
     const token = await this.accessTokenSource.getAccessToken();
     const collected: MergeVoidedPurchase[] = [];
     let pageToken: string | null = null;
-    for (let page = 0; page < maxVoidedPages; page += 1) {
+    for (let page = 0; ; page += 1) {
+      if (page >= maxVoidedPages)
+        throw new GooglePlayPurchaseProviderError("voided_pages_exceeded", false);
       const query = new URLSearchParams({
         startTime: String(input.startTimeMillis),
         type: "0",
@@ -84,9 +86,8 @@ export class GooglePlayPurchaseProvider
       if (!parsed) throw new GooglePlayPurchaseProviderError("provider_response_invalid", false);
       collected.push(...parsed.items);
       pageToken = parsed.nextPageToken;
-      if (!pageToken) break;
+      if (!pageToken) return collected;
     }
-    return collected;
   }
 
   private async request(
@@ -150,6 +151,7 @@ function parseProductPurchase(
     orderId: optionalText(record.orderId, 256),
     acknowledged: acknowledgementState === "ACKNOWLEDGEMENT_STATE_ACKNOWLEDGED",
     obfuscatedExternalAccountId: optionalText(record.obfuscatedExternalAccountId, 256),
+    testPurchase: record.testPurchaseContext !== undefined && record.testPurchaseContext !== null,
   };
 }
 

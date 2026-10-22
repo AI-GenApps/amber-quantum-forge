@@ -96,13 +96,22 @@ authenticated by the Google OIDC bearer token (issuer, audience, verified
 service-account email, RS256). Purchase notifications requery the product
 state and acknowledge when needed; voided notifications are applied only when
 the voided-purchases list confirms the token, otherwise the endpoint returns
-503 so Pub/Sub retries. Unknown tokens, foreign packages, and other SKUs are
-acknowledged and ignored. `POST /:environment/commerce/google-play/voided/reconcile`
+503 so Pub/Sub retries. A voided notification for a token this service never
+stored is acknowledged and ignored rather than retried forever. Unknown tokens,
+foreign packages, and other SKUs are acknowledged and ignored. The voided list
+is paged until exhausted (up to 100 pages); exceeding that cap fails with
+`voided_pages_exceeded` instead of silently truncating. `POST /:environment/commerce/google-play/voided/reconcile`
 (service role) sweeps the 30-day voided list. Rewarded-ad SSV is the public
 `GET /:environment/rewards/admob/ssv` callback: the ECDSA signature is verified
 against the AdMob verifier keys, the ad unit must be allow-listed, and the
 transaction is stored once (`user_id` is the subject, `custom_data` the result
 ID). Reward grants for `ad_reward` settle only against a recorded callback.
+
+Purchase attestations are also checked before acknowledgement. When Google
+returns `obfuscatedExternalAccountId` it must equal the caller's subject, or be
+a guest that was upgraded into the caller (`purchase_account_mismatch`, 403).
+A `testPurchaseContext` purchase is rejected in the production environment
+(`purchase_test_rejected`, 422) and accepted elsewhere.
 
 The service-account adapter uses the Android Publisher OAuth scope and a fixed
 Google token URI. If the optional token key is configured, AES-GCM retention is

@@ -1,4 +1,5 @@
-import { reconcileVoided, requeryPurchase } from "./commerce-reconcile";
+import { parseCommercePurchase } from "./commerce-parsers";
+import { purchaseIdForToken, reconcileVoided, requeryPurchase } from "./commerce-reconcile";
 import type { MergeEnvironment } from "./contracts";
 import type { MergeRelayServiceDependencies } from "./dependencies";
 import { configuredCommerceRuntime } from "./dependencies";
@@ -32,6 +33,16 @@ export async function handleRtdn(
     return "ignored";
   if (!notification.purchaseToken) return "ignored";
   if (notification.kind === "voided") {
+    const stored = await dependencies.store.readArtifacts(
+      environment,
+      {
+        recordType: "commerce_purchase",
+        recordId: purchaseIdForToken(notification.purchaseToken),
+        limit: 1,
+      },
+      parseCommercePurchase,
+    );
+    if (stored.items.length === 0) return "ignored";
     const result = await reconcileVoided(dependencies, environment, [notification.purchaseToken]);
     if (result.voided === 0) return "unconfirmed";
     return result.applied > 0 ? "applied" : "replayed";

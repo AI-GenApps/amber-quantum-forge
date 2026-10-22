@@ -1,5 +1,6 @@
 import type { MergeRelayArtifactTransaction } from "./artifact-store";
 import { requirePlayer } from "./authorization";
+import { assertAttestationAllowed } from "./commerce-attestation";
 import {
   MERGE_PLAY_PROVIDER,
   MERGE_RELAY_THEME_ENTITLEMENT_ID,
@@ -97,18 +98,23 @@ export async function settleCommercePurchase(
       productId: input.productId,
       purchaseToken: input.purchaseToken,
     });
-    if (attestation.state === "purchased" && !attestation.acknowledged)
-      await runtime.provider.acknowledgePurchase({
-        productId: input.productId,
-        purchaseToken: input.purchaseToken,
-      });
-    if (attestation.state === "purchased" && !attestation.acknowledged)
-      attestation = { ...attestation, acknowledged: true };
   } catch (error) {
     throw mapProviderError(error);
   }
   if (attestation.productId !== input.productId)
     throw new MergeRelayError(422, "purchase_product_mismatch", "The purchase product is invalid");
+  await assertAttestationAllowed(dependencies, environment, session.subject, attestation);
+  try {
+    if (attestation.state === "purchased" && !attestation.acknowledged) {
+      await runtime.provider.acknowledgePurchase({
+        productId: input.productId,
+        purchaseToken: input.purchaseToken,
+      });
+      attestation = { ...attestation, acknowledged: true };
+    }
+  } catch (error) {
+    throw mapProviderError(error);
+  }
   const tokenEnvelope =
     runtime.tokenVault?.seal({
       environment,

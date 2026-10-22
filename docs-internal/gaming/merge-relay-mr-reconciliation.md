@@ -37,8 +37,8 @@ PGS paths, so the service loop is unreachable. The 2026-09-25 v1 scope cut defer
 | MR-10 | Local and server save, optimistic conflict, ordered writes, offline queue, cross-device restore | partial | Receipts tested on Docker postgres:16. Cross-device conflict UI partly done. Second-device restore is external-gate. Task 12 independent review open. |
 | MR-11 | Sandbox ad and IAP providers, callback idempotency, no client settlement | missing on client | Server pieces implemented and tested. No billing or rewarded-ad code in the Flutter app. Live Play, Pub/Sub and AdMob delivery are external-gate. |
 | MR-12 | Versioned tuning and rollback, new-run application, frozen old links, kill switch | partial | Server revisions, rollback and disable guards tested. Client now applies the active revision to new daily, endless and relay starts only (frozen runs and links keep theirs), with rollback and kill-switch tests, behind the social gate. Audit P1-05 open. |
-| MR-13 | Codes resist enumeration, report and block, membership scope, rate limits, no contacts or DMs | partial | Client report and block sheet exists behind the social gate (sends `target_challenge_id`). No rate limiting anywhere in `merge-relay`. Audit P2-02 open. |
-| MR-14 | Artifact-linked telemetry, outbox reconciliation, redaction, retention, outage handling | partial | Client has a persistent outbox with redaction, retry backoff, drop-oldest retention and a kill switch, behind the social gate. Only `daily_run_complete` is emitted. No server-side retention or pruning code. Reconciliation open. |
+| MR-13 | Codes resist enumeration, report and block, membership scope, rate limits, no contacts or DMs | partial | Client report and block sheet exists behind the social gate (sends `target_challenge_id`). Server rate limits are implemented and tested (see [rate limits](merge-relay-rate-limits)); the client does not yet surface the 429. Audit P2-02 open. |
+| MR-14 | Artifact-linked telemetry, outbox reconciliation, redaction, retention, outage handling | partial | Client has a persistent outbox with redaction, retry backoff, drop-oldest retention and a kill switch, behind the social gate. Only `daily_run_complete` is emitted. Server-side bounded retention is implemented and tested (see [retention](merge-relay-retention)). Reconciliation open. |
 | MR-15 | Separate prototype, MVP, Play-test, enabled and published states in UI, CI, docs, listing | partial | Staging exists in config, CI and scope tests. Manifest `stage` text is stale. No Play-test or enabled state recorded. Listing has TBD fields. |
 
 ## Other task 05 items
@@ -51,8 +51,9 @@ PGS paths, so the service loop is unreachable. The 2026-09-25 v1 scope cut defer
 - **Achievement catalogue:** none authored in the repo. The plan's minimum of ten visible, four
   attainable within an hour, is not met.
 - **Optional Play Integrity:** no code.
-- **Audit items still open:** retention and pruning, per-route rate limits, the signed-token role
-  matrix (P1-03) and the retirement timing matrix (P1-04).
+- **Audit items:** retention and pruning, per-route rate limits, the signed-token role matrix
+  (P1-03) and the retirement timing matrix (P1-04) now have server implementations and tests
+  (memory and Docker PostgreSQL 16). Production execution and independent review remain open.
 
 ## External inputs still needed
 

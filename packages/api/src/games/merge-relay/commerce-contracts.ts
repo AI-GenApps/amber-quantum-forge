@@ -63,6 +63,7 @@ export interface MergePlayPurchaseAttestation {
   orderId: string | null;
   acknowledged: boolean;
   obfuscatedExternalAccountId: string | null;
+  testPurchase?: boolean;
 }
 
 export interface MergePlayPurchaseProvider {

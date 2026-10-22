@@ -3,6 +3,7 @@ import {
   parseChallengeArtifact,
   parseConfigArtifact,
   parseDailyArtifact,
+  parseResultArtifact,
 } from "./artifact-parsers";
 import type { MergeRelayArtifactTransaction } from "./artifact-store";
 import { requirePlayer } from "./authorization";
@@ -69,7 +70,22 @@ export function createChallenge(
         { recordType: "challenge", recordId: input.parentChallengeId },
         parseChallengeArtifact,
       );
-      if (!parent || parent.environment !== environment)
+      const permitted =
+        parent !== null &&
+        parent.environment === environment &&
+        (parent.ownerSubject === session.subject ||
+          (
+            await transaction.list(
+              {
+                recordType: "result",
+                challengeId: parent.challengeId,
+                ownerSubject: session.subject,
+                limit: 1,
+              },
+              parseResultArtifact,
+            )
+          ).items.length > 0);
+      if (!permitted)
         throw new MergeRelayError(
           404,
           "parent_challenge_not_found",
