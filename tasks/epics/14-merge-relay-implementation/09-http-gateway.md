@@ -42,3 +42,13 @@ message and action, rendered on the relay screen. Verified only against the
 fake gateway and route fixtures; no real service was run. The wiring item stays
 open because the server-issued daily challenge (`getDaily`) is not surfaced in
 the UI.
+
+## Server daily note
+
+`refreshDaily()` calls `gateway.getDaily(utcDate)` after restore and on home,
+only when social is enabled. States are local, loading, ready, offline and
+error, with failures mapped through `mergeRelayOutcomeFor`. A ready server
+daily seeds the board from the server checkpoint; offline or error falls back
+to the local daily seed. Server spawn weights are not yet applied to later
+spawns, and a custom-weight daily is unverified. Evidence is fake-gateway tests
+only; real-service and two-device runs are NOT RUN.

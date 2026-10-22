@@ -40,3 +40,12 @@ death, in-flight-write death, burst ordering, and offline daily restart).
 Item 3 stays open: no profile or achievement entry point was found on Home.
 Item 5 is NOT RUN: no Android device or emulator was available. Eight golden
 pixel comparisons fail on this Linux host before and after this change.
+
+## Home entry points note
+
+Home now has Profile and Achievements buttons, shown only when the social gate
+(`pgsAccountController`) is present, so the solo v1 build still hides every PGS
+control. Profile opens a sheet with rescues cleared, best Endless score and the
+Play Games section. Achievements opens provider UI only and never submits a
+score. The pause/reset-guard part of the Home checklist item is not audited,
+and physical Android evidence is NOT RUN.
