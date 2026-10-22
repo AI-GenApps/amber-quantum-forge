@@ -41,12 +41,12 @@ export async function rankedDependencies(
   const admin = testSession("admin", environment, "game_admin");
   await provisionInitialConfig(dependencies, environment, admin);
   const current = await getConfig(dependencies, environment);
-  if (!current.features.rankedRelay)
+  if (!current.features.rankedRelay || !current.features.cosmetics)
     await updateConfig(dependencies, environment, admin, {
       expectedRevision: current.revision,
       spawnTwoWeight: current.spawnTwoWeight,
       spawnFourWeight: current.spawnFourWeight,
-      features: { ...current.features, rankedRelay: true },
+      features: { ...current.features, rankedRelay: true, cosmetics: true },
       contentRevision: current.contentRevision,
     });
   return dependencies;

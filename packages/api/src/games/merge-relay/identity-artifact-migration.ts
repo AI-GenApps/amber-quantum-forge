@@ -1,3 +1,4 @@
+import { listAll } from "./artifact-list";
 import {
   parseAliasArtifact,
   parseAttemptArtifact,
@@ -8,13 +9,11 @@ import {
   parseSaveArtifact,
   parseSocialArtifact,
 } from "./artifact-parsers";
-import {
-  artifactRecordId,
-  type MergeRelayArtifactFilter,
-  type MergeRelayArtifactTransaction,
-} from "./artifact-store";
+import { artifactRecordId, type MergeRelayArtifactTransaction } from "./artifact-store";
+import type { MergePurchaseTokenVault } from "./commerce-contracts";
 import type { MergeChallenge, MergeSocialRecord } from "./contracts";
 import { MergeRelayError } from "./errors";
+import { migrateCommerceArtifacts } from "./identity-commerce-migration";
 import {
   parsePgsCredentialArtifact,
   parsePgsIdentityArtifact,
@@ -39,6 +38,7 @@ export async function migrateGuestArtifacts(
   guestSubject: string,
   accountSubject: string,
   updatedAt: string,
+  tokenVault: MergePurchaseTokenVault | null = null,
 ): Promise<void> {
   const challenges = await listAll(
     transaction,
@@ -172,6 +172,7 @@ export async function migrateGuestArtifacts(
     );
 
   await migratePgsArtifacts(transaction, guestSubject, accountSubject, updatedAt);
+  await migrateCommerceArtifacts(transaction, guestSubject, accountSubject, tokenVault);
 }
 
 async function migratePgsArtifacts(
@@ -278,22 +279,4 @@ async function putSocial(
     ownerSubject: record.subject,
     targetSubject: record.targetSubject,
   });
-}
-
-async function listAll<T>(
-  transaction: MergeRelayArtifactTransaction,
-  filter: Omit<MergeRelayArtifactFilter, "limit" | "afterRecordId">,
-  parse: (payload: unknown) => T,
-): Promise<T[]> {
-  const items: T[] = [];
-  let afterRecordId: string | undefined;
-  do {
-    const page = await transaction.list(
-      { ...filter, limit: 100, ...(afterRecordId === undefined ? {} : { afterRecordId }) },
-      parse,
-    );
-    items.push(...page.items);
-    afterRecordId = page.nextCursor ?? undefined;
-  } while (afterRecordId !== undefined);
-  return items;
 }

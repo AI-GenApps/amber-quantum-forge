@@ -8,7 +8,7 @@ import type {
   MergeGuest,
   MergeSession,
 } from "./contracts";
-import type { MergeRelayServiceDependencies } from "./dependencies";
+import { configuredCommerceRuntime, type MergeRelayServiceDependencies } from "./dependencies";
 import { MergeRelayError } from "./errors";
 import { migrateGuestArtifacts, saveIdsForSubject } from "./identity-artifact-migration";
 
@@ -139,7 +139,13 @@ export async function upgradeGuest(
         "Account already owns a save with the same ID",
       );
     const upgradedAt = dependencies.clock.now().toISOString();
-    await migrateGuestArtifacts(transaction, guest.subject, session.subject, upgradedAt);
+    await migrateGuestArtifacts(
+      transaction,
+      guest.subject,
+      session.subject,
+      upgradedAt,
+      configuredCommerceRuntime(dependencies, environment)?.tokenVault ?? null,
+    );
     const upgraded = {
       ...guest,
       upgradedSubject: session.subject,
