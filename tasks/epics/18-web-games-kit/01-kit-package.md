@@ -1,7 +1,7 @@
 ---
 epic: 18-web-games-kit
 task: 01-kit-package
-status: pending
+status: in-progress
 commit_scope: web-games-kit
 depends_on: [18-web-games-kit/00-kit-epic-and-status]
 estimate: XL
@@ -96,30 +96,30 @@ primitives, fonts, assets, motion and strings.
 
 ## Implementation Checklist
 
-- [ ] Verify the branch is `feat/web-games-kit`; look up and record the pinned
+- [x] Verify the branch is `feat/web-games-kit`; look up and record the pinned
       versions (including `@capacitor/share`) in the evidence README.
-- [ ] Scaffold `apps-games/web-kit`: `package.json`, `tsconfig.json` (strict, DOM
+- [x] Scaffold `apps-games/web-kit`: `package.json`, `tsconfig.json` (strict, DOM
       lib), `tsconfig.build.json`, `vitest.config.ts` (happy-dom), `src/index.ts`.
-- [ ] Implement and test `rng` and `daily`.
-- [ ] Implement and test `save` (schema, migrations, corrupt recovery, three
+- [x] Implement and test `rng` and `daily`.
+- [x] Implement and test `save` (schema, migrations, corrupt recovery, three
       adapters) and `settings`.
-- [ ] Implement and test `audio` (including the missing `AudioContext` path) and
+- [x] Implement and test `audio` (including the missing `AudioContext` path) and
       `haptics`.
-- [ ] Implement and test `share` (all three paths and the returned path name)
+- [x] Implement and test `share` (all three paths and the returned path name)
       and `lifecycle` (web no-ops).
-- [ ] Implement and test `router`.
-- [ ] Implement and test the `ui` primitives, `ThemeTokens` and `applyTheme()`.
-- [ ] Implement and test `fonts`, `assets`, `motion` and `strings`.
-- [ ] Write `README.md` with one short example per module.
-- [ ] Run `bun install` (the only `bun.lock` changes are the kit's dependencies).
-- [ ] Update `biome.json` and `knip.json` for `apps-games/web-kit` if the
+- [x] Implement and test `router`.
+- [x] Implement and test the `ui` primitives, `ThemeTokens` and `applyTheme()`.
+- [x] Implement and test `fonts`, `assets`, `motion` and `strings`.
+- [x] Write `README.md` with one short example per module.
+- [x] Run `bun install` (the only `bun.lock` changes are the kit's dependencies).
+- [x] Update `biome.json` and `knip.json` for `apps-games/web-kit` if the
       existing City Drive globs do not already cover it.
-- [ ] Update the knowledge base `.agents/games/web-games-kit/` (README, product,
+- [x] Update the knowledge base `.agents/games/web-games-kit/` (README, product,
       economy, store-listing, assets-index, decisions-log, open-questions) with
       the module list and the pin decisions.
-- [ ] Write `.agents/resources/2026-10-23/web-games/web-games-kit/01/README.md`
+- [x] Write `.agents/resources/2026-10-23/web-games/web-games-kit/01/README.md`
       (versions, `npm view` output summary, test counts).
-- [ ] Tick task 01 in `STATUS.md`.
+- [x] Tick task 01 in `STATUS.md`.
 
 ## Files Touched
 

@@ -23,6 +23,10 @@
       ],
       "project": ["src/**", "scripts/**", "tool/**", "test/**"],
       "ignoreDependencies": ["@dimforge/rapier3d-compat"]
+    },
+    "apps-games/web-kit": {
+      "entry": ["src/index.ts", "vitest.config.ts", "test/**"],
+      "project": ["src/**", "test/**"]
     }
   },
   "ignoreBinaries": [
