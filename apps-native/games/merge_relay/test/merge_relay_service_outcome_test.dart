@@ -125,10 +125,10 @@ void main() {
   group('controller surfaces outcomes', () {
     test('missing relay config blocks reserve with a home action', () async {
       final fake = FakeRelayGateway();
+      fake.configError = _api(503, 'config_unavailable');
       final controller = _controller(fake);
       await controller.bootstrap();
       await controller.openChallenge(fake.challenge.challengeId);
-      fake.configError = _api(503, 'config_unavailable');
       await controller.reserve();
 
       final outcome = controller.snapshot.outcome!;

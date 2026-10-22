@@ -158,17 +158,6 @@ MergeRelayServiceOutcome mergeRelayOutcomeFor(
       'Retry',
     );
   }
-  if (_providerCodes.contains(code) || error.statusCode == 403) {
-    return _outcome(
-      MergeRelayOutcomeKind.providerDisabled,
-      MergeRelayRelayPhase.error,
-      error,
-      'Not available right now.',
-      'This feature is switched off or needs another sign-in. $_practiceNote',
-      MergeRelayOutcomeAction.home,
-      'Back to home',
-    );
-  }
   if (_clientCodes.contains(code)) {
     return _outcome(
       MergeRelayOutcomeKind.unsupportedClient,
@@ -177,6 +166,17 @@ MergeRelayServiceOutcome mergeRelayOutcomeFor(
       'Update needed.',
       'This version cannot join relays on this service. $_practiceNote',
       MergeRelayOutcomeAction.updateApp,
+      'Back to home',
+    );
+  }
+  if (_providerCodes.contains(code) || error.statusCode == 403) {
+    return _outcome(
+      MergeRelayOutcomeKind.providerDisabled,
+      MergeRelayRelayPhase.error,
+      error,
+      'Not available right now.',
+      'This feature is switched off or needs another sign-in. $_practiceNote',
+      MergeRelayOutcomeAction.home,
       'Back to home',
     );
   }
