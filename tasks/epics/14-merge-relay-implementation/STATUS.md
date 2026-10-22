@@ -12,14 +12,14 @@ Status: in-progress
 | 03 | Client owner | Flutter gateway and end-to-end device wiring | [ ] |
 | 04 | Release owner | Sandbox commerce, remote gates, Android review and service deployment checks | [ ] |
 | 05 | Release/service owners | Corrective full-MVP, Google Play Games v2, Play quality, and external-config gates | [~] |
-| 06 | Client and UX owners | Swipe-first solo shell, tutorial, ordered saves and physical Android evidence | [~] |
-| 07 | Domain owner | Frozen config, daily seed, cross-runtime fixtures and numeric guards | [~] |
-| 08 | Android/native owner | Optional PGS v2 bridge, guest-first auth and provider outbox seam | [~] typed bridge/tests; live project NOT RUN |
-| 09 | Android/client owner | Strict HTTP gateway, links, recovery, sync and service error states | [~] gateway/fixture path present; full two-device gate open |
+| 06 | Client and UX owners | Swipe-first solo shell, tutorial, ordered saves and physical Android evidence | [~] swipe/tutorial/versioned saves with process-death tests present; Home profile/achievement entry points open; physical Android evidence NOT RUN |
+| 07 | Domain owner | Frozen config, daily seed, cross-runtime fixtures and numeric guards | [~] frozen-config/daily/origin fixtures, 44 negatives; Dart VM, compiled Dart and Bun agree; client MergeChallenge hash adoption, rollback immutability and TS unknown-field strictness open |
+| 08 | Android/native owner | Optional PGS v2 bridge, guest-first auth and provider outbox seam | [~] PGS bridge, guest-first startup, outbox seam and no-client-score policy checks unit-tested; live PGS project, tester and console NOT RUN |
+| 09 | Android/client owner | Strict HTTP gateway, links, recovery, sync and service error states | [~] strict gateway, links, fixtures and service-outcome UI tested on fake gateway; server daily UI and real-service/two-device proof open |
 | 10 | Merge service owner | Bounded backend corrective foundation and PostgreSQL/provider regression gates | [x] 35 focused tests, 6 isolated PostgreSQL tests; full-MVP gates remain open |
 | 11 | Integration/tooling owner | Pinned backend/Next maintenance CI and local share-preview smoke | [x] actionlint, root gates, docs, and local smoke pass; release gates remain open |
-| 12 | Merge service owner | Idempotent cloud-save receipts, atomic save events, and guest-upgrade migration | [~] focused service/HTTP tests pass; PostgreSQL and independent review open |
-| 13 | Merge service owner | Server-side Google Play cosmetic purchase verification, restore, and entitlement settlement | [~] provider/service foundation tested; native Billing, live config, and dedicated commerce PostgreSQL coverage open |
+| 12 | Merge service owner | Idempotent cloud-save receipts, atomic save events, and guest-upgrade migration | [~] receipt path passes on Docker postgres:16; independent review open |
+| 13 | Merge service owner | Server-side Google Play cosmetic purchase verification, restore, and entitlement settlement | [~] commerce PostgreSQL tests, RTDN, voided requery and ad SSV server pieces tested; native Billing, sandbox product and live Pub/Sub/Play/AdMob delivery NOT RUN |
 
 The v0.3 source scope is the active target. P0 local play remains an early
 checkpoint; these tasks do not mark the product published or market validated.
