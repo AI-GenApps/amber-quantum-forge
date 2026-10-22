@@ -86,7 +86,23 @@ MERGE_RELAY_PLAY_<ENV>_PACKAGE_NAME
 MERGE_RELAY_PLAY_<ENV>_PRODUCT_ID=merge_relay_theme_pack_v1
 MERGE_RELAY_PLAY_<ENV>_SERVICE_ACCOUNT_JSON
 MERGE_RELAY_PLAY_<ENV>_PURCHASE_TOKEN_KEY   # optional 32-byte base64url key
+MERGE_RELAY_PLAY_<ENV>_RTDN_AUDIENCE        # optional; enables RTDN with the next value
+MERGE_RELAY_PLAY_<ENV>_RTDN_SERVICE_ACCOUNT_EMAIL
+MERGE_RELAY_ADMOB_<ENV>_AD_UNIT_IDS         # optional comma list; enables rewarded SSV
 ```
+
+RTDN is a public Pub/Sub push endpoint, `POST /:environment/commerce/google-play/rtdn`,
+authenticated by the Google OIDC bearer token (issuer, audience, verified
+service-account email, RS256). Purchase notifications requery the product
+state and acknowledge when needed; voided notifications are applied only when
+the voided-purchases list confirms the token, otherwise the endpoint returns
+503 so Pub/Sub retries. Unknown tokens, foreign packages, and other SKUs are
+acknowledged and ignored. `POST /:environment/commerce/google-play/voided/reconcile`
+(service role) sweeps the 30-day voided list. Rewarded-ad SSV is the public
+`GET /:environment/rewards/admob/ssv` callback: the ECDSA signature is verified
+against the AdMob verifier keys, the ad unit must be allow-listed, and the
+transaction is stored once (`user_id` is the subject, `custom_data` the result
+ID). Reward grants for `ad_reward` settle only against a recorded callback.
 
 The service-account adapter uses the Android Publisher OAuth scope and a fixed
 Google token URI. If the optional token key is configured, AES-GCM retention is
@@ -106,10 +122,10 @@ fake success path.
 | Pending/purchased/cancelled/refunded/revoked settlement | yes | yes | provider fake only | 6 service tests | no |
 | Token ownership, request idempotency, and subject isolation | yes | yes | no native client | route/service tests | no |
 | Encrypted token retention | yes | yes | no configured key | 2 vault tests | no |
-| PostgreSQL commerce persistence | yes | generic adapter only | no purchase-specific PG suite | purchase tests use injected store; receipt/adapter PG run passed | no |
+| PostgreSQL commerce persistence | yes | yes | no native client | 5 dedicated PG lifecycle/concurrency/ownership/environment/requery tests passed on Docker postgres:16 | no |
 | Native Google Play Billing SDK | yes | no | no | NOT RUN | no |
-| RTDN/voided-purchase requery | yes | no | no | NOT RUN | no |
-| AdMob rewarded SSV | yes in full product scope | no | no | NOT RUN | no |
+| RTDN/voided-purchase requery | yes | yes | no live Pub/Sub or Play | 5 RTDN, 5 auth/voided-provider, 3 route tests; live delivery NOT RUN | no |
+| AdMob rewarded SSV | yes | server only | no AdMob unit or client | 10 signed-callback/reward tests with a local key; live AdMob NOT RUN | no |
 | External product registration, pricing, credentials, and live money | external | no | no | NOT RUN | no |
 
 The server purchase tests use the same platform artifact store seam as the

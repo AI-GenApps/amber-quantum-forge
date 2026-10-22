@@ -7,6 +7,8 @@ import {
   signGameToken,
 } from "../tokens";
 import { isGameEnvironment } from "../validation";
+import { adSsvRuntimeFromEnvironment } from "./ad-ssv-keys";
+import { createAdSsvRewardProvider } from "./ad-ssv-service";
 import { createCommerceRuntimeFromEnvironment } from "./commerce-runtime";
 import {
   MERGE_RELAY_APP_ID,
@@ -20,6 +22,7 @@ import { asMergeError } from "./errors";
 import { effectiveSubject } from "./identity-service";
 import { InMemoryMergeRelayStore } from "./memory-store";
 import { createPgsRuntimeFromEnvironment } from "./pgs-runtime";
+import { registerCallbackRoutes } from "./route-callbacks";
 import { registerCommerceRoutes } from "./route-commerce";
 import {
   fail,
@@ -99,6 +102,7 @@ export function createMergeRelayRoutes(dependencies: MergeRelayRouteDependencies
   registerRelayRoutes(routes, dependencies);
   registerDataRoutes(routes, dependencies);
   registerCommerceRoutes(routes, dependencies);
+  registerCallbackRoutes(routes, dependencies);
   registerPlatformRoutes(routes, dependencies);
   routes.onError((error, c) => {
     const mapped = asMergeError(error);
@@ -116,7 +120,8 @@ export function createConfiguredMergeRelayRoutes(): MergeRoutes {
   return createMergeRelayRoutes({
     store,
     clock: systemMergeRelayClock,
-    rewardProvider: null,
+    rewardProvider: createAdSsvRewardProvider(store),
+    adSsvRuntimeForEnvironment: adSsvRuntimeFromEnvironment,
     pgsRuntimeForEnvironment: createPgsRuntimeFromEnvironment,
     commerceRuntimeForEnvironment: createCommerceRuntimeFromEnvironment,
     tokenVerifier: new EnvironmentGameTokenVerifier(),

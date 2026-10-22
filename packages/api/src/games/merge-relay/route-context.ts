@@ -53,6 +53,8 @@ export function isPublicPath(path: string, environment: string, method = "GET"):
   return (
     suffix === "guest" ||
     suffix === "guest/recover" ||
+    (suffix === "commerce/google-play/rtdn" && method === "POST") ||
+    (suffix === "rewards/admob/ssv" && method === "GET") ||
     (suffix === "config" && method === "GET") ||
     /^daily\/[^/]+$/.test(suffix) ||
     /^challenges\/[^/]+\/resolve$/.test(suffix)

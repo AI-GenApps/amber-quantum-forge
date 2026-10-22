@@ -159,7 +159,7 @@ export async function settleCommercePurchase(
   });
 }
 
-async function writeEntitlement(
+export async function writeEntitlement(
   transaction: MergeRelayArtifactTransaction,
   purchase: MergeCommercePurchase,
   now: string,

@@ -1,3 +1,4 @@
+import type { AdSsvRuntime } from "./ad-ssv-contracts";
 import type { MergeCommerceRuntime } from "./commerce-contracts";
 import type { MergeEnvironment } from "./contracts";
 import type { MergePgsRuntime } from "./pgs-contracts";
@@ -20,6 +21,7 @@ export interface MergeRelayServiceDependencies {
   pgsRuntime?: MergePgsRuntime | null;
   pgsRuntimeForEnvironment?: (environment: MergeEnvironment) => MergePgsRuntime | null;
   commerceRuntimeForEnvironment?: (environment: MergeEnvironment) => MergeCommerceRuntime | null;
+  adSsvRuntimeForEnvironment?: (environment: MergeEnvironment) => AdSsvRuntime | null;
 }
 
 export function configuredPgsRuntime(

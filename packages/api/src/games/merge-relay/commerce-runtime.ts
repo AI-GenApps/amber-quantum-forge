@@ -1,6 +1,7 @@
 import { MERGE_RELAY_THEME_PRODUCT_ID, type MergeCommerceRuntime } from "./commerce-contracts";
 import { createServiceAccountTokenSource } from "./commerce-google-auth";
 import { GooglePlayPurchaseProvider } from "./commerce-provider";
+import { rtdnAuthenticatorFromEnvironment } from "./commerce-rtdn-auth";
 import { createPurchaseTokenVault, purchaseTokenKeyFromEnvironment } from "./commerce-vault";
 import type { MergeEnvironment } from "./contracts";
 
@@ -21,10 +22,13 @@ export function createCommerceRuntimeFromEnvironment(
   const tokenSource = createServiceAccountTokenSource(serviceAccount);
   if (!tokenSource) return null;
   const key = purchaseTokenKeyFromEnvironment(environment);
+  const provider = new GooglePlayPurchaseProvider(packageName, tokenSource);
   return {
     environment,
     config: { packageName, productId: MERGE_RELAY_THEME_PRODUCT_ID },
-    provider: new GooglePlayPurchaseProvider(packageName, tokenSource),
+    provider,
     tokenVault: key ? createPurchaseTokenVault(key) : null,
+    voidedProvider: provider,
+    rtdnAuthenticator: rtdnAuthenticatorFromEnvironment(environment),
   };
 }

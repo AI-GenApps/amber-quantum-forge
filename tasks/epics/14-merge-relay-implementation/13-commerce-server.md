@@ -31,9 +31,10 @@ and store publication remain separate gates.
   subject; never return or log raw provider credentials or tokens.
 - [x] Add official-shape provider fixtures and service, route, runtime, and
   vault regression tests.
-- [ ] Add dedicated commerce PostgreSQL lifecycle/concurrency coverage.
+- [x] Add dedicated commerce PostgreSQL lifecycle/concurrency coverage.
 - [ ] Integrate the native Billing SDK and a configured sandbox product.
-- [ ] Add authenticated RTDN/voided-purchase requery and rewarded-ad SSV.
+- [x] Add authenticated RTDN/voided-purchase requery and rewarded-ad SSV
+  server pieces (live Pub/Sub, Play, and AdMob delivery NOT RUN).
 
 ## Verification
 
@@ -48,6 +49,13 @@ test run pass. Provider and live external configuration are NOT RUN.
 See [the commerce boundary](../../../docs-internal/gaming/merge-relay-commerce.md)
 for the DTO, environment variables, source links, and specified/implemented/
 integrated/verified/enabled ledger.
+
+2026-10-22 additions: `drizzle-postgres-commerce.test.ts` (5 tests) passed
+against Docker postgres:16 with all migrations applied (temporary container,
+stopped afterward), alongside the 5 receipt, 5 adapter, and lifecycle tests.
+The full API suite passed 488 tests with the PostgreSQL files enabled. New
+unit/route tests cover RTDN, OIDC auth, voided-purchase listing, and AdMob SSV.
+No production migration, live provider call, or native Billing SDK work ran.
 
 ## Acceptance boundary
 

@@ -21,6 +21,7 @@ export const mergeRelayPlatformRecordTypes = [
   "save_write_receipt",
   "commerce_purchase",
   "commerce_entitlement",
+  "ad_ssv",
 ] as const;
 
 export type MergeRelayRecordType =

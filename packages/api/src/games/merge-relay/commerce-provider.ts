@@ -3,12 +3,16 @@ import type {
   MergeCommercePurchaseState,
   MergePlayPurchaseAttestation,
   MergePlayPurchaseProvider,
+  MergePlayVoidedPurchaseProvider,
+  MergeVoidedPurchase,
 } from "./commerce-contracts";
 import type { GooglePlayAccessTokenSource } from "./commerce-google-auth";
+import { parseVoidedPage } from "./commerce-voided";
 import { readProviderResponse } from "./pgs-provider-body";
 
 const publisherRoot = "https://androidpublisher.googleapis.com/androidpublisher/v3";
 const providerTimeoutMs = 10_000;
+const maxVoidedPages = 5;
 
 export class GooglePlayPurchaseProviderError extends Error {
   constructor(
@@ -19,7 +23,9 @@ export class GooglePlayPurchaseProviderError extends Error {
   }
 }
 
-export class GooglePlayPurchaseProvider implements MergePlayPurchaseProvider {
+export class GooglePlayPurchaseProvider
+  implements MergePlayPurchaseProvider, MergePlayVoidedPurchaseProvider
+{
   constructor(
     private readonly packageName: string,
     private readonly accessTokenSource: GooglePlayAccessTokenSource,
@@ -56,6 +62,31 @@ export class GooglePlayPurchaseProvider implements MergePlayPurchaseProvider {
     if (!response.ok) throw providerHttpError(response.status);
     if (response.body.length > 0)
       throw new GooglePlayPurchaseProviderError("acknowledge_response_invalid", false);
+  }
+
+  async listVoidedPurchases(input: { startTimeMillis: number }): Promise<MergeVoidedPurchase[]> {
+    const token = await this.accessTokenSource.getAccessToken();
+    const collected: MergeVoidedPurchase[] = [];
+    let pageToken: string | null = null;
+    for (let page = 0; page < maxVoidedPages; page += 1) {
+      const query = new URLSearchParams({
+        startTime: String(input.startTimeMillis),
+        type: "0",
+        maxResults: "100",
+      });
+      if (pageToken) query.set("token", pageToken);
+      const response = await this.request(
+        `${publisherRoot}/applications/${encodeURIComponent(this.packageName)}/purchases/voidedpurchases?${query.toString()}`,
+        { headers: { authorization: `Bearer ${token}` } },
+      );
+      if (!response.ok) throw providerHttpError(response.status);
+      const parsed = parseVoidedPage(response.body);
+      if (!parsed) throw new GooglePlayPurchaseProviderError("provider_response_invalid", false);
+      collected.push(...parsed.items);
+      pageToken = parsed.nextPageToken;
+      if (!pageToken) break;
+    }
+    return collected;
   }
 
   private async request(

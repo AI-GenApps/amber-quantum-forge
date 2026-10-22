@@ -96,6 +96,20 @@ export interface MergePurchaseTokenVault {
   }): string;
 }
 
+export interface MergeVoidedPurchase {
+  purchaseToken: string;
+  orderId: string | null;
+  voidedTimeMillis: number;
+}
+
+export interface MergePlayVoidedPurchaseProvider {
+  listVoidedPurchases(input: { startTimeMillis: number }): Promise<MergeVoidedPurchase[]>;
+}
+
+export interface MergeRtdnAuthenticator {
+  authenticate(authorizationHeader: string | null): Promise<boolean>;
+}
+
 export interface MergeCommerceRuntime {
   environment: MergeEnvironment;
   config: {
@@ -104,6 +118,8 @@ export interface MergeCommerceRuntime {
   };
   provider: MergePlayPurchaseProvider;
   tokenVault: MergePurchaseTokenVault | null;
+  voidedProvider?: MergePlayVoidedPurchaseProvider | null;
+  rtdnAuthenticator?: MergeRtdnAuthenticator | null;
 }
 
 export interface MergeCommerceSettlement {
