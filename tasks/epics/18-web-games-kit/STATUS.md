@@ -129,7 +129,7 @@ only after this epic is merged to `main`; each game branch must not touch
 |---|---|---|---|
 | 00 | Kit epic, task files and portfolio status | agent | [x] |
 | 01 | Shared web-games kit package (`apps-games/web-kit`) | agent | [x] |
-| 02 | Six game skeletons, workspace wiring and registry entries | agent | [ ] |
+| 02 | Six game skeletons, workspace wiring and registry entries | agent | [x] |
 | 03 | Web-games CI and internal docs | agent | [ ] |
 
 ## Verification gate for tasks 01 to 03

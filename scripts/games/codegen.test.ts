@@ -22,5 +22,16 @@ test("generated Dart registry excludes web games and is left untouched when unch
   expect(after).toBe(before);
   expect(after).not.toContain("city_drive");
   expect(after).not.toContain("babylon");
+  expect(after).not.toContain("'dom'");
+  for (const id of [
+    "lantern_loops",
+    "floodplain_dispatch",
+    "cloud_observatory",
+    "the_last_window",
+    "dress_rehearsal",
+    "lost_parcel_desk",
+  ]) {
+    expect(after).not.toContain(id);
+  }
   expect(after).toContain("id: 'ludo'");
 });

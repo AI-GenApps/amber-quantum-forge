@@ -1,7 +1,7 @@
 ---
 epic: 18-web-games-kit
 task: 02-game-skeletons-and-registry
-status: pending
+status: in-progress
 commit_scope: web-games-kit
 depends_on: [18-web-games-kit/01-kit-package]
 estimate: L
@@ -97,17 +97,17 @@ six games and game branches never touch it.
 
 ## Implementation Checklist
 
-- [ ] Confirm the branch and that task 01 is complete.
-- [ ] Scaffold the six `<slug>-core` packages (with architecture test).
-- [ ] Scaffold the six `<slug>` apps (config files, `src/main.tsx` title screen
+- [x] Confirm the branch and that task 01 is complete.
+- [x] Scaffold the six `<slug>-core` packages (with architecture test).
+- [x] Scaffold the six `<slug>` apps (config files, `src/main.tsx` title screen
       through the kit, smoke test, `public/.gitkeep`).
-- [ ] Run `bun install`; verify the lock diff contains only the new packages.
-- [ ] Add the three root `web-games:*` scripts.
-- [ ] Update `biome.json` and `knip.json`.
-- [ ] Add `"dom"` to the rendering type and the six registry entries.
-- [ ] Update `scripts/games/*.test.ts` and add `registry-web.test.ts`.
-- [ ] Create the six `.agents/games/<slug>/README.md` placeholders.
-- [ ] Record versions and the lock diff summary in
+- [x] Run `bun install`; verify the lock diff contains only the new packages.
+- [x] Add the three root `web-games:*` scripts.
+- [x] Update `biome.json` and `knip.json`.
+- [x] Add `"dom"` to the rendering type and the six registry entries.
+- [x] Update `scripts/games/*.test.ts` and add `registry-web.test.ts`.
+- [x] Create the six `.agents/games/<slug>/README.md` placeholders.
+- [x] Record versions and the lock diff summary in
       `.agents/resources/2026-10-23/web-games/web-games-kit/02/README.md`.
 - [ ] Tick task 02 in `STATUS.md`.
 

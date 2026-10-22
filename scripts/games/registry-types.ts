@@ -6,6 +6,12 @@ export const GAME_IDS = [
   "snapquest",
   "ludo",
   "city_drive",
+  "lantern_loops",
+  "floodplain_dispatch",
+  "cloud_observatory",
+  "the_last_window",
+  "dress_rehearsal",
+  "lost_parcel_desk",
 ] as const;
 
 export type GameId = (typeof GAME_IDS)[number];
@@ -58,10 +64,16 @@ export interface GameRegistration {
     readonly prdId: string;
     readonly validationId: string;
     readonly canonicalDrivePath: string | null;
+    readonly links: {
+      readonly folder: string;
+      readonly index: string;
+      readonly prd: string;
+      readonly validation: string;
+    };
   };
   readonly platforms: readonly GamePlatform[];
   readonly environments: readonly GameEnvironment[];
-  readonly rendering: "flame" | "flutter_widgets" | "babylon";
+  readonly rendering: "flame" | "flutter_widgets" | "babylon" | "dom";
   readonly capabilities: GameCapabilities;
   readonly permissions: {
     readonly specified: readonly string[];

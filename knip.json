@@ -27,6 +27,174 @@
     "apps-games/web-kit": {
       "entry": ["src/index.ts", "vitest.config.ts", "test/**"],
       "project": ["src/**", "test/**"]
+    },
+    "apps-games/lantern-loops": {
+      "entry": [
+        "src/main.tsx",
+        "vite.config.ts",
+        "vitest.config.ts",
+        "capacitor.config.ts",
+        "test/**"
+      ],
+      "project": ["src/**", "test/**"],
+      "ignoreDependencies": [
+        "@capacitor/android",
+        "@capacitor/app",
+        "@capacitor/assets",
+        "@capacitor/cli",
+        "@capacitor/core",
+        "@capacitor/haptics",
+        "@capacitor/ios",
+        "@capacitor/preferences",
+        "@capacitor/screen-orientation",
+        "@capacitor/share",
+        "@capacitor/status-bar",
+        "sharp"
+      ]
+    },
+    "apps-games/lantern-loops-core": {
+      "entry": ["src/index.ts", "vitest.config.ts", "test/**"],
+      "project": ["src/**", "test/**"]
+    },
+    "apps-games/floodplain-dispatch": {
+      "entry": [
+        "src/main.tsx",
+        "vite.config.ts",
+        "vitest.config.ts",
+        "capacitor.config.ts",
+        "test/**"
+      ],
+      "project": ["src/**", "test/**"],
+      "ignoreDependencies": [
+        "@capacitor/android",
+        "@capacitor/app",
+        "@capacitor/assets",
+        "@capacitor/cli",
+        "@capacitor/core",
+        "@capacitor/haptics",
+        "@capacitor/ios",
+        "@capacitor/preferences",
+        "@capacitor/screen-orientation",
+        "@capacitor/share",
+        "@capacitor/status-bar",
+        "sharp"
+      ]
+    },
+    "apps-games/floodplain-dispatch-core": {
+      "entry": ["src/index.ts", "vitest.config.ts", "test/**"],
+      "project": ["src/**", "test/**"]
+    },
+    "apps-games/cloud-observatory": {
+      "entry": [
+        "src/main.tsx",
+        "vite.config.ts",
+        "vitest.config.ts",
+        "capacitor.config.ts",
+        "test/**"
+      ],
+      "project": ["src/**", "test/**"],
+      "ignoreDependencies": [
+        "@capacitor/android",
+        "@capacitor/app",
+        "@capacitor/assets",
+        "@capacitor/cli",
+        "@capacitor/core",
+        "@capacitor/haptics",
+        "@capacitor/ios",
+        "@capacitor/preferences",
+        "@capacitor/screen-orientation",
+        "@capacitor/share",
+        "@capacitor/status-bar",
+        "sharp"
+      ]
+    },
+    "apps-games/cloud-observatory-core": {
+      "entry": ["src/index.ts", "vitest.config.ts", "test/**"],
+      "project": ["src/**", "test/**"]
+    },
+    "apps-games/the-last-window": {
+      "entry": [
+        "src/main.tsx",
+        "vite.config.ts",
+        "vitest.config.ts",
+        "capacitor.config.ts",
+        "test/**"
+      ],
+      "project": ["src/**", "test/**"],
+      "ignoreDependencies": [
+        "@capacitor/android",
+        "@capacitor/app",
+        "@capacitor/assets",
+        "@capacitor/cli",
+        "@capacitor/core",
+        "@capacitor/haptics",
+        "@capacitor/ios",
+        "@capacitor/preferences",
+        "@capacitor/screen-orientation",
+        "@capacitor/share",
+        "@capacitor/status-bar",
+        "sharp"
+      ]
+    },
+    "apps-games/the-last-window-core": {
+      "entry": ["src/index.ts", "vitest.config.ts", "test/**"],
+      "project": ["src/**", "test/**"]
+    },
+    "apps-games/dress-rehearsal": {
+      "entry": [
+        "src/main.tsx",
+        "vite.config.ts",
+        "vitest.config.ts",
+        "capacitor.config.ts",
+        "test/**"
+      ],
+      "project": ["src/**", "test/**"],
+      "ignoreDependencies": [
+        "@capacitor/android",
+        "@capacitor/app",
+        "@capacitor/assets",
+        "@capacitor/cli",
+        "@capacitor/core",
+        "@capacitor/haptics",
+        "@capacitor/ios",
+        "@capacitor/preferences",
+        "@capacitor/screen-orientation",
+        "@capacitor/share",
+        "@capacitor/status-bar",
+        "sharp"
+      ]
+    },
+    "apps-games/dress-rehearsal-core": {
+      "entry": ["src/index.ts", "vitest.config.ts", "test/**"],
+      "project": ["src/**", "test/**"]
+    },
+    "apps-games/lost-parcel-desk": {
+      "entry": [
+        "src/main.tsx",
+        "vite.config.ts",
+        "vitest.config.ts",
+        "capacitor.config.ts",
+        "test/**"
+      ],
+      "project": ["src/**", "test/**"],
+      "ignoreDependencies": [
+        "@capacitor/android",
+        "@capacitor/app",
+        "@capacitor/assets",
+        "@capacitor/cli",
+        "@capacitor/core",
+        "@capacitor/haptics",
+        "@capacitor/ios",
+        "@capacitor/preferences",
+        "@capacitor/screen-orientation",
+        "@capacitor/share",
+        "@capacitor/status-bar",
+        "sharp"
+      ]
+    },
+    "apps-games/lost-parcel-desk-core": {
+      "entry": ["src/index.ts", "vitest.config.ts", "test/**"],
+      "project": ["src/**", "test/**"]
     }
   },
   "ignoreBinaries": [
