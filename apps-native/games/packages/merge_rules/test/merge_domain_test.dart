@@ -143,15 +143,32 @@ void main() {
       mode: MergeRelayMode.rescue,
       checkpoint: checkpoint,
       creatorAlias: 'Player One',
+      configRevision: 1,
     );
     expect(
       MergeChallenge.fromJson(challenge.toJson()).payloadHash,
       challenge.payloadHash,
     );
     expect(
+      challenge.payloadHash,
+      mergeChallengePayloadHash(
+        checkpoint: checkpoint,
+        configRevision: 1,
+        mode: MergeRelayMode.rescue,
+        originMode: MergeRelayMode.rescue,
+      ),
+    );
+    expect(
       () => MergeChallenge.fromJson({
         ...challenge.toJson(),
-        'creator_alias': 'Tampered',
+        'config_revision': 2,
+      }),
+      throwsFormatException,
+    );
+    expect(
+      () => MergeChallenge.fromJson({
+        ...challenge.toJson(),
+        'origin_mode': 'daily',
       }),
       throwsFormatException,
     );

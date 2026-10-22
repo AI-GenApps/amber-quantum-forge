@@ -50,6 +50,34 @@ void main() {
     expect(runMergeConfigFixture(fixture), isEmpty);
   });
 
+  test('MergeChallenge hashes match every fixture origin payload hash', () {
+    final configs = fixture['configs']! as Map;
+    for (final raw in (fixture['origins']! as List)) {
+      final entry = (raw as Map).cast<String, Object?>();
+      final origin = mergeOriginFor(entry['kind']! as String);
+      final revision = ((configs[entry['config']]! as Map)['revision']) as int;
+      final challenge = MergeChallenge(
+        challengeId: 'fixture-${entry['id']}',
+        mode: origin.mode,
+        originMode: origin.originMode,
+        configRevision: revision,
+        checkpoint: MergeCheckpoint.fromJson(
+          (entry['checkpoint']! as Map).cast<String, Object?>(),
+        ),
+        creatorAlias: 'Fixture',
+      );
+      expect(
+        challenge.payloadHash,
+        entry['payload_hash'],
+        reason: '${entry['id']}',
+      );
+      expect(
+        MergeChallenge.fromJson(challenge.toJson()).payloadHash,
+        entry['payload_hash'],
+      );
+    }
+  });
+
   test('daily seeds use the 17 times 31 derivation', () {
     final derivation = fixture['seed_derivation']! as Map;
     expect(derivation['initial'], 17);

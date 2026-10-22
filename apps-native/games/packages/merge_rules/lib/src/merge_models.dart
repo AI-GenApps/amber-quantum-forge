@@ -1,5 +1,6 @@
 import 'merge_codec.dart';
 import 'merge_config.dart';
+import 'merge_config_domain.dart';
 import 'merge_game.dart';
 
 enum MergeRelayMode { rescue, daily, endless }
@@ -130,23 +131,26 @@ final class MergeChallenge {
     required this.mode,
     required this.checkpoint,
     required this.creatorAlias,
+    required this.configRevision,
+    MergeRelayMode? originMode,
     this.parentChallengeId,
     String? payloadHash,
     this.schemaVersion = 1,
-  }) : payloadHash =
+  }) : originMode = originMode ?? mode,
+       payloadHash =
            payloadHash ??
-           sha256Hex(
-             _challengeHashPayload(
-               challengeId: challengeId,
-               mode: mode,
-               checkpoint: checkpoint,
-               creatorAlias: creatorAlias,
-               parentChallengeId: parentChallengeId,
-               schemaVersion: schemaVersion,
-             ),
+           mergeChallengePayloadHash(
+             checkpoint: checkpoint,
+             configRevision: configRevision,
+             mode: mode,
+             originMode: originMode ?? mode,
+             parentChallengeId: parentChallengeId,
            ) {
     if (schemaVersion != 1) {
       throw ArgumentError.value(schemaVersion, 'schemaVersion');
+    }
+    if (configRevision < 1) {
+      throw ArgumentError.value(configRevision, 'configRevision');
     }
     _validateId(challengeId, 'challengeId');
     _validateText(creatorAlias, 'creatorAlias', maxLength: 64);
@@ -161,6 +165,8 @@ final class MergeChallenge {
       'schema_version',
       'challenge_id',
       'mode',
+      'origin_mode',
+      'config_revision',
       'checkpoint',
       'creator_alias',
       'parent_challenge_id',
@@ -173,6 +179,8 @@ final class MergeChallenge {
     final schemaVersion = json['schema_version'];
     final challengeId = json['challenge_id'];
     final mode = json['mode'];
+    final originMode = json['origin_mode'];
+    final configRevision = json['config_revision'];
     final checkpoint = json['checkpoint'];
     final creatorAlias = json['creator_alias'];
     final parentChallengeId = json['parent_challenge_id'];
@@ -180,23 +188,26 @@ final class MergeChallenge {
     if (schemaVersion is! int ||
         challengeId is! String ||
         mode is! String ||
+        originMode is! String ||
+        configRevision is! int ||
         checkpoint is! Map ||
         creatorAlias is! String ||
         (parentChallengeId != null && parentChallengeId is! String) ||
         payloadHash is! String) {
       throw const FormatException('Invalid Merge challenge');
     }
-    final parsedMode = _parseMode(mode);
     final result = MergeChallenge(
       schemaVersion: schemaVersion,
       challengeId: challengeId,
-      mode: parsedMode,
+      mode: _parseMode(mode),
+      originMode: _parseMode(originMode),
+      configRevision: configRevision,
       checkpoint: MergeCheckpoint.fromJson(checkpoint.cast<String, Object?>()),
       creatorAlias: creatorAlias,
       parentChallengeId: parentChallengeId as String?,
       payloadHash: payloadHash,
     );
-    if (result.payloadHash != sha256Hex(result._hashPayload)) {
+    if (result.payloadHash != result.computedHash) {
       throw const FormatException('Merge challenge hash mismatch');
     }
     return result;
@@ -205,46 +216,33 @@ final class MergeChallenge {
   final int schemaVersion;
   final String challengeId;
   final MergeRelayMode mode;
+  final MergeRelayMode originMode;
+  final int configRevision;
   final MergeCheckpoint checkpoint;
   final String creatorAlias;
   final String? parentChallengeId;
   final String payloadHash;
 
-  Map<String, Object?> get _hashPayload => _challengeHashPayload(
-    challengeId: challengeId,
-    mode: mode,
+  String get computedHash => mergeChallengePayloadHash(
     checkpoint: checkpoint,
-    creatorAlias: creatorAlias,
+    configRevision: configRevision,
+    mode: mode,
+    originMode: originMode,
     parentChallengeId: parentChallengeId,
-    schemaVersion: schemaVersion,
   );
 
   Map<String, Object?> toJson() => {
     'schema_version': schemaVersion,
     'challenge_id': challengeId,
     'mode': mode.name,
+    'origin_mode': originMode.name,
+    'config_revision': configRevision,
     'checkpoint': checkpoint.toJson(),
     'creator_alias': creatorAlias,
     'parent_challenge_id': parentChallengeId,
     'payload_hash': payloadHash,
   };
 }
-
-Map<String, Object?> _challengeHashPayload({
-  required int schemaVersion,
-  required String challengeId,
-  required MergeRelayMode mode,
-  required MergeCheckpoint checkpoint,
-  required String creatorAlias,
-  required String? parentChallengeId,
-}) => {
-  'schema_version': schemaVersion,
-  'challenge_id': challengeId,
-  'mode': mode.name,
-  'checkpoint': checkpoint.toJson(),
-  'creator_alias': creatorAlias,
-  'parent_challenge_id': parentChallengeId,
-};
 
 MergeRelayMode _parseMode(String value) => switch (value) {
   'rescue' => MergeRelayMode.rescue,

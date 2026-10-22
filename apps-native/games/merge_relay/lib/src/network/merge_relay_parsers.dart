@@ -86,25 +86,19 @@ MergeRelayChallenge parseChallenge(Object? value) {
   final configRevision = relayPositiveInt(json, 'config_revision');
   if (payloadHash != null &&
       payloadHash !=
-          sha256Hex({
-            'checkpoint': {
-              'board': checkpoint.state.board.cells,
-              'content_id': checkpoint.contentId,
-              'content_version': checkpoint.contentVersion,
-              'max_legal_moves': checkpoint.maxLegalMoves,
-              'move_count': checkpoint.state.moveCount,
-              'rng_state': checkpoint.state.rngState,
-              'rule_version': checkpoint.state.ruleVersion,
-              'score': checkpoint.state.score,
-              'seed': checkpoint.state.seed,
-              'spawn_four_weight': checkpoint.spawnWeights?.spawnFourWeight,
-              'spawn_two_weight': checkpoint.spawnWeights?.spawnTwoWeight,
-            },
-            'config_revision': configRevision,
-            'mode': mode.name,
-            'origin_mode': originMode.name,
-            'parent_challenge_id': parentChallengeId,
-          })) {
+          mergeChallengePayloadHash(
+            checkpoint: MergeCheckpoint(
+              state: checkpoint.state,
+              maxLegalMoves: checkpoint.maxLegalMoves,
+              contentId: checkpoint.contentId,
+              contentVersion: checkpoint.contentVersion,
+              spawnWeights: checkpoint.spawnWeights,
+            ),
+            configRevision: configRevision,
+            mode: mode,
+            originMode: originMode,
+            parentChallengeId: parentChallengeId,
+          )) {
     throw const MergeRelayProtocolException('Challenge payload hash mismatch');
   }
   return MergeRelayChallenge(
