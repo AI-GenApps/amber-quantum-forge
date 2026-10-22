@@ -39,13 +39,16 @@ export async function findExistingPurchase(
     const byRequest = (
       await dependencies.store.readArtifacts(
         environment,
-        { recordType: "commerce_purchase", idempotencyKey: clientRequestId, limit: 2 },
+        {
+          recordType: "commerce_purchase",
+          ownerSubject: subject,
+          idempotencyKey: clientRequestId,
+          limit: 2,
+        },
         parseCommercePurchase,
       )
     ).items;
-    const conflict = byRequest.find(
-      (purchase) => purchase.subject !== subject || purchase.purchaseTokenDigest !== tokenDigest,
-    );
+    const conflict = byRequest.find((purchase) => purchase.purchaseTokenDigest !== tokenDigest);
     if (conflict)
       throw new MergeRelayError(
         409,

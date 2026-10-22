@@ -3,6 +3,7 @@ import {
   MERGE_RELAY_THEME_PRODUCT_ID,
   type MergeCommercePurchaseInput,
 } from "./commerce-contracts";
+import { isClientIdempotencyKey } from "./idempotency-keys";
 
 export function parseCommercePurchase(value: unknown): MergeCommercePurchaseInput | null {
   if (!isObject(value)) return null;
@@ -13,7 +14,7 @@ export function parseCommercePurchase(value: unknown): MergeCommercePurchaseInpu
   if (
     productId !== MERGE_RELAY_THEME_PRODUCT_ID ||
     !isPurchaseToken(purchaseToken) ||
-    (clientRequestId !== undefined && !isRequestId(clientRequestId))
+    (clientRequestId !== undefined && !isClientIdempotencyKey(clientRequestId))
   )
     return null;
   return {
@@ -33,14 +34,5 @@ function isPurchaseToken(value: unknown): value is string {
     value.length > 0 &&
     value.length <= 4096 &&
     /^[A-Za-z0-9._~+/=-]+$/.test(value)
-  );
-}
-
-function isRequestId(value: unknown): value is string {
-  return (
-    typeof value === "string" &&
-    value.length > 0 &&
-    value.length <= 128 &&
-    /^[A-Za-z0-9._:-]+$/.test(value)
   );
 }

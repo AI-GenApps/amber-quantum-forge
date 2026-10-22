@@ -1,0 +1,3 @@
+DROP INDEX "merge_relay_records_scope_idempotency_unique";--> statement-breakpoint
+CREATE UNIQUE INDEX "merge_relay_records_owner_idempotency_unique" ON "merge_relay_records" USING btree ("app_id","environment","record_type","owner_subject","idempotency_key") WHERE "idempotency_key" IS NOT NULL AND "record_type" NOT IN ('reward', 'ad_ssv', 'pgs_outbox');--> statement-breakpoint
+CREATE UNIQUE INDEX "merge_relay_records_scope_idempotency_unique" ON "merge_relay_records" USING btree ("app_id","environment","record_type","idempotency_key") WHERE "idempotency_key" IS NOT NULL AND "record_type" IN ('reward', 'ad_ssv', 'pgs_outbox');

@@ -212,7 +212,20 @@ export const mergeRelayRecords = pgTable(
     ),
     uniqueIndex("merge_relay_records_scope_idempotency_unique")
       .on(table.appId, table.environment, table.recordType, table.idempotencyKey)
-      .where(sql`"idempotency_key" IS NOT NULL`),
+      .where(
+        sql`"idempotency_key" IS NOT NULL AND "record_type" IN ('reward', 'ad_ssv', 'pgs_outbox')`,
+      ),
+    uniqueIndex("merge_relay_records_owner_idempotency_unique")
+      .on(
+        table.appId,
+        table.environment,
+        table.recordType,
+        table.ownerSubject,
+        table.idempotencyKey,
+      )
+      .where(
+        sql`"idempotency_key" IS NOT NULL AND "record_type" NOT IN ('reward', 'ad_ssv', 'pgs_outbox')`,
+      ),
     check(
       "merge_relay_records_parent_pair_check",
       sql`("parent_record_type" IS NULL) = ("parent_record_id" IS NULL)`,

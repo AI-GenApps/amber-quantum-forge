@@ -24,5 +24,20 @@ export class MergeRelayError extends Error {
 
 export function asMergeError(error: unknown): MergeRelayError {
   if (error instanceof MergeRelayError) return error;
+  if (isUniqueViolation(error))
+    return new MergeRelayError(
+      409,
+      "idempotency_conflict",
+      "The request conflicts with an existing record",
+    );
   return new MergeRelayError(503, "merge_relay_unavailable", "Merge Relay service is unavailable");
+}
+
+function isUniqueViolation(error: unknown): boolean {
+  let current: unknown = error;
+  for (let depth = 0; depth < 4 && typeof current === "object" && current !== null; depth += 1) {
+    if ((current as { code?: unknown }).code === "23505") return true;
+    current = (current as { cause?: unknown }).cause;
+  }
+  return false;
 }

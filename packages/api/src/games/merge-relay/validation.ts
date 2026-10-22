@@ -16,6 +16,7 @@ import {
   MERGE_RELAY_SAVE_SCHEMA_VERSION,
 } from "./contracts";
 import { isCanonicalJsonValue } from "./fingerprint";
+import { isClientIdempotencyKey } from "./idempotency-keys";
 
 const MERGE_MAX_ALIAS_LENGTH = 40;
 export const MERGE_MAX_PAYLOAD_BYTES = 32 * 1024;
@@ -49,10 +50,6 @@ function isSafeText(value: unknown, max = 128): value is string {
 
 export function isSafeId(value: unknown): value is string {
   return typeof value === "string" && /^[A-Za-z0-9_-]{1,128}$/.test(value);
-}
-
-function isIdempotencyKey(value: unknown): value is string {
-  return isSafeText(value, 128) && /^[A-Za-z0-9._:-]+$/.test(value);
 }
 
 export function parseCheckpoint(value: unknown): MergeCheckpoint | null {
@@ -152,7 +149,7 @@ export function parseWireCheckpoint(value: unknown): MergeCheckpoint | null {
 export function parseCreateChallenge(value: unknown): CreateChallengeRequest | null {
   if (
     !isObject(value) ||
-    !isIdempotencyKey(value.idempotency_key) ||
+    !isClientIdempotencyKey(value.idempotency_key) ||
     !isSafeText(value.creator_alias, MERGE_MAX_ALIAS_LENGTH) ||
     (value.mode !== undefined && !isMode(value.mode))
   )
@@ -186,7 +183,7 @@ export function parseCreateChallenge(value: unknown): CreateChallengeRequest | n
 }
 
 export function parseReserveAttempt(value: unknown): ReserveAttemptRequest | null {
-  return isObject(value) && isIdempotencyKey(value.reservation_key)
+  return isObject(value) && isClientIdempotencyKey(value.reservation_key)
     ? { reservationKey: value.reservation_key }
     : null;
 }
@@ -213,7 +210,7 @@ export function parseSubmitMoves(value: unknown): SubmitMovesRequest | null {
 export function parseFinalize(value: unknown): FinalizeAttemptRequest | null {
   if (
     !isObject(value) ||
-    !isIdempotencyKey(value.idempotency_key) ||
+    !isClientIdempotencyKey(value.idempotency_key) ||
     (value.finish_early !== undefined && typeof value.finish_early !== "boolean")
   )
     return null;
@@ -239,7 +236,8 @@ export function parseSave(value: unknown): SaveRequest | null {
     !isCanonicalJsonValue(value.payload)
   )
     return null;
-  if (value.client_write_id !== undefined && !isIdempotencyKey(value.client_write_id)) return null;
+  if (value.client_write_id !== undefined && !isClientIdempotencyKey(value.client_write_id))
+    return null;
   if (Buffer.byteLength(JSON.stringify(value.payload), "utf8") > MERGE_MAX_PAYLOAD_BYTES)
     return null;
   return {

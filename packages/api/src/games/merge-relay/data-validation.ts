@@ -7,20 +7,11 @@ import type {
   SocialRequest,
 } from "./contracts";
 import { MERGE_RELAY_CONTENT_VERSION } from "./contracts";
+import { isClientIdempotencyKey } from "./idempotency-keys";
 
 const maxAliasLength = 40;
 const eventTypes = new Set<EventRequest["type"]>([
-  "challenge_created",
   "challenge_opened",
-  "challenge_retired",
-  "checkpoint_saved",
-  "relay_attempt_reserved",
-  "relay_attempt_abandoned",
-  "relay_attempt_cancelled",
-  "attempt_reserved",
-  "attempt_abandoned",
-  "attempt_completed",
-  "relay_return_created",
   "replay_viewed",
   "validation_rejected",
   "daily_run_complete",
@@ -47,7 +38,7 @@ export function parseReward(value: unknown): RewardGrantRequest | null {
 export function parseEvent(value: unknown): EventRequest | null {
   if (
     !isObject(value) ||
-    !isIdempotencyKey(value.idempotency_key) ||
+    !isClientIdempotencyKey(value.idempotency_key) ||
     typeof value.type !== "string" ||
     !eventTypes.has(value.type as EventRequest["type"]) ||
     !isObject(value.payload)
@@ -134,10 +125,6 @@ function isSafeText(value: unknown, max: number): value is string {
 
 function isSafeId(value: unknown): value is string {
   return typeof value === "string" && /^[A-Za-z0-9_-]{1,128}$/.test(value);
-}
-
-function isIdempotencyKey(value: unknown): value is string {
-  return isSafeText(value, 128) && /^[A-Za-z0-9._:-]+$/.test(value);
 }
 
 function integerField(value: JsonObject[string]): number | null {
