@@ -191,7 +191,9 @@ export async function enqueuePgsResult(
       : "identity_unlinked"
     : "identity_unlinked";
   const now = dependencies.clock.now().toISOString();
-  for (const targetKey of achievementKeys(result))
+  const target = runtime.config.leaderboardTarget;
+  const knownCohort = target !== null && target.cohortHash === result.challengePayloadHash;
+  for (const targetKey of knownCohort ? achievementKeys(result) : [])
     await putPgsOutbox(transaction, result, {
       kind: "achievement",
       targetKey,
@@ -208,11 +210,7 @@ export async function enqueuePgsResult(
       credential: linked?.credential ?? null,
       now,
     });
-  const target = runtime.config.leaderboardTarget;
-  const comparableScore =
-    target && target.cohortHash === result.challengePayloadHash
-      ? providerScore(result, target.maxTileBound)
-      : null;
+  const comparableScore = target && knownCohort ? providerScore(result, target.maxTileBound) : null;
   if (result.originMode === "daily")
     await putPgsOutbox(transaction, result, {
       kind: "leaderboard",

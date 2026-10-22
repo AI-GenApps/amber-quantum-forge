@@ -36,6 +36,12 @@ export async function reserveAttempt(
       throw new MergeRelayError(404, "challenge_not_found", "Challenge was not found");
     if (challenge.status !== "open")
       throw new MergeRelayError(409, "challenge_retired", "Challenge is no longer playable");
+    if (challenge.ownerSubject === session.subject)
+      throw new MergeRelayError(
+        403,
+        "self_challenge_forbidden",
+        "You cannot play your own challenge",
+      );
     const config = await transaction.read(
       { recordType: "config", direction: "desc" },
       parseConfigArtifact,

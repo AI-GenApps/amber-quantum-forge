@@ -136,7 +136,7 @@ describe("Merge Relay contract regressions", () => {
     const challenge = await createChallenge(dependencies, "debug", session("owner"), {
       idempotencyKey: "origin-1",
       creatorAlias: "Ada",
-      checkpoint,
+      checkpoint: daily.checkpoint,
       mode: "daily",
       contentId: daily.checkpoint.contentId,
     });

@@ -24,6 +24,7 @@ const admin: MergeSession = {
   role: "game_admin",
 };
 const player: MergeSession = { ...admin, subject: "player", role: "player" };
+const owner: MergeSession = { ...admin, subject: "owner", role: "player" };
 const service: MergeSession = { ...admin, subject: "billing", role: "service" };
 
 function dependencies(): MergeRelayServiceDependencies {
@@ -35,7 +36,7 @@ function dependencies(): MergeRelayServiceDependencies {
 }
 
 async function finishedResult(deps: MergeRelayServiceDependencies): Promise<string> {
-  const challenge = await createChallenge(deps, "debug", player, {
+  const challenge = await createChallenge(deps, "debug", owner, {
     idempotencyKey: "gate-create",
     creatorAlias: "Admin",
     checkpoint,

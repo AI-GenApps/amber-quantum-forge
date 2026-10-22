@@ -15,15 +15,6 @@ const tokenConfig: GameTokenConfig = {
   audience: "merge-relay-fixture",
 };
 
-const checkpoint = {
-  board: [2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  score: 0,
-  move_count: 0,
-  seed: 7,
-  rng_state: 123,
-  rule_version: "MR-2D-1",
-};
-
 const fixture = JSON.parse(
   readFileSync(new URL("./fixtures/merge-relay-v1-http.json", import.meta.url), "utf8"),
 ) as Record<string, unknown>;
@@ -36,6 +27,8 @@ describe("Merge Relay v1 HTTP fixture", () => {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     };
+    const playerToken = await signGameToken(tokenConfig, { subject: "player", role: "player" });
+    const playerHeaders = { ...headers, Authorization: `Bearer ${playerToken}` };
     const adminToken = await signGameToken(tokenConfig, { subject: "admin", role: "game_admin" });
     const provisioned = await app.request("/games/merge_relay/debug/daily/2026-01-01/provision", {
       method: "POST",
@@ -45,6 +38,10 @@ describe("Merge Relay v1 HTTP fixture", () => {
       },
     });
     expect(provisioned.status).toBe(201);
+    const provisionedDaily = await app.request("/games/merge_relay/debug/daily/2026-01-01");
+    const dailyCheckpoint = (
+      (await provisionedDaily.json()) as { data: { checkpoint: Record<string, unknown> } }
+    ).data.checkpoint;
     const created = await app.request("/games/merge_relay/debug/challenges", {
       method: "POST",
       headers,
@@ -54,7 +51,7 @@ describe("Merge Relay v1 HTTP fixture", () => {
         mode: "daily",
         content_id: "daily_20260101",
         content_version: "MR-CONTENT-1",
-        checkpoint,
+        checkpoint: dailyCheckpoint,
       }),
     });
     expect(created.status).toBe(201);
@@ -77,7 +74,7 @@ describe("Merge Relay v1 HTTP fixture", () => {
       `/games/merge_relay/debug/challenges/${challengeId}/attempts`,
       {
         method: "POST",
-        headers,
+        headers: playerHeaders,
         body: JSON.stringify({ reservation_key: "fixture-reservation" }),
       },
     );
@@ -92,7 +89,7 @@ describe("Merge Relay v1 HTTP fixture", () => {
 
     const moved = await app.request(`/games/merge_relay/debug/attempts/${attemptId}/moves`, {
       method: "POST",
-      headers,
+      headers: playerHeaders,
       body: JSON.stringify({ expected_version: 0, moves: ["left"] }),
     });
     expect(moved.status).toBe(200);
@@ -101,7 +98,7 @@ describe("Merge Relay v1 HTTP fixture", () => {
 
     const finalized = await app.request(`/games/merge_relay/debug/attempts/${attemptId}/finalize`, {
       method: "POST",
-      headers,
+      headers: playerHeaders,
       body: JSON.stringify({ idempotency_key: "fixture-finalize", finish_early: true }),
     });
     expect(finalized.status).toBe(200);

@@ -106,7 +106,7 @@ describe("Merge Relay service policy guards", () => {
       spawnFourWeight: config.spawnFourWeight,
       features: { ...config.features, cosmetics: true },
     });
-    const challenge = await createChallenge(dependencies, "debug", player, {
+    const challenge = await createChallenge(dependencies, "debug", session("owner"), {
       idempotencyKey: "policy-create",
       creatorAlias: "Admin",
       checkpoint,

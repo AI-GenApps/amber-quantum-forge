@@ -14,6 +14,7 @@ import {
 import type {
   CreateChallengeRequest,
   MergeChallenge,
+  MergeCheckpoint,
   MergeDailyChallenge,
   MergeEnvironment,
   MergeSession,
@@ -190,7 +191,25 @@ async function readDailyReference(
     input.checkpoint.spawnFourWeight !== daily.checkpoint.spawnFourWeight
   )
     throw new MergeRelayError(422, "daily_config_mismatch", "Daily spawn rules are not frozen");
+  if (!input.parentChallengeId && !sameDailyStart(input.checkpoint, daily.checkpoint))
+    throw new MergeRelayError(
+      422,
+      "daily_checkpoint_mismatch",
+      "Daily challenges must start from the provisioned daily checkpoint",
+    );
   return daily;
+}
+
+function sameDailyStart(supplied: CreateChallengeRequest["checkpoint"], daily: MergeCheckpoint) {
+  return (
+    supplied.board.length === daily.board.length &&
+    supplied.board.every((cell, index) => cell === daily.board[index]) &&
+    supplied.score === daily.score &&
+    supplied.moveCount === daily.moveCount &&
+    supplied.seed === daily.seed &&
+    supplied.rngState === daily.rngState &&
+    supplied.ruleVersion === daily.ruleVersion
+  );
 }
 
 function bindDailyCheckpoint(input: CreateChallengeRequest, daily: MergeDailyChallenge) {

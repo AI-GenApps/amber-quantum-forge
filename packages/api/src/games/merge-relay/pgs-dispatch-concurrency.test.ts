@@ -96,7 +96,7 @@ describe("Merge Relay PGS dispatch concurrency", () => {
         webClientId: "web-client",
         webClientSecret: "secret",
         achievementTargets: { relay_result: "achievement-1" },
-        leaderboardTarget: null,
+        leaderboardTarget: { leaderboardId: "board-1", cohortHash: "cohort-1", maxTileBound: 4096 },
       },
       provider,
       vault: createPgsCredentialVault(Buffer.alloc(32, 7)),
@@ -120,7 +120,7 @@ describe("Merge Relay PGS dispatch concurrency", () => {
       session("worker", "service"),
       20,
     );
-    expect(summary.succeeded).toBe(2);
+    expect(summary.succeeded).toBe(4);
     expect(provider.peak).toBeGreaterThan(1);
   });
 });
