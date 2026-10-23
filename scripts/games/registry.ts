@@ -26,6 +26,10 @@ export function isWebGame(game: GameRegistration): boolean {
 }
 
 export function webEngineMessage(game: GameRegistration): string {
+  if (game.id !== "city_drive") {
+    const app = `@web-games/${game.paths.app.split("/").pop()}`;
+    return `${game.id} uses the web engine: use \`bun run web-games:build\` or \`bun run --filter ${app} cap:sync\` (Flutter games:* commands do not apply).`;
+  }
   return `${game.id} uses the web engine: use \`bun run city-drive:build\`, \`bun run city-drive:cap:sync\` or \`bun run city-drive:android:debug\` (Flutter games:* commands do not apply).`;
 }
 
@@ -33,14 +37,15 @@ function validateEngine(game: GameRegistration, root: string): string[] {
   const errors: string[] = [];
   if (game.engine !== "flutter" && game.engine !== "web") errors.push(`invalid engine: ${game.id}`);
   if (game.engine === "web") {
-    if (game.rendering !== "babylon")
-      errors.push(`web game must use babylon rendering: ${game.id}`);
+    const expectedRendering = game.id === "city_drive" ? "babylon" : "dom";
+    if (game.rendering !== expectedRendering)
+      errors.push(`web game must use ${expectedRendering} rendering: ${game.id}`);
     for (const path of [game.paths.app, game.paths.rulesPackage]) {
       if (!existsSync(join(root, path, "package.json")))
         errors.push(`web game is missing package.json: ${game.id}/${path}`);
     }
-  } else if (game.rendering === "babylon") {
-    errors.push(`babylon rendering requires the web engine: ${game.id}`);
+  } else if (game.rendering === "babylon" || game.rendering === "dom") {
+    errors.push(`${game.rendering} rendering requires the web engine: ${game.id}`);
   }
   return errors;
 }
