@@ -1,7 +1,7 @@
 ---
 epic: 21-web-cloud-observatory
 task: 01-core-rules
-status: todo
+status: in-progress
 commit_scope: cloud-observatory
 depends_on: []
 estimate: L
@@ -37,13 +37,13 @@ tables, saves, achievements, the daily Comet and the UI come later.
 
 Files under `apps-games/cloud-observatory-core/src/` (each under 800 lines):
 
-- [ ] `constants.ts`: `RULES` with `STARTING_STARLIGHT = 10`, `ATLAS_BONUS = 0.05`,
+- [x] `constants.ts`: `RULES` with `STARTING_STARLIGHT = 10`, `ATLAS_BONUS = 0.05`,
       `ACHIEVEMENT_BONUS = 0.01`, `OFFLINE_CAP_SECONDS = 28800`, `OFFLINE_EFFICIENCY_BASE = 0.5`,
       `ECLIPSE_DIVISOR = 1e9`, `ECLIPSE_MIN_SHARDS = 5`, `UPGRADE_THRESHOLDS = [10, 25, 50]`,
       `UPGRADE_COST_FACTORS = [10, 100, 1000]`, `UPGRADE_MULTIPLIERS = [2, 2, 3]`,
       `STAR_MIN_SPACING = 140`, `MAP_WIDTH = 1000`, `MAP_HEIGHT = 1400`, `MAP_MARGIN = 100`,
       `MAX_VALUE = 1e300`.
-- [ ] `types.ts`: id aliases; `InstrumentDef { id, name, baseCost, baseSps, growth }`;
+- [x] `types.ts`: id aliases; `InstrumentDef { id, name, baseCost, baseSps, growth }`;
       `UpgradeDef { id, instrumentId, tier, name }`; `ConstellationDef { id, name, stars:
       readonly Point[], closed: boolean, cost, requires: { instrumentId, count } }`;
       `BoonDef { id, name, cost, effect: BoonEffect }` where `BoonEffect` is a discriminated union
@@ -52,72 +52,72 @@ Files under `apps-games/cloud-observatory-core/src/` (each under 800 lines):
       (`starlight`, `cycleStarlight`, `lifetimeStarlight`, `shards`, `shardsEarned`, `owned`,
       `upgrades`, `charted`, `boons`, `achievements`, `eclipses`, `taps`, `cycleSeconds`);
       `GameEvent` union (`purchased`, `upgraded`, `charted`, `eclipsed`, `boon-bought`).
-- [ ] `numbers.ts`: `clampValue`, `formatNumber` (rules: below 10 up to 2 decimals trimmed, below
+- [x] `numbers.ts`: `clampValue`, `formatNumber` (rules: below 10 up to 2 decimals trimmed, below
       100 up to 1 decimal trimmed, below 1000 integer, then K M B T Qa Qi Sx Sp Oc No Dc with 3
       significant digits up to 1e33, then `1.23e45` scientific, valid to 1e300, `NaN` as "0",
       infinities and anything at or above 1e300 as "1.00e300+", negatives with a leading "-"),
       `formatNumberWords` (aria label, "1.2 million"), `formatDuration` (seconds to "2h 05m").
-- [ ] `economy.ts`: `instrumentUnitCost`, `bulkCost(def, owned, count, costMult)` (closed-form
+- [x] `economy.ts`: `instrumentUnitCost`, `bulkCost(def, owned, count, costMult)` (closed-form
       geometric sum), `maxAffordable(def, owned, budget, costMult)` (exact boundary, verified
       against a loop), `upgradeCost`, `instrumentMultiplier`, `gatherMultiplier`,
       `atlasFactor`, `globalMultiplier`, `starlightPerSecond`, `gatherValue`, `chartCost`,
       `offlineEfficiency`, all as specified in `economy.md` including boon effects.
-- [ ] `state.ts`: `createInitialState(catalog)` (10 starlight, empty everything);
+- [x] `state.ts`: `createInitialState(catalog)` (10 starlight, empty everything);
       `sanitizeState(unknown, catalog)` returning a valid state or `null` (rejects `NaN`,
       negatives, unknown ids; clamps to `MAX_VALUE`).
-- [ ] `actions.ts`: `gather`, `tick(state, seconds, catalog)` (production for `seconds`, adds to
+- [x] `actions.ts`: `gather`, `tick(state, seconds, catalog)` (production for `seconds`, adds to
       `starlight`, `cycleStarlight`, `lifetimeStarlight`, `cycleSeconds`), `buyInstrument(state,
       id, quantity | "max", catalog)`, `buyUpgrade`, `buyBoon`, `applyOffline(state, elapsed,
       catalog)` returning `{ state, gained, secondsCounted, capped }`. Every purchase function
       returns `{ ok: false, reason }` for: unknown id, not enough starlight or shards, already
       owned, threshold not met, instrument not yet unlocked.
-- [ ] `chart.ts`: `canChart`, `startChart(constellation)`, `tapStar(session, index)` returning a
+- [x] `chart.ts`: `canChart`, `startChart(constellation)`, `tapStar(session, index)` returning a
       new session plus `result: "correct" | "wrong" | "repeat" | "complete" | "invalid"`,
       `completeChart(state, session, catalog)` (pays the cost, adds the id to `charted`, emits the
       event, records `flawless`), `hitTestStar(stars, point, radius)`, `minStarDistance(stars)`,
       `starsInsideMargin(stars)`.
-- [ ] `eclipse.ts`: `pendingShards(cycleStarlight)`, `canEclipse`, `eclipse(state, catalog)`
+- [x] `eclipse.ts`: `pendingShards(cycleStarlight)`, `canEclipse`, `eclipse(state, catalog)`
       (resets starlight, instruments, upgrades, `cycleStarlight`, `cycleSeconds`; keeps charted,
       achievements, boons, lifetime, taps; banks shards; applies `start-starlight` and
       `start-owned` boons; increments `eclipses`).
-- [ ] `reducer.ts`: `reduce(state, action, catalog)` over an `Action` union returning
+- [x] `reducer.ts`: `reduce(state, action, catalog)` over an `Action` union returning
       `{ state, events, ok, reason? }`, so the UI has a single entry point.
-- [ ] `index.ts` re-exports the public API (named exports only); keep `version`.
+- [x] `index.ts` re-exports the public API (named exports only); keep `version`.
 
 Tests under `apps-games/cloud-observatory-core/test/` (all deterministic; any pseudo-randomness
 comes from a local seeded LCG written in the test, never `Math.random`):
 
-- [ ] `numbers.test.ts`: table of 40+ formatting cases including 0, 0.2, 9.99, 10.04, 99.95, 999,
+- [x] `numbers.test.ts`: table of 40+ formatting cases including 0, 0.2, 9.99, 10.04, 99.95, 999,
       1000, 1234, 999999, 1e6, 1e33, 1e36, 1.234e45, 1e300, 1e301, `NaN`, `-5`, `Infinity`;
       words labels; duration cases; `clampValue` bounds.
-- [ ] `economy.test.ts`: bulk cost equals the sum of unit costs for k in 1..250 within 1e-9
+- [x] `economy.test.ts`: bulk cost equals the sum of unit costs for k in 1..250 within 1e-9
       relative error; `maxAffordable` boundary (budget exactly at, just below and just above the
       cost of k units) for every growth in the fixture; multiplier combinations (atlas factor 1 and
       1.5, achievements 0 and 20, corona and totality); `starlightPerSecond` hand-computed
       examples; gather multiplier from Telescope upgrades.
-- [ ] `actions.test.ts`: gather adds `gatherValue`; `tick` splitting invariance (tick 10 twice
+- [x] `actions.test.ts`: gather adds `gatherValue`; `tick` splitting invariance (tick 10 twice
       equals tick 20); purchase failures for each reason; upgrade thresholds exactly at 9/10, 24/25,
       49/50 owned; cost halving by boons; inputs never mutated (deep-freeze the input); `NaN` and
       `Infinity` seconds ignored; bulk and max purchase; unlock-after-previous rule.
-- [ ] `chart.test.ts`: in-order completion for 5-, 7- and 10-star layouts; wrong tap increments
+- [x] `chart.test.ts`: in-order completion for 5-, 7- and 10-star layouts; wrong tap increments
       `mistakes` and never advances; tapping an already-lit star is `repeat` and not a mistake;
       out-of-range index is `invalid`; `flawless` only with zero mistakes; completion pays the
       cost on completion, fails when starlight is below cost or the prerequisite unmet, and
       cannot chart twice; `hitTestStar` picks the nearest star within the radius and none outside;
       spacing and margin helpers on good and bad layouts.
-- [ ] `eclipse.test.ts`: `pendingShards` boundaries (2.5e10 minus 1 gives 4, 2.5e10 gives 5, 1e11
+- [x] `eclipse.test.ts`: `pendingShards` boundaries (2.5e10 minus 1 gives 4, 2.5e10 gives 5, 1e11
       gives 10, 0 and negatives give 0), `canEclipse`, everything reset or kept as specified, boons
       applied to the next cycle, shards banked and boon purchases spend shards, repeated Eclipses
       accumulate counters.
-- [ ] `offline.test.ts`: cap at 28,800 s with `capped: true`, efficiency 50/75/100 by boon,
+- [x] `offline.test.ts`: cap at 28,800 s with `capped: true`, efficiency 50/75/100 by boon,
       negative or `NaN` elapsed gives 0, zero production gives 0, identical inputs give identical
       outputs, starlight also feeds `cycleStarlight` and `lifetimeStarlight`.
-- [ ] `state.test.ts`: `sanitizeState` accepts a valid state, rejects `NaN`, negative counts,
+- [x] `state.test.ts`: `sanitizeState` accepts a valid state, rejects `NaN`, negative counts,
       unknown ids and wrong types, clamps oversized numbers; JSON round trip equals the input.
-- [ ] `constants.test.ts`: every `RULES` value asserted literally against `economy.md`.
-- [ ] `reducer.test.ts`: a scripted 30-action playthrough on the fixture catalog reaches a
+- [x] `constants.test.ts`: every `RULES` value asserted literally against `economy.md`.
+- [x] `reducer.test.ts`: a scripted 30-action playthrough on the fixture catalog reaches a
       known end state (assert the exact numbers) and emits the expected event sequence.
-- [ ] Keep `architecture.test.ts` and `version.test.ts` green.
+- [x] Keep `architecture.test.ts` and `version.test.ts` green.
 
 ## Files Touched
 

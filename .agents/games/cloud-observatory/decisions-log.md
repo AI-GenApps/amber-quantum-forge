@@ -122,3 +122,24 @@ numbers are copied into economy.md there.
 ### 2026-10-23 — Audio container left to task 05
 iOS WKWebView and Android WebView do not decode every container. Default to MP3 and verify the
 converter available on the build machine; record in assets-index.md.
+
+### 2026-10-23 — Core rule clarifications fixed by task 01 (no number changed)
+Where the economy text left a corner open, the headless engine settled it as follows. The task 02
+balance simulator runs against exactly these rules.
+- Gather uses the upgrades of the first catalog instrument (the Telescope). The Brass Polish boon is
+  an instrument boon and does not multiply Gather, matching `gatherValue = globalMult *
+  telescopeUpgradeMult`.
+- Clear Glass (cost ×0.95) applies to instrument unit costs and charting costs, not upgrade costs.
+  Second Sight (×0.75) applies to upgrade costs only.
+- Offline progress feeds `starlight`, `cycleStarlight` and `lifetimeStarlight` but not `cycleSeconds`
+  or `taps`; `cycleSeconds` counts active play only. A non-finite elapsed time (NaN, Infinity) counts
+  as 0, like a negative one.
+- Starting starlight from Dark-Adapted Eyes is a gift, not earnings: it does not feed
+  `cycleStarlight` or `lifetimeStarlight`. Start-owned instruments are likewise free.
+- The Eclipse resets `owned`, so an instrument is hidden again until its predecessor is bought once
+  in the new cycle; Apprentice's Bench starts the Lens Array unlocked because it grants Telescopes.
+- Upgrades have no tier ordering: tier 3 can be bought at 50 owned without tier 1.
+- A chart session records mistakes; `flawless` travels on the `charted` event (and the completion
+  result), not in the game state. Task 03 turns it into the Steady Hand achievement and statistics.
+- Offline efficiency is the best of the base 50% and the owned `offline-efficiency` boons, capped at
+  100%.

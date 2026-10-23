@@ -40,7 +40,7 @@ change is updated here in the same commit. Evidence lives under
 | Data | Local save only (Capacitor Preferences on device, localStorage on web); nothing collected |
 | Epic | [`tasks/epics/21-web-cloud-observatory`](../../../tasks/epics/21-web-cloud-observatory/STATUS.md) |
 | Shared kit | [`.agents/games/web-games-kit/`](../web-games-kit/README.md) |
-| Status (2026-10-23) | Task 00 done: knowledge base, design spec and epic task files. Code tasks 01 to 08 pending |
+| Status (2026-10-23) | Task 00 done: knowledge base, design spec and epic task files. Task 01 (headless core rules) in progress. Code tasks 02 to 08 pending |
 
 ## Core Lore Constraint For Code
 
