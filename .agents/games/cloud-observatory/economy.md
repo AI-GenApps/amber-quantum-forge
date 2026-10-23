@@ -1,9 +1,13 @@
 # Cloud Observatory — economy
 
-Every currency, source, sink and number. These are the starting values proven by a throwaway
-balance sketch (`.agents/resources/2026-10-23/web-games/cloud-observatory/00/README.md`). Task 02
-turns them into content tables and the headless balance simulator test; the simulator is the
-authority and its tuned numbers must be copied back here in the same commit.
+Every currency, source, sink and number. These values are in the code
+(`cloud-observatory-core/src/content/`) and are proven by the headless balance simulator
+(`src/simulator.ts`, tested in `test/content/simulator.test.ts`, output recorded in
+`.agents/resources/2026-10-23/web-games/cloud-observatory/02/README.md`). A docs-drift test
+(`test/content/economy-table.test.ts`) reads this file and fails when a number here differs from
+the code. The throwaway sketch from planning
+(`.agents/resources/2026-10-23/web-games/cloud-observatory/00/README.md`) agreed with the
+simulator to within one percent, so no number was retuned in task 02.
 
 No monetization in v1: no ads, no IAP, no accounts, no network. A future IAP layer would sell
 cosmetic observatory themes or time-skips; the economy needs no change for that (see
@@ -131,22 +135,28 @@ Reward `max(1000, 900 × productionPerSecond) × (1 + 0.1 × min(streak - 1, 4))
 
 ## Pacing targets (proven by the balance simulator in task 02)
 
-Reference player: taps Gather twice a second for the first 10 minutes and once every two seconds
-afterwards, checks the shop every 5 seconds, buys the best payback item it can afford, and charts a
-constellation as soon as it can.
+Reference player (`simulate` in `src/simulator.ts`): taps Gather twice a second for the first 10
+minutes of a cycle and once every two seconds afterwards, decides every 5 seconds, charts a
+constellation (perfect tracing) as soon as its prerequisite and cost are met, otherwise buys the
+affordable instrument or upgrade with the best starlight-per-second gain per cost, and Eclipses as
+soon as 5 shards are pending. Between cycles it buys boons by ascending cost until the next one is
+unaffordable. Achievements and the Comet are not modelled, so real play is slightly faster.
 
-| Target | Value | Sketch result |
+| Target | Value | Simulator result |
 |---|---|---|
-| First constellation charted | under 180 s | about 90 s |
-| First Eclipse available (5 pending shards) | 2.5 to 4 h active | about 2.9 h |
-| Longest gap between two purchases before the first Eclipse | at most 360 s | about 30 s |
-| Cycle to 5 shards with Dark-Adapted Eyes + Brass Polish (3 shards, affordable after the first Eclipse) | at most 85% of the first | about 80% |
-| Cycle to 5 shards with the four early boons (Dark-Adapted, Brass Polish, Clear Glass, Apprentice: 11 shards) | at most 85% of the first | about 77% |
-| Cycle to 5 shards with those four plus Atlas Ink and Corona (39 shards) | at most 55% of the first | about 40% |
-| All 12 constellations charted before the first Eclipse | at least 11 | 11 |
+| First constellation charted | under 180 s | 90 s |
+| First Eclipse available (5 pending shards) | 2.5 to 4 h active | 10,293 s (2.86 h) |
+| Longest gap between two purchases (cycles 1, 2, 3) | at most 360 s | 30 s |
+| All but one constellation charted before the first Eclipse | at least 11 | 11 |
+| Cycle 2 (Dark-Adapted + Brass Polish bought after cycle 1) to 5 shards | at most 85% of cycle 1 | 8,605 s (83.6%) |
+| Cycle 3 (also Clear Glass + Night Watch) to 5 shards | at most 85% of cycle 1 | 8,313 s (80.8%) |
+| Dark-Adapted + Brass Polish with 11 charted | at most 85% of cycle 1 | 82.4% |
+| Dark-Adapted, Brass Polish, Clear Glass, Apprentice with 11 charted (11 shards) | at most 85% of cycle 1 | 80.7% |
+| Those four plus Atlas Ink and Corona with 11 charted (39 shards) | at most 55% of cycle 1 | 41.9% (the Owl is charted in that cycle) |
 
-Pending shards at the same reference points: 8 at about 3.7 h, 10 at about 4.3 h, 15 at about 5.3 h
-(first cycle). Full boon completion (105 shards) is a multi-week idle-session goal.
+The sequential run spends cycle 2's shards on Clear Glass and Night Watch because boons are bought
+strictly by ascending cost; a human who saves for Apprentice or Atlas Ink does better. Full boon
+completion (105 shards) is a multi-week idle-session goal.
 
 ## Anti-exploit notes
 

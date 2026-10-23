@@ -1,6 +1,6 @@
 # Epic 21 — Cloud Observatory (web, full v1)
 
-Status: in progress (tasks 00 and 01 done, 02 to 08 pending)
+Status: in progress (tasks 00, 01 and 02 done, 03 to 08 pending)
 
 ## Purpose
 
@@ -86,7 +86,7 @@ checklist.
 |---|---|---|---|
 | 00 | Knowledge base, design spec and epic task files (this planning step; no task file) | agent | [x] |
 | 01 | [Core rules engine (headless, in cloud-observatory-core)](01-core-rules.md) | agent | [x] |
-| 02 | [Full v1 content + validators](02-content.md) | agent | [ ] |
+| 02 | [Full v1 content + validators](02-content.md) | agent | [x] |
 | 03 | [Progression, economy, daily mode, versioned save](03-progression-and-save.md) | agent | [ ] |
 | 04 | [All screens, navigation, design tokens, fonts, accessibility](04-screens-and-ui.md) | agent | [ ] |
 | 05 | [CC0 audio, haptics, motion polish, onboarding and how-to-play](05-audio-haptics-onboarding.md) | agent | [ ] |

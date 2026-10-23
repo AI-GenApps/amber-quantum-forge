@@ -30,6 +30,29 @@ export {
   tapStar,
 } from "./chart";
 export { RULES } from "./constants";
+export { ACHIEVEMENTS } from "./content/achievements";
+export { BOONS } from "./content/boons";
+export {
+  achievementById,
+  boonById,
+  CATALOG,
+  constellationById,
+  instrumentById,
+  loreById,
+  loreForTrigger,
+  upgradeById,
+} from "./content/catalog";
+export { CONSTELLATIONS } from "./content/constellations";
+export { INSTRUMENTS } from "./content/instruments";
+export { LORE, LORE_CHAPTERS } from "./content/lore";
+export type {
+  AchievementCondition,
+  AchievementDef,
+  LoreChapter,
+  LoreEntry,
+  LoreTrigger,
+} from "./content/types";
+export { UPGRADES } from "./content/upgrades";
 export type { EclipseResult } from "./eclipse";
 export { canEclipse, eclipse, pendingShards } from "./eclipse";
 export {
@@ -53,6 +76,8 @@ export {
 export { clampValue, formatDuration, formatNumber, formatNumberWords } from "./numbers";
 export type { Action, ReduceResult } from "./reducer";
 export { reduce } from "./reducer";
+export type { CycleReport, SimulationOptions, SimulationReport } from "./simulator";
+export { simulate } from "./simulator";
 export { createInitialState, sanitizeState } from "./state";
 export type {
   AchievementId,

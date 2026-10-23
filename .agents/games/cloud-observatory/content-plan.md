@@ -33,6 +33,14 @@ drawings, not copies of IAU charts.
 | 11 | tower | The Tower | 9 | A stepped tower: base left, base right, four tier corners (two tiers narrowing upward), a roof star, a spire star and a flag star | emblem-tower |
 | 12 | owl | The Owl | 10 | Two ear tufts, two eyes, a beak star, wing tips left and right, two talon stars and the tail star | emblem-owl |
 
+Tracing order note (task 02): the descriptions name the parts of each figure, not a strict walking
+order. The coordinates in `cloud-observatory-core/src/content/constellations.ts` use an order in
+which the open path never crosses itself: the Whale is traced spout, snout, back, back, tail base,
+upper fluke, lower fluke; the Ship is traced pennant, mast top, mast base, hull left, keel, hull
+right, sail outer point, sail inner point; the Lantern's base star is the wick inside the cage; the
+Harp's three string stars run along the diagonal; the Archer's arrow rises to the upper right.
+Only the Lyre, Crown and Lantern are `closed`.
+
 Totals: 86 stars. Each constellation has one lore entry (section 5) and a card in the atlas showing
 its emblem (placeholder: code-drawn gold line figure until the emblem art is accepted).
 

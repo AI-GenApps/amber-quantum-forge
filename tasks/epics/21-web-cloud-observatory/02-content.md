@@ -1,7 +1,7 @@
 ---
 epic: 21-web-cloud-observatory
 task: 02-content
-status: todo
+status: in-progress
 commit_scope: cloud-observatory
 depends_on: [21-web-cloud-observatory/01-core-rules]
 estimate: L
@@ -40,47 +40,47 @@ simulator-verified ones.
 Files under `apps-games/cloud-observatory-core/src/content/` (split by topic, each under 800
 lines):
 
-- [ ] `instruments.ts`: the 8 `InstrumentDef` rows with the economy.md numbers.
-- [ ] `upgrades.ts`: 24 `UpgradeDef` rows generated from a table of names (ids `u-<instrument>-<tier>`).
-- [ ] `constellations.ts`: 12 `ConstellationDef` rows with all 86 star coordinates, `closed`,
+- [x] `instruments.ts`: the 8 `InstrumentDef` rows with the economy.md numbers.
+- [x] `upgrades.ts`: 24 `UpgradeDef` rows generated from a table of names (ids `u-<instrument>-<tier>`).
+- [x] `constellations.ts`: 12 `ConstellationDef` rows with all 86 star coordinates, `closed`,
       cost and prerequisite from economy.md; atlas order fixed.
-- [ ] `boons.ts`: 10 `BoonDef` rows with their typed `BoonEffect`.
-- [ ] `lore.ts`: 6 chapters and 30 `LoreEntry { id, chapter, title, trigger, body }` where
+- [x] `boons.ts`: 10 `BoonDef` rows with their typed `BoonEffect`.
+- [x] `lore.ts`: 6 chapters and 30 `LoreEntry { id, chapter, title, trigger, body }` where
       `trigger` is `{ kind: "instrument" | "constellation" | "boon", id }`, in chapter order.
-- [ ] `achievements.ts`: 20 `AchievementDef { id, name, description, condition }` with a typed
+- [x] `achievements.ts`: 20 `AchievementDef { id, name, description, condition }` with a typed
       `AchievementCondition` union (`owned`, `charted`, `flawless`, `lifetime`, `eclipses`,
       `comet-days`, `comet-streak`, `lore`, `offline-full`); evaluation arrives in task 03.
-- [ ] `catalog.ts`: assembles and freezes `CATALOG` (type `Catalog` from task 01) and exports
+- [x] `catalog.ts`: assembles and freezes `CATALOG` (type `Catalog` from task 01) and exports
       lookup maps (`instrumentById`, ...).
-- [ ] `simulator.ts`: `simulate(catalog, options)` stepping one second at a time with the
+- [x] `simulator.ts`: `simulate(catalog, options)` stepping one second at a time with the
       reference player (taps twice a second for the first 600 s then once per 2 s; decides every
       5 s; buys the affordable item with the best output per cost; charts as soon as possible;
       buys boons by ascending cost between cycles). Returns a report: first chart time, time to 5
       pending shards, longest purchase gap, charted count at the first Eclipse, and the same for
       cycles 2 and 3 with the boons bought so far.
-- [ ] Update `index.ts` exports. Remove nothing from task 01.
+- [x] Update `index.ts` exports. Remove nothing from task 01.
 
 Tests under `apps-games/cloud-observatory-core/test/content/`:
 
-- [ ] `counts.test.ts`: exact counts (12/86, 8, 24, 10/105, 30 in 6 chapters of 5, 20, 6).
-- [ ] `ids.test.ts`: all ids unique and kebab-case within their type; every name non-empty,
+- [x] `counts.test.ts`: exact counts (12/86, 8, 24, 10/105, 30 in 6 chapters of 5, 20, 6).
+- [x] `ids.test.ts`: all ids unique and kebab-case within their type; every name non-empty,
       trimmed, and unique within its type; every upgrade references an existing instrument with
       tiers 1 to 3 exactly once per instrument; every prerequisite references an existing
       instrument; every boon effect references existing instruments.
-- [ ] `lore.test.ts`: every lore entry has a trigger that resolves; each instrument, constellation
+- [x] `lore.test.ts`: every lore entry has a trigger that resolves; each instrument, constellation
       and boon is the trigger of exactly one entry (8 + 12 + 10); chapters have 5 entries each in
       order; body length 40 to 90 words; no `window`/`document` tokens; no entry is a
       duplicate of another (normalised text); titles match `content-plan.md` (the test parses the
       table rows of the markdown file and compares ids and titles).
-- [ ] `stars.test.ts`: star counts per constellation match the plan (5,6,6,6,7,7,7,7,8,8,9,10);
+- [x] `stars.test.ts`: star counts per constellation match the plan (5,6,6,6,7,7,7,7,8,8,9,10);
       margin, minimum spacing 140, minimum bounding box 500×250, no self-crossing path; the first and last
       star distance is under 700 for `closed` shapes.
-- [ ] `economy-table.test.ts`: reads `economy.md` and asserts every instrument, constellation and
+- [x] `economy-table.test.ts`: reads `economy.md` and asserts every instrument, constellation and
       boon number equals the code (so docs and code cannot drift); upgrade cost factors; achievement
       names equal `content-plan.md`.
-- [ ] `catalog.test.ts`: `CATALOG` is deeply frozen, round-trips through `JSON.stringify`, and the
+- [x] `catalog.test.ts`: `CATALOG` is deeply frozen, round-trips through `JSON.stringify`, and the
       fixture-based task 01 tests still pass against it for the generic rules.
-- [ ] `simulator.test.ts` (the balance proof; allowed up to 20 s of test time):
+- [x] `simulator.test.ts` (the balance proof; allowed up to 20 s of test time):
       - first constellation charted in under 180 s;
       - first cycle reaches 5 pending shards between 2.5 and 4 hours;
       - no gap longer than 360 s between two consecutive purchases (instruments, upgrades or
@@ -90,7 +90,7 @@ Tests under `apps-games/cloud-observatory-core/test/content/`:
         85% of cycle 1's time; a cycle with Dark-Adapted, Brass Polish, Clear Glass, Apprentice,
         Atlas Ink and Corona in at most 55%;
       - the report is deterministic (two runs equal) and never contains `NaN`.
-- [ ] If a target fails, retune within the allowed levers (Eclipse divisor, growth, tier ratios,
+- [x] If a target fails, retune within the allowed levers (Eclipse divisor, growth, tier ratios,
       chart costs) and copy the new numbers into `economy.md`, `content-plan.md`,
       `decisions-log.md` and `.agents/resources/2026-10-23/web-games/cloud-observatory/00/README.md`
       history note in this commit. Keep the first-Eclipse window and the six-minute gap rule.

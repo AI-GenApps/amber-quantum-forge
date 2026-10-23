@@ -4,8 +4,8 @@ Nothing here blocks starting task 01. Each item names the task that closes it.
 
 | # | Question | Default if unanswered | Closes in |
 |---|---|---|---|
-| 1 | Final constellation star coordinates (86 stars) | Hand-authored on the 1000×1400 map, validated by spacing/margin tests | 02 |
-| 2 | Do the simulator's tuned numbers move the Eclipse divisor or growth rates? | Keep the economy.md values unless a pacing target fails; record any change in the same commit | 02 |
+| 1 | Final constellation star coordinates (86 stars) | Hand-authored on the 1000×1400 map, validated by spacing/margin tests | 02 (closed: coordinates are in `src/content/constellations.ts`, see decisions-log) |
+| 2 | Do the simulator's tuned numbers move the Eclipse divisor or growth rates? | Keep the economy.md values unless a pacing target fails; record any change in the same commit | 02 (closed: no number moved, every target met) |
 | 3 | Long ambient music loop that is explicitly CC0 (Kenney has jingles, not long ambient tracks) | Search OpenGameArt/other pages that state CC0 in their licence field; if none is found, ship sfx and jingles only and record it | 05 |
 | 4 | Audio container: MP3 vs AAC vs Ogg for iOS and Android WebViews | MP3 (`ffmpeg` and `lame` are installed on the build machine) | 05 |
 | 5 | Designer thread art acceptance: which of the 33 slots pass review | Rejected slots keep code-drawn placeholders; record in assets-index.md | 06 |

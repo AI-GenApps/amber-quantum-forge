@@ -143,3 +143,32 @@ balance simulator runs against exactly these rules.
   result), not in the game state. Task 03 turns it into the Steady Hand achievement and statistics.
 - Offline efficiency is the best of the base 50% and the owned `offline-efficiency` boons, capped at
   100%.
+
+### 2026-10-23 — Task 02: content tables, simulator and no retune
+All 12 constellations (86 stars), 8 instruments, 24 upgrades, 10 boons, 30 lore entries, 6 chapters
+and 20 achievements are typed data in `cloud-observatory-core/src/content/`. The balance simulator
+is a pure function (`src/simulator.ts`) that drives the real rules engine one second at a time. It
+met every pacing target with the planning numbers, so no economy number moved: first chart at 90 s,
+first Eclipse at 2.86 h, longest purchase gap 30 s, 11 of 12 constellations charted at the first
+Eclipse, cycle 2 at 83.6% and the six-boon cycle at 41.9% of cycle 1. Output is recorded in the
+evidence README for task 02. *Why no retune:* the sketch and the engine differ only in tap value
+details and agree within one percent.
+
+### 2026-10-23 — Simulator reference player details
+The player ranks purchases by (starlight per second gain + tap gain at the current tap rate) per
+cost, charts before buying, Eclipses at 5 pending shards, and buys boons by strictly ascending cost
+until the next is unaffordable (so cycle 2 buys Clear Glass and Night Watch with its 7 shards).
+Pinned scenarios (`startBoons`, `startCharted`) seed a cycle through the real `eclipse` rule so
+start-starlight and start-owned boons apply exactly as in play, then zero the shards.
+
+### 2026-10-23 — Star coordinates are hand-authored; path order adapted to avoid crossings
+Validators require margin 100, spacing 140, a 500 by 250 bounding box and no touching between
+non-adjacent path edges (the closing edge of Lyre, Crown and Lantern is checked too). To satisfy that,
+the Whale, Ship and Lantern use the tracing orders described in content-plan.md. The first and last
+star of the closed shapes are under 700 units apart.
+
+### 2026-10-23 — Biome skips directories named `content`
+The root `biome.json` excludes `apps-games/**/content`, so `src/content` and `test/content` are not
+checked by `bunx biome check`. They were formatted with the repo's Biome binary in a scratch copy
+with that exclusion removed. The root config is out of scope for this epic; if later edits touch
+these files, repeat the scratch-copy format (see the task 02 evidence README).
