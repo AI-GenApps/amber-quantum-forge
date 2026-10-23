@@ -56,12 +56,15 @@ one pastry or book is unlocked. Drinks are in every order.
   among unlocked drinks; pastry likewise (favourite 70 percent if unlocked); book mood is one of their
   two favourite moods (50/50). Customers whose favourites unlock later simply order other things first.
   Walk-in: random unlocked drink and pastry, random mood among moods that some unlocked book covers.
+  A regular only asks for a favourite mood that some unlocked book covers (if neither is covered, any
+  covered mood), so a book request can always be met by some unlocked book.
 - Mood-to-book: 5 moods (comforting, adventurous, wistful, funny, curious); each book carries exactly
   two mood tags and each mood is carried by exactly two books (table in `content-plan.md`).
 - Patience (seconds): Day 1 = 60; Days 2 and 3 = 50; Days 4 to 8 = 45; Days 9 to 14 = 40; plus rain
   +6, plus decor (cushions +4, rain chime +8 only in rain). Relaxed mode (setting) multiplies the total
-  by 1.5, rounded down to a tick. Patience drains one tick per tick from the moment the customer takes a
-  seat; the door wait is separate and does not drain it.
+  by 1.5, rounded down to a tick. Patience drains one tick per tick from the tick after the customer takes a
+  seat; the door wait is separate and does not drain it. A warning event fires at 100 ticks left. When a
+  customer leaves or is served, anything started for their seat (cup, plates, tray) is dropped.
 - Customer mood faces (art states): neutral while waiting, happy after a delighted or satisfied serve,
   sad after a disappointed serve or when leaving.
 
@@ -72,9 +75,11 @@ for the active ticket.
 
 ### Drinks (6)
 
-A cup is built by tapping step buttons in order. A wrong step tap is a mistake: the cup is emptied and
-the recipe restarts (no other penalty). Steps with a duration lock the next tap until the timer ends
-and show a progress ring.
+A cup is built by tapping step buttons in order, following the recipe of the active ticket's drink (the
+`cup` tap fixes the drink for that seat, so a finished cup always matches the order). A wrong step tap is
+a mistake: the cup is emptied and the recipe restarts (no other penalty). Steps with a duration lock the
+next tap until the timer ends and show a progress ring; a recipe whose last step has a duration (Fog Tea)
+is ready when that timer ends. A seat holds one drink at a time.
 
 | Id | Drink | Steps | Duration ticks | Price |
 |---|---|---|---|---|
@@ -101,8 +106,10 @@ elsewhere meanwhile; when done the plate flashes and the next step becomes avail
 | `pastry-4` | Lemon Cream Bun | plate, cream, dust | 4 | 1 |
 | `pastry-5` | Ginger Loaf | plate, warm, glaze, dust | 5 | 2 |
 
-Step tokens (5): `plate`, `warm`, `glaze`, `dust`, `cream`. Finishing a pastry uses one portion of that
-kind from the day's stock. A pastry that is out of stock cannot be started.
+Step tokens (5): `plate`, `warm`, `glaze`, `dust`, `cream`. Starting a pastry (the `plate` step) takes a
+free plate and uses one portion of that kind from the day's stock; a discarded plate loses its portion.
+A pastry that is out of stock cannot be started. A wrong pastry step is a mistake with no other penalty
+(the plate keeps its progress). A seat holds one pastry at a time (on a plate or on its tray).
 
 ### Books (5)
 
@@ -161,10 +168,11 @@ Each requested component is scored 0 to 10:
 
 Items not requested but placed on the tray are ignored (not paid, not scored).
 
-Payment: each delivered requested item pays its price (substitutes pay half, rounded down, minimum 1;
-a book with the wrong mood pays 1). Tip, rounded up, on the payment: delighted 40 percent, satisfied
+Payment: each delivered requested item pays its price (a substitute pastry pays half of the delivered
+pastry's price, rounded down, minimum 1; a book with the wrong mood pays 1; a wrong drink pays 0). Tip, rounded up, on the payment: delighted 40 percent, satisfied
 15 percent, disappointed 0, left 0 (nothing was delivered). Gramophone adds +10 percentage points.
-Decor price effects apply to the item prices before the tip.
+Decor price effects apply to the item prices before the tip, to the exact drink and to a right-mood
+book only (a wrong-mood book stays at 1).
 
 Friendship points (regulars only): delighted +2, satisfied +1, disappointed 0, left 0; with Harbour
 Chart Frame a delighted serve gives +1 more (maximum 3 per serve).
@@ -186,6 +194,8 @@ against 3 stars.
   thresholds reached from `[1, 2, 4, 6, 8]` (levels 0 to 5, hearts in the UI).
 - Each regular has 5 scenes. Scene k becomes available when level >= k and the regular has had at
   least k visits served (campaign visit k, or any later served shift) and scene k-1 is finished.
+- The core offers one scene per regular at a time (the next unfinished one); after a scene is finished
+  the app asks again, so scene k+1 can follow in the same evening if it is already eligible.
 - After a shift, pending scenes play on the evening screen in calendar order, at most 4 per evening
   (`MAX_SCENES_PER_EVENING = 4`); on Day 14 the limit is 8. Extra scenes wait for the next evening.
 - A scene is 6 to 9 beats of dialogue with the regular's bust (neutral, happy or sad per beat), a speaker

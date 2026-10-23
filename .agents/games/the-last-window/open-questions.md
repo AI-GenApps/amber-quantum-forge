@@ -5,7 +5,7 @@ None of these block v1; each has a stated default. After task 08 the open items 
 
 | # | Question | Default used until answered | Owner |
 |---|---|---|---|
-| Q1 | Are the balance numbers fun in practice (patience 60 to 40 s, 12 customers in 240 s, tip percentages, recipe durations)? | Values in `product.md` and `economy.md`. Tasks 01 and 03 may adjust them if a scripted bot shows the targets in `economy.md` are missed, logging the change in `decisions-log.md`. | tasks 01, 03, owner at QA |
+| Q1 | Are the balance numbers fun in practice (patience 60 to 40 s, 12 customers in 240 s, tip percentages, recipe durations)? Task 01 bot check: a bot acting every 3 ticks never loses a customer on Days 5 to 14, while a bot acting every 2.5 s with 20 percent wrong taps loses 3 to 5 customers on Days 9, 12 and 14 (11 to 12 customers). | Values in `product.md` and `economy.md`. Tasks 01 and 03 may adjust them if a scripted bot shows the targets in `economy.md` are missed, logging the change in `decisions-log.md`. | tasks 01, 03, owner at QA |
 | Q2 | Do 3 seats, 8 step buttons and a book shelf fit a 360 x 640 phone with 44 px hit areas? | Layout in task 04 uses the lower third for stations and a compact tray; owner judges in browser QA at 360 x 640. | task 04, owner |
 | Q3 | Privacy policy URL for store submission | Not needed in v1 (no submission); a one-page "no data collected" policy is needed later. | owner |
 | Q4 | Public name beyond the working title | The Last Window stays the public name in v1. | owner, later step |

@@ -157,3 +157,43 @@ rules before content, content before UI, so each task has a testable target.
 ### Ports and ids
 Dev server port 4014 (already in `vite.config.ts`), app id `app.w3dev.thelastwindow`, save key
 `the-last-window.profile`.
+
+## 2026-10-24 - Task 01 rule clarifications (core rules engine)
+
+Rules the spec left open, fixed while implementing the headless engine. Numbers did not change.
+
+- **Drinks follow the ticket.** The `cup` tap binds the cup to the active ticket's drink and the next
+  step is that recipe's next token, so a finished cup always matches the order. A drink on a tray is
+  therefore exact or missing; a wrong drink only exists at the scoring-function level (scores 0, pays 0).
+  Rationale: matches "the next needed step glows" and the screen-reader label "Tide Latte step 2 of 4".
+- **Portion at the plate step.** Starting a pastry takes the portion (the task's `pastryPick`), so a
+  discarded plate loses it. Product text said "finishing"; the engine API fixes it at the start.
+- **Wrong pastry step** is a counted mistake with no other penalty (the plate keeps its progress); only
+  the cup is emptied by a wrong step. Rationale: portions are paid for up front, so ruining them on a
+  mis-tap would feel harsh.
+- **Substitute pay** is half of the delivered pastry's price (floor, minimum 1). Decor price bonuses
+  (+1 drink, +2 book) apply to the exact drink and to a right-mood book only; a wrong-mood book pays 1.
+- **Moods are always answerable.** A regular's book request uses a favourite mood that some unlocked
+  book covers, else any covered mood. Rationale: avoids unanswerable requests on Day 1 (only
+  The Lamplighter's Almanac is unlocked) without changing the 50/50 split when both moods are covered.
+- **Tick order.** Each tick: station timers, patience (seated customers only), arrivals join the door
+  queue, door customers take free seats in arrival order, then door customers waiting 50 ticks are
+  turned away. A customer seated on a tick starts draining on the next tick.
+- **Cut-off and closing.** Arrivals at or after `length - 200` are dropped by `createShift`; the shift
+  enters `closing` at the clock and is `closed` once no customer is seated or waiting. Anything started
+  for a seat is dropped when the customer leaves or is served.
+- **Scripted Day 1.** `ShiftDef.patienceFreeArrivals` freezes patience for the first N arrivals (the
+  tutorial's "first two do not lose patience").
+- **Scenes one at a time.** `eligibleScenes` returns only the next unfinished scene per regular;
+  the app asks again after each scene. `eveningQueue` orders by regular then scene index.
+- **Arrival ticks** are stratified over the open part of the shift (first arrival from tick 10, spacing
+  at least 30, none in the final 200), so customers spread across the whole clock.
+- **`buildArrivals` takes an order context** (`{unlocked, weather, shelfEmpty}`) as a fifth argument, because
+  orders depend on them. `createShift` also strips the pastry from every order when the stock has no
+  pastry kind, so a `ShiftDef` built before the stock plan stays legal.
+- **Late Shift weather** comes from `weatherForSeed(seed)` (a fork of the shift seed).
+- **Bot.** `test/helpers/bot.ts` plays any `ShiftDef` through the public engine API. `perfect` reacts
+  every 3 ticks with no wrong taps; `casual` every 25 ticks with 20 percent wrong taps and no
+  urgency ordering. On a Day 14 sized shift (14 customers, cake stand, ladder, cushions, chart frame)
+  perfect earns 226 coins (3 stars, nobody left) and casual 104 coins (1 star, 7 left); task 03 reports
+  the campaign balance against `economy.md`.
