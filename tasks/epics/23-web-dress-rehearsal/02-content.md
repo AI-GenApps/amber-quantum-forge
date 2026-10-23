@@ -1,7 +1,7 @@
 ---
 epic: 23-web-dress-rehearsal
 task: 02-content
-status: todo
+status: in-progress
 commit_scope: dress-rehearsal
 depends_on: [23-web-dress-rehearsal/01-core-rules]
 estimate: XL
@@ -36,19 +36,19 @@ Ship the complete v1 content in `apps-games/dress-rehearsal-core`: all 48 closet
 
 ## Implementation Checklist
 
-- [ ] `src/content/types.ts` additions: `ChapterDef`, `ClientDef`, `ClientLines`, `ChallengeDef` (id, name, chapterIndex, clientId, slotSet, rules, brief, reference), `RuleCard`, `TutorialStep`, `ResultHeadline`.
-- [ ] `src/content/pieces.ts`: the 48 pieces with exactly the ids, names, tags and prices in `content-plan.md` (art notes stay in the document); export `PIECES`, `PIECE_BY_ID`, `piecesOfTheme`, `closetFor(chapterIndex)`.
-- [ ] `src/content/chapters.ts`: the six chapters with theme id, title, chapter title, accent hex, unlock stars (0, 0, 12, 27, 45, 66), intro and outro texts.
-- [ ] `src/content/clients.ts`: six clients with name, role, bio and the eight lines each; affinity thresholds `[3, 9, 15]`.
-- [ ] The six `challenges-*.ts` files with all 40 challenges (ids `riv-01..07`, `rai-01..07`, `gal-01..07`, `mtn-01..07`, `stu-01..06`, `vin-01..06`) with the exact names, clients, slot sets, rule codes (parsed with `parseRuleCode`), briefs and a reference look each.
-- [ ] `src/content/cards.ts`: the nine rule cards (title, shown-on challenge id, text) and the five tutorial steps as data; `src/content/strings.ts`: game title, tagline, tray tab labels, result headlines for 3, 2, 1 and 0 stars, star names, harmony part and scheme names, how-to page titles, frame names.
-- [ ] `src/content/index.ts`: `CHAPTERS`, `CHALLENGES` (40, ordered), `CHALLENGE_BY_ID`, `getChallenge(id)`, `nextChallengeId(id)`, `chapterOf(id)`, `clientOf(id)`, `TOTAL_STARS = 120`, `TOTAL_PIECES = 48`.
-- [ ] `src/content/validate.ts`: `validateChallenge(def, closet)` returning typed issues (unknown slot set, slot count outside 6 to 8, rule count outside 2 to 4, bad rule argument, unknown piece id, brief longer than 90 or empty, reference illegal or incomplete or not three stars, empty board not 0 stars, fewer than 2 three-star looks, three-star share above the chapter cap, rule first used before its card), `validatePieces`, `validateClients` and `validateContent()` for the whole set (unique ids and names, id order, per-theme and per-category counts, client challenge counts 7, 7, 7, 7, 6, 6, totals).
-- [ ] `test/content-plan.test.ts`: parse the tables of `.agents/games/dress-rehearsal/content-plan.md` (read with `node:fs`) and assert every piece row, chapter row, client row and line, challenge row (id, name, client, set, rule codes, brief), the rule cards and the proof-count table equal the data. This keeps documentation and code identical.
-- [ ] `test/proof.test.ts`: enumerate every challenge in its unlock closet once; assert looks and three-star counts equal the proof table, at least 2 three-star looks, the share caps (35, 35, 5, 2, 2, 2 percent by chapter), the reference scores three stars, and the empty board scores 0.
-- [ ] `test/content-validators.test.ts`: validator unit tests that build deliberately broken copies (bad rule code, 5 rules, 9 slots, unknown piece in a rule, reference missing a slot, reference with two stars, over-long brief, duplicate id, wrong client count) and expect the exact issue codes.
-- [ ] `test/content-text.test.ts`: lengths, no duplicate names, headlines present, cards reference existing challenge ids and sit on or before the first use of the rule family, tutorial steps ordered, every character inside the font subset.
-- [ ] Update `content-plan.md` and `decisions-log.md` if any binding number moved; record the final reference look per challenge in `.agents/resources/2026-10-23/web-games/dress-rehearsal/02/README.md`.
+- [x] `src/content/types.ts` additions: `ChapterDef`, `ClientDef`, `ClientLines`, `ChallengeDef` (id, name, chapterIndex, clientId, slotSet, rules, brief, reference), `RuleCard`, `TutorialStep`, `ResultHeadline`.
+- [x] `src/content/pieces.ts`: the 48 pieces with exactly the ids, names, tags and prices in `content-plan.md` (art notes stay in the document); export `PIECES`, `PIECE_BY_ID`, `piecesOfTheme`, `closetFor(chapterIndex)`.
+- [x] `src/content/chapters.ts`: the six chapters with theme id, title, chapter title, accent hex, unlock stars (0, 0, 12, 27, 45, 66), intro and outro texts.
+- [x] `src/content/clients.ts`: six clients with name, role, bio and the eight lines each; affinity thresholds `[3, 9, 15]`.
+- [x] The six `challenges-*.ts` files with all 40 challenges (ids `riv-01..07`, `rai-01..07`, `gal-01..07`, `mtn-01..07`, `stu-01..06`, `vin-01..06`) with the exact names, clients, slot sets, rule codes (parsed with `parseRuleCode`), briefs and a reference look each.
+- [x] `src/content/cards.ts`: the nine rule cards (title, shown-on challenge id, text) and the five tutorial steps as data; `src/content/strings.ts`: game title, tagline, tray tab labels, result headlines for 3, 2, 1 and 0 stars, star names, harmony part and scheme names, how-to page titles, frame names.
+- [x] `src/content/index.ts`: `CHAPTERS`, `CHALLENGES` (40, ordered), `CHALLENGE_BY_ID`, `getChallenge(id)`, `nextChallengeId(id)`, `chapterOf(id)`, `clientOf(id)`, `TOTAL_STARS = 120`, `TOTAL_PIECES = 48`.
+- [x] `src/content/validate.ts`: `validateChallenge(def, closet)` returning typed issues (unknown slot set, slot count outside 6 to 8, rule count outside 2 to 4, bad rule argument, unknown piece id, brief longer than 90 or empty, reference illegal or incomplete or not three stars, empty board not 0 stars, fewer than 2 three-star looks, three-star share above the chapter cap, rule first used before its card), `validatePieces`, `validateClients` and `validateContent()` for the whole set (unique ids and names, id order, per-theme and per-category counts, client challenge counts 7, 7, 7, 7, 6, 6, totals).
+- [x] `test/content-plan.test.ts`: parse the tables of `.agents/games/dress-rehearsal/content-plan.md` (read with `node:fs`) and assert every piece row, chapter row, client row and line, challenge row (id, name, client, set, rule codes, brief), the rule cards and the proof-count table equal the data. This keeps documentation and code identical.
+- [x] `test/proof.test.ts`: enumerate every challenge in its unlock closet once; assert looks and three-star counts equal the proof table, at least 2 three-star looks, the share caps (35, 35, 5, 2, 2, 2 percent by chapter), the reference scores three stars, and the empty board scores 0.
+- [x] `test/content-validators.test.ts`: validator unit tests that build deliberately broken copies (bad rule code, 5 rules, 9 slots, unknown piece in a rule, reference missing a slot, reference with two stars, over-long brief, duplicate id, wrong client count) and expect the exact issue codes.
+- [x] `test/content-text.test.ts`: lengths, no duplicate names, headlines present, cards reference existing challenge ids and sit on or before the first use of the rule family, tutorial steps ordered, every character inside the font subset.
+- [x] Update `content-plan.md` and `decisions-log.md` if any binding number moved; record the final reference look per challenge in `.agents/resources/2026-10-23/web-games/dress-rehearsal/02/README.md`.
 
 ## Files Touched
 

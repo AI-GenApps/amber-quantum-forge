@@ -46,3 +46,18 @@ The kit stays read-only for this epic. Known at planning time:
   `include-piece` and `avoid-piece`; the solver counts one visit per complete look it scores.
 - Hint solver speed: about 0.8 microseconds per complete look in Node, so the 400,000 cap costs
   roughly a third of a second there; expect several times that on a phone.
+
+## Task 02 notes
+
+- No binding number changed; `content-plan.md` is the contract and `test/content-plan.test.ts`
+  parses it, so the data and the document cannot drift apart silently.
+- All 40 challenges reproduce the prototype's proof counts (looks and three-star looks) exactly in
+  the TypeScript engine; the whole exhaustive proof runs in about 2 seconds in Node (limit 60).
+- The committed reference look per challenge is the prototype's choice (most pieces from the
+  chapter's own theme, then highest harmony, then lowest price); the list is in
+  `.agents/resources/2026-10-23/web-games/dress-rehearsal/02/README.md`.
+- Q11 stays as decided: hats are scarce, so the six-slot sets that open the hat slot (A, B) only
+  appear where the starting closet's single hat (the sun hat) is enough; the proofs confirm it.
+- Task 03 (daily fallbacks) and task 04 (UI) can import everything through
+  `@web-games/dress-rehearsal-core` (`CHALLENGES`, `PIECES`, `closetFor`, `CLIENTS`, `CHAPTERS`,
+  `RULE_CARDS`, `TUTORIAL_STEPS`, `validateContent`, `proveChallenge`).
