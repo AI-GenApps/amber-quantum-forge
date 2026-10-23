@@ -135,3 +135,42 @@ export function analyseLoops(puzzle: Puzzle, tiles: Tiles): LoopAnalysis {
   }
   return { loops, chains, looseEnds };
 }
+
+export interface LoopDiff {
+  /** Closed loops present after the edit that were not closed before. */
+  readonly closed: Component[];
+  /** Closed loops present before the edit that no longer exist. */
+  readonly broken: Component[];
+  /** Lantern cells that sit on a closed loop now and did not before. */
+  readonly lit: number[];
+  /** Lantern cells that sat on a closed loop before and no longer do. */
+  readonly unlit: number[];
+}
+
+const loopKey = (loop: Component): string => [...loop.cells].sort((a, b) => a - b).join(",");
+
+function litLanterns(loops: readonly Component[]): Set<number> {
+  const out = new Set<number>();
+  for (const loop of loops) for (const cell of loop.lanterns) out.add(cell);
+  return out;
+}
+
+/**
+ * Compares two boards of one puzzle. A loop is identified by its set of cells, so a merge or a
+ * split reports the old loops as broken and the new ones as closed. A no-op edit yields empty lists.
+ */
+export function diffLoops(puzzle: Puzzle, before: Tiles, after: Tiles): LoopDiff {
+  const was = analyseLoops(puzzle, before).loops;
+  const now = analyseLoops(puzzle, after).loops;
+  const wasKeys = new Set(was.map(loopKey));
+  const nowKeys = new Set(now.map(loopKey));
+  const wasLit = litLanterns(was);
+  const nowLit = litLanterns(now);
+  const byCell = (a: number, b: number): number => a - b;
+  return {
+    closed: now.filter((loop) => !wasKeys.has(loopKey(loop))),
+    broken: was.filter((loop) => !nowKeys.has(loopKey(loop))),
+    lit: [...nowLit].filter((cell) => !wasLit.has(cell)).sort(byCell),
+    unlit: [...wasLit].filter((cell) => !nowLit.has(cell)).sort(byCell),
+  };
+}

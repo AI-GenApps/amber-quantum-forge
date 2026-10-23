@@ -1,7 +1,9 @@
 import { Button, plural, Sheet, StarRating } from "@web-games/kit";
 import { formatDuration, getChapter } from "@web-games/lantern-loops-core";
-import { useSheetBack } from "../app/AppContext";
+import { useEffect, useRef } from "preact/hooks";
+import { useApp, useSheetBack } from "../app/AppContext";
 import { EmberIcon } from "../components/icons";
+import { starPop } from "../motion/presets";
 import type { WinSummary } from "../state/finish";
 import { t } from "../strings";
 
@@ -14,14 +16,22 @@ export interface WinSheetProps {
 }
 
 export function WinSheet({ summary, onNext, onReplay, onShare, onHome }: WinSheetProps) {
-  useSheetBack(summary !== null, onHome);
+  const { motion } = useApp();
+  const body = useRef<HTMLDivElement>(null);
+  const shown = summary !== null;
+  useSheetBack(shown, onHome);
+  useEffect(() => {
+    if (!shown || !body.current) return;
+    const stars = Array.from(body.current.querySelectorAll<SVGElement>(".wg-star--on"));
+    void starPop(motion, stars);
+  }, [shown, motion]);
   if (summary === null) return null;
   const tutorial = summary.kind === "tutorial";
   const shareable = summary.shareText !== null;
   const cleared = summary.chaptersCleared.map((id) => getChapter(id).title);
   return (
     <Sheet open onClose={onHome} title={t("win.title")} dismissOnBackdrop={false}>
-      <div class="ll-win" data-kind={summary.kind}>
+      <div class="ll-win" data-kind={summary.kind} ref={body}>
         {tutorial ? null : (
           <StarRating value={summary.stars} label={t("win.stars", { count: summary.stars })} />
         )}

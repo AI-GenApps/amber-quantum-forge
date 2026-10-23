@@ -1,5 +1,6 @@
 import { IconButton } from "@web-games/kit";
 import type { ComponentChildren } from "preact";
+import { useApp } from "../app/AppContext";
 import { t } from "../strings";
 import { BackIcon } from "./icons";
 
@@ -10,10 +11,17 @@ export interface ScreenHeaderProps {
 }
 
 export function ScreenHeader({ title, onBack, right }: ScreenHeaderProps) {
+  const { feedback } = useApp();
   return (
     <header class="ll-header">
       {onBack ? (
-        <IconButton label={t("common.back")} onClick={onBack}>
+        <IconButton
+          label={t("common.back")}
+          onClick={() => {
+            feedback.emit("ui-back");
+            onBack();
+          }}
+        >
           <BackIcon />
         </IconButton>
       ) : (

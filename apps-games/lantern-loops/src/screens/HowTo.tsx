@@ -3,53 +3,23 @@ import { useState } from "preact/hooks";
 import { useApp } from "../app/AppContext";
 import { HOWTO_PAGES, type HowToPage } from "../app/routes";
 import { ScreenHeader } from "../components/ScreenHeader";
+import { Diagram } from "../howto/diagrams";
+import { HOWTO_COPY, pageIndex } from "../howto/pages";
 import { t } from "../strings";
 
-function pageTitle(page: HowToPage): string {
-  switch (page) {
-    case "basics":
-      return t("howto.basics");
-    case "stones":
-      return t("howto.stones");
-    case "mirrors":
-      return t("howto.mirrors");
-    case "gates":
-      return t("howto.gates");
-    case "daily":
-      return t("howto.daily");
-    default:
-      return t("howto.hints");
-  }
-}
-
-function pageBody(page: HowToPage): string {
-  switch (page) {
-    case "basics":
-      return t("howto.basicsBody");
-    case "stones":
-      return t("howto.stonesBody");
-    case "mirrors":
-      return t("howto.mirrorsBody");
-    case "gates":
-      return t("howto.gatesBody");
-    case "daily":
-      return t("howto.dailyBody");
-    default:
-      return t("howto.hintsBody");
-  }
-}
-
-/** Shell with the six pages; the diagrams and final copy arrive with the onboarding task. */
+/** Six short pages, each with a code-drawn diagram, reached from Home and the pause sheet. */
 export function HowToScreen({ page }: { page: HowToPage }) {
   const { router } = useApp();
-  const [index, setIndex] = useState(Math.max(0, HOWTO_PAGES.indexOf(page)));
+  const [index, setIndex] = useState(pageIndex(page));
   const current = HOWTO_PAGES[index] ?? "basics";
+  const copy = HOWTO_COPY[current];
   return (
     <Screen name="howto" class="ll-screen">
       <ScreenHeader title={t("howto.title")} onBack={() => router.pop()} />
       <article class="ll-howto" data-page={current}>
-        <h2 class="ll-subtitle">{pageTitle(current)}</h2>
-        <p class="ll-body">{pageBody(current)}</p>
+        <h2 class="ll-subtitle">{copy.title()}</h2>
+        <Diagram page={current} label={copy.diagram()} />
+        <p class="ll-body">{copy.body()}</p>
       </article>
       <p class="ll-muted" aria-live="polite" data-testid="howto-position">
         {t("howto.position", { page: index + 1, total: HOWTO_PAGES.length })}

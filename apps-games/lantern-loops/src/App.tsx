@@ -1,6 +1,9 @@
 import { Button, Sheet, systemPrefersReducedMotion, useCurrentScreen } from "@web-games/kit";
 import { useEffect, useRef, useState } from "preact/hooks";
 import { AppContext, type AppEnv, useApp, useSheetBack } from "./app/AppContext";
+import { AudioProvider } from "./audio/AudioProvider";
+import { screenEnter } from "./motion/presets";
+import { OnboardingScreen } from "./onboarding/Onboarding";
 import { AboutScreen } from "./screens/About";
 import { ArchiveScreen } from "./screens/Archive";
 import { BootScreen } from "./screens/Boot";
@@ -8,7 +11,6 @@ import { ChaptersScreen } from "./screens/Chapters";
 import { DailyScreen } from "./screens/Daily";
 import { HomeScreen } from "./screens/Home";
 import { HowToScreen } from "./screens/HowTo";
-import { OnboardingScreen } from "./screens/Onboarding";
 import { PuzzleScreen } from "./screens/Puzzle";
 import { PuzzleListScreen } from "./screens/PuzzleList";
 import { SettingsScreen } from "./screens/Settings";
@@ -67,6 +69,9 @@ function ExitSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
   );
 }
 
+/** Buttons whose own feedback replaces the generic tap sound. */
+const SILENT_BUTTONS = ".ll-tools button, .ll-hint-btn, .ll-header > button:first-child";
+
 function Shell() {
   const env = useApp();
   const { router, lifecycle, motion, services } = env;
@@ -98,18 +103,21 @@ function Shell() {
   useEffect(() => {
     const el = outlet.current;
     if (!el) return;
-    void motion.tween(
-      el,
-      [
-        { opacity: 0, transform: "translateY(10px)" },
-        { opacity: 1, transform: "translateY(0)" },
-      ],
-      { duration: 200 },
-    );
+    void screenEnter(motion, el);
   }, [screen, motion]);
 
+  const onClick = (event: MouseEvent): void => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const button = target.closest("button");
+    if (button === null || button.disabled || button.matches(SILENT_BUTTONS)) return;
+    env.feedback.emit("ui-tap");
+  };
+
   return (
-    <div class="ll-app">
+    // biome-ignore lint/a11y/useKeyWithClickEvents: this only listens for clicks that bubble up from real buttons
+    // biome-ignore lint/a11y/noStaticElementInteractions: delegated listener, the buttons inside are the interactive elements
+    <div class="ll-app" onClick={onClick}>
       <div class="ll-outlet" ref={outlet} data-route={screen.name}>
         <Outlet />
       </div>
@@ -121,7 +129,9 @@ function Shell() {
 export function App({ env }: { env: AppEnv }) {
   return (
     <AppContext.Provider value={env}>
-      <Shell />
+      <AudioProvider>
+        <Shell />
+      </AudioProvider>
     </AppContext.Provider>
   );
 }

@@ -1,0 +1,26 @@
+Music Jingles (Kenney)
+Source page: https://kenney.nl/assets/music-jingles
+Retrieved: 2026-10-23
+Files used from this pack: Audio/Steel jingles/jingles_STEEL08.ogg, Audio/Steel jingles/jingles_STEEL12.ogg, Audio/Steel jingles/jingles_STEEL07.ogg, Audio/Pizzicato jingles/jingles_PIZZI07.ogg, Audio/Steel jingles/jingles_STEEL06.ogg
+
+Licence file shipped inside the pack (License.txt):
+
+Music Jingles
+
+	by  Kenney Vleugels (Kenney.nl)
+
+			------------------------------
+
+	License (Creative Commons Zero, CC0)
+	http://creativecommons.org/publicdomain/zero/1.0/
+
+	You may use these assets in personal and commercial projects.
+	Credit (Kenney or www.kenney.nl) would be nice but is not mandatory.
+
+			------------------------------
+
+	Donate:   http://support.kenney.nl
+	Request:  http://request.kenney.nl
+
+	Follow on Twitter for updates:
+	@KenneyNL

@@ -18,7 +18,11 @@ import {
   StraightIcon,
   UndoIcon,
 } from "../components/icons";
-import { CoachCard, type CoachKind } from "../overlays/CoachCard";
+import { finishEvents, winEvent } from "../feedback/derive";
+import { useBoardFeedback } from "../feedback/useBoardFeedback";
+import { CoachCards, useCoachCard } from "../onboarding/CoachCards";
+import { completes, highlightCells, reduce, routeFor, stateForPuzzle } from "../onboarding/machine";
+import { finishOnboarding, TutorialBanner } from "../onboarding/Onboarding";
 import { ConfirmSheet } from "../overlays/ConfirmSheet";
 import { HintSheet } from "../overlays/HintSheet";
 import { PauseSheet } from "../overlays/PauseSheet";
@@ -41,11 +45,6 @@ const BRUSHES: ReadonlyArray<{
   { brush: "corner", label: () => t("puzzle.brushCorner"), Icon: CornerIcon },
   { brush: "erase", label: () => t("puzzle.brushErase"), Icon: EraseIcon },
 ];
-
-const COACH_PUZZLES: Readonly<Record<string, CoachKind>> = {
-  "bridge-01": "bridge",
-  "sky-01": "sky",
-};
 
 const readViewport = (): { w: number; h: number } => ({
   w: window.innerWidth,
@@ -119,7 +118,7 @@ function PuzzlePlay({ source, session, onReplay }: PlayProps) {
   const [overlay, setOverlay] = useState<Overlay>(null);
   const [summary, setSummary] = useState<WinSummary | null>(null);
   const [pending, setPending] = useState<WinSummary | null>(null);
-  const [coach, setCoach] = useState<CoachKind | null>(null);
+  const [coach, dismissCoach] = useCoachCard(source.key);
   const boardRef = useRef<HTMLDivElement>(null);
   const finishing = useRef(false);
 
@@ -130,21 +129,17 @@ function PuzzlePlay({ source, session, onReplay }: PlayProps) {
   const seconds = useRunTimer(env, session, running);
   const cellPx = layoutBoard(viewport.w, viewport.h, source.puzzle.size).cell;
 
+  useBoardFeedback(env.feedback, session, profile.showConflicts);
+
   useEffect(() => {
-    const kind = COACH_PUZZLES[source.key];
-    if (kind === undefined) return undefined;
-    let live = true;
-    void services.flags.hasSeen(source.key).then((seen) => {
-      if (live && !seen) setCoach(kind);
-    });
-    return () => {
-      live = false;
-    };
-  }, [services, source.key]);
+    env.feedback.setBoard(boardRef.current);
+    return () => env.feedback.setBoard(null);
+  }, [env.feedback]);
 
   useEffect(() => {
     if (!state.solved || finishing.current) return;
     finishing.current = true;
+    env.feedback.emit(winEvent(state.hintCount));
     const run = async (): Promise<void> => {
       const marks = computeMarks(source.puzzle, state.tiles, state.evaluation, false);
       const timeline = winTimeline(marks.litLoops, env.motion.reduced);
@@ -154,9 +149,13 @@ function PuzzlePlay({ source, session, onReplay }: PlayProps) {
           finishRun(env, source, state),
           root ? playWinSequence(root, timeline, env.motion) : Promise.resolve(),
         ]);
-        if (result.kind === "tutorial" && result.nextId === null) {
-          await services.progression.patch({ onboardingDone: true });
+        if (result.kind === "tutorial") {
+          const before = stateForPuzzle(source.key);
+          if (completes(before, reduce(before, "solved"))) {
+            await finishOnboarding(services.progression);
+          }
         }
+        for (const event of finishEvents(result)) env.feedback.emit(event);
         if (result.tokensCapped) toast.show(t("toast.tokenCap"));
         else if (result.events.some((event) => event.kind === "freeze-used"))
           toast.show(t("toast.freeze"));
@@ -209,26 +208,24 @@ function PuzzlePlay({ source, session, onReplay }: PlayProps) {
   };
 
   const next = (): void => {
-    if (summary?.nextId) router.replace("puzzle", { id: summary.nextId });
+    if (tutorial) {
+      const route = routeFor(reduce(stateForPuzzle(source.key), "solved"));
+      if (route.name === "puzzle") router.replace("puzzle", { id: route.id });
+      else goHome();
+    } else if (summary?.nextId) router.replace("puzzle", { id: summary.nextId });
     else goHome();
   };
 
   const skipTutorial = (): void => {
-    void services.progression.patch({ onboardingDone: true });
+    const before = stateForPuzzle(source.key);
+    if (completes(before, reduce(before, "skip"))) void finishOnboarding(services.progression);
     router.reset("home");
   };
 
-  const targets = useMemo(() => {
-    if (!tutorial) return [];
-    return source.puzzle.cells.flatMap((cell, i) =>
-      cell.clue?.kind === "lantern" || cell.kind === "stone" ? [i] : [],
-    );
-  }, [tutorial, source.puzzle]);
-
-  const dismissCoach = (): void => {
-    setCoach(null);
-    void services.flags.markSeen(source.key);
-  };
+  const targets = useMemo(
+    () => (tutorial ? highlightCells(source.puzzle) : []),
+    [tutorial, source.puzzle],
+  );
 
   return (
     <Screen name="puzzle" class="ll-screen ll-puzzle">
@@ -263,14 +260,7 @@ function PuzzlePlay({ source, session, onReplay }: PlayProps) {
         </IconButton>
       </header>
       {tutorial ? (
-        <div class="ll-coach-line" data-testid="tutorial-step">
-          <p class="ll-body">
-            {source.key === "tutorial-1" ? t("onboarding.step1") : t("onboarding.step2")}
-          </p>
-          <Button variant="ghost" size="small" onClick={skipTutorial}>
-            {t("onboarding.skip")}
-          </Button>
-        </div>
+        <TutorialBanner step={stateForPuzzle(source.key).step} onSkip={skipTutorial} />
       ) : null}
       <div class="ll-board-area" ref={boardRef}>
         <PlayBoard
@@ -364,7 +354,7 @@ function PuzzlePlay({ source, session, onReplay }: PlayProps) {
         onCancel={() => setOverlay(null)}
         onConfirm={() => void confirmHint()}
       />
-      <CoachCard kind={coach} onDismiss={dismissCoach} />
+      <CoachCards kind={coach} onDismiss={dismissCoach} />
       <UnlockCelebration
         chapters={celebrating && summary === null ? (pending?.chaptersUnlocked ?? []) : []}
         onContinue={() => setSummary(pending)}

@@ -20,7 +20,21 @@ import {
 } from "@web-games/lantern-loops-core";
 import type { RunState } from "../save/runs";
 
+/** What produced the latest change; feedback (sound, haptics, motion) reads it. */
+export type EditCause =
+  | "start"
+  | "tap"
+  | "drag"
+  | "drag-end"
+  | "cancel"
+  | "undo"
+  | "redo"
+  | "restart"
+  | "hint"
+  | "brush";
+
 export interface SessionState {
+  cause: EditCause;
   tiles: Tiles;
   locked: Locked;
   hintCells: readonly number[];
@@ -95,7 +109,10 @@ export function createSession(init: SessionInit): Session {
   const listeners = new Set<SessionListener>();
   let cached: SessionState | null = null;
 
-  const invalidate = (): void => {
+  let cause: EditCause = "start";
+
+  const invalidate = (next: EditCause): void => {
+    cause = next;
     cached = null;
     const snapshot = api.state();
     for (const listener of [...listeners]) listener(snapshot);
@@ -107,12 +124,12 @@ export function createSession(init: SessionInit): Session {
     return next;
   };
 
-  const travel = (step: () => Tiles | null): boolean => {
+  const travel = (step: () => Tiles | null, kind: "undo" | "redo"): boolean => {
     for (let next = step(); next !== null; next = step()) {
       const shown = overlayHints(next);
       if (equalTiles(shown, tiles)) continue;
       tiles = shown;
-      invalidate();
+      invalidate(kind);
       return true;
     }
     return false;
@@ -122,12 +139,12 @@ export function createSession(init: SessionInit): Session {
     if (!solvedFlag && evaluate(puzzle, tiles).solved) solvedFlag = true;
   };
 
-  const commit = (next: Tiles, changed: boolean): boolean => {
+  const commit = (next: Tiles, changed: boolean, kind: EditCause): boolean => {
     if (!changed || solvedFlag) return false;
     tiles = next;
     if (history.push(tiles)) moves += 1;
     settle();
-    invalidate();
+    invalidate(kind);
     return true;
   };
 
@@ -139,6 +156,7 @@ export function createSession(init: SessionInit): Session {
       const evaluation = evaluate(puzzle, tiles);
       const fixedCount = countTiles(emptyTiles(puzzle));
       cached = {
+        cause,
         tiles,
         locked,
         hintCells: [...hintCells],
@@ -161,15 +179,15 @@ export function createSession(init: SessionInit): Session {
     setBrush(next) {
       if (brush === next) return;
       brush = next;
-      invalidate();
+      invalidate("brush");
     },
     tap(cell) {
       const result = tapCell(puzzle, tiles, locked, cell, brush);
-      return commit(result.tiles, result.changed.length > 0);
+      return commit(result.tiles, result.changed.length > 0, "tap");
     },
     erase(cell) {
       const result = eraseCells(puzzle, tiles, locked, [cell]);
-      return commit(result.tiles, result.changed.length > 0);
+      return commit(result.tiles, result.changed.length > 0, "tap");
     },
     beginDrag() {
       if (!solvedFlag) dragBase = tiles.slice();
@@ -181,8 +199,7 @@ export function createSession(init: SessionInit): Session {
           ? eraseCells(puzzle, dragBase, locked, cells)
           : dragPath(puzzle, dragBase, locked, cells);
       tiles = result.changed.length === 0 ? dragBase : result.tiles;
-      cached = null;
-      invalidate();
+      invalidate("drag");
     },
     endDrag() {
       const base = dragBase;
@@ -192,27 +209,27 @@ export function createSession(init: SessionInit): Session {
       if (!changed) return false;
       if (history.push(tiles)) moves += 1;
       settle();
-      invalidate();
+      invalidate("drag-end");
       return true;
     },
     cancelDrag() {
       if (dragBase === null) return;
       tiles = dragBase;
       dragBase = null;
-      invalidate();
+      invalidate("cancel");
     },
     undo() {
       if (solvedFlag) return false;
-      return travel(() => history.undo());
+      return travel(() => history.undo(), "undo");
     },
     redo() {
       if (solvedFlag) return false;
-      return travel(() => history.redo());
+      return travel(() => history.redo(), "redo");
     },
     restart() {
       if (solvedFlag || api.state().clearable === 0) return false;
       const cleared = overlayHints(emptyTiles(puzzle));
-      return commit(cleared, true);
+      return commit(cleared, true, "restart");
     },
     placeHint(hint) {
       if (solvedFlag) return;
@@ -224,7 +241,7 @@ export function createSession(init: SessionInit): Session {
       history.push(tiles);
       moves += 1;
       settle();
-      invalidate();
+      invalidate("hint");
     },
     tick(ms) {
       if (solvedFlag || !(ms > 0)) return;

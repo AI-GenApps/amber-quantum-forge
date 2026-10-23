@@ -62,6 +62,9 @@ describe("string table", () => {
       ...tsxFiles(join(SRC, "overlays")),
       ...tsxFiles(join(SRC, "components")),
       ...tsxFiles(join(SRC, "a11y")),
+      ...tsxFiles(join(SRC, "onboarding")),
+      ...tsxFiles(join(SRC, "howto")),
+      ...tsxFiles(join(SRC, "audio")),
       join(SRC, "App.tsx"),
     ];
     expect(files.length).toBeGreaterThan(20);

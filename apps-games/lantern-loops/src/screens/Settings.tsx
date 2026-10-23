@@ -3,6 +3,7 @@ import { Button, Screen, Toast, Toggle, useToast } from "@web-games/kit";
 import { useState } from "preact/hooks";
 import { useApp } from "../app/AppContext";
 import { ScreenHeader } from "../components/ScreenHeader";
+import { reduce, routeFor } from "../onboarding/machine";
 import { ConfirmSheet } from "../overlays/ConfirmSheet";
 import type { Profile } from "../save/profile";
 import { useProfile, useSettings } from "../state/hooks";
@@ -36,6 +37,11 @@ export function SettingsScreen() {
     />
   );
 
+  const replayTutorial = (): void => {
+    const route = routeFor(reduce({ step: "done" }, "replay"));
+    if (route.name === "puzzle") router.push("puzzle", { id: route.id });
+  };
+
   const reset = async (): Promise<void> => {
     setStep("none");
     await services.progression.reset();
@@ -63,11 +69,7 @@ export function SettingsScreen() {
         {profileToggle("showTimer", t("settings.showTimer"))}
         {profileToggle("showConflicts", t("settings.showConflicts"))}
         {profileToggle("hidePathInShare", t("settings.hidePath"))}
-        <Button
-          variant="secondary"
-          fullWidth
-          onClick={() => router.push("puzzle", { id: "tutorial-1" })}
-        >
+        <Button variant="secondary" fullWidth onClick={replayTutorial}>
           {t("settings.replayTutorial")}
         </Button>
       </section>

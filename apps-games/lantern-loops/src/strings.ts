@@ -251,7 +251,7 @@ export const strings = defineStrings({
   "howto.daily": "Daily and streak",
   "howto.hints": "Hints and stars",
   "howto.basicsBody":
-    "Drag across the board to draw a path. Every lantern must sit on a path, and every path must close into a loop that holds at least one lantern.",
+    "Drag across the board to draw a path, or tap a cell to place and turn a tile. Every lantern must sit on a path, and every path must close into a loop that holds at least one lantern.",
   "howto.stonesBody": "A numbered stone says how many of its four neighbours hold a path tile.",
   "howto.mirrorsBody": "A path must bend on a mirror. You choose which of the two corners fits.",
   "howto.gatesBody":
@@ -260,6 +260,13 @@ export const strings = defineStrings({
     "A new puzzle every day. Solve it to grow your streak. A weekly freeze covers one missed day.",
   "howto.hintsBody":
     "Without hints you earn 3 stars, with one hint 2 stars, with more 1 star. A hint costs 1 token.",
+  "howto.basicsDiagram": "A lantern on a small closed loop of four tiles",
+  "howto.stonesDiagram": "A stone numbered 4 inside a loop that touches all four of its sides",
+  "howto.mirrorsDiagram": "A loop that bends on a mirror in its corner",
+  "howto.gatesDiagram": "A rose gate on a straight tile of a rose lantern's loop",
+  "howto.dailyDiagram": "A week of dots with five days solved in a row",
+  "howto.hintsDiagram": "A board with one tile locked by a hint and three stars",
+  "howto.hintsStars": "3 of 3 stars",
   "howto.position": "Page {page} of {total}",
   "howto.previous": "Previous",
   "howto.next": "Next",
@@ -275,7 +282,13 @@ export const strings = defineStrings({
   "about.title": "About and licences",
   "about.version": "Version {version}",
   "about.fonts": "Fonts: Fraunces and Nunito, SIL Open Font License 1.1.",
-  "about.audio": "Sound: CC0 sound packs from Kenney (kenney.nl).",
+  "about.audio": "Sound: CC0 sound packs from Kenney (kenney.nl) and a CC0 music loop.",
+  "about.fontsTitle": "Fonts",
+  "about.audioTitle": "Sound and music",
+  "about.font": "{family}, {role}. {licence}. Source: {url}",
+  "about.pack": "{pack}. {licence}. Source: {url}. Used for: {ids}.",
+  "about.fontRoleDisplay": "titles and numerals",
+  "about.fontRoleBody": "text and labels",
   "about.privacy": "Lantern Loops collects no data and makes no network requests.",
 
   "toast.freeze": "Your streak freeze kept the streak alive",

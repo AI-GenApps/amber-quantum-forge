@@ -1,4 +1,8 @@
+import type { FakeContext as FakeAudioContext } from "@web-games/kit";
 import {
+  createAudioManager,
+  createFakeAudioContext,
+  createHaptics,
   createMemoryAdapter,
   createMotion,
   createRouter,
@@ -16,6 +20,7 @@ import { vi } from "vitest";
 import { App } from "../../src/App";
 import { AppContext, type AppEnv } from "../../src/app/AppContext";
 import type { Routes } from "../../src/app/routes";
+import { createFeedbackBus, type FeedbackBus } from "../../src/feedback/events";
 import { defaults, PROFILE_KEY, PROFILE_VERSION, type Profile } from "../../src/save/profile";
 import { createServices } from "../../src/services";
 import { injectGameStyles } from "../../src/theme/styles";
@@ -123,6 +128,14 @@ export interface TestEnvOptions {
 
 export interface TestEnv {
   env: AppEnv;
+  /** The fake WebAudio context behind `env.audio`. */
+  context: FakeAudioContext;
+  fetched: string[];
+  /** Haptic calls as `impact:light`, `notification:success`, ... */
+  buzzes: string[];
+  feedback: FeedbackBus;
+  /** Ids of every feedback event emitted, in order. */
+  events: string[];
   adapter: MemoryAdapter;
   lifecycle: FakeLifecycle;
   router: Router<Routes>;
@@ -179,6 +192,27 @@ export async function createTestEnv(options: TestEnvOptions = {}): Promise<TestE
     (router.reset as (n: string, p?: unknown) => void)(name, rest.params);
   }
   const lifecycle = fakeLifecycle();
+  const context = createFakeAudioContext();
+  const fetched: string[] = [];
+  const audio = createAudioManager({
+    createContext: () => context,
+    fetchBuffer: async (url) => {
+      fetched.push(url);
+      return new ArrayBuffer(url.length);
+    },
+  });
+  const buzzes: string[] = [];
+  const haptics = createHaptics({
+    driver: {
+      name: "recording",
+      impact: (style) => void buzzes.push(`impact:${style}`),
+      notification: (kind) => void buzzes.push(`notification:${kind}`),
+      selection: () => void buzzes.push("selection"),
+    },
+  });
+  const feedback = createFeedbackBus();
+  const events: string[] = [];
+  feedback.subscribe((event) => void events.push(event.id));
   const shares: ShareContent[] = [];
   const exits: number[] = [];
   const env: AppEnv = {
@@ -186,6 +220,9 @@ export async function createTestEnv(options: TestEnvOptions = {}): Promise<TestE
     router,
     motion: createMotion(() => services.settings.effectiveReducedMotion(false)),
     lifecycle,
+    audio,
+    haptics,
+    feedback,
     share: async (content): Promise<ShareResult> => {
       shares.push(content);
       return { path: "clipboard", ok: true, cancelled: false };
@@ -195,7 +232,20 @@ export async function createTestEnv(options: TestEnvOptions = {}): Promise<TestE
     },
     exitApp: () => void exits.push(1),
   };
-  return { env, adapter, lifecycle, router, shares, exits, animate };
+  return {
+    env,
+    context,
+    fetched,
+    buzzes,
+    feedback,
+    events,
+    adapter,
+    lifecycle,
+    router,
+    shares,
+    exits,
+    animate,
+  };
 }
 
 export interface Mounted {

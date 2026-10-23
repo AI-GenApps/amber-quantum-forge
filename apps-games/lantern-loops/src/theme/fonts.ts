@@ -17,3 +17,29 @@ export const FONT_FACES: readonly FontFaceSpec[] = [
 ];
 
 export const FONT_FAMILIES: readonly string[] = ["Fraunces", "Nunito"];
+
+export interface FontCredit {
+  family: string;
+  role: "display" | "body";
+  licence: string;
+  url: string;
+  licenceFile: string;
+}
+
+/** Where each bundled font comes from, for the About screen. */
+export const FONT_CREDITS: readonly FontCredit[] = [
+  {
+    family: "Fraunces",
+    role: "display",
+    licence: "SIL Open Font License 1.1",
+    url: "https://github.com/google/fonts/tree/main/ofl/fraunces",
+    licenceFile: "/fonts/fraunces/OFL.txt",
+  },
+  {
+    family: "Nunito",
+    role: "body",
+    licence: "SIL Open Font License 1.1",
+    url: "https://github.com/google/fonts/tree/main/ofl/nunito",
+    licenceFile: "/fonts/nunito/OFL.txt",
+  },
+];

@@ -36,7 +36,7 @@ every decision or number change is updated here in the same commit as the code. 
 | Streak freeze | 1 per ISO week (cap 1), spent automatically on exactly one missed day |
 | Fonts | Fraunces (display) + Nunito (body), OFL, bundled woff2 |
 | Art | 15 slots (icon, key art, 6 lanterns, 4 backdrops, daily medallion, empty archive, feature graphic); budget <= 8 MB WebP; code-drawn fallbacks for every slot |
-| Audio | CC0 only (Kenney); source URL and licence recorded per file |
+| Audio | CC0 only: Kenney packs for 17 effects (mono MP3, 1 to 13 KB each) and one OpenGameArt music loop (`calm-loop`, 307 KB); 386 KB in total, budget 1.5 MB (effects <= 60 KB, music <= 1 MB); source URL, licence and SHA-256 recorded per file in `assets-index.md` |
 | Budgets | JS bundle <= 300 KB gzip (art, fonts, audio excluded), art <= 8 MB, audio <= 1.5 MB, each woff2 <= 120 KB |
 | Monetization | None in v1: no ads, no IAP, no accounts, no network calls |
 | Save | Versioned local save (Capacitor Preferences on device, `localStorage` on web) with migrations |
@@ -46,4 +46,4 @@ every decision or number change is updated here in the same commit as the code. 
 | Fixed tiles (anchors) | Real shares of solution tiles, median per chapter: Harbor 31.3%, Garden 19%, Bridge 16.3%, Sky 12.5%; maximum 33.3% (limits: median <= 35%, hard limit 50%, unchanged) |
 | Generator | `ll-gen-1`, seeded integer PRNG (mulberry32), campaign seed = FNV-1a of `ll-gen-1\|<puzzle id>`; the whole campaign regenerates in about 2 s with `bun run generate` in `apps-games/lantern-loops-core` |
 | Difficulty rating | 1 to 5 from solver statistics (guesses, undecided cells after propagation, board size); non-decreasing over the five bands of six puzzles |
-| Status (2026-10-23) | Tasks 00 to 03 done (knowledge base, rules, solver, 120 proven-unique puzzles, progression, economy, daily mode, save). Task 04 in progress: all screens, SVG board, tokens, fonts, accessibility |
+| Status (2026-10-23) | Tasks 00 to 04 done (knowledge base, rules, solver, 120 proven-unique puzzles, progression, economy, daily mode, save, all screens, SVG board, tokens, fonts, accessibility). Task 05 in progress: CC0 audio, haptics, motion polish, onboarding machine, how-to diagrams |

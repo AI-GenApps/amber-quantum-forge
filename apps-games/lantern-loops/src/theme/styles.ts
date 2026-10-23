@@ -70,7 +70,14 @@ body { -webkit-tap-highlight-color: transparent; overscroll-behavior: none; }
 .ll-bar-bg { fill: var(--wg-color-surface-raised); }
 .ll-bar { fill: var(--wg-color-accent); }
 .ll-chart-label, .ll-chart-value { font-family: var(--wg-font-body); font-size: 11px; fill: var(--wg-color-text); }
-.ll-howto { min-height: 8rem; }
+.ll-howto { min-height: 8rem; display: flex; flex-direction: column; gap: var(--wg-space); }
+.ll-diagram { margin: 0; display: flex; flex-direction: column; align-items: center; gap: var(--wg-space); }
+.ll-diagram-board { width: min(60vw, 220px); height: auto; border-radius: 10px; box-shadow: var(--wg-shadow-raised); }
+.ll-diagram-week { width: min(80vw, 300px); height: auto; }
+.ll-week-on { fill: var(--wg-color-accent); }
+.ll-week-off { fill: none; stroke: var(--wg-color-border); stroke-width: 2; }
+.ll-flame { display: inline-flex; }
+.ll-credits { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; overflow-wrap: anywhere; }
 .ll-puzzle { gap: 6px; }
 .ll-hud { display: flex; align-items: center; gap: var(--wg-space); }
 .ll-hud-title { display: flex; flex-direction: column; flex: 1; min-width: 0; }
