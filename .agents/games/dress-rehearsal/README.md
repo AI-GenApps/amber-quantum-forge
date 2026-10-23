@@ -2,7 +2,7 @@
 
 Fashion puzzles: assemble a look on a styled flat-lay board that satisfies a client's creative brief, then share it.
 
-- Status: planned (epic 23 task 00 done: knowledge base, design spec and task files). Tasks 01 to 08 build it as a full v1 web game with the shared kit.
+- Status: in build (epic 23 tasks 00 to 03 done; task 04 adds all screens, design tokens, fonts and accessibility). Tasks 05 to 08 add audio, art, packaging and release readiness.
 - Epic: [`tasks/epics/23-web-dress-rehearsal`](../../../tasks/epics/23-web-dress-rehearsal/STATUS.md)
 - Code: `apps-games/dress-rehearsal` (`@web-games/dress-rehearsal`) and
   `apps-games/dress-rehearsal-core` (`@web-games/dress-rehearsal-core`).

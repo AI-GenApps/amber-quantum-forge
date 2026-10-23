@@ -212,3 +212,88 @@ proven numbers instead of rediscovering them. It is throwaway JavaScript, not sh
 Tasks 01 to 08 run in order (core rules, content, progression, screens, audio and onboarding,
 art, packaging, release readiness). Every code task passes the four verification commands; no
 task needs a browser, device or emulator.
+
+## 2026-10-24 - Task 04 (screens, tokens, fonts, accessibility)
+
+### D21. Fonts as shipped
+
+Playfair Display keeps its whole `wght` axis (400 to 900) in a regular and an italic file; DM Sans
+is instanced with `opsz` pinned at 14 and `wght` limited to 400 to 700. Subset to the planned
+range, converted to woff2 with an ephemeral `uvx` fonttools run (no project dependency). Sizes
+48,444, 48,120 and 23,844 bytes (120,408 in total, limits 120 KB each and 300 KB). Commands and
+hashes: `.agents/resources/2026-10-23/web-games/dress-rehearsal/04/README.md`.
+Rationale: the planned files, and the smallest set that covers display, italic client lines and body.
+
+### D22. Dark chrome, paper surfaces, three derived tokens
+
+Screens sit on `night`; every card, panel, sheet, tray, meter, rule chip and the board are paper or
+linen surfaces that re-declare the kit text, border and focus tokens (`paperTokens`). Primary
+buttons are star gold with ink text and an ink border (ink on star 5.56). Chapter accents appear on
+paper and linen only (band of a chapter card, hint outline, drop target, client badge), never on
+night. Three tokens outside the 14 art-bible tokens exist only for the dark chrome and are checked
+in the contrast test: `#26201d` and `#322a26` for dark surfaces and `#a08c6e` for borders on night
+(4.33 to 5.43). The focus ring is star gold on night and `focus` blue on paper because `focus` is
+2.73 on night. The 18 garment fill colours (one per colour tag) are swatches, not UI tokens.
+Rationale: meets the 4.5 and 3 contrast bars for every pair without changing the palette.
+
+### D23. Board layout: three columns, dense placement, tall dress cell
+
+The open slots flow onto a three-column grid in the order hat, accessory, bag, outer, top, dress,
+shoes, bottom (`src/board/layout.ts`). The dress cell is two rows tall, so in the full set it sits
+next to the top and bottom cells and spans their two rows (sets E to G); in the dress-only set B
+it is simply a tall cell. Empty grid cells are left empty. The export image uses the same cells.
+Tray tabs of categories the brief does not open are shown but disabled.
+Rationale: slots stay at least 88 x 88 px at 360 px width (3 x 88 + 16 gap fits the 328 px
+content width) and one layout function serves the screen, the thumbnails and the export.
+
+### D24. Rule chips wait for the first piece
+
+While the board is empty the chips show a neutral "Not checked yet" state (dashed border, document
+icon) instead of met, because rules that hold vacuously (for example "Nothing navy") would read as
+met before any piece is placed (task 01 note). From the first piece on, chips show met or unmet
+with a check or cross, the rule text and the detail line. The harmony meter shows 0 of 100 on an
+empty board; with one piece it is the core's live preview (a single neutral piece scores 94).
+
+### D25. Hints are checked before they are bought
+
+The solver runs first; if nothing is left to reveal (the board already matches a polished look)
+no coins are spent and a toast says so. Otherwise the price is paid, the tab switches to the hint
+category, the piece card and its slot get a pulsing outline and the live region announces it.
+
+### D26. Finish look keeps its name; Brief lives in the styling screen
+
+The Finish look button always reads "Finish look" (disabled until complete) with a line under it
+("5 slots left to fill" or "Every slot is filled."). The Brief sheet opens when the styling screen
+opens and can be reopened from the header or the pause sheet; leaving from it never asks to
+confirm. Retry empties the board; Edit look closes the result and keeps the pieces; leaving a look
+that was already finished does not ask for confirmation.
+
+### D27. Export and share flow
+
+The export sheet previews any frame, but only owned frames can be shared or saved: a locked frame
+shows "Buy this frame for N coins" and selecting an owned frame persists the choice. Frames are
+buttons with `aria-pressed` inside a fieldset. Share order: Web Share API with the PNG and the
+share text when `canShare({ files })` allows; otherwise the PNG is saved as a download and the
+share text goes through the kit `shareContent` (clipboard or share sheet); a cancelled file share
+stops without a download. "Save to device" only downloads. Every failure ends in a message in the
+sheet, never an exception, and an export is counted (stat) only when an image was shared or saved.
+Daily boards store no client, so their gallery export uses the headline "Daily Fitting" and the
+date.
+Rationale: product.md D13 asks for the text through the kit in every case; a successful file share
+already carries the text in the same share.
+
+### D28. Garment drawings are one shape list per category
+
+Each of the eight categories is a list of path and circle shapes in a 100 x 100 box with paint roles
+(main, shade, light, ink); the SVG components and the canvas export both read the same list (a
+small M, L, Q, C, Z path parser feeds the canvas). Accessories are drawn as one necklace-style
+piece whatever their name. Bounding boxes follow the scale rules in `assets-index.md` within a few
+units (tested).
+
+### D29. Navigation and sheets
+
+Routes: `boot`, `home`, `chapters`, `challenges {chapter}`, `styling {challengeId | daily}`,
+`daily`, `closet`, `clients`, `gallery`, `settings`, `howto`, `credits`. Sheets (brief, result,
+export, pause, hint, confirm) are kit sheets that push a back interceptor while open. Back order:
+open sheet, then "Leave this look?" if pieces are on an unfinished board, then pop. At the root the
+kit exit hook asks "Leave Dress Rehearsal?".

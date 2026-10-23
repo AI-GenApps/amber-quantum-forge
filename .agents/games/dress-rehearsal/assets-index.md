@@ -1,8 +1,9 @@
 # Dress Rehearsal - assets index
 
-Status at planning (task 00): nothing is bundled yet. This file is the plan: art slots and briefs
-(63 slots), fonts, the audio plan (24 sounds, 2 music loops) and where everything lives. Tasks 04
-to 07 fill in the provenance tables. Every art slot has a code-drawn fallback, so the game renders
+Status after task 04: the three font files are bundled (table below); no audio and no designer art
+yet (`src/art/manifest.ts` is empty, so every one of the 63 slots shows its code-drawn fallback).
+This file is the plan for art slots and briefs (63 slots), fonts, the audio plan (24 sounds, 2
+music loops) and where everything lives. Tasks 05 to 07 fill in the remaining provenance tables. Every art slot has a code-drawn fallback, so the game renders
 completely with zero, some or all slots present.
 
 ## Where things live
@@ -131,14 +132,18 @@ that are rejected or missing keep their code-drawn fallback.
 
 ## Fonts
 
-| Role | Family | Licence | Source in `github.com/google/fonts` | Bundled as (planned) |
-|---|---|---|---|---|
-| Display | Playfair Display | OFL 1.1 | `ofl/playfairdisplay/PlayfairDisplay[wght].ttf` and `PlayfairDisplay-Italic[wght].ttf` | `public/fonts/playfair-display/PlayfairDisplay-Variable.woff2` (wght 400 to 900) and `PlayfairDisplay-Italic-Variable.woff2` (client lines), plus `OFL.txt` |
-| Body | DM Sans | OFL 1.1 | `ofl/dmsans/DMSans[opsz,wght].ttf` | `public/fonts/dm-sans/DMSans-Variable.woff2` (wght 400 to 700, `opsz` pinned at 14), plus `OFL.txt` |
+| Role | Family | Licence | Source in `github.com/google/fonts` | Shipped as | Bytes |
+|---|---|---|---|---|---|
+| Display | Playfair Display | OFL 1.1 | `ofl/playfairdisplay/PlayfairDisplay[wght].ttf` | `public/fonts/playfair-display/PlayfairDisplay-Variable.woff2` (wght 400 to 900) | 48,444 |
+| Display italic | Playfair Display Italic | OFL 1.1 | `ofl/playfairdisplay/PlayfairDisplay-Italic[wght].ttf` | `public/fonts/playfair-display/PlayfairDisplay-Italic-Variable.woff2` (client lines, `style: "italic"`) | 48,120 |
+| Body | DM Sans | OFL 1.1 | `ofl/dmsans/DMSans[opsz,wght].ttf` | `public/fonts/dm-sans/DMSans-Variable.woff2` (wght 400 to 700, `opsz` pinned at 14) | 23,844 |
+
+Each family folder also holds its `OFL.txt` (4,449 and 4,482 bytes). The three woff2 files total
+120,408 bytes (budget: each at most 120 KB, total at most 300 KB).
 
 Folder and file names were confirmed through the GitHub API on 2026-10-23. Subset to Basic Latin,
 Latin-1, U+2013, U+2014, U+2018 to U+201D, U+2022 and U+2026 (the dollar sign is Basic Latin).
-Budgets: each woff2 at most 120 KB, total at most 300 KB. Tool, commands and SHA-256 hashes go in
+Tool, commands and SHA-256 hashes are in
 `.agents/resources/2026-10-23/web-games/dress-rehearsal/04/README.md`. No rendered text may fall
 back to a platform font (kit `assertNoPlatformFontFallback` runs on every screen and sheet in
 tests, and a test keeps every source character inside the subset).

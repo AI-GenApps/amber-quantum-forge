@@ -1,6 +1,6 @@
 # Epic 23 - Dress Rehearsal (full v1 web game)
 
-Status: in progress (task 00 done: knowledge base, design spec and task files; tasks 01 to 03 done; tasks 04 to 08 to do)
+Status: in progress (task 00 done: knowledge base, design spec and task files; tasks 01 to 04 done; tasks 05 to 08 to do)
 
 ## Purpose
 
@@ -81,7 +81,7 @@ Rules for every task:
 | 01 | [Core rules engine (headless, in dress-rehearsal-core)](01-core-rules.md) | code | agent | [x] |
 | 02 | [Full v1 content + validators](02-content.md) | code | agent | [x] |
 | 03 | [Progression, economy, daily mode, versioned save](03-progression-and-save.md) | code | agent | [x] |
-| 04 | [All screens, navigation, design tokens, fonts, accessibility](04-screens-and-ui.md) | code | agent | [ ] |
+| 04 | [All screens, navigation, design tokens, fonts, accessibility](04-screens-and-ui.md) | code | agent | [x] |
 | 05 | [CC0 audio, haptics, motion polish, onboarding and how-to-play](05-audio-haptics-onboarding.md) | code | agent | [ ] |
 | 06 | [Integrate reviewed art from the designer inbox](06-art-integration.md) | art | agent | [ ] |
 | 07 | [Capacitor Android/iOS projects, icons and splash](07-capacitor-packaging.md) | code | agent | [ ] |

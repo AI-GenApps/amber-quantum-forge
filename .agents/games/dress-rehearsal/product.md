@@ -290,6 +290,24 @@ challenge, chapter bonuses claimed, affinity levels paid, streak freezes, daily 
 (24), frames owned and selected, flags (tutorial, rule cards, how-to), stats. Settings use the kit
 settings store with game id `dress-rehearsal`. Details in `economy.md` and task 03.
 
+## UI behaviours settled in task 04
+
+Details the sections above left open (reasons in `decisions-log.md` D21 to D29):
+
+- The board is a three-column grid; the dress cell is two rows tall next to the top and bottom
+  cells. Tray tabs for categories a brief does not open are shown but disabled.
+- Rule chips read "Not checked yet" until the first piece is placed, then met or unmet with an
+  icon, the rule text and the detail line. The harmony meter marks the three-star bar at 70.
+- A selected piece highlights the slot that takes it; while dragging, a matching slot shows a solid
+  drop highlight and any other slot a dashed refusal outline. Pieces already on the board show
+  "On board" in the tray. Enter on a tray card places it, Enter on a slot selects it or opens its
+  tab, Backspace or Delete clears a focused slot.
+- Finish look always keeps its name; a line below says how many slots are left.
+- Locked chapters and challenges are disabled buttons; the Closet shows locked themes as grey
+  garment silhouettes with the stars needed and no names.
+- The export sheet previews any frame but shares or saves only owned frames; buying a frame
+  selects it.
+
 ## Non-goals for v1
 
 Ads, purchases, accounts, leaderboards, multiplayer, user-made challenges, a body or mannequin,

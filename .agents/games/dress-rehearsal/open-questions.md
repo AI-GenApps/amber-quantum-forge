@@ -25,6 +25,14 @@ The kit stays read-only for this epic. Known at planning time:
 - K1. `shareContent` has no `files` support. Image sharing is done inside the game with the Web
   Share API (see Q4); a kit helper `shareFile(blob, ...)` would let every game reuse it.
 - K2. `registerFonts` supports `style: "italic"` (confirmed in `fonts.ts`); nothing needed.
+- K3. (task 04) `Tabs` gives `.wg-tab` no `min-width`, so eight tabs would be 45 px wide; the game
+  overrides it inside the tray (`min-width: 72px`, horizontal scroll). A kit `minWidth` or scroll
+  option would let every game with many tabs skip the override.
+- K4. (task 04) The kit toggle thumb and star colours come from `colorText` and `colorStarOn`, which
+  are paper-dark on dark surfaces; the game re-declares them per surface and adds ink outlines in
+  CSS. A kit `outline` token for stars, toggles and progress bars would remove those overrides.
+- K5. (task 04) `Sheet` moves focus into the dialog but does not trap Tab or return focus to the
+  opener; keyboard users can tab out behind a sheet. Worth a kit fix before the owner's QA pass.
 
 ## Task 00 notes
 
@@ -85,3 +93,21 @@ The kit stays read-only for this epic. Known at planning time:
 - Q11 still holds: the Daily generator skips attempts whose slot set needs a category the closet
   lacks (a closet without hats uses the committed fallback for that day).
 
+
+## Task 04 notes
+
+- No number in `product.md`, `economy.md` or `content-plan.md` changed. Design choices that the
+  spec left open are `decisions-log.md` D21 to D29 (fonts as shipped, dark chrome with three derived
+  tokens, board layout, pending rule chips, hint pre-check, share flow, route table).
+- Verified headlessly only: Vitest with happy-dom (265 app tests plus the 457 core tests), `tsc`,
+  `vite build` and Biome. For the owner's browser QA (Q2 and Q10 stay open): drag and drop with a
+  real pointer and with touch (tray cards set `touch-action: none`, so swipe on the gaps to scroll
+  the tray), the board at 360 x 640, 390 x 844 and 430 x 932, the PNG that the canvas produces for
+  the four frames, the Web Share sheet with files, font rendering of both families, and the
+  high-contrast hatching on swatches.
+- Q2 answer so far: the three-column board needs 3 x 88 + 2 x 8 = 280 px of the 300 px inside the
+  board border at 360 px width, so 88 px slots fit; the screen scrolls, with Finish look sticky.
+- `product.md` says the Gallery shows "24 slots"; the screen lists saved boards followed by dashed
+  empty slots numbered up to 24.
+- The How to play screen is a shell of six titled pages with empty bodies (`src/data/howto.ts`),
+  and the credits screen reads `src/data/credits.ts`; tasks 05 and 06 add their entries there.
