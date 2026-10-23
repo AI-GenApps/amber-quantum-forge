@@ -11,7 +11,7 @@ browser QA from [`../qa-checklist.md`](../qa-checklist.md).
 | `budgets.json` | Written by `test/release/budgets.test.ts` on every run: per JS chunk raw and gzip bytes, art files, audio totals, font sizes and the budgets |
 | `no-data-audit.txt` | Written by `scripts/no-data-audit.ts` (run by `test/release/noData.test.ts`): zero network API uses, zero non-allowlisted URLs, dependencies equal the skeleton |
 | `../qa-checklist.md` | The 13 section owner browser checklist |
-| `../art/` | Art bible, accepted manifest, review notes of batch b1 rounds 1 to 4 and the b2 brief (task 06 evidence, unchanged by this task) |
+| `../art/` | Art bible, accepted manifest, masters, conversion report and the review notes and briefs of every designer round (b1, b2, retry), refreshed in the update pass below |
 
 ## What the new tests verify (`apps-games/lantern-loops/test/release/`)
 
@@ -30,9 +30,9 @@ browser QA from [`../qa-checklist.md`](../qa-checklist.md).
 
 | Budget | Actual | Limit |
 |---|---|---|
-| JS bundle (gzip, sum of 6 chunks) | 78,848 bytes (77.0 KB) | 307,200 bytes (300 KB) |
-| JS raw | 232,087 bytes | n/a |
-| Art (shipped WebP) | 162,934 bytes (12 files; task 06 update pass, was 2,832 bytes with `lantern-amber` only) | 8 MB |
+| JS bundle (gzip, sum of 6 chunks) | 87,811 bytes (85.8 KB) | 307,200 bytes (300 KB) |
+| JS raw | 251,680 bytes | n/a |
+| Art (shipped WebP) | 162,934 bytes (12 files after the task 06 update pass) | 8 MB |
 | Audio (18 MP3 files, largest 314,222 bytes) | 394,979 bytes (385.7 KB) | 1.5 MB |
 | Fraunces woff2 | 109,868 bytes | 122,880 bytes |
 | Nunito woff2 | 32,776 bytes | 122,880 bytes |
@@ -58,8 +58,8 @@ Run from `/Users/ashutosh/Dev/W3DevMobile/aqf-wt/web-lantern-loops`.
 | Command | Result |
 |---|---|
 | `bun run --filter '@web-games/lantern-loops*' typecheck` | pass (core and app) |
-| `bun run --filter '@web-games/lantern-loops*' test` | pass: core 29 files, 397 tests; app 45 files, 467 tests |
-| `bun run --filter '@web-games/lantern-loops' build` | pass: 188 modules, main chunk 227.73 kB (77.58 kB gzip) |
+| `bun run --filter '@web-games/lantern-loops*' test` | pass: core 29 files, 397 tests; app 46 files, 476 tests |
+| `bun run --filter '@web-games/lantern-loops' build` | pass: 200 modules, main chunk 247.32 kB (86.49 kB gzip) |
 | `bunx biome check apps-games/lantern-loops apps-games/lantern-loops-core` | pass, 209 files, no fixes |
 
 No result was red, so no pre-existing-failure comparison against `origin/main` was needed.
@@ -69,8 +69,18 @@ ignored, locally synced copies in `android/` and `ios/`. After any source change
 `bunx vite build && bunx cap sync` in `apps-games/lantern-loops` so the copies match; in a fresh
 checkout (no `dist/`, no sync) the test skips itself.
 
+## Update pass after the full designer loop (2026-10-23)
+
+The art track finished with status `ok` (14 of 15 slots accepted). The accepted folder was compared with
+the shipped art: every accepted PNG SHA-256 equals the one recorded in `art/report.json`, the art bible,
+the accepted manifest and all 11 review notes in `art/review/` equal the inbox originals, so no art file
+changed in this pass. What changed: the numbers above (the 12 bundled WebP files raised the JS gzip sum
+from 78,848 to 87,811 bytes through the art imports, and the app suite grew to 46 files and 476 tests),
+the stale wording about 13 placeholder slots, and the knowledge base status line. `empty-archive` stays a
+code-drawn placeholder (assets-index.md, Q11). The whole verification set was re-run and is green.
+
 ## Unresolved items carried to the owner
 
 See `.agents/games/lantern-loops/open-questions.md`: Q1 name, Q3 Sunday 9x9 speed on a phone, Q4 to Q7
-feel and layout, Q6 Android INTERNET permission, Q8 store account data, Q10 audio feel, Q11 the 13
-placeholder art slots (style anchor failed), Q12 icon and splash on a device, Q13 the `?qa=` helper.
+feel and layout, Q6 Android INTERNET permission, Q8 store account data, Q10 audio feel, Q11 the one
+placeholder art slot (`empty-archive`, rejected in the final round), Q12 icon and splash on a device, Q13 the `?qa=` helper.
