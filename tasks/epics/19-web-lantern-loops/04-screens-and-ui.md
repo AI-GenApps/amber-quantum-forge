@@ -1,7 +1,7 @@
 ---
 epic: 19-web-lantern-loops
 task: 04-screens-and-ui
-status: pending
+status: in-progress
 commit_scope: lantern-loops
 depends_on: [19-web-lantern-loops/03-progression-and-save]
 estimate: XL
@@ -59,29 +59,29 @@ that later); agents verify it with component and interaction tests only.
 
 ## Implementation Checklist
 
-- [ ] Fonts downloaded, subset, converted, committed with `OFL.txt`; provenance (source URL, commit,
+- [x] Fonts downloaded, subset, converted, committed with `OFL.txt`; provenance (source URL, commit,
       SHA-256, subset command, sizes) recorded in `assets-index.md` and
       `.agents/resources/2026-10-23/web-games/lantern-loops/04/README.md`.
-- [ ] `src/theme/tokens.ts`: `ThemeTokens` values for dark UI, high-contrast variant, `applyTheme` at boot;
+- [x] `src/theme/tokens.ts`: `ThemeTokens` values for dark UI, high-contrast variant, `applyTheme` at boot;
       `src/theme/palette.ts` exports the lantern colours and glyph map; `src/theme/styles.ts` game CSS.
-- [ ] `src/board/layout.ts` (`layoutBoard`), `src/board/BoardView.tsx` (SVG), `TileShape.tsx`,
+- [x] `src/board/layout.ts` (`layoutBoard`), `src/board/BoardView.tsx` (SVG), `TileShape.tsx`,
       `LanternGlyph.tsx`, `StoneGlyph.tsx`, `MirrorGlyph.tsx`, `GateGlyph.tsx`, `ConflictLayer.tsx`,
       `useBoardInput.ts` (pointer + keyboard), `src/board/winSequence.ts` (pure timeline; reduced motion
       skips it).
-- [ ] `src/art/slots.ts`, `ArtImage.tsx`, `src/art/fallbacks/*.tsx` (4 backdrops, lantern, medallion,
+- [x] `src/art/slots.ts`, `ArtImage.tsx`, `src/art/fallbacks/*.tsx` (4 backdrops, lantern, medallion,
       empty-archive, key-art scene).
-- [ ] `src/screens/{Boot,Home,Chapters,PuzzleList,Puzzle,Daily,Archive,Stats,Settings,About,HowTo,Onboarding}.tsx`
+- [x] `src/screens/{Boot,Home,Chapters,PuzzleList,Puzzle,Daily,Archive,Stats,Settings,About,HowTo,Onboarding}.tsx`
       plus `src/overlays/{WinSheet,PauseSheet,ConfirmSheet,HintSheet,UnlockCelebration,CoachCard}.tsx`.
-- [ ] Puzzle screen wiring: core history (undo/redo), brush switch persisted in the profile, hint flow
+- [x] Puzzle screen wiring: core history (undo/redo), brush switch persisted in the profile, hint flow
       (confirm, spend token, apply, lock), restart confirm, autosave to the runs store every move and on
       lifecycle pause, timer pauses when hidden, win flow calls the task 03 services and opens the win sheet
       with stars, time, tokens earned, events (freeze used, milestone, chapter unlocked).
-- [ ] Home daily card (tier name, streak flame, freeze, solved tick), Daily screen (medallion, mechanics
+- [x] Home daily card (tier name, streak flame, freeze, solved tick), Daily screen (medallion, mechanics
       strip), Archive tabs (To play, Completed with empty-archive art), Statistics (bars drawn in SVG), Settings
       (kit toggles plus showTimer, showConflicts, hidePathInShare, replay tutorial, reset progress with a
       two-step confirm).
-- [ ] `src/App.tsx` router outlet with transitions; `src/main.tsx` boots fonts, theme, services, lifecycle.
-- [ ] `src/strings.ts` with all copy; `src/a11y/` helpers (cell labels, live region).
+- [x] `src/App.tsx` router outlet with transitions; `src/main.tsx` boots fonts, theme, services, lifecycle.
+- [x] `src/strings.ts` with all copy; `src/a11y/` helpers (cell labels, live region).
 
 ## Files Touched
 
@@ -93,30 +93,30 @@ that later); agents verify it with component and interaction tests only.
 
 ## Acceptance Criteria
 
-- [ ] Every screen and overlay has a render test with seeded profile fixtures (fresh, mid-game with locked
+- [x] Every screen and overlay has a render test with seeded profile fixtures (fresh, mid-game with locked
       chapters, finished) asserting key text, roles and navigation targets; chapter cards show locked
       state and "N stars to go" with the 45/120/210 thresholds.
-- [ ] Board tests: renders a fixture for each mechanic (stone numbers, both mirror slashes, gates with
+- [x] Board tests: renders a fixture for each mechanic (stone numbers, both mirror slashes, gates with
       glyphs, anchors with tacks, five lantern colours); a simulated pointer drag across cells produces the
       expected tiles; tap cycles follow the brush; long-press erases; stones, anchors and hint-locked cells
       ignore input; keyboard play solves a 5x5 fixture without a pointer; conflict markers appear and clear
       per `product.md`; solving a fixture opens the win sheet with the right star count.
-- [ ] Contrast test: text/background token pairs >= 4.5:1 and graphical pairs (tile ribbon, glyphs, unlit
+- [x] Contrast test: text/background token pairs >= 4.5:1 and graphical pairs (tile ribbon, glyphs, unlit
       lantern) >= 3:1 in both default and high-contrast themes; prints the table.
-- [ ] Hit-area test: `layoutBoard` gives cell >= 36 px for n = 5..9 at 340x640, 360x740, 390x844 and
+- [x] Hit-area test: `layoutBoard` gives cell >= 36 px for n = 5..9 at 340x640, 360x740, 390x844 and
       >= 44 px for n <= 7 at 390 wide; stylesheet contains `min-height: var(--ll-hit)` for controls and
       `--ll-hit` equals 44px.
-- [ ] Font test: for every screen render, the kit `assertNoPlatformFontFallback` passes with families
+- [x] Font test: for every screen render, the kit `assertNoPlatformFontFallback` passes with families
       Fraunces and Nunito; woff2 files exist, are <= 120 KB, and each has an `OFL.txt`.
-- [ ] Art slot test: all 15 slot ids resolve to either a file URL or a fallback; with no files present
+- [x] Art slot test: all 15 slot ids resolve to either a file URL or a fallback; with no files present
       every screen still renders; fallbacks contain no `<text>` outside the bundled families.
-- [ ] Reduced motion: with the setting on, no WAAPI animation is started by the win sequence or screen
+- [x] Reduced motion: with the setting on, no WAAPI animation is started by the win sequence or screen
       transitions (assert on the kit motion mock).
-- [ ] Strings: no component contains a hard-coded user-facing literal (test scans `src/screens` and
+- [x] Strings: no component contains a hard-coded user-facing literal (test scans `src/screens` and
       `src/overlays` for JSX text nodes outside the string table, allowing glyphs and numbers).
-- [ ] Android back: with a sheet open it closes the sheet; on a screen it pops; on Home it asks to exit
+- [x] Android back: with a sheet open it closes the sheet; on a screen it pops; on Home it asks to exit
       (router and lifecycle mocks).
-- [ ] All verification commands below pass; no file over 800 lines.
+- [x] All verification commands below pass; no file over 800 lines.
 
 ## Verification Commands
 

@@ -209,11 +209,27 @@ decision, because it changes every future daily). The archive covers the 30 date
 | Jade | #3FBF98 | triangle | `lantern-jade` | Sky 03 |
 | Azure | #4EA6EA | square | `lantern-azure` | Sky 05 |
 | Violet | #9A7DE3 | star | `lantern-violet` | Sky 04 |
-| Unlit | #5C6385 | none (outline) | `lantern-unlit` | all chapters |
+| Unlit | #6E76A6 | none (outline) | `lantern-unlit` | all chapters |
 
 Base palette for the art bible and design tokens: deep indigo `#12132E` (background), indigo
-`#1E2050`, teal `#0E5A5F`, paper cream `#F6EAD3` (text and ribbons), ink `#241B2F`. Task 04 owns
-the final token table and its contrast test.
+`#1E2050`, teal `#0E5A5F`, paper cream `#F6EAD3` (text and ribbons), ink `#241B2F`.
+
+Final UI tokens (task 04, `apps-games/lantern-loops/src/theme/tokens.ts`, contrast-tested in both
+themes by `test/theme.test.ts`; the full ratio table is in
+`.agents/resources/2026-10-23/web-games/lantern-loops/04/README.md`):
+
+| Token | Default | High contrast |
+|---|---|---|
+| background / surface / raised | `#12132E` / `#1E2050` / `#2A2D66` | `#0A0B1F` / `#14163D` / `#20235A` |
+| text / muted | `#F6EAD3` / `#B9BBD6` | `#FFFFFF` / `#DADCF0` |
+| accent / text on accent | `#F2A33A` / `#241B2F` | `#FFB84D` / `#000000` |
+| border / focus | `#7C83C4` / `#8FD0FF` | `#C2C8F0` / `#FFFFFF` |
+| board plate / ribbon / unlit | `#1E2050` / `#F6EAD3` / `#6E76A6` | `#14163D` / `#FFFFFF` / `#A9B1E0` |
+| lantern colours | amber `#F2A33A`, rose `#E9657F`, jade `#3FBF98`, azure `#4EA6EA`, violet `#9A7DE3` | `#FFB84D`, `#FF8FA6`, `#5EE0B6`, `#7CC4FF`, `#B9A2FF` |
+
+Two hexes were adjusted to meet contrast: unlit `#5C6385` to `#6E76A6` (3:1 against the board plate
+`#1E2050`; the old value gave 2.6:1) and the UI border to `#7C83C4` (3:1 against the raised
+surface).
 
 ## 8. Streak medallions (6 tiers, art slot `daily-medallion`)
 

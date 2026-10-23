@@ -1,4 +1,5 @@
 import { createDefaultAdapter, type SettingsStore, type StorageAdapter } from "@web-games/kit";
+import { createFlagsStore, type FlagsStore } from "../save/flags";
 import { createProfileStore } from "../save/profile";
 import { createRunsStore, type RunsStore } from "../save/runs";
 import { type Clock, createProgression, type Progression } from "./progression";
@@ -9,6 +10,7 @@ export interface Services {
   now: Clock;
   settings: SettingsStore;
   runs: RunsStore;
+  flags: FlagsStore;
   progression: Progression;
   /** Loads settings and the profile, then runs the weekly freeze refill. Safe to call once. */
   start(): Promise<void>;
@@ -24,12 +26,14 @@ export function createServices(options: ServiceOptions = {}): Services {
   const now = options.now ?? (() => new Date());
   const settings = createGameSettings(adapter);
   const runs = createRunsStore(adapter);
+  const flags = createFlagsStore(adapter);
   const progression = createProgression({ store: createProfileStore(adapter), now, runs });
   return {
     adapter,
     now,
     settings,
     runs,
+    flags,
     progression,
     async start() {
       await settings.load();
