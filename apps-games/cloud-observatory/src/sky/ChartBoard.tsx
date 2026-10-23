@@ -1,6 +1,7 @@
 import { hitTestStar, type Point, type TapResult } from "@web-games/cloud-observatory-core";
 import { useEffect, useRef, useState } from "preact/hooks";
 import { useApp } from "../app/context";
+import { goldWash } from "../motion/effects";
 import { t } from "../strings";
 import { cx } from "../ui/cx";
 import { clientToMap, hitRadiusUnits, mapScale, pathFor } from "./geometry";
@@ -15,6 +16,8 @@ export interface ChartBoardProps {
   label: string;
   /** Applies the tap and returns what happened. */
   onTap: (index: number) => TapResult;
+  /** Called after the last star's feedback, so the finish sound follows the star sound. */
+  onComplete?: () => void;
 }
 
 const MISS_MS = 650;
@@ -27,8 +30,9 @@ function starLabel(index: number, total: number, next: number): string {
 }
 
 /** Numbered star targets on the sky map with lines drawn in tap order. */
-export function ChartBoard({ stars, next, closed, label, onTap }: ChartBoardProps) {
-  const { feedback, reducedMotion } = useApp();
+export function ChartBoard({ stars, next, closed, label, onTap, onComplete }: ChartBoardProps) {
+  const { feedback, reducedMotion, motion } = useApp();
+  const wash = useRef<HTMLDivElement>(null);
   const svg = useRef<SVGSVGElement>(null);
   const [miss, setMiss] = useState<{ index: number; key: number } | null>(null);
   const [status, setStatus] = useState("");
@@ -53,6 +57,7 @@ export function ChartBoard({ stars, next, closed, label, onTap }: ChartBoardProp
       feedback.sfx("star-ok");
       feedback.haptic("light");
       setStatus(t("chart.found", { n: index + 1 }));
+      if (result === "complete") onComplete?.();
     }
   };
 
@@ -72,6 +77,9 @@ export function ChartBoard({ stars, next, closed, label, onTap }: ChartBoardProp
   };
 
   const complete = next >= stars.length && stars.length > 0;
+  useEffect(() => {
+    if (complete) void goldWash(motion, wash.current);
+  }, [complete, motion]);
   const drawn = stars.slice(0, Math.min(next, stars.length));
   return (
     <div class={cx("co-board", complete && "co-board--done")} data-board="true">
@@ -139,6 +147,9 @@ export function ChartBoard({ stars, next, closed, label, onTap }: ChartBoardProp
           </g>
         ) : null}
       </SkyMap>
+      {complete && !reducedMotion ? (
+        <div ref={wash} class="co-wash-gold" data-wash="gold" aria-hidden="true" />
+      ) : null}
       <p class="co-board__status" role="status" aria-live="polite" data-status="true">
         {status}
       </p>

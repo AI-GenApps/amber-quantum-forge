@@ -1,7 +1,7 @@
 ---
 epic: 21-web-cloud-observatory
 task: 05-audio-haptics-onboarding
-status: todo
+status: in-progress
 commit_scope: cloud-observatory
 depends_on: [21-web-cloud-observatory/04-screens-and-ui]
 estimate: L
@@ -47,47 +47,47 @@ drivers; the owner judges the sound and feel at the end.
 
 ## Implementation Checklist
 
-- [ ] Choose and download the CC0 files for the 13 cues (and the loop if one qualifies); trim
+- [x] Choose and download the CC0 files for the 13 cues (and the loop if one qualifies); trim
       silence; normalise peaks to about -3 dBFS; convert to MP3; place under
       `apps-games/cloud-observatory/public/audio/` with `LICENSES.md` listing source URL and licence
       for every file and a copy of each pack's licence text.
-- [ ] `src/audio/cues.ts`: typed cue table (id to file, default volume, rate jitter range);
+- [x] `src/audio/cues.ts`: typed cue table (id to file, default volume, rate jitter range);
       `createGameAudio(manager)` that loads cues lazily after unlock, plays by id, throttles
       `gather` to at most 8 plays per second, and starts/stops the music loop with a 600 ms fade.
-- [ ] `src/audio/feedback.ts`: the real `Feedback` implementation (replaces the null one from task
+- [x] `src/audio/feedback.ts`: the real `Feedback` implementation (replaces the null one from task
       04) combining audio and haptics; a single `feedback.sfx/haptic` call site per interaction.
-- [ ] Wire feedback into: Gather, buy, upgrade, star correct/wrong, chart complete, lore unlock,
+- [x] Wire feedback into: Gather, buy, upgrade, star correct/wrong, chart complete, lore unlock,
       achievement toast, Eclipse, Comet complete, buttons (click/back), Welcome Back.
-- [ ] Settings: sound and music toggles mute immediately; haptics toggle silences impacts; reduced
+- [x] Settings: sound and music toggles mute immediately; haptics toggle silences impacts; reduced
       motion removes the animations below.
-- [ ] Motion polish with the kit `createMotion` (all skipped when reduced): star twinkle (slow,
+- [x] Motion polish with the kit `createMotion` (all skipped when reduced): star twinkle (slow,
       at most 1.5 Hz), ink-draw of constellation lines on correct taps, wrong-tap shake (80 ms),
       starlight number count-up, purchase pulse, chart-complete gold wash, Eclipse sequence (dim,
       ring of light, return; 2.4 s; static card when reduced), chapter card fade.
-- [ ] Onboarding: `src/onboarding/steps.ts` (pure step machine driven by profile flags and game
+- [x] Onboarding: `src/onboarding/steps.ts` (pure step machine driven by profile flags and game
       events, persisted in `profile.tutorial`), `OnboardingHint.tsx` (non-blocking coach mark with
       Skip), `EclipseIntro` sheet; skippable and replayable from How to Play.
-- [ ] `HowToPlay` screen: four pages (Gather and Build, Chart the Sky, The Eclipse, The Comet and
+- [x] `HowToPlay` screen: four pages (Gather and Build, Chart the Sky, The Eclipse, The Comet and
       the Journal) with small code-drawn diagrams; reachable from Title and Settings; plain,
       short sentences; reading level suitable for age 8 and up.
-- [ ] Update `assets-index.md` (audio provenance table, sizes), `open-questions.md` (loop
+- [x] Update `assets-index.md` (audio provenance table, sizes), `open-questions.md` (loop
       outcome) and `decisions-log.md` (audio container, final cue list).
 
 Tests:
 
-- [ ] `audio/cues.test.ts`: with the kit `createFakeAudioContext`, every cue loads and plays;
+- [x] `audio/cues.test.ts`: with the kit `createFakeAudioContext`, every cue loads and plays;
       unknown ids are ignored; throttling of `gather`; settings mute; music fades in/out; a
       missing `AudioContext` is a silent no-op.
-- [ ] `audio/assets.test.ts`: every cue file exists, non-empty, MP3 header present; total audio
+- [x] `audio/assets.test.ts`: every cue file exists, non-empty, MP3 header present; total audio
       bytes at most 2,500,000 (kit `assertAssetBudget`); `LICENSES.md` has a row with a source URL
       and the licence text `CC0` for every audio file and no file without a row.
-- [ ] `feedback.test.ts`: each interaction triggers the expected sfx id and haptic kind exactly
+- [x] `feedback.test.ts`: each interaction triggers the expected sfx id and haptic kind exactly
       once (fake driver and fake manager), nothing fires when settings disable them.
-- [ ] `onboarding/steps.test.ts`: step order, each step completes on its event, skip works, replay
+- [x] `onboarding/steps.test.ts`: step order, each step completes on its event, skip works, replay
       resets, flags persist across a save/load, the Eclipse intro shows once.
-- [ ] `HowToPlay` renders four pages and navigates; reduced-motion tests: no animation classes or
+- [x] `HowToPlay` renders four pages and navigates; reduced-motion tests: no animation classes or
       `Element.animate` calls when reduced; the Eclipse sequence becomes a static card.
-- [ ] Full-session test: scripted run through onboarding to the first chart completes with the
+- [x] Full-session test: scripted run through onboarding to the first chart completes with the
       expected feedback calls and no unhandled promise rejections.
 
 ## Files Touched

@@ -8,6 +8,7 @@ import {
   claimComet,
   constellationById,
   createProfile,
+  createTutorial,
   type GameEvent,
   generateComet,
   markSeen,
@@ -94,6 +95,8 @@ export interface GameSession {
   cometPattern(): Point[];
   markLoreSeen(id: string): void;
   setTutorial(flag: keyof Tutorial): void;
+  /** Clears the four hints and the skip flag so the coach starts over. */
+  resetTutorial(): void;
   markEclipseIntroSeen(): void;
   dismissSaveNotice(): void;
   reset(): Promise<void>;
@@ -325,6 +328,9 @@ export function createGameSession(options: GameSessionOptions): GameSession {
           ? current
           : { ...current, tutorial: { ...current.tutorial, [flag]: true } },
       );
+    },
+    resetTutorial() {
+      touch((current) => ({ ...current, tutorial: createTutorial() }));
     },
     markEclipseIntroSeen() {
       touch((current) =>

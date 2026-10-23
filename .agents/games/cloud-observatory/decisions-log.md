@@ -228,3 +228,37 @@ changed in this task.
 - **Next-goal hint.** A chart that is ready, else the first Eclipse, else the cheapest affordable
   instrument or upgrade, else the cheapest target with its price.
 - **No economy number changed.**
+
+### 2026-10-23 — Audio, haptics, motion and onboarding (task 05)
+- **Audio container and sources.** MP3 (WebView-safe; `ffmpeg` with libmp3lame is installed). Cues
+  are mono 44.1 kHz at 64 kbps; the loop is stereo at 96 kbps. 13 cues from Kenney CC0 packs (Interface
+  Sounds, Music Jingles, Sci-fi Sounds) and one loop, "Cosmic Navigation" by Synth-thetic from
+  OpenGameArt, whose page states CC0. Total 1,920,489 bytes. Nothing is synthesized; each file has a
+  source URL and licence row in `public/audio/LICENSES.md`, enforced by a test. The cue list kept its
+  final ids: gather, buy, upgrade, star-ok, star-miss, chart-done, lore, achievement, eclipse, comet,
+  click, back, welcome, plus the music id `observatory-night`.
+- **Playback rules.** Audio loads lazily after the first user gesture (the kit unlocks the context);
+  nothing plays before it; a missing `AudioContext` is a silent no-op. `gather` is limited to 8 plays
+  per second; `gather` and `star-ok` use a small rate jitter. Music fades in and out over 600 ms and
+  follows the music switch; the sound switch cuts playing cues; both suspend with the app lifecycle.
+- **Haptics.** Correct star: light impact. Wrong star: warning notification. Chart complete and
+  achievement: success. Eclipse: medium impact. Any purchase (instrument, upgrade, boon): light
+  impact. Comet traced: success. Silent on web; everything is behind the haptics switch, and the
+  switches apply on the next call because audio and haptics subscribe to the settings store.
+- **Motion.** One 2.4 s Eclipse (dim 0.7 s, ring of light 1.1 s, return 0.6 s) driven by the kit
+  `createMotion`; a still card when reduced. Purchase pulse, chapter-card fade and the chart-complete
+  gold wash use `createMotion` and are skipped when reduced. Twinkle (4.8 s period, 0.2 Hz), the
+  ink-draw of a new constellation line, the wrong-tap shake (four swings of 80 ms) and the next-star
+  pulse are CSS keyframes that are not rendered when reduced. The Welcome Back total counts up over
+  0.9 s of frame time (immediate when reduced).
+- **Onboarding.** The four beats from the product spec are a pure step machine
+  (`src/onboarding/steps.ts`), driven by changes between session snapshots (taps, instrument count,
+  chart opened, correct star), stored in `profile.tutorial`. Hints sit in the page flow with a Skip
+  button and never capture input. A loaded save that already satisfies a beat is caught up once, so a
+  returning player is not taught again. Replay (How to Play, "Show the tips again") clears the flags
+  and counts taps from zero. The Eclipse explainer sheet opens once when pending shards first reach 5
+  (not over Welcome Back, a chapter card, a reader or the Eclipse sequence), independent of Skip.
+- **How to Play.** Four pages (Gather and Build, Chart the Sky, The Eclipse, The Comet and the
+  Journal) with a code-drawn SVG diagram each; reachable from Title, the shell menu and Settings.
+- **No economy number changed.**
+

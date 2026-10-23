@@ -110,33 +110,50 @@ review accepts them. Rejected slots keep their placeholders.
 
 ## Audio (CC0 only)
 
-Planned cue list (task 05 selects files; each must come from a Kenney pack or a page that states
-CC0, with the URL and licence recorded below). No synthesized audio is ever passed off as CC0.
+Task 05 status: bundled. 13 cues and one music loop, all CC0, none synthesized. Format MP3 (the
+default, WebView-safe), encoded with the locally installed `ffmpeg` (libmp3lame). Short cues are mono
+44.1 kHz at 64 kbps, silence trimmed at both ends, peak normalised to about -3 dBFS; the loop is stereo
+44.1 kHz at 96 kbps. Total 1,920,489 bytes of MP3 (budget 2,500,000). Files live in
+`apps-games/cloud-observatory/public/audio/`; the same table, the CC0 pack licence texts and the
+conversion commands are in `public/audio/LICENSES.md` and `public/audio/licenses/`, and
+`test/audio/assets.test.ts` fails when a file lacks a row, a source URL or the licence text `CC0`.
 
-| Id | Used for | Source candidate |
-|---|---|---|
-| gather | Tap on the sky | Kenney Interface Sounds / Digital Audio (CC0) |
-| buy | Instrument purchase | Kenney Interface Sounds (CC0) |
-| upgrade | Upgrade purchase | Kenney Interface Sounds (CC0) |
-| star-ok | Correct star in the chart | Kenney Interface Sounds / Music Jingles (CC0) |
-| star-miss | Wrong star | Kenney Interface Sounds (CC0) |
-| chart-done | Constellation complete | Kenney Music Jingles (CC0) |
-| lore | Lore entry unlocked | Kenney Interface Sounds (CC0) |
-| achievement | Achievement toast | Kenney Music Jingles (CC0) |
-| eclipse | Eclipse sequence | Kenney Sci-fi Sounds / Impact Sounds (CC0) |
-| comet | Comet done | Kenney Music Jingles (CC0) |
-| click / back | UI | Kenney UI Audio (CC0) |
-| welcome | Welcome Back sheet | Kenney Interface Sounds (CC0) |
-| music: observatory-night | Single ambient loop | A page stating CC0 (Kenney ships jingles, not long ambient loops); see open-questions |
+| Id | Used for | File | Bytes | Duration (s) | Original (pack and file) |
+|---|---|---|---|---|---|
+| gather | Tap on the sky (throttled to 8 per second, rate 0.94 to 1.08) | `gather.mp3` | 1,505 | 0.16 | Kenney Interface Sounds `glass_003` |
+| buy | Instrument or boon purchase | `buy.mp3` | 3,177 | 0.37 | Kenney Interface Sounds `confirmation_003` |
+| upgrade | Upgrade purchase | `upgrade.mp3` | 4,640 | 0.55 | Kenney Interface Sounds `confirmation_002` |
+| star-ok | Correct star (rate 0.97 to 1.05) | `star-ok.mp3` | 1,505 | 0.16 | Kenney Interface Sounds `pluck_002` |
+| star-miss | Wrong star | `star-miss.mp3` | 1,714 | 0.18 | Kenney Interface Sounds `error_008` |
+| chart-done | Constellation complete | `chart-done.mp3` | 12,999 | 1.59 | Kenney Music Jingles, Steel `jingles_STEEL07` |
+| lore | Lore entry unlocked | `lore.mp3` | 4,849 | 0.57 | Kenney Interface Sounds `glass_004` |
+| achievement | Achievement toast | `achievement.mp3` | 10,700 | 1.31 | Kenney Music Jingles, Steel `jingles_STEEL12` |
+| eclipse | Eclipse sequence | `eclipse.mp3` | 19,687 | 2.43 | Kenney Sci-fi Sounds `spaceEngineLow_002`, first 2.4 s with 0.8 s fades |
+| comet | Comet traced | `comet.mp3` | 9,656 | 1.18 | Kenney Music Jingles, Pizzicato `jingles_PIZZI03` |
+| click | UI tap | `click.mp3` | 669 | 0.05 | Kenney Interface Sounds `click_002` |
+| back | Back button | `back.mp3` | 1,087 | 0.10 | Kenney Interface Sounds `back_001` |
+| welcome | Welcome Back sheet | `welcome.mp3` | 4,431 | 0.52 | Kenney Interface Sounds `confirmation_004` |
+| music: observatory-night | The one ambient loop, 153.6 s, fades 600 ms in and out | `observatory-night.mp3` | 1,843,870 | 153.63 | "Cosmic Navigation" (`cosmic_navigation_loop.flac`) by Synth-thetic, OpenGameArt |
 
-Format: decided in task 05 after checking converter availability; default MP3 for universal
-WebView support. Budget: all audio at most 2.5 MB.
+The cue choices were made from file names, durations and levels only (no listening, by the owner's
+no-device rule); the owner judges the sound in the browser and may swap any file by editing the
+table in `src/audio/cues.ts` and `LICENSES.md` together.
 
-### Provenance (filled by tasks 05 and 06)
+### Provenance
 
-| File | Source URL | Licence | Converted from | Date |
-|---|---|---|---|---|
-| (none yet) | | | | |
+Downloaded 2026-10-23. Every row is CC0 1.0 (https://creativecommons.org/publicdomain/zero/1.0/).
+
+| Pack | Source URL | Licence evidence | Files used |
+|---|---|---|---|
+| Kenney Interface Sounds 1.0 | https://kenney.nl/assets/interface-sounds (zip `kenney_interface-sounds.zip`) | `License.txt` in the zip: "Creative Commons Zero, CC0"; copy at `public/audio/licenses/kenney-interface-sounds-License.txt` | gather, buy, upgrade, star-ok, star-miss, lore, click, back, welcome |
+| Kenney Music Jingles | https://kenney.nl/assets/music-jingles (zip `kenney_music-jingles.zip`) | `License.txt` in the zip: "Creative Commons Zero, CC0"; copy at `public/audio/licenses/kenney-music-jingles-License.txt` | chart-done, achievement, comet |
+| Kenney Sci-fi Sounds | https://kenney.nl/assets/sci-fi-sounds (zip `kenney_sci-fi-sounds.zip`) | `License.txt` in the zip: "Creative Commons Zero, CC0"; copy at `public/audio/licenses/kenney-sci-fi-sounds-License.txt` | eclipse |
+| Cosmic Navigation by Synth-thetic | https://opengameart.org/content/cosmic-navigation | The page's licence field reads "CC0" and its notice reads "CC0 / Public Domain. No Rights Reserved. Free to use however you like with no attribution required."; recorded at `public/audio/licenses/opengameart-cosmic-navigation-NOTICE.txt` | observatory-night |
+
+Kenney Digital Audio, UI Audio and Impact Sounds were also downloaded and inspected (all CC0) but no file
+from them shipped. Other OpenGameArt candidates that also state CC0 (Outer Space Loop, Safe Space,
+Another Space Background Track) were not used; Cosmic Navigation fits the game best and ships an
+explicit loop file.
 
 ### Art provenance (filled by task 06)
 

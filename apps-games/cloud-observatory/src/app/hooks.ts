@@ -1,6 +1,16 @@
 import { useBackInterceptor } from "@web-games/kit";
+import type { RefObject } from "preact";
 import { useCallback, useEffect, useRef } from "preact/hooks";
+import { purchasePulse } from "../motion/effects";
 import { useApp } from "./context";
+
+/** A ref for the element that swells when something is bought, and the function that swells it. */
+export function usePulse<T extends HTMLElement>(): [RefObject<T | null>, () => void] {
+  const { motion } = useApp();
+  const ref = useRef<T>(null);
+  const pulse = useCallback(() => void purchasePulse(motion, ref.current), [motion]);
+  return [ref, pulse];
+}
 
 /** While `active`, a back press runs `onBack` and counts as handled. */
 export function useBack(active: boolean, onBack: () => void): void {

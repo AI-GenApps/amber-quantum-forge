@@ -2,6 +2,7 @@ import type { BoonEffect } from "@web-games/cloud-observatory-core";
 import { CATALOG, formatNumber } from "@web-games/cloud-observatory-core";
 import { useState } from "preact/hooks";
 import { useApp } from "../app/context";
+import { usePulse } from "../app/hooks";
 import { Btn } from "../components/Btn";
 import { Icon } from "../components/Icon";
 import { ManagedSheet } from "../components/ManagedSheet";
@@ -44,12 +45,18 @@ export function boonText(effect: BoonEffect): string {
 
 function BoonCard({ view }: { view: BoonView }) {
   const { session, feedback } = useApp();
+  const [pulseRef, pulse] = usePulse<HTMLLIElement>();
   const buy = () => {
     if (view.state !== "affordable") return;
-    if (session.buyBoon(view.def.id).ok) feedback.sfx("buy");
+    if (session.buyBoon(view.def.id).ok) {
+      feedback.sfx("buy");
+      feedback.haptic("light");
+      pulse();
+    }
   };
   return (
     <li
+      ref={pulseRef}
       class={cx("co-boon", `co-boon--${view.state}`)}
       data-boon={view.def.id}
       data-state={view.state}

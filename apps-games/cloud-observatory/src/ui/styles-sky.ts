@@ -39,7 +39,7 @@ export const skyCss = `
 .co-pulse { animation: co-pulse 1.8s ease-in-out infinite; }
 .co-star__inner { transform-box: fill-box; transform-origin: center; }
 .co-star--miss .co-badge { stroke: var(--wg-color-danger); stroke-width: 8; }
-.co-shake { animation: co-shake 420ms linear 1; }
+.co-shake { animation: co-shake 320ms linear 1; }
 .co-glow { fill: none; stroke: var(--co-gold-light); stroke-width: 5; opacity: 0.5; transform-box: fill-box; transform-origin: center; }
 .co-flourish--anim .co-glow { animation: co-glow 1.4s ease-out 1 forwards; }
 .co-pips { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; }
@@ -48,10 +48,8 @@ export const skyCss = `
 .co-pop { position: absolute; font-family: var(--wg-font-display); font-weight: 700; font-size: 1.5rem; color: var(--co-gold-light); animation: co-pop 800ms ease-out forwards; pointer-events: none; }
 @keyframes co-twinkle { 0%, 100% { opacity: 0.25; } 50% { opacity: 0.9; } }
 @keyframes co-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.12); opacity: 0.75; } }
-@keyframes co-shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-14px); } 40% { transform: translateX(14px); } 60% { transform: translateX(-10px); } 80% { transform: translateX(10px); } }
+@keyframes co-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-14px); } 50% { transform: translateX(14px); } 75% { transform: translateX(-8px); } }
 @keyframes co-draw { to { stroke-dashoffset: 0; } }
 @keyframes co-glow { from { transform: scale(0.6); opacity: 0.9; } to { transform: scale(1.8); opacity: 0; } }
 @keyframes co-pop { from { transform: translateY(40px); opacity: 1; } to { transform: translateY(-40px); opacity: 0; } }
-@keyframes co-eclipse { from { transform: scale(0.2); } to { transform: scale(1); } }
-@keyframes co-fade { from { opacity: 0; } to { opacity: 1; } }
 `;

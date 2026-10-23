@@ -40,6 +40,9 @@ export function SettingsScreen() {
           />
         ))}
         <p class="co-settings__note">{t("settings.motionNote")}</p>
+        <Btn variant="secondary" fullWidth onClick={() => router.push("howto")}>
+          {t("menu.howToPlay")}
+        </Btn>
         <h2 class="co-section">{t("settings.dataTitle")}</h2>
         <Btn variant="danger" fullWidth onClick={() => setStep(1)}>
           {t("settings.reset")}

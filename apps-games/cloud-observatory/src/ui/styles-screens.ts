@@ -100,9 +100,9 @@ export const screensCss = `
 .co-stats__row dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
 .co-howto { display: flex; flex-direction: column; gap: 12px; }
 .co-howto__body { font-size: 1.0625rem; line-height: 1.6; }
-.co-eclipse-seq { position: fixed; inset: 0; z-index: 250; display: flex; align-items: center; justify-content: center; background: var(--co-ink-950); animation: co-fade 900ms ease-out both; padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px); }
-.co-eclipse-seq__disc { position: absolute; width: 60vmin; height: 60vmin; border-radius: 50%; background: #050813; box-shadow: 0 0 0 6px var(--co-gold-light), 0 0 80px 20px rgba(235, 203, 133, 0.35); animation: co-eclipse 3200ms ease-in-out both; }
-.co-eclipse-seq__text { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; padding: 16px; animation: co-fade 1600ms 900ms ease-out both; }
+.co-eclipse-seq { position: fixed; inset: 0; z-index: 250; display: flex; align-items: center; justify-content: center; background: var(--co-ink-950); padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px); }
+.co-eclipse-seq__disc { position: absolute; width: 60vmin; height: 60vmin; border-radius: 50%; background: #050813; box-shadow: 0 0 0 6px var(--co-gold-light), 0 0 80px 20px rgba(235, 203, 133, 0.35); }
+.co-eclipse-seq__text { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; padding: 16px; }
 .co-eclipse-seq__title { font-size: 2.5rem; color: var(--co-gold-light); }
 .co-eclipse-seq--still .co-eclipse-seq__disc { transform: none; }
 [data-contrast="high"] .co-title__shade { background: rgba(11, 18, 38, 0.97); }

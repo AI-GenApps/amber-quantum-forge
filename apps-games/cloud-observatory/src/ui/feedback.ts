@@ -15,7 +15,7 @@ export type SfxId =
 
 export type HapticKind = "light" | "warning" | "success" | "medium";
 
-/** Sound and haptic hooks. Task 05 supplies the real implementation; here it does nothing. */
+/** Sound and haptic hooks. `src/audio/feedback.ts` is the real implementation; the null one is for tests. */
 export interface Feedback {
   sfx(id: SfxId): void;
   haptic(kind: HapticKind): void;

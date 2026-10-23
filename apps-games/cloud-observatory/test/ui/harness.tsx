@@ -164,6 +164,8 @@ export interface RenderOptions {
   props?: Partial<AppProps>;
   startMs?: number;
   harness?: HarnessOptions;
+  /** Builds extra feedback once the session exists; every call is also recorded. */
+  wrapFeedback?: (harness: Harness) => Feedback;
 }
 
 export async function renderApp(options: RenderOptions = {}): Promise<Rendered> {
@@ -172,6 +174,18 @@ export async function renderApp(options: RenderOptions = {}): Promise<Rendered> 
   const router = createAppRouter();
   if ((options.start ?? "shell") === "shell") router.reset("shell");
   const feedback = recordingFeedback();
+  const inner = options.wrapFeedback?.(harness);
+  if (inner) {
+    const record = { sfx: feedback.sfx, haptic: feedback.haptic };
+    feedback.sfx = (id) => {
+      record.sfx(id);
+      inner.sfx(id);
+    };
+    feedback.haptic = (kind) => {
+      record.haptic(kind);
+      inner.haptic(kind);
+    };
+  }
   const frames = fakeFrames();
   const lifecycle = fakeLifecycle();
   injectKitStyles();

@@ -1,7 +1,7 @@
 import { formatNumber, formatNumberWords, RULES } from "@web-games/cloud-observatory-core";
 import { useState } from "preact/hooks";
 import { useApp } from "../app/context";
-import { useRepeat } from "../app/hooks";
+import { usePulse, useRepeat } from "../app/hooks";
 import { Icon } from "../components/Icon";
 import { t } from "../strings";
 import { ArtImage } from "../ui/ArtImage";
@@ -25,6 +25,7 @@ function modeLabel(mode: BuyMode): string {
 
 function UpgradeChip({ view }: { view: UpgradeView }) {
   const { session, feedback } = useApp();
+  const [pulseRef, pulse] = usePulse<HTMLButtonElement>();
   const actionable = view.state === "available";
   const text =
     view.state === "bought"
@@ -35,6 +36,7 @@ function UpgradeChip({ view }: { view: UpgradeView }) {
   const mult = RULES.UPGRADE_MULTIPLIERS[view.def.tier - 1] ?? 1;
   return (
     <button
+      ref={pulseRef}
       type="button"
       class={cx("co-chip", `co-chip--${view.state}`)}
       data-upgrade={view.def.id}
@@ -53,6 +55,8 @@ function UpgradeChip({ view }: { view: UpgradeView }) {
         if (!actionable) return;
         if (session.buyUpgrade(view.def.id).ok) {
           feedback.sfx("upgrade");
+          feedback.haptic("light");
+          pulse();
         }
       }}
     >
@@ -71,12 +75,18 @@ function UpgradeChip({ view }: { view: UpgradeView }) {
 function BuyButton({ view, mode }: { view: InstrumentView; mode: BuyMode }) {
   const { session, snapshot, feedback } = useApp();
   const quote = buyQuote(snapshot.profile, view.def, mode);
+  const [pulseRef, pulse] = usePulse<HTMLButtonElement>();
   const repeat = useRepeat(() => {
-    if (session.buyInstrument(view.def.id, mode).ok) feedback.sfx("buy");
+    if (session.buyInstrument(view.def.id, mode).ok) {
+      feedback.sfx("buy");
+      feedback.haptic("light");
+      pulse();
+    }
   });
   const enabled = view.unlocked && quote.affordable;
   return (
     <button
+      ref={pulseRef}
       type="button"
       class="wg-btn wg-btn--primary co-btn co-buy"
       data-buy={view.def.id}

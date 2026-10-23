@@ -1,6 +1,8 @@
 import { App as CapacitorApp } from "@capacitor/app";
 import {
+  createAudioManager,
   createDefaultAdapter,
+  createHaptics,
   createLifecycle,
   createSettingsStore,
   injectKitStyles,
@@ -8,6 +10,8 @@ import {
 import { render } from "preact";
 import { App } from "./App";
 import { parseDevSpeed } from "./app/devspeed";
+import { createGameAudio } from "./audio/cues";
+import { createFeedback } from "./audio/feedback";
 import { createProfileStore } from "./save/profile-store";
 import { createClock } from "./session/clock";
 import { createGameSession, GAME_ID } from "./session/game-session";
@@ -37,11 +41,18 @@ async function boot(): Promise<void> {
     onPause: lifecycle.onPause,
   });
 
+  const audio = createGameAudio(createAudioManager());
+  audio.installUnlock();
+  lifecycle.onPause(() => void audio.suspend());
+  lifecycle.onResume(() => void audio.resume());
+  const feedback = createFeedback(audio, createHaptics(), session.settings);
+
   const root = document.getElementById("app");
   if (!root) return;
   render(
     <App
       session={session}
+      feedback={feedback}
       lifecycle={lifecycle}
       devSpeed={parseDevSpeed(window.location.search, import.meta.env.DEV)}
       onExit={() => void CapacitorApp.exitApp().catch(() => undefined)}

@@ -1,9 +1,11 @@
 import type { Motion, Settings } from "@web-games/kit";
 import { createContext } from "preact";
 import { useContext } from "preact/hooks";
+import type { OnboardingApi } from "../onboarding/useOnboarding";
 import type { GameSession } from "../session/game-session";
 import type { SessionSnapshot } from "../session/types";
 import type { Feedback } from "../ui/feedback";
+import type { FrameScheduler } from "./game-loop";
 import type { AppRouter, TabId } from "./routes";
 
 export interface AppContextValue {
@@ -11,6 +13,8 @@ export interface AppContextValue {
   readonly router: AppRouter;
   readonly feedback: Feedback;
   readonly motion: Motion;
+  readonly uiFrames: FrameScheduler;
+  readonly onboarding: OnboardingApi;
   readonly snapshot: SessionSnapshot;
   readonly settings: Readonly<Settings>;
   /** Player setting or the system preference. */

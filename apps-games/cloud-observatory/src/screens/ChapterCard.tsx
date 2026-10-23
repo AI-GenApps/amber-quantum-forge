@@ -1,5 +1,8 @@
+import { useEffect, useRef } from "preact/hooks";
+import { useApp } from "../app/context";
 import { Btn } from "../components/Btn";
 import { ManagedSheet } from "../components/ManagedSheet";
+import { fadeIn } from "../motion/effects";
 import { t } from "../strings";
 import { ArtImage } from "../ui/ArtImage";
 import { loreSlot } from "../ui/art-slots";
@@ -11,6 +14,12 @@ export interface ChapterCardProps {
 
 /** Interstitial shown when the first entry of a new chapter unlocks. */
 export function ChapterCard({ chapter, onClose }: ChapterCardProps) {
+  const { motion } = useApp();
+  const card = useRef<HTMLDivElement>(null);
+  const number = chapter?.chapter ?? 0;
+  useEffect(() => {
+    if (number > 0) void fadeIn(motion, card.current);
+  }, [number, motion]);
   return (
     <ManagedSheet
       open={chapter !== null}
@@ -19,6 +28,7 @@ export function ChapterCard({ chapter, onClose }: ChapterCardProps) {
     >
       {chapter ? (
         <div
+          ref={card}
           class="co-stack co-chapter-card"
           data-sheet="chapter-card"
           data-chapter={chapter.chapter}

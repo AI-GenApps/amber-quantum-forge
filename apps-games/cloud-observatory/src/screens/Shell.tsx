@@ -7,6 +7,7 @@ import { Btn } from "../components/Btn";
 import { Icon } from "../components/Icon";
 import { ManagedSheet } from "../components/ManagedSheet";
 import { SaveNotice } from "../components/SaveNotice";
+import { OnboardingHint } from "../onboarding/OnboardingHint";
 import { t } from "../strings";
 import { NumberText } from "../ui/NumberText";
 import { AtlasTab } from "./AtlasTab";
@@ -68,6 +69,7 @@ export function Shell() {
       </header>
       <LiveStarlight />
       <SaveNotice />
+      <OnboardingHint screen="shell" />
       <Tabs
         class="co-tabs"
         label={t("shell.sections")}

@@ -107,8 +107,8 @@ header menu. All screens are portrait, safe-area aware.
 | Achievements | 20 achievements with progress |
 | Statistics | Lifetime and current-cycle numbers |
 | Settings | Sound, music, haptics, reduced motion, high contrast, reset progress |
-| How to Play | Four-page guide, also first-run onboarding |
-| Eclipse sequence | Short full-screen transition at the moment of the Eclipse (about 3.6 s, slow, no flashing; a still card the player dismisses when motion is reduced) |
+| How to Play | Four-page guide with a diagram per page (Gather and Build, Chart the Sky, The Eclipse, The Comet and the Journal), from Title, menu and Settings; the first-run hints are separate and replayable from here |
+| Eclipse sequence | Short full-screen transition at the moment of the Eclipse (2.4 s: dim, ring of light, return; slow, no flashing; a still card the player dismisses when motion is reduced) |
 | Chapter card | Interstitial sheet when a new chapter begins |
 
 ## Controls
@@ -119,8 +119,8 @@ header menu. All screens are portrait, safe-area aware.
 - Dev builds only: `?devspeed=N` (1 to 600) multiplies the tick delta so the owner can reach the
   Eclipse quickly during QA; production builds ignore it.
 - Android back: closes the open sheet, then pops the screen, then (Observe tab) asks to leave.
-- Haptics: light impact on correct star, soft warning on a wrong star, success on chart complete,
-  medium on Eclipse. All behind the haptics setting.
+- Haptics: light impact on correct star and on any purchase, soft warning on a wrong star, success
+  on chart complete, achievement and Comet, medium on Eclipse. All behind the haptics setting.
 - Long-press on a buy button: after 450 ms it repeats at 4 per second; the click that ends a hold is
   ignored. The buy amount (x1, x10, Max) is one toggle at the top of the Build tab and applies to every
   row; an unaffordable amount disables the button, Max with nothing affordable quotes one unit.
@@ -144,7 +144,10 @@ just did, never a wall of text:
 3. Atlas: "Your first constellation is ready." (when the Lyre is available)
 4. Chart: "Tap the numbered stars in order." (first Chart Table open only)
 
-The Eclipse is explained by a one-time sheet the first time pending shards reach 5.
+The Eclipse is explained by a one-time sheet the first time pending shards reach 5. A save that
+already did a beat skips it. "Skip tips" hides the hints for good; "Show the tips again" on the How to
+Play screen starts them over. The hints sit above the tab bar, never cover a control and never capture
+a tap.
 
 ## Accessibility
 

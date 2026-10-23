@@ -11,6 +11,7 @@ import { useApp } from "../app/context";
 import { Btn } from "../components/Btn";
 import { ManagedSheet } from "../components/ManagedSheet";
 import { ScreenHeader } from "../components/ScreenHeader";
+import { OnboardingHint } from "../onboarding/OnboardingHint";
 import { ChartBoard } from "../sky/ChartBoard";
 import { t } from "../strings";
 import { cx } from "../ui/cx";
@@ -97,16 +98,14 @@ export function ChartTable({ id }: { id: string }) {
           {t("chart.mistakes", { count: mistakes })}
         </p>
       </div>
+      <OnboardingHint screen="chart" />
       <ChartBoard
         stars={def.stars}
         next={next}
         closed={def.closed}
         label={t("chart.boardLabel", { name: def.name })}
-        onTap={(index) => {
-          const result = session.tapStar(index);
-          if (result === "complete") finish();
-          return result;
-        }}
+        onTap={(index) => session.tapStar(index)}
+        onComplete={finish}
       />
       <Btn variant="secondary" onClick={leave} class="co-chart__cancel">
         {t("chart.cancel")}

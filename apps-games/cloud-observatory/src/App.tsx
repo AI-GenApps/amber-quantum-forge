@@ -16,6 +16,9 @@ import { type AppRouter, createAppRouter, type TabId } from "./app/routes";
 import { useBoot, useSessionSnapshot, useSettingsState } from "./app/useSessionState";
 import { Btn } from "./components/Btn";
 import { ManagedSheet } from "./components/ManagedSheet";
+import { EclipseIntro } from "./onboarding/EclipseIntro";
+import { shouldShowEclipseIntro } from "./onboarding/steps";
+import { useOnboarding } from "./onboarding/useOnboarding";
 import { AchievementsScreen } from "./screens/AchievementsScreen";
 import { ChapterCard } from "./screens/ChapterCard";
 import { ChartTable } from "./screens/ChartTable";
@@ -38,6 +41,8 @@ export interface AppProps {
   router?: AppRouter;
   feedback?: Feedback;
   frames?: FrameScheduler;
+  /** Frames for UI polish such as the count-up; separate from the game loop's. */
+  uiFrames?: FrameScheduler;
   lifecycle?: Pick<Lifecycle, "onPause" | "onResume" | "onBack">;
   /** Dev-only game time multiplier from `?devspeed=N`; 1 in production. */
   devSpeed?: number;
@@ -87,8 +92,17 @@ export function App(props: AppProps) {
   const [exitOpen, setExitOpen] = useState(false);
   const [sequence, setSequence] = useState<{ shards: number; eclipses: number } | null>(null);
 
-  const queues = useQueues(useCallback((id) => feedback.sfx(id), [feedback]));
+  const queues = useQueues(
+    useCallback(
+      (id) => {
+        feedback.sfx(id);
+        if (id === "achievement") feedback.haptic("success");
+      },
+      [feedback],
+    ),
+  );
   const snapshot = useSessionSnapshot(session, queues.push);
+  const onboarding = useOnboarding(session, snapshot);
   const settings = useSettingsState(session);
   const [boot, setWelcome] = useBoot(session);
 
@@ -154,12 +168,23 @@ export function App(props: AppProps) {
   const closeReader = useCallback(() => setReaderId(null), []);
   const closeWelcome = useCallback(() => setWelcome(null), [setWelcome]);
   const closeExit = useCallback(() => setExitOpen(false), []);
+  const closeIntro = useCallback(() => session.markEclipseIntroSeen(), [session]);
+  const introOpen =
+    onShell &&
+    sequence === null &&
+    boot.welcome === null &&
+    queues.chapter === null &&
+    readerId === null &&
+    !exitOpen &&
+    shouldShowEclipseIntro(snapshot.profile);
 
   const value: AppContextValue = {
     session,
     router,
     feedback,
     motion,
+    uiFrames: props.uiFrames ?? browserFrames,
+    onboarding,
     snapshot,
     settings,
     reducedMotion,
@@ -200,6 +225,7 @@ export function App(props: AppProps) {
         <EntryReader entryId={readerId} onClose={closeReader} />
         <WelcomeBack summary={onShell ? boot.welcome : null} onClose={closeWelcome} />
         <ChapterCard chapter={queues.chapter} onClose={queues.dismissChapter} />
+        <EclipseIntro open={introOpen} onClose={closeIntro} />
         {sequence ? (
           <EclipseSequence
             shards={sequence.shards}
