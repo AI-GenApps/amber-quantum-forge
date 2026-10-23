@@ -20,21 +20,21 @@ export function createInitialState(_catalog: Catalog): GameState {
   };
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
+export function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function readAmount(value: unknown): number | null {
+export function readAmount(value: unknown): number | null {
   if (typeof value !== "number" || Number.isNaN(value) || value < 0) return null;
   return clampValue(value);
 }
 
-function readCount(value: unknown): number | null {
+export function readCount(value: unknown): number | null {
   const amount = readAmount(value);
   return amount === null || !Number.isInteger(amount) ? null : amount;
 }
 
-function readIds(value: unknown, known: ((id: string) => boolean) | null): string[] | null {
+export function readIds(value: unknown, known: ((id: string) => boolean) | null): string[] | null {
   if (!Array.isArray(value)) return null;
   const ids: string[] = [];
   for (const item of value) {

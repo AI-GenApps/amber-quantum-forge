@@ -56,8 +56,19 @@ of active play, spread over many sessions with offline progress in between.
   value from a clock that went back counts as 0) times the production at the moment of the last
   save times the efficiency (50%, 75% with Night Watch, 100% with Long Vigil). No purchases happen
   offline; a Welcome Back sheet shows time away and starlight gained.
-- Autosave: every 10 seconds of play, on every purchase, on chart completion, on Eclipse, and on
-  the lifecycle pause event.
+- Autosave: every 10 seconds of play, on every purchase, on chart completion, on Eclipse, on a Comet
+  claim, after a resume and on the lifecycle pause event. Bursts of triggers are coalesced into one
+  write (400 ms debounce). Every write also stamps `lastSeenMs`, so a killed app still resumes from
+  its last save. If the stored save could not be read at all (`read-failed`), autosave stays off for
+  that launch so a good save is never overwritten by defaults.
+- Resume details: the elapsed time is `(now - lastSeenMs) / 1000`; `NaN`, infinite or negative
+  elapsed counts as 0 and the seen time is reset to now. A collect is "full" (Long Sleep) when the
+  counted time reaches the 8 hour cap with a positive gain (exactly 8 hours counts). The Welcome
+  Back sheet is offered when the gain is positive and the player was away at least 60 seconds.
+  One tick step in play is clamped to 30 seconds; longer gaps must come through `resume`.
+- Lore: unlocked entries are stored in the profile (`loreUnlocked`), because the Eclipse clears the
+  owned instruments; read state is `loreSeen`. A chapter toast precedes the first entry of a
+  chapter.
 
 ## The Wandering Comet (daily mode)
 
@@ -68,6 +79,10 @@ of active play, spread over many sessions with offline progress in between.
 - Once per date. Reward: `max(1000, 900 * productionPerSecond) * (1 + 0.1 * min(streak - 1, 4))`
   starlight (900 seconds of production, boosted up to +40% at a 5-day streak). Every 7th streak day
   also awards +1 Eclipse shard.
+- Claiming is refused with a reason: `locked` (no constellation yet), `already-claimed` (same date)
+  or `clock-went-back` (the date key is earlier than the last claim; the streak is kept). The
+  profile keeps `cometLastKey`, `cometStreak` and `cometDays` (number of dates ever claimed, for
+  Comet Chaser).
 - Streak: consecutive local dates (`streakStep`: next-day adds one, gap resets to 1, same-day
   cannot claim twice, clock-went-back is ignored without breaking the streak).
 - Missing a day never takes anything away other than resetting the streak counter; the longest

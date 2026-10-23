@@ -172,3 +172,27 @@ The root `biome.json` excludes `apps-games/**/content`, so `src/content` and `te
 checked by `bunx biome check`. They were formatted with the repo's Biome binary in a scratch copy
 with that exclusion removed. The root config is out of scope for this epic; if later edits touch
 these files, repeat the scratch-copy format (see the task 02 evidence README).
+
+### 2026-10-23 — Task 03: profile save is version 1, nested game state
+The profile (`PROFILE_VERSION = 1`, key `cloud-observatory.profile`) is `{ game, stats, cometLastKey,
+cometStreak, cometDays, loreUnlocked, loreSeen, tutorial, eclipseIntroSeen, lastSeenMs, createdMs }`
+with the core `GameState` nested under `game`. Settings stay in the kit settings store
+(`cloud-observatory.settings`). Key order is fixed by the sanitizer, so a load/save cycle of the
+committed golden `test/fixtures/profile-v1.json` is byte-identical. The migration table is empty;
+the v1 to v2 to v3 chain is proven with a synthetic registry in tests, so the first real migration
+only needs a new function. Corrupt, unreadable, future-version and failed-migration data are backed
+up by the kit and replaced with defaults, and the player sees a one-time "your save could not be
+read" notice.
+
+### 2026-10-23 — Lore unlocks are persisted, not only derived
+Task 03 derives lore from triggers (first instrument purchase, charting, boon purchase) but the
+Eclipse resets the owned instruments, so the unlocked ids are stored in `loreUnlocked` and the
+derivation is a union with it. The pre-action list is always carried forward so nothing is lost.
+
+### 2026-10-23 — Resume, Comet and autosave details settled in task 03
+Resume uses the economy rules unchanged (cap 8 h, 50/75/100 percent). Long Sleep needs the counted
+time to reach the cap with a positive gain. The Welcome Back sheet shows from 60 seconds away.
+Comet claims return typed refusals and never break a streak on a back-dated clock. Autosave
+is armed only after a successful load and stays off after a `read-failed` load. No economy number
+changed in this task.
+

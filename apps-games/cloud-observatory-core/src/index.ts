@@ -1,5 +1,6 @@
 export const version = "0.0.0";
 
+export { evaluateAchievements, isSatisfied, withAchievements } from "./achievement-eval";
 export type { InstrumentPurchase, OfflineResult, PurchaseSuccess } from "./actions";
 export {
   applyOffline,
@@ -29,6 +30,8 @@ export {
   startChart,
   tapStar,
 } from "./chart";
+export type { CometClaim, CometRefusal, CometRng, CometStep } from "./comet";
+export { COMET, claimComet, cometReward, generateComet } from "./comet";
 export { RULES } from "./constants";
 export { ACHIEVEMENTS } from "./content/achievements";
 export { BOONS } from "./content/boons";
@@ -73,9 +76,24 @@ export {
   upgradeCostMultiplier,
   upgradeThreshold,
 } from "./economy";
+export type { ChapterProgress } from "./lore-unlock";
+export {
+  chapterProgress,
+  isChapterStarted,
+  loreIdsFor,
+  newLoreSince,
+  unlockedLore,
+  withLoreUnlocked,
+} from "./lore-unlock";
 export { clampValue, formatDuration, formatNumber, formatNumberWords } from "./numbers";
+export type { Profile, Tutorial } from "./profile";
+export { createProfile, createTutorial, PROFILE_VERSION, sanitizeProfile } from "./profile";
+export type { Stats, StatsEvent } from "./progression";
+export { createStats, STAT_KEYS, updateStats } from "./progression";
 export type { Action, ReduceResult } from "./reducer";
 export { reduce } from "./reducer";
+export type { ResumeResult, ResumeSummary } from "./session-rules";
+export { markSeen, resume, WELCOME_MIN_SECONDS } from "./session-rules";
 export type { CycleReport, SimulationOptions, SimulationReport } from "./simulator";
 export { simulate } from "./simulator";
 export { createInitialState, sanitizeState } from "./state";

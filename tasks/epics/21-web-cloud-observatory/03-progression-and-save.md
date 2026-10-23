@@ -1,7 +1,7 @@
 ---
 epic: 21-web-cloud-observatory
 task: 03-progression-and-save
-status: todo
+status: in-progress
 commit_scope: cloud-observatory
 depends_on: [21-web-cloud-observatory/02-content]
 estimate: L
@@ -39,73 +39,73 @@ autosaves, and exposes every action the screens in task 04 need.
 
 Core (`apps-games/cloud-observatory-core/src/`):
 
-- [ ] `progression.ts`: `Stats` type (taps, flawless charts, charts, comets claimed, longest
+- [x] `progression.ts`: `Stats` type (taps, flawless charts, charts, comets claimed, longest
       streak, best starlight per second, offline seconds collected, full offline collects, active
       seconds, eclipses, shards spent) and `updateStats(stats, event)`.
-- [ ] `achievement-eval.ts`: `evaluateAchievements(profile, catalog)` returns the ids newly satisfied
+- [x] `achievement-eval.ts`: `evaluateAchievements(profile, catalog)` returns the ids newly satisfied
       (never re-grants); all 20 conditions from the content plan implemented, including `steady-hand`
       (flawless chart), `long-sleep` (a collect that hit the 8 hour cap), `comet-chaser` (3
       different dates), `seven-nights`, `keeper-of-tales` (all 30 lore unlocked).
-- [ ] `lore-unlock.ts`: `unlockedLore(profile, catalog)` derives entries from owned
+- [x] `lore-unlock.ts`: `unlockedLore(profile, catalog)` derives entries from owned
       instruments (first purchase), charted constellations and boons; `newLoreSince(before, after)`;
       chapter progress (`chapterProgress`), `isChapterStarted`.
-- [ ] `comet.ts`: `generateComet(rng)` (6 stars, margin 100, spacing at least 140, tracing order
+- [x] `comet.ts`: `generateComet(rng)` (6 stars, margin 100, spacing at least 140, tracing order
       fixed; retry with the same stream until valid, bounded loop), `cometReward(production,
       streak)`, `claimComet(profile, dateKey, step)` returning `{ ok, reward, shards, streak }` or
       `{ ok: false, reason: "locked" | "already-claimed" | "clock-went-back" }`; streak rules:
       first claim 1, next-day +1, gap resets to 1, same-day refused, clock-went-back refused and the
       streak preserved; every 7th streak day awards +1 shard.
-- [ ] `profile.ts`: `Profile` (game state + stats + `cometLastKey`, `cometStreak`, `cometDays`,
+- [x] `profile.ts`: `Profile` (game state + stats + `cometLastKey`, `cometStreak`, `cometDays`,
       `loreSeen`, `tutorial` flags, `lastSeenMs`, `createdMs`, `eclipseIntroSeen`), `createProfile`,
       `sanitizeProfile` (rejects `NaN`, negatives, unknown ids; clamps to 1e300),
       `PROFILE_VERSION = 1`.
-- [ ] `session-rules.ts`: `resume(profile, nowMs, catalog)` computes offline progress from
+- [x] `session-rules.ts`: `resume(profile, nowMs, catalog)` computes offline progress from
       `lastSeenMs` (negative or `NaN` elapsed is 0; returns the Welcome Back summary data) and
       `markSeen(profile, nowMs)`.
 
 App (`apps-games/cloud-observatory/src/`):
 
-- [ ] `save/profile-store.ts`: `createProfileStore(adapter)` wrapping the kit save store, with
+- [x] `save/profile-store.ts`: `createProfileStore(adapter)` wrapping the kit save store, with
       `parse` = `sanitizeProfile`, `defaults` = `createProfile`, and the migrations table
       (empty for v1, typed for future steps).
-- [ ] `save/autosave.ts`: `createAutosave({ store, getProfile, schedule })` saving every 10 s of
+- [x] `save/autosave.ts`: `createAutosave({ store, getProfile, schedule })` saving every 10 s of
       play, after every purchase, chart, Eclipse, Comet claim and on the lifecycle pause event
       (injected `schedule` and `onPause`, so tests drive it without timers).
-- [ ] `session/game-session.ts`: `createGameSession({ store, settings, clock, rng, catalog })`
+- [x] `session/game-session.ts`: `createGameSession({ store, settings, clock, rng, catalog })`
       with `load()`, `resume()` (offline summary), `tick(dtSeconds)`, `dispatch(action)` over
       the core reducer, `startChart/tapStar/finishChart`, `claimComet()`, `buyBoon()`, `eclipse()`,
       `subscribe(listener)`, `snapshot()`; it applies achievements and lore after every action and
       returns the new unlocks as toast events.
-- [ ] `session/clock.ts`: `createClock` with an injected `now()` and a `localDateKey`, plus a fake
+- [x] `session/clock.ts`: `createClock` with an injected `now()` and a `localDateKey`, plus a fake
       clock for tests.
 
 Tests (all headless; fake clocks and memory adapters, no real timers):
 
-- [ ] Core `achievement-eval.test.ts`: one test per achievement id (20) that builds the minimal
+- [x] Core `achievement-eval.test.ts`: one test per achievement id (20) that builds the minimal
       profile satisfying it, asserts it unlocks exactly once, and asserts the neighbour state
       one step short does not unlock it.
-- [ ] Core `lore-unlock.test.ts`: every trigger unlocks its entry; all 30 reachable; order stable;
+- [x] Core `lore-unlock.test.ts`: every trigger unlocks its entry; all 30 reachable; order stable;
       `newLoreSince` reports exactly the new entries; chapter progress counts.
-- [ ] Core `comet.test.ts`: same seed gives the same pattern (golden for three fixed seeds);
+- [x] Core `comet.test.ts`: same seed gives the same pattern (golden for three fixed seeds);
       1,000 different seeds all satisfy margin and spacing; reward numbers for streaks 1 to 7,
       minimum 1,000; streak transitions for first, next-day, gap, same-day, clock-went-back; the
       7th-day shard; locked before the first constellation.
-- [ ] Core `profile.test.ts`: sanitize accepts a golden profile, rejects each corruption class
+- [x] Core `profile.test.ts`: sanitize accepts a golden profile, rejects each corruption class
       (NaN, negative, wrong type, unknown id, oversized), JSON round trip, stable key order.
-- [ ] Core `resume.test.ts`: offline cases (1 minute, 3 hours, exactly 8 hours, 30 hours capped,
+- [x] Core `resume.test.ts`: offline cases (1 minute, 3 hours, exactly 8 hours, 30 hours capped,
       clock back, equal timestamps, NaN), efficiency per boon, summary values match
       `applyOffline`, `long-sleep` unlock on a capped collect.
-- [ ] App `save/profile-store.test.ts`: fresh status; save then load round trip;
+- [x] App `save/profile-store.test.ts`: fresh status; save then load round trip;
       `test/fixtures/profile-v1.json` golden loads as `loaded` and stays byte-identical after a
       load/save cycle; a synthetic registry with a v1 to v2 to v3 chain migrates and reports
       `migrated`; corrupt JSON, bad envelope, future version and failing migration each yield
       `recovered` with the right reason and a backup; `reset()` returns defaults.
-- [ ] App `save/autosave.test.ts`: saves on the 10 s tick, on each trigger, coalesces bursts, saves
+- [x] App `save/autosave.test.ts`: saves on the 10 s tick, on each trigger, coalesces bursts, saves
       on pause, never writes during a failed load recovery loop.
-- [ ] App `session/game-session.test.ts`: scripted sessions through the controller (new game, tap,
+- [x] App `session/game-session.test.ts`: scripted sessions through the controller (new game, tap,
       buy, upgrade, chart the Lyre, Comet claim, cross a date boundary, Eclipse) assert profile
       values, toast events (achievement, lore, chapter), and save contents at each step.
-- [ ] Update `.agents/games/cloud-observatory/product.md` if any resume or Comet detail was
+- [x] Update `.agents/games/cloud-observatory/product.md` if any resume or Comet detail was
       refined, and `decisions-log.md` with the save version.
 
 ## Files Touched
