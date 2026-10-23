@@ -158,6 +158,18 @@ The sequential run spends cycle 2's shards on Clear Glass and Night Watch becaus
 strictly by ascending cost; a human who saves for Apprentice or Atlas Ink does better. Full boon
 completion (105 shards) is a multi-week idle-session goal.
 
+## Final numbers at release (task 08)
+
+No number moved after task 02. Re-running the balance report in task 08
+(`bun report.ts` in the task 02 evidence folder) printed output byte-identical to the recorded
+`simulator-output.txt`: first constellation at 90 s, 5 pending shards at 10,293 s (2.86 h) in cycle 1,
+8,605 s in cycle 2 and 8,313 s in cycle 3, longest gap between purchases 30 s. Release gates added in
+task 08 that touch the economy: `performance.test.ts` in the core runs 8 hours of play at 10 ticks per
+second (288,000 ticks) in about one second against a 2 second budget, `formatNumber` formats 100,000
+values in about 0.1 s against 0.2 s, and `save-roundtrip.test.ts` plays 30 hours with 17 Eclipses, all
+12 charts and three Comet claims (one day skipped, so the streak restarts) and requires a lossless
+save round trip with a save under 20 KB (measured about 2 KB).
+
 ## Anti-exploit notes
 
 - The clock is only used for offline gains and the Comet. Offline gain is capped at 8 hours and

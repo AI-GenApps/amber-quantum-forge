@@ -300,3 +300,24 @@ The splash uses the accepted key art, feathered into a flat ink field (`#101A33`
 template defaults (grid launcher vectors, three default iOS splash files) were deleted after
 `capacitor-assets` ran. No economy number, content or rule changed. *Rationale: the task's own
 rules, with the smallest permission surface for the store form.*
+
+### 2026-10-24 — Release readiness (task 08)
+
+Decisions: (1) **Release gates are tests, not a script**: `apps-games/cloud-observatory/test/release/`
+holds the bundle build (Vite's JavaScript `build()` API run with `NODE_ENV=production` into
+`node_modules/.cache/bundle-check`, so the numbers equal a real `vite build`), the byte budgets, the
+no-network source audit, the content contract, the store-listing checks, the long save round trip and
+the accessibility gate; the core gained `test/performance.test.ts`. (2) **Performance guards take the
+fastest of three runs** so a busy machine cannot fail them, while the budgets stay as written
+(8 hours at 10 ticks per second under 2 s, 100,000 `formatNumber` calls under 200 ms, no DOM growth over
+200 Build renders). (3) **Privacy claims are backed by the audit**: the app and core `src/` contain no
+network API, remote URL, analytics or ad SDK name, neither `package.json` depends on one, and the
+built bundle carries only XML namespace URLs and three known `fetch(` sites (Vite preload polyfill,
+kit audio loader on bundled files, Capacitor core's unused HTTP plugin). (4) **Store answer corrected**:
+`store-listing.md` claimed a Share feature that does not exist (the plugin is installed but unused);
+the row now says "None in v1" and a test keeps it true. The README quick-facts row also states the
+105 shards so the content-contract test can parse it. (5) The owner QA checklist is
+`qa-checklist.md` in the evidence folder, 20 sections. (6) No economy number, content, rule or
+dependency changed; the balance report re-run is identical to the recorded output. *Rationale: the
+task's own acceptance criteria, with every claim in the knowledge base tied to a failing test.*
+

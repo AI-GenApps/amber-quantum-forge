@@ -102,11 +102,17 @@ First release of Cloud Observatory.
 | Third-party SDKs that collect data | None (Capacitor core plugins only: App, Haptics, Preferences, Screen Orientation, Share, Status Bar) |
 | Advertising ID | Not used |
 | Permissions requested | None. The Capacitor Android template declared `INTERNET`; task 07 removed it because the game makes no network calls and the bridge serves the bundled build in-process (nothing in Capacitor Android, the six plugins or the template requires it). Not proven on a device: if the app opens blank, restore the line (see evidence `07/README.md`). iOS declares no usage-description keys |
-| Share feature | Opens the system share sheet only when the player taps Share; the game sends no data itself |
+| Share feature | None in v1. The `@capacitor/share` plugin is installed (skeleton dependency) but no source file imports it, so the app never opens a share sheet. If a Share button is added later, it opens the system sheet only on tap and the game sends no data itself |
 | App Store privacy label | "Data Not Collected" |
 
-Evidence for these claims is a grep audit recorded in task 08 (no `fetch`, `XMLHttpRequest`,
-`WebSocket`, analytics or ad SDK in `src/`).
+Evidence for these claims is the source audit `apps-games/cloud-observatory/test/release/no-network.test.ts`
+(task 08): no `fetch`, `XMLHttpRequest`, `WebSocket`, `EventSource`, `sendBeacon`, `importScripts`,
+`CapacitorHttp`, remote URL, analytics or ad SDK name in the `src/` of the app and the core, and no
+tracker, ad or analytics package in either `package.json`. The built bundle is also scanned
+(`test/release/bundle.test.ts`): the only remote URLs in it are XML namespace identifiers, and the
+three `fetch(` call sites are Vite's same-origin modulepreload polyfill, the kit audio loader (bundled
+MP3 files) and Capacitor core's unused web HTTP plugin. The reproducible numbers are in the evidence
+README `08/README.md`.
 
 ## Graphic assets for a later submission
 

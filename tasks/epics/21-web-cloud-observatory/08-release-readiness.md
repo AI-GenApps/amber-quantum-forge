@@ -1,7 +1,7 @@
 ---
 epic: 21-web-cloud-observatory
 task: 08-release-readiness
-status: todo
+status: in-progress
 commit_scope: cloud-observatory
 depends_on: [21-web-cloud-observatory/07-capacitor-packaging]
 estimate: M
@@ -36,49 +36,50 @@ run a browser, so everything visual and tactile goes on the checklist.
 
 ## Implementation Checklist
 
-- [ ] `test/release/bundle.test.ts`: programmatic Vite build into the package cache directory,
+- [x] `test/release/bundle.test.ts`: programmatic Vite build into the package cache directory,
       sums gzip sizes of emitted `.js` files, asserts at most 300 × 1024 bytes, prints the numbers,
       asserts every referenced font/audio/art file exists in the output, asserts no source maps
       are emitted and `index.html` is under 5 KB. Timeout 120 s.
-- [ ] `test/release/budgets.test.ts`: kit `assertAssetBudget` over `public/fonts` (woff2 at most
+- [x] `test/release/budgets.test.ts`: kit `assertAssetBudget` over `public/fonts` (woff2 at most
       400,000), `public/audio` (at most 2,500,000) and `public/art` (at most 8,000,000, 600,000
       per file); every font has an `OFL.txt`; every audio file has a `LICENSES.md` row with a source
       URL and CC0.
-- [ ] `test/release/no-network.test.ts`: scans `src/**` of the app and core for `fetch(`,
+- [x] `test/release/no-network.test.ts`: scans `src/**` of the app and core for `fetch(`,
       `XMLHttpRequest`, `WebSocket`, `EventSource`, `sendBeacon`, `navigator.sendBeacon`,
       `importScripts`, remote `http://` or `https://` URLs (except an explicit allowlist in the test, for example the
       SVG namespace), analytics or ad SDK names (`gtag`,
       `firebase`, `adsbygoogle`, `admob`, `appsflyer`), and checks `package.json` has no such
       dependency. Output is the "no data collected" evidence.
-- [ ] `test/release/content-contract.test.ts`: asserts the contract counts one more time against the
+- [x] `test/release/content-contract.test.ts`: asserts the contract counts one more time against the
       real catalog (12/86, 8, 24, 10/105, 30/6, 20) and that `README.md`'s quick-facts table in the
       knowledge base still states the same counts (parsed).
-- [ ] `test/release/store-listing.test.ts`: reads the fenced `text` blocks in
+- [x] `test/release/store-listing.test.ts`: reads the fenced `text` blocks in
       `.agents/games/cloud-observatory/store-listing.md` and asserts name at most 30, short
       description at most 80, full description at most 4,000 and non-empty, no emoji, no claims of
       features that do not exist (a keyword denylist: "multiplayer", "leaderboard", "ads", "in-app
       purchase" appear only in negated sentences from an allowlist), and the app id equals
       `capacitor.config.ts`.
-- [ ] `test/release/save-roundtrip.test.ts`: a long scripted session through the real
+- [x] `test/release/save-roundtrip.test.ts`: a long scripted session through the real
       `GameSession` (hours of simulated ticks, Eclipses, offline resume, Comet across date
       boundaries) saves, reloads and resumes with identical state; save size under 20 KB.
-- [ ] `test/release/accessibility-audit.test.ts`: aggregates the task 04 checks into one release
+- [x] `test/release/accessibility-audit.test.tsx`: aggregates the task 04 checks into one release
       gate (contrast table, hit areas, accessible names on every screen at three progress points,
       no `NaN`/`undefined`/`Infinity` text rendered anywhere in a late-game profile).
-- [ ] Performance guards (headless): a simulated 8 hours at 10 ticks per second through the core
+- [x] Performance guards (headless): a simulated 8 hours at 10 ticks per second through the core
       runs in under 2 seconds; `formatNumber` over 100,000 values under 200 ms; rendering the Build
-      tab with all rows 200 times does not grow the DOM node count.
-- [ ] Final full run of the four verification commands; paste the real summary counts (tests,
+      tab with all rows 200 times does not grow the DOM node count
+      (`test/release/performance.test.tsx` and core `test/performance.test.ts`).
+- [x] Final full run of the four verification commands; paste the real summary counts (tests,
       files, bundle bytes gzip, font/audio/art bytes) into
       `.agents/resources/2026-10-23/web-games/cloud-observatory/08/README.md`, with any proven
       pre-existing failure.
-- [ ] Write the owner browser QA checklist (below).
-- [ ] Knowledge base pass: `README.md` quick facts (counts, status, budgets with measured
+- [x] Write the owner browser QA checklist (below).
+- [x] Knowledge base pass: `README.md` quick facts (counts, status, budgets with measured
       numbers), `economy.md` (final simulator numbers), `content-plan.md` (any renamed item),
       `assets-index.md` (final art status table and provenance), `store-listing.md` (permissions),
       `decisions-log.md` (release decisions), `open-questions.md` (closed items struck through
       with the resolving task, remaining items listed).
-- [ ] Tick every task in `STATUS.md` and set the epic status to "done, awaiting owner QA".
+- [x] Tick every task in `STATUS.md` and set the epic status to "done, awaiting owner QA".
 
 ### Owner browser QA checklist (content of `qa-checklist.md`)
 
@@ -122,7 +123,7 @@ the exact expected behaviour):
 
 ## Files Touched
 
-- `apps-games/cloud-observatory/test/release/*.test.ts` and small supporting helpers
+- `apps-games/cloud-observatory/test/release/*.test.{ts,tsx}` and small supporting helpers (`paths.ts`, `bot.ts`)
 - `apps-games/cloud-observatory-core/test/performance.test.ts`
 - `.agents/resources/2026-10-23/web-games/cloud-observatory/{qa-checklist.md,08/README.md}`
 - `.agents/games/cloud-observatory/*.md` (final pass)

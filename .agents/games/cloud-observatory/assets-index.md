@@ -231,6 +231,28 @@ from `bunx capacitor-assets generate --android --ios --assetPath resources` and 
 Replacing the stopgap with a painted icon: add the accepted master, point `build-icons.mjs` at it,
 re-run both commands, update this section and open-questions row 15.
 
+## Release status (task 08, 2026-10-24)
+
+Final art status, from the designer review loop (`status=style_anchor_failed`): 33 slots, 3 accepted
+and bundled, 1 rejected, 29 never requested. The 30 non-accepted slots keep code-drawn placeholders; the
+per-slot status is the table above and the reasons are in "Placeholder slots (30) and why". Only images
+from the designer `accepted/` folder are used (checked by `test/art/manifest.test.ts` and
+`test/art/masters.test.ts`). The art bible and every reviewer verdict are in the evidence folder
+`.agents/resources/2026-10-23/web-games/cloud-observatory/art/` and were compared byte for byte with the
+designer inbox in task 08 (no differences).
+
+| Budget | Limit | Measured | Test |
+|---|---|---|---|
+| JavaScript, gzip level 9, all `dist/assets/*.js` | 300 KB (307,200 bytes) | 63,346 bytes (6 files) | `test/release/bundle.test.ts` (programmatic Vite build into `node_modules/.cache/bundle-check`) |
+| woff2 fonts | 400,000 bytes | 76,792 bytes (4 files) | `test/release/budgets.test.ts` |
+| Audio | 2,500,000 bytes | 1,920,489 bytes (14 files) | `test/release/budgets.test.ts` |
+| Art | 8,000,000 bytes, 600,000 per file | 108,912 bytes (3 files, largest 50,002) | `test/release/budgets.test.ts` |
+| First-load `index.html` | under 5 KB | 694 bytes | `test/release/bundle.test.ts` |
+
+Every font folder has an `OFL.txt`; every audio file has a row with a source URL and `CC0` in
+`public/audio/LICENSES.md` (both checked by `budgets.test.ts`). `public/.gitkeep` was removed in
+task 08 because it was copied into every build.
+
 ## Where things live
 
 | What | Where |
