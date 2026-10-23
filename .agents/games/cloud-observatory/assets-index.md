@@ -26,7 +26,8 @@ are drawn by code (SVG) in gold on navy, never baked into images.
 | success | `#8FCB9B` | Charted, success | 9.2:1 |
 
 Ratios were computed with the WCAG relative-luminance formula (evidence README of task 00). Task 04
-turns these into `ThemeTokens` and a unit test recomputes them.
+turned these into `ThemeTokens` (`src/ui/tokens.ts`); `test/ui/a11y.test.tsx` recomputes every text pair
+(19 per variant, default and high contrast) and requires at least 4.5:1.
 
 ## Fonts (OFL)
 
@@ -37,7 +38,23 @@ turns these into `ThemeTokens` and a unit test recomputes them.
 
 Bundled under `apps-games/cloud-observatory/public/fonts/<family-slug>/` with each family's
 `OFL.txt`. Budget: all woff2 combined at most 400 KB. The no-platform-fallback test from the kit
-asserts that every rendered text node resolves to Cormorant Garamond or Manrope.
+asserts that every rendered text node resolves to Cormorant Garamond or Manrope, and a CSS scan test
+requires every `font-family` declaration to list only these two (plus `serif` or `sans-serif` last).
+
+### Font files (task 04, status: bundled)
+
+| File | Bytes | Weight | Source (github.com/google/fonts) | Licence |
+|---|---|---|---|---|
+| `cormorant-garamond/CormorantGaramond-Medium.woff2` | 18,096 | 500 | `ofl/cormorantgaramond` (commit `3dd7884`) | SIL OFL 1.1 |
+| `cormorant-garamond/CormorantGaramond-Bold.woff2` | 17,272 | 700 | same | SIL OFL 1.1 |
+| `cormorant-garamond/CormorantGaramond-MediumItalic.woff2` | 19,124 | italic 500 | same | SIL OFL 1.1 |
+| `manrope/Manrope-Variable.woff2` | 22,300 | variable, declared 400 to 700 | `ofl/manrope` (commit `b31870a`) | SIL OFL 1.1 |
+| `cormorant-garamond/OFL.txt`, `manrope/OFL.txt` | 4,387 each | | same directories | licence text |
+
+Total woff2: 76,792 bytes. Latin subset (Basic Latin, Latin-1, general punctuation, arrows,
+minus); static instances of the display family made with fontTools `instancer`, then
+`pyftsubset --flavor=woff2`. The exact commands and the Unicode ranges are in
+`.agents/resources/2026-10-23/web-games/cloud-observatory/04/README.md`.
 
 ## Art slots (33 images)
 

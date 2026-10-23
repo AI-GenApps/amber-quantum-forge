@@ -96,7 +96,7 @@ header menu. All screens are portrait, safe-area aware.
 | Screen | Purpose |
 |---|---|
 | Title | Logo, Continue / New Journey, How to Play, Settings. Shown on cold start |
-| Observe (tab 1) | The sky: tap to Gather, starlight and per-second readout, Comet button, next-goal hint |
+| Observe (tab 1) | The sky: tap to Gather, Comet button (after the first chart), next-goal hint. The starlight total and per-second readout sit in the header that every tab shares |
 | Build (tab 2) | Instrument list with buy ×1/×10/×Max, upgrade chips per instrument |
 | Atlas (tab 3) | 12 constellation cards (locked, ready, charted), opens the Chart Table |
 | Chart Table | Full-screen sky map to tap a constellation's stars in order |
@@ -108,7 +108,7 @@ header menu. All screens are portrait, safe-area aware.
 | Statistics | Lifetime and current-cycle numbers |
 | Settings | Sound, music, haptics, reduced motion, high contrast, reset progress |
 | How to Play | Four-page guide, also first-run onboarding |
-| Eclipse sequence | Short full-screen transition at the moment of the Eclipse |
+| Eclipse sequence | Short full-screen transition at the moment of the Eclipse (about 3.6 s, slow, no flashing; a still card the player dismisses when motion is reduced) |
 | Chapter card | Interstitial sheet when a new chapter begins |
 
 ## Controls
@@ -121,6 +121,18 @@ header menu. All screens are portrait, safe-area aware.
 - Android back: closes the open sheet, then pops the screen, then (Observe tab) asks to leave.
 - Haptics: light impact on correct star, soft warning on a wrong star, success on chart complete,
   medium on Eclipse. All behind the haptics setting.
+- Long-press on a buy button: after 450 ms it repeats at 4 per second; the click that ends a hold is
+  ignored. The buy amount (x1, x10, Max) is one toggle at the top of the Build tab and applies to every
+  row; an unaffordable amount disables the button, Max with nothing affordable quotes one unit.
+- Chart Table taps: a tap is matched to the nearest star within 24 CSS px (never less) of the finger;
+  stars are also focusable and take Enter or Space. A tap on empty sky does nothing and costs nothing.
+  A wrong tap shakes that star, shows "Not that star. Find number N." and adds one mistake; tapping a
+  finished star again is ignored.
+- Android back also steps off a non-Observe tab: with nothing open, back from Build, Atlas, Eclipse or
+  Journal returns to Observe first, and only then asks "Leave the observatory?". On the Title screen
+  back exits the app.
+- The game clock does not run on the Title screen. It ticks at most 10 times per second, pauses with
+  the page or app, and offline progress is collected on return.
 
 ## Onboarding
 

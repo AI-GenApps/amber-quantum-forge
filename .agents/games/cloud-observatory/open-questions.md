@@ -9,7 +9,7 @@ Nothing here blocks starting task 01. Each item names the task that closes it.
 | 3 | Long ambient music loop that is explicitly CC0 (Kenney has jingles, not long ambient tracks) | Search OpenGameArt/other pages that state CC0 in their licence field; if none is found, ship sfx and jingles only and record it | 05 |
 | 4 | Audio container: MP3 vs AAC vs Ogg for iOS and Android WebViews | MP3 (`ffmpeg` and `lame` are installed on the build machine) | 05 |
 | 5 | Designer thread art acceptance: which of the 33 slots pass review | Rejected slots keep code-drawn placeholders; record in assets-index.md | 06 |
-| 6 | Font weights actually used by the final screens | Cormorant Garamond 500/700 and italic 500, Manrope variable | 04 |
+| 6 | Font weights actually used by the final screens | Cormorant Garamond 500/700 and italic 500, Manrope variable | 04 (closed: those four files are bundled; the italic is reserved for flavour text and not yet used on a screen) |
 | 7 | App icon and splash source: `icon` and `key-art` as accepted | If `icon` is rejected, generate a code-drawn icon (gold star on navy) with `sharp` as a stopgap | 07 |
 | 8 | Clock forward exploit (offline 8 h per resume by changing the system clock) | Accepted for a single-player offline game; revisit if monetization arrives | later |
 | 9 | Privacy policy hosting and developer identity | Not needed until submission (human) | later |
@@ -18,5 +18,11 @@ Nothing here blocks starting task 01. Each item names the task that closes it.
 
 ## Kit follow-ups (record only; the kit is read-only for this epic)
 
-None known at planning time. If a kit bug blocks a task, work around it inside this game and add a
-row here with the task number, the symptom and the proposed kit fix.
+| Task | Symptom | Worked around by | Proposed kit fix |
+|---|---|---|---|
+| 04 | `@web-games/kit` does not export the `cx` class helper (it is private to `ui/`) | `src/ui/cx.ts` | Export `cx` from `ui/index.ts` |
+| 04 | `Button` and `IconButton` accept no `aria-label`, `data-*` or pointer handlers, so a repeat-on-hold buy button and buttons with a longer spoken name need a raw `<button>` | Plain `<button class="wg-btn ...">` where needed | Spread remaining props onto the `<button>` |
+| 04 | `Tabs` always renders the tab list before the panel, so a bottom tab bar needs CSS `order` | `order` rules in `styles-base.ts` | Add a `position="bottom"` option |
+| 04 | `Toast` restarts its dismiss timer on every render when `onDismiss` is not memoised | Stable `useCallback` dismissers in `app/queues.ts` | Keep the latest `onDismiss` in a ref |
+| 04 | `Sheet` has no focus trap and does not restore focus on close | Not worked around (the dialog itself receives focus on open only) | Trap Tab inside the dialog and restore the opener's focus |
+| 04 | `Screen` padding shorthand and the safe-area longhands live in one rule, so a full-bleed screen must reset padding itself | `.co-title` and `.co-shell` reset it and add their own insets | Add a `bleed` prop |

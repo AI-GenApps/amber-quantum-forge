@@ -196,3 +196,35 @@ Comet claims return typed refusals and never break a streak on a back-dated cloc
 is armed only after a successful load and stays off after a `read-failed` load. No economy number
 changed in this task.
 
+
+### 2026-10-23 — Task 04: screens, tokens, fonts and accessibility
+- **Layout.** One persistent header (starlight total, per-second rate, menu) above a bottom tab bar
+  built from the kit `Tabs` (CSS reorders the tab list below the panel). The Title, Chart Table,
+  Comet, Achievements, Statistics, Settings and How to Play are pushed screens on the kit router;
+  Welcome Back, Chapter Card, the journal reader, the Eclipse confirm, the Eclipse sequence and the
+  exit confirm are sheets or overlays owned by the app shell, so they work over any screen. Every sheet
+  registers a back interceptor, so back closes it before any screen pops.
+- **Back button.** Order: open sheet, then (on the shell) a non-Observe tab returns to Observe, then a
+  pushed screen pops, then the exit confirm on Observe. The Title screen lets the app exit.
+- **Tokens.** The art-bible palette maps to the kit `ThemeTokens`; a high-contrast variant uses
+  parchment on solid `#0B1226`, no wash layers and thicker lines. `--co-hit: 44px` is the minimum for
+  every control (the kit buttons are 48 px). `src/ui/tokens.ts` lists the 19 text pairs the contrast
+  test checks.
+- **Fonts.** Cormorant Garamond as three static instances (500, 700, italic 500) and one Manrope
+  variable file, 76.8 KB of woff2 in total. A 1.5 s timeout keeps font loading from ever blocking the
+  first paint of the app.
+- **Images.** All 33 slots go through `ArtImage`; the manifest is empty until task 06, so each draws a
+  code placeholder (emblem frames with the constellation line figure, instrument line glyphs, six
+  lore vignettes, key art, building, sky, nebula and hills). A failed image load falls back to the
+  placeholder.
+- **Chart input.** One click handler on the sky svg matches the tap to the nearest star within 24 CSS
+  px using `hitTestStar` and the rendered size (including the `meet` letterbox). Star elements are also
+  keyboard operable and carry labels such as "Star 3 of 7, next". The next star has a dashed ring and
+  a number badge, so it never relies on colour.
+- **Game clock.** `requestAnimationFrame` frames are accumulated and flushed at most 10 times per
+  second, each flush split into steps of at most 30 s (the session limit). `?devspeed=N` (1 to 600)
+  multiplies the delta only when `import.meta.env.DEV` is true; production ignores it. The clock does
+  not run on the Title screen.
+- **Next-goal hint.** A chart that is ready, else the first Eclipse, else the cheapest affordable
+  instrument or upgrade, else the cheapest target with its price.
+- **No economy number changed.**
