@@ -1,8 +1,8 @@
 # The Last Window - assets index
 
-Status after task 00: nothing is delivered yet. This file plans every art slot, the two fonts and the
-audio slots. Later tasks fill in provenance, sizes and hashes: task 04 (fonts), 05 (audio), 06 (art),
-07 (icon and splash), 08 (totals). Every one of the 54 art slots has a code-drawn fallback so the game
+Status after task 04: the two fonts are delivered (below); art and audio are not yet. This file plans every art
+slot and the audio slots. Later tasks fill in provenance, sizes and hashes: 05 (audio), 06 (art), 07 (icon
+and splash), 08 (totals). Every one of the 54 art slots has a code-drawn fallback so the game
 renders completely with zero, some or all slots present.
 
 ## Where things live
@@ -104,17 +104,25 @@ images at most 400 KB, customer busts at most 120 KB, objects at most 60 KB.
 
 ## Fonts
 
-| Role | Family | Licence | Source in `github.com/google/fonts` | Bundled as (planned, task 04) |
-|---|---|---|---|---|
-| Display | Young Serif | OFL 1.1 | `ofl/youngserif/YoungSerif-Regular.ttf` (single weight 400) | `public/fonts/young-serif/YoungSerif-Regular.woff2` plus `OFL.txt` |
-| Body | Nunito Sans | OFL 1.1 | `ofl/nunitosans/NunitoSans[YTLC,opsz,wdth,wght].ttf` (variable) | `public/fonts/nunito-sans/NunitoSans-Variable.woff2` plus `OFL.txt`; `YTLC` default, `opsz` pinned 12, `wdth` pinned 100, `wght` variable 400 to 800 |
+Shipped by task 04 (OFL 1.1, from `github.com/google/fonts`, subset and converted with ephemeral
+`uvx` fonttools; tool, commands and upstream hashes in
+`.agents/resources/2026-10-23/web-games/the-last-window/04/README.md`).
 
-Folder and file names were confirmed through the GitHub API during task 00. Subset
-to Basic Latin, Latin-1, U+2013, U+2014, U+2018 to U+201D, U+2022 and U+2026. Budget: each woff2 at most
-120 KB, total at most 300 KB. Young Serif has no bold: headings use weight 400 with `font-synthesis: none`
-so the browser never fakes bold. No rendered text may fall back to a platform font (kit
-`assertNoPlatformFontFallback` runs on every screen and sheet in tests; a test keeps every source
-character inside the subset).
+| Role | Family | Licence | Shipped file | Bytes | SHA-256 |
+|---|---|---|---|---|---|
+| Display | Young Serif (single weight 400) | OFL 1.1 | `public/fonts/young-serif/YoungSerif-Regular.woff2` | 25,464 | `d48c025fca525cd51af805feeb3d2d82c03f73f577c18f3ee2a06170c428bdb2` |
+| Display | licence text | OFL 1.1 | `public/fonts/young-serif/OFL.txt` | 4,398 | `737d8d343b674c6894f373de71a044b6782c130f2aebf180933d63ddf7a3dc19` |
+| Body | Nunito Sans (variable `wght` 400 to 800) | OFL 1.1 | `public/fonts/nunito-sans/NunitoSans-Variable.woff2` | 26,412 | `fc9591c87e4806058919d333c2d80d52bba0f6c2396cbeb8f17dd6976905d6fa` |
+| Body | licence text | OFL 1.1 | `public/fonts/nunito-sans/OFL.txt` | 4,393 | `efbb0c9e864cef973982d9a17567e6be5c3d1759695574586f3f18c7ecca064b` |
+
+Nunito Sans is pinned to `opsz` 12, `wdth` 100 and the `YTLC` default (500); only `wght` stays variable
+(400 to 800, default 400). Both are subset to Basic Latin, Latin-1, U+2013, U+2014, U+2018 to U+201D,
+U+2022 and U+2026. Budget: each woff2 at most 120 KB (largest 26 KB), total at most 300 KB (51,876 bytes
+for the two woff2 files). Young Serif has no bold: headings use weight 400 and `font-synthesis: none`
+keeps the browser from faking bold. No rendered text may fall back to a platform font: kit
+`assertNoPlatformFontFallback` runs on every screen and sheet in `test/a11y.test.tsx`, and a test keeps
+every source character inside the subset. Both fonts are preloaded from `index.html` and registered by
+`src/boot/preload.ts`. The Credits screen lists them from `src/data/credits.ts`.
 
 ## Audio (CC0 only, delivered in task 05)
 

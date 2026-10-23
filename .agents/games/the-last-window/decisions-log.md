@@ -288,3 +288,40 @@ two plan rows changed wording (below). Evidence: `.agents/resources/2026-10-23/w
   `.agents/resources/2026-10-23/web-games/the-last-window/03/README.md`. A test fails if the bot leaves the
   documented range.
 
+
+## 2026-10-24 - Task 04: screens, tokens, fonts, accessibility
+
+- **Palette in code.** `src/theme/tokens.ts` holds the 12 `product.md` tokens as `--tlw-*` properties and
+  maps them onto the kit tokens (night page, paper cards and sheets through a generated rule on
+  `.wg-sheet, .wg-card, .tlw-paper`). Four extra colours are mixed from tokens only where a token missed its
+  contrast target (`nightRaised`, `tealLight`, `brickLight`, `starOffPaper`). High contrast is a second
+  palette (ink `#1B1209`, night `#0F1826`, no paperDark fill, deeper brick/teal/sage) and every text and UI
+  pair is asserted in both modes (text 4.5, UI 3; high contrast text 7).
+- **Fonts shipped.** Young Serif (25,464 bytes) and Nunito Sans pinned to `wght` 400 to 800 (26,412 bytes),
+  woff2 with `OFL.txt` under `public/fonts/`; commands and hashes in the 04 evidence README.
+- **Routes and sheets.** The 14 routes are a `type` alias route map in `src/nav.ts`; params carry the shift
+  target (`day` or `late`), the result summary and the scene queue. A result route with `finale: true`
+  shows the Lantern Night cards, which come after the evening scenes on Day 14 (the scenes decide each
+  card's variant). Sheets are overlays with back interceptors (Android back closes a sheet first, then
+  opens the pause sheet; it never pops a running shift, Quit shift does).
+- **Evening scenes use `replace`.** Scenes of one evening replace each other in the router, so the stack
+  does not grow. A saved evening (profile `pendingEvening`) is offered again on Home as "Evening scenes (n)".
+- **Runner.** `src/shift/Runner.ts` is a class over an injected frame scheduler: one `tickShift` per 100 ms
+  of accumulated time, at most 5 per frame, standing still for the pause sheet and a hidden document. Tests
+  use a manual scheduler. The shift screen also opens the pause sheet when the page is hidden.
+- **Controls.** Tapping the active seat again serves (as `product.md` says "tap the customer"); a fully
+  empty tray asks first. Discard is a button on each tray item and plate. Pastry step buttons act on the
+  active seat's plate (else the first plate in use); tapping a plate selects its seat. The book shelf glows
+  only when a book is requested, never to show which book (the recipe guide must not solve the mood puzzle).
+  Space is reserved for serving, so it does not activate a focused button; Enter does.
+- **Drawn art.** Busts are 300 x 400 SVG (head about 41 percent of the height, eyes at 38 percent), one
+  `Bust` component with per-regular looks (hair, outfit colour, gear) and one `FaceMarks` for the three
+  expressions, so identity cannot drift between expressions (a test strips the face group and compares).
+  Walk-ins are simpler silhouettes with the same face marks. Interiors share one layout (arched window top
+  centre, shelves at the sides, counter in the lower third); decor icons sit at fixed percentages over the
+  interior, so real art and drawings use the same placement.
+- **Image slots.** `ART_MANIFEST` is empty in this task. `Portrait`, `ItemIcon` and `Backdrop` read the
+  manifest from a context (default the constant), so tests inject one; task 06 only appends entries.
+- **Credits data.** `src/data/credits.ts` lists the fonts; tasks 05 and 06 append audio and art rows.
+- **Not done here (by design).** Audio, haptics, the guided tutorial, first-time cards and final how-to text
+  (task 05); real art (06); native projects (07). The How to play pages hold short placeholder wording.
