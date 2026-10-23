@@ -255,3 +255,70 @@ engine output is unchanged (golden hashes, determinism and property tests pass).
 ### Floating point in generation is kept to + - * / and comparisons
 Annealing acceptance uses a truncated series instead of `Math.exp` and the temperature falls
 linearly, so the same date gives the same map on V8 and JavaScriptCore.
+
+## 2026-10-23 - Task 04 decisions (screens, tokens, fonts, accessibility)
+
+### The board is drawn by pure functions against a small `Draw2D` interface
+happy-dom has no canvas, so `src/board/draw*.ts` take a `Draw2D` (the subset of
+`CanvasRenderingContext2D` used) and the browser passes the real 2D context. Tests inject a
+recording fake and assert the draw calls for a small fixture board; there is no pixel or screenshot
+test. The same shape lists (`src/art/shapes.ts`) draw the code-drawn art fallbacks on the canvas
+and as inline SVG in `<Sprite>`, so one drawing serves the board, the tray and the menus.
+
+### Art slots resolve through an empty manifest
+`src/art/slots.ts` lists the 20 slots, `src/art/manifest.ts` lists which have a file in
+`public/art/` (empty), and `<Sprite slot=... />` and the board draw the image when listed and the
+code-drawn fallback otherwise. Task 06 only adds manifest entries.
+
+### Fonts: pinned axes, one variable display file, two static body files
+Bricolage Grotesque is pinned at `opsz` 36 and `wdth` 100 with `wght` kept variable (400 to 800);
+Atkinson Hyperlegible ships Regular and Bold. All three are subset to the characters the game
+uses and converted with `fonttools` through `uvx` (no project dependency). 73,364 bytes in total.
+Because the subset is small, every UI icon is an SVG path (`src/ui/Glyph.tsx`) rather than a text
+glyph, and a test fails if a source file contains a character outside the subset.
+
+### Two surface contexts: night chrome and paper cards
+The kit has one text token for screens and sheets. The app background is `night` with `paper` text;
+sheets, cards, tiles and panels are `paper` with `ink` text through a scoped token override
+(`PAPER_SELECTOR`, injected by `installTheme`). Three derived colours exist only to pass contrast:
+`BORDER_ON_NIGHT`, `MUTED_ON_PAPER` and the two dark surface shades. The danger button text and the
+toggle thumb are overridden in `styles.css` because the kit values failed 4.5 and 3.
+
+### Map themes recolour the board and the page background only
+The seven themes (`src/theme/mapThemes.ts`, keyed by core `ThemeDef.id`) swap terrain, field,
+scenery, water ramp, shoreline and haze colours; UI chrome keeps one palette so text contrast is
+shared. Night Lantern uses a paper shoreline (the ink shoreline fails on dark land); Paper Blueprint
+uses a blue-ink shoreline. Contrast is asserted for ten board pairs per theme and 29 chrome pairs.
+
+### Hints, results and recording
+The hint is the next reference piece the plan does not yet hold (kind, cell and, for pumps and
+gates, direction and weeks); pressing Hint when the plan already matches costs nothing. The season
+result is recorded in the profile when Run is pressed (the outcome is deterministic), and the result
+sheet opens when playback ends or the player scrubs or skips to the end. Retry clears the plan; Edit
+keeps it.
+
+### Playback timing
+Smooth playback advances one simulation step per tick (160 ms at 1x, 80 ms at 2x, 40 ms at 4x, so
+a 20-week season takes about 13 seconds at 1x). With reduced motion on (system or in-app) playback
+jumps one whole week per tick (700 ms at 1x) and the sea waves and spring ripples are not animated.
+The season timeline is built once per Run by stepping the engine and snapshotting depths and the
+cumulative house and field metrics, and is tested to end exactly where `runSeason` ends.
+
+### Navigation and back button
+Routes are typed through the kit router (`boot`, `home`, `regions`, `levels`, `board`, `daily`,
+`themes`, `records`, `settings`, `howto`, `credits`). Sheets are not routes; each registers a back
+interceptor while open. The board registers two more: during playback Back returns to planning, and
+planning with pieces placed asks for confirmation. Order: sheet, playback, exit confirm, pop; at the
+root a quit confirmation opens.
+
+### Input
+Pointer: tap places or inspects, a drag with a piece tool paints an edge-connected path (one undo
+step per stroke), leaving the board cancels the stroke, a long press erases. With the Select tool a
+drag pans when zoomed. Keyboard: arrows, Enter, Backspace or Delete, R, Space, `1`..`n` for tools,
+E for the eraser, S for select, H for hint, `+` for zoom, Ctrl or Cmd Z / Shift Z / Y. Pinch zoom is
+not implemented; the zoom button cycles fit, 1.5x and 2x.
+
+### Screens added beyond the task list
+`Boot` shows the icon fallback and a progress bar; the credits screen reads
+`src/data/credits.ts` (fonts now; tasks 05 and 06 append audio and art entries); the how-to screen
+reads `src/data/howto.ts` (six real pages that task 05 may enrich).

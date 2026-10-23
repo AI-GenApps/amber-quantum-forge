@@ -35,3 +35,26 @@ workaround used inside this game; the kit itself is read-only for this epic.
 | Q14 | The bounded solver fails on 5 campaign maps (v10, d09, h10, e01, e02; table in the resources README). It never affects shipped play because campaign hints use the committed references. | Keep; improving the solver is optional polish. | task 08 or later |
 | Q15 | Q8 answered: 14 fallback templates (2 per weekday). Observed use over 365 dates: 0. | Keep the 14 templates as a safety net. | closed |
 | Q16 | Kit: `SaveStore.update` always writes, even when the callback returns the same profile (a rejected purchase). Harmless. | Left as is. | kit follow-up, optional |
+
+## Task 04 notes
+
+| # | Question | Default used until answered | Owner |
+|---|---|---|---|
+| Q17 | While zoomed, a drag with a piece tool paints, so panning needs the Select tool (or the keyboard cursor, which scrolls the board to follow it). Is that discoverable enough, or should a two-finger drag pan? | Keep; the owner judges in browser QA. Pinch zoom is not built; the zoom button cycles fit, 1.5x, 2x. | owner at QA |
+| Q18 | Board cells are 26 to 30 px at fit zoom on 8 x 12 to 12 x 16 boards (Q2). The renderer sizes cells from the board area, so a short phone gives smaller cells. | Zoom steps plus keyboard cursor. | owner at QA |
+| Q19 | The code-drawn art (houses, trees, pump, gate, sandbags, tank, rocks) is functional placeholder drawing. Task 06 replaces it only where designer art passes review. | Keep placeholders. | task 06 |
+| Q20 | The how-to pages are short real text, not the guided tutorial; mechanic cards and the v01 tutorial are task 05. | As described. | task 05 |
+
+### Kit follow-ups found in task 04 (kit stays read-only; worked around in this game)
+
+- `Button` does not forward `aria-label`, `data-*` or `class`-only props other than `class`;
+  icon buttons use `IconButton`, and the zoom control is a plain `button` with the kit classes.
+- The danger button text (`--wg-color-accent-text` on `--wg-color-danger`) and the toggle thumb
+  (`--wg-color-text` on the accent track) cannot meet contrast with a dark-background palette, so
+  this game overrides both in `src/styles.css`. A kit option for separate danger text and thumb
+  tokens would remove the override.
+- `createRouter<R>` with `interface Routes extends Record<string, unknown>` widens `keyof R` to
+  `string` and loses the per-route param types; a `type` alias avoids it. Worth noting in the kit
+  README example.
+- `Sheet` has one text colour token for the screen and the sheet; games with a dark screen and
+  light sheets must scope a token override (done with `PAPER_SELECTOR`).

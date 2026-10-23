@@ -1,7 +1,9 @@
 # Floodplain Dispatch - assets index
 
-Status at planning time: nothing delivered yet. Task 06 fills the provenance columns; tasks 04 and
-05 add fonts and audio. Every art slot has a code-drawn fallback so the game is complete without it.
+Status after task 04: the three fonts are bundled (below). No designer art and no audio are delivered
+yet. Task 06 fills the art provenance columns and flips entries in `src/art/manifest.ts`; task 05 adds
+audio. Every one of the 20 art slots already has a code-drawn fallback (`src/art/fallbacks.ts`), so
+the game is complete without art.
 
 ## Where things live
 
@@ -65,12 +67,15 @@ path, bytes) is added by task 06 below.
 
 | Role | Family | Licence | Source in `github.com/google/fonts` | Bundled as |
 |---|---|---|---|---|
-| Display | Bricolage Grotesque | OFL 1.1 | `ofl/bricolagegrotesque/BricolageGrotesque[opsz,wdth,wght].ttf` | woff2 Latin subset, variable, plus `OFL.txt` |
-| Body | Atkinson Hyperlegible | OFL 1.1 | `ofl/atkinsonhyperlegible/AtkinsonHyperlegible-Regular.ttf` and `-Bold.ttf` | two woff2 Latin subsets, plus `OFL.txt` |
+| Display | Bricolage Grotesque | OFL 1.1 | `ofl/bricolagegrotesque/BricolageGrotesque[opsz,wdth,wght].ttf` | `public/fonts/bricolage-grotesque/BricolageGrotesque-Variable.woff2` (42,316 bytes) plus `OFL.txt`; `opsz` pinned at 36, `wdth` pinned at 100, `wght` variable 400 to 800 |
+| Body | Atkinson Hyperlegible | OFL 1.1 | `ofl/atkinsonhyperlegible/AtkinsonHyperlegible-Regular.ttf` and `-Bold.ttf` | `public/fonts/atkinson-hyperlegible/AtkinsonHyperlegible-Regular.woff2` (15,368 bytes) and `-Bold.woff2` (15,680 bytes) plus `OFL.txt` |
 
-Folder names and filenames were confirmed through the GitHub API on 2026-10-23. Font budget: each
-woff2 <= 120 KB, total <= 300 KB. No rendered text may fall back to a platform font (kit
-`assertNoPlatformFontFallback` in tests).
+Folder names and filenames were confirmed through the GitHub API on 2026-10-23. All three files
+are subset to Basic Latin, Latin-1, U+2013, U+2014, U+2018 to U+201D, U+2022 and U+2026. Total
+73,364 bytes (budget: each woff2 <= 120 KB, total <= 300 KB). Tool, commands and SHA-256 hashes:
+`.agents/resources/2026-10-23/web-games/floodplain-dispatch/04/README.md`. No rendered text may fall
+back to a platform font (kit `assertNoPlatformFontFallback` runs on every screen and sheet in
+tests, and a test keeps every source character inside the subset).
 
 ## Audio plan (CC0 only)
 

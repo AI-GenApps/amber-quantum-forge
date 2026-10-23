@@ -1,7 +1,7 @@
 ---
 epic: 20-web-floodplain-dispatch
 task: 04-screens-and-ui
-status: todo
+status: in-progress
 commit_scope: floodplain-dispatch
 depends_on: [20-web-floodplain-dispatch/03-progression-and-save]
 estimate: XL
@@ -37,19 +37,19 @@ Build every screen in the app on the kit primitives: boot, home, region and leve
 
 ## Implementation Checklist
 
-- [ ] `src/theme/tokens.ts`: the 14 palette tokens, `neutralTheme` overrides through `applyTheme`, font stacks (`"Atkinson Hyperlegible", sans-serif`, `"Bricolage Grotesque", sans-serif`), spacing, radii, `--wg-hit-min`.
-- [ ] `src/theme/mapThemes.ts`: terrain, field, scenery and light palettes for the seven themes (Gouache Meadow, Harvest Ochre, Reed and Mist, Terracotta Dry, Slate Highland, Night Lantern, Paper Blueprint) keyed by core `ThemeDef.id`.
-- [ ] Fonts into `public/fonts/` with `OFL.txt`, `registerFonts` at boot, `src/fonts.ts` listing families, and an evidence README `.agents/resources/2026-10-23/web-games/floodplain-dispatch/04/README.md` with the tool, commands, sizes and hashes.
-- [ ] `src/board/draw.ts` (pure draw functions for terrain, water, pieces, badges, cursor, ghost hint), `src/board/Board.tsx` (canvas host, resize, zoom steps, pointer painting and tap, keyboard cursor), `src/board/model.ts` (view model from core board plus frames), `src/board/a11y.ts` (text summary).
-- [ ] `src/screens/Boot.tsx`: preloads fonts and listed art with `preloadImages` progress, then routes to home.
-- [ ] `src/screens/Home.tsx` (Play, Daily with streak, Themes, Records, How to play, Settings), `Regions.tsx` (four cards with stars and lock state), `Levels.tsx` (ten tiles with stars, par, locked state), `Board.tsx` screen (tray with tool buttons showing cost and remaining budget, forecast bar, budget meter, undo, redo, clear, zoom, Run, hint).
-- [ ] `src/screens/Playback.tsx` behaviour within the board screen: week counter, 1x 2x 4x speed, pause, scrub bar, live badges, Edit button; reduced motion jumps week to week.
-- [ ] `src/sheets/Result.tsx` (stars, headline, score, spend vs par, partials, Next, Retry, Edit, Share through `shareContent`), `Inspector.tsx` (rotate pump, gate weeks with two steppers, remove), `Pause.tsx`, `HintConfirm.tsx`, `Confirm.tsx` (reset, exit).
-- [ ] `src/screens/Daily.tsx` (today's map, streak, freezes with buy button, last 14 days), `Themes.tsx` (seven themes, stars needed, apply), `Records.tsx` (best per map, history, totals), `Settings.tsx` (sound, music, haptics, reduced motion, high contrast, reset progress with confirm), `HowTo.tsx` (shell with six empty pages filled by task 05), `Credits.tsx` (fonts, audio and art licences list fed by data files that tasks 05 and 06 extend).
-- [ ] `src/art/{slots,manifest}.ts`, `src/art/Sprite.tsx`, and `src/art/fallbacks.ts` code-drawn drawings per slot.
-- [ ] `src/App.tsx` router host and `src/main.tsx` wiring (kit styles, theme, fonts, stores, lifecycle back button).
-- [ ] Tests (happy-dom, `act` from `preact/test-utils`): every screen renders with the loaded profile and shows the right elements; locked regions and maps cannot be opened; Home to Regions to Levels to Board to Result flow with a scripted placement and run; keyboard-only play of v01 (arrow keys, Enter, Space) reaches a cleared result; undo and redo; hint spends coins and draws a ghost; gate inspector changes weeks; pump rotation; playback speed and scrub; reduced motion path; high-contrast flag changes draw calls (hatching ops present); back button routing; every `<button>` has an accessible name; every interactive element has `min-width` and `min-height` of the hit token (assert the stylesheet rules and the inline sizes of tray tools); `assertNoPlatformFontFallback` on every screen with both families; contrast function test over every text and UI token pair against the thresholds, for all seven themes; no `fetch`, `XMLHttpRequest` or `sendBeacon` usage in `src/` (grep test); draw functions called with a recording context produce the expected call sequences for a small fixture board; `Sprite` falls back when the manifest lacks a slot and renders an `img` when it has one.
-- [ ] Update `assets-index.md` (font files actually shipped, sizes) and `decisions-log.md` (any tool or design choice) in this commit.
+- [x] `src/theme/tokens.ts`: the 14 palette tokens, `neutralTheme` overrides through `applyTheme`, font stacks (`"Atkinson Hyperlegible", sans-serif`, `"Bricolage Grotesque", sans-serif`), spacing, radii, `--wg-hit-min`.
+- [x] `src/theme/mapThemes.ts`: terrain, field, scenery and light palettes for the seven themes (Gouache Meadow, Harvest Ochre, Reed and Mist, Terracotta Dry, Slate Highland, Night Lantern, Paper Blueprint) keyed by core `ThemeDef.id`.
+- [x] Fonts into `public/fonts/` with `OFL.txt`, `registerFonts` at boot, `src/fonts.ts` listing families, and an evidence README `.agents/resources/2026-10-23/web-games/floodplain-dispatch/04/README.md` with the tool, commands, sizes and hashes.
+- [x] `src/board/draw.ts` (pure draw functions for terrain, water, pieces, badges, cursor, ghost hint), `src/board/Board.tsx` (canvas host, resize, zoom steps, pointer painting and tap, keyboard cursor), `src/board/model.ts` (view model from core board plus frames), `src/board/a11y.ts` (text summary).
+- [x] `src/screens/Boot.tsx`: preloads fonts and listed art with `preloadImages` progress, then routes to home.
+- [x] `src/screens/Home.tsx` (Play, Daily with streak, Themes, Records, How to play, Settings), `Regions.tsx` (four cards with stars and lock state), `Levels.tsx` (ten tiles with stars, par, locked state), `Board.tsx` screen (tray with tool buttons showing cost and remaining budget, forecast bar, budget meter, undo, redo, clear, zoom, Run, hint).
+- [x] `src/screens/Playback.tsx` behaviour within the board screen: week counter, 1x 2x 4x speed, pause, scrub bar, live badges, Edit button; reduced motion jumps week to week.
+- [x] `src/sheets/Result.tsx` (stars, headline, score, spend vs par, partials, Next, Retry, Edit, Share through `shareContent`), `Inspector.tsx` (rotate pump, gate weeks with two steppers, remove), `Pause.tsx`, `HintConfirm.tsx`, `Confirm.tsx` (reset, exit).
+- [x] `src/screens/Daily.tsx` (today's map, streak, freezes with buy button, last 14 days), `Themes.tsx` (seven themes, stars needed, apply), `Records.tsx` (best per map, history, totals), `Settings.tsx` (sound, music, haptics, reduced motion, high contrast, reset progress with confirm), `HowTo.tsx` (shell with six empty pages filled by task 05), `Credits.tsx` (fonts, audio and art licences list fed by data files that tasks 05 and 06 extend).
+- [x] `src/art/{slots,manifest}.ts`, `src/art/Sprite.tsx`, and `src/art/fallbacks.ts` code-drawn drawings per slot.
+- [x] `src/App.tsx` router host and `src/main.tsx` wiring (kit styles, theme, fonts, stores, lifecycle back button).
+- [x] Tests (happy-dom, `act` from `preact/test-utils`): every screen renders with the loaded profile and shows the right elements; locked regions and maps cannot be opened; Home to Regions to Levels to Board to Result flow with a scripted placement and run; keyboard-only play of v01 (arrow keys, Enter, Space) reaches a cleared result; undo and redo; hint spends coins and draws a ghost; gate inspector changes weeks; pump rotation; playback speed and scrub; reduced motion path; high-contrast flag changes draw calls (hatching ops present); back button routing; every `<button>` has an accessible name; every interactive element has `min-width` and `min-height` of the hit token (assert the stylesheet rules and the inline sizes of tray tools); `assertNoPlatformFontFallback` on every screen with both families; contrast function test over every text and UI token pair against the thresholds, for all seven themes; no `fetch`, `XMLHttpRequest` or `sendBeacon` usage in `src/` (grep test); draw functions called with a recording context produce the expected call sequences for a small fixture board; `Sprite` falls back when the manifest lacks a slot and renders an `img` when it has one.
+- [x] Update `assets-index.md` (font files actually shipped, sizes) and `decisions-log.md` (any tool or design choice) in this commit.
 
 ## Files Touched
 

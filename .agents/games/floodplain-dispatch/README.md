@@ -3,7 +3,7 @@
 Compact strategy puzzles: place pumps, canals and barriers to supply a riverside town with water
 before the flood season, without drowning anyone.
 
-- Status: planned (epic 20 task 00 done). Built as a full v1 web game with the shared kit.
+- Status: in progress (epic 20 tasks 00 to 03 done, task 04 screens and UI in progress). Built as a full v1 web game with the shared kit.
 - Epic: [`tasks/epics/20-web-floodplain-dispatch`](../../../tasks/epics/20-web-floodplain-dispatch/STATUS.md)
 - Code: `apps-games/floodplain-dispatch` (`@web-games/floodplain-dispatch`) and
   `apps-games/floodplain-dispatch-core` (`@web-games/floodplain-dispatch-core`).
