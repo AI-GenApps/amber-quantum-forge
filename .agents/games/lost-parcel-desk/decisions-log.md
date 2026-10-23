@@ -1,0 +1,129 @@
+# Lost Parcel Desk - decisions log
+
+Dated entries. All dates 2026-10-23 (planning day, task 00 of epic 24).
+
+## 2026-10-23 - Owner decisions (final, from `.claude/workflows/web-games-v1-args.json`)
+
+1. Full v1 for all six web games (complete loop, full content, progression, local save, reviewed art, custom
+   OFL fonts, CC0 audio, haptics, onboarding, Capacitor Android and iOS projects). No store submission.
+   Rationale: ship a finished product per game and decide store steps later.
+2. Wave 2 after the kit (with The Last Window and Dress Rehearsal); Lost Parcel Desk is epic 24.
+3. No monetization: soft currency and unlocks only, no ads, no IAP, no accounts, no network.
+4. QA is browser-only and done by the owner at the end. Agents run no browser, device or emulator, build no
+   APK, install no JDK. Verification is Vitest (happy-dom), tsc, vite build and Biome.
+5. Stack: TypeScript, Vite, Preact, Vitest, Capacitor 8. DOM, SVG and Canvas 2D. No engines.
+6. Structure: `apps-games/lost-parcel-desk` (app) and `apps-games/lost-parcel-desk-core` (headless rules);
+   shared code in `apps-games/web-kit`.
+7. Portrait, offline-first, local save only, versioned with migrations; daily modes seeded from the local
+   date and generated on device.
+8. Graphics only from the MobileGamesDesigner thread after strict review; fonts OFL (Courier Prime, IBM Plex
+   Sans); audio CC0 only.
+9. The working title is the public name for v1.
+10. Every game ships on its own branch and PR, merged by the orchestrator.
+
+## 2026-10-23 - Design decisions
+
+### The logic model: facets, candidates, deductions
+Twelve townsfolk each have four logic facets (street, pastime, look, pet), six values per facet, every value
+held by exactly two people. A case shows three candidates. A **deduction** is a fact about the owner (`is` or
+`is not` a value) backed by one clue or by a key-and-lock pair of clues. Rationale: the spec demands "exactly
+one owner consistent with the clues" and "every clue is necessary or flavour"; with three candidates at most two
+deductions can be necessary (each must be the sole reason one decoy is out), so the model is built around two
+necessary deductions per case, each of which can be made of one or two clues. That gives 2 to 4 lead clues per
+case and lets difficulty grow through pairs and rule-outs instead of through more candidates.
+
+### Trade is identity, not a facet
+Every person has a unique trade, which would rule out both decoys at once and make every other clue
+redundant. Trade is therefore shown on the profile card and in the reveal text but never used in a
+deduction, and no object points at a trade (a film can for the projectionist is avoided).
+
+### Pairing structure that guarantees necessity
+For owner O the decoy B shares a fact with O that the second deduction rules out in C, and C shares a fact
+with O that the first deduction rules out in B. Each decoy matches one decisive fact and fails the other,
+which is exactly the condition that makes both deductions necessary. All 12 cases were checked by script
+during planning (unique owner, both deductions necessary, flavour clean).
+
+### Flavour clues are real flavour
+A flavour clue has no logic effect and, by validator rule, never uses an almanac keyword of a value that
+some but not all of the three candidates hold (so no flavour clue secretly separates the candidates). They
+carry atmosphere, the flood-night story and the cosiness. 37 of 70 clues are flavour.
+
+### Key-and-lock pairs and rule-outs
+Three deduction kinds: direct (one clue, 12), key-and-lock pair (two clues on two objects that only mean
+something together, 9) and rule-out (a clue that says who the owner is not, 3). Chapter 1 uses only direct
+clues; chapter 2 introduces pairs (case 05) and rule-outs (case 06); chapter 3 mixes them, with case 09 and
+case 12 made entirely of pairs. This gives a real difficulty ramp inside a short case format.
+
+### Deduction board: link, not guess
+The player pins clues and links each one to a candidate as "fits" or "rules out". Links are private notes: the
+game never validates them live, otherwise trying every link would solve the case. Accusing requires two "fits"
+links on the accused card (the two-witness rule) so blind guessing is slower than reading, and the wrong
+accusation feedback names a found clue that does not fit the person.
+
+### Stamps = 3 minus wrong accusations; no failure state
+Spec: "wrong guesses cost a stamp". With three candidates at most two accusations can be wrong, so stamps are
+3, 2 or 1 and the last candidate is delivered by elimination. A case always ends with the truth; the
+satisfying reveal is never withheld. Hints do not cost stamps (they cost postage), consistent with the other
+web games.
+
+### Hint = reveal a clue link
+Spec: "hints reveal a clue link". A hint takes the first unresolved deduction, finds and pins its clues and
+draws the correct fits / rules-out links with a one-line explanation. At most 2 per case. Prices 20 (campaign)
+and 15 (daily) postage.
+
+### One currency: postage
+Postage is earned by closing cases (10 first close + 5 per stamp gained, max 25 per case), a 40 chapter bonus
+and the daily; it is spent on hints and streak freezes. Campaign total 450 including a 30 grant. Rationale:
+the same shape as the sibling games (one soft currency, two sinks, nothing farmable), with room for a later
+postage-pack IAP.
+
+### Chapter unlocks by stamps: 7 and 18
+Case n+1 opens when case n is closed; chapters also need 7 (chapter 2) and 18 (chapter 3) total stamps. 7 of
+12 asks for about 1.75 stamps per case; 18 of 24 asks for 2.25. This encourages replaying early cases to
+raise the stamp count, which uses the spec's "replay with best score".
+
+### Daily Parcel (generated mini-case)
+The spec lists no daily mode, but the owner decision says daily modes are generated from the local date and
+task 03 is "progression, economy, daily mode, versioned save". The daily is a short generated case (3 to 5
+objects, direct and rule-out deductions only, under 3 minutes) built from a template bank and the same 12
+townsfolk, proven by the validator over 365 dates. Daily objects use code-drawn pictograms, so the daily needs
+no new art slots. Daily stamps never count towards campaign unlocks.
+
+### Evidence count 49 and the art batches
+The spec says B2 to B5 are the "remaining" evidence objects, 12 per batch, after B1's single postcard: so
+there are 49 evidence objects. Cases 01 to 11 have 4 objects and the finale (case 12) has 5, which also lets
+the finale carry Mr. Hobb's desk key. The B1 postcard is object 01-1. Zoom hotspots are an overlay in the
+object viewer and are not required to match a drawn detail (see open question Q8).
+
+### Meta-story: the flood-night ledger
+One light thread: the March 1974 flood scrambled the labels, the old clerk Mr. Hobb saved the mail and wrote a
+ledger, and the player is the new clerk. Twelve ledger fragments (lore titles) unlock one per closed case; the
+last one hands over the desk. Each person owns exactly one parcel, so the cast fills the town map one place at a
+time.
+
+### Achievements pay nothing
+Twelve achievements are badges only. Rationale: keeps the economy sums exact (450) and avoids rewards for
+daily-only milestones that a campaign player cannot reach.
+
+### Five desk themes (0, 6, 14, 24, 33 stamps)
+Cosmetic desk palettes instead of unlocking content, mirroring the other web games. 33 rather than 36 for the
+last theme so a near-perfect run is enough.
+
+### No timers
+Spec: cases are cosy and short. The only time value is an informational "fastest solve" record, never a rule or
+a penalty.
+
+### Palette and fonts
+Riso palette of mustard, teal, brick, cream and ink, plus deep, light and night variants (13 tokens). Teal on
+cream measures 4.22 and ink on teal 3.09, so teal is used for fills only and teal-deep carries text. Fonts per
+spec: Courier Prime (typewriter clue text and stamps) and IBM Plex Sans (readable body); Plex ships as one
+variable woff2.
+
+### Audio plan: 27 sounds and 2 loops
+Paper, flip, pin, link, stamp and typewriter sounds suit the desk. The typewriter and music loops are the slots
+most likely to have no Kenney source; fallbacks are CC0 OpenGameArt pages, otherwise the slot ships silent
+(open question Q5).
+
+### Task files follow the sibling epics
+Structure, file names, verification commands and commit format copy epic 20 (Floodplain Dispatch) so the
+orchestrator can run the same workflow. Game-specific content is in each task's checklist.
