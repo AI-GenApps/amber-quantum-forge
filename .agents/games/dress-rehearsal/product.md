@@ -148,12 +148,14 @@ stars per challenge are kept; replays never lower them.
   with the real scoring function before the challenge is returned.
 - **Fallback**: if 12 attempts fail, a committed template for that weekday is used (7 templates,
   built from the 16-piece starting closet only, each with a reference look, so they are valid for
-  any closet). Prototype result: over 365 dates from 2026-01-01 with the starting closet, 10 dates
-  needed the fallback (2.7 percent); with every larger closet none did. The test requires at most
-  18 fallbacks (5 percent) per closet level.
+  any closet). Shipped result (task 03 test, same numbers as the prototype): over 365 dates from
+  2026-01-01 with the starting closet, 10 dates needed the fallback (2.7 percent, 9 Mondays and 1
+  Thursday); with every larger closet none did. The test requires at most 18 fallbacks (5
+  percent) per closet level.
 - The client is picked by the PRNG from the six clients; the brief text is assembled from the
-  rule chips ("{Client} needs {rule}, {rule} and {rule}.") because daily briefs are not hand
-  written.
+  rule chips ("{Client}: {rule}, {rule} and {rule}.") because daily briefs are not hand written.
+  It never exceeds 120 characters: the full client name and full chips are used when they fit,
+  then the client's short name, then compact phrases ("spend at most $330" becomes "up to $330").
 - One Daily result counts per date (best stars kept). The streak, freezes and coins are in
   `economy.md`; the device clock moving backwards is neutral (kit `streakStep` returns
   `clock-went-back`).

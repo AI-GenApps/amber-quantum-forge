@@ -1,0 +1,53 @@
+{
+  "v": 1,
+  "data": {
+    "coins": 215,
+    "stars": { "riv-01": 3, "riv-02": 2, "riv-03": 1, "riv-04": 3 },
+    "best": {
+      "riv-01": { "stars": 3, "harmony": 83, "spend": 308 },
+      "riv-02": { "stars": 2, "harmony": 66, "spend": 322 },
+      "riv-03": { "stars": 1, "harmony": 58, "spend": 410 },
+      "riv-04": { "stars": 3, "harmony": 79, "spend": 365 }
+    },
+    "chapterBonusClaimed": {},
+    "affinityPaid": { "mireille": 1 },
+    "streakFreezes": 1,
+    "framesOwned": ["plain", "paper"],
+    "frameSelected": "paper",
+    "daily": {
+      "lastKey": "2026-10-22",
+      "streak": 3,
+      "bestStreak": 5,
+      "results": {
+        "2026-10-20": { "stars": 2, "harmony": 74 },
+        "2026-10-21": { "stars": 3, "harmony": 88 },
+        "2026-10-22": { "stars": 1, "harmony": 61 }
+      }
+    },
+    "gallery": [
+      {
+        "id": "campaign-riv-01-2026-10-22-1",
+        "kind": "campaign",
+        "ref": "riv-01",
+        "look": {
+          "hat": "item-riviera-7",
+          "accessory": "item-riviera-8",
+          "top": "item-riviera-1",
+          "bag": "item-riviera-6",
+          "bottom": "item-riviera-4",
+          "shoes": "item-riviera-5"
+        },
+        "stars": 3,
+        "harmony": 83,
+        "savedKey": "2026-10-22"
+      }
+    ],
+    "history": [
+      { "kind": "campaign", "ref": "riv-01", "stars": 3, "harmony": 83, "key": "2026-10-21" },
+      { "kind": "daily", "ref": "2026-10-21", "stars": 3, "harmony": 88, "key": "2026-10-21" },
+      { "kind": "campaign", "ref": "riv-04", "stars": 3, "harmony": 79, "key": "2026-10-22" }
+    ],
+    "flags": { "tutorial": true, "howTo": false, "ruleCards": { "brief": true, "warmth": true } },
+    "stats": { "looksFinished": 9, "starsEarned": 9, "hintsUsed": 2, "boardsExported": 1 }
+  }
+}

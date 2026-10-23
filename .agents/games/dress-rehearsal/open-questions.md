@@ -61,3 +61,27 @@ The kit stays read-only for this epic. Known at planning time:
 - Task 03 (daily fallbacks) and task 04 (UI) can import everything through
   `@web-games/dress-rehearsal-core` (`CHALLENGES`, `PIECES`, `closetFor`, `CLIENTS`, `CHAPTERS`,
   `RULE_CARDS`, `TUTORIAL_STEPS`, `validateContent`, `proveChallenge`).
+
+## Task 03 notes
+
+- No number in `economy.md` changed; `test/economy.test.ts` and `test/daily-rewards.test.ts` read
+  the source and sink tables from the document and compare them with the constants, and a perfect
+  campaign replay pays exactly 1460 coins including the 40 grant.
+- Wording changed (not a number): the Daily brief frame is "{Client}: {rule}, ..." (D12 in
+  `decisions-log.md`, `product.md` updated).
+- API choices the spec left open (tests pin them): `applyCampaignResult` ignores unknown challenge
+  ids and does not enforce challenge unlocks (the UI gates play with `challengeUnlocked`);
+  `applyDailyResult` takes the kit `StreakStep` as a plain string plus `missedDays` (the app
+  computes both with `streakStep` and `daysBetween`) and ignores the step on the very first
+  clear; purchases and frame selection return `{ ok: false, reason }` instead of throwing, as
+  does `saveToGallery` (`GALLERY_FULL`, `NO_STARS`, `BAD_ENTRY`); `sanitizeProfile` returns null
+  when a top-level field has the wrong type (the kit then recovers with defaults and writes the
+  raw text to the backup key) and drops bad entries inside collections.
+- Core change outside the task list: `validateChallenge` takes an optional `briefMax` so generated
+  Daily briefs (120 characters) pass the same structural checks as campaign briefs (90).
+- Kit follow-ups: none needed. `createSaveStore.update` re-reads storage on every call, so the app
+  game store treats storage as the source of truth and keeps the in-memory state in sync after
+  each awaited write; if a write fails the in-memory result is kept and `saveFailed` is set.
+- Q11 still holds: the Daily generator skips attempts whose slot set needs a category the closet
+  lacks (a closet without hats uses the committed fallback for that day).
+

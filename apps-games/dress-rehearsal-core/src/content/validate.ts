@@ -62,6 +62,7 @@ export type SlotSetTable = Readonly<Record<string, readonly Slot[]>>;
 export interface ValidateChallengeOptions {
   readonly slotSets?: SlotSetTable;
   readonly proof?: ProofResult;
+  readonly briefMax?: number;
 }
 
 export const MIN_SLOTS = 6;
@@ -181,7 +182,7 @@ export function validateChallenge(
   }
   out.push(...ruleIssues(def, closet));
   if (def.brief.trim() === "") out.push(issue("BRIEF_EMPTY", def.id, "empty brief"));
-  else if (def.brief.length > BRIEF_MAX_LENGTH) {
+  else if (def.brief.length > (options.briefMax ?? BRIEF_MAX_LENGTH)) {
     out.push(issue("BRIEF_TOO_LONG", def.id, `${def.brief.length} characters`));
   }
   if (!(def.slotSet in SLOT_SETS)) return out;

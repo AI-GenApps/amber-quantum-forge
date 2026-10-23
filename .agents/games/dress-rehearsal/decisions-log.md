@@ -127,6 +127,16 @@ larger ones, average 1.0 to 2.2 attempts. The shipped test allows at most 18 fal
 per closet level and uses 7 committed fallback templates (one per weekday).
 Rationale: no search over up to 316,224 looks is needed per date, the test runs quickly, and
 solvability does not depend on a lucky seed.
+Task 03 result: the TypeScript generator (core PRNG with one fork per attempt) reproduces the
+prototype counts exactly: 10 fallbacks at 16 pieces (9 Mondays, 1 Thursday), 0 at 24, 32, 40 and
+48 pieces; attempts per generated date: median 1, maximum 12 / 11 / 3 / 5 / 3 by closet level.
+
+### D12. Daily brief wording
+
+The daily brief is "{Client}: {rule}, {rule} and {rule}." instead of "{Client} needs ..." because
+chips such as "Wear the Camel Trench Coat" or "Spend at most $330" do not read after "needs".
+It is capped at 120 characters with two shorter variants (short client name, compact phrases);
+campaign briefs stay hand written with the 90 character cap.
 
 ### D11. Hints use a bounded solver
 

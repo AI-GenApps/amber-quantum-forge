@@ -33,4 +33,17 @@ describe("core purity", () => {
       expect(offenders).toEqual([]);
     });
   }
+
+  for (const specifier of ["@web-games/kit", "preact", "@capacitor", "node:"]) {
+    it(`src never imports ${specifier}`, () => {
+      const pattern = new RegExp(`from\\s+["']${specifier}`);
+      const offenders = files.filter((file) => pattern.test(readFileSync(file, "utf8")));
+      expect(offenders).toEqual([]);
+    });
+  }
+
+  it("package.json has no runtime dependencies", () => {
+    const manifest = JSON.parse(readFileSync(join(SRC_DIR, "..", "package.json"), "utf8"));
+    expect(manifest.dependencies).toBeUndefined();
+  });
 });
