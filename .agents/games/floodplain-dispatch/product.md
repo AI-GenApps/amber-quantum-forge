@@ -99,13 +99,33 @@ at star 1. The result sheet also lists partial progress (for example 3 of 4 hous
 
 - One generated map per local calendar day, seed `dailySeed("floodplain-dispatch", dateKey)` from
   the kit, generated on the device. Same date, same map, on every device and run.
-- Weekday ladder (local weekday): Mon 8 x 12 no events; Tue 8 x 12 with a surge; Wed 9 x 13 with
-  surges; Thu 10 x 14 with gates and surges; Fri 10 x 14 with reservoirs and droughts; Sat 11 x 15
-  with tides; Sun 12 x 16 with every mechanic. Piece sets match the region that teaches the mechanic.
-- The generator proves a 3-star solution exists by running a bounded solver on the finished map,
-  rerolling the attempt index up to 12 times, then using a proven fallback template. The test
-  checks 365 consecutive dates: every one must have a verified 3-star solution, and at most 5 percent
-  (18 dates) may use the fallback templates.
+- Weekday ladder (local weekday, Monday first). The tier comes from the weekday of the date key, so
+  every device gets the same tier and map for a date.
+
+  | Day | Size | Weeks | Houses / fields | Inlets | Pieces | Events |
+  |---|---|---|---|---|---|---|
+  | Mon | 8 x 12 | 20 | 2 / 1 | 1 | canal, barrier | none |
+  | Tue | 8 x 12 | 22 | 2 / 2 | 1 | canal, barrier | 1 surge |
+  | Wed | 9 x 13 | 22 | 3 / 2 | 1 | + pump | 2 surges |
+  | Thu | 10 x 14 | 24 | 3 / 3 | 2 | + sluice gate | 2 surges |
+  | Fri | 10 x 14 | 26 | 4 / 3 | 2 | + reservoir (all five) | 2 droughts, 1 surge |
+  | Sat | 11 x 15 | 26 | 4 / 3 | 1 | all five | 1 surge, a tide (period 6 to 10, amp 1 to 2) |
+  | Sun | 12 x 16 | 28 | 5 / 4 | 2 | all five | 2 surges, 1 drought, 1 storm tide, a tide (amp 1 to 3) |
+
+  The weekday piece sets match the region that teaches the mechanic.
+- How a daily map is made (`generateDaily(seed, tier)`, core PRNG only, 12 attempts at most, each
+  attempt forks the seed): inlets on the top edge, houses and fields placed within a reach of the
+  inlets, a canal tree built from the inlets to a cell beside every house and field, terrain heights
+  shaped around the tree (tree cells low, banks, houses high, fields low, a relief channel that
+  drains the inlet into a sea cell) and then simulated annealing of single heights against the
+  real engine (at most 1200 simulated seasons) until the tree earns three stars. The tree minus
+  any leaf that is not needed becomes the reference: par is its cost and the budget is par + 3. If
+  shaping does not converge, the bounded solver (at most 600 simulated seasons, starting from the
+  tree) may repair the map with barriers, pumps, gates or reservoirs. The result is re-simulated and
+  must earn exactly three stars. After 12 failed attempts one of the 14 committed fallback
+  templates (2 per weekday, each with a reference) is used, chosen by `seed mod 2`. The 365-date
+  test checks every date: a verified 3-star solution and at most 5 percent (18 dates) on fallbacks.
+  Par is the cost of the generated reference, not a proven minimum (same wording as the campaign).
 - Daily stars do not count toward the 120 campaign stars. Rewards and streak: `economy.md`.
 - Streak: +1 per day with at least one daily star; missing a day resets it unless a streak freeze
   is used. A clock that moves backwards never advances or breaks the streak (kit `streakStep`).
@@ -113,7 +133,9 @@ at star 1. The result sheet also lists partial progress (for example 3 of 4 hous
 ## Hints
 
 A hint reveals the next piece of the reference solution (a ghost piece on the right cell) and costs
-coins (`economy.md`). Using hints does not remove stars. Daily hints use the solver's solution.
+coins (`economy.md`). Using hints does not remove stars. Daily hints use the reference stored with
+the generated map (the generator's proven solution; the bounded solver backs it when shaping needed
+a repair).
 
 ## Screens
 

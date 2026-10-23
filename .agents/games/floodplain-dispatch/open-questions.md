@@ -26,3 +26,12 @@ workaround used inside this game; the kit itself is read-only for this epic.
 | Q10 | The integer snapshot flow model lets water creep overland and puddle into any canal cell dug beside it, so cheap "tap" solutions exist on open ground. The shipped maps were hardened against the cheaper placements the authoring search found, but a final three-seed re-check still finds cheaper placements on 27 of 40 maps (table in `.agents/resources/2026-10-23/web-games/floodplain-dispatch/02/README.md`). Is par tight enough in play? | Ship as authored (a cheaper placement still earns three stars); the owner judges in browser QA. Task 03's exact solver can measure par gaps and, if wanted, par can be lowered per map with the content-plan row, decisions log and tests changed together. | owner at QA, task 03 |
 | Q11 | Several maps carry a small sea cell near the inlet (the river outfall that keeps overland water local). Does it read as a river mouth in the art, or should the renderer draw it as a drain? | Draw sea cells as water everywhere; revisit after the owner sees the board. | task 04, owner |
 | Q12 | Houses sit inside rings of trees (sealed cells). Is the amount of scenery acceptable visually? | Keep; task 04 draws trees as light woods and hedges. | task 04, owner |
+
+## Task 03 notes
+
+| # | Question | Default used until answered | Owner |
+|---|---|---|---|
+| Q13 | Daily maps are valid and proven, but their par is the generator's own reference (a connected canal tree). Cheaper "sump" placements can exist, as on the campaign (Q10). The terrain is also less landscape-like than the hand-authored campaign (lower half is mostly flat plain with woods). Good enough for v1? | Ship as generated; the owner judges the daily in browser QA. A later pass can add a cheaper-solution search and scenery hardening. | owner at QA |
+| Q14 | The bounded solver fails on 5 campaign maps (v10, d09, h10, e01, e02; table in the resources README). It never affects shipped play because campaign hints use the committed references. | Keep; improving the solver is optional polish. | task 08 or later |
+| Q15 | Q8 answered: 14 fallback templates (2 per weekday). Observed use over 365 dates: 0. | Keep the 14 templates as a safety net. | closed |
+| Q16 | Kit: `SaveStore.update` always writes, even when the callback returns the same profile (a rejected purchase). Harmless. | Left as is. | kit follow-up, optional |

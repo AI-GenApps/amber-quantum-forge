@@ -1,0 +1,38 @@
+{
+  "v": 1,
+  "data": {
+    "coins": 187,
+    "stars": { "v01": 3, "v02": 3, "v03": 3, "v04": 2, "d01": 1 },
+    "best": {
+      "v01": { "score": 540, "stars": 3, "spend": 6 },
+      "v02": { "score": 610, "stars": 3, "spend": 9 },
+      "v04": { "score": 455, "stars": 2, "spend": 12 },
+      "d01": { "score": 320, "stars": 1, "spend": 15 }
+    },
+    "regionBonusClaimed": {},
+    "themeSelected": "harvest-ochre",
+    "streakFreezes": 1,
+    "daily": {
+      "lastKey": "2026-10-22",
+      "streak": 4,
+      "bestStreak": 6,
+      "results": {
+        "2026-10-21": { "stars": 2, "score": 480 },
+        "2026-10-22": { "stars": 3, "score": 560 }
+      }
+    },
+    "history": [
+      { "kind": "campaign", "id": "v04", "stars": 2, "score": 455, "spend": 12 },
+      { "kind": "daily", "id": "2026-10-22", "stars": 3, "score": 560, "spend": 8 },
+      { "kind": "campaign", "id": "d01", "stars": 1, "score": 320, "spend": 15 }
+    ],
+    "flags": { "tutorial": true, "card-surge": true },
+    "stats": {
+      "seasons": 14,
+      "housesSupplied": 41,
+      "fieldsIrrigated": 29,
+      "housesFlooded": 5,
+      "hintsUsed": 2
+    }
+  }
+}

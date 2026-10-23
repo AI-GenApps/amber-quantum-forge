@@ -38,6 +38,27 @@ Replays never pay again, so there is nothing to farm.
 
 Themes are unlocked by stars, not coins (spec), so there are no coin cosmetics in v1.
 
+## Rules as implemented (task 03, core `progress/`)
+
+No number changed; these are the edge cases the tests pin down.
+
+- Campaign: a result pays `10` only when the map goes from 0 to at least 1 star, plus `5` for every
+  star above the previous best (first clear at 3 stars: 10 + 15 = 25; 1 to 3 stars later: 10;
+  repeats and lower results: 0). The region bonus (50) is paid in the same update that clears the
+  tenth map of a region, once, and is stored in `regionBonusClaimed`. A perfect campaign replay in
+  order pays exactly 1250 coins including the grant (tested).
+- Daily: a result with 0 stars changes nothing. The first clear of a date pays the tier (10 / 15 /
+  20) and the streak bonus `2 x min(streak, 7)` using the streak after that day's update; a better
+  tier on the same date pays only the difference and no second bonus. A device clock that moved
+  back (`clock-went-back`) is neutral: no coins, no streak change, no result stored.
+- Streak freezes: bought one at a time up to 2. On a gap the app passes the number of missed days;
+  if the held freezes cover every missed day they are consumed (one per day) and the streak
+  continues; otherwise the streak restarts at 1 and no freeze is consumed.
+- Hints and freezes are rejected (profile unchanged) when coins are short; a hint does not touch
+  stars. The "cannot buy while a season is running" rule is a screen rule (task 04).
+- Save: the profile is clamped and stripped on every load (`sanitizeProfile`). A selected theme the
+  stars have not unlocked falls back to the default theme.
+
 ## Unlock thresholds (stars)
 
 | Unlock | Stars |

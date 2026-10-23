@@ -1,9 +1,22 @@
-import { createLifecycle, injectKitStyles } from "@web-games/kit";
+import { createDefaultAdapter, createLifecycle, injectKitStyles } from "@web-games/kit";
 import { render } from "preact";
 import { App } from "./App";
+import { createServices, loadServices } from "./state/services";
+import { GameContext } from "./state/useGame";
 
 injectKitStyles();
-void createLifecycle().setupDisplay({ lockPortrait: true });
+const lifecycle = createLifecycle();
+void lifecycle.setupDisplay({ lockPortrait: true });
+
+const services = createServices(createDefaultAdapter(), { lifecycle });
+void loadServices(services);
 
 const root = document.getElementById("app");
-if (root) render(<App />, root);
+if (root) {
+  render(
+    <GameContext.Provider value={services.game}>
+      <App />
+    </GameContext.Provider>,
+    root,
+  );
+}

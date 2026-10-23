@@ -65,8 +65,9 @@ Keeps the 120-star ceiling and the unlock thresholds stable; the daily feeds coi
 
 ### Daily difficulty by weekday
 A seven-step ladder (8 x 12 plain up to 12 x 16 with every mechanic) is predictable for players and
-simple to test. The generator validates with a bounded solver and rerolls up to 12 attempts, then
-uses fallback templates; the 365-date test limits fallbacks to 5 percent.
+simple to test. The generator proves every map by simulation (task 03 refined how, see below) and
+rerolls up to 12 attempts, then uses fallback templates; the 365-date test limits fallbacks to 5
+percent.
 
 ### Hints reveal one piece at a time
 Cheaper to build than a full solution view and keeps the puzzle intact; never removes stars.
@@ -199,3 +200,58 @@ column is the set the player may use and did not change.
 Because trees block canals, the sealed ring around houses and fields is part of the puzzle: the
 reference cells are the only buildable cells touching a house. Task 04 should draw reference-free
 scenery as woods or hedges rather than as obstacles with their own meaning.
+
+## 2026-10-23 - Task 03 progression, economy, daily mode and save (no economy number changed)
+
+### Profile is plain data and the core never sees the kit
+`Profile` (version 1, key `floodplain-dispatch.profile`) lives in the core with pure reducers
+(`applyCampaignResult`, `applyDailyResult`, `buyHint`, `buyFreeze`). The app injects what needs the
+kit: the date key, the streak step (`first`, `same-day`, `next-day`, `gap`, `clock-went-back`) and
+the number of missed days. `dailySeedOf(dateKey)` and `weekdayOfDateKey` exist in the core and are
+tested to equal the kit's `dailySeed` and `dayNumber`.
+
+### Clock going back and zero-star dailies are neutral
+Setting the clock back must not farm coins or break a streak; a 0-star daily attempt pays and counts
+nothing. Daily results are kept for 60 days, so a date older than that cannot be replayed for coins
+through a back-dated clock either (the step is `clock-went-back`).
+
+### A failed freeze cover keeps the freezes
+If the held freezes do not cover every missed day the streak restarts and no freeze is spent.
+Player-friendly and simpler to explain; the economy numbers are unaffected.
+
+### `sanitizeProfile` rejects wrong types and forgives unknown content
+Wrong types on known top-level fields reject the whole profile (the kit then keeps a backup and starts
+fresh); missing fields use defaults; unknown map ids, regions, flags and keys are dropped; values are
+clamped (coins >= 0, stars 0 to 3, freezes 0 to 2, history 50, daily results 60). Future work adds
+migrations as `migrations[1]` when the schema changes; the chain through the same parse is tested
+with a local version 2 schema.
+
+### Daily maps are made reference-first, par is the generated reference
+A random terrain plus a bounded solver solved too few maps: the water model lets overland water
+pool in any canal, so flat or lumpy random terrain often has no flood-free supply solution within
+the simulation cap. The generator therefore builds a canal tree first, shapes the terrain around it
+and anneals single heights against the real engine until the tree earns three stars (same method the
+campaign authoring used), then trims unneeded leaves; par is the trimmed tree's cost, budget par + 3.
+The bounded solver stays in the loop as a repair step and as the hint engine for arbitrary maps.
+Measured over 365 dates from 2026-01-01: 0 fallbacks, all 365 re-verified at three stars (evidence in
+`.agents/resources/2026-10-23/web-games/floodplain-dispatch/03/README.md`).
+
+### Daily piece sets and events follow the tier table in `product.md`
+Monday and Tuesday offer canals and barriers (Monday has no events), Wednesday adds pumps, Thursday
+gates, Friday to Sunday all five pieces. The earlier planning text left Monday's set open.
+
+### The solver is a heuristic, not an exact search
+`solveMap(def, { maxSims, maxCost, seed, starts })` is a best-first search over placements with
+at most 20000 simulated seasons (default). It solves 35 of the 40 campaign maps (Valley 9, Delta 9,
+Highland 9, Estuary 8) and reports `null` for the rest. Because it is not exact it does not prove that
+par is minimal; it does find cheaper three-star placements on many maps, which quantifies the
+known "par is a reference, not a minimum" gap (resources README, table). No par was changed.
+
+### Simulation hot loops use local constant aliases
+Vitest reads imported bindings through a module object, which made the engine about three times
+slower under test. `simulate.ts` now copies the imported constants into module-level consts. The
+engine output is unchanged (golden hashes, determinism and property tests pass).
+
+### Floating point in generation is kept to + - * / and comparisons
+Annealing acceptance uses a truncated series instead of `Math.exp` and the temperature falls
+linearly, so the same date gives the same map on V8 and JavaScriptCore.

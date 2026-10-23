@@ -15,6 +15,17 @@ import {
 import { inletRate, tideLevel } from "./events";
 import type { Board, MapDef, Placement, SeasonMetrics, SeasonResult } from "./types";
 
+// Local aliases: Vitest reads imported bindings through a module object, which slows hot loops.
+const CANAL_CAP = CANAL_EDGE_CAP;
+const WET_MIN = FIELD_WET_MIN;
+const WET_MAX = FIELD_WET_MAX;
+const FLOOD_AT = FLOOD_DEPTH;
+const SUPPLY_AT = SUPPLY_DEPTH;
+const PUMP_MOVE = PUMP_RATE;
+const WEEK_STEPS = STEPS_PER_WEEK;
+const OTHER_CAP = OTHER_EDGE_CAP;
+const MIN_DIFF = FLOW_MIN_DIFF;
+const DEPTH_LIMIT = MAX_CELL_DEPTH;
 const NEVER = 0x7fffffff;
 const ROLE_CANAL = 1;
 const ROLE_GATE = 2;
@@ -182,7 +193,7 @@ function addInlets(state: SimState, week: number): void {
   const { ctx, depths } = state;
   ctx.board.inletCells.forEach((cell, k) => {
     const next = (depths[cell] ?? 0) + inletRate(ctx.def, k, week);
-    depths[cell] = Math.min(MAX_CELL_DEPTH, next);
+    depths[cell] = Math.min(DEPTH_LIMIT, next);
   });
 }
 
@@ -193,7 +204,7 @@ function runPumps(state: SimState): void {
     if (target < 0) continue;
     if (ctx.role[target] === ROLE_GATE && closed[target]) continue;
     const room = (ctx.capacity[target] ?? 0) - (depths[target] ?? 0);
-    const moved = Math.min(PUMP_RATE, depths[p] ?? 0, room);
+    const moved = Math.min(PUMP_MOVE, depths[p] ?? 0, room);
     if (moved <= 0) continue;
     depths[p] = (depths[p] ?? 0) - moved;
     depths[target] = (depths[target] ?? 0) + moved;
@@ -216,7 +227,7 @@ function flow(state: SimState): void {
     let found = 0;
     for (let d = 0; d < 4; d++) {
       const b = ctx.neighbours[a * 4 + d] ?? -1;
-      if (b < 0 || surfaceA - (surface[b] ?? 0) < FLOW_MIN_DIFF || !edgeOpen(state, a, b)) continue;
+      if (b < 0 || surfaceA - (surface[b] ?? 0) < MIN_DIFF || !edgeOpen(state, a, b)) continue;
       const key = (surface[b] ?? 0) * 4 + d;
       let at = found++;
       while (at > 0 && (sortKeys[at - 1] ?? 0) > key) {
@@ -227,11 +238,11 @@ function flow(state: SimState): void {
     }
     for (let k = 0; k < found && remaining > 0; k++) {
       const b = ctx.neighbours[a * 4 + ((sortKeys[k] ?? 0) & 3)] ?? -1;
-      const cap = ctx.canalType[a] && ctx.canalType[b] ? CANAL_EDGE_CAP : OTHER_EDGE_CAP;
+      const cap = ctx.canalType[a] && ctx.canalType[b] ? CANAL_CAP : OTHER_CAP;
       const diff = surfaceA - (surface[b] ?? 0);
-      const limit = ctx.capacity[b] ?? MAX_CELL_DEPTH;
+      const limit = ctx.capacity[b] ?? DEPTH_LIMIT;
       const room =
-        limit < MAX_CELL_DEPTH ? limit - (snapshot[b] ?? 0) - (inflow[b] ?? 0) : MAX_CELL_DEPTH;
+        limit < DEPTH_LIMIT ? limit - (snapshot[b] ?? 0) - (inflow[b] ?? 0) : DEPTH_LIMIT;
       const moved = Math.min(cap, Math.floor(diff / 2), remaining, room);
       if (moved <= 0) continue;
       remaining -= moved;
@@ -241,12 +252,12 @@ function flow(state: SimState): void {
     }
   }
   for (let i = 0; i < count; i++) {
-    depths[i] = Math.min(MAX_CELL_DEPTH, Math.max(0, (snapshot[i] ?? 0) + (delta[i] ?? 0)));
+    depths[i] = Math.min(DEPTH_LIMIT, Math.max(0, (snapshot[i] ?? 0) + (delta[i] ?? 0)));
   }
 }
 
 function setSea(state: SimState, week: number): void {
-  const level = Math.min(MAX_CELL_DEPTH, Math.max(0, tideLevel(state.ctx.def, week)));
+  const level = Math.min(DEPTH_LIMIT, Math.max(0, tideLevel(state.ctx.def, week)));
   for (const cell of state.ctx.board.seaCells) state.depths[cell] = level;
 }
 
@@ -256,7 +267,7 @@ function supplied(state: SimState, cell: number): boolean {
     const n = ctx.neighbours[cell * 4 + d] ?? -1;
     if (n < 0 || !ctx.canalType[n]) continue;
     if (ctx.role[n] === ROLE_GATE && closed[n]) continue;
-    if ((depths[n] ?? 0) >= SUPPLY_DEPTH) return true;
+    if ((depths[n] ?? 0) >= SUPPLY_AT) return true;
   }
   return false;
 }
@@ -264,20 +275,19 @@ function supplied(state: SimState, cell: number): boolean {
 export function recordMetrics(state: SimState): void {
   const { ctx, depths } = state;
   ctx.board.houseCells.forEach((cell, h) => {
-    if ((depths[cell] ?? 0) >= FLOOD_DEPTH)
-      state.houseFlooded[h] = (state.houseFlooded[h] ?? 0) + 1;
+    if ((depths[cell] ?? 0) >= FLOOD_AT) state.houseFlooded[h] = (state.houseFlooded[h] ?? 0) + 1;
     if (supplied(state, cell)) state.houseSupplied[h] = (state.houseSupplied[h] ?? 0) + 1;
   });
   ctx.board.fieldCells.forEach((cell, f) => {
     const depth = depths[cell] ?? 0;
-    if (depth >= FIELD_WET_MIN && depth <= FIELD_WET_MAX) {
+    if (depth >= WET_MIN && depth <= WET_MAX) {
       state.fieldWet[f] = (state.fieldWet[f] ?? 0) + 1;
     }
   });
 }
 
 export function stepOnce(state: SimState): void {
-  const week = Math.floor(state.step / STEPS_PER_WEEK);
+  const week = Math.floor(state.step / WEEK_STEPS);
   updateGates(state, week);
   addInlets(state, week);
   runPumps(state);
