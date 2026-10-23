@@ -1,0 +1,1990 @@
+[
+  {
+    "id": "harbor-01",
+    "size": 5,
+    "rating": 1,
+    "lanterns": 2,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 16,
+    "anchorShare": 31.3,
+    "nodes": 2
+  },
+  {
+    "id": "harbor-02",
+    "size": 5,
+    "rating": 1,
+    "lanterns": 2,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 14,
+    "anchorShare": 28.6,
+    "nodes": 2
+  },
+  {
+    "id": "harbor-03",
+    "size": 5,
+    "rating": 1,
+    "lanterns": 2,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 16,
+    "anchorShare": 31.3,
+    "nodes": 0
+  },
+  {
+    "id": "harbor-04",
+    "size": 5,
+    "rating": 1,
+    "lanterns": 2,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 16,
+    "anchorShare": 31.3,
+    "nodes": 2
+  },
+  {
+    "id": "harbor-05",
+    "size": 5,
+    "rating": 1,
+    "lanterns": 2,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 16,
+    "anchorShare": 31.3,
+    "nodes": 2
+  },
+  {
+    "id": "harbor-06",
+    "size": 5,
+    "rating": 1,
+    "lanterns": 2,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 16,
+    "anchorShare": 31.3,
+    "nodes": 2
+  },
+  {
+    "id": "harbor-07",
+    "size": 5,
+    "rating": 2,
+    "lanterns": 2,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 16,
+    "anchorShare": 25,
+    "nodes": 6
+  },
+  {
+    "id": "harbor-08",
+    "size": 5,
+    "rating": 2,
+    "lanterns": 2,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 16,
+    "anchorShare": 25,
+    "nodes": 10
+  },
+  {
+    "id": "harbor-09",
+    "size": 5,
+    "rating": 2,
+    "lanterns": 2,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 16,
+    "anchorShare": 31.3,
+    "nodes": 12
+  },
+  {
+    "id": "harbor-10",
+    "size": 5,
+    "rating": 2,
+    "lanterns": 2,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 16,
+    "anchorShare": 25,
+    "nodes": 8
+  },
+  {
+    "id": "harbor-11",
+    "size": 6,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 8,
+    "solutionTiles": 24,
+    "anchorShare": 33.3,
+    "nodes": 6
+  },
+  {
+    "id": "harbor-12",
+    "size": 6,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 8,
+    "solutionTiles": 24,
+    "anchorShare": 33.3,
+    "nodes": 6
+  },
+  {
+    "id": "harbor-13",
+    "size": 6,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 6,
+    "solutionTiles": 22,
+    "anchorShare": 27.3,
+    "nodes": 18
+  },
+  {
+    "id": "harbor-14",
+    "size": 6,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 6,
+    "solutionTiles": 18,
+    "anchorShare": 33.3,
+    "nodes": 22
+  },
+  {
+    "id": "harbor-15",
+    "size": 6,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 8,
+    "solutionTiles": 24,
+    "anchorShare": 33.3,
+    "nodes": 6
+  },
+  {
+    "id": "harbor-16",
+    "size": 6,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 7,
+    "solutionTiles": 24,
+    "anchorShare": 29.2,
+    "nodes": 18
+  },
+  {
+    "id": "harbor-17",
+    "size": 6,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 8,
+    "solutionTiles": 24,
+    "anchorShare": 33.3,
+    "nodes": 4
+  },
+  {
+    "id": "harbor-18",
+    "size": 6,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 8,
+    "solutionTiles": 24,
+    "anchorShare": 33.3,
+    "nodes": 6
+  },
+  {
+    "id": "harbor-19",
+    "size": 6,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 7,
+    "solutionTiles": 24,
+    "anchorShare": 29.2,
+    "nodes": 6
+  },
+  {
+    "id": "harbor-20",
+    "size": 6,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 6,
+    "solutionTiles": 22,
+    "anchorShare": 27.3,
+    "nodes": 14
+  },
+  {
+    "id": "harbor-21",
+    "size": 7,
+    "rating": 4,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 10,
+    "solutionTiles": 32,
+    "anchorShare": 31.3,
+    "nodes": 146
+  },
+  {
+    "id": "harbor-22",
+    "size": 7,
+    "rating": 4,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 10,
+    "solutionTiles": 30,
+    "anchorShare": 33.3,
+    "nodes": 36
+  },
+  {
+    "id": "harbor-23",
+    "size": 7,
+    "rating": 4,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 9,
+    "solutionTiles": 28,
+    "anchorShare": 32.1,
+    "nodes": 36
+  },
+  {
+    "id": "harbor-24",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 11,
+    "solutionTiles": 34,
+    "anchorShare": 32.4,
+    "nodes": 10
+  },
+  {
+    "id": "harbor-25",
+    "size": 7,
+    "rating": 5,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 7,
+    "solutionTiles": 24,
+    "anchorShare": 29.2,
+    "nodes": 506
+  },
+  {
+    "id": "harbor-26",
+    "size": 7,
+    "rating": 4,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 9,
+    "solutionTiles": 34,
+    "anchorShare": 26.5,
+    "nodes": 30
+  },
+  {
+    "id": "harbor-27",
+    "size": 7,
+    "rating": 4,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 8,
+    "solutionTiles": 30,
+    "anchorShare": 26.7,
+    "nodes": 64
+  },
+  {
+    "id": "harbor-28",
+    "size": 7,
+    "rating": 4,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 11,
+    "solutionTiles": 34,
+    "anchorShare": 32.4,
+    "nodes": 40
+  },
+  {
+    "id": "harbor-29",
+    "size": 7,
+    "rating": 5,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 9,
+    "solutionTiles": 28,
+    "anchorShare": 32.1,
+    "nodes": 258
+  },
+  {
+    "id": "harbor-30",
+    "size": 7,
+    "rating": 4,
+    "lanterns": 3,
+    "stones": 0,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 11,
+    "solutionTiles": 34,
+    "anchorShare": 32.4,
+    "nodes": 76
+  },
+  {
+    "id": "garden-01",
+    "size": 5,
+    "rating": 1,
+    "lanterns": 2,
+    "stones": 2,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 16,
+    "anchorShare": 25,
+    "nodes": 2
+  },
+  {
+    "id": "garden-02",
+    "size": 5,
+    "rating": 1,
+    "lanterns": 2,
+    "stones": 2,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 3,
+    "solutionTiles": 14,
+    "anchorShare": 21.4,
+    "nodes": 0
+  },
+  {
+    "id": "garden-03",
+    "size": 5,
+    "rating": 1,
+    "lanterns": 2,
+    "stones": 2,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 3,
+    "solutionTiles": 16,
+    "anchorShare": 18.8,
+    "nodes": 0
+  },
+  {
+    "id": "garden-04",
+    "size": 5,
+    "rating": 1,
+    "lanterns": 2,
+    "stones": 3,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 3,
+    "solutionTiles": 14,
+    "anchorShare": 21.4,
+    "nodes": 0
+  },
+  {
+    "id": "garden-05",
+    "size": 5,
+    "rating": 1,
+    "lanterns": 2,
+    "stones": 2,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 16,
+    "anchorShare": 31.3,
+    "nodes": 0
+  },
+  {
+    "id": "garden-06",
+    "size": 6,
+    "rating": 1,
+    "lanterns": 3,
+    "stones": 3,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 6,
+    "solutionTiles": 22,
+    "anchorShare": 27.3,
+    "nodes": 0
+  },
+  {
+    "id": "garden-07",
+    "size": 6,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 4,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 22,
+    "anchorShare": 18.2,
+    "nodes": 6
+  },
+  {
+    "id": "garden-08",
+    "size": 6,
+    "rating": 1,
+    "lanterns": 3,
+    "stones": 3,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 3,
+    "solutionTiles": 24,
+    "anchorShare": 12.5,
+    "nodes": 0
+  },
+  {
+    "id": "garden-09",
+    "size": 6,
+    "rating": 1,
+    "lanterns": 3,
+    "stones": 3,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 18,
+    "anchorShare": 22.2,
+    "nodes": 2
+  },
+  {
+    "id": "garden-10",
+    "size": 6,
+    "rating": 1,
+    "lanterns": 3,
+    "stones": 3,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 24,
+    "anchorShare": 16.7,
+    "nodes": 0
+  },
+  {
+    "id": "garden-11",
+    "size": 6,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 3,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 24,
+    "anchorShare": 16.7,
+    "nodes": 4
+  },
+  {
+    "id": "garden-12",
+    "size": 6,
+    "rating": 1,
+    "lanterns": 3,
+    "stones": 3,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 6,
+    "solutionTiles": 24,
+    "anchorShare": 25,
+    "nodes": 2
+  },
+  {
+    "id": "garden-13",
+    "size": 6,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 4,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 3,
+    "solutionTiles": 22,
+    "anchorShare": 13.6,
+    "nodes": 6
+  },
+  {
+    "id": "garden-14",
+    "size": 6,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 3,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 20,
+    "anchorShare": 20,
+    "nodes": 6
+  },
+  {
+    "id": "garden-15",
+    "size": 6,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 3,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 20,
+    "anchorShare": 25,
+    "nodes": 2
+  },
+  {
+    "id": "garden-16",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 4,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 32,
+    "anchorShare": 15.6,
+    "nodes": 16
+  },
+  {
+    "id": "garden-17",
+    "size": 7,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 4,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 32,
+    "anchorShare": 15.6,
+    "nodes": 2
+  },
+  {
+    "id": "garden-18",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 5,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 24,
+    "anchorShare": 20.8,
+    "nodes": 28
+  },
+  {
+    "id": "garden-19",
+    "size": 7,
+    "rating": 4,
+    "lanterns": 3,
+    "stones": 4,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 30,
+    "anchorShare": 16.7,
+    "nodes": 104
+  },
+  {
+    "id": "garden-20",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 5,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 6,
+    "solutionTiles": 34,
+    "anchorShare": 17.6,
+    "nodes": 12
+  },
+  {
+    "id": "garden-21",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 4,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 26,
+    "anchorShare": 19.2,
+    "nodes": 8
+  },
+  {
+    "id": "garden-22",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 4,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 30,
+    "anchorShare": 16.7,
+    "nodes": 6
+  },
+  {
+    "id": "garden-23",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 4,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 32,
+    "anchorShare": 15.6,
+    "nodes": 12
+  },
+  {
+    "id": "garden-24",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 5,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 32,
+    "anchorShare": 12.5,
+    "nodes": 10
+  },
+  {
+    "id": "garden-25",
+    "size": 7,
+    "rating": 4,
+    "lanterns": 3,
+    "stones": 4,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 7,
+    "solutionTiles": 34,
+    "anchorShare": 20.6,
+    "nodes": 24
+  },
+  {
+    "id": "garden-26",
+    "size": 8,
+    "rating": 4,
+    "lanterns": 4,
+    "stones": 5,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 8,
+    "solutionTiles": 36,
+    "anchorShare": 22.2,
+    "nodes": 42
+  },
+  {
+    "id": "garden-27",
+    "size": 8,
+    "rating": 4,
+    "lanterns": 4,
+    "stones": 5,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 10,
+    "solutionTiles": 32,
+    "anchorShare": 31.3,
+    "nodes": 50
+  },
+  {
+    "id": "garden-28",
+    "size": 8,
+    "rating": 4,
+    "lanterns": 4,
+    "stones": 6,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 42,
+    "anchorShare": 9.5,
+    "nodes": 26
+  },
+  {
+    "id": "garden-29",
+    "size": 8,
+    "rating": 5,
+    "lanterns": 4,
+    "stones": 5,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 6,
+    "solutionTiles": 32,
+    "anchorShare": 18.8,
+    "nodes": 496
+  },
+  {
+    "id": "garden-30",
+    "size": 8,
+    "rating": 5,
+    "lanterns": 4,
+    "stones": 5,
+    "mirrors": 0,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 8,
+    "solutionTiles": 34,
+    "anchorShare": 23.5,
+    "nodes": 270
+  },
+  {
+    "id": "bridge-01",
+    "size": 5,
+    "rating": 1,
+    "lanterns": 2,
+    "stones": 2,
+    "mirrors": 1,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 3,
+    "solutionTiles": 16,
+    "anchorShare": 18.8,
+    "nodes": 0
+  },
+  {
+    "id": "bridge-02",
+    "size": 5,
+    "rating": 1,
+    "lanterns": 2,
+    "stones": 1,
+    "mirrors": 1,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 3,
+    "solutionTiles": 14,
+    "anchorShare": 21.4,
+    "nodes": 0
+  },
+  {
+    "id": "bridge-03",
+    "size": 5,
+    "rating": 1,
+    "lanterns": 2,
+    "stones": 3,
+    "mirrors": 1,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 2,
+    "solutionTiles": 16,
+    "anchorShare": 12.5,
+    "nodes": 0
+  },
+  {
+    "id": "bridge-04",
+    "size": 5,
+    "rating": 1,
+    "lanterns": 2,
+    "stones": 1,
+    "mirrors": 2,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 2,
+    "solutionTiles": 16,
+    "anchorShare": 12.5,
+    "nodes": 0
+  },
+  {
+    "id": "bridge-05",
+    "size": 6,
+    "rating": 1,
+    "lanterns": 3,
+    "stones": 3,
+    "mirrors": 2,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 24,
+    "anchorShare": 16.7,
+    "nodes": 0
+  },
+  {
+    "id": "bridge-06",
+    "size": 6,
+    "rating": 1,
+    "lanterns": 3,
+    "stones": 4,
+    "mirrors": 2,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 3,
+    "solutionTiles": 24,
+    "anchorShare": 12.5,
+    "nodes": 0
+  },
+  {
+    "id": "bridge-07",
+    "size": 6,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 2,
+    "mirrors": 2,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 2,
+    "solutionTiles": 20,
+    "anchorShare": 10,
+    "nodes": 6
+  },
+  {
+    "id": "bridge-08",
+    "size": 6,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 2,
+    "mirrors": 2,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 22,
+    "anchorShare": 22.7,
+    "nodes": 12
+  },
+  {
+    "id": "bridge-09",
+    "size": 6,
+    "rating": 1,
+    "lanterns": 3,
+    "stones": 4,
+    "mirrors": 2,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 1,
+    "solutionTiles": 24,
+    "anchorShare": 4.2,
+    "nodes": 0
+  },
+  {
+    "id": "bridge-10",
+    "size": 6,
+    "rating": 1,
+    "lanterns": 3,
+    "stones": 2,
+    "mirrors": 2,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 22,
+    "anchorShare": 22.7,
+    "nodes": 0
+  },
+  {
+    "id": "bridge-11",
+    "size": 6,
+    "rating": 1,
+    "lanterns": 3,
+    "stones": 3,
+    "mirrors": 2,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 22,
+    "anchorShare": 18.2,
+    "nodes": 0
+  },
+  {
+    "id": "bridge-12",
+    "size": 6,
+    "rating": 1,
+    "lanterns": 3,
+    "stones": 3,
+    "mirrors": 2,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 22,
+    "anchorShare": 18.2,
+    "nodes": 0
+  },
+  {
+    "id": "bridge-13",
+    "size": 7,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 3,
+    "mirrors": 2,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 6,
+    "solutionTiles": 30,
+    "anchorShare": 20,
+    "nodes": 6
+  },
+  {
+    "id": "bridge-14",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 4,
+    "mirrors": 2,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 26,
+    "anchorShare": 15.4,
+    "nodes": 12
+  },
+  {
+    "id": "bridge-15",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 4,
+    "mirrors": 2,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 32,
+    "anchorShare": 15.6,
+    "nodes": 8
+  },
+  {
+    "id": "bridge-16",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 5,
+    "mirrors": 2,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 4,
+    "solutionTiles": 32,
+    "anchorShare": 12.5,
+    "nodes": 16
+  },
+  {
+    "id": "bridge-17",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 3,
+    "mirrors": 3,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 6,
+    "solutionTiles": 30,
+    "anchorShare": 20,
+    "nodes": 10
+  },
+  {
+    "id": "bridge-18",
+    "size": 7,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 5,
+    "mirrors": 2,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 3,
+    "solutionTiles": 34,
+    "anchorShare": 8.8,
+    "nodes": 2
+  },
+  {
+    "id": "bridge-19",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 2,
+    "mirrors": 2,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 6,
+    "solutionTiles": 32,
+    "anchorShare": 18.8,
+    "nodes": 28
+  },
+  {
+    "id": "bridge-20",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 2,
+    "mirrors": 2,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 6,
+    "solutionTiles": 34,
+    "anchorShare": 17.6,
+    "nodes": 8
+  },
+  {
+    "id": "bridge-21",
+    "size": 8,
+    "rating": 3,
+    "lanterns": 4,
+    "stones": 4,
+    "mirrors": 3,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 38,
+    "anchorShare": 13.2,
+    "nodes": 22
+  },
+  {
+    "id": "bridge-22",
+    "size": 8,
+    "rating": 3,
+    "lanterns": 4,
+    "stones": 4,
+    "mirrors": 3,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 7,
+    "solutionTiles": 32,
+    "anchorShare": 21.9,
+    "nodes": 36
+  },
+  {
+    "id": "bridge-23",
+    "size": 8,
+    "rating": 4,
+    "lanterns": 4,
+    "stones": 4,
+    "mirrors": 3,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 38,
+    "anchorShare": 13.2,
+    "nodes": 32
+  },
+  {
+    "id": "bridge-24",
+    "size": 8,
+    "rating": 3,
+    "lanterns": 4,
+    "stones": 3,
+    "mirrors": 3,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 9,
+    "solutionTiles": 44,
+    "anchorShare": 20.5,
+    "nodes": 10
+  },
+  {
+    "id": "bridge-25",
+    "size": 8,
+    "rating": 4,
+    "lanterns": 4,
+    "stones": 4,
+    "mirrors": 4,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 38,
+    "anchorShare": 13.2,
+    "nodes": 42
+  },
+  {
+    "id": "bridge-26",
+    "size": 8,
+    "rating": 4,
+    "lanterns": 4,
+    "stones": 3,
+    "mirrors": 3,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 8,
+    "solutionTiles": 30,
+    "anchorShare": 26.7,
+    "nodes": 46
+  },
+  {
+    "id": "bridge-27",
+    "size": 9,
+    "rating": 5,
+    "lanterns": 5,
+    "stones": 5,
+    "mirrors": 5,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 11,
+    "solutionTiles": 46,
+    "anchorShare": 23.9,
+    "nodes": 152
+  },
+  {
+    "id": "bridge-28",
+    "size": 9,
+    "rating": 5,
+    "lanterns": 5,
+    "stones": 5,
+    "mirrors": 5,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 7,
+    "solutionTiles": 44,
+    "anchorShare": 15.9,
+    "nodes": 228
+  },
+  {
+    "id": "bridge-29",
+    "size": 9,
+    "rating": 4,
+    "lanterns": 5,
+    "stones": 5,
+    "mirrors": 5,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 5,
+    "solutionTiles": 46,
+    "anchorShare": 10.9,
+    "nodes": 62
+  },
+  {
+    "id": "bridge-30",
+    "size": 9,
+    "rating": 5,
+    "lanterns": 5,
+    "stones": 5,
+    "mirrors": 4,
+    "gates": 0,
+    "colours": [
+      "amber"
+    ],
+    "anchors": 7,
+    "solutionTiles": 52,
+    "anchorShare": 13.5,
+    "nodes": 66
+  },
+  {
+    "id": "sky-01",
+    "size": 6,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 2,
+    "mirrors": 2,
+    "gates": 1,
+    "colours": [
+      "amber",
+      "rose"
+    ],
+    "anchors": 3,
+    "solutionTiles": 18,
+    "anchorShare": 16.7,
+    "nodes": 6
+  },
+  {
+    "id": "sky-02",
+    "size": 6,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 2,
+    "mirrors": 2,
+    "gates": 1,
+    "colours": [
+      "amber",
+      "rose"
+    ],
+    "anchors": 4,
+    "solutionTiles": 20,
+    "anchorShare": 20,
+    "nodes": 24
+  },
+  {
+    "id": "sky-03",
+    "size": 6,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 3,
+    "mirrors": 2,
+    "gates": 1,
+    "colours": [
+      "rose",
+      "jade"
+    ],
+    "anchors": 1,
+    "solutionTiles": 22,
+    "anchorShare": 4.5,
+    "nodes": 4
+  },
+  {
+    "id": "sky-04",
+    "size": 6,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 2,
+    "mirrors": 2,
+    "gates": 2,
+    "colours": [
+      "amber",
+      "violet"
+    ],
+    "anchors": 1,
+    "solutionTiles": 24,
+    "anchorShare": 4.2,
+    "nodes": 6
+  },
+  {
+    "id": "sky-05",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 4,
+    "stones": 2,
+    "mirrors": 2,
+    "gates": 2,
+    "colours": [
+      "rose",
+      "jade",
+      "azure"
+    ],
+    "anchors": 8,
+    "solutionTiles": 32,
+    "anchorShare": 25,
+    "nodes": 12
+  },
+  {
+    "id": "sky-06",
+    "size": 7,
+    "rating": 2,
+    "lanterns": 3,
+    "stones": 2,
+    "mirrors": 2,
+    "gates": 2,
+    "colours": [
+      "azure",
+      "violet"
+    ],
+    "anchors": 4,
+    "solutionTiles": 24,
+    "anchorShare": 16.7,
+    "nodes": 6
+  },
+  {
+    "id": "sky-07",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 4,
+    "stones": 3,
+    "mirrors": 2,
+    "gates": 3,
+    "colours": [
+      "rose",
+      "jade",
+      "azure"
+    ],
+    "anchors": 4,
+    "solutionTiles": 28,
+    "anchorShare": 14.3,
+    "nodes": 10
+  },
+  {
+    "id": "sky-08",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 4,
+    "mirrors": 2,
+    "gates": 2,
+    "colours": [
+      "amber",
+      "violet"
+    ],
+    "anchors": 3,
+    "solutionTiles": 28,
+    "anchorShare": 10.7,
+    "nodes": 18
+  },
+  {
+    "id": "sky-09",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 4,
+    "stones": 3,
+    "mirrors": 2,
+    "gates": 2,
+    "colours": [
+      "jade",
+      "azure",
+      "violet"
+    ],
+    "anchors": 4,
+    "solutionTiles": 32,
+    "anchorShare": 12.5,
+    "nodes": 20
+  },
+  {
+    "id": "sky-10",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 4,
+    "stones": 3,
+    "mirrors": 3,
+    "gates": 2,
+    "colours": [
+      "amber",
+      "rose",
+      "jade"
+    ],
+    "anchors": 4,
+    "solutionTiles": 32,
+    "anchorShare": 12.5,
+    "nodes": 12
+  },
+  {
+    "id": "sky-11",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 4,
+    "mirrors": 2,
+    "gates": 2,
+    "colours": [
+      "amber",
+      "azure",
+      "violet"
+    ],
+    "anchors": 2,
+    "solutionTiles": 28,
+    "anchorShare": 7.1,
+    "nodes": 6
+  },
+  {
+    "id": "sky-12",
+    "size": 7,
+    "rating": 3,
+    "lanterns": 3,
+    "stones": 2,
+    "mirrors": 2,
+    "gates": 3,
+    "colours": [
+      "rose",
+      "jade",
+      "azure"
+    ],
+    "anchors": 5,
+    "solutionTiles": 34,
+    "anchorShare": 14.7,
+    "nodes": 18
+  },
+  {
+    "id": "sky-13",
+    "size": 8,
+    "rating": 4,
+    "lanterns": 4,
+    "stones": 3,
+    "mirrors": 3,
+    "gates": 2,
+    "colours": [
+      "amber",
+      "rose",
+      "violet"
+    ],
+    "anchors": 7,
+    "solutionTiles": 34,
+    "anchorShare": 20.6,
+    "nodes": 66
+  },
+  {
+    "id": "sky-14",
+    "size": 8,
+    "rating": 3,
+    "lanterns": 4,
+    "stones": 5,
+    "mirrors": 3,
+    "gates": 2,
+    "colours": [
+      "jade",
+      "azure",
+      "violet"
+    ],
+    "anchors": 4,
+    "solutionTiles": 42,
+    "anchorShare": 9.5,
+    "nodes": 6
+  },
+  {
+    "id": "sky-15",
+    "size": 8,
+    "rating": 4,
+    "lanterns": 4,
+    "stones": 3,
+    "mirrors": 3,
+    "gates": 3,
+    "colours": [
+      "amber",
+      "rose",
+      "jade",
+      "azure"
+    ],
+    "anchors": 5,
+    "solutionTiles": 36,
+    "anchorShare": 13.9,
+    "nodes": 68
+  },
+  {
+    "id": "sky-16",
+    "size": 8,
+    "rating": 4,
+    "lanterns": 4,
+    "stones": 3,
+    "mirrors": 3,
+    "gates": 2,
+    "colours": [
+      "amber",
+      "azure",
+      "violet"
+    ],
+    "anchors": 6,
+    "solutionTiles": 38,
+    "anchorShare": 15.8,
+    "nodes": 40
+  },
+  {
+    "id": "sky-17",
+    "size": 8,
+    "rating": 4,
+    "lanterns": 4,
+    "stones": 6,
+    "mirrors": 3,
+    "gates": 2,
+    "colours": [
+      "rose",
+      "jade",
+      "azure",
+      "violet"
+    ],
+    "anchors": 4,
+    "solutionTiles": 42,
+    "anchorShare": 9.5,
+    "nodes": 36
+  },
+  {
+    "id": "sky-18",
+    "size": 8,
+    "rating": 4,
+    "lanterns": 4,
+    "stones": 4,
+    "mirrors": 3,
+    "gates": 2,
+    "colours": [
+      "amber",
+      "rose",
+      "violet"
+    ],
+    "anchors": 3,
+    "solutionTiles": 40,
+    "anchorShare": 7.5,
+    "nodes": 94
+  },
+  {
+    "id": "sky-19",
+    "size": 8,
+    "rating": 5,
+    "lanterns": 4,
+    "stones": 4,
+    "mirrors": 3,
+    "gates": 2,
+    "colours": [
+      "amber",
+      "jade",
+      "azure",
+      "violet"
+    ],
+    "anchors": 3,
+    "solutionTiles": 38,
+    "anchorShare": 7.9,
+    "nodes": 182
+  },
+  {
+    "id": "sky-20",
+    "size": 8,
+    "rating": 4,
+    "lanterns": 4,
+    "stones": 3,
+    "mirrors": 3,
+    "gates": 2,
+    "colours": [
+      "amber",
+      "rose",
+      "jade"
+    ],
+    "anchors": 5,
+    "solutionTiles": 32,
+    "anchorShare": 15.6,
+    "nodes": 80
+  },
+  {
+    "id": "sky-21",
+    "size": 8,
+    "rating": 4,
+    "lanterns": 4,
+    "stones": 4,
+    "mirrors": 3,
+    "gates": 2,
+    "colours": [
+      "amber",
+      "rose",
+      "azure",
+      "violet"
+    ],
+    "anchors": 4,
+    "solutionTiles": 44,
+    "anchorShare": 9.1,
+    "nodes": 26
+  },
+  {
+    "id": "sky-22",
+    "size": 8,
+    "rating": 5,
+    "lanterns": 4,
+    "stones": 3,
+    "mirrors": 3,
+    "gates": 2,
+    "colours": [
+      "rose",
+      "jade",
+      "azure",
+      "violet"
+    ],
+    "anchors": 4,
+    "solutionTiles": 36,
+    "anchorShare": 11.1,
+    "nodes": 370
+  },
+  {
+    "id": "sky-23",
+    "size": 9,
+    "rating": 5,
+    "lanterns": 5,
+    "stones": 4,
+    "mirrors": 4,
+    "gates": 3,
+    "colours": [
+      "amber",
+      "rose",
+      "jade",
+      "violet"
+    ],
+    "anchors": 5,
+    "solutionTiles": 40,
+    "anchorShare": 12.5,
+    "nodes": 432
+  },
+  {
+    "id": "sky-24",
+    "size": 9,
+    "rating": 5,
+    "lanterns": 5,
+    "stones": 4,
+    "mirrors": 4,
+    "gates": 3,
+    "colours": [
+      "amber",
+      "jade",
+      "azure",
+      "violet"
+    ],
+    "anchors": 7,
+    "solutionTiles": 54,
+    "anchorShare": 13,
+    "nodes": 532
+  },
+  {
+    "id": "sky-25",
+    "size": 9,
+    "rating": 5,
+    "lanterns": 5,
+    "stones": 5,
+    "mirrors": 4,
+    "gates": 3,
+    "colours": [
+      "amber",
+      "rose",
+      "jade"
+    ],
+    "anchors": 2,
+    "solutionTiles": 46,
+    "anchorShare": 4.3,
+    "nodes": 438
+  },
+  {
+    "id": "sky-26",
+    "size": 9,
+    "rating": 5,
+    "lanterns": 5,
+    "stones": 4,
+    "mirrors": 4,
+    "gates": 3,
+    "colours": [
+      "amber",
+      "rose",
+      "azure",
+      "violet"
+    ],
+    "anchors": 10,
+    "solutionTiles": 40,
+    "anchorShare": 25,
+    "nodes": 860
+  },
+  {
+    "id": "sky-27",
+    "size": 9,
+    "rating": 5,
+    "lanterns": 6,
+    "stones": 4,
+    "mirrors": 4,
+    "gates": 3,
+    "colours": [
+      "amber",
+      "rose",
+      "jade",
+      "azure",
+      "violet"
+    ],
+    "anchors": 6,
+    "solutionTiles": 46,
+    "anchorShare": 13,
+    "nodes": 704
+  },
+  {
+    "id": "sky-28",
+    "size": 9,
+    "rating": 5,
+    "lanterns": 5,
+    "stones": 4,
+    "mirrors": 4,
+    "gates": 3,
+    "colours": [
+      "amber",
+      "rose",
+      "jade",
+      "violet"
+    ],
+    "anchors": 5,
+    "solutionTiles": 54,
+    "anchorShare": 9.3,
+    "nodes": 546
+  },
+  {
+    "id": "sky-29",
+    "size": 9,
+    "rating": 5,
+    "lanterns": 5,
+    "stones": 4,
+    "mirrors": 5,
+    "gates": 3,
+    "colours": [
+      "amber",
+      "jade",
+      "azure",
+      "violet"
+    ],
+    "anchors": 6,
+    "solutionTiles": 40,
+    "anchorShare": 15,
+    "nodes": 122
+  },
+  {
+    "id": "sky-30",
+    "size": 9,
+    "rating": 5,
+    "lanterns": 6,
+    "stones": 4,
+    "mirrors": 4,
+    "gates": 3,
+    "colours": [
+      "amber",
+      "rose",
+      "jade",
+      "azure",
+      "violet"
+    ],
+    "anchors": 4,
+    "solutionTiles": 44,
+    "anchorShare": 9.1,
+    "nodes": 90
+  }
+]

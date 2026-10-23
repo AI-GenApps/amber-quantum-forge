@@ -46,8 +46,16 @@ Chapter blurbs (shown on chapter cards, at most 90 characters):
 | Sky | 0 | 4 | 8 | 10 | 8 | 30 |
 
 Sizes appear in ascending order inside a chapter (the puzzle number rises with the size and
-difficulty). Difficulty rating 1 to 5 is computed by the solver (task 02) and non-decreasing over
-the five bands of six puzzles (1 to 6, 7 to 12, 13 to 18, 19 to 24, 25 to 30).
+difficulty). Difficulty rating 1 to 5 is computed from solver statistics (task 02: effort =
+log2(1 + guesses) + 4 x share of free cells that propagation cannot decide + 0.5 x (size - 5); the
+rating steps at 3.5, 6, 8.5 and 11) and is non-decreasing over the five bands of six puzzles (1 to 6,
+7 to 12, 13 to 18, 19 to 24, 25 to 30). Shipped ladder (accepted rating per band, each band ends where
+the next begins, so the highest rating of a band never exceeds the lowest of the next):
+
+| Chapter | Band 1 | Band 2 | Band 3 | Band 4 | Band 5 |
+|---|---|---|---|---|---|
+| Harbor, Garden, Bridge | 1 | 1 to 2 | 2 to 3 | 3 to 4 | 4 to 5 |
+| Sky | 2 to 3 | 3 | 3 to 4 | 4 to 5 | 5 |
 
 ### Clue ranges per board (validator limits)
 
@@ -61,8 +69,23 @@ the five bands of six puzzles (1 to 6, 7 to 12, 13 to 18, 19 to 24, 25 to 30).
 
 A chapter's mechanic count applies from that chapter on: Harbor has 0 stones, mirrors and gates;
 Garden has stones; Bridge adds mirrors; Sky adds gates and uses 2 to 5 lantern colours. Stones in
-Bridge and Sky use 60 to 100% of the Garden range for the size. Harbor, Garden and Bridge lanterns
-are all amber.
+Bridge and Sky use 60 to 100% of the Garden range for the size (implemented as low end x 0.6 rounded,
+at least 1, up to the Garden high end: 5x5 1 to 3, 6x6 2 to 5, 7x7 2 to 6, 8x8 3 to 8, 9x9 4 to 9).
+Every board of a chapter uses every mechanic of that chapter and the ones before it (each range has a
+low end of at least 1). Harbor, Garden and Bridge lanterns are all amber.
+
+Real fixed-tile (anchor) shares of the shipped campaign (task 02, share of solution tiles):
+
+| Chapter | Median | Lowest | Highest | Median anchors per board |
+|---|---|---|---|---|
+| Harbor | 31.3% | 25% | 33.3% | 7 |
+| Garden | 19% | 9.5% | 31.3% | 5 |
+| Bridge | 16.3% | 4.2% | 26.7% | 5 |
+| Sky | 12.5% | 4.2% | 25% | 4 |
+
+Harbor (lanterns only) reaches the 35% target, so the limits stay at 35% (median per chapter) and
+50% (hard limit per puzzle). The tutorial boards are 4x4 with two anchors or fewer and sit outside
+these limits. The generator's per-puzzle goal is 34% for Harbor and 35% elsewhere.
 
 ## 3. Campaign puzzles (120)
 
@@ -142,6 +165,10 @@ mirrors), Sky 01 (first gate, only amber and rose lanterns). Colours arrive in o
 jade in Sky 03 ("Jade Latch"), violet in Sky 04 ("Two Keys"), azure in Sky 05. Sky 27 ("Five
 Colours") must use all five colours.
 Chapter finale puzzles (30) must use every mechanic of their chapter.
+
+Shipped Sky colour plan (task 02): 01 and 02 amber + rose, 03 rose + jade, 04 amber + violet,
+05 jade + azure + rose; from 06 a rotating subset of 2 to 4 colours chosen by a fixed table; 27 and 30
+use all five. A puzzle always uses every colour of its set, each colour on at least one loop.
 
 ## 4. Tutorial boards (2, outside the campaign)
 

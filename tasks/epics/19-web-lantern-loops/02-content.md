@@ -1,7 +1,7 @@
 ---
 epic: 19-web-lantern-loops
 task: 02-content
-status: pending
+status: in-progress
 commit_scope: lantern-loops
 depends_on: [19-web-lantern-loops/01-core-rules]
 estimate: XL
@@ -41,38 +41,38 @@ the data against the content plan, so the plan and the code cannot drift.
 
 ## Implementation Checklist
 
-- [ ] `src/gen/rng.ts`: `createRng(seed)` with `int(n)`, `pick`, `shuffle`, `chance(p as integer percent)`;
+- [x] `src/gen/rng.ts`: `createRng(seed)` with `int(n)`, `pick`, `shuffle`, `chance(p as integer percent)`;
       unit-tested for determinism and uniform spread (chi-square sanity on 10,000 draws).
-- [ ] `src/gen/solution.ts`: random solution generator for N x N: random set of disjoint closed loops
+- [x] `src/gen/solution.ts`: random solution generator for N x N: random set of disjoint closed loops
       (loop grow by random walk closure and 2x2 ring seeds), loop count and coverage targets per size,
       deterministic for a seed.
-- [ ] `src/gen/place.ts`: choose lanterns (count in range; colours per `GenParams.colours`), stones
+- [x] `src/gen/place.ts`: choose lanterns (count in range; colours per `GenParams.colours`), stones
       (only on cells empty in the solution; number = true lit-neighbour count), mirrors on loop corners,
       gates on loop straights, ensuring clue ranges and colour rules hold for the solution.
-- [ ] `src/gen/minimise.ts`: add anchors until `isUnique`, then greedily remove anchors and redundant
+- [x] `src/gen/minimise.ts`: add anchors until `isUnique`, then greedily remove anchors and redundant
       clues in a seeded order while uniqueness holds; keep clue counts within range.
-- [ ] `src/gen/difficulty.ts`: `rate(puzzle)` returns 1..5 and raw stats.
-- [ ] `src/gen/generate.ts`: `generatePuzzle(params, seed)` returning `{ puzzle, solution, rating, stats }`;
+- [x] `src/gen/difficulty.ts`: `rate(puzzle)` returns 1..5 and raw stats.
+- [x] `src/gen/generate.ts`: `generatePuzzle(params, seed)` returning `{ puzzle, solution, rating, stats }`;
       `GenParams = { size, mechanics: { stones, mirrors, gates }, colours, lanterns: [min,max], ... }`;
       bounded retries then guaranteed fallback by pinning.
-- [ ] `scripts/generate-campaign.ts` (run with `bun run scripts/generate-campaign.ts` from the core dir;
+- [x] `scripts/generate-campaign.ts` (run with `bun run scripts/generate-campaign.ts` from the core dir;
       add the `generate` and `verify` scripts to `apps-games/lantern-loops-core/package.json`; add
       `scripts` to the core `tsconfig.json` include): writes the data files deterministically, supports
       `--only <id>` and `--verify` (re-prove all data, exit 1 on any failure) and prints a report.
-- [ ] `src/content/types.ts`: `PuzzleRecord { id, chapter, index, title, size, code, solution, rating, seed }`.
-- [ ] `src/content/campaign/{harbor,garden,bridge,sky}.ts`: the 120 records (compact codes keep each file
+- [x] `src/content/types.ts`: `PuzzleRecord { id, chapter, index, title, size, code, solution, rating, seed }`.
+- [x] `src/content/campaign/{harbor,garden,bridge,sky}.ts`: the 120 records (compact codes keep each file
       far below 800 lines). Titles and sizes exactly as in `content-plan.md`.
-- [ ] `src/content/chapters.ts`: `CHAPTERS` (id, title, blurb, mechanic, unlockStars 0/45/120/210, backdrop
+- [x] `src/content/chapters.ts`: `CHAPTERS` (id, title, blurb, mechanic, unlockStars 0/45/120/210, backdrop
       slot id) and `CAMPAIGN` helpers `getPuzzle(id)`, `chapterPuzzles(chapterId)`, `nextPuzzle(id)`,
       `PUZZLE_COUNT = 120`, `MAX_STARS = 360`.
-- [ ] `src/content/tutorials.ts`: `tutorial-1` and `tutorial-2` (4x4, unique), outside `CAMPAIGN`.
-- [ ] `src/content/validate.ts`: `validateCampaign()` returning a list of issues (empty = valid), used by
+- [x] `src/content/tutorials.ts`: `tutorial-1` and `tutorial-2` (4x4, unique), outside `CAMPAIGN`.
+- [x] `src/content/validate.ts`: `validateCampaign()` returning a list of issues (empty = valid), used by
       tests and by the script's `--verify`.
-- [ ] Run the generator, commit the data, write the evidence
+- [x] Run the generator, commit the data, write the evidence
       `.agents/resources/2026-10-23/web-games/lantern-loops/02/campaign-report.json` (per puzzle: id,
       size, rating, lanterns, stones, mirrors, gates, colours, anchors, anchor share, solver nodes) and
       `02/README.md` (command, seed scheme, summary statistics, medians per chapter).
-- [ ] Update `README.md` quick facts, `content-plan.md` and `decisions-log.md` with the real anchor
+- [x] Update `README.md` quick facts, `content-plan.md` and `decisions-log.md` with the real anchor
       shares and any limit change.
 
 ## Files Touched
@@ -86,27 +86,27 @@ the data against the content plan, so the plan and the code cannot drift.
 
 ## Acceptance Criteria
 
-- [ ] `CAMPAIGN` has exactly 120 puzzles, 30 per chapter, ids `harbor-01` to `sky-30`, titles unique and
+- [x] `CAMPAIGN` has exactly 120 puzzles, 30 per chapter, ids `harbor-01` to `sky-30`, titles unique and
       at most 24 characters; sizes per chapter match the table in `content-plan.md`.
-- [ ] A test parses the puzzle tables in `.agents/games/lantern-loops/content-plan.md` and asserts that
+- [x] A test parses the puzzle tables in `.agents/games/lantern-loops/content-plan.md` and asserts that
       every id/title/size in the data equals the plan (and the reverse), and that the chapter blurbs,
       unlock thresholds and size bands match.
-- [ ] Every puzzle: decodes and re-encodes to the same code; `validatePuzzleShape` passes; `solve` finds
+- [x] Every puzzle: decodes and re-encodes to the same code; `validatePuzzleShape` passes; `solve` finds
       exactly 1 solution (all 120 re-proven in the test run) and it equals the stored `solution`;
       `evaluate(solution).solved`; the initial board is not already solved; every loop in the solution has
       a lantern.
-- [ ] Mechanic gating holds: no stones in Harbor, no mirrors before Bridge, no gates or non-amber
+- [x] Mechanic gating holds: no stones in Harbor, no mirrors before Bridge, no gates or non-amber
       lanterns before Sky; each chapter's puzzle 1 uses its new mechanic; colour introduction order as in
       the plan; Sky 27 uses five colours; finale puzzles (30) use every mechanic of their chapter.
-- [ ] Clue counts per size are inside the ranges in `content-plan.md`; anchors <= the hard limit for every
+- [x] Clue counts per size are inside the ranges in `content-plan.md`; anchors <= the hard limit for every
       puzzle and the per-chapter median <= 35% (or the recorded raised limit).
-- [ ] Ratings are integers 1 to 5, stored equals recomputed, non-decreasing across the five bands per chapter.
-- [ ] The two tutorial boards are unique and 4x4.
-- [ ] Generator: the same seed gives the same puzzle; 200 seeded generations across all sizes and
+- [x] Ratings are integers 1 to 5, stored equals recomputed, non-decreasing across the five bands per chapter.
+- [x] The two tutorial boards are unique and 4x4.
+- [x] Generator: the same seed gives the same puzzle; 200 seeded generations across all sizes and
       mechanic sets (including all five colours) each prove unique and solved; the fallback path is
       exercised by a test that forces `attempts = 0`; no `Math.random` or clock use (architecture test).
-- [ ] `bun run generate -- --verify` (script) exits 0 and the report file exists.
-- [ ] All verification commands below pass; the full test run stays under about 120 seconds.
+- [x] `bun run generate -- --verify` (script) exits 0 and the report file exists.
+- [x] All verification commands below pass; the full test run stays under about 120 seconds.
 
 ## Verification Commands
 

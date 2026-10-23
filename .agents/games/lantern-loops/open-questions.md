@@ -16,7 +16,12 @@ task finds a new one. Kit follow-ups are listed separately because this game nev
 | Q6 | Strip `android.permission.INTERNET` from the Capacitor manifest? | Task 07 note, store submission | Owner | The app makes no requests; the default Capacitor template declares it. Verify offline-only claims in the no-data audit |
 | Q7 | Cell floor of 36 px: acceptable for 9x9 on 340 px wide phones? | Owner QA | Owner | Alternative: pinch-zoom on 9x9 boards (not in v1) |
 | Q8 | Developer account, contact email, privacy policy URL | Store submission (out of v1) | Owner | See `store-listing.md` |
-| Q9 | Real fixed-tile shares per chapter | Task 02 | Agent | Target <= 35%, hard limit 50%; record real numbers and revise the validator if Harbor needs more |
+
+## Answered
+
+| # | Question | Answer |
+|---|---|---|
+| Q9 | Real fixed-tile shares per chapter | Task 02, 2026-10-23: median 31.3% (Harbor), 19% (Garden), 16.3% (Bridge), 12.5% (Sky); highest single puzzle 33.3%. The limits stay at 35% median and 50% hard; Harbor did not need a raised limit |
 
 ## Kit follow-ups (record here, do not edit the kit)
 

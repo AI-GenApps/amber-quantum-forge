@@ -43,4 +43,7 @@ every decision or number change is updated here in the same commit as the code. 
 | QA | Agents run headless checks only; the owner does browser QA from `.agents/resources/2026-10-23/web-games/lantern-loops/qa-checklist.md` |
 | Epic | [`tasks/epics/19-web-lantern-loops`](../../../tasks/epics/19-web-lantern-loops/STATUS.md) |
 | Shared kit | [`.agents/games/web-games-kit/`](../web-games-kit/README.md) |
-| Status (2026-10-23) | Task 00 done: knowledge base and epic task files written. No code changed yet (skeleton only) |
+| Fixed tiles (anchors) | Real shares of solution tiles, median per chapter: Harbor 31.3%, Garden 19%, Bridge 16.3%, Sky 12.5%; maximum 33.3% (limits: median <= 35%, hard limit 50%, unchanged) |
+| Generator | `ll-gen-1`, seeded integer PRNG (mulberry32), campaign seed = FNV-1a of `ll-gen-1\|<puzzle id>`; the whole campaign regenerates in about 2 s with `bun run generate` in `apps-games/lantern-loops-core` |
+| Difficulty rating | 1 to 5 from solver statistics (guesses, undecided cells after propagation, board size); non-decreasing over the five bands of six puzzles |
+| Status (2026-10-23) | Tasks 00 to 02 done: knowledge base, headless rules and solver, 120 proven-unique campaign puzzles with validators. No UI yet |

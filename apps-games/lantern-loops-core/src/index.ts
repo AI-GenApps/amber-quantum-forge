@@ -2,7 +2,16 @@ export const version = "0.1.0";
 
 export * from "./board";
 export * from "./code";
+export * from "./content/analyse";
+export * from "./content/chapters";
+export * from "./content/tutorials";
+export * from "./content/types";
+export * from "./content/validate";
 export * from "./edit";
+export * from "./gen/difficulty";
+export * from "./gen/generate";
+export * from "./gen/ranges";
+export * from "./gen/rng";
 export * from "./hint";
 export * from "./history";
 export * from "./loops";
