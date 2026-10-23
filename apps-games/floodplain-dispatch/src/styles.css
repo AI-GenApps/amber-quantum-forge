@@ -363,6 +363,8 @@ h3 {
 }
 
 .fd-board-screen {
+  position: relative;
+  isolation: isolate;
   height: 100%;
   min-height: 0;
   overflow: hidden;
@@ -674,4 +676,20 @@ html[data-motion="reduced"] *::after {
   transition: none !important;
   animation: none !important;
   scroll-behavior: auto !important;
+}
+
+.fd-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.fd-backdrop__scrim {
+  position: absolute;
+  inset: 0;
 }

@@ -66,7 +66,7 @@ A privacy policy URL is still required by both stores even with no data collecte
 | App icon 512 / 1024 | `icon` art slot (opaque square) |
 | Feature graphic 1024 x 500 | `feature-graphic` art slot (landscape, no text), cropped |
 | Phone screenshots (planned 6) | Owner captures in a browser later: planning board, season playback with surge, result with 3 stars, daily screen, region select, themes |
-| Key art | `key-art` slot, used on the title screen and for promotional use |
+| Key art | `key-art` slot (rejected in the designer loop, placeholder in v1; the accepted `feature-graphic` serves promotional use) |
 
 ## Release notes (first release)
 

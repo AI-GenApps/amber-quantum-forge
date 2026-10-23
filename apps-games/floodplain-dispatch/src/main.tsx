@@ -22,6 +22,8 @@ void lifecycle.setupDisplay({ lockPortrait: true, statusBarColor: PALETTE.night 
 const services = createServices(createDefaultAdapter(), { lifecycle });
 void loadServices(services);
 
+const images: Record<string, unknown> = {};
+
 const feedback = createFeedback({ settings: services.settings });
 feedback.audio.start();
 bindAudioLifecycle(feedback.audio, lifecycle);
@@ -38,7 +40,8 @@ if (root) {
         share: shareContent,
         lifecycle,
         exitApp: () => void CapacitorApp.exitApp(),
-        preload: createPreload(),
+        images,
+        preload: createPreload({ images }),
         feedback,
       }}
     />,

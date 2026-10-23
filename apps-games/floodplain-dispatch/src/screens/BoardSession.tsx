@@ -1,4 +1,5 @@
 import { Button, IconButton, Screen, Toast } from "@web-games/kit";
+import { Backdrop } from "../art/Backdrop";
 import { playbackSummary } from "../board/a11y";
 import { Board, type DragMode } from "../board/Board";
 import { BudgetMeter } from "../board/BudgetMeter";
@@ -184,6 +185,12 @@ export function BoardSessionView({ source }: { source: SessionSource }) {
       : session.note;
   return (
     <Screen name="board" class="fd-board-screen">
+      <Backdrop
+        region={source.region}
+        scrim={session.theme.background}
+        plain={settings.highContrast}
+        {...(session.app.artManifest ? { manifest: session.app.artManifest } : {})}
+      />
       <Header title={source.title} onBack={session.requestLeave}>
         <span class="fd-coins" data-testid="coins">
           {t("homeCoins", { coins: session.profile.coins })}
@@ -211,6 +218,7 @@ export function BoardSessionView({ source }: { source: SessionSource }) {
         view={view}
         highlights={onboarding.highlightCells}
         theme={session.theme}
+        backdrop={!settings.highContrast}
         highContrast={settings.highContrast}
         reducedMotion={session.reduced}
         zoomStep={session.zoom}

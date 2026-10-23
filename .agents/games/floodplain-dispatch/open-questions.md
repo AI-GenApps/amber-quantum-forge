@@ -76,3 +76,13 @@ workaround used inside this game; the kit itself is read-only for this epic.
 - `AudioManager` exposes no per-load progress; the game counts finished `load` calls itself.
 - `createFakeAudioContext` plus `createAudioManager({ createContext, fetchBuffer })` was enough to test
   the whole engine without a browser; no kit change needed.
+
+## Task 06 notes
+
+| # | Question | Default used until answered | Owner |
+|---|---|---|---|
+| Q25 | `key-art` was rejected in the final round (canal feeders end in blunt caps at the plot edge, the fork reads as a pitchfork, flat field stickers, mismatched river ends, dashed slab edge, slab flat against the 3/4 sprites). Do we commission another round later, or ship the title screen with the code-drawn gradient and river? | Keep the placeholder; the accepted `feature-graphic` covers store promo use. | owner, later step |
+| Q26 | How much of the region backdrop should show behind the board? The scrim is 72 percent of the theme background and the canvas margin is 60 percent (`BACKDROP_SCRIM` in `src/art/Backdrop.tsx`, `BACKDROP_MARGIN_ALPHA` in `src/board/draw.ts`). Nobody has seen it (no browser in agent runs). | Keep; owner tunes the two constants at QA. | owner at QA |
+| Q27 | Designer sprites came at 1024 px (above the planned 768) and backdrops at 1024 x 1536 (below the planned 1600 x 2400). Runtime sizes are unaffected (192 and 800 x 1200); 800 x 1200 is a 22 percent downscale. | Masters stay at the delivered resolution. | none |
+| Q28 | The designer inbox manifest has no thread message id per image. Provenance uses batch and round plus the quoted verdict. | Keep. | none |
+| Q29 | Backdrop edges: the designer noted scenery only at the top and bottom corner fragments and a flat centre, so the board area shows mostly flat colour. | Keep; owner judges at QA. | owner at QA |

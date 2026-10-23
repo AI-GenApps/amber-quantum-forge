@@ -16,7 +16,11 @@ export interface DrawOptions {
   reducedMotion: boolean;
   time: number;
   images?: Readonly<Record<string, unknown>>;
+  /** A region backdrop shows behind the canvas, so the margin colour is laid over it translucent. */
+  backdrop?: boolean;
 }
+
+export const BACKDROP_MARGIN_ALPHA = 0.6 as const;
 
 export const LABEL_FONT = '"Atkinson Hyperlegible", sans-serif' as const;
 
@@ -42,6 +46,12 @@ function neighbour(view: BoardView, x: number, y: number, dir: Direction): numbe
 export function drawBackground(ctx: Draw2D, geom: Geometry, options: DrawOptions): void {
   ctx.clearRect(0, 0, geom.viewport.width, geom.viewport.height);
   ctx.fillStyle = options.theme.background;
+  if (options.backdrop) {
+    ctx.globalAlpha = BACKDROP_MARGIN_ALPHA;
+    ctx.fillRect(0, 0, geom.viewport.width, geom.viewport.height);
+    ctx.globalAlpha = 1;
+    return;
+  }
   ctx.fillRect(0, 0, geom.viewport.width, geom.viewport.height);
 }
 

@@ -194,6 +194,7 @@ export interface RigOptions {
   now?: Date;
   shareResult?: ShareResult;
   preload?: AppContextValue["preload"];
+  artManifest?: AppContextValue["artManifest"];
   feedback?: (settings: AppContextValue["settings"]) => NonNullable<AppContextValue["feedback"]>;
 }
 
@@ -240,6 +241,7 @@ export async function mountApp(options: RigOptions = {}): Promise<Rig> {
     prefersReducedMotion: () => false,
     contextFactory: () => ctx,
     ...(options.preload ? { preload: options.preload } : {}),
+    ...(options.artManifest ? { artManifest: options.artManifest } : {}),
     ...(options.feedback ? { feedback: options.feedback(services.settings) } : {}),
   };
   injectKitStyles();

@@ -1,9 +1,14 @@
+import { ART_ENTRIES } from "../art/manifest";
+
 export interface CreditEntry {
   name: string;
   licence: string;
   source: string;
   note?: string;
 }
+
+const ART_LICENCE = "Owned by the project";
+const ART_SOURCE = "MobileGamesDesigner thread";
 
 export const FONT_CREDITS: readonly CreditEntry[] = [
   {
@@ -186,5 +191,15 @@ export const AUDIO_CREDITS: readonly CreditEntry[] = [
   },
 ];
 
-/** Task 06 appends one entry per integrated art slot. */
-export const ART_CREDITS: readonly CreditEntry[] = [];
+/** One grouped entry for the integrated in-game art; empty while no slot has art. */
+export const ART_CREDITS: readonly CreditEntry[] =
+  ART_ENTRIES.length === 0
+    ? []
+    : [
+        {
+          name: "Houses, pieces, trees and region backdrops",
+          licence: ART_LICENCE,
+          source: ART_SOURCE,
+          note: `${ART_ENTRIES.length} hand-painted gouache images, reviewed before integration`,
+        },
+      ];

@@ -31,6 +31,7 @@ export interface BoardProps {
   announcement?: string;
   highlights?: readonly CellPos[];
   images?: Readonly<Record<string, unknown>>;
+  backdrop?: boolean;
   contextFactory?: (canvas: HTMLCanvasElement) => Draw2D | null;
   onPanChange: (pan: Pan) => void;
   onTap: (cell: CellPos) => void;
@@ -130,6 +131,7 @@ export function Board(props: BoardProps) {
       reducedMotion: current.reducedMotion,
       time,
       ...(current.images ? { images: current.images } : {}),
+      ...(current.backdrop ? { backdrop: true } : {}),
     });
     ctx.restore();
   };

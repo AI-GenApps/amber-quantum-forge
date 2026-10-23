@@ -381,3 +381,29 @@ and never calls `animate`; the pop ring's final frame is invisible so nothing is
   core constants in `src/data/howto.ts`.
 - Credits: one row per audio file in `src/data/credits.ts`, kept equal to `public/audio/LICENSES.md`
   by a test.
+
+## Art integration (task 06)
+
+- 19 of 20 slots accepted by the designer loop's reviews are integrated; `key-art` stays rejected
+  (final round) and keeps the code-drawn placeholder. Nothing from a rejected or unreviewed delivery
+  is committed; the build script refuses a slot without a recorded accepted verdict.
+- Runtime: sprites 192 x 192 WebP q82 with alpha (13 files), backdrops 800 x 1200 WebP q82 opaque
+  (4 files); total 153,586 bytes (budget 8 MB; 250 KB per sprite, 400 KB per 800 x 1200 file).
+  `icon` and `feature-graphic` keep only a q90 master.
+- Automated checks stand in for visual QA: exact runtime size, exact aspect, alpha channel on
+  sprites, corner and outer 3 percent border fully transparent, opaque coverage 25 to 90 percent,
+  bounding box at most 85 percent of the frame in each dimension (pixels below alpha 16, the resample
+  fringe, are ignored), opaque slots fully opaque, no animation, no EXIF. "Inside the 85 percent safe
+  area" is read as bounding box size, not margin: the delivered sprites keep an 8 percent margin and
+  the cottage and pump reach 5 to 6 percent on one side, so a margin rule would reject accepted art.
+- Two coverage minimums are lowered with a stated reason: `tree-poplar` to 10 percent (tall narrow
+  flame, 31 percent of the frame wide) and `sandbag-barrier` to 24 percent (lowest sprite, 46 percent
+  of the frame tall; master coverage is 24.98 percent).
+- The canvas draws the decoded sprite images (kept by slot id during boot) instead of the code-drawn
+  shapes; the DOM tray and any `Sprite` render `<img>`.
+- Backdrops: each board shows its region's backdrop behind the whole screen under a scrim of the
+  map theme's background colour at 72 percent opacity; the canvas lays its margin colour at 60 percent
+  opacity over it. High contrast hides the art (opaque scrim, opaque canvas margin). Daily boards use
+  the valley backdrop. A test checks light text keeps 4.5:1 on the scrim over the brightest and darkest
+  backdrop pixel for all seven map themes. Only the owner's browser QA can judge how much art shows.
+- Credits: one grouped art row (licence "Owned by the project", source "MobileGamesDesigner thread").
