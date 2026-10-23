@@ -1,0 +1,141 @@
+# Cloud Observatory — assets index
+
+Planned art slots, fonts, audio, budgets and provenance. Update the Status columns and the
+provenance tables in the same commit that changes an asset.
+
+## Art bible (what the designer thread and code both follow)
+
+Ink-and-watercolour celestial atlas: deep navy paper, gold-leaf linework, soft watercolour nebula
+washes, antique star-chart motifs; elegant, restrained, luminous. Star maps and constellation lines
+are drawn by code (SVG) in gold on navy, never baked into images.
+
+| Token | Hex | Use | Contrast on #101A33 |
+|---|---|---|---|
+| ink-950 | `#0B1226` | Deepest background, text on gold | |
+| ink-900 | `#101A33` | Page background | |
+| ink-800 | `#172445` | Surface (cards) | |
+| ink-700 | `#22335C` | Raised surface, borders | |
+| parchment | `#F3E9D2` | Primary text | 14.3:1 |
+| parchment-dim | `#C9BFA4` | Secondary text | 9.4:1 |
+| muted | `#A39E8F` | Tertiary text (large or supporting) | 6.4:1 |
+| gold-leaf | `#D8A94B` | Accent, constellation lines, primary button fill (text `#0B1226`, 8.6:1) | 8.0:1 |
+| gold-light | `#EBCB85` | Highlights, next-star ring | 11.0:1 |
+| wash-teal | `#6FB3BD` | Nebula wash, info | 7.3:1 |
+| wash-rose | `#D98BA0` | Nebula wash | 6.7:1 |
+| danger | `#F08A78` | Wrong-tap feedback, destructive confirm | 7.1:1 |
+| success | `#8FCB9B` | Charted, success | 9.2:1 |
+
+Ratios were computed with the WCAG relative-luminance formula (evidence README of task 00). Task 04
+turns these into `ThemeTokens` and a unit test recomputes them.
+
+## Fonts (OFL)
+
+| Role | Family | Source | Files to bundle | Notes |
+|---|---|---|---|---|
+| Display (titles, numbers in hero positions) | Cormorant Garamond | github.com/google/fonts `ofl/cormorantgaramond` | woff2 for weights 500 and 700 plus italic 500, Latin subset | Variable TTF subsetted with `pyftsubset --flavor=woff2` |
+| Body (UI, lore, numbers) | Manrope | github.com/google/fonts `ofl/manrope` | one variable woff2 (wght 400 to 700), Latin subset | Tabular figures feature on for counters |
+
+Bundled under `apps-games/cloud-observatory/public/fonts/<family-slug>/` with each family's
+`OFL.txt`. Budget: all woff2 combined at most 400 KB. The no-platform-fallback test from the kit
+asserts that every rendered text node resolves to Cormorant Garamond or Manrope.
+
+## Art slots (33 images)
+
+The designer thread delivers masters; the app uses WebP at 2x the display size. Masters are kept
+as WebP q90 under `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/`.
+Until a slot is accepted the app draws a tasteful code-drawn placeholder (SVG/CSS in the palette).
+
+| Batch | Slot | Shape | Alpha | Display (CSS px) | App file (2x) | Used by |
+|---|---|---|---|---|---|---|
+| B1 | icon | square | opaque | n/a (store/launcher) | not bundled; master 1024 | Capacitor icon, favicon |
+| B1 | key-art | portrait 2:3, title-safe band | opaque | 360×540 | 720×1080 | Title screen |
+| B1 | observatory-building | square | transparent | 320×320 | 640×640 | Observe tab foreground |
+| B1 | emblem-lyre | square, round emblem framing | transparent | 144×144 | 288×288 | Atlas card, journal |
+| B2 | sky-far | portrait 2:3 | opaque | full-bleed (cover) | 780×1170 | Observe/Chart background |
+| B2 | nebula-mid | portrait 2:3 | transparent | full-bleed (cover) | 780×1170 | Parallax layer |
+| B2 | horizon-hills | portrait 2:3, bottom third only | transparent | bottom-anchored | 780×1170 | Observe foreground |
+| B2 | emblem-whale | square | transparent | 144×144 | 288×288 | Atlas card |
+| B2 | emblem-archer | square | transparent | 144×144 | 288×288 | Atlas card |
+| B2 | emblem-crown | square | transparent | 144×144 | 288×288 | Atlas card |
+| B2 | emblem-serpent | square | transparent | 144×144 | 288×288 | Atlas card |
+| B2 | emblem-lantern | square | transparent | 144×144 | 288×288 | Atlas card |
+| B2 | emblem-ship | square | transparent | 144×144 | 288×288 | Atlas card |
+| B2 | emblem-fox | square | transparent | 144×144 | 288×288 | Atlas card |
+| B2 | emblem-key | square | transparent | 144×144 | 288×288 | Atlas card |
+| B2 | emblem-harp | square | transparent | 144×144 | 288×288 | Atlas card |
+| B2 | emblem-tower | square | transparent | 144×144 | 288×288 | Atlas card |
+| B2 | emblem-owl | square | transparent | 144×144 | 288×288 | Atlas card |
+| B3 | instrument-telescope | square | transparent | 112×112 | 224×224 | Build row |
+| B3 | instrument-lens | square | transparent | 112×112 | 224×224 | Build row |
+| B3 | instrument-prism | square | transparent | 112×112 | 224×224 | Build row |
+| B3 | instrument-orrery | square | transparent | 112×112 | 224×224 | Build row |
+| B3 | instrument-star-map | square | transparent | 112×112 | 224×224 | Build row |
+| B3 | instrument-beacon | square | transparent | 112×112 | 224×224 | Build row |
+| B3 | instrument-archive | square | transparent | 112×112 | 224×224 | Build row |
+| B3 | instrument-aurora-coil | square | transparent | 112×112 | 224×224 | Build row |
+| B3 | lore-1 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 1 card, journal |
+| B3 | lore-2 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 2 |
+| B3 | lore-3 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 3 |
+| B3 | lore-4 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 4 |
+| B3 | lore-5 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 5 |
+| B3 | lore-6 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 6 |
+| B3 | feature-graphic | landscape 3:2, no text | opaque | n/a (store) | not bundled; master 1536×1024 | Store feature graphic |
+
+Count: B1 4 + B2 14 + B3 15 = 33 slots (31 bundled, 2 store/launcher only). The 12 emblems share
+identical framing so the atlas grid is consistent. Vignette subjects are in `content-plan.md`
+section 5. Every slot has a stable code-drawn fallback keyed by the same name.
+
+Art budget: bundled art at most 8 MB total (estimate under 2 MB), any single file at most 600 KB;
+enforced by a test using the kit's `checkAssetBudget`.
+
+Image status (update in task 06): all slots `pending` until the designer inbox delivers and the
+review accepts them. Rejected slots keep their placeholders.
+
+## Audio (CC0 only)
+
+Planned cue list (task 05 selects files; each must come from a Kenney pack or a page that states
+CC0, with the URL and licence recorded below). No synthesized audio is ever passed off as CC0.
+
+| Id | Used for | Source candidate |
+|---|---|---|
+| gather | Tap on the sky | Kenney Interface Sounds / Digital Audio (CC0) |
+| buy | Instrument purchase | Kenney Interface Sounds (CC0) |
+| upgrade | Upgrade purchase | Kenney Interface Sounds (CC0) |
+| star-ok | Correct star in the chart | Kenney Interface Sounds / Music Jingles (CC0) |
+| star-miss | Wrong star | Kenney Interface Sounds (CC0) |
+| chart-done | Constellation complete | Kenney Music Jingles (CC0) |
+| lore | Lore entry unlocked | Kenney Interface Sounds (CC0) |
+| achievement | Achievement toast | Kenney Music Jingles (CC0) |
+| eclipse | Eclipse sequence | Kenney Sci-fi Sounds / Impact Sounds (CC0) |
+| comet | Comet done | Kenney Music Jingles (CC0) |
+| click / back | UI | Kenney UI Audio (CC0) |
+| welcome | Welcome Back sheet | Kenney Interface Sounds (CC0) |
+| music: observatory-night | Single ambient loop | A page stating CC0 (Kenney ships jingles, not long ambient loops); see open-questions |
+
+Format: decided in task 05 after checking converter availability; default MP3 for universal
+WebView support. Budget: all audio at most 2.5 MB.
+
+### Provenance (filled by tasks 05 and 06)
+
+| File | Source URL | Licence | Converted from | Date |
+|---|---|---|---|---|
+| (none yet) | | | | |
+
+### Art provenance (filled by task 06)
+
+| Slot | Designer batch / thread message | Review verdict | Master path | App path | Date |
+|---|---|---|---|---|---|
+| (none yet) | | | | | |
+
+## Where things live
+
+| What | Where |
+|---|---|
+| App source and tests | `apps-games/cloud-observatory/` |
+| Rules, content, simulator | `apps-games/cloud-observatory-core/` |
+| Fonts | `apps-games/cloud-observatory/public/fonts/` |
+| Bundled art | `apps-games/cloud-observatory/public/art/` |
+| Audio | `apps-games/cloud-observatory/public/audio/` |
+| Art masters | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/` |
+| Owner QA checklist | `.agents/resources/2026-10-23/web-games/cloud-observatory/qa-checklist.md` (task 08) |
+| Epic and task files | `tasks/epics/21-web-cloud-observatory/` |
