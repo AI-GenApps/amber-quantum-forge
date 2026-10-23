@@ -1,0 +1,5492 @@
+{
+  "generator": "ll-gen-1",
+  "start": "2026-10-23",
+  "days": 365,
+  "distinctCodes": 365,
+  "totalMs": 2319,
+  "meanMs": 6.4,
+  "slowest": {
+    "date": "2027-05-15",
+    "weekday": 6,
+    "size": 8,
+    "ms": 84.2
+  },
+  "wallMs": 4788,
+  "rows": [
+    {
+      "date": "2026-10-23",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 24.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 7
+      },
+      "code": "..La..S1..|.S1....S2.|...La....|..S1..S3..|...S3....=5|.....=5.M/M/|S1...La..La|..M\\....."
+    },
+    {
+      "date": "2026-10-24",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 7.7,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 5,
+        "gate": 2,
+        "stone": 4
+      },
+      "code": ".M/LjS2....|.Lj....S1.|.M\\Gj.S4...|...Gj....|......LjM\\|...=6.....|..LvM/..S4.|....M\\..."
+    },
+    {
+      "date": "2026-10-25",
+      "weekday": 7,
+      "size": 9,
+      "rating": 3,
+      "ms": 8.2,
+      "distinctColours": 5,
+      "clues": {
+        "lantern": 6,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": "..S1..M\\...|.....Lv...|..Gr.S1.S1..|LrS4.......|...=9..M\\.La.|Lj...Gv.=c..=a.|Gj..=c.Lv..Lb=aM\\|.M/...=3....=5|......=9.=3.."
+    },
+    {
+      "date": "2026-10-26",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 2.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "...La.|..=6...=c|...=a.=c.|...=6La.|....."
+    },
+    {
+      "date": "2026-10-27",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 7.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "...S2..|.=6...=cLa.|..=c...=c.|.La.La..|......=9|.S0S0..."
+    },
+    {
+      "date": "2026-10-28",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 8.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "...S1...|.....S1.|.S2..La..|....=c.S2La|.......|..=6..=c.S2La|......."
+    },
+    {
+      "date": "2026-10-29",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 7.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "La......|...S2.S3.|.....=a..|.S1..M/La=9.|La....S3.|...S2...|M\\......"
+    },
+    {
+      "date": "2026-10-30",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 38.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "....=a...M\\|.=5....M/M\\.|..S2..=a...|...=c.....|.....=9..=3.|..=9.LaLa=6La.S1|..S1.La...|....S1..."
+    },
+    {
+      "date": "2026-10-31",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 11.4,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": "S1....LaS1.|.Lj..=c.M/..|........|.=5..M\\.S1..|..LvGv....|..Gv.=a..Lv=c.|..=5......|....=a.M/.."
+    },
+    {
+      "date": "2026-11-01",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 15.9,
+      "distinctColours": 5,
+      "clues": {
+        "lantern": 5,
+        "mirror": 5,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": "....S2S1Lv..|.M/Lb.....=5.|...=a......|....=3...Gr.|..M/......|Gj..=6.M\\LrM/.S1|.....=5....|Lj.GaM/.....|S1..La....."
+    },
+    {
+      "date": "2026-11-02",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 2.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "La...=c.|..=c.La=5.|.....|..=5.=5..|....."
+    },
+    {
+      "date": "2026-11-03",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 0.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".S0...La|....=6..|..La=a...=5|La...=c..|S1.....|....=3.S2"
+    },
+    {
+      "date": "2026-11-04",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 5.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..S2....|...La=c...|..=5...=aLa=c.|La....=6..|..S2....|.S2.....|....S1.."
+    },
+    {
+      "date": "2026-11-05",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "....M/..|...La=a..=5.|S0.....=3.|...S3...|..S1..M\\.|.....LaLa|.....S2."
+    },
+    {
+      "date": "2026-11-06",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 3.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "La..=a.La...|La..M/La=a...|......M/S2|S2.S2.....|.....M/..|.=6...S1...|..=a......|.....S0.."
+    },
+    {
+      "date": "2026-11-07",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 2.3,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 4
+      },
+      "code": "........|..M/.Lv.=aLv.|S1.Gv...Gv.|..S1.S1...|......S2.|........|..=6..=6..M\\.|..Lv..M/Lb."
+    },
+    {
+      "date": "2026-11-08",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 7.7,
+      "distinctColours": 5,
+      "clues": {
+        "lantern": 6,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": "..Gv......|Lv..Gv....S1|M/.Lv...M/..|.......=3.Lb=9|...=9..M\\...|.Lr=9..Ga....|S3Lj.=c.La=3.S1..|.........|...M/....S0"
+    },
+    {
+      "date": "2026-11-09",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 6.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|..=5..=5.|..=5..La=c|.La..=c.|..=3..."
+    },
+    {
+      "date": "2026-11-10",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 3.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "S0..La..|...=aLa..=5|..=3....=5|....=5..|..=6La...=9|S1...S1."
+    },
+    {
+      "date": "2026-11-11",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".....S2.|..S2S3.=3..|La=5.....La|La..=3....=9|..=6...=5..|......S0|.=3...=9..."
+    },
+    {
+      "date": "2026-11-12",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".S1...=6..|....=c..S2|.La=9.LaM/M\\.|.=5......|.=5......|La.....S2|..=a..=a.=9.."
+    },
+    {
+      "date": "2026-11-13",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 38.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "....M/...|..La=6.=a...=5.|..M/.....=c|.......La|S1...=9....|.LaM/.S2S0S1.|........|...S2..La."
+    },
+    {
+      "date": "2026-11-14",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 7.8,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 5
+      },
+      "code": "S0.......|.M/Lj=c..LrS3.|.....=3Lr..|........|.S3.M/...=5.|Gr.Gr.S1.M\\.|......S2.|Lr......."
+    },
+    {
+      "date": "2026-11-15",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 17.1,
+      "distinctColours": 5,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": "........S1|..Lb=a.=a..Gj=a..|..=3..=a.=9Gj...|......Lj.=cGj|.....=a....|Lv.=c..=3La..S3.|.M\\.S2.M\\.Lr.|......M/..|M\\..S0....."
+    },
+    {
+      "date": "2026-11-16",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|..=6..=c.|...=cLa.|...La=5.|.=3...=9."
+    },
+    {
+      "date": "2026-11-17",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 1.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".La.La.S0|.S3....|....=a..|.S2La...|...S3.=3.|......"
+    },
+    {
+      "date": "2026-11-18",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 2.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "....S2..|..=9....La|...S3...|......S1|S0.La...La|...=a...=a.|......."
+    },
+    {
+      "date": "2026-11-19",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 2.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 2
+      },
+      "code": "..=a..=a...|.=5.....=6.|......M\\|LaLa=6..=c...|..S3..=cLa.|.S1....=aM/|......."
+    },
+    {
+      "date": "2026-11-20",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 25,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": ".......S0|La=5.M\\M/S3...|...S1...=c.|...S3....|.=5..La=a.S2..|..La.....|...La=a....|.=3.....M/."
+    },
+    {
+      "date": "2026-11-21",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 9.7,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 4
+      },
+      "code": ".S1..La...|S1..=a.=a..S1.|...La....|.M\\...=9...|Gj.LjM/Lr...|Gj...M\\...|..=5...=9.S1.|....=3...."
+    },
+    {
+      "date": "2026-11-22",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 9.6,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 5,
+        "gate": 3,
+        "stone": 6
+      },
+      "code": "...Lb....S0|.S2...Gb...|..Lv.....=a.|M/..S1...=c..|.=3..=5...M\\.Lj|.Lv......M/|S1...S2.GaM\\.|....La....|..M\\...Ga.S1"
+    },
+    {
+      "date": "2026-11-23",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 1.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "...=c..|La..=3..|..=5..=9.|..=3..La|....."
+    },
+    {
+      "date": "2026-11-24",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 3.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".La..La.|..S1S2.=6.|......|..=5...=a.|.La.=9...|.S1...."
+    },
+    {
+      "date": "2026-11-25",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 2.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": ".=6...S3La.|.......|..=3.La..=a.|S0......|......S2|..S2.=5La..|......S1"
+    },
+    {
+      "date": "2026-11-26",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 7.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "....S1.S1|....=a...|..La..M\\.|.S1.=6....|.....=cLa.|.M\\.....|.LaS1...S0"
+    },
+    {
+      "date": "2026-11-27",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 3.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": ".....S0..|........|S2.S1..La..|.M/..La...=c|.=5...S3.M\\.|....=aLa=a...|.M\\=cLa.....|...=9...S1."
+    },
+    {
+      "date": "2026-11-28",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 2.9,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 4
+      },
+      "code": "..Lr=a.....|S1M\\...=c.M/La|.Lr.....=c.|S1.Gr.....|..Gj.S3..=c.|........|LjM/.=5....S1|........"
+    },
+    {
+      "date": "2026-11-29",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 6.6,
+      "distinctColours": 5,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": ".Lj=a.....=c..|..M\\.GvLv...|M\\.=a.M/.Gv...|........=6.|.......Gb.|..S1S1S1....|.....=aLa...|M\\.....=6.Lb.|..LrS3.....=9"
+    },
+    {
+      "date": "2026-11-30",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 5.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".=6..La=a.|...La.|.=5..=3..|..=a..=9.|....."
+    },
+    {
+      "date": "2026-12-01",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 0.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "..La...|..S1.S3.|......|..La..La|S2....S1|S0....."
+    },
+    {
+      "date": "2026-12-02",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 4.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "S2...=a...|.....=3.=a.|.=5......|.La.=c.S2..|..=6..S2..|S1...La=c..|.La....."
+    },
+    {
+      "date": "2026-12-03",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 2.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "...S0..S1|....La..|....=aLa..|..=a.....|M\\....S1.|..=9.....|...LaM\\.."
+    },
+    {
+      "date": "2026-12-04",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 4.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "...=a..=a.=a..|.=5.......=5|.M/.M\\....|..=3..=3La...|....La.S1La|..S1.....|La...S1...|M\\......=a."
+    },
+    {
+      "date": "2026-12-05",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 3.2,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 4
+      },
+      "code": ".....=a.LjLj|..=5.GjLj...|.M\\.M/..Gj.|.=6..La...S2|...S4..M/.|..S3.....|..=6......|....S0..."
+    },
+    {
+      "date": "2026-12-06",
+      "weekday": 7,
+      "size": 9,
+      "rating": 3,
+      "ms": 3.4,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 7
+      },
+      "code": ".........|Lv.M\\M\\M/LvS1..|S1..M/.....|...Gv.S2...|...S2.....|....Gj..=3.S1|.S2..=c..Lj..|S1.....Gb.=a.|..Lr.Lb...."
+    },
+    {
+      "date": "2026-12-07",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 2.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|..=3..=aLa|.=5..La.|....=5.|..=a..=9."
+    },
+    {
+      "date": "2026-12-08",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 2.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".....=c.|S1LaS3...|..La=c...=5|......|..=6....|La...=a.S2"
+    },
+    {
+      "date": "2026-12-09",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 6.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".S0.S2...=c|.......|..=c...=5..=c|La.La..=9..|.......|S1La.=9..=cS3.|......."
+    },
+    {
+      "date": "2026-12-10",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 18.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "..=6.....|...=6..M/.|..=6....S2|.=3...LaS2.|....=a...|..La.S1..|.M\\La...."
+    },
+    {
+      "date": "2026-12-11",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 5.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "..=a....=a..|..S3..=9...=5|........|.S3...LaLa=c.|..=6..=a...M/|.La...=3M/..|..=9....LaM/|S1......."
+    },
+    {
+      "date": "2026-12-12",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 1.8,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 7
+      },
+      "code": "..Lb.....|Gb.M\\...M\\Lv|LbS2S3..S1..|.=5....S2..|....S2.Lb.|..S0S1...=5.|.......M\\|.....Gb.."
+    },
+    {
+      "date": "2026-12-13",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 4.8,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 7
+      },
+      "code": ".........|S0..Gb....=cS2|...M\\.M/...|...GbLb..Lv.|S1LjM\\.M/S3S1..|.........|..=5..LaGa...|.....=c..S1.|..S1..La..."
+    },
+    {
+      "date": "2026-12-14",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 0.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".LaLa..|..=9..=9.|.=5..=5..|.....|..=a..=9."
+    },
+    {
+      "date": "2026-12-15",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 2.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".S0....|.S1.La=c..|..La..=a.|......|.=3..S3La=5.|......"
+    },
+    {
+      "date": "2026-12-16",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 1.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "....=6.S1.|.....S2.|.......|..S1.=5...=9|S1.....=3.|..LaLa=9...|..La...=a."
+    },
+    {
+      "date": "2026-12-17",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 1.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "...S1...|..=5..S1..|.......|.M/M\\..S2.|.=5...La.=c.|..La.=a...|La.=a...S1."
+    },
+    {
+      "date": "2026-12-18",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 13.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..=a......|.=5...=c..S2.|..=5.La....|....=3La.S1.|..M\\.....|........|.M\\La.S1S1..|M\\....La.."
+    },
+    {
+      "date": "2026-12-19",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 6.5,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": "...M\\...S0|.S1......|.....=5S2.Lj|.LbLv.....|..M\\GvGv..=5.|..Lb.=3..M\\.|..=a......|........"
+    },
+    {
+      "date": "2026-12-20",
+      "weekday": 7,
+      "size": 9,
+      "rating": 3,
+      "ms": 6,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": ".........=c|.=5..=6...=cM/..|..Gj..Lr.S2.|.Lj....Lr..|Gj.LrM\\S2....|.M/M\\......|....GaS3..=c.|..S0......=c|......La.."
+    },
+    {
+      "date": "2026-12-21",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 6.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".=6....|.La..=c.|.=3.La=c..|...=5.=5.|....."
+    },
+    {
+      "date": "2026-12-22",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 1.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "..S1...|......=5|.S1..=3La.|..La=5..=6.|S0.....|...=3..La"
+    },
+    {
+      "date": "2026-12-23",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 10.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "S1.....La|......La|La.=5.S1S0..|...S1...|..=3....=9.|.S3....=a.|......."
+    },
+    {
+      "date": "2026-12-24",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".......|...M/La.=a.|S1..=aLa...|....=6..M\\|...=a..S4.|.......|La.S1.S1.."
+    },
+    {
+      "date": "2026-12-25",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 2.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 6
+      },
+      "code": "M/...La.La.|........|.S1.S1S1.S1.|........|..=6..M\\LaS2.|...S3....|..=3..M/...|...=a.La.=a..=9"
+    },
+    {
+      "date": "2026-12-26",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 3,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 5
+      },
+      "code": "M/.M\\.....|........|...=a.S2...|...S4Lj.S2.|.=5.GaLj...S1|La.Ga..=c...|........|.M/..=3Lj.S1."
+    },
+    {
+      "date": "2026-12-27",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 6.4,
+      "distinctColours": 5,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": ".M\\M/Gb.....|...Lb..M/Gj.|.Lv..=6.=9...=6.|..=9S3......|.Lr..LaS4Lj.=9.|.....M\\...|.S2Gr......|.....=9S2...|........."
+    },
+    {
+      "date": "2026-12-28",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 11.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".=6....|.La=3.La=6.|..=c..=3.|...=9..|....."
+    },
+    {
+      "date": "2026-12-29",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 0.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "....La.|..S2...=5|.La=6.S2..|...La..|.S1...=9.|.....S0"
+    },
+    {
+      "date": "2026-12-30",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 4.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 6
+      },
+      "code": "..S1S2...|.S1...LaS2|..La.S4..|..=6.=9....|...La...|...=3..=3..=9|..S1...."
+    },
+    {
+      "date": "2026-12-31",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 9.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 2
+      },
+      "code": "...=a....|.=5...=6.M\\.|.La...La.|...=6.La=3..|S1...M/..|..S1....|......=a."
+    },
+    {
+      "date": "2027-01-01",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 18.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": ".La..LaS1..|........|.S1S1.....|.S2M/..=aM/..|....=a..M\\.|.S2La...=aLa.|.....=a...=c|........"
+    },
+    {
+      "date": "2027-01-02",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 3.7,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 4
+      },
+      "code": "........|...S1....|.......S0|...=5M\\.=9.S1.|...LbLb...|.Gv......|....LvLjGj.|M\\..S1.M\\.=a."
+    },
+    {
+      "date": "2027-01-03",
+      "weekday": 7,
+      "size": 9,
+      "rating": 3,
+      "ms": 16.2,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": ".LrS2...S1..|...=c..M/...|.......M\\S1|..=3.=c..Lv=5...|.=3........|..M/..=c..=9GbGb|.LjLj=9..=5..=a.Lb|S1..=c......|....M/.Gb.=a."
+    },
+    {
+      "date": "2027-01-04",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 0.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|.La=5.=5..|.=6...=a.|....La|..=a..=a."
+    },
+    {
+      "date": "2027-01-05",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 0.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "S1.....=c|..S4...|....S4.|La.=6....|...La=3La.|S1....."
+    },
+    {
+      "date": "2027-01-06",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 2.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".....=6..|S0S1..=c..S2|S0......|.La...La.=5|.....=3..|.=6..=9...La|.....=a.=a."
+    },
+    {
+      "date": "2027-01-07",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 2.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "..La....|.S2...=9.=5.|.......|..S1.M\\..|.....=3..|..S1.M/.=9.|LaLa....."
+    },
+    {
+      "date": "2027-01-08",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 6.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "...=c..=a..=6.|.=6..La..=5..|......La.|.M/=9..=5....|M/...=9..S1.|M\\....S0S1.|.La=5......|.La..=a...."
+    },
+    {
+      "date": "2027-01-09",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 46.3,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": "..M\\.....|.....S1..|.S4Gb.....|.....=6.M\\.|........|LbLb.=5....Ga|.S2Lj.M/=6...|....=a..La."
+    },
+    {
+      "date": "2027-01-10",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 7.8,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 5
+      },
+      "code": ".Lv...M\\...|.Lv=c.Lb.....|..=5...M/...=c|....=9.M/...|.S2....S2..|..=6.GrLr..LaGa|...Gr.S2...|.M\\=3....S1S1.|........."
+    },
+    {
+      "date": "2027-01-11",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 13.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "..=6...|....=a.|.La..=6.|.=3La=c...|....=9."
+    },
+    {
+      "date": "2027-01-12",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 2.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "S2...S1.|......|...La=6.La|.La=9..S2.|.S1....|......"
+    },
+    {
+      "date": "2027-01-13",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 4.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "..=c...S2.|...=9.La..|..S2...=9S1|....La..|..S2..=9.La|.......|.=3..=9.=3..S1"
+    },
+    {
+      "date": "2027-01-14",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 4.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 2
+      },
+      "code": "....S2..|.=5...=3La..=c|..S2....|.=5...La=3M/.|...=3....|La=3..M/...|...=9...."
+    },
+    {
+      "date": "2027-01-15",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 2.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "........|.....S1..|..=a...LaM/.|....=9..La.|..S2..M\\.La=5|.....S1..|...S2....|.M\\.....La"
+    },
+    {
+      "date": "2027-01-16",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 28.6,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 3,
+        "stone": 5
+      },
+      "code": "......S1.|LjM\\..S1..S1|..S1.....|.Gj....Gb.|..M\\..=a...|....Lb..Lb=5|.=3.......|.M\\Lj.Gj..S1"
+    },
+    {
+      "date": "2027-01-17",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 10.5,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 7
+      },
+      "code": ".........|Lr.=5..=3La=a....|.....Ga...|..S3S2.M/...|..M\\......=c|S1.La...S1GbLb|.GaS3.M/....|.La..S2....|M\\......S0."
+    },
+    {
+      "date": "2027-01-18",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".La.=c..|..=5La..=c|.....|.=3..=c.=5.|....."
+    },
+    {
+      "date": "2027-01-19",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 1.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "....=c..|S0.....|.La...S1|La.S3..La|....S3.|.=3....."
+    },
+    {
+      "date": "2027-01-20",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 4.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "S1....La.|.......|...=5S2.S1.|.......|.S1..=a...|....La=3..|.....La."
+    },
+    {
+      "date": "2027-01-21",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "...M\\.=6..=c|M/La.....|...=9....=5|....S1..|M/..=aLa..La|.....S2.|..S2...."
+    },
+    {
+      "date": "2027-01-22",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 4.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "....=c....|.=6..=9.....|.=5...=6M/..S0|.....=c...|.=5....La=9..|LaLa=c.La=6.=c..M/|......M\\S2|.=3...=a...S1"
+    },
+    {
+      "date": "2027-01-23",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 12.8,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 3,
+        "stone": 3
+      },
+      "code": "...M/.S2..|...Gr...=c.|.....=3...|..Lr=3...Lr.|...=c..=a..=a.|.=6..Gb.M\\..|Lb.S3..M\\..|.Lb.Gb...S1"
+    },
+    {
+      "date": "2027-01-24",
+      "weekday": 7,
+      "size": 9,
+      "rating": 3,
+      "ms": 3.6,
+      "distinctColours": 5,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 6
+      },
+      "code": "....Gb...Lj|.Lb=3.Gb.....|...M/Lv.M\\.S3|.........|S0.S1.Gv..Lr=9.|...=c....M/.|La........|...=9.S0....|M\\.....S1.S0"
+    },
+    {
+      "date": "2027-01-25",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 1.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "..La..|...=3.=9.|..=6...|.=6..=3..=c|....La"
+    },
+    {
+      "date": "2027-01-26",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 3.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "..=c....|La.S2...|.La=5..S1.|....S1.|La.=6..=5..|......"
+    },
+    {
+      "date": "2027-01-27",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 3.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "..=a.La...|....S3.=5.|..=6.=c....|.....S1.|La.La=5.S1..|S1......|...S1..."
+    },
+    {
+      "date": "2027-01-28",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 3.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..S1....|...La.S0.|S1M\\.....|...M\\..=c.|...=5La...|...M\\.=a.La|.S1....."
+    },
+    {
+      "date": "2027-01-29",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "........|M/...=6.S2..|...=a.S2...|..M/...S1.|.LaLa.....|La.M/.=9.=3La..|S2.......|.....=a..S2"
+    },
+    {
+      "date": "2027-01-30",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 2.2,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 4,
+        "gate": 2,
+        "stone": 4
+      },
+      "code": "........|.....S1..=c|S1.......|.M\\S2....La|...=a.Lb.=5..|Lb....M\\.La|...M\\Gb...|S2..Gb..M\\."
+    },
+    {
+      "date": "2027-01-31",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 9.1,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 6
+      },
+      "code": "La.Ga......|...=6..=9..S3.|.=5.....Ga.La|.=3.La.=5.M/.Lb.|......M\\.S2|.=6.S3.M/...M\\|..Lr....=aGb.|.........|.S1.S0S0...."
+    },
+    {
+      "date": "2027-02-01",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 2.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "...=6..|....=5.|..=cLa..|La.=9..=3.|....."
+    },
+    {
+      "date": "2027-02-02",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 0.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".....S0|..La.=c..|..La=5..La|S2.....|...S2S3.|......"
+    },
+    {
+      "date": "2027-02-03",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 7.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "....S1..|.=5......|...=9.S1..|.=5..=6..S1.|..La.=a...|.=5.La....|.La=a...=a.S2"
+    },
+    {
+      "date": "2027-02-04",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 1.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 2
+      },
+      "code": ".......|.M/.....|.La=5LaS1...|.......|M/..=3..=a..=c|...LaS4..|..=3....."
+    },
+    {
+      "date": "2027-02-05",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 2.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..S2La..LaM\\|........=5|.La=a...S1La.|..=c.=5...M\\.|......S2.|..=a......|...S2....|..M\\....=a."
+    },
+    {
+      "date": "2027-02-06",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 2.6,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 5
+      },
+      "code": ".....S2..|S2..S3.Lv..|.....M\\LvGv|..Gr..=6..=5.|.Lr......|..S0.Lv.M/.|.....M\\..|......S1."
+    },
+    {
+      "date": "2027-02-07",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 4.7,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 5
+      },
+      "code": ".........|...M/.Gj..Gj|.S0....LjS3.|...S1.....|.....M\\S4.Lj|.LbM/......|..=5...=3.=aM\\.Gv|.........|...S1..=3.LvLv"
+    },
+    {
+      "date": "2027-02-08",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 0.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|..=6..=9.|...=6.La|..=3.La=3.|....."
+    },
+    {
+      "date": "2027-02-09",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 1.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "......=c|..S1...|..La=a.La.|S2.....|...S2..=9|....La."
+    },
+    {
+      "date": "2027-02-10",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 2.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "....=6...=c|...=6....|..=6.S4...=c|......La|...=3.La..|La......=9|.S1.S0S0.."
+    },
+    {
+      "date": "2027-02-11",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 3.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "....S2La.|...S2...|.......|S1M\\La.S1..|......La|.M/=6...=c..=5|......."
+    },
+    {
+      "date": "2027-02-12",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 3.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".......S0|..S1.=6....|....LaLa..|.M\\.M/.M/S2.|..=5..La...|....=6...=a.|La.=c......|.....=9..."
+    },
+    {
+      "date": "2027-02-13",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 4.3,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 3,
+        "stone": 3
+      },
+      "code": "......S1.|S0..M\\....|..Lj.Gr.M\\Lr|...=9....=6.|.=3.Lj.Gr...|...=3.....|...Lb..M/Gb|.S1......"
+    },
+    {
+      "date": "2027-02-14",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 10.7,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 4,
+        "stone": 4
+      },
+      "code": ".....Gj..=a.|...=3Lj.=c....|.....LjM/..|....LbS4M\\..|....=3...Gb.|..S2....Gb.|.S2.......|....M/....|S1.LrGr..M\\.Lb"
+    },
+    {
+      "date": "2027-02-15",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|..=6..=a.|..=3...|.La.=5.La=5|La...."
+    },
+    {
+      "date": "2027-02-16",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".=6La.=aLa..|....S1.|.=5...=5S1.|......|..S2..=a.|..La..."
+    },
+    {
+      "date": "2027-02-17",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 6.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": ".......|.S3La....|La....=3.S2|...La...|...S2.S0.|..=5S2....|......."
+    },
+    {
+      "date": "2027-02-18",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 2.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "S1......|...=6...S2|.M/....=a.|.=5...=6.La.|....La.=c.|.=5..S2...|.La.=a..M/."
+    },
+    {
+      "date": "2027-02-19",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 10.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".....S3..|La=5M/......|..La=9S2..La=6.|....=c....|..=6.....=5.|..=5.La....|....=3M\\..=aM\\|S0......."
+    },
+    {
+      "date": "2027-02-20",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 5.9,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 4,
+        "gate": 4,
+        "stone": 4
+      },
+      "code": "...=6.=c....|M/...Gv.LjGj|Lv..Gv....|.M/..S3..M\\|S2....=6...|.Gr....M\\.|.=3.Lr=9.....|....S1Lv.S2"
+    },
+    {
+      "date": "2027-02-21",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 11.2,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": ".........|.=6..Lv=9.....|Gr.......M\\|Lr..=a.M/.S1..|S1......LjGj|....=cS2...Gj|.S2..=3.M\\..=5.|.Lr=a.......=9|..Lr.=a..M/.."
+    },
+    {
+      "date": "2027-02-22",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 4.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|..=6...|...=3..|.La..=3.|..=a.La."
+    },
+    {
+      "date": "2027-02-23",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 2.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "S0.....|...=9..=3La|S1..=a...|S1...=9..=9|.La.=c.La.|.....=9."
+    },
+    {
+      "date": "2027-02-24",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 6.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".......|.S1S2La.=a..=c|S2....La.|....S2..|..=a.=9La...=9|.......|....=3..=9."
+    },
+    {
+      "date": "2027-02-25",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 13.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".......|..LaM\\.=c..|S1M\\....S0|..La.=3...|......=a.|..S1....|.....=a.La"
+    },
+    {
+      "date": "2027-02-26",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 5.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".....=a..=a.|.=5..=6....La|.....=5...|...M\\La.S1.|.S1....S1.|...LaS1...|...M/....|M\\.La....=a."
+    },
+    {
+      "date": "2027-02-27",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 4.1,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": "........|..=c..Lv=6...|Gb...=6.Lv..|Lb.M/...M/.|...=c..S2..|.=5......S0|.GaLa.....|...M/S1..."
+    },
+    {
+      "date": "2027-02-28",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 26.6,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 7
+      },
+      "code": "....S0....|.....M/..=5.|.....La...|........S1|..=a....S1..|LjLj.S3M/Lr.Gb.|..S3M/...Gb.|...M\\...=5.Gb|..S1S1....Lb"
+    },
+    {
+      "date": "2027-03-01",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 0.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "..=6...|....=9.|..=5...=5|...=c..|...LaLa"
+    },
+    {
+      "date": "2027-03-02",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 2.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".=6..=c...|....=a.=a.|......=5|.S2La=6...|.S3La...|...S3.La"
+    },
+    {
+      "date": "2027-03-03",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 13.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".S1.S1S0..|...=6....|.....S1.|.La=c.....|...La=3.=a..=5|.=3.....La=5|...=3..=a.."
+    },
+    {
+      "date": "2027-03-04",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 8.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".....=6..=c|..=5...La.|.La..=aLa=9..|.=5.....=5.|..S1....|..S1...S1|M\\...M/.."
+    },
+    {
+      "date": "2027-03-05",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 5.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 4,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "...=6.La.La=a.|...S3....|...=3...=6..|.M/..=a.La..=5|......=c..|.S2M\\M\\...S2|...M/..=3..|...La...."
+    },
+    {
+      "date": "2027-03-06",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 4.6,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 5
+      },
+      "code": "..S0..Lj.M\\|.S0....=9..|...M\\Lj..M/|...=a.....|....=aGb.=9..|S2Lb...Lr..|...Gr...S1|...=3...S2."
+    },
+    {
+      "date": "2027-03-07",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 9.1,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 6
+      },
+      "code": ".S1S2..=a..S1.|.........|...=3.Lr=a..=9.S1|.........|M\\Lb...Gb..=c.|.La.......|M\\Ga...=6..S1.|M/.LaGaM/....|Lj...S1...."
+    },
+    {
+      "date": "2027-03-08",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 4.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".La...|..=3..=c.|..=c...|...La=5.|..=3..."
+    },
+    {
+      "date": "2027-03-09",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 2.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".La..=a..|.La=6..S2.|.=3..=5..La|......|....=5.S2|.S0...."
+    },
+    {
+      "date": "2027-03-10",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 1.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "......La|..S2..=9..=5|...S1...|.=5.....=3.|....La..|La.=6..=c..S1|......S0"
+    },
+    {
+      "date": "2027-03-11",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 13.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "....S1..|La.M\\....|..=5...M/S2|..S3....|....=6La..=9|.......|..=9.LaS1.."
+    },
+    {
+      "date": "2027-03-12",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 5.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "....La.=c.M\\|...=9La....|..=5...S1..|.M\\La.....|S1..S2....|..M\\...=9La.=9|........|...S1...."
+    },
+    {
+      "date": "2027-03-13",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 4.9,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 6
+      },
+      "code": "....=6....|.....S2.Lj|..M\\..S2S1.|S1.S3Gv....|...Lv....|Lj.=a.....M\\|....M/.S3Gb|...Lb=3...."
+    },
+    {
+      "date": "2027-03-14",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 6.6,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": "..M\\......|..=5.M\\..=a.S1.|.Lv.......|....Lj....|...=5LbS4Lj..S1|....LaGa.=c..|..=3..Ga..M\\.|.S2.=5.Ga..M/.|......=9..."
+    },
+    {
+      "date": "2027-03-15",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 6.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "...=a.La|.=5....|..La=a..|..=9...=9|....."
+    },
+    {
+      "date": "2027-03-16",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 0.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "LaLa....=c|..S1...|..S1...|...La=5..|..=6...=3.|...S1.."
+    },
+    {
+      "date": "2027-03-17",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 2.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..La.=a...|.S2S2La..=c.|.......|...La..=5.|.=5..S2...|.=5....S3.|...=a...."
+    },
+    {
+      "date": "2027-03-18",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 1.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".....S1.|...S2..=c.|.......|....=c..=3.|.S1.....|.M/.M/..=aLa|...La..La"
+    },
+    {
+      "date": "2027-03-19",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 16.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "S1.......=c|...S3.S2..|La.=a..M\\...|..=a......|...=5..=3.S3.|..M\\..La..|....La=c..=3La=9|...M\\...."
+    },
+    {
+      "date": "2027-03-20",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 7.2,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": "...Gv....|.S4..Gv.=9..|Lv....Lr.M\\|..=9S2.Lr.M/=9.|....Lr...|......=6..=9|...S1.M/..|........"
+    },
+    {
+      "date": "2027-03-21",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 6.5,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 5
+      },
+      "code": "..Lj.....=6.|..=3..S1..=a..|.Gr..S1..La.|Gr....S1..M/|..M\\.....=c.|GrLrM/..LrLr..|M\\....=3....|....S2..=a.S1|........."
+    },
+    {
+      "date": "2027-03-22",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 5.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "..=a..=c.|....La|.=5...=c.|.La=a..=3.|....."
+    },
+    {
+      "date": "2027-03-23",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 1.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "...=a...|.La....|.La.S3.=5.|S3.....|......|La.S2..S0"
+    },
+    {
+      "date": "2027-03-24",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 9.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".......=c|S1.S1.La=c..|......=9.|.....S2.|.=3..=6..S1.|......La|..=3.La..."
+    },
+    {
+      "date": "2027-03-25",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 4.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "....S2..|.M\\...=c..|..M/....|.S2La=3..=a.S1|..La..La.|...S2...|..=a....."
+    },
+    {
+      "date": "2027-03-26",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 5.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 6
+      },
+      "code": ".La.....M\\|..S1...S2La|....S1...|.....=a.S3La|.=5.....M\\.|.=5.S3La=6..M/.|....S3...|...=a.....=9"
+    },
+    {
+      "date": "2027-03-27",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 9.1,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 5
+      },
+      "code": "....=c..=c..|Gj..=9.....|...LjLj=a...|..S2Lj..S1.|.....Gv.S1|..Lv.....|.S2M\\M\\.M\\..|.......S2"
+    },
+    {
+      "date": "2027-03-28",
+      "weekday": 7,
+      "size": 9,
+      "rating": 3,
+      "ms": 5.5,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 4,
+        "stone": 6
+      },
+      "code": ".S0.S0.....|.......S4.|.....S2La..|M/.M\\....LaS2|...GbS1...=c.|..Lb...Gj..|.GaGb.....M/|La..=3...=a.=9..|..=9....LjM/."
+    },
+    {
+      "date": "2027-03-29",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 0.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....=c|...=9La.|..=5...|.La=5...=9|...=9.."
+    },
+    {
+      "date": "2027-03-30",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 1.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "S2.....|..S3...=5|La=3..=c...|..La...|.La.=c..S2|..=3...S1"
+    },
+    {
+      "date": "2027-03-31",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 5.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "......=6.|......La|.S1.S1S2..=5|..=6.....|...=3.S2..|..=5.....|....=aLa.La"
+    },
+    {
+      "date": "2027-04-01",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 12.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".......|.S3...=c..|.La.....|..=6.LaM/..=c|S1...S4La.|...=9.M\\..|......S0"
+    },
+    {
+      "date": "2027-04-02",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 2.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "..S1.....|......=3..|.La=6.....=9.|...M\\....|.S2.M\\LaS1..|..S2.....|..=6.M\\..S0.|..LaLa...."
+    },
+    {
+      "date": "2027-04-03",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 3.3,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": "......Gv.|.....=9.S2.|........|..S1Lv.=a...|LjLjS1....M/|......=a..|.M\\...Lj.M\\|...=a..=a.Gj."
+    },
+    {
+      "date": "2027-04-04",
+      "weekday": 7,
+      "size": 9,
+      "rating": 3,
+      "ms": 5.5,
+      "distinctColours": 5,
+      "clues": {
+        "lantern": 6,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": "...S1..M/Lj.|....M/LrM\\.=9.|.Lb.=6......|..=a...=3..S0S0|.....=6....|.=6....Lv.S2.|Ga..=c.Gv.=5...|Ga.=6...=3....=c|M\\La....Lv.."
+    },
+    {
+      "date": "2027-04-05",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 12.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".La=6...|....=3La|..=9...=9|..=a...|....=9."
+    },
+    {
+      "date": "2027-04-06",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 1.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": ".=6..=aLa..|......|..S3..S3|.La..La.|..S2S2..=9|..S0..."
+    },
+    {
+      "date": "2027-04-07",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 1.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "..S3...S0|.La....S1|..=6.....|....=a..S0|.S3.....|.=5.=6..La=3.=c.|....=a.La."
+    },
+    {
+      "date": "2027-04-08",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 7.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 2
+      },
+      "code": "M/....=a.La|..La=6....|La=5.....=9.|.......|..S0.S0..|.......|M\\......=9"
+    },
+    {
+      "date": "2027-04-09",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 25.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "..M\\S3..=a..|.S3....La.|La...=9...=a.|....=6...S2|..=6La..=3.M/.|.La.=9.....|.....=5...|..=a.=a.M/..."
+    },
+    {
+      "date": "2027-04-10",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 36.2,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 4,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": "......LvM\\|.....=c..=3.|.S3..=5....|..LjLv.M/.=5.|S2...GvGv..|..=5..=c....|.M/...M\\.S0|...La...."
+    },
+    {
+      "date": "2027-04-11",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 25.3,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": ".......S2.|....=5..=aLrLa.|....Gr....=9|..S2......|M/.Lr.=aM\\....|Lj........|.GjGr...=9...|.M/.M/.....|...S2Lb.S1.."
+    },
+    {
+      "date": "2027-04-12",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 9.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "....=c.|.=6.La..|La.=3...|....=c.|..=a.=a.."
+    },
+    {
+      "date": "2027-04-13",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 0.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "..S0S2..|.S1....|....S3.|.LaLa=a...|..S2...|..La..=a."
+    },
+    {
+      "date": "2027-04-14",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..=a.....=c|...S2...|.=5..La...|...=9..S1.|.=5...=9S1..|..=3...S2.|.....LaLa"
+    },
+    {
+      "date": "2027-04-15",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".S2..=a...|......=6.|.M\\M\\.=6La..|.....=5.=5.|..=9.....|.S4....=c.|..LaS3.La."
+    },
+    {
+      "date": "2027-04-16",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "S1..La..S0.|....=3.=9...|........|...=9...=aLa.|.=5..S1.M/.=9.|........|.=5..S1S2.M/.|.La..LaM/.."
+    },
+    {
+      "date": "2027-04-17",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 4.8,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": "........|Gj..=9.....|.LjM\\..=cS2S0.|...Gb....|...=6.....|......=a..=c|..M\\.M/.=cLb.|.S1.Lb..Lb."
+    },
+    {
+      "date": "2027-04-18",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 17.9,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": "..=aLj...=c...|..LjGj.....|.S3.Lr.=c....|..M/M/.....|.....M/...|S1Lb....=5...|..Gb...LvS2.|...S1.....|.GbM/.....=9."
+    },
+    {
+      "date": "2027-04-19",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 3.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|.=6..=6..=c|.....|La=3La.=a..|....=3."
+    },
+    {
+      "date": "2027-04-20",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 5.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": ".S1....|....=c..|S1La..S3.|..S3...|..=3..La.|..La.=a.S1"
+    },
+    {
+      "date": "2027-04-21",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 4.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "S1S2La...S0|....=6...|......=a.|..S1....|...La.=3..|La=3....=c..|...=9...S1"
+    },
+    {
+      "date": "2027-04-22",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 2.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 2
+      },
+      "code": "...La...|S1.=6...=5..|....=9M\\..|......=5.|LaM/..M/La.|.....=5..|..=3..=a.S1."
+    },
+    {
+      "date": "2027-04-23",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 13.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".La...S2..|.S3...La=a..|........=c|LaM/.=5.....=5|...M/..=c..|...=5La...=6.|...=3.M\\.=a..|S0......."
+    },
+    {
+      "date": "2027-04-24",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 3.5,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 3,
+        "stone": 3
+      },
+      "code": "S1...Lj..=a.|M/Lb...M\\Lv.|..=9.=5Gj....|..M\\..Gj..|..S1...=6.Lj|......Gj.=9|S0.......|........"
+    },
+    {
+      "date": "2027-04-25",
+      "weekday": 7,
+      "size": 9,
+      "rating": 3,
+      "ms": 5.3,
+      "distinctColours": 5,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 6
+      },
+      "code": "....=c....=6.|.=6.M/.S3.Gr..|.Lj..=6.....|.M/...Lr..Gv|.La=a...=3.M/Lv.|.=3....S3.GvM/|...S2.....|........S0|.S0..S1Lb..."
+    },
+    {
+      "date": "2027-04-26",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 8.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "...La.|...=c..=9|..=9La..|...=3..|..=a..=9."
+    },
+    {
+      "date": "2027-04-27",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 0.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "......|.=3La.S2..|..S3...|..La...|S1.=5.S3..|..La.S1."
+    },
+    {
+      "date": "2027-04-28",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 3.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".S1..S1.S0|.......|S2La.=9....|...La..=c.|....=3.=9..|..=3.....=9|..La..=a.."
+    },
+    {
+      "date": "2027-04-29",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "......S0|..=3..La..|.=6...=9M\\LaS2|..La....|..=9..=cM/..|....=5..S2|......."
+    },
+    {
+      "date": "2027-04-30",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 4.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 4,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "......=c..|.M\\.=a.....|....=5.M/M/.|....=3..M/.|S0.La..=5La..|S1......=9.|........|..S2.La.=a.La"
+    },
+    {
+      "date": "2027-05-01",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 15.6,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 4,
+        "stone": 3
+      },
+      "code": "S0..Lr=a....|.....Gr.M\\|.M\\..=a..=3..|Gb..=6..M\\.Gr|........|...S3....|.=5...Lb=aGb..|.Lb.=aLb...S0"
+    },
+    {
+      "date": "2027-05-02",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 16,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 4,
+        "stone": 4
+      },
+      "code": ".Lr......S1|..=3.=9....M/.|..M/....=6.Lj|.=6....=c....=9|Lv..Gv...=3..|...S3.....|S2.....=cGbGb.|..GbLb.....|...S1..M\\LbM/"
+    },
+    {
+      "date": "2027-05-03",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 0.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|.=6..=a.=c.|.La...|.=5...=9.|.La..."
+    },
+    {
+      "date": "2027-05-04",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 4.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "......|La.=9.=3.=a..|...La.=9.|....=5..|S1.S4...|..La..S1"
+    },
+    {
+      "date": "2027-05-05",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 1.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..=a.....|.La..=a...=5|..=3..La..|.....S1.|.S1S0.S0..|.......|......La"
+    },
+    {
+      "date": "2027-05-06",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 2.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".....La.|.=6..M\\S2..|...=a....|....S0..|..M\\S1..La|.La=5.....=5|......=a."
+    },
+    {
+      "date": "2027-05-07",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 13.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "M/..S0....|..La.....|..La..=c...|La.S1.....|.S1...=3..=6La=c|....S2...|..=6.=c...M\\.|......M/."
+    },
+    {
+      "date": "2027-05-08",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 4.4,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": "..=a......|Gv...Lb.S3.|..Lv.Lb=a...=9|..=5.S3.M\\..|.M\\...S3..|..=a......|.....=aM/..|LjGj.=a....."
+    },
+    {
+      "date": "2027-05-09",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 6.9,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 5
+      },
+      "code": "S1.M\\.=6.....|..Lj...=5...|..GjGr.....|.M\\..M/LrS1..|..M/.Lr....|......S1..|....Lb=6....|...=5S4.....|.....GbLbS1."
+    },
+    {
+      "date": "2027-05-10",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 1.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|...=a.=c.|..=5...|..=5La.La|...=a.."
+    },
+    {
+      "date": "2027-05-11",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".....La|S0S1....|....S4.|...La..|..=a.=c..=9.|..La.=a.."
+    },
+    {
+      "date": "2027-05-12",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..S0.S1..|.......|.....La=c.|..=5.=5La.=6..|......=c.|.S3...=c.S1|....La.."
+    },
+    {
+      "date": "2027-05-13",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 1.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".La..La..|.S2S2...=a.|....M/.=a.|.......|.=5..=5.M/..|.La=a..S1..|......."
+    },
+    {
+      "date": "2027-05-14",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 5.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "..=a..=a..=a..=c|........|.=5.......=5|.M/M\\.....|..M\\.La=cS1.La|.La=3....S1.|....=3La=9.S2.|..=a......"
+    },
+    {
+      "date": "2027-05-15",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 84.2,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": "........|..Gv.=3.S1..|..=c.Lv....|Gj.....=c..|...M/=6LrM/..|......M\\.|.=3Lj.S1.Lj..|......S1."
+    },
+    {
+      "date": "2027-05-16",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 5.9,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 5
+      },
+      "code": "....Lj....|..=cS1....=c..=9|...Lb.....|Ga.....S2..|..Gb..LaM\\..|La....M\\...|.Ga..S0.S3LrM\\|......=6...|S1.......M/"
+    },
+    {
+      "date": "2027-05-17",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 1.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "..La..|..=5.=3..=5|.....|.La=3..=c.=5|....."
+    },
+    {
+      "date": "2027-05-18",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 1.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "S1.S2...|...La.=5.|....La=9.|.S4....|....=c..|...La.."
+    },
+    {
+      "date": "2027-05-19",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 7.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "..=6La...S1|.La.S4...|.......|.=3....S3.|..S1....|..=9.S2...=9|...La..."
+    },
+    {
+      "date": "2027-05-20",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 1.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..La..S0.|...M/...|.S1.....|.S2..La=6.M/|.La.....|S1..=3..=5..|......."
+    },
+    {
+      "date": "2027-05-21",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 6.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".....S2.M\\|S1..=c...La.|....=6..M\\.|La...=9..=6..|........|.La.M/S2.=5..|.......=a.|.S0.La...."
+    },
+    {
+      "date": "2027-05-22",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 4.8,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": ".......=c.|Lv..S2....|..=3.Lv=aLv.Gv.|.....Gv.=5.|LaM\\..=c....|..M/...S2.|..=c...=a..S0|...M/...."
+    },
+    {
+      "date": "2027-05-23",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 6.5,
+      "distinctColours": 5,
+      "clues": {
+        "lantern": 6,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": "......S0..|..Lj=5.=3.....|S1...M/La...|.....=6....|.Lb=a.M/...S1.|.Gb.....S2.|..GjLj...Lr.|..=3.Gj.=5M\\...|....Lv...M/"
+    },
+    {
+      "date": "2027-05-24",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 6.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|..La..=9|.La=3.=c..|....=a.=9|....."
+    },
+    {
+      "date": "2027-05-25",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 0.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "..=a.La..|.....=a.|.=3.S1S2..|La.....|.La=6....|....S0."
+    },
+    {
+      "date": "2027-05-26",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 2.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": ".S1....La|..LaS2...|......=a.|.=5S1...=6..|.S2.....|....S3..|...=a..La=a."
+    },
+    {
+      "date": "2027-05-27",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 3.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 2
+      },
+      "code": "......La|.....=c.=3.|..=6.....|..M\\.S4..|.=3.S3....=9|.La....=a.|..M\\...La"
+    },
+    {
+      "date": "2027-05-28",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 3.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 4,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "S1.......|...=c.S1...|La..M/.La=c..|.=5LaM\\....=c.|...La=9....|..S2...=9..|..M/..=5...|M\\......."
+    },
+    {
+      "date": "2027-05-29",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 3.7,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 5
+      },
+      "code": "....Gr..=aM\\|..Gr.Lr..Lr|.....S2Lr.|..S3.....|.S2...LjS1.|.....M/..|..=5.M/....|...S2...."
+    },
+    {
+      "date": "2027-05-30",
+      "weekday": 7,
+      "size": 9,
+      "rating": 3,
+      "ms": 5.2,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 6
+      },
+      "code": "S1..=aM\\.S1...|..M/..S1Lb.=9.|..Lr......|....S0....|S3......=a..=c|.LbGb...=3...|..Gb......=c|M/M/...=c..S3.|Lb..Gb...La."
+    },
+    {
+      "date": "2027-05-31",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 0.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|..=6..La|.La..=c.|.=6...=9.|...=9.."
+    },
+    {
+      "date": "2027-06-01",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 0.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".S1....|..=a....|....=c..|..LaLaS1.|.=5..=5LaS1.|......"
+    },
+    {
+      "date": "2027-06-02",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 1.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "....S0..|..=a..S1..|.=3.La.=c...|La.....=3.|.=5.....=a.|...=cLa...|.S2...S1."
+    },
+    {
+      "date": "2027-06-03",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 1.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 2
+      },
+      "code": "....La=a.=a.|..M\\....|S0....=c..=5|....=9..=c.|.S1.....|.La=c...=cLaM/|......."
+    },
+    {
+      "date": "2027-06-04",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 4.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "........|...S0...=6.|......M/.|...M/.La..|..LaLa..=9..=5|.=6..=9La.S3..|.S4M/.....=5|......=9.."
+    },
+    {
+      "date": "2027-06-05",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 2.3,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 5,
+        "gate": 3,
+        "stone": 6
+      },
+      "code": "......S0.|..M\\...S1.|La..M\\....|.S3.Ga..S2.|...Ga.M\\Gj.|.La=5......|..M\\La.M\\Lj.|..S1....S0"
+    },
+    {
+      "date": "2027-06-06",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 19.6,
+      "distinctColours": 5,
+      "clues": {
+        "lantern": 6,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": ".Ga.GaLa=c...S0|.M/.......|.M/.....=a..|..Lj.Lb...=6.|.......Lr.|..=9..Gv....|.......=3..|.LrM/S2M\\...=9S1|S0....Lv..."
+    },
+    {
+      "date": "2027-06-07",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 3.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".La=a..=c.|.=5....|....=3.|.=3....|.La..=9."
+    },
+    {
+      "date": "2027-06-08",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 1.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "...La=a..|.=5.....|...=3LaS2.|La.S1...|..S1...|.....=a."
+    },
+    {
+      "date": "2027-06-09",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 2.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".......|.....=c..|LaS1S2....=c|..La....|...La..S2|...=9..S1.|..=9....."
+    },
+    {
+      "date": "2027-06-10",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 2.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "S1......|.LaS1....|......=cS1|..=6.S3...|..La....|La=6.S4M/..=6M/|......."
+    },
+    {
+      "date": "2027-06-11",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 5.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "S0....=6...|..M\\....=3.|...La.=9..La|.=3..M/...=3.|.....=c...=5|........|.=3..S2S3La=6..|......M\\La"
+    },
+    {
+      "date": "2027-06-12",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 15.2,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": "......M\\.|.S1....Lb.|.M\\.S3.=3..Gb|..Gv.....|Lv...=5..=3.S2|Lv.=9......|...=6.....|..LvM/...."
+    },
+    {
+      "date": "2027-06-13",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 10.7,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 5
+      },
+      "code": ".........|M\\.Lb.S1...Lb=c|....Ga.=aM\\..|..S3M\\.La...|..M\\.....S0|S1...Gv.Lv=c..|...LrGv..=9..|...=9..=3....|..S1......"
+    },
+    {
+      "date": "2027-06-14",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 5.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "...=c..|.=6...=c.|....=9.|.La=c...|..La.=9."
+    },
+    {
+      "date": "2027-06-15",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 1.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "..S1..S0|...La.S1|...=3...|...=c..=9La|..=5....|...La..=9"
+    },
+    {
+      "date": "2027-06-16",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 2.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..S1....|..=6...=c..|.=6......=c|La.S2.S2..|.......|.=5..S1..La|....La.=9."
+    },
+    {
+      "date": "2027-06-17",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 2.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 2
+      },
+      "code": ".......=c|..=3.=9S2..La|..=a.....=5|.......|M/.=9.....|LaM\\...S2.|..La=a...=a."
+    },
+    {
+      "date": "2027-06-18",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 2.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "M/......M\\|La.=6..=a....|.....S1.La|..=5...=5...|...LaM/S1..|..=5.=6La....|..=3...S1..|........"
+    },
+    {
+      "date": "2027-06-19",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 3.7,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": "......=c..|.....Lb..|..S1.S4..S1|.....GbM/.|.....=3...|.Lr=a.=aLr....|M\\..=aM/...=9Gj|......=3Lj."
+    },
+    {
+      "date": "2027-06-20",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 4.7,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 5
+      },
+      "code": ".......S0.|..S1......|.=6Lj.....=5..|....S1....|.GjM\\.....S1|...=a....Lr.|M/La....=5..S1|...=a....LbM\\|M\\.Ga.LjGj..."
+    },
+    {
+      "date": "2027-06-21",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 2.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".La=c...|.=3...=5.|.La...|..=5..=9.|...=9.."
+    },
+    {
+      "date": "2027-06-22",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 1.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "S0...La.|S1..=a...=9|....=5La.|..=5..La.|S1.=5...=6.|....=a.."
+    },
+    {
+      "date": "2027-06-23",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 6.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".=6LaLa...La|.......|.=3.S2S1...|.....S3.|.=3..=5....|..=3...=5..|......S2"
+    },
+    {
+      "date": "2027-06-24",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 2.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "...S1...|.....M\\.|...La=a..=9.|.S2La=5....|......=c.|.M\\...=9.=3La|...S1..."
+    },
+    {
+      "date": "2027-06-25",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 10.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 4,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "..S1.....|.......=a.|.S1M\\..=5...|......M/.|....=cLa.=c..=5|........|S1.La=aM\\..=6..|.....LaM\\La"
+    },
+    {
+      "date": "2027-06-26",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 9.2,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 5
+      },
+      "code": "S1.S1...M\\.|....=3....|.....LrS3.|.Gb..Lb..M\\|....Lb.=6..|S0...S2..Gv|........|.....LvM/."
+    },
+    {
+      "date": "2027-06-27",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 8.2,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 5
+      },
+      "code": ".=6..S3.....|.....M\\..S0|Gb..=5M\\...=5..|Lb..Gb.....|..=3...Lr.Gr.|.....LvS3..|..=a..S4....|..=a.=c.M/.Lv.S0|....Lv.M/.."
+    },
+    {
+      "date": "2027-06-28",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 0.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|..La=c..|.=6...=c.|..=6..=5.|La...."
+    },
+    {
+      "date": "2027-06-29",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "...=a.La.|......=9|.S1..La.|.....=c.|..=c...S1|...La.S0"
+    },
+    {
+      "date": "2027-06-30",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 1.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "..S1....|.....=c..|.S3S3....|..=6LaLa...|.......|.S4...=6.S1|....=9La.."
+    },
+    {
+      "date": "2027-07-01",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 1.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..M/....|...La=3..=3.|S2La.....|...S1S0..|.=3.M\\..La.|.......|..M\\.S2.."
+    },
+    {
+      "date": "2027-07-02",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 2.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 4,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": ".......S1|..S1..M\\..|..M\\.....|M/...S4LaLaS1|.=5.......|...S2La...|M\\....=9...|..La=a....."
+    },
+    {
+      "date": "2027-07-03",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 3.7,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 4,
+        "gate": 2,
+        "stone": 4
+      },
+      "code": "....=a....|..=6..Lj=5..S0|.....=3...|S1..M\\...La|S1...Lj.M/La|.S1..Ga...|.....M\\.Ga|...M\\...."
+    },
+    {
+      "date": "2027-07-04",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 12.8,
+      "distinctColours": 5,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": "S1La..M\\....|..M\\.....S0|....=9...S1.|.Lv....Lr..|..=5.M\\..=a..=5.|..=3.....=6..|Lj...S4...=6.|...M\\.....|..Gj.Lb.GbGb."
+    },
+    {
+      "date": "2027-07-05",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 0.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "..=a..=c.|.=5....|La....=9|La...=9.|..=3..."
+    },
+    {
+      "date": "2027-07-06",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 0.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".S0....|....=6..|S1...=9.=5.|.....La|..=6....|.LaS2..La"
+    },
+    {
+      "date": "2027-07-07",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 4.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "S1.La....|...=9..=3..|....=6..=9.|..=aLa....|...=9.=6La..=9|.......|S0.S1..S1."
+    },
+    {
+      "date": "2027-07-08",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 1.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 6
+      },
+      "code": "S0.....M\\|....S1..|..=6La....|....S2..|La....S3.|...=6..S3.|S0...La.M/"
+    },
+    {
+      "date": "2027-07-09",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 28.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 4,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..S1.....|...La.=6...|...=3La..=5..|S0...La.=5..|.M/...=5...|..La...M\\.|..S3M/.M\\.S1|........"
+    },
+    {
+      "date": "2027-07-10",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 4.1,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": ".M/......|...=c.Lv=a.Lv.|...Gv...S2|...Ga....|.S1..=aLaS4.=5.|........|....=3.=c...|M\\Lv=9....M/."
+    },
+    {
+      "date": "2027-07-11",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 11.9,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": ".....Gb..S1|S1..=c.M/Gb...|........=5Lj|.S1.Lb=a.M/.=aLjLj|.........|...=6.M\\...Gj|...S4.La.=9.=3.|..M\\..=5....|........."
+    },
+    {
+      "date": "2027-07-12",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 0.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "...La.|..=6.=a..|....=c.=5|..=3...|....La"
+    },
+    {
+      "date": "2027-07-13",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 0.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".....=a.|....=9..|.S2....=9|.La.S3La=3.|La..=c...|.S2..S2."
+    },
+    {
+      "date": "2027-07-14",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 1.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..=6...S0.|.......|.LaS3..=3.La|.La.=c....|..=3.....|..=a.S4.=6..|......S0"
+    },
+    {
+      "date": "2027-07-15",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 1.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "....S1..|..S1..M\\.|..S2...=5.|....=9...|M\\.....=a.|La.=9.....|La..=a.LaS2."
+    },
+    {
+      "date": "2027-07-16",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 3.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "S0.......|...=cM/...=a.|........|S1.LaM/S3...|.La....=cS2.|S2.M/.=6....|La.=c.....=6.|.....=3La.."
+    },
+    {
+      "date": "2027-07-17",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 3.8,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": "..S3..=a...|..M/M/...=5.|Gb.....=a..|....=6..=6..|..La.=9...S1|.Lb..LaGa..|.=5.LjM\\S2...|........"
+    },
+    {
+      "date": "2027-07-18",
+      "weekday": 7,
+      "size": 9,
+      "rating": 3,
+      "ms": 14.9,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": ".S0.S2..Gj..|....M\\Lj..Gj|..M/...=5...|..=3..Gb...=a.|....Lb.=6..Lb|....=5M/....|.S1...S2.Lb.|..M/.....=a.|..Lv......"
+    },
+    {
+      "date": "2027-07-19",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 2.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|...=9..=5|..=5...|....=cLa|..=3La.."
+    },
+    {
+      "date": "2027-07-20",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 1.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "...S1..|La=6.....=c|.S4....|....=9La=5.|..=3.La..|....S1."
+    },
+    {
+      "date": "2027-07-21",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 13.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "S0..S2..La|.......|..=9..=9..La=c|.La.....|...=a.S1..|....=9.S2.|.=3......"
+    },
+    {
+      "date": "2027-07-22",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 2.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 4,
+        "gate": 0,
+        "stone": 2
+      },
+      "code": ".M/...S0.|..=3..=5.S1.|.La.....|..=5..M\\M/.|.=6......|..=6La..=a.M/|..La...."
+    },
+    {
+      "date": "2027-07-23",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 21.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "S2..=a.....|LaM/.....=5.|....=a..=3..|.M\\......|.S3...=3...|.La=c.La=6.=a..S0|......M\\.|..=3..=aLa..."
+    },
+    {
+      "date": "2027-07-24",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 4,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 6
+      },
+      "code": "Lv.......|...=3LvM\\...|..=5..=a.S2.S0|........|S1.M/.Gj...|.....S3.Gj|..S2.LjM\\..=5|Lj..S1...."
+    },
+    {
+      "date": "2027-07-25",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 5.3,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": ".........|....S0..S1.|.....M/...=c|.La.=c....=aLj.|.=6..S1...Lb.|........=5.|Lb...GrLr..=9Gb|..M/..M/.Gb.|S1..=3.M/...."
+    },
+    {
+      "date": "2027-07-26",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 2.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "..=aLa..|.=5....=9|....=3La|..=a..=a.|....."
+    },
+    {
+      "date": "2027-07-27",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 0.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "....=a.La|.S2..La.=9|..S1.=5..|...La..|.=3..=a.=a..|.....S0"
+    },
+    {
+      "date": "2027-07-28",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 7.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "S0S2La.La..|......=c.|.......|..=5..=5..=9.|.......|..La=5...S1|....=9.S1."
+    },
+    {
+      "date": "2027-07-29",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 1.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "...LaM\\.M\\|...La...|...=3M\\...|....S1.La|.....S1.|S0S2..=a...|......."
+    },
+    {
+      "date": "2027-07-30",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 4.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".S0....La.|.....S2..|...=3..La=c.La|.La=3...=a...=5|.M/.S2....|........=5|M/.......|.....=a.=a.M/"
+    },
+    {
+      "date": "2027-07-31",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 2.7,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 4
+      },
+      "code": "...S0...=6Lv|........|.....M\\.=5.|.M\\La...Gv.|.LaS3..=9.Gv.|.S1.S3...=3.|......=5..|..M\\.Lr..."
+    },
+    {
+      "date": "2027-08-01",
+      "weekday": 7,
+      "size": 9,
+      "rating": 3,
+      "ms": 7.6,
+      "distinctColours": 5,
+      "clues": {
+        "lantern": 6,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": "S1.Gv......|....Lv=a....=9|..Gj...Lb.=5.|..=3LjM/..M\\..|..S2....S1.|...La.....|...=5Ga.Lr.=5.S0|..M\\...M/..|.....Lr..."
+    },
+    {
+      "date": "2027-08-02",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 1.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "La..=c..|....=a.|..=3...|....=cLa|....."
+    },
+    {
+      "date": "2027-08-03",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".=6.La...|....=c.S0|.=5.....|.=5...La.|..S3..=cS1|...=aLa.."
+    },
+    {
+      "date": "2027-08-04",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..=6La....|..La.S1S2.|.....S1.|.=6..=9....|..=c.....|.......=5|S1...=a.La=a."
+    },
+    {
+      "date": "2027-08-05",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 7.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "M/......|.S3.S3.M/.|.La=c....=6.|....La..|..LaS1...|.S3.....|......."
+    },
+    {
+      "date": "2027-08-06",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 3.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "...La.=a.=a.M\\|LaS2......|.....La.=c.|.=5...S1...|........=5|.=5..S1...=5.|....M\\=3.M/.|..=a....La."
+    },
+    {
+      "date": "2027-08-07",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 3.5,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": ".Lr...M\\..|..=6...=cGr..|Lr.S3...=9..|M\\Lr......|....=5....|.=3.....S1.|.=6..S3La.M\\.|.....Ga.."
+    },
+    {
+      "date": "2027-08-08",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 6.2,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 7
+      },
+      "code": ".........|....S1....=c|.S2.....M\\La|.....M/S2..|.Lv=3...=9...S2|.S1.M/....Lj|...LjGjS3...|...=a....M/.|Lj.Gj.Gj..S1."
+    },
+    {
+      "date": "2027-08-09",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 1.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|..=3...|..La=3..=c|..=c...|....=aLa"
+    },
+    {
+      "date": "2027-08-10",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 6.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "...S1..|...La..|...=5..La|..=6....|..LaS2S3.|......"
+    },
+    {
+      "date": "2027-08-11",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 1.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "...La..=c.|..=a.....=c|.=5..La=9...|..S3...=6.|.....=3..|S1...=5La..|.S2....S1"
+    },
+    {
+      "date": "2027-08-12",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 10.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 2
+      },
+      "code": "...S2..S0|.=5..M\\La..|....M/..|.La=c...M/.|....=c.=3..|..=a...=a.La=9|......."
+    },
+    {
+      "date": "2027-08-13",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 2.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 6
+      },
+      "code": "M/.....La.|...S1....|.S1..LaM\\S3.|.....M\\.=c.|.S2......|.S1...=9..=9.|La...S2...|....La..=a."
+    },
+    {
+      "date": "2027-08-14",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 3.6,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 5
+      },
+      "code": "Lv.......|....=5.M/S3.|.S3M/....Gj|....Lj..Lj|...=9Gj...S1|M\\..Lj.S2..|...S1....|........"
+    },
+    {
+      "date": "2027-08-15",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 7.5,
+      "distinctColours": 5,
+      "clues": {
+        "lantern": 6,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 5
+      },
+      "code": "S1..LvM\\..M/.|....=a...La.|S1..S2...Ga.|.Lr.......=9|...Gb...=c..|S0...=6..=5..Lj|..LbM/.Lr..S2|.....M\\Gr..|........."
+    },
+    {
+      "date": "2027-08-16",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".La...|..=3..=c.|.La..=3.|...=c..|....=9."
+    },
+    {
+      "date": "2027-08-17",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 1.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".....=c.|.S1....|S1....=3La|S1..La=c..|...=a...=5|.La...."
+    },
+    {
+      "date": "2027-08-18",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".....S0.|..=c.S1...|.......|La.S2..=6.=a.|...La..=6.|..S1....|La.....=9."
+    },
+    {
+      "date": "2027-08-19",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 1.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 4,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "..=c.....|La..S2.M/.|.M/..=a...=5|.M\\La....|....=9...=9|.S1La....|...S2..M/"
+    },
+    {
+      "date": "2027-08-20",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 7.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 4,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "M/...La.=a.La|La.......|..S0.S0...=5|....S1...|.S2....S2.|...M\\La...|.....=a.M/.|..=a.....M/"
+    },
+    {
+      "date": "2027-08-21",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 3.6,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 5
+      },
+      "code": "...S1...=6.|..M\\.M\\..La|........|S2..=c..GaS2.|...S2...=c.|Lv.=5....La.|.M\\..Lv.S1.|..Gv....."
+    },
+    {
+      "date": "2027-08-22",
+      "weekday": 7,
+      "size": 9,
+      "rating": 3,
+      "ms": 6.7,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": "...=aLv.=c..S1.|.Lv=6......S0|..=9....LbM\\.|....=3.=a.Gb.S1|..=6.S2.....|..Gr......|M/.....=a...|M\\.=c.Gr...=3Lj.|..LrM/..=a..=9."
+    },
+    {
+      "date": "2027-08-23",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 0.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|.=6..=a..|.=3...=3.|.La=6...|..La..=9"
+    },
+    {
+      "date": "2027-08-24",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 0.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".....=c.|...La=5..|S1.=6..La.|.La....|...S3S2.|......"
+    },
+    {
+      "date": "2027-08-25",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 1.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "......=a.|.=6..S3...|....S2..|..S3..=c..=5|..LaLa=6...|..=5..S3..|....=a..La"
+    },
+    {
+      "date": "2027-08-26",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 3.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..=6..=a.La.|.....=3..|..=9La..S3.|La.S2....|.....=5..|M\\...M\\..=9|S1...S1.."
+    },
+    {
+      "date": "2027-08-27",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "...M/....|.S1..La=9...|....S3..S0|.....La..|.=5M\\..=3..=3.S1|.....La..|La=5.....=9..|...=a.M/..."
+    },
+    {
+      "date": "2027-08-28",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 49.1,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 4
+      },
+      "code": ".S2......|.Lv..=3..Lr=5.|S1.Gv....M\\|..La.....|S2..Lr...=3.|..M\\....S1|....=5....|..=aGaM/...."
+    },
+    {
+      "date": "2027-08-29",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 4.6,
+      "distinctColours": 5,
+      "clues": {
+        "lantern": 6,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": ".........|....=6LjLv.=5..|.S1..M/GvGv..|.La...M\\...|..S1.....S1|.M/..S2.Lr=c..|M/........|.Lj=9...=5.=6.GbLb|........."
+    },
+    {
+      "date": "2027-08-30",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 5.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|...=c..=c|..=5..=9.|.=6....|.La.La=a."
+    },
+    {
+      "date": "2027-08-31",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 0.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "....S1.|...La.S2|....=9..|.S2.=5...|..=6...=3.|.La..La."
+    },
+    {
+      "date": "2027-09-01",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 6.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..S1...S2|S1....=5..|....=aLa.La|......La|S1...=6.=a..|..=3.....=5|.....=a.."
+    },
+    {
+      "date": "2027-09-02",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 1.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "..La....|M\\..S1.La.|M/..S1..=a.|.La...=5..|..=5.M\\...|...=9....|.....S0."
+    },
+    {
+      "date": "2027-09-03",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 12.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 4,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "S0.....LaS1|...=5M\\....|.....=3..=3.|..M/.....|La.=9......=5|M\\.La..=c...|........=5|.S0S1.M\\.=a.La"
+    },
+    {
+      "date": "2027-09-04",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 3.3,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 3,
+        "stone": 3
+      },
+      "code": "..=6......|.Lb..=6.M\\S1.|.Gb.=3..Lb=9..|........|...Gr.=c..S0|...=3....S1|..Lr..M\\Lr.|..M\\..Gr.."
+    },
+    {
+      "date": "2027-09-05",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 5.1,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 4,
+        "stone": 5
+      },
+      "code": "M/...=c.....|GrLr....M\\Lb.|...LvM/.GbGbS1|..=6.......|....=9...S1.|...S1.....|.M/.....La.|S1..LvS1.Ga.=3.|........."
+    },
+    {
+      "date": "2027-09-06",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 0.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "....=a.|.La=5...|....=aLa|.=3..=9..|....."
+    },
+    {
+      "date": "2027-09-07",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".....=6.|...=9.La.|..La..=c.|S0..S3..=c|......|.S1..La.=9"
+    },
+    {
+      "date": "2027-09-08",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 1.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "....S2..|..=5.=5..=6.=9.|La..=5....|..La..S1.|.La=3..S1..|.S3.....|.......=9"
+    },
+    {
+      "date": "2027-09-09",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 4.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "......La|S1M/M\\..=c.La|......=a.|.......|S1..S0..M\\|...S1...|......La"
+    },
+    {
+      "date": "2027-09-10",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 3.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 4,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..S0.....|.M\\......|......=a.M\\|.S3.LaM/.=6La.|.......=3La|...S2.=6...|.S2....M\\.|..=aLa....."
+    },
+    {
+      "date": "2027-09-11",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 32.8,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": "S1.Gb.....|..Lb.=3..=c..|...M/....|..=aLb..Lb=5..|...M\\....|.S3......|...LjS4...|M\\...Gj..=9."
+    },
+    {
+      "date": "2027-09-12",
+      "weekday": 7,
+      "size": 9,
+      "rating": 4,
+      "ms": 7.1,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": "Lv....=c....|.Gv.....=3M\\.|M/Gb.S4...=6..|...M\\.....|.....LjM/..|S1..=3.Lb...S2|..Lr....=c..|.S1..=9..Lr.Gr|........=3."
+    },
+    {
+      "date": "2027-09-13",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 1.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "...=a.La|.=5...=6.|..=6.La.|.=3...=9.|....."
+    },
+    {
+      "date": "2027-09-14",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 1.5,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "S0...=a..|......=5|...=c.=6..|...LaLa=5.|S1..=aLa..|....S1."
+    },
+    {
+      "date": "2027-09-15",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 2.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..=6.....|...S3..S0|..=3....S1|...=6....|....LaLa=c.|...=5.La.=3.|....S2.."
+    },
+    {
+      "date": "2027-09-16",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 2.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": ".=6..=a..=a..|......La=5|.La.=c.=6...|..=3..M\\..|..S3.M\\.S1|La....=5..|.S1....."
+    },
+    {
+      "date": "2027-09-17",
+      "weekday": 5,
+      "size": 8,
+      "rating": 4,
+      "ms": 10.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "M/.......|...M\\..=c.La=9|.S1...=6...|....LaS3..|..M/...=c..|.La..=5....|S2.=3.La.=a.=9..|........"
+    },
+    {
+      "date": "2027-09-18",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 20.9,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 3
+      },
+      "code": "......S0.|.....=c...|.S2..=9..Lj.|..Lj..=6.M/.|...Gj.M/La.=c|GbLbM\\..=6...|.Gb...M\\..|.......S2"
+    },
+    {
+      "date": "2027-09-19",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 11.8,
+      "distinctColours": 4,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 4,
+        "stone": 5
+      },
+      "code": "...S1.....|...Gj..=6..M\\|..=3LjLj..=5LaM/.|..S3......|...Gv....=a.|..Gv...=5..M\\|...=9.....Lb|S1.Lv...M/Gb.|.S1..S2...."
+    },
+    {
+      "date": "2027-09-20",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 5.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": "....=a.|..=c...|.La..La|..=5..=9.|...=9.."
+    },
+    {
+      "date": "2027-09-21",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 0.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".S0....|...S2..=c|......|.La=3La...|La...S2.|..=a.S2.."
+    },
+    {
+      "date": "2027-09-22",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 4.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".La..S1..|..=c.....|La..S3...|.=3.La..S0.|.......|..=c..=3...|......S0"
+    },
+    {
+      "date": "2027-09-23",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 6.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "La.=a.....|....=a...|..=3M\\LaM/S2.|.......|.S1.S1...|.....S2.|....La.."
+    },
+    {
+      "date": "2027-09-24",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 12.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 5,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "....La=6...|.M\\S4..M\\.S2|...M\\LaS3..|..=c.....La|..M/....=3.|.S3...S2..|.M\\.....=9.|....=a.La.."
+    },
+    {
+      "date": "2027-09-25",
+      "weekday": 6,
+      "size": 8,
+      "rating": 3,
+      "ms": 12.4,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 5
+      },
+      "code": "........|..=3.M\\S2...|.....LbS1.|Gb.=6Lb..=a...|.....S3..|.M/.S3Lr..S1|..=3..M/...|...Gr.Lr.."
+    },
+    {
+      "date": "2027-09-26",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 14.7,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": "......Lb=c..|.....M/...=c|....Gb.GbGb.|.....Lb...|.......=5.S2|.S1.M\\.S1..Lv|......M\\..|.....=a...Lv|..M\\La..S1.."
+    },
+    {
+      "date": "2027-09-27",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 17.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|..=5.=3..=c|La....=5|.La=c...|....=9."
+    },
+    {
+      "date": "2027-09-28",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 0.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "...S0..|.=6.....|LaLa=5....|...=9...|..S3S3..|.....La"
+    },
+    {
+      "date": "2027-09-29",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 6.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..=a...S1S0|.....S2.|.=5...=3..=c.|....La..|.=5....=3..|..La.=cLa..|..=3....S0"
+    },
+    {
+      "date": "2027-09-30",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 2.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "..La...=a.|S1...=aLa..|..La..=5..=5|...=6.M/..|.......|.....S2.|..S1...M/"
+    },
+    {
+      "date": "2027-10-01",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 10.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "La....=a.=a..|..=aM\\.....=5|.......=c.|...=5.S1..La|..La.....|..=3La=cS3.M/.S0|.....M\\..|........"
+    },
+    {
+      "date": "2027-10-02",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 4.8,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": "........|.S1.M/.=c...|....LbLb.M\\|S2.=3......|M/..S3...=9.|.=5....Ga..|...=6.Lv=9.La.|..=a....Ga."
+    },
+    {
+      "date": "2027-10-03",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 10.5,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": "..=6Lj.....S0|...S3.=5....|....M\\...Lv|..=6.=9...M/..|...M/.Gv..=6.|.....GvLv..|LrS2.Lr.....|.....Gr.S1.|....=aM/...."
+    },
+    {
+      "date": "2027-10-04",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 10.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|..=a..=a.|..=a..La=5|...=5..|...La.=9"
+    },
+    {
+      "date": "2027-10-05",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 1.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "....La.|..=3La=a...=5|....=9..|S1....=c.|.....La=9|.S0S0..."
+    },
+    {
+      "date": "2027-10-06",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 6.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 6
+      },
+      "code": "....=c...|...=9....|S1La.=c..S1.|......S1|.La.S3.La.|...=5S2...|.S2....=9."
+    },
+    {
+      "date": "2027-10-07",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 1.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "......=a.|..S2....|...=c.M\\..|.M/..M\\..|..S2....|..=9..S2S3La|....LaLa."
+    },
+    {
+      "date": "2027-10-08",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 3.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 5,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".LaLa=6..=a.=a..|........=5|M\\.......|..S1...M\\.=5|M\\.S3.M\\...|..M/.La...|......=9.S0|S1La.=9....."
+    },
+    {
+      "date": "2027-10-09",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 2.5,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 3
+      },
+      "code": "Lv.Gv..Lj.S2|......=9..|M\\..=3..Gj..|M/....S2..=9|...=3.....|Lr=5Lr.M/S1...|.=3.......|........"
+    },
+    {
+      "date": "2027-10-10",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 5.4,
+      "distinctColours": 3,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": "........=6.|.....S2.Lr.|.....=6....|S1.....=a..=6.|.....S4...|Lv.S3Ga...M\\.|.Ga.M/..LvLv.|Ga..La.=9.=3...|M\\.M/......"
+    },
+    {
+      "date": "2027-10-11",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 4.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|..=a..=9.|.=3La.La.|...=5.=5.|...=3.."
+    },
+    {
+      "date": "2027-10-12",
+      "weekday": 2,
+      "size": 6,
+      "rating": 1,
+      "ms": 1.1,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "...S1..|.S1La...|....La.|S2...=9S3.|....S3.|.....La"
+    },
+    {
+      "date": "2027-10-13",
+      "weekday": 3,
+      "size": 7,
+      "rating": 2,
+      "ms": 1.8,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "S1......|....=c.La=cLa|.....=5..|...=5..=5..|.S1..=c...|....La=9S2.|......S0"
+    },
+    {
+      "date": "2027-10-14",
+      "weekday": 4,
+      "size": 7,
+      "rating": 2,
+      "ms": 1.9,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 2,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "....=a...|.=5....=5..|.La=6.=9La...|....S2..|....=9..La|.S3M\\....|M\\....S1."
+    },
+    {
+      "date": "2027-10-15",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 10.3,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 5
+      },
+      "code": "M/..=a..M\\..|.S3LaLa.=a...|......S1.|.S3.M\\La..=c.|.....=c.=6..|La.......|.S1......|.....S0.."
+    },
+    {
+      "date": "2027-10-16",
+      "weekday": 6,
+      "size": 8,
+      "rating": 4,
+      "ms": 2.5,
+      "distinctColours": 2,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 2,
+        "stone": 6
+      },
+      "code": ".LaS2.S0...|.......S1|.Ga=5..S2.Lr.|M\\......Gr|..La.S3...|M\\.......|...=6M\\...=5.|...LrS2..."
+    },
+    {
+      "date": "2027-10-17",
+      "weekday": 7,
+      "size": 9,
+      "rating": 5,
+      "ms": 30.3,
+      "distinctColours": 5,
+      "clues": {
+        "lantern": 5,
+        "mirror": 4,
+        "gate": 3,
+        "stone": 4
+      },
+      "code": ".........|S1.......=5.|M/........|..Ga...=6.Lv.|.La=6..=6.Lb=5...=c|......M/..|...=6M/Lr...Gj|S0....=5..GjLj|.S1....S1.M/"
+    },
+    {
+      "date": "2027-10-18",
+      "weekday": 1,
+      "size": 5,
+      "rating": 1,
+      "ms": 0.7,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 2,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 0
+      },
+      "code": ".....|..=cLa.=c.|..=3...|.=5...=3.|..=a.La."
+    },
+    {
+      "date": "2027-10-19",
+      "weekday": 2,
+      "size": 6,
+      "rating": 2,
+      "ms": 2.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "......|.....=c.|..=5...La=9|..S2...|.....=6.|S0S0..LaLa"
+    },
+    {
+      "date": "2027-10-20",
+      "weekday": 3,
+      "size": 7,
+      "rating": 3,
+      "ms": 1.4,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 0,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": ".......|.....=6La.|....=c...|..=6....=cS1|.LaS3....|..=9S2S2..La|......."
+    },
+    {
+      "date": "2027-10-21",
+      "weekday": 4,
+      "size": 7,
+      "rating": 3,
+      "ms": 1.6,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 3,
+        "mirror": 4,
+        "gate": 0,
+        "stone": 4
+      },
+      "code": "..S1...S1|......La|.S3.M\\..=3.|.....M\\.|.M\\La.La.M\\|....S2..|.=3......"
+    },
+    {
+      "date": "2027-10-22",
+      "weekday": 5,
+      "size": 8,
+      "rating": 3,
+      "ms": 4.2,
+      "distinctColours": 1,
+      "clues": {
+        "lantern": 4,
+        "mirror": 3,
+        "gate": 0,
+        "stone": 3
+      },
+      "code": "La...=a..=a..|.=5.M/.....|..M\\.=c.M/=6..=5|..=6..La...|..La.....=5|....S0...|.S2...S1..|.=3.....La."
+    }
+  ]
+}

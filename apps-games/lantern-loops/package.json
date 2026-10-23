@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "cap:sync": "vite build && cap sync"
+    "cap:sync": "vite build && cap sync",
+    "brand:sources": "bun scripts/render-brand-sources.ts",
+    "brand:assets": "capacitor-assets generate --android --ios"
   },
   "dependencies": {
     "@capacitor/android": "8.5.3",

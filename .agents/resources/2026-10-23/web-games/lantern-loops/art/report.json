@@ -1,0 +1,460 @@
+{
+  "masterQuality": 90,
+  "shippedQuality": 82,
+  "slots": [
+    {
+      "slot": "backdrop-bridge",
+      "batch": "b2",
+      "round": 1,
+      "transparent": false,
+      "source": {
+        "path": "backdrop-bridge.png",
+        "bytes": 1789326,
+        "sha256": "492f0795af456c37e15fe0b97b8047cf7d2b561c0492262e85d57b82749073ef",
+        "width": 1024,
+        "height": 1536
+      },
+      "master": {
+        "path": "masters/backdrop-bridge.webp",
+        "bytes": 63624,
+        "sha256": "972098927163716f5ee115e5b2e0d41a8cb305a83ba26b20c7fcad2e1ae891a0",
+        "width": 1024,
+        "height": 1536
+      },
+      "shipped": {
+        "path": "src/art/files/backdrop-bridge.webp",
+        "bytes": 17440,
+        "sha256": "774347cfb4515ddd78ece83238552eac54b3218f977e612768980be10b2a7930",
+        "width": 800,
+        "height": 1200
+      },
+      "cornerAlpha": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "centreEdgeDensity": 0.004246465859564868
+    },
+    {
+      "slot": "backdrop-garden",
+      "batch": "b2",
+      "round": 1,
+      "transparent": false,
+      "source": {
+        "path": "backdrop-garden.png",
+        "bytes": 2308330,
+        "sha256": "c95182778ba8715a4e494670597f37b8650047f554562009342ca2cf201d4009",
+        "width": 1024,
+        "height": 1536
+      },
+      "master": {
+        "path": "masters/backdrop-garden.webp",
+        "bytes": 156478,
+        "sha256": "b61ed10b7704674ea3a16babe65f53f60e011ac3a9e5d568c9205b5d3574fa8c",
+        "width": 1024,
+        "height": 1536
+      },
+      "shipped": {
+        "path": "src/art/files/backdrop-garden.webp",
+        "bytes": 39448,
+        "sha256": "0c065c7d3c101c6fcf0a6e1e4ca4e85b68a6557af6134ea886fedd03dc4ed839",
+        "width": 800,
+        "height": 1200
+      },
+      "cornerAlpha": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "centreEdgeDensity": 0.008074023666692272
+    },
+    {
+      "slot": "backdrop-harbor",
+      "batch": "retry",
+      "round": 3,
+      "transparent": false,
+      "source": {
+        "path": "backdrop-harbor.png",
+        "bytes": 1822315,
+        "sha256": "cc9f0d199cfe747cc508afae4ebd19a1615c6d39bc2171013cc4026808fd62a2",
+        "width": 1024,
+        "height": 1536
+      },
+      "master": {
+        "path": "masters/backdrop-harbor.webp",
+        "bytes": 83434,
+        "sha256": "5d13e8cd5fbf0f39a38a067a996aadc94ac153dd417da7aafaf57dfc2fa0cde0",
+        "width": 1024,
+        "height": 1536
+      },
+      "shipped": {
+        "path": "src/art/files/backdrop-harbor.webp",
+        "bytes": 18676,
+        "sha256": "7252450a1c8cc32d2accd7d0e3eef956e9ff636ff30c9aa61287362dbc432c85",
+        "width": 800,
+        "height": 1200
+      },
+      "cornerAlpha": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "centreEdgeDensity": 0.005937853047473425
+    },
+    {
+      "slot": "backdrop-sky",
+      "batch": "b2",
+      "round": 2,
+      "transparent": false,
+      "source": {
+        "path": "backdrop-sky.png",
+        "bytes": 2093997,
+        "sha256": "c619e8d8f976d50e4b718016f6cc8844f6eb3fb551253368951ead629bcbffb6",
+        "width": 1024,
+        "height": 1536
+      },
+      "master": {
+        "path": "masters/backdrop-sky.webp",
+        "bytes": 88400,
+        "sha256": "13449ba4c79ce86645a3ffb04db7d6f42b709c074db91f26435364b973e1baac",
+        "width": 1024,
+        "height": 1536
+      },
+      "shipped": {
+        "path": "src/art/files/backdrop-sky.webp",
+        "bytes": 25470,
+        "sha256": "17b8f52dc29cbe1308fc0da506e74ee33ee0f4f8953455863faa2e73d9ec3d4a",
+        "width": 800,
+        "height": 1200
+      },
+      "cornerAlpha": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "centreEdgeDensity": 0.004203362970745629
+    },
+    {
+      "slot": "daily-medallion",
+      "batch": "b2",
+      "round": 2,
+      "transparent": true,
+      "source": {
+        "path": "daily-medallion.png",
+        "bytes": 902655,
+        "sha256": "1aaa0f6edf3da5e9d8341f89abaa4504b50a3b0bf648d5c5b1e0f086fc465a3c",
+        "width": 1024,
+        "height": 1024
+      },
+      "master": {
+        "path": "masters/daily-medallion.webp",
+        "bytes": 64912,
+        "sha256": "adf509254cff4716453fa7a4ea1680274dcd4c2f3ac17e7cbeec8eb890558cc3",
+        "width": 1024,
+        "height": 1024
+      },
+      "shipped": {
+        "path": "src/art/files/daily-medallion.webp",
+        "bytes": 10820,
+        "sha256": "26047aa1dd148ffb79eebef6afbfb551bbf9b9dac88c5551d20780e754aa0269",
+        "width": 240,
+        "height": 240
+      },
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "slot": "feature-graphic",
+      "batch": "retry",
+      "round": 2,
+      "transparent": false,
+      "source": {
+        "path": "feature-graphic.png",
+        "bytes": 1965425,
+        "sha256": "4056e3b45e2989a03bd42d6c6842b303b8899be610867f2a8f3fcd19bdb0e55b",
+        "width": 1536,
+        "height": 1024
+      },
+      "master": {
+        "path": "masters/feature-graphic.webp",
+        "bytes": 82378,
+        "sha256": "25e0837feac42a87e9d3e0499b1136769c97b87ef022b17a5084775f7b4b98ec",
+        "width": 1536,
+        "height": 1024
+      },
+      "shipped": null,
+      "cornerAlpha": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "slot": "icon",
+      "batch": "b1",
+      "round": 4,
+      "transparent": false,
+      "source": {
+        "path": "icon.png",
+        "bytes": 1184923,
+        "sha256": "3f6966f1dd4b3845860900e7dd48a5a6c0f5a01a38e175a0bceb301d05699627",
+        "width": 1024,
+        "height": 1024
+      },
+      "master": {
+        "path": "masters/icon.webp",
+        "bytes": 38590,
+        "sha256": "5f5fb19b1c13d386dcfca6319fb73ab989ee02691ad91c12e3129d92eac72eaa",
+        "width": 1024,
+        "height": 1024
+      },
+      "shipped": null,
+      "cornerAlpha": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "slot": "key-art",
+      "batch": "retry",
+      "round": 1,
+      "transparent": false,
+      "source": {
+        "path": "key-art.png",
+        "bytes": 2105458,
+        "sha256": "c65b9a5110326ad7f269b5848c0f9d3a94e995cec39c6266855fd24899fc8f1a",
+        "width": 1024,
+        "height": 1536
+      },
+      "master": {
+        "path": "masters/key-art.webp",
+        "bytes": 105202,
+        "sha256": "08e21e80b1bdf2d1a9abb06fd35ca49789e21a8253a7fb6bf6ca25fdf8680d8a",
+        "width": 1024,
+        "height": 1536
+      },
+      "shipped": {
+        "path": "src/art/files/key-art.webp",
+        "bytes": 34768,
+        "sha256": "e1cf481aff883df62e391f9ce1767fbabcf1efa970331bd3ccd9584af909242b",
+        "width": 800,
+        "height": 1200
+      },
+      "cornerAlpha": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "slot": "lantern-amber",
+      "batch": "b1",
+      "round": 3,
+      "transparent": true,
+      "source": {
+        "path": "lantern-amber.png",
+        "bytes": 705736,
+        "sha256": "e191d5294e0a565559dce5d82de5d52a6a8bdef613fcb159f9b48e1969984270",
+        "width": 1024,
+        "height": 1024
+      },
+      "master": {
+        "path": "masters/lantern-amber.webp",
+        "bytes": 57464,
+        "sha256": "51c9c6ab913fc470820d5f6a9c6034da0e847af7733b9990e253556c703ac37c",
+        "width": 1024,
+        "height": 1024
+      },
+      "shipped": {
+        "path": "src/art/files/lantern-amber.webp",
+        "bytes": 2832,
+        "sha256": "8f3d5bc82102990d35a05215f9e93b7b1a330a992a688978a6c7733dbba9b0b0",
+        "width": 112,
+        "height": 112
+      },
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "slot": "lantern-azure",
+      "batch": "b2",
+      "round": 1,
+      "transparent": true,
+      "source": {
+        "path": "lantern-azure.png",
+        "bytes": 630269,
+        "sha256": "6b144924a3d9b2f647e38357e56574c3332b631dc5a6920faf53f0cbbd7b3d31",
+        "width": 1024,
+        "height": 1024
+      },
+      "master": {
+        "path": "masters/lantern-azure.webp",
+        "bytes": 43672,
+        "sha256": "060cea725e9aff285f038bed235feb422a8202c450f61f8bd3f5f3dffe81c302",
+        "width": 1024,
+        "height": 1024
+      },
+      "shipped": {
+        "path": "src/art/files/lantern-azure.webp",
+        "bytes": 2780,
+        "sha256": "b9d2afa1fa471a31aa589d34cb485ac2f5457a618a2c6b95193485901ad18b1e",
+        "width": 112,
+        "height": 112
+      },
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "slot": "lantern-jade",
+      "batch": "b2",
+      "round": 1,
+      "transparent": true,
+      "source": {
+        "path": "lantern-jade.png",
+        "bytes": 633302,
+        "sha256": "d7ebeac4dd585c0e1102acadce2c822fe79d140c0bcfdaf70fbd1167311a7f43",
+        "width": 1024,
+        "height": 1024
+      },
+      "master": {
+        "path": "masters/lantern-jade.webp",
+        "bytes": 44682,
+        "sha256": "7775f3d2bd99e46877c305da5cd7c15ce9c70abac3878b208b330cee7d44af69",
+        "width": 1024,
+        "height": 1024
+      },
+      "shipped": {
+        "path": "src/art/files/lantern-jade.webp",
+        "bytes": 2756,
+        "sha256": "cd59dc6b94c1185edbd03b849f0f532e3a8dae02f434fcde2114e9f752fc730f",
+        "width": 112,
+        "height": 112
+      },
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "slot": "lantern-rose",
+      "batch": "b2",
+      "round": 1,
+      "transparent": true,
+      "source": {
+        "path": "lantern-rose.png",
+        "bytes": 631513,
+        "sha256": "8f6bbf7204d186681de822d616ad209021e4628b78b9f709754dfc923143b27e",
+        "width": 1024,
+        "height": 1024
+      },
+      "master": {
+        "path": "masters/lantern-rose.webp",
+        "bytes": 43810,
+        "sha256": "c73eca29c553ba2996e38ef5e10d884a3d4d028c0271c053e52b8ad493606d45",
+        "width": 1024,
+        "height": 1024
+      },
+      "shipped": {
+        "path": "src/art/files/lantern-rose.webp",
+        "bytes": 2762,
+        "sha256": "e64f0b38214482aee5983db1c66a8346f63488d05c789b28d50d1e8875f5bc85",
+        "width": 112,
+        "height": 112
+      },
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "slot": "lantern-unlit",
+      "batch": "b2",
+      "round": 1,
+      "transparent": true,
+      "source": {
+        "path": "lantern-unlit.png",
+        "bytes": 600081,
+        "sha256": "3dcfab8aefd2ab479d8f1fc52cdced81f727f5d673430bab3dd058fb06886a6b",
+        "width": 1024,
+        "height": 1024
+      },
+      "master": {
+        "path": "masters/lantern-unlit.webp",
+        "bytes": 44636,
+        "sha256": "2244d7220334824e1f704f78233425df34dd5a4af8e7a397d9974a7b73ff9cef",
+        "width": 1024,
+        "height": 1024
+      },
+      "shipped": {
+        "path": "src/art/files/lantern-unlit.webp",
+        "bytes": 2460,
+        "sha256": "28fa82cf8c09482e3b8e6fe01dc73a6c6d1b821dce40ca96051fa99ae28842bd",
+        "width": 112,
+        "height": 112
+      },
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "slot": "lantern-violet",
+      "batch": "b2",
+      "round": 1,
+      "transparent": true,
+      "source": {
+        "path": "lantern-violet.png",
+        "bytes": 613036,
+        "sha256": "650e3632cde4a1a44b6f5c59fcd05f6c795b74110c3f4ef802fc8df574adbbf0",
+        "width": 1024,
+        "height": 1024
+      },
+      "master": {
+        "path": "masters/lantern-violet.webp",
+        "bytes": 43512,
+        "sha256": "aabb6e0cd61d07e219bb3dfb60362023cd9797008a57228b0e9ee861fd900ec3",
+        "width": 1024,
+        "height": 1024
+      },
+      "shipped": {
+        "path": "src/art/files/lantern-violet.webp",
+        "bytes": 2722,
+        "sha256": "9685465d87eeffa45bd6a5ff2668702a370607229373ea5aaf0b106e3b5a250d",
+        "width": 112,
+        "height": 112
+      },
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

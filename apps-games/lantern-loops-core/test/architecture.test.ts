@@ -10,6 +10,12 @@ const FORBIDDEN_TOKENS = [
   "performance.now",
   "Math.random",
   "localStorage",
+  "new Date",
+  "Date.UTC",
+  "performance.",
+  "crypto.",
+  "setTimeout",
+  "setInterval",
 ];
 
 function listSourceFiles(dir: string): string[] {

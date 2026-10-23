@@ -10,7 +10,9 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "build": "tsc -p tsconfig.build.json"
+    "build": "tsc -p tsconfig.build.json",
+    "generate": "bun run scripts/generate-campaign.ts",
+    "verify": "bun run scripts/generate-campaign.ts --verify"
   },
   "devDependencies": {
     "@types/node": "20.19.43",
