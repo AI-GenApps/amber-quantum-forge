@@ -1,0 +1,68 @@
+{
+  "budgets": {
+    "jsGzipBytes": 307200,
+    "artBytes": 8388608,
+    "audioBytes": 1572864,
+    "fontBytes": 122880
+  },
+  "js": {
+    "chunks": [
+      {
+        "file": "assets/index-CShhire5.js",
+        "raw": 227734,
+        "gzip": 76859
+      },
+      {
+        "file": "assets/web-BaXeckx8.js",
+        "raw": 1058,
+        "gzip": 347
+      },
+      {
+        "file": "assets/web-CEikbY6C.js",
+        "raw": 365,
+        "gzip": 247
+      },
+      {
+        "file": "assets/web-CipXoJKU.js",
+        "raw": 1192,
+        "gzip": 539
+      },
+      {
+        "file": "assets/web-CllDhEbO.js",
+        "raw": 844,
+        "gzip": 399
+      },
+      {
+        "file": "assets/web-CQYyt8cg.js",
+        "raw": 894,
+        "gzip": 457
+      }
+    ],
+    "gzipBytes": 78848,
+    "rawBytes": 232087
+  },
+  "art": {
+    "files": [
+      {
+        "file": "apps-games/lantern-loops/src/art/files/lantern-amber.webp",
+        "bytes": 2832
+      }
+    ],
+    "bytes": 2832
+  },
+  "audio": {
+    "files": 18,
+    "largest": 314222,
+    "bytes": 394979
+  },
+  "fonts": [
+    {
+      "file": "apps-games/lantern-loops/public/fonts/fraunces/Fraunces-Variable.woff2",
+      "bytes": 109868
+    },
+    {
+      "file": "apps-games/lantern-loops/public/fonts/nunito/Nunito-Variable.woff2",
+      "bytes": 32776
+    }
+  ]
+}

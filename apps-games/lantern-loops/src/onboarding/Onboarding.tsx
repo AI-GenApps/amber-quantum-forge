@@ -36,7 +36,8 @@ export function OnboardingScreen() {
     <Screen name="onboarding" class="ll-screen ll-onboarding">
       <Backdrop chapter="key-art" />
       <div class="ll-onboarding-card">
-        <Card tone="raised" title={t("onboarding.title")}>
+        <Card tone="raised">
+          <h1 class="ll-title">{t("onboarding.title")}</h1>
           <p class="ll-body">{t(stepTextKey("welcome"))}</p>
           <div class="ll-stack">
             <Button fullWidth onClick={start}>

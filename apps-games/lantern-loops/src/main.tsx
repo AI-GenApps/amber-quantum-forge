@@ -28,6 +28,7 @@ const lifecycle = createLifecycle();
 void lifecycle.setupDisplay({ lockPortrait: true, statusBarColor: "#12132E" });
 
 const services = createServices();
+const baseBoot = createBoot(services);
 const env: AppEnv = {
   services,
   router: createRouter<Routes>("boot"),
@@ -39,7 +40,13 @@ const env: AppEnv = {
   haptics: createHaptics(),
   feedback: createFeedbackBus(),
   share: shareContent,
-  boot: createBoot(services),
+  boot: import.meta.env.DEV
+    ? async (onProgress) => {
+        await baseBoot(onProgress);
+        const { applyQaParams } = await import("./qa/devParams");
+        await applyQaParams(services, window.location.search);
+      }
+    : baseBoot,
   exitApp: () => void CapacitorApp.exitApp(),
 };
 

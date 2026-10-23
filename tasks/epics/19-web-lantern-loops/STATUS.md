@@ -1,6 +1,6 @@
 # Epic 19 — Lantern Loops (daily logic puzzle, full v1 web game)
 
-Status: in progress (tasks 00 to 07 done, task 08 pending)
+Status: done (tasks 00 to 08 done; owner browser QA remains)
 
 ## Purpose
 
@@ -102,7 +102,7 @@ code-drawn placeholders for every other slot. The owner does browser QA after ta
 | 05 | CC0 audio, haptics, motion polish, onboarding and how-to-play | agent | [x] |
 | 06 | Integrate reviewed art from the designer inbox | agent | [x] |
 | 07 | Capacitor Android/iOS projects, icons and splash | agent | [x] |
-| 08 | Release readiness, budgets, knowledge base, owner QA checklist | agent | [ ] |
+| 08 | Release readiness, budgets, knowledge base, owner QA checklist | agent | [x] |
 
 ## Verification gate (every code task)
 

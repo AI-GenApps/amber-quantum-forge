@@ -1,7 +1,7 @@
 ---
 epic: 19-web-lantern-loops
 task: 08-release-readiness
-status: pending
+status: done
 commit_scope: lantern-loops
 depends_on: [19-web-lantern-loops/07-capacitor-packaging]
 estimate: M
@@ -40,31 +40,31 @@ browser QA checklist. No agent opens a browser; the checklist is for the owner.
 
 ## Implementation Checklist
 
-- [ ] Campaign playthrough test (`test/release/playthrough.test.ts`): from a fresh profile with an
+- [x] Campaign playthrough test (`test/release/playthrough.test.ts`): from a fresh profile with an
       in-memory adapter, solve all 120 puzzles in order using stored solutions through the real services
       with zero hints; assert chapter unlocks happen exactly at 45, 120 and 210 stars, final stars 360, four
       chapter-clear rewards (+5 each, capped at 20 tokens), progress survives a save/load round trip, and the
       statistics screen numbers match.
-- [ ] Daily and archive playthrough: simulate 40 consecutive days with a fake clock (including a freeze
+- [x] Daily and archive playthrough: simulate 40 consecutive days with a fake clock (including a freeze
       save, a reset, and milestones 3, 7, 14, 30), assert tokens, streak, freeze counts and the share text.
-- [ ] Bundle budget test and a printed size table (JS gzip, art, audio, fonts) written to
+- [x] Bundle budget test and a printed size table (JS gzip, art, audio, fonts) written to
       `.agents/resources/2026-10-23/web-games/lantern-loops/08/budgets.json`.
-- [ ] No-data audit script `scripts/no-data-audit.ts` (run by a test; output committed as
+- [x] No-data audit script `scripts/no-data-audit.ts` (run by a test; output committed as
       `08/no-data-audit.txt`).
-- [ ] Dev-only QA helper (`src/qa/devParams.ts`) and the production-absence test.
-- [ ] Knowledge-base consistency tests (`test/release/knowledgeBase.test.ts`): `README.md` quick facts
+- [x] Dev-only QA helper (`src/qa/devParams.ts`) and the production-absence test.
+- [x] Knowledge-base consistency tests (`test/release/knowledgeBase.test.ts`): `README.md` quick facts
       match code constants (puzzle count 120, unlocks 45/120/210, max stars 360, tokens start 3 / cap 20,
       freeze 1 per week, art slot count 15, budgets); all eight KB files exist and have no `TODO`; the
       content plan titles match the data (task 02 test still passes); `assets-index.md` has no slot left as
       `planned` (each is `shipped` or `placeholder`), every font and audio file has provenance;
       `decisions-log.md` has a 2026-10-23 row for every area in the epic decision table.
-- [ ] Store listing test (`test/release/storeListing.test.ts`).
-- [ ] Final accessibility sweep tests (contrast, hit areas, labels, reduced motion) re-run across all
+- [x] Store listing test (`test/release/storeListing.test.ts`).
+- [x] Final accessibility sweep tests (contrast, hit areas, labels, reduced motion) re-run across all
       screens; fix any gap found.
-- [ ] Write `qa-checklist.md` (below), `08/README.md` (what was verified, commands, numbers), and update
+- [x] Write `qa-checklist.md` (below), `08/README.md` (what was verified, commands, numbers), and update
       `README.md` status line, `open-questions.md` (carry unresolved items), and the epic `STATUS.md`
       task table (mark 01 to 08 `[x]` only if their own acceptance criteria are met).
-- [ ] Run the full verification commands and the pre-existing-failure check (same commands in a
+- [x] Run the full verification commands and the pre-existing-failure check (same commands in a
       throwaway `origin/main` worktree under `.../aqf-wt/scratch/`, removed afterwards) for any red result.
 
 ### Owner browser QA checklist (content of `qa-checklist.md`)
@@ -106,16 +106,16 @@ real Android/iOS device with the Capacitor projects.
 
 ## Acceptance Criteria
 
-- [ ] The playthrough test passes: 120 puzzles solved, 360 stars, unlocks at exactly 45, 120 and 210.
-- [ ] The 40-day daily simulation passes with the expected tokens, streak, freeze and milestone events.
-- [ ] JS bundle <= 300 KB gzip (printed), art <= 8 MB, audio <= 1.5 MB, fonts <= 120 KB each, all enforced by tests.
-- [ ] `no-data-audit.txt` is committed, shows zero network API uses and zero non-allowlisted URLs, and
+- [x] The playthrough test passes: 120 puzzles solved, 360 stars, unlocks at exactly 45, 120 and 210.
+- [x] The 40-day daily simulation passes with the expected tokens, streak, freeze and milestone events.
+- [x] JS bundle <= 300 KB gzip (printed), art <= 8 MB, audio <= 1.5 MB, fonts <= 120 KB each, all enforced by tests.
+- [x] `no-data-audit.txt` is committed, shows zero network API uses and zero non-allowlisted URLs, and
       `package.json` dependencies equal the skeleton set.
-- [ ] The dev QA helper works in dev and is absent from the production bundle.
-- [ ] Knowledge base complete and consistent (tests above); store listing limits hold.
-- [ ] `qa-checklist.md` exists with the 13 sections above, specific to this game.
-- [ ] Epic `STATUS.md` rows 01 to 08 are `[x]`; any red verification result is proven pre-existing.
-- [ ] All verification commands below pass.
+- [x] The dev QA helper works in dev and is absent from the production bundle.
+- [x] Knowledge base complete and consistent (tests above); store listing limits hold.
+- [x] `qa-checklist.md` exists with the 13 sections above, specific to this game.
+- [x] Epic `STATUS.md` rows 01 to 08 are `[x]`; any red verification result is proven pre-existing.
+- [x] All verification commands below pass.
 
 ## Verification Commands
 

@@ -1,0 +1,60 @@
+Lantern Loops no-data audit
+===========================
+
+Scope: apps-games/lantern-loops/src, apps-games/lantern-loops/public and index.html
+(95 text files; binary fonts, audio and images are skipped).
+
+Network APIs searched for (case-sensitive substrings):
+  fetch(
+  XMLHttpRequest
+  WebSocket
+  EventSource
+  sendBeacon
+  navigator.geolocation
+  importScripts
+
+Network API uses: 0
+
+Non-allowlisted URLs: 0
+
+Allowlisted URLs: 64
+  attribution and licence URL printed as text (About screen, source records):
+    http://creativecommons.org/publicdomain/zero/1.0/ (x17)
+    https://creativecommons.org/publicdomain/zero/1.0/ (x1)
+    https://github.com/google/fonts/tree/main/ofl/fraunces (x1)
+    https://github.com/google/fonts/tree/main/ofl/nunito (x1)
+    https://kenney.nl/assets/impact-sounds (x1)
+    https://kenney.nl/assets/interface-sounds (x10)
+    https://kenney.nl/assets/music-jingles (x5)
+    https://kenney.nl/assets/ui-audio (x1)
+    https://opengameart.org/content/calm-loop (x1)
+  licence text file (never executed):
+    http://creativecommons.org/publicdomain/zero/1.0/ (x4)
+    http://patreon.com/kenney/ (x2)
+    http://request.kenney.nl (x3)
+    http://scripts.sil.org/OFL (x2)
+    http://support.kenney.nl (x4)
+    http://twitter.com/KenneyNL (x2)
+    https://creativecommons.org/publicdomain/zero/1.0/ (x1)
+    https://github.com/googlefonts/nunito (x1)
+    https://github.com/undercasetype/Fraunces (x1)
+    https://kenney.nl/assets/impact-sounds (x1)
+    https://kenney.nl/assets/interface-sounds (x1)
+    https://kenney.nl/assets/music-jingles (x1)
+    https://kenney.nl/assets/ui-audio (x1)
+    https://opengameart.org/content/calm-loop (x1)
+    https://opengameart.org/sites/default/files/Relaxing_0.mp3 (x1)
+
+Notes:
+  Allowlisted URLs are printed as text on the About screen or sit in licence files; the app
+  never loads, opens or requests them.
+  The shared kit loads the bundled audio files with a same-origin fetch of relative paths
+  (apps-games/web-kit/src/audio/manager.ts); that is local file access, not network use, and the
+  kit is outside this scan.
+  The Capacitor Android template still declares android.permission.INTERNET; see
+  .agents/games/lantern-loops/open-questions.md (Q6).
+
+Skeleton dependencies: unchanged
+  dependencies and devDependencies equal the skeleton commit 7a34ae8 (only npm scripts were added)
+
+Result: PASS

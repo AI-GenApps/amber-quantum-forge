@@ -8,6 +8,7 @@ loop result: `style_anchor_failed`. Accepted: `lantern-amber` (b1 round 3) and `
 | `art-bible.md` | Copy of the art bible the designer and the reviewer used |
 | `accepted-manifest.json` | Copy of `accepted/manifest.json` (prompts, model, notes per accepted asset); the app tests compare the shipped files against it |
 | `review/b1-round-1..4-review.md` | Copies of the strict review notes of batch b1, rounds 1 to 4 (round 3 accepted the lantern, round 4 accepted the icon and rejected key-art (missing) and backdrop-harbor) |
+| `review/b2-round-1-brief.md` | Copy of the batch b2 brief the designer received; batch b2 was never generated because the style anchor failed, so no b2 image exists |
 | `masters/<slot>.webp` | WebP q90 masters at the generation size (1024x1024), alpha kept for the lantern |
 | `report.json` | Per slot: source PNG, master and shipped file size, dimensions, SHA-256, corner alpha, batch and round (centre edge density for backdrops, none accepted) |
 

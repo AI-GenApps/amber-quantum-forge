@@ -41,9 +41,10 @@ every decision or number change is updated here in the same commit as the code. 
 | Monetization | None in v1: no ads, no IAP, no accounts, no network calls |
 | Save | Versioned local save (Capacitor Preferences on device, `localStorage` on web) with migrations |
 | QA | Agents run headless checks only; the owner does browser QA from `.agents/resources/2026-10-23/web-games/lantern-loops/qa-checklist.md` |
+| Dev QA helper | `?qa=stars:210,tokens:5,streak:6,onboarded:1,reset:1` on the dev server only (`import.meta.env.DEV`); absent from the production bundle (test) |
 | Epic | [`tasks/epics/19-web-lantern-loops`](../../../tasks/epics/19-web-lantern-loops/STATUS.md) |
 | Shared kit | [`.agents/games/web-games-kit/`](../web-games-kit/README.md) |
 | Fixed tiles (anchors) | Real shares of solution tiles, median per chapter: Harbor 31.3%, Garden 19%, Bridge 16.3%, Sky 12.5%; maximum 33.3% (limits: median <= 35%, hard limit 50%, unchanged) |
 | Generator | `ll-gen-1`, seeded integer PRNG (mulberry32), campaign seed = FNV-1a of `ll-gen-1\|<puzzle id>`; the whole campaign regenerates in about 2 s with `bun run generate` in `apps-games/lantern-loops-core` |
 | Difficulty rating | 1 to 5 from solver statistics (guesses, undecided cells after propagation, board size); non-decreasing over the five bands of six puzzles |
-| Status (2026-10-23) | Tasks 00 to 04 done (knowledge base, rules, solver, 120 proven-unique puzzles, progression, economy, daily mode, save, all screens, SVG board, tokens, fonts, accessibility). Task 05 in progress: CC0 audio, haptics, motion polish, onboarding machine, how-to diagrams |
+| Status (2026-10-23) | Tasks 00 to 08 built (knowledge base, rules, solver, 120 proven-unique puzzles, progression, economy, daily mode, save, all screens, SVG board, tokens, fonts, accessibility, CC0 audio, haptics, motion, onboarding, reviewed art where accepted, Capacitor Android and iOS projects, release readiness). Release readiness (task 08): full 120-puzzle campaign and 40-day daily playthrough tests, budgets enforced (JS 77 KB gzip of 300), no-data audit, dev-only QA helper, store listing limits, owner QA checklist. Waiting for the owner browser QA |

@@ -1,6 +1,6 @@
-# Lantern Loops — store listing answer bank (draft)
+# Lantern Loops — store listing answer bank (final copy, task 08)
 
-Draft answers for Google Play Console and App Store Connect, finalised in task 08 and checked
+Answers for Google Play Console and App Store Connect. The copy is final (task 08) and checked
 against the shipped code. No store submission happens in v1 (owner decision 2026-10-23); this bank
 exists so a later submission is a copy-paste job. Length limits are enforced by
 `apps-games/lantern-loops/test/release/storeListing.test.ts` (task 08), which reads the fenced
@@ -106,8 +106,10 @@ puzzle,logic,loop,lantern,daily,brain,path,calm,offline,relax
 | Permissions | None requested at runtime. Capacitor's Android template declares `INTERNET`; whether to strip it is tracked in `open-questions.md` |
 | Share | The share action hands text to the OS share sheet; the player chooses the destination |
 
-Evidence for every "no data" claim is produced in task 08 (`no-data-audit.txt` under
-`.agents/resources/2026-10-23/web-games/lantern-loops/`).
+Evidence for every "no data" claim: `no-data-audit.txt` under
+`.agents/resources/2026-10-23/web-games/lantern-loops/08/` (zero network API uses and zero
+non-allowlisted URLs in the source and public files; dependencies equal the skeleton set). Produced
+by `apps-games/lantern-loops/scripts/no-data-audit.ts` and re-checked by `test/release/noData.test.ts`.
 
 ## Graphics needed (from `assets-index.md`)
 

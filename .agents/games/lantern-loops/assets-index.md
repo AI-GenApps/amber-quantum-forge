@@ -11,7 +11,7 @@
 | Headless rules, solver, generator, content data | `apps-games/lantern-loops-core` (`@web-games/lantern-loops-core`) | 01, 02 |
 | Shared kit | `apps-games/web-kit` (`@web-games/kit`), docs `.agents/games/web-games-kit/` | epic 18 |
 | Evidence root | `.agents/resources/2026-10-23/web-games/lantern-loops/` | all |
-| Owner browser QA checklist | `.agents/resources/2026-10-23/web-games/lantern-loops/qa-checklist.md` | 08 (planned) |
+| Owner browser QA checklist | `.agents/resources/2026-10-23/web-games/lantern-loops/qa-checklist.md` | 08 (done) |
 
 ## Fonts (OFL, bundled woff2 with `OFL.txt`, task 04)
 
@@ -157,7 +157,7 @@ key-art lantern; `bun scripts/render-brand-sources.ts --fallback` draws the code
 indigo for the case where no accepted art exists. Evidence:
 `.agents/resources/2026-10-23/web-games/lantern-loops/07/README.md`.
 
-## Evidence planned
+## Evidence
 
 | What | Path | Task |
 |---|---|---|
@@ -167,4 +167,4 @@ indigo for the case where no accepted art exists. Evidence:
 | Audio provenance | `.agents/resources/2026-10-23/web-games/lantern-loops/05/README.md` | 05 (done) |
 | Art review log and masters | `.agents/resources/2026-10-23/web-games/lantern-loops/art/` | 06 (done) |
 | Capacitor sync log, `capacitor-assets` log, README | `.agents/resources/2026-10-23/web-games/lantern-loops/07/` | 07 (done) |
-| Bundle and art budget report, no-data audit, QA checklist | `.agents/resources/2026-10-23/web-games/lantern-loops/08/`, `qa-checklist.md` | 08 |
+| Bundle, art, audio and font budget report (`08/budgets.json`), no-data audit (`08/no-data-audit.txt`), verification summary (`08/README.md`), QA checklist (`qa-checklist.md`) | `.agents/resources/2026-10-23/web-games/lantern-loops/08/`, `.agents/resources/2026-10-23/web-games/lantern-loops/qa-checklist.md` | 08 (done) |
