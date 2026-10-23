@@ -171,3 +171,57 @@ The game store updates its in-memory model first and saves in the background, so
 a failed save sets `saveFailed` and the next good write clears it. Over 365 dates from 2026-01-01 the
 generator never needed a fallback (attempts: 316 first try, max 5 tries); the 14 fallback plans are still
 tested on their own and for every date with attempts forced to zero.
+
+### Screens, tokens, fonts and accessibility settled in task 04
+No binding number moved. Refinements, all recorded because they change what the player sees or what tests pin:
+
+- **Navigation.** Typed routes `boot home files intro table viewer board reveal map almanac ledger daily achievements
+  records themes settings howto credits`; a case route carries `{ caseId } | { daily: true }`. Intro replaces itself
+  with the table so Back from the table returns to the case files. A correct accusation (or delivery by
+  elimination) pops the intro, table, viewer and board and pushes the reveal on whatever lies beneath (Back from
+  the reveal lands on the case files, Daily Parcel or Home). Replay starts the case fresh and goes straight to the
+  table; Next opens the intro of the next case when it is unlocked.
+- **Board interaction.** Tapping a pinned clue selects it; tapping a card always selects the card and, when a clue is
+  selected, opens the link menu (Fits, Rules out, Remove link) as a sheet; Accuse works on the selected card. Accuse
+  is never disabled: pressing it with 0 or 1 fits writes the two-witness rule and the missing count in a status
+  line, and a card that was not chosen asks for one. A wrong accusation opens the Return to sender note (the
+  `explainWrong` result written as one sentence, for example "The river-mud grit on the cuff does not fit Ambrose:
+  Ambrose is tall.") and returns the card; the accusation that closes the case (right or by elimination) goes
+  straight to the reveal. A key-and-lock pair is bracketed in a card's link list once both clues carry the same
+  link kind there. The hint (button on the table and on the board) always shows the price and the postage left
+  first.
+- **Drag and drop is not built.** `product.md` lists dragging a chip onto a card as an alternative; v1 ships the
+  complete tap and keyboard path only ("everything needs only taps"). It can be added without touching the core.
+- **Keyboard.** F flips, M toggles the magnifier, P pins or unpins, L opens the link menu, A accuses, H asks for a
+  hint, left and right move between objects in the viewer, and the arrow keys move focus between objects, tray
+  chips, pinned clues and cards (`data-nav`). Shortcuts are ignored inside dialogs and with modifier keys.
+- **Almanac links.** Every clue (lead and flavour alike, so the presence of a link tells nothing) has a small book
+  button that opens the Almanac clue list. The entry that is highlighted comes from the clue tag: whole vocabulary
+  phrases first, then the best weighted word overlap, plus five authored pointers (`02-c2`, `09-c3`, `10-c3`, `12-c2`, `12-c4`, see
+  `src/data/almanacOverrides.ts`) for lead clues whose tag shares no word with their entry. `test/almanac-link.test.ts`
+  proves all 33 lead clues highlight the entry of their own deduction. Flavour clues highlight whatever matches
+  best, or nothing.
+- **Townsfolk Book.** A townsperson is met when they were a candidate of a delivered case or of the case in
+  progress (including a Daily Parcel in progress).
+- **Palette and desk themes.** The 13 art-bible tokens are unchanged. Four derived neutrals were needed to meet the
+  contrast rules: muted text `#3d4658` on light desks and `#d6cdb4` on dark desks, a raised dark surface `#252e3d`
+  and a functional border `#6e6040` (the art-bible `line` is 2.92 on cream-2 and stays a decorative hairline). The
+  five desk themes are keyed by the core ids; the three light desks keep cream-2 as the app background with cream
+  paper and take their accent from mustard-deep, teal-deep or brick-deep (cream text), the two dark desks use night
+  with an ink surface and a mustard or mustard-light accent (ink text). Blotter colours (mustard, teal, brick, ink)
+  are fills behind the evidence objects only; every object stands on its own cream paper label.
+- **Contrast is enforced by data.** `themePairs(themeId)` lists the 21 pairs a desk theme puts on screen and
+  `PAPER_PAIRS` the 19 paper pairs; `test/theme.test.ts` fails on any pair under 4.5 (text) or 3 (UI). It caught
+  the brick stamp icon on the night desk (2.72), which is mustard there now.
+- **Hit areas.** One shared rule gives every custom control `min-width` and `min-height` of `--wg-hit-min`
+  (44 px); kit buttons, toggles and tabs keep 48 px; hotspots are 48 px with inline sizes. `test/a11y.test.tsx`
+  measures the stylesheets.
+- **Motion.** Reduced motion (system or in-app) removes the flip animation, the falling stamp and the typewriter
+  (the full reveal text is on screen at once); the full text is always in the DOM for screen readers.
+- **Fonts.** One variable Plex file and two Courier Prime files, 79,884 bytes in total; see `assets-index.md`.
+- **How to play** ships six short pages written from the product rules so the screen is useful today; task 05
+  replaces the copy and adds the tutorial. Credits lists the two font families; the audio and art lists are empty
+  data files that tasks 05 and 06 extend.
+- **Map.** The town is one SVG (six streets, 12 place markers filled when the case is delivered, dashed when locked)
+  with a list of 12 real buttons under it for keyboards and screen readers; tapping a marker or a button opens the
+  case intro, or says the case is locked.

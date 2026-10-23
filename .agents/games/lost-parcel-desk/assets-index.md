@@ -1,9 +1,9 @@
 # Lost Parcel Desk - assets index
 
-Status after task 00: planning only. Nothing is downloaded or generated yet. The plan below is binding for
-tasks 04 (fonts, code-drawn fallbacks), 05 (audio), 06 (art) and 07 (icons and splash). Every one of the 67
-art slots has a code-drawn fallback (`src/art/fallbacks.ts`, task 04), so the game renders completely with
-zero, some or all slots present.
+Status after task 04: the two font families are bundled and the 67 art slots all have code-drawn fallbacks
+(`src/art/slots.ts`, `manifest.ts`, `fallbacks.tsx`, `src/ui/Glyph.tsx`), with an empty manifest, so the game
+renders completely today. Audio (task 05), designer art (task 06) and icons and splash (task 07) are still to come
+and follow the plan below.
 
 ## Where things live
 
@@ -119,15 +119,28 @@ Both families are SIL OFL, downloaded from `github.com/google/fonts` in task 04,
 Latin-1 and the punctuation used (U+2013, U+2014, U+2018 to U+201D, U+2022, U+2026), converted to woff2 and
 bundled under `public/fonts/` with the family `OFL.txt`. No rendered text may fall back to a platform font.
 
-| Role | Family | Source path in google/fonts | Files shipped | Budget |
-|---|---|---|---|---|
-| Display, clue text, stamps, labels | Courier Prime | `ofl/courierprime/CourierPrime-Regular.ttf`, `CourierPrime-Bold.ttf`, `OFL.txt` | `CourierPrime-Regular.woff2`, `CourierPrime-Bold.woff2` | each at most 60 KB |
-| Body, UI, profile cards | IBM Plex Sans | `ofl/ibmplexsans/IBMPlexSans[wdth,wght].ttf`, `OFL.txt` | `IBMPlexSans.woff2` (variable, `wdth` pinned, `wght` kept) | at most 120 KB |
+| Role | Family | Source path in google/fonts | Files shipped | Bytes | Budget |
+|---|---|---|---|---|---|
+| Display, clue text, stamps, labels | Courier Prime | `ofl/courierprime/CourierPrime-Regular.ttf`, `CourierPrime-Bold.ttf`, `OFL.txt` | `courier-prime/CourierPrime-Regular.woff2`, `courier-prime/CourierPrime-Bold.woff2`, `courier-prime/OFL.txt` | 17,668 and 18,172 | each at most 60 KB |
+| Body, UI, profile cards | IBM Plex Sans | `ofl/ibmplexsans/IBMPlexSans[wdth,wght].ttf`, `OFL.txt` | `ibm-plex-sans/IBMPlexSans.woff2` (variable, `wdth` pinned at 100, `wght` 100 to 700 kept), `ibm-plex-sans/OFL.txt` | 44,044 | at most 120 KB |
 
-Fonts total at most 300 KB. Stacks: `"Courier Prime", "Courier New", monospace` and
+Fonts total 79,884 bytes of the 300 KB budget. Stacks: `"Courier Prime", "Courier New", monospace` and
 `"IBM Plex Sans", system-ui, sans-serif` (the fallbacks exist only for the font-loading gap; the kit test
-helper fails if any rendered text uses them). Provenance (tool command, sizes, SHA-256) goes into
-`.agents/resources/2026-10-23/web-games/lost-parcel-desk/04/README.md` in task 04.
+helper fails if any rendered text uses them; `test/a11y.test.tsx` runs it on every screen). `src/fonts.ts`
+lists the `@font-face` faces; `registerFonts` runs in the boot screen and `index.html` preloads the bold Courier
+Prime and the Plex file. Provenance (tool versions, commands, source and output SHA-256) is in
+`.agents/resources/2026-10-23/web-games/lost-parcel-desk/04/README.md`.
+
+## Code-drawn art (task 04)
+
+`src/art/slots.ts` derives the 67 slot ids from the content (49 evidence objects from `artSlot`, 12 portraits from
+`portraitSlot`) plus `icon`, `key-art`, `desk-backdrop`, `parcel-closed`, `parcel-open` and `feature-graphic`.
+`src/art/manifest.ts` lists the slots that have a file in `public/art/`; it is empty until task 06, which only
+flips entries. `<Sprite slot=... />` renders the image when the manifest lists the slot and the fallback otherwise.
+Fallbacks use palette tokens only: the 14 object glyphs (`tin cloth paper card key glove bag box metal wood lens lamp
+ticket hat`, each a flat riso drawing with a 2 px offset second-colour layer and a dot-grain pass), an initials badge
+for each portrait, a brown-paper parcel and an open box, a grained desk backdrop, a key-art lamp-and-desk scene and
+the stamp-and-envelope icon badge. No fallback draws text except the portrait initials.
 
 ## Audio (CC0 only, delivered in task 05)
 

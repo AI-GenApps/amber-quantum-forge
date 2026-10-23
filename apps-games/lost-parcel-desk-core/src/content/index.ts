@@ -12,6 +12,7 @@ export { CHAPTERS, SETTING } from "./chapters";
 export { HEADLINES, headlineFor, RETURN_TO_SENDER, SUBTITLE, TAGLINE, TITLE } from "./headlines";
 export { LEDGER } from "./ledger";
 export { PLACES, POST_OFFICE, STREETS } from "./places";
+export { containsPhrase, termsOf } from "./text-rules";
 export { THEMES } from "./themes";
 export * from "./totals";
 export { TUTORIAL, TUTORIAL_CASE_ID } from "./tutorial";

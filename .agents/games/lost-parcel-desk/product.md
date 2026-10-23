@@ -126,7 +126,7 @@ A case takes 5 to 8 minutes. There is no failure state and no time pressure.
 7. **Deduction board**: pinned clues, 3 profile cards, link menu (fits / rules out), hint, accuse.
 8. **Reveal**: accusation result, typed reveal, falling stamp, ledger fragment, Next, Replay, Share.
 9. **Town map**: 12 places that fill in as cases close.
-10. **Almanac**: clue vocabulary (24 entries) and the Townsfolk Book (12 profiles, unlocked when met).
+10. **Almanac**: clue vocabulary (24 entries) and the Townsfolk Book (12 profiles, unlocked when met). Every clue on the evidence table, the viewer and the board has a book button that opens the clue list with the matching entry highlighted.
 11. **Ledger**: the 12 fragments of the flood-night story.
 12. **Daily Parcel**: today's case, streak, freezes with a buy button, last 14 days.
 13. **Achievements**: 12 badges.
@@ -145,7 +145,7 @@ confirm, chapter intro and outro, mechanic card, achievement toast.
   toggles hotspot mode, where small glowing discs (visible outline, 48 px hit area) can be tapped.
   There is no pinch requirement: everything needs only taps.
 - Clue tray: tap a clue to pin or unpin it. Board: tap a pinned clue, then tap a profile card to open
-  the link menu (Fits, Rules out, Remove link). Dragging a clue chip onto a card does the same.
+  the link menu (Fits, Rules out, Remove link). Dragging a clue chip onto a card is a planned alternative that v1 does not ship (taps and keys cover every action).
 - Accuse: select a profile card, press Accuse, confirm.
 - Keyboard: Tab order follows the visual order; arrow keys move between objects, chips and cards; Enter
   activates; F flips, M toggles the magnifier, P pins, L opens the link menu, H asks for a hint, A

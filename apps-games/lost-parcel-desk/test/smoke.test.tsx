@@ -1,23 +1,22 @@
-import { injectKitStyles } from "@web-games/kit";
-import { render } from "preact";
-import { act } from "preact/test-utils";
 import { afterEach, describe, expect, it } from "vitest";
-import { App } from "../src/App";
 import { GAME_TITLE } from "../src/brand";
+import { mountApp, type Rig } from "./helpers";
 
-describe("lost-parcel-desk title screen", () => {
-  afterEach(() => {
-    document.body.replaceChildren();
-  });
+let rig: Rig | null = null;
 
-  it("renders the title through the kit", async () => {
-    injectKitStyles();
-    const container = document.createElement("div");
-    document.body.appendChild(container);
-    await act(() => render(<App />, container));
-    expect(container.querySelector("[data-screen='title']")).not.toBeNull();
-    expect(container.querySelector("h1")?.textContent).toBe(GAME_TITLE);
-    expect(container.querySelector("button")?.textContent).toBe("Coming soon");
+afterEach(() => {
+  rig?.unmount();
+  rig = null;
+  document.body.replaceChildren();
+});
+
+describe("lost-parcel-desk shell", () => {
+  it("boots into the home screen through the kit", async () => {
+    rig = await mountApp({ route: ["boot"] });
+    await rig.settle();
+    expect(rig.app.router.current.name).toBe("home");
+    expect(rig.container.querySelector("[data-screen='home']")).not.toBeNull();
+    expect(rig.container.querySelector("h1")?.textContent).toBe(GAME_TITLE);
     expect(document.getElementById("wg-kit-styles")).not.toBeNull();
   });
 });

@@ -16,6 +16,9 @@ None of these block v1; each has a stated default. After task 08 the open items 
 | Q9 | Remove the default Android `INTERNET` permission since the game is fully offline? | Keep Capacitor's default (WebView loader not verified without a device); data safety stays "no data collected". Owner decides after device QA. | owner |
 | Q10 | Daily Parcel variety: generated cases are valid but may feel samey (4 facets, 24 templates). | Ship as generated; the owner judges the daily in browser QA. More template objects can be added without touching the rules. | owner at QA |
 | Q11 | Do players find the Almanac when a clue seems unfair? | The board and the viewer link to the matching Almanac entry from every clue tag. Owner judges whether it needs a stronger prompt. | owner at QA |
+| Q12 | The IBM Plex Sans `OFL.txt` declares the Reserved Font Name "Plex". The shipped woff2 is a subset with the `wdth` axis pinned, whose name table keeps the upstream family name. Is that acceptable, or should the font be renamed or shipped whole? | Keep as shipped (subsetting and woff2 conversion are ordinary web-font practice, and the glyph outlines are unchanged); the whole variable file is 537 KB, far over the 120 KB budget. The licence text ships beside the files and the family is credited. A rename would be a name-table edit plus one CSS family name. | owner, before any store step |
+| Q13 | Dragging a clue chip onto a profile card (listed as an alternative in `product.md`) is not built. | The tap flow and the keyboard flow are complete; drag adds nothing the tests require. The owner decides at QA whether a drag gesture is missed. | owner at QA |
+| Q14 | Do the Almanac links feel found? Every clue has a book button, and the entry highlighted comes from the tag wording (33 of 33 lead clues are checked by a test). | Ship as built; flavour clues highlight their best word match or nothing. | owner at QA |
 
 ## Kit follow-ups
 
@@ -27,3 +30,18 @@ Found while building task 03 (the kit is read-only for this epic; the workaround
 - The kit has no weekday helper and `streakStep` has no state for "no previous day". Workaround: the game
   derives the weekday from `dayNumber` (the epoch 2026-01-01 is a Thursday, tested against `Date`) and
   passes `first` itself when `daily.lastKey` is null.
+
+Found while building task 04 (worked around inside the game; the kit stays read-only):
+
+- `injectKitStyles()` appends the kit stylesheet at runtime, after the game's bundled CSS, so a game rule with the
+  same specificity as a kit rule loses. The game raises specificity (`.wg-btn.wg-btn--danger`) or avoids the clash.
+  Loading the kit CSS first, or putting it in a cascade layer, would remove the trap.
+- `.wg-btn--danger` and `.wg-btn--primary` both use `--wg-color-accent-text` as the text colour, which cannot be
+  correct for a danger fill when the accent is a dark ink-on-gold pair (ink on brick is 2.45). A
+  `--wg-color-danger-text` token would help; the game sets the colour itself.
+- The toggle thumb uses `--wg-color-text`, which has no contrast guarantee against the accent track. The game
+  overrides the thumb with two desk-theme custom properties.
+- `.wg-tab` declares `min-height: 48px` but no `min-width` (it relies on `flex: 1`), so a stylesheet audit cannot
+  prove the hit width; the game adds `min-width: var(--wg-hit-min)`.
+- `mount()` in `ui/testing.ts` is not exported from the kit index; the game tests use `render` and `act` directly.
+- `Sheet` has no portal and no back-button hook; the game wraps it (`AppSheet`) with a router back interceptor.
