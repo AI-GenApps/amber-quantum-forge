@@ -1,7 +1,7 @@
 ---
 epic: 19-web-lantern-loops
 task: 07-capacitor-packaging
-status: pending
+status: in-progress
 commit_scope: lantern-loops
 depends_on: [19-web-lantern-loops/06-art-integration]
 estimate: M
@@ -51,21 +51,21 @@ simulator or device is touched. Tests read the generated files and prove the con
 
 ## Implementation Checklist
 
-- [ ] `bun run --filter '@web-games/lantern-loops' build` then, from `apps-games/lantern-loops`,
+- [x] `bun run --filter '@web-games/lantern-loops' build` then, from `apps-games/lantern-loops`,
       `bunx cap add android` and `bunx cap add ios`; commit the generated project files.
-- [ ] `scripts/render-brand-sources.ts` (re-runnable): writes `resources/*.png` from the accepted art
+- [x] `scripts/render-brand-sources.ts` (re-runnable): writes `resources/*.png` from the accepted art
       (evidence masters) or from the code-drawn fallback.
-- [ ] `bunx capacitor-assets generate --android --ios` (icons, adaptive icons, splash for light and dark);
+- [x] `bunx capacitor-assets generate --android --ios` (icons, adaptive icons, splash for light and dark);
       commit the outputs; keep `resources/` as the single source.
-- [ ] Set orientation in `AndroidManifest.xml` and `Info.plist`; set display name, bundle id, version
+- [x] Set orientation in `AndroidManifest.xml` and `Info.plist`; set display name, bundle id, version
       name `0.1.0` / code 1 (Android) and marketing version 0.1.0 / build 1 (iOS) to match the package
       version; set status bar style and launch screen background to the indigo.
-- [ ] `bunx cap sync` (copies `dist` and plugin config into both projects); save the command output under
+- [x] `bunx cap sync` (copies `dist` and plugin config into both projects); save the command output under
       `.agents/resources/2026-10-23/web-games/lantern-loops/07/cap-sync.log` (strip absolute home paths if any).
-- [ ] Add the `android` and `ios` package scripts only if missing (`cap:sync` exists); no new dependency.
-- [ ] Tests (below), evidence README listing commands, versions of `@capacitor/cli` and
+- [x] Add the `android` and `ios` package scripts only if missing (`cap:sync` exists); no new dependency.
+- [x] Tests (below), evidence README listing commands, versions of `@capacitor/cli` and
       `@capacitor/assets`, which icon path was used, and file counts.
-- [ ] Update `assets-index.md` (icon/splash status) and `decisions-log.md` if anything deviates.
+- [x] Update `assets-index.md` (icon/splash status) and `decisions-log.md` if anything deviates.
 
 ## Files Touched
 
@@ -77,21 +77,21 @@ simulator or device is touched. Tests read the generated files and prove the con
 
 ## Acceptance Criteria
 
-- [ ] `android/` and `ios/` exist with the Capacitor 8 structure; a test asserts the Android
+- [x] `android/` and `ios/` exist with the Capacitor 8 structure; a test asserts the Android
       `applicationId`/`namespace` and the iOS bundle identifier equal `app.w3dev.lanternloops`, the app
       name is "Lantern Loops" in `strings.xml` and `Info.plist`, versions are 0.1.0, and
       `capacitor.config.ts` still has no `server.url`.
-- [ ] Portrait only: manifest has `android:screenOrientation="portrait"`; `Info.plist` lists only portrait
+- [x] Portrait only: manifest has `android:screenOrientation="portrait"`; `Info.plist` lists only portrait
       orientations for iPhone and iPad.
-- [ ] Icons: the Android `mipmap-*` launcher icons (all five densities, round and adaptive foreground)
+- [x] Icons: the Android `mipmap-*` launcher icons (all five densities, round and adaptive foreground)
       and the iOS `AppIcon.appiconset` (1024 marketing icon present, no alpha) exist and are non-empty;
       splash assets exist for light and dark; `resources/` holds the five source PNGs at the stated sizes
       (test reads PNG headers).
-- [ ] The synced web copy matches `dist` (test compares `index.html` hash after a build, skipped with a clear
+- [x] The synced web copy matches `dist` (test compares `index.html` hash after a build, skipped with a clear
       message only if `dist` is absent) and contains no `server.url` in either `capacitor.config.json`.
-- [ ] No Gradle, Xcode, JDK, simulator or device command was run (state in the evidence README).
-- [ ] Committed platform folders contain no build output, no `local.properties`, no keystores.
-- [ ] All verification commands below pass.
+- [x] No Gradle build, Xcode, JDK install, simulator or device command was run (stated in the evidence README, including the "Syncing Gradle" step that `cap add android` runs inside the CLI).
+- [x] Committed platform folders contain no build output, no `local.properties`, no keystores.
+- [x] All verification commands below pass.
 
 ## Verification Commands
 

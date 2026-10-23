@@ -137,6 +137,26 @@ from the same records.
 | `freeze-used` | `public/audio/freeze-used.mp3` | Kenney Interface Sounds: `Audio/bong_001.ogg` (https://kenney.nl/assets/interface-sounds) | CC0 1.0 | 1,505 | `aff3a11099516ed349df34b6f83d8d92c002239d43f031fe1270710912f48604` | `d21d0f0b782445db579d11e2506b24cd1ac9d664ee33aeaf807761aa7b6fd710` |
 | `calm-loop` | `public/audio/calm-loop.mp3` | OpenGameArt: Calm Loop by wipics: `Relaxing_0.mp3` (https://opengameart.org/content/calm-loop) | CC0 1.0 | 314,222 | `1d7e386c079d4add6b3b1592054846e4977035f26844466e409467c6dc7bdbde` | `1d7e386c079d4add6b3b1592054846e4977035f26844466e409467c6dc7bdbde` |
 
+## Capacitor icon and splash (task 07, done)
+
+Sources live in `apps-games/lantern-loops/resources/` and are written by
+`apps-games/lantern-loops/scripts/render-brand-sources.ts` (`bun run brand:sources`, deterministic,
+reads the evidence masters, never the inbox). `bunx capacitor-assets generate --android --ios`
+(`bun run brand:assets`) turns them into the launcher icons, adaptive icons and splash images that are
+committed under `android/` and `ios/`.
+
+| Source | Size | Built from | Status |
+|---|---|---|---|
+| `resources/icon.png` | 1024x1024, opaque RGB | accepted `icon` master (`art/masters/icon.webp`), unchanged | accepted art |
+| `resources/icon-foreground.png` | 1024x1024, RGBA | accepted `lantern-amber` master, trimmed and fitted into the central 66% (676 px) | accepted art |
+| `resources/icon-background.png` | 1024x1024, opaque | flat indigo `#12132E` | code |
+| `resources/splash.png`, `splash-dark.png` | 2732x2732, opaque | indigo `#12132E` field with the accepted `lantern-amber` centred inside the safe 1200 px square, posterised to 32 colours (median 5) to keep the committed splash copies small; light and dark are identical because the game has one dark look | accepted art lantern, not `key-art` |
+
+`key-art` was rejected (undelivered), so the splash motif is the accepted `lantern-amber` instead of the
+key-art lantern; `bun scripts/render-brand-sources.ts --fallback` draws the code-drawn lantern on
+indigo for the case where no accepted art exists. Evidence:
+`.agents/resources/2026-10-23/web-games/lantern-loops/07/README.md`.
+
 ## Evidence planned
 
 | What | Path | Task |
@@ -146,5 +166,5 @@ from the same records.
 | Font provenance and contrast table | `.agents/resources/2026-10-23/web-games/lantern-loops/04/README.md` | 04 |
 | Audio provenance | `.agents/resources/2026-10-23/web-games/lantern-loops/05/README.md` | 05 (done) |
 | Art review log and masters | `.agents/resources/2026-10-23/web-games/lantern-loops/art/` | 06 (done) |
-| Capacitor sync log | `.agents/resources/2026-10-23/web-games/lantern-loops/07/` | 07 |
+| Capacitor sync log, `capacitor-assets` log, README | `.agents/resources/2026-10-23/web-games/lantern-loops/07/` | 07 (done) |
 | Bundle and art budget report, no-data audit, QA checklist | `.agents/resources/2026-10-23/web-games/lantern-loops/08/`, `qa-checklist.md` | 08 |

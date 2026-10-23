@@ -10,8 +10,12 @@ const config: CapacitorConfig = {
   appName: "Lantern Loops",
   webDir: "dist",
   // No `server.url`: the committed config always loads the bundled build.
+  backgroundColor: "#12132E",
   android: { webContentsDebuggingEnabled: false },
   ios: { contentInset: "never" },
+  plugins: {
+    StatusBar: { style: "DARK", backgroundColor: "#12132E", overlaysWebView: false },
+  },
 };
 
 export default config;
