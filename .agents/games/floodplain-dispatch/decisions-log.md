@@ -119,3 +119,30 @@ cross-checks shared numbers between the knowledge base and code, so documents ca
 ### Android INTERNET permission
 Left at the Capacitor default until a device can confirm the offline WebView loader works without
 it (open question Q9). The app makes no network requests either way.
+
+## 2026-10-23 - Task 01 engine interpretations (no constant changed)
+
+Rules the spec left open, fixed by the core engine and pinned by tests. None changes a number in
+`product.md` or `economy.md`.
+
+- **Events apply to every inlet.** A surge or drought changes the rate of all inlets; the map has
+  one forecast, not one per inlet.
+- **Storm tide needs a tide.** With no tide spec the sea level is always 0 and storm-tide events are
+  ignored.
+- **Tide integer formula.** `floor(2 * amp * span / period)` with `span = phase` when
+  `2 * phase <= period`, else `period - phase`. Identical to the spec for even periods (6, 8, 10).
+- **Sea starts at the week 0 level** and is reset to the current level at the end of every step.
+- **Reservoir partners.** A reservoir exchanges water by flow only with canal, open gate and pump
+  cells; a pump that faces the reservoir is not a flow partner (it delivers by pumping only). Sea,
+  inlet, bare land, barriers and other reservoirs are walls. The capacity clip (10) uses the start of
+  step depth plus inflow accepted so far in row-major order.
+- **Pump transfer is partial.** A pump moves `min(4, own depth, room in target)`; a full target (10
+  for a reservoir, 99 otherwise) or a closed gate stalls it. A pump facing the board edge idles.
+- **Closed gates hold their water.** Water already in a gate cell stays there until it reopens.
+- **Equal-surface ties** are served N, E, S, W, so a cell with too little water for all lower
+  neighbours favours the earlier direction; mirror symmetry therefore holds only while the source
+  has enough water (tested with deep sources).
+- **Illegal placements are ignored by the simulator** (out of bounds, not on land, second piece on a
+  cell); legality is the job of `checkPlacement`.
+- **Gate weeks.** `opensWeek` defaults to 0 and `closesWeek` to the season length; `checkPlacement`
+  requires `0 <= opens < closes <= weeks`. Only gates may carry weeks and only pumps a direction.

@@ -1,7 +1,7 @@
 ---
 epic: 20-web-floodplain-dispatch
 task: 01-core-rules
-status: todo
+status: in-progress
 commit_scope: floodplain-dispatch
 depends_on: []
 estimate: L
@@ -35,20 +35,20 @@ Build the deterministic water-routing engine in `apps-games/floodplain-dispatch-
 
 ## Implementation Checklist
 
-- [ ] `src/types.ts`: `CellKind`, `PieceKind` (`canal | barrier | pump | gate | reservoir`), `Direction`, `Placement` (x, y, kind, optional `dir` for pumps, optional `opensWeek` and `closesWeek` for gates), `MapDef`, `Board`, `SeasonEvent` (`surge | drought | storm-tide`), `TideSpec`, `SeasonMetrics`, `SeasonResult`, `Evaluation`.
-- [ ] `src/constants.ts` with every balance constant named above, each exported as a readonly value and covered by a test that pins its number (so doc and code cannot drift silently).
-- [ ] `src/prng.ts`: `createPrng(seed)`, `hashString`, `next()`, `int(n)`, `pick`, `shuffle`, `fork(label)`; tests for sequence stability against hard-coded values.
-- [ ] `src/layout.ts`: `parseLayout(rows)` returning a typed grid or a typed `LayoutError` (`EMPTY`, `RAGGED_ROW`, `BAD_TOKEN`, `BAD_HEIGHT`) with row and column; `formatLayout` for round-trip tests.
-- [ ] `src/board.ts`: `createBoard(def)`, `cellIndex`, `neighbors(x, y)` in N, E, S, W order, `isBuildable`, `effectiveCrest(cell, piece)`, `isCanalType(cell, piece)`.
-- [ ] `src/placement.ts`: `checkPlacement(def, placements, candidate)` returning `null` or a `PlacementError` code (`OUT_OF_BOUNDS`, `NOT_BUILDABLE`, `OCCUPIED`, `PIECE_UNAVAILABLE`, `OVER_BUDGET`, `BAD_DIRECTION`, `BAD_GATE_WEEKS`); `placementCost`, `budgetLeft`, immutable `addPlacement`, `removePlacement`, `rotatePump`, `setGateWeeks`.
-- [ ] `src/events.ts`: `inletRate(def, inletIndex, week)` (base plus surges minus droughts, floor 0) and `tideLevel(def, week)` using the integer formula in `product.md`, plus storm-tide deltas.
-- [ ] `src/simulate.ts`: `createSimState`, `stepOnce` (inlets, pumps, flow from snapshot, sea reset, metrics, in that order) and `runSeason` returning per-week depth frames (`Uint8Array` per week, plus the step-level frames when `{ keepSteps: true }`), the per-cell metrics and the final `SeasonResult`. Row-major order everywhere; flows computed from a snapshot and applied together; outflow per cell clipped to its depth in the order of ascending neighbour surface, then N, E, S, W.
-- [ ] `src/evaluate.ts`: `evaluate(def, result, placements)` giving `housesSupplied`, `fieldsIrrigated`, `housesFlooded`, `spend`, `stars` (cumulative 0 to 3), `cleared`, `score` (formula in `product.md`, floor 0) and the partial-progress counts for the result sheet.
-- [ ] `src/index.ts` re-exports the public API (keep the existing `version` export).
-- [ ] Tests in `test/` (one file per module, hand-computed expectations, no snapshot files): layout parse and error cases; board geometry and neighbour order; crest and canal-type for every piece; placement legality for each error code and for refunds; flow downhill and equalisation (difference 1 never moves, difference 2 moves 1); edge cap 2 versus 4; flow limited by source depth; mirror-symmetric boards give mirror-symmetric depths (no order bias); mass conservation on boards without sea or inlet and with a known inflow and drain; barrier overtopping at the exact depth; pump moves 4 uphill, stalls with a full target, obeys direction, runs in row-major order; gate open and closed on both week boundaries (`opensWeek` inclusive, `closesWeek` exclusive); reservoir walls, capacity 10, filling only through canal neighbours; tide table for periods 6, 8, 10 and amplitudes 1 to 3 including a storm-tide overlap; surge and drought sums, overlap and the floor at 0; metrics thresholds at 5 and 6 supplied steps, flood at depth 1 and 2, field wet band at 0, 1, 4 and 5; star rules for all combinations of (supplied, irrigated, flooded, spend vs par); score formula including the floor; PRNG-driven property test over 200 random boards and random legal placements: the run is repeatable, never throws, depths stay within 0 to 99, and the input is not mutated; a hand-built 5 x 6 golden season with every depth frame spelled out.
-- [ ] Add `test/determinism.test.ts` that runs the same random scenario twice and compares full JSON.
-- [ ] Confirm `test/architecture.test.ts` still passes and no file in `src/` exceeds 800 lines.
-- [ ] Update `product.md` and `decisions-log.md` only if a constant changed; otherwise leave them.
+- [x] `src/types.ts`: `CellKind`, `PieceKind` (`canal | barrier | pump | gate | reservoir`), `Direction`, `Placement` (x, y, kind, optional `dir` for pumps, optional `opensWeek` and `closesWeek` for gates), `MapDef`, `Board`, `SeasonEvent` (`surge | drought | storm-tide`), `TideSpec`, `SeasonMetrics`, `SeasonResult`, `Evaluation`.
+- [x] `src/constants.ts` with every balance constant named above, each exported as a readonly value and covered by a test that pins its number (so doc and code cannot drift silently).
+- [x] `src/prng.ts`: `createPrng(seed)`, `hashString`, `next()`, `int(n)`, `pick`, `shuffle`, `fork(label)`; tests for sequence stability against hard-coded values.
+- [x] `src/layout.ts`: `parseLayout(rows)` returning a typed grid or a typed `LayoutError` (`EMPTY`, `RAGGED_ROW`, `BAD_TOKEN`, `BAD_HEIGHT`) with row and column; `formatLayout` for round-trip tests.
+- [x] `src/board.ts`: `createBoard(def)`, `cellIndex`, `neighbors(x, y)` in N, E, S, W order, `isBuildable`, `effectiveCrest(cell, piece)`, `isCanalType(cell, piece)`.
+- [x] `src/placement.ts`: `checkPlacement(def, placements, candidate)` returning `null` or a `PlacementError` code (`OUT_OF_BOUNDS`, `NOT_BUILDABLE`, `OCCUPIED`, `PIECE_UNAVAILABLE`, `OVER_BUDGET`, `BAD_DIRECTION`, `BAD_GATE_WEEKS`); `placementCost`, `budgetLeft`, immutable `addPlacement`, `removePlacement`, `rotatePump`, `setGateWeeks`.
+- [x] `src/events.ts`: `inletRate(def, inletIndex, week)` (base plus surges minus droughts, floor 0) and `tideLevel(def, week)` using the integer formula in `product.md`, plus storm-tide deltas.
+- [x] `src/simulate.ts`: `createSimState`, `stepOnce` (inlets, pumps, flow from snapshot, sea reset, metrics, in that order) and `runSeason` returning per-week depth frames (`Uint8Array` per week, plus the step-level frames when `{ keepSteps: true }`), the per-cell metrics and the final `SeasonResult`. Row-major order everywhere; flows computed from a snapshot and applied together; outflow per cell clipped to its depth in the order of ascending neighbour surface, then N, E, S, W.
+- [x] `src/evaluate.ts`: `evaluate(def, result, placements)` giving `housesSupplied`, `fieldsIrrigated`, `housesFlooded`, `spend`, `stars` (cumulative 0 to 3), `cleared`, `score` (formula in `product.md`, floor 0) and the partial-progress counts for the result sheet.
+- [x] `src/index.ts` re-exports the public API (keep the existing `version` export).
+- [x] Tests in `test/` (one file per module, hand-computed expectations, no snapshot files): layout parse and error cases; board geometry and neighbour order; crest and canal-type for every piece; placement legality for each error code and for refunds; flow downhill and equalisation (difference 1 never moves, difference 2 moves 1); edge cap 2 versus 4; flow limited by source depth; mirror-symmetric boards give mirror-symmetric depths (no order bias); mass conservation on boards without sea or inlet and with a known inflow and drain; barrier overtopping at the exact depth; pump moves 4 uphill, stalls with a full target, obeys direction, runs in row-major order; gate open and closed on both week boundaries (`opensWeek` inclusive, `closesWeek` exclusive); reservoir walls, capacity 10, filling only through canal neighbours; tide table for periods 6, 8, 10 and amplitudes 1 to 3 including a storm-tide overlap; surge and drought sums, overlap and the floor at 0; metrics thresholds at 5 and 6 supplied steps, flood at depth 1 and 2, field wet band at 0, 1, 4 and 5; star rules for all combinations of (supplied, irrigated, flooded, spend vs par); score formula including the floor; PRNG-driven property test over 200 random boards and random legal placements: the run is repeatable, never throws, depths stay within 0 to 99, and the input is not mutated; a hand-built 5 x 6 golden season with every depth frame spelled out.
+- [x] Add `test/determinism.test.ts` that runs the same random scenario twice and compares full JSON.
+- [x] Confirm `test/architecture.test.ts` still passes and no file in `src/` exceeds 800 lines.
+- [x] Update `product.md` and `decisions-log.md` only if a constant changed; otherwise leave them.
 
 ## Files Touched
 
