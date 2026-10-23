@@ -1,7 +1,7 @@
 ---
 epic: 18-web-games-kit
 task: 03-ci-and-docs
-status: pending
+status: done
 commit_scope: web-games-kit
 depends_on: [18-web-games-kit/02-game-skeletons-and-registry]
 estimate: S
@@ -60,16 +60,16 @@ the architecture so game epics 19 to 24 follow the same conventions.
 
 ## Implementation Checklist
 
-- [ ] Confirm tasks 01 and 02 are complete and `web-games:*` scripts exist.
-- [ ] Write `.github/workflows/web-games-ci.yml`; validate the YAML (parse it
+- [x] Confirm tasks 01 and 02 are complete and `web-games:*` scripts exist.
+- [x] Write `.github/workflows/web-games-ci.yml`; validate the YAML (parse it
       with a script; no network run is possible).
-- [ ] Write `docs-internal/gaming/web-games-kit.md`.
-- [ ] Add the page to `docs-internal/docs.json`; run `bun run check:doc-paths`.
-- [ ] Update `.agents/games/web-games-kit/decisions-log.md` with the CI and doc
+- [x] Write `docs-internal/gaming/web-games-kit.md`.
+- [x] Add the page to `docs-internal/docs.json`; run `bun run check:doc-paths`.
+- [x] Update `.agents/games/web-games-kit/decisions-log.md` with the CI and doc
       decisions.
-- [ ] Write `.agents/resources/2026-10-23/web-games/web-games-kit/03/README.md`
+- [x] Write `.agents/resources/2026-10-23/web-games/web-games-kit/03/README.md`
       (workflow trigger table, validation output).
-- [ ] Tick task 03 in `STATUS.md`; when 00 to 03 are all done, tick epic 18 in
+- [x] Tick task 03 in `STATUS.md`; when 00 to 03 are all done, tick epic 18 in
       `tasks/STATUS.md`.
 
 ## Files Touched
@@ -79,6 +79,9 @@ the architecture so game epics 19 to 24 follow the same conventions.
 - `.agents/games/web-games-kit/decisions-log.md`
 - `.agents/resources/2026-10-23/web-games/web-games-kit/03/README.md`
 - `tasks/epics/18-web-games-kit/STATUS.md`, `tasks/STATUS.md`
+- `scripts/games/registry.ts` (web validation accepts `dom` rendering for the six games and
+  `webEngineMessage` points at `web-games:build`; carried over from task 02 because
+  `registry-web.test.ts` fails 4 tests without it; needs an explicit scope-fence extension)
 
 ## Acceptance Criteria
 

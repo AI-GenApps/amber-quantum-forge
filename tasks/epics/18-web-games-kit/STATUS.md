@@ -1,6 +1,6 @@
 # Epic 18 — Web games kit (shared foundation for six web games)
 
-Status: in-progress
+Status: done
 
 ## Purpose
 
@@ -91,6 +91,8 @@ Allowed edits for this epic and the game epics that follow it:
   `tsconfig*.json`
 - `scripts/games/registry-games.ts`, `scripts/games/registry-types.ts`,
   `scripts/games/*.test.ts`
+- `scripts/games/registry.ts` (validation and message logic that `registry-web.test.ts`
+  exercises; extension recorded in task 03 because the test cannot pass without it)
 - `.github/workflows/web-games-ci.yml`
 - `docs-internal/gaming/web-games-kit.md`, `docs-internal/docs.json`
 - `.agents/resources/2026-10-23/web-games/**`
@@ -130,7 +132,7 @@ only after this epic is merged to `main`; each game branch must not touch
 | 00 | Kit epic, task files and portfolio status | agent | [x] |
 | 01 | Shared web-games kit package (`apps-games/web-kit`) | agent | [x] |
 | 02 | Six game skeletons, workspace wiring and registry entries | agent | [x] |
-| 03 | Web-games CI and internal docs | agent | [ ] |
+| 03 | Web-games CI and internal docs | agent | [x] |
 
 ## Verification gate for tasks 01 to 03
 

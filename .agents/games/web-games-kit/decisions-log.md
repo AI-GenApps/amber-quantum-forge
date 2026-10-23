@@ -40,3 +40,20 @@ Every dependency is exact-pinned and copied from `apps-games/city-drive/package.
 - `springEasing` samples a damped spring into CSS `linear()`, so springs run on the compositor.
 - Barrel `src/index.ts` uses `export *` per module; type names are unique across modules (the
   string table's parameter type is `StringParamsArg`, the router's is `ParamsArg`).
+
+## 2026-10-23 — CI and internal docs (task 03)
+
+- One workflow, `.github/workflows/web-games-ci.yml`, for the kit and all six games: install
+  (`--frozen-lockfile`), typecheck, test, build through the `web-games:*` root scripts. No browser,
+  device, deploy or store jobs (owner QA is browser-only and manual).
+- Triggers: pull requests and pushes to `main`, path-filtered to `apps-games/web-kit/**`, the six
+  `apps-games/<slug>/**` and `<slug>-core/**` dirs, `bun.lock`, `package.json` and the workflow file.
+- The Bun version is read from the root `package.json` `packageManager` field in a step and passed
+  to `oven-sh/setup-bun`, so it can never drift from the repo pin. Action SHAs match
+  `city-drive-ci.yml`.
+- `contents: read` only, a concurrency group that cancels superseded runs, 20-minute job timeout.
+- `scripts/games/web-games-ci-workflow.test.ts` pins the triggers, path list, version source, step
+  order, permissions and the absence of browser or deploy steps.
+- Architecture, conventions, pin rule, scope fence and the browser-only QA rule live in
+  `docs-internal/gaming/web-games-kit.md`, registered under the Gaming tab in
+  `docs-internal/docs.json`.
