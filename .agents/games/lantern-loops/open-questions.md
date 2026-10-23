@@ -27,3 +27,4 @@ task finds a new one. Kit follow-ups are listed separately because this game nev
 
 None found yet. Task authors append `YYYY-MM-DD, task NN: description, workaround used` below when a
 kit issue blocks or bends their work.
+- 2026-10-23, task 03: the kit save store rejects an envelope with `v: 0` (version must be an integer >= 1), so a version-0 migration source cannot be registered in `SaveSchema.migrations`. Workaround inside this game: `withLegacyProfile` in `apps-games/lantern-loops/src/save/profile.ts` upgrades a v0 envelope or a bare preview object to a v1 envelope before the kit reads it. Follow-up for the kit: allow `v: 0` and `migrations[0]`, or document that legacy shapes need an adapter shim.

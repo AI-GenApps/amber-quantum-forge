@@ -90,4 +90,9 @@ softens it).
 
 `stars` (map puzzleId to 0..3), `tokens`, `freezes`, `freezeWeek`, `streak`, `bestStreak`,
 `lastDailyDate`, `milestonesGranted` (for the current run), `archiveRewarded` (date keys),
-`chaptersCleared`. Defined in task 03; mirrored here.
+`chaptersCleared`. Defined in task 03 (`apps-games/lantern-loops/src/save/profile.ts`); mirrored here.
+Also stored: `bestTimes` (seconds per puzzle), `dailiesSolved` (date key to best stars and fastest
+seconds, daily and archive), `hintsUsed`, `playSeconds`, `onboardingDone`, and the game settings
+`showTimer`, `showConflicts`, `hidePathInShare`, `brush`. Every number above is one exported constant
+in `apps-games/lantern-loops-core/src/progress/` (`TOKEN_CONFIG`, `MILESTONES`, `STAR_UNLOCKS`,
+`STARS_BY_HINTS`) and `test/progress/economy-sync.test.ts` reads the tables of this file and compares.

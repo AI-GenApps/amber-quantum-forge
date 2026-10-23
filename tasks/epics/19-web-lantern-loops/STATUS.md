@@ -1,6 +1,6 @@
 # Epic 19 — Lantern Loops (daily logic puzzle, full v1 web game)
 
-Status: in progress (tasks 00 and 01 done, task 02 in progress)
+Status: in progress (tasks 00 to 03 done)
 
 ## Purpose
 
@@ -97,7 +97,7 @@ code-drawn placeholders for every other slot. The owner does browser QA after ta
 | 00 | Knowledge base, design spec and epic task files | agent | [x] |
 | 01 | Core rules engine (headless, in `lantern-loops-core`) | agent | [x] |
 | 02 | Full v1 content + validators | agent | [x] |
-| 03 | Progression, economy, daily mode, versioned save | agent | [ ] |
+| 03 | Progression, economy, daily mode, versioned save | agent | [x] |
 | 04 | All screens, navigation, design tokens, fonts, accessibility | agent | [ ] |
 | 05 | CC0 audio, haptics, motion polish, onboarding and how-to-play | agent | [ ] |
 | 06 | Integrate reviewed art from the designer inbox | agent | [ ] |
