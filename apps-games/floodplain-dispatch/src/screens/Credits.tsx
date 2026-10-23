@@ -15,6 +15,7 @@ function Section({ title, entries }: { title: string; entries: readonly CreditEn
             <li key={entry.name}>
               <strong>{t("creditsLicence", { name: entry.name, licence: entry.licence })}</strong>
               {entry.note ? <span class="fd-sub"> {entry.note}</span> : null}
+              <span class="fd-sub fd-credit__source"> {entry.source}</span>
             </li>
           ))}
         </ul>

@@ -139,7 +139,7 @@ a repair).
 
 ## Screens
 
-1. Boot and loading (fonts, art, audio preload with progress).
+1. Boot and loading (fonts and art with progress; the audio preload starts on the first user gesture, because browsers keep audio locked until then, and reports its own progress).
 2. Title and home: Play, Daily Dispatch (with streak), Themes, Records, How to play, Settings.
 3. Region select (four regions, lock state, stars needed).
 4. Level select (ten map tiles per region, stars, par and best).

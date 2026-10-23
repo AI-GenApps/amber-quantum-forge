@@ -281,7 +281,9 @@ describe("source hygiene", () => {
       expect(file.text, file.name).not.toMatch(/XMLHttpRequest/);
       expect(file.text, file.name).not.toMatch(/sendBeacon/);
       expect(file.text, file.name).not.toMatch(/\bWebSocket\b/);
-      expect(file.text, file.name).not.toMatch(/https?:\/\/(?!github\.com\/google\/fonts)/);
+      expect(file.text, file.name).not.toMatch(
+        /https?:\/\/(?!github\.com\/google\/fonts|kenney\.nl\/assets\/|opengameart\.org\/content\/)/,
+      );
     }
   });
 
@@ -299,10 +301,11 @@ describe("source hygiene", () => {
     }
   });
 
-  it("keeps public assets small", () => {
+  it("keeps public assets other than audio small", () => {
     const publicDir = join(import.meta.dirname, "../public");
     let total = 0;
     for (const name of readdirSync(publicDir, { recursive: true }) as string[]) {
+      if (name.startsWith("audio")) continue;
       const full = join(publicDir, name);
       if (statSync(full).isFile()) total += statSync(full).size;
     }

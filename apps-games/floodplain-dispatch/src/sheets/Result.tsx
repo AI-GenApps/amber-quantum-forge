@@ -4,8 +4,12 @@ import {
   headlineFor,
   REGIONS,
   THEMES,
+  TUTORIAL_STEPS,
 } from "@web-games/floodplain-dispatch-core";
 import { Button, StarRating } from "@web-games/kit";
+import { useEffect, useRef } from "preact/hooks";
+import { useMotion } from "../motion/useMotion";
+import { coachHint } from "../onboarding/Coachmark";
 import { t } from "../strings";
 import { Glyph } from "../ui/Glyph";
 import { AppSheet } from "./AppSheet";
@@ -18,6 +22,8 @@ export interface ResultProps {
   streak: number | null;
   next: string | null;
   shareNote: string;
+  tutorialStep?: number | null;
+  onSeen?: () => void;
   onNext: () => void;
   onRetry: () => void;
   onEdit: () => void;
@@ -57,12 +63,37 @@ function Goal({ met, text }: { met: boolean; text: string }) {
 
 export function Result(props: ResultProps) {
   const { evaluation: ev } = props;
+  const motion = useMotion();
+  const body = useRef<HTMLDivElement>(null);
+  const { open } = props;
+  const stars = ev.stars;
+  // biome-ignore lint/correctness/useExhaustiveDependencies: the reveal replays only when the sheet opens or the star count changes
+  useEffect(() => {
+    if (!open) return;
+    const earned = body.current?.querySelectorAll<SVGElement>(".wg-star--on");
+    if (earned && earned.length > 0) void motion.starReveal(Array.from(earned));
+  }, [open, stars, motion]);
   const coins = coinsFrom(props.events);
   const lines = unlockLines(props.events);
   return (
     <AppSheet open={props.open} onClose={props.onClose} title={headlineFor(ev.stars)}>
-      <div class="fd-result" data-testid="result">
-        <StarRating value={ev.stars} label={t("resultStarsLabel", { stars: ev.stars })} />
+      <div class="fd-result" data-testid="result" ref={body}>
+        <StarRating
+          value={ev.stars}
+          label={t("resultStarsLabel", { stars: ev.stars })}
+          class={props.tutorialStep ? "fd-hl" : ""}
+        />
+        {props.tutorialStep ? (
+          <div class="fd-coach fd-coach--sheet" data-testid="coach-result">
+            <p class="fd-coach__text">{TUTORIAL_STEPS[props.tutorialStep - 1]?.text}</p>
+            <p class="fd-coach__hint">{coachHint(props.tutorialStep)}</p>
+            {props.onSeen ? (
+              <Button size="small" onClick={props.onSeen}>
+                {t("cardGotIt")}
+              </Button>
+            ) : null}
+          </div>
+        ) : null}
         <p class="fd-result__score" data-testid="result-score">
           {t("resultScore", { score: ev.score })}
         </p>

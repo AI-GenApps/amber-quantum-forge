@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { defaultProfile, type Profile } from "@web-games/floodplain-dispatch-core";
+import { defaultProfile, MECHANIC_CARDS, type Profile } from "@web-games/floodplain-dispatch-core";
 import {
   createMemoryAdapter,
   injectKitStyles,
@@ -179,6 +179,12 @@ export interface Rig {
   settle(ms?: number): Promise<void>;
 }
 
+/** Flags that mark the tutorial and every mechanic card as already seen. */
+export const SEEN_FLAGS: Record<string, true> = Object.fromEntries([
+  ["tutorial", true],
+  ...MECHANIC_CARDS.map((card) => [`card-${card.id}`, true]),
+]);
+
 export interface RigOptions {
   route?: {
     [K in keyof Routes]: [K, ...(Routes[K] extends undefined ? [] : [Routes[K]])];
@@ -188,6 +194,7 @@ export interface RigOptions {
   now?: Date;
   shareResult?: ShareResult;
   preload?: AppContextValue["preload"];
+  feedback?: (settings: AppContextValue["settings"]) => NonNullable<AppContextValue["feedback"]>;
 }
 
 export const GAME_CSS = readFileSync(join(import.meta.dirname, "../src/styles.css"), "utf8");
@@ -204,9 +211,11 @@ export const FIXED_NOW = new Date(2026, 9, 21, 12, 0, 0);
 
 export async function mountApp(options: RigOptions = {}): Promise<Rig> {
   const adapter = createMemoryAdapter();
-  if (options.profile) {
-    await createProfileStore(adapter).save({ ...defaultProfile(), ...options.profile });
-  }
+  await createProfileStore(adapter).save({
+    ...defaultProfile(),
+    flags: SEEN_FLAGS,
+    ...options.profile,
+  });
   const now = options.now ?? FIXED_NOW;
   const services = createServices(adapter, { clock: () => now });
   if (options.settings) {
@@ -231,6 +240,7 @@ export async function mountApp(options: RigOptions = {}): Promise<Rig> {
     prefersReducedMotion: () => false,
     contextFactory: () => ctx,
     ...(options.preload ? { preload: options.preload } : {}),
+    ...(options.feedback ? { feedback: options.feedback(services.settings) } : {}),
   };
   injectKitStyles();
   installGameStyles();

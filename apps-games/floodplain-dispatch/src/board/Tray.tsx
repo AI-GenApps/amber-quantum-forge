@@ -10,6 +10,7 @@ export interface TrayProps {
   tools: readonly Tool[];
   tool: Tool;
   budgetLeft: number;
+  highlight?: Tool | null;
   onSelect: (tool: Tool) => void;
 }
 
@@ -87,7 +88,7 @@ function ToolIcon({ tool }: { tool: Tool }) {
   return slot ? <Sprite slot={slot} size={28} label={pieceName(tool)} /> : <CanalIcon />;
 }
 
-export function Tray({ tools, tool, budgetLeft, onSelect }: TrayProps) {
+export function Tray({ tools, tool, budgetLeft, highlight = null, onSelect }: TrayProps) {
   return (
     <div class="fd-tray" role="toolbar" aria-label={t("toolsLabel")}>
       {tools.map((entry, index) => {
@@ -100,6 +101,7 @@ export function Tray({ tools, tool, budgetLeft, onSelect }: TrayProps) {
             class="fd-tool fd-hit"
             data-tool={entry}
             data-afford={afford ? "yes" : "no"}
+            data-highlight={highlight === entry ? "true" : undefined}
             aria-pressed={tool === entry}
             aria-label={toolAria(entry)}
             aria-keyshortcuts={String(index + 1)}

@@ -4,6 +4,8 @@ import {
   type SeasonEvent,
   tideLevel,
 } from "@web-games/floodplain-dispatch-core";
+import { useEffect, useRef } from "preact/hooks";
+import { useMotion } from "../motion/useMotion";
 import { t } from "../strings";
 import { PALETTE } from "../theme/tokens";
 
@@ -40,6 +42,11 @@ function weekFill(def: MapDef, week: number): string {
 }
 
 export function Forecast({ def, week }: ForecastProps) {
+  const marker = useRef<SVGRectElement>(null);
+  const motion = useMotion();
+  useEffect(() => {
+    if (week !== null && marker.current) void motion.weekPulse(marker.current);
+  }, [week, motion]);
   const peak = Math.max(1, ...Array.from({ length: def.weeks }, (_, w) => inletRate(def, 0, w)));
   const lines = forecastLines(def);
   return (
@@ -78,6 +85,8 @@ export function Forecast({ def, week }: ForecastProps) {
         })}
         {week !== null ? (
           <rect
+            ref={marker}
+            data-testid="forecast-week"
             x={Math.min(week, def.weeks - 1) * COLUMN}
             y={0}
             width={COLUMN}

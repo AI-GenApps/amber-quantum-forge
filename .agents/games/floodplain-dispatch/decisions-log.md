@@ -322,3 +322,62 @@ not implemented; the zoom button cycles fit, 1.5x and 2x.
 `Boot` shows the icon fallback and a progress bar; the credits screen reads
 `src/data/credits.ts` (fonts now; tasks 05 and 06 append audio and art entries); the how-to screen
 reads `src/data/howto.ts` (six real pages that task 05 may enrich).
+
+## 2026-10-23 - Task 05: audio, haptics, motion polish, onboarding, how to play
+
+### Audio sources and processing
+Every one of the 25 sound slots and 2 music loops has a CC0 file, so no slot ships silent. UI,
+placement, badge and result sounds are Kenney files (Interface Sounds, Impact Sounds, Digital
+Audio, RPG Audio, Music Jingles). Kenney has no looping music or water, so the water loop is a
+10 second excerpt of the CC0 Vistula river recording by Snabisch on OpenGameArt, and the two music
+loops are 45 second excerpts of "Calm Ambient 3 (Lifewave 2k)" and "Another August" by The Cynic
+Project (both CC0 on OpenGameArt). Excerpts are cut from CC0 recordings with an equal-power
+crossfade of the tail into the head so they loop; this is editing, not synthesis. OpenGameArt entries
+that show `OGA-BY 3.0` were rejected. Candidates and the Kenney original name per slot are in
+`.agents/resources/2026-10-23/web-games/floodplain-dispatch/05/README.md`. Sound effects are mono Ogg;
+stereo Kenney originals were downmixed with ffmpeg, mono ones are byte-identical to the pack.
+Total 962,201 bytes (budget 2 MB). Nobody has listened to the result; the owner does at QA (Q22).
+
+### One table from events to sound and haptic
+`src/audio/events.ts` is the only mapping. Haptic map as in the task: light impact on placing and
+rotating, `warning` on an illegal placement, medium impact on Run, `error` when a house floods,
+`success` on each earned star, on a region unlock and on a theme unlock; nothing on plain button
+taps, removal, surge weeks, supplied or irrigated badges, streaks or a failed season.
+- Stars: one sound for the final star count (`star-1`, `star-2` or `star-3`, played when the last
+  star appears) and one `success` haptic per star, 120 ms apart; zero stars plays `result-fail`.
+- Surge warning: plays once when playback moves forward onto the first week of a surge or a storm tide.
+- Badge sounds: at most one sound per badge kind per playback tick; only natural forward ticks make
+  sound, scrubbing and the skip button stay quiet.
+- Dragging a stroke across cells plays at most one place or remove cue per 60 ms and one illegal cue
+  per stroke, so a long canal drag does not machine-gun.
+- UI sounds come from one delegated click handler (tap, back, toggle); Run has its own sound; sheets
+  play `ui-open-sheet` when the inspector, pause, hint or exit sheet opens.
+
+### Engine
+The sound effects and both music loops run on one kit `AudioManager`; the first user gesture unlocks
+it and starts the preload (27 files, progress 0 to 1). The water loop needs a looping voice that the
+kit manager only offers for music, so it runs on a second manager (second AudioContext) whose level
+follows the share of wet cells on the board (0 at a dry board, full at a quarter wet) and fades out
+when playback pauses or ends. Music crossfades menu to play over 1.2 s when the screen changes to or
+from a board. The Sound switch mutes effects and the water; the Music switch mutes the loops. The app
+lifecycle suspends both contexts on pause and resumes them. Audio is Ogg Vorbis (Q21 records the iOS risk).
+
+### Motion
+Kit `createMotion` helpers: placement pop (a ring pulsing out of the new cell, spring), badge pop on
+the count chips, sheet slide on every sheet, star reveal staggered 120 ms, week pulse on the forecast
+bar marker. With reduced motion (system or the in-app switch) every helper applies its final frame
+and never calls `animate`; the pop ring's final frame is invisible so nothing is left on screen.
+
+### Onboarding
+- Tutorial: five steps on v01, advanced only by the real action: acknowledging the glowing inlet,
+  choosing the canal tool in the tray, a canal chain from the inlet to a cell beside the cottage,
+  Run, and seeing the result sheet's star explainer. Skippable at any step. The flag `tutorial` is
+  saved when it is finished or skipped; leaving v01 mid-way restarts it next time.
+- Mechanic cards: the seven cards from `content-plan.md` open as a sheet before planning on their
+  own map (v01, v03, v04, v06, d01, h01, e01) and set `card-<id>`; the daily map shows none. On
+  v01 the canal card comes first, then the tutorial. Eight flags of the 64 allowed.
+- How to play: six pages (Goal, Pieces, Reading the water, Forecast and weeks, Stars and scoring,
+  Daily Dispatch). Piece costs, hint and freeze prices, step counts and score weights are read from the
+  core constants in `src/data/howto.ts`.
+- Credits: one row per audio file in `src/data/credits.ts`, kept equal to `public/audio/LICENSES.md`
+  by a test.

@@ -247,6 +247,15 @@ export const strings = defineStrings({
   creditsLicence: "{name}, {licence}",
 
   cardGotIt: "Got it",
+  coachStep: "Step {step} of {total}",
+  coachSkip: "Skip tutorial",
+  coachHint1: "Water enters the board at the glowing square and runs downhill.",
+  coachHint2: "Tap the canal piece in the tray below.",
+  coachHint3: "Press on the river square and drag canals in one unbroken chain to the cottage.",
+  coachHint4: "Press Run season and watch the water play out.",
+  coachHint5:
+    "Three stars: supply every house and field, keep houses dry, and spend no more than par.",
+  coachResultTitle: "How stars work",
   starsLabel: "{stars} of 3 stars",
 });
 

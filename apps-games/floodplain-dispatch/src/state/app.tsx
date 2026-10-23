@@ -11,6 +11,7 @@ import { createContext } from "preact";
 import { useContext, useEffect, useState } from "preact/hooks";
 import type { SlotId } from "../art/slots";
 import type { Draw2D } from "../board/Draw2D";
+import { type Feedback, noopFeedback } from "../feedback/feedback";
 import type { AppRouter } from "../nav";
 import { type MapTheme, mapThemeFor } from "../theme/mapThemes";
 import type { GameStore } from "./game";
@@ -28,6 +29,8 @@ export interface AppContextValue {
   images?: Readonly<Record<string, unknown>>;
   contextFactory?: (canvas: HTMLCanvasElement) => Draw2D | null;
   prefersReducedMotion?: () => boolean;
+  /** Sound and haptics; absent in tests that do not need them. */
+  feedback?: Feedback;
   /** Boot waits for this before leaving the loading screen (fonts and art). */
   preload?: (onProgress: (fraction: number) => void) => Promise<void>;
 }
@@ -48,6 +51,10 @@ export function useSettings(): Readonly<Settings> {
     return settings.subscribe((next) => setCurrent(next));
   }, [settings]);
   return current;
+}
+
+export function useFeedback(): Feedback {
+  return useApp().feedback ?? noopFeedback;
 }
 
 export function useReducedMotion(): boolean {

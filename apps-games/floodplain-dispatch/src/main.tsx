@@ -8,9 +8,11 @@ import {
 import { render } from "preact";
 import { App } from "./App";
 import { createPreload } from "./boot/preload";
+import { bindAudioLifecycle, createFeedback } from "./feedback/feedback";
 import { createAppRouter } from "./nav";
 import { createServices, loadServices } from "./state/services";
 import "./styles.css";
+import "./onboarding/onboarding.css";
 import { PALETTE } from "./theme/tokens";
 
 injectKitStyles();
@@ -19,6 +21,10 @@ void lifecycle.setupDisplay({ lockPortrait: true, statusBarColor: PALETTE.night 
 
 const services = createServices(createDefaultAdapter(), { lifecycle });
 void loadServices(services);
+
+const feedback = createFeedback({ settings: services.settings });
+feedback.audio.start();
+bindAudioLifecycle(feedback.audio, lifecycle);
 
 const root = document.getElementById("app");
 if (root) {
@@ -33,6 +39,7 @@ if (root) {
         lifecycle,
         exitApp: () => void CapacitorApp.exitApp(),
         preload: createPreload(),
+        feedback,
       }}
     />,
     root,

@@ -1,7 +1,7 @@
 ---
 epic: 20-web-floodplain-dispatch
 task: 05-audio-haptics-onboarding
-status: todo
+status: in-progress
 commit_scope: floodplain-dispatch
 depends_on: [20-web-floodplain-dispatch/04-screens-and-ui]
 estimate: L
@@ -36,15 +36,15 @@ Make the game feel finished: CC0 sound effects and two music loops wired to game
 
 ## Implementation Checklist
 
-- [ ] Select and download the CC0 files, copy the chosen ogg files into `apps-games/floodplain-dispatch/public/audio/` (names equal slot ids), write `LICENSES.md`, copy pack licences, delete the scratch downloads, and write the evidence README `.agents/resources/2026-10-23/web-games/floodplain-dispatch/05/README.md` (candidates considered, choices, silent slots).
-- [ ] `src/audio/slots.ts` (slot table with file, kind, gain, loop flag), `src/audio/engine.ts` (create manager, preload on first gesture with progress, music crossfade menu to play, water loop gain from playback flow, suspend on pause and resume).
-- [ ] `src/audio/events.ts`: mapping from game events (placement, removal, rotation, invalid, run start, surge week reached, badge changes during playback, result stars, unlocks, streak) to sounds and haptics, one table with unit tests.
-- [ ] `src/feedback/haptics.ts` wiring `createHaptics` and `syncSettings`; settings screen toggles take effect immediately.
-- [ ] `src/motion/` helpers: piece placement pop (spring), badge pop, sheet slide, star reveal stagger of 120 ms, week-tick pulse on the forecast bar; every helper falls back to the final frame when motion is reduced.
-- [ ] `src/onboarding/tutorial.ts` (pure step machine), `Coachmark.tsx` overlay, `src/onboarding/cards.tsx` (mechanic card sheet and first-time logic using profile flags), `src/screens/HowTo.tsx` filled with the six pages.
-- [ ] Credits screen data: add audio rows from `LICENSES.md` (parsed in a test to prove they match).
-- [ ] Tests: slot table complete (each slot has a file or an explicit `silent` reason); every listed file exists, is ogg, within size budgets and total at most 2 MB; `LICENSES.md` has a row for each file with a URL, "CC0" and a SHA-256 that matches the file (computed in the test); no audio file lacks a licence row; fake `AudioContext` (kit `createFakeAudioContext`) proves events trigger the right sound ids, music crossfades between menu and play, mute and volume follow settings, nothing plays before unlock, pause suspends; fake haptics receive the exact map above and nothing when haptics are off; tutorial machine advances only on the matching action, can be skipped and never repeats; each mechanic card shows once and only on its map; how-to renders six pages with prices from the constants; reduced motion makes every motion helper apply the final frame without calling `animate`.
-- [ ] Update `assets-index.md` (audio table with sources and sizes), `open-questions.md` (silent slots), `decisions-log.md` (source choices).
+- [x] Select and download the CC0 files, copy the chosen ogg files into `apps-games/floodplain-dispatch/public/audio/` (names equal slot ids), write `LICENSES.md`, copy pack licences, delete the scratch downloads, and write the evidence README `.agents/resources/2026-10-23/web-games/floodplain-dispatch/05/README.md` (candidates considered, choices, silent slots).
+- [x] `src/audio/slots.ts` (slot table with file, kind, gain, loop flag), `src/audio/engine.ts` (create manager, preload on first gesture with progress, music crossfade menu to play, water loop gain from playback flow, suspend on pause and resume).
+- [x] `src/audio/events.ts`: mapping from game events (placement, removal, rotation, invalid, run start, surge week reached, badge changes during playback, result stars, unlocks, streak) to sounds and haptics, one table with unit tests.
+- [x] `src/feedback/haptics.ts` wiring `createHaptics` and `syncSettings`; settings screen toggles take effect immediately.
+- [x] `src/motion/` helpers: piece placement pop (spring), badge pop, sheet slide, star reveal stagger of 120 ms, week-tick pulse on the forecast bar; every helper falls back to the final frame when motion is reduced.
+- [x] `src/onboarding/tutorial.ts` (pure step machine), `Coachmark.tsx` overlay, `src/onboarding/cards.tsx` (mechanic card sheet and first-time logic using profile flags), `src/screens/HowTo.tsx` filled with the six pages.
+- [x] Credits screen data: add audio rows from `LICENSES.md` (parsed in a test to prove they match).
+- [x] Tests: slot table complete (each slot has a file or an explicit `silent` reason); every listed file exists, is ogg, within size budgets and total at most 2 MB; `LICENSES.md` has a row for each file with a URL, "CC0" and a SHA-256 that matches the file (computed in the test); no audio file lacks a licence row; fake `AudioContext` (kit `createFakeAudioContext`) proves events trigger the right sound ids, music crossfades between menu and play, mute and volume follow settings, nothing plays before unlock, pause suspends; fake haptics receive the exact map above and nothing when haptics are off; tutorial machine advances only on the matching action, can be skipped and never repeats; each mechanic card shows once and only on its map; how-to renders six pages with prices from the constants; reduced motion makes every motion helper apply the final frame without calling `animate`.
+- [x] Update `assets-index.md` (audio table with sources and sizes), `open-questions.md` (silent slots), `decisions-log.md` (source choices).
 
 ## Files Touched
 

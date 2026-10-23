@@ -3,8 +3,11 @@ import { playbackSummary } from "../board/a11y";
 import { Board, type DragMode } from "../board/Board";
 import { BudgetMeter } from "../board/BudgetMeter";
 import { Forecast } from "../board/Forecast";
-import { zoomLabel } from "../board/geometry";
+import { type CellPos, zoomLabel } from "../board/geometry";
 import { Tray } from "../board/Tray";
+import { Coachmark } from "../onboarding/Coachmark";
+import { MechanicCardSheet } from "../onboarding/cards";
+import { type Onboarding, useOnboarding } from "../onboarding/useOnboarding";
 import type { SessionSource } from "../session/types";
 import { type BoardSession, useBoardSession } from "../session/useBoardSession";
 import { Confirm } from "../sheets/Confirm";
@@ -18,21 +21,38 @@ import { Glyph } from "../ui/Glyph";
 import { Header } from "../ui/Header";
 import { PlaybackBar } from "./Playback";
 
+function cellsOf(indices: readonly number[], width: number): CellPos[] {
+  return indices.map((index) => ({ x: index % width, y: Math.floor(index / width) }));
+}
+
 function dragModeOf(session: BoardSession): DragMode {
   if (session.phase === "playback") return session.zoom > 0 ? "pan" : "none";
   if (session.tool === "select") return session.zoom > 0 ? "pan" : "none";
   return "paint";
 }
 
-function Sheets({ session, source }: { session: BoardSession; source: SessionSource }) {
+function Sheets({
+  session,
+  source,
+  onboarding,
+}: {
+  session: BoardSession;
+  source: SessionSource;
+  onboarding: Onboarding;
+}) {
   const { sheet, run, app } = session;
   const piece = session.selected
     ? (session.placements.find((p) => p.x === session.selected?.x && p.y === session.selected?.y) ??
       null)
     : null;
   const exitConfirmed = (): void => session.leave();
+  const seen = (action: () => void) => (): void => {
+    onboarding.notify({ type: "result-seen" });
+    action();
+  };
   return (
     <>
+      <MechanicCardSheet card={onboarding.card} onDismiss={onboarding.dismissCard} />
       <Inspector
         open={sheet?.kind === "inspector"}
         piece={piece}
@@ -85,18 +105,22 @@ function Sheets({ session, source }: { session: BoardSession; source: SessionSou
           streak={run.streak}
           next={session.nextMap}
           shareNote={session.shareNote}
-          onNext={session.goNext}
-          onRetry={session.retry}
-          onEdit={session.toEdit}
+          tutorialStep={
+            onboarding.tutorial && onboarding.tutorial.step >= 5 ? onboarding.tutorial.step : null
+          }
+          onNext={seen(session.goNext)}
+          onRetry={seen(session.retry)}
+          onEdit={seen(session.toEdit)}
           onShare={() => void session.share()}
-          onClose={session.closeSheet}
+          onSeen={() => onboarding.notify({ type: "result-seen" })}
+          onClose={seen(session.closeSheet)}
         />
       ) : null}
     </>
   );
 }
 
-function ActionRow({ session }: { session: BoardSession }) {
+function ActionRow({ session, highlightRun }: { session: BoardSession; highlightRun: boolean }) {
   return (
     <fieldset class="fd-actions" aria-label={t("actionsLabel")}>
       <Button
@@ -134,7 +158,7 @@ function ActionRow({ session }: { session: BoardSession }) {
       <Button variant="secondary" size="small" onClick={session.onHint}>
         {t("hint")}
       </Button>
-      <Button class="fd-run" onClick={session.startRun}>
+      <Button class={highlightRun ? "fd-run fd-hl" : "fd-run"} onClick={session.startRun}>
         {t("run")}
       </Button>
     </fieldset>
@@ -145,6 +169,14 @@ export function BoardSessionView({ source }: { source: SessionSource }) {
   const session = useBoardSession(source);
   const settings = useSettings();
   const { view, phase } = session;
+  const onboarding = useOnboarding(source, {
+    tool: session.tool,
+    placements: session.placements,
+    phase,
+    houseCells: cellsOf(view.board.houseCells, view.board.width),
+    inletCells: cellsOf(view.board.inletCells, view.board.width),
+  });
+  const coach = onboarding.tutorial && onboarding.tutorial.step < 5 && phase === "plan";
   const week = session.run ? Math.floor(session.playback.pos / 4) : null;
   const announcement =
     phase === "playback" && week !== null
@@ -164,8 +196,20 @@ export function BoardSessionView({ source }: { source: SessionSource }) {
       {phase === "plan" ? (
         <BudgetMeter left={session.left} budget={source.def.budget} par={source.def.par} />
       ) : null}
+      {coach && onboarding.tutorial ? (
+        <Coachmark
+          step={onboarding.tutorial.step}
+          onAck={
+            onboarding.tutorial.step === 1
+              ? () => onboarding.notify({ type: "inlet-ack" })
+              : undefined
+          }
+          onSkip={onboarding.skip}
+        />
+      ) : null}
       <Board
         view={view}
+        highlights={onboarding.highlightCells}
         theme={session.theme}
         highContrast={settings.highContrast}
         reducedMotion={session.reduced}
@@ -189,9 +233,13 @@ export function BoardSessionView({ source }: { source: SessionSource }) {
             tools={session.tools}
             tool={session.tool}
             budgetLeft={session.left}
-            onSelect={session.setTool}
+            highlight={onboarding.highlight.canalTool ? "canal" : null}
+            onSelect={(next) => {
+              session.setTool(next);
+              onboarding.notify({ type: "tool", tool: next });
+            }}
           />
-          <ActionRow session={session} />
+          <ActionRow session={session} highlightRun={onboarding.highlight.runButton} />
         </>
       ) : (
         <PlaybackBar
@@ -210,7 +258,7 @@ export function BoardSessionView({ source }: { source: SessionSource }) {
       {session.note && phase === "plan" ? (
         <Toast message={session.note} durationMs={2600} onDismiss={() => session.setNote("")} />
       ) : null}
-      <Sheets session={session} source={source} />
+      <Sheets session={session} source={source} onboarding={onboarding} />
     </Screen>
   );
 }

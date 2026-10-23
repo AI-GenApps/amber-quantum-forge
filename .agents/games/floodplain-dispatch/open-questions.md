@@ -8,7 +8,7 @@ None of these block v1 tasks 01 to 08; each has a stated default.
 | Q2 | Do 12 x 16 boards feel playable at 26 to 30 px cells? | Zoom steps plus keyboard cursor; owner judges in browser QA. | owner |
 | Q3 | Privacy policy URL for store submission | Not needed in v1 (no submission); a one-page "no data collected" policy is needed later. | owner |
 | Q4 | Public name beyond the working title | Floodplain Dispatch stays the public name in v1. | owner, later step |
-| Q5 | Which CC0 water and ambience sources exist for the sound slots? | Task 05 searches Kenney first, then CC0-stated pages; slots without a CC0 source ship silent and are listed here. | task 05 |
+| Q5 | Which CC0 water and ambience sources exist for the sound slots? | Answered in task 05: every slot has a CC0 file (Kenney packs, plus three OpenGameArt CC0 pages for the water loop and the two music loops). No slot ships silent. See Task 05 notes. | closed |
 | Q6 | Does the iOS Capacitor 8 project need CocoaPods for `cap sync`? | Capacitor 8 uses Swift Package Manager; if `cap sync` insists on CocoaPods, record and skip. | task 07 |
 | Q7 | Designer art delivery timing | Placeholders are code-drawn; task 06 integrates whatever passed review and keeps placeholders elsewhere. | orchestrator |
 | Q8 | Daily fallback templates: how many are needed? | 14 templates (2 per weekday tier); task 03 sizes it from the 365-date test. | task 03 |
@@ -43,7 +43,7 @@ workaround used inside this game; the kit itself is read-only for this epic.
 | Q17 | While zoomed, a drag with a piece tool paints, so panning needs the Select tool (or the keyboard cursor, which scrolls the board to follow it). Is that discoverable enough, or should a two-finger drag pan? | Keep; the owner judges in browser QA. Pinch zoom is not built; the zoom button cycles fit, 1.5x, 2x. | owner at QA |
 | Q18 | Board cells are 26 to 30 px at fit zoom on 8 x 12 to 12 x 16 boards (Q2). The renderer sizes cells from the board area, so a short phone gives smaller cells. | Zoom steps plus keyboard cursor. | owner at QA |
 | Q19 | The code-drawn art (houses, trees, pump, gate, sandbags, tank, rocks) is functional placeholder drawing. Task 06 replaces it only where designer art passes review. | Keep placeholders. | task 06 |
-| Q20 | The how-to pages are short real text, not the guided tutorial; mechanic cards and the v01 tutorial are task 05. | As described. | task 05 |
+| Q20 | The how-to pages are short real text, not the guided tutorial; mechanic cards and the v01 tutorial are task 05. | Answered in task 05: six how-to pages, the v01 tutorial and the seven cards are built. | closed |
 
 ### Kit follow-ups found in task 04 (kit stays read-only; worked around in this game)
 
@@ -58,3 +58,21 @@ workaround used inside this game; the kit itself is read-only for this epic.
   README example.
 - `Sheet` has one text colour token for the screen and the sheet; games with a dark screen and
   light sheets must scope a token override (done with `PAPER_SELECTOR`).
+
+## Task 05 notes
+
+| # | Question | Default used until answered | Owner |
+|---|---|---|---|
+| Q21 | Audio ships as Ogg Vorbis (Kenney's format, no conversion). Does the iOS WKWebView in the target Capacitor 8 build decode Ogg through WebAudio? If not, the game is silent on iOS (the kit manager's `load` fails quietly). | Keep Ogg; owner checks sound on iOS and in Safari during QA. A fix is AAC or MP3 twins of each file (the kit `load` takes any URL), which would need a decision on lossy re-encoding of CC0 files. | owner at QA |
+| Q22 | Nobody has listened to the audio (no browser or player in agent runs). Slot fit is by file name, pack and duration only. The star stingers are Kenney Music Jingles chosen by duration (1 s, 1.4 s, 1.7 s). Do the choices sound right, and are the 45 second music loops seamless? | Ship as chosen; the owner swaps any file by editing one row in `public/audio/LICENSES.md`, `src/data/credits.ts` and the assets index (a test keeps them equal). | owner at QA |
+| Q23 | The water loop is a 10 second excerpt of a river recording and the music loops are 45 second excerpts, each with a crossfade built so the end leads into the start. Audible repetition after a few minutes is possible. | Keep; budget (600 KB per loop, 2 MB total) leaves room for longer loops if the owner wants them. | owner at QA |
+| Q24 | The mechanic cards and the v01 tutorial need `profile.flags` (one flag for the tutorial, one per card, 8 of the 64 allowed). A "Reset progress" clears them, so the tutorial and cards replay after a reset. | Intended. | none |
+
+### Kit follow-ups found in task 05 (kit stays read-only; worked around in this game)
+
+- `AudioManager.play` cannot loop a sound effect; only `playMusic` loops. The water loop therefore
+  runs on a second `AudioManager` (a second `AudioContext`, driven with `playMusic` and `setVolume("music")`
+  for its level). A looping `play` option would allow one context.
+- `AudioManager` exposes no per-load progress; the game counts finished `load` calls itself.
+- `createFakeAudioContext` plus `createAudioManager({ createContext, fetchBuffer })` was enough to test
+  the whole engine without a browser; no kit change needed.

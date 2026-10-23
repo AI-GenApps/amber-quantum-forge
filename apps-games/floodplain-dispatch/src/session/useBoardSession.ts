@@ -5,6 +5,7 @@ import {
   HINT_PRICE,
   mapUnlocked,
   nextMapId,
+  type PieceKind,
   type Placement,
   shareText,
   tideLevel,
@@ -48,6 +49,7 @@ import {
 import { badgesAt, buildTimeline, countBadges, frameAt, type Timeline } from "./timeline";
 import { availableTools, isPieceTool, type Tool } from "./tools";
 import type { SessionSource, SheetState } from "./types";
+import { usePlanCues, useSessionFeedback } from "./useSessionFeedback";
 
 export interface RunData {
   id: number;
@@ -102,14 +104,17 @@ export function useBoardSession(source: SessionSource) {
     }
   }, [placements, ghost]);
 
+  const { planCue, strokeStarted, runStarted } = usePlanCues();
+
   const apply = useCallback(
-    (result: PlanResult, quiet = false): void => {
+    (result: PlanResult, quiet = false, piece?: PieceKind): void => {
       setPlan(result.state);
+      planCue(result, piece);
       if (quiet) return;
       if (result.error) setNote(placementErrorText(result.error));
       else if (result.change === "placed") setNote("");
     },
-    [setPlan],
+    [planCue, setPlan],
   );
 
   const frame = run && phase === "playback" ? frameAt(run.timeline, playback.pos) : null;
@@ -167,7 +172,7 @@ export function useBoardSession(source: SessionSource) {
       }
       if (!isPieceTool(tool)) return;
       const result = placePiece(current, def, tool, cell.x, cell.y);
-      apply(result);
+      apply(result, false, tool);
       if (result.change === "placed") setNote(t("msgPlaced", { piece: pieceName(tool) }));
     },
     [apply, def, tool],
@@ -179,7 +184,7 @@ export function useBoardSession(source: SessionSource) {
       if (tool === "erase") {
         apply(erasePiece(current, cell.x, cell.y), true);
       } else if (isPieceTool(tool) && !findPlacement(current.placements, cell.x, cell.y)) {
-        apply(placePiece(current, def, tool, cell.x, cell.y));
+        apply(placePiece(current, def, tool, cell.x, cell.y), false, tool);
       }
     },
     [apply, def, tool],
@@ -187,11 +192,12 @@ export function useBoardSession(source: SessionSource) {
 
   const strokeStart = useCallback(
     (cell: CellPos): void => {
+      strokeStarted();
       setPlan(beginStroke(planRef.current));
       setCursor(cell);
       strokeCell(cell);
     },
-    [setPlan, strokeCell],
+    [setPlan, strokeCell, strokeStarted],
   );
 
   const strokeEnd = useCallback((): void => setPlan(endStroke(planRef.current)), [setPlan]);
@@ -259,6 +265,7 @@ export function useBoardSession(source: SessionSource) {
     setGhost(null);
     setSheet(null);
     setShareNote("");
+    runStarted();
     const ev = timeline.evaluation;
     if (source.kind === "campaign" && source.mapId) {
       void app.game.recordCampaignResult(source.mapId, ev).then((events) => {
@@ -274,7 +281,7 @@ export function useBoardSession(source: SessionSource) {
           );
         });
     }
-  }, [app.game, def, phase, source.kind, source.mapId]);
+  }, [app.game, def, phase, runStarted, source.kind, source.mapId]);
 
   const toEdit = useCallback((): void => {
     setPhase("plan");
@@ -314,6 +321,18 @@ export function useBoardSession(source: SessionSource) {
     }
     setSheet({ kind: "hint" });
   }, [phase, source.reference]);
+
+  useSessionFeedback({
+    def,
+    phase,
+    playback,
+    badges: view.badges,
+    depths: frame?.depths,
+    sheet,
+    runId: run?.id ?? null,
+    stars: run?.timeline.evaluation.stars ?? null,
+    events: run?.events ?? null,
+  });
 
   const hintKind = source.kind === "daily" ? "daily" : "campaign";
   const confirmHint = useCallback(async (): Promise<void> => {

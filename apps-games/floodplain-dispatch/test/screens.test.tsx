@@ -386,11 +386,13 @@ describe("how to play and credits", () => {
     expect(text(q(rig.container, "[data-testid='howto-count']"))).toBe("Page 5 of 6");
   });
 
-  it("lists the fonts with their licence and leaves audio and art empty for now", async () => {
+  it("lists the fonts and audio with their licences and leaves art empty for now", async () => {
     rig = await mountApp({ route: ["credits"] });
     const body = text(rig.container);
     expect(body).toContain("Bricolage Grotesque, SIL Open Font License 1.1");
     expect(body).toContain("Atkinson Hyperlegible, SIL Open Font License 1.1");
-    expect(body.match(/Nothing to list yet/g)).toHaveLength(2);
+    expect(body).toContain("place-canal.ogg, CC0 1.0");
+    expect(body).toContain("music-menu.ogg, CC0");
+    expect(body.match(/Nothing to list yet/g)).toHaveLength(1);
   });
 });

@@ -1,9 +1,9 @@
 # Floodplain Dispatch - assets index
 
-Status after task 04: the three fonts are bundled (below). No designer art and no audio are delivered
-yet. Task 06 fills the art provenance columns and flips entries in `src/art/manifest.ts`; task 05 adds
-audio. Every one of the 20 art slots already has a code-drawn fallback (`src/art/fallbacks.ts`), so
-the game is complete without art.
+Status after task 05: the three fonts and all 27 CC0 audio files are bundled (below). No designer art is
+delivered yet. Task 06 fills the art provenance columns and flips entries in `src/art/manifest.ts`. Every one of
+the 20 art slots already has a code-drawn fallback (`src/art/fallbacks.ts`), so the game is complete
+without art.
 
 ## Where things live
 
@@ -77,26 +77,51 @@ are subset to Basic Latin, Latin-1, U+2013, U+2014, U+2018 to U+201D, U+2022 and
 back to a platform font (kit `assertNoPlatformFontFallback` runs on every screen and sheet in
 tests, and a test keeps every source character inside the subset).
 
-## Audio plan (CC0 only)
+## Audio (CC0 only, delivered in task 05)
 
-Sources in order: Kenney audio packs (Interface Sounds, UI Audio, Impact Sounds, Digital Audio, Music
-Jingles) at `kenney.nl/assets`; otherwise a page that explicitly states CC0 for the file (for
-example a CC0-tagged entry on OpenGameArt or Freesound). Never synthesised audio. Each file gets
-a row in `public/audio/LICENSES.md` with source URL, licence, author and SHA-256. A slot with no CC0
-source ships silent and is recorded in `open-questions.md`.
+Sources, in the order tried: Kenney audio packs (Interface Sounds, Impact Sounds, Digital Audio,
+RPG Audio, Music Jingles) at `kenney.nl/assets`; otherwise a page that explicitly states CC0 for the
+file (OpenGameArt entries that show `License(s): CC0`). Nothing is synthesised. The 25 sound slots
+and 2 music loops all have a CC0 file, so no slot ships silent. Every file has a row in
+`public/audio/LICENSES.md` (author, source URL, licence, download date, SHA-256 of the shipped file);
+pack licence texts are in `public/audio/licenses/`. Candidates and choices:
+`.agents/resources/2026-10-23/web-games/floodplain-dispatch/05/README.md`.
 
-| Slot id | Trigger |
-|---|---|
-| `ui-tap`, `ui-back`, `ui-toggle`, `ui-open-sheet` | buttons, toggles, sheets |
-| `place-canal`, `place-barrier`, `place-pump`, `place-gate`, `place-reservoir` | placing a piece |
-| `remove-piece`, `rotate-pump`, `invalid` | removal, rotation, illegal placement |
-| `run-start`, `water-loop` | Run pressed; ambient water while playback runs |
-| `surge-warning` | a surge week begins |
-| `house-supplied`, `field-irrigated`, `house-flooded` | per-badge events during playback |
-| `star-1`, `star-2`, `star-3`, `result-fail` | result sheet |
-| `region-unlock`, `theme-unlock`, `streak-up` | progression events |
-| `music-menu`, `music-play` | two looping tracks (CC0 music only) |
+| Slot id | Trigger | File | Author | Source | Bytes |
+|---|---|---|---|---|---|
+| `ui-tap` | any button tap (not Run) | `ui-tap.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds | 4,876 |
+| `ui-back` | Back button | `ui-back.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds | 6,997 |
+| `ui-toggle` | a settings toggle | `ui-toggle.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds | 7,369 |
+| `ui-open-sheet` | inspector, pause, hint or exit sheet opens | `ui-open-sheet.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds | 9,834 |
+| `place-canal` | canal placed | `place-canal.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/impact-sounds | 8,361 |
+| `place-barrier` | sandbags placed | `place-barrier.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/impact-sounds | 4,790 |
+| `place-pump` | pump placed | `place-pump.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/impact-sounds | 5,488 |
+| `place-gate` | sluice gate placed | `place-gate.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/impact-sounds | 5,172 |
+| `place-reservoir` | reservoir placed | `place-reservoir.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/impact-sounds | 7,288 |
+| `remove-piece` | piece erased | `remove-piece.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds | 11,739 |
+| `rotate-pump` | pump rotated | `rotate-pump.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/rpg-audio | 6,481 |
+| `invalid` | illegal placement | `invalid.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds | 5,013 |
+| `run-start` | Run season pressed | `run-start.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds | 11,618 |
+| `water-loop` | ambient water while playback runs (volume follows how much of the board is wet) | `water-loop.ogg` | Snabisch (user snabisch on OpenGameArt) | opengameart.org/content/sea-and-river-wave-sounds | 54,591 |
+| `surge-warning` | a surge or storm-tide week begins during playback | `surge-warning.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/impact-sounds | 9,270 |
+| `house-supplied` | a house becomes supplied | `house-supplied.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds | 14,169 |
+| `field-irrigated` | a field becomes irrigated | `field-irrigated.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds | 4,759 |
+| `house-flooded` | a house floods | `house-flooded.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/digital-audio | 5,956 |
+| `star-1` | result sheet, 1 star | `star-1.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/music-jingles | 11,051 |
+| `star-2` | result sheet, 2 stars | `star-2.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/music-jingles | 12,270 |
+| `star-3` | result sheet, 3 stars | `star-3.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/music-jingles | 14,977 |
+| `result-fail` | result sheet, 0 stars | `result-fail.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/digital-audio | 7,035 |
+| `region-unlock` | a region opens | `region-unlock.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/music-jingles | 15,086 |
+| `theme-unlock` | a theme unlocks | `theme-unlock.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/music-jingles | 12,229 |
+| `streak-up` | daily streak extended | `streak-up.ogg` | Kenney (Kenney Vleugels) | kenney.nl/assets/music-jingles | 11,651 |
+| `music-menu` | menus (loop) | `music-menu.ogg` | The Cynic Project (cynicmusic) | opengameart.org/content/calm-ambient-3-lifewave-2k | 309,909 |
+| `music-play` | on a map (loop) | `music-play.ogg` | The Cynic Project (cynicmusic) | opengameart.org/content/another-august | 384,222 |
 
-25 sound slots plus 2 music loops. Audio budget: total <= 2 MB (ogg, mono sfx, 96 kbps music).
-Haptics (no files): light impact on placement, warning on invalid, medium on Run, error on flood,
-success on star earned and unlocks.
+Total audio: 962,201 bytes (budget 2 MB; each sound at most 60 KB, each music loop at most 600 KB).
+Sound effects are mono Ogg Vorbis: files that were already mono are shipped unchanged, stereo ones
+were downmixed to mono with ffmpeg. The water loop and both music loops are excerpts of CC0 recordings
+with a short crossfade of the tail into the head so they loop; the music loops are 45 seconds each.
+
+Haptics (no files): light impact on placing or rotating a piece, `warning` on an illegal placement,
+medium impact on Run, `error` when a house floods, `success` on each earned star, region unlock and
+theme unlock. Nothing on plain button taps.

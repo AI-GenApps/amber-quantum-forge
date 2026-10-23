@@ -1,4 +1,6 @@
 import { Button, plural } from "@web-games/kit";
+import { useEffect, useRef } from "preact/hooks";
+import { useMotion } from "../motion/useMotion";
 import { type PlaybackState, SPEEDS, type Speed, weekAt } from "../session/playback";
 import { t } from "../strings";
 import { Glyph, type GlyphKind } from "../ui/Glyph";
@@ -23,8 +25,16 @@ const CHIP_GLYPH: Readonly<Record<string, GlyphKind>> = {
 };
 
 function Chip({ kind, text }: { kind: string; text: string }) {
+  const ref = useRef<HTMLLIElement>(null);
+  const last = useRef(text);
+  const motion = useMotion();
+  useEffect(() => {
+    if (last.current === text) return;
+    last.current = text;
+    if (ref.current) void motion.badgePop(ref.current);
+  }, [text, motion]);
   return (
-    <li class={`fd-chip fd-chip--${kind}`} data-chip={kind}>
+    <li ref={ref} class={`fd-chip fd-chip--${kind}`} data-chip={kind}>
       <Glyph kind={CHIP_GLYPH[kind] ?? "dot"} size={16} />
       {text}
     </li>

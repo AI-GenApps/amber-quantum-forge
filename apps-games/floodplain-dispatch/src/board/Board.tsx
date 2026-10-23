@@ -14,6 +14,7 @@ import {
   type Viewport,
   type ZoomStep,
 } from "./geometry";
+import { Marks } from "./Marks";
 import type { BoardView } from "./model";
 import { renderBoard } from "./render";
 
@@ -28,6 +29,7 @@ export interface BoardProps {
   pan: Pan;
   dragMode: DragMode;
   announcement?: string;
+  highlights?: readonly CellPos[];
   images?: Readonly<Record<string, unknown>>;
   contextFactory?: (canvas: HTMLCanvasElement) => Draw2D | null;
   onPanChange: (pan: Pan) => void;
@@ -254,6 +256,11 @@ export function Board(props: BoardProps) {
     >
       {/* biome-ignore lint/a11y/noInteractiveElementToNoninteractiveRole: the canvas is decoration for the text summary */}
       <canvas ref={canvas} class="fd-board-canvas" data-testid="board-canvas" role="presentation" />
+      <Marks
+        geom={geom}
+        placements={props.view.placements}
+        {...(props.highlights ? { highlights: props.highlights } : {})}
+      />
       <div class="fd-sr-only" role="status" aria-live="polite" data-testid="board-live">
         {props.announcement ? `${props.announcement}. ` : ""}
         {boardSummary(props.view)}
