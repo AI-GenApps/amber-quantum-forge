@@ -56,6 +56,9 @@
     "city-drive:android:debug": "bun run --filter @city-drive/app android:debug",
     "city-drive:test": "bun run --filter '@city-drive/*' test",
     "city-drive:typecheck": "bun run --filter '@city-drive/*' typecheck",
+    "web-games:test": "bun run --filter '@web-games/*' test",
+    "web-games:typecheck": "bun run --filter '@web-games/*' typecheck",
+    "web-games:build": "bun run --filter '@web-games/*' build",
     "prepare": "husky"
   },
   "devDependencies": {

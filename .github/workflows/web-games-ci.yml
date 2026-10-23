@@ -1,0 +1,72 @@
+name: Web Games CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps-games/web-kit/**"
+      - "apps-games/lantern-loops/**"
+      - "apps-games/lantern-loops-core/**"
+      - "apps-games/floodplain-dispatch/**"
+      - "apps-games/floodplain-dispatch-core/**"
+      - "apps-games/cloud-observatory/**"
+      - "apps-games/cloud-observatory-core/**"
+      - "apps-games/the-last-window/**"
+      - "apps-games/the-last-window-core/**"
+      - "apps-games/dress-rehearsal/**"
+      - "apps-games/dress-rehearsal-core/**"
+      - "apps-games/lost-parcel-desk/**"
+      - "apps-games/lost-parcel-desk-core/**"
+      - "bun.lock"
+      - "package.json"
+      - ".github/workflows/web-games-ci.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "apps-games/web-kit/**"
+      - "apps-games/lantern-loops/**"
+      - "apps-games/lantern-loops-core/**"
+      - "apps-games/floodplain-dispatch/**"
+      - "apps-games/floodplain-dispatch-core/**"
+      - "apps-games/cloud-observatory/**"
+      - "apps-games/cloud-observatory-core/**"
+      - "apps-games/the-last-window/**"
+      - "apps-games/the-last-window-core/**"
+      - "apps-games/dress-rehearsal/**"
+      - "apps-games/dress-rehearsal-core/**"
+      - "apps-games/lost-parcel-desk/**"
+      - "apps-games/lost-parcel-desk-core/**"
+      - "bun.lock"
+      - "package.json"
+      - ".github/workflows/web-games-ci.yml"
+
+concurrency:
+  group: web-games-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: "24"
+
+jobs:
+  quality:
+    name: Typecheck, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Read the Bun version from package.json
+        id: bun
+        run: echo "version=$(node -p "require('./package.json').packageManager.replace(/^bun@/, '')")" >> "$GITHUB_OUTPUT"
+      - uses: oven-sh/setup-bun@3d267786b128fe76c2f16a390aa2448b815359f3
+        with:
+          bun-version: ${{ steps.bun.outputs.version }}
+      - run: bun install --frozen-lockfile
+      - run: bun run web-games:typecheck
+      - run: bun run web-games:test
+      - run: bun run web-games:build

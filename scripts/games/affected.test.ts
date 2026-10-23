@@ -169,7 +169,25 @@ test("full matrix lists Flutter games in apps and web games in web_apps", () => 
   const result = affectedForFiles(["turbo.json"]);
   expect(result.fallback).toBe(true);
   expect(result.apps).not.toContain("city_drive");
-  expect(result.web_apps).toEqual(["city_drive"]);
+  expect(result.web_apps).toEqual([
+    "city_drive",
+    "lantern_loops",
+    "floodplain_dispatch",
+    "cloud_observatory",
+    "the_last_window",
+    "dress_rehearsal",
+    "lost_parcel_desk",
+  ]);
+});
+
+test("new web game paths map to their own game and never enter the Flutter matrices", () => {
+  const result = affectedForFiles([
+    "apps-games/lantern-loops/src/main.tsx",
+    "apps-games/lost-parcel-desk-core/src/index.ts",
+  ]);
+  expect(result.fallback).toBe(false);
+  expect(result.apps).toEqual([]);
+  expect(result.web_apps).toEqual(["lantern_loops", "lost_parcel_desk"]);
 });
 
 test("the Pub graph ignores web games", () => {
