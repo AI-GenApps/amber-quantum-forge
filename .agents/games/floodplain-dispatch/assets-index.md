@@ -1,6 +1,6 @@
 # Floodplain Dispatch - assets index
 
-Status after task 06: the three fonts, all 27 CC0 audio files and 19 of the 20 designer art slots are
+Status at release (task 08): the three fonts, all 27 CC0 audio files and 19 of the 20 designer art slots are
 bundled or archived (below). 17 slots ship as runtime WebP in `public/art/`; `icon` and `feature-graphic`
 are accepted store assets kept as masters only (task 07 turns `icon` into the app icon; the store listing uses both); `key-art` was
 rejected in the designer loop's final round and keeps its code-drawn placeholder (the title screen
@@ -158,6 +158,23 @@ with a short crossfade of the tail into the head so they loop; the music loops a
 Haptics (no files): light impact on placing or rotating a piece, `warning` on an illegal placement,
 medium impact on Run, `error` when a house floods, `success` on each earned star, region unlock and
 theme unlock. Nothing on plain button taps.
+
+## Release totals and budgets (task 08)
+
+| Group | Files | Shipped size | Budget | Enforced by |
+|---|---|---|---|---|
+| JS bundle (gzip, art/fonts/audio excluded) | 6 `.js` files | 78.6 KB | 300 KB | `test/budgets.test.ts` (runs a Vite build into `node_modules/.cache/bundle-check`) |
+| Runtime art (`public/art`) | 17 WebP | 153,586 bytes | 8 MB; any file 400 KB | `test/budgets.test.ts`, `test/art-assets.test.ts` |
+| Fonts (`public/fonts`) | 3 woff2 | 73,364 bytes | 300 KB | `test/budgets.test.ts` |
+| Audio (`public/audio`) | 27 Ogg | 962,201 bytes | 2 MB | `test/budgets.test.ts`, `test/audio-assets.test.ts` |
+
+`bun scripts/check-bundle.ts` (in the app) prints the same table for humans.
+
+Slots without shipped art (code-drawn placeholder stays, owner decides later): `key-art` was rejected
+in the designer loop's final round (reasons in open question Q25), so the title screen keeps the
+gradient and the code-drawn river and the splash uses the code-drawn badge. `icon` and
+`feature-graphic` are accepted but are store and launcher assets, not runtime art. Nothing was
+"not generated": all 20 slots were delivered at least once.
 
 ## Capacitor icon and splash (task 07)
 

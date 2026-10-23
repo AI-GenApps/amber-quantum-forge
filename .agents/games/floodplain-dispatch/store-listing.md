@@ -1,6 +1,6 @@
-# Floodplain Dispatch - store listing (draft)
+# Floodplain Dispatch - store listing (final draft)
 
-Drafts for a later submission. v1 does not submit to any store (owner decision 2026-10-23).
+Final draft for a later submission (finalised in task 08; screenshots are left to the owner). v1 does not submit to any store (owner decision 2026-10-23).
 Working title is the public name for v1.
 
 ## Names and text

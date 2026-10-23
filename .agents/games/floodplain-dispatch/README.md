@@ -3,7 +3,7 @@
 Compact strategy puzzles: place pumps, canals and barriers to supply a riverside town with water
 before the flood season, without drowning anyone.
 
-- Status: in progress (epic 20 tasks 00 to 05 done, task 06 art integration in progress). Built as a full v1 web game with the shared kit.
+- Status: v1 complete, pending owner QA (epic 20 tasks 00 to 08 done). Built as a full v1 web game with the shared kit; the owner browser checklist is `.agents/resources/2026-10-23/web-games/floodplain-dispatch/qa-checklist.md`.
 - Epic: [`tasks/epics/20-web-floodplain-dispatch`](../../../tasks/epics/20-web-floodplain-dispatch/STATUS.md)
 - Code: `apps-games/floodplain-dispatch` (`@web-games/floodplain-dispatch`) and
   `apps-games/floodplain-dispatch-core` (`@web-games/floodplain-dispatch-core`).
@@ -30,9 +30,9 @@ before the flood season, without drowning anyone.
 | Currency | coins (1250 from the campaign), spent on hints (25 / 40) and streak freezes (30) |
 | Themes | 7 cosmetic map themes unlocked by stars (0 to 120) |
 | Fonts | Bricolage Grotesque (display), Atkinson Hyperlegible (body), OFL |
-| Audio | CC0 only: 25 sounds and 2 music loops, 962 KB, Kenney packs plus three CC0 OpenGameArt pages (`assets-index.md`) |
+| Audio | CC0 only: 25 sounds and 2 music loops, 962,201 bytes, Kenney packs plus three CC0 OpenGameArt pages (`assets-index.md`) |
 | Art | 20 designer slots (B1 4, B2 11, B3 5): 19 accepted (17 runtime WebP, 153,586 bytes; icon and feature graphic as masters), key-art rejected and code-drawn; terrain and water are code-drawn |
-| Budgets | JS bundle <= 300 KB gzip excluding art; art <= 8 MB |
+| Budgets | JS bundle <= 300 KB gzip excluding art (shipped 78.6 KB); art <= 8 MB (shipped 153,586 bytes, largest file <= 400 KB); fonts <= 300 KB (shipped 73,364 bytes); audio <= 2 MB (shipped 962,201 bytes). Enforced by `test/budgets.test.ts` |
 | Monetization | none in v1 |
 | Data collected | none |
 

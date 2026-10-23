@@ -424,3 +424,25 @@ and never calls `animate`; the pop ring's final frame is invisible so nothing is
 - iOS uses Swift Package Manager (`ios/App/CapApp-SPM`), so `cap sync` needs no CocoaPods (Q6).
 - Template leftovers removed: Capacitor's default vector launcher drawables and the three unreferenced
   `splash-2732x2732*.png` template images. No gameplay number changed.
+
+## 2026-10-23 - Task 08 release readiness
+
+- **Budgets are tests.** `test/budgets.test.ts` runs the Vite JS API `build()` into
+  `node_modules/.cache/bundle-check` (gitignored through `node_modules`, `publicDir: false`,
+  `logLevel: "silent"`), gzips every emitted `.js` file and sums them (limit 300 KB; shipped
+  78.6 KB), and measures `public/art` (8 MB, any file 400 KB; shipped 153,586 bytes), `public/fonts`
+  (300 KB; 73,364 bytes) and `public/audio` (2 MB; 962,201 bytes). `scripts/check-bundle.ts` prints
+  the same numbers for humans. The shared logic is `scripts/bundle-lib.ts`.
+- **Knowledge base audit as a test.** `test/kb-consistency.test.ts` reads the knowledge base and
+  compares it with the code: 40 maps, 120 stars, 193 houses, 133 fields, unlocks 12 / 33 / 60, theme
+  thresholds, 1250 campaign coins, hint and freeze prices, 20 art slots, 25 sounds and 2 music loops,
+  piece costs and the budget figures. A number change in code now fails until the documents change.
+- **Network and determinism audit as a test.** `test/network-audit.test.ts` scans `src/` of the app
+  and the core: no `fetch(`, `XMLHttpRequest`, `sendBeacon`, `WebSocket` or `EventSource`; no
+  `http(s)://` literal except `src/data/credits.ts` (licence source links, hosts limited to
+  github.com, kenney.nl and opengameart.org); no `Math.random` or `Date.now` in the core; no
+  `console.log`. `Date.now` is allowed in the app (a stroke-sound throttle in the board session).
+- **Status.** The game is "v1 complete, pending owner QA". No game number, rule or content changed in
+  this task. `key-art` stays rejected (final designer round) and keeps its code-drawn placeholder.
+- **Owner QA checklist** written (`.agents/resources/2026-10-23/web-games/floodplain-dispatch/qa-checklist.md`);
+  agents never run it.

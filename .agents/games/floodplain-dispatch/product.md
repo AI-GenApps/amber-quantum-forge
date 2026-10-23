@@ -133,7 +133,8 @@ at star 1. The result sheet also lists partial progress (for example 3 of 4 hous
 ## Hints
 
 A hint reveals the next piece of the reference solution (a ghost piece on the right cell) and costs
-coins (`economy.md`). Using hints does not remove stars. Daily hints use the reference stored with
+coins: 25 on a campaign map and 40 on the daily map (`economy.md`). Streak freezes cost 30 coins and
+up to 2 are held. Region unlocks need 12 (Delta), 33 (Highland) and 60 (Estuary) stars. Using hints does not remove stars. Daily hints use the reference stored with
 the generated map (the generator's proven solution; the bounded solver backs it when shaping needed
 a repair).
 

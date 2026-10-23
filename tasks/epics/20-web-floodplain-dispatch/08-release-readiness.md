@@ -1,7 +1,7 @@
 ---
 epic: 20-web-floodplain-dispatch
 task: 08-release-readiness
-status: todo
+status: done
 commit_scope: floodplain-dispatch
 depends_on: [20-web-floodplain-dispatch/07-capacitor-packaging]
 estimate: M
@@ -34,13 +34,13 @@ Close the epic: enforce the budgets with tests, run every check, finish and cros
 
 ## Implementation Checklist
 
-- [ ] Write `test/budgets.test.ts` and `test/kb-consistency.test.ts` as described; add `scripts/check-bundle.ts` (same logic, printable table) for humans.
-- [ ] Run the four verification commands plus `bun run web-games:typecheck`, `web-games:test` and `web-games:build` from the repo root; if anything outside this game fails, prove it pre-existing in a throwaway worktree of `origin/main` and record it.
-- [ ] Grep audit written as a test: no `fetch(`, `XMLHttpRequest`, `sendBeacon`, `WebSocket`, `http://` or `https://` URL literal in `src/` except the licence/credits source URLs listed in an allowlist; no `Math.random`, `Date.now` in the core; no `console.log`.
-- [ ] Finish the knowledge base: `README.md` status set to "v1 complete, pending owner QA" with the final quick-facts numbers; `product.md` and `economy.md` match shipped behaviour; `content-plan.md` matches data; `store-listing.md` final draft; `assets-index.md` provenance complete (art, fonts, audio with sizes); `decisions-log.md` has the epic's final entries; `open-questions.md` resolved or carried with owners.
-- [ ] Write the owner QA checklist `.agents/resources/2026-10-23/web-games/floodplain-dispatch/qa-checklist.md` covering: first launch and tutorial on v01; every screen (home, regions, levels, board, playback, result, inspector, daily, themes, records, settings, how-to, credits); one map per region and every mechanic (barrier, surge, pump, gate timing, reservoir with drought, tide and storm tide); 3-star and fail paths; undo, redo, clear, zoom, drag-to-paint, keyboard play; hints and streak freezes spending coins; daily on today's date, then with the device date moved forward one day and two days (streak, freeze, gap), and backwards; theme unlocks; share (clipboard fallback in a desktop browser); sound, music and haptics toggles; reduced motion and high contrast; text legibility and fonts (no fallback look); offline (network disabled, reload); save persistence across reload and the reset flow; Android back behaviour is device-only and listed as not covered; performance feel on the 12 x 16 map; any visual defects with a place to attach screenshots.
-- [ ] Write `.agents/resources/2026-10-23/web-games/floodplain-dispatch/08/README.md`: command results (real output summaries), budget numbers (bundle KB gzip, art MB, fonts KB, audio KB), test counts, known gaps.
-- [ ] Tick task 08 and the epic status in `tasks/epics/20-web-floodplain-dispatch/STATUS.md` (status: done, pending owner browser QA).
+- [x] Write `test/budgets.test.ts` and `test/kb-consistency.test.ts` as described; add `scripts/check-bundle.ts` (same logic, printable table) for humans.
+- [x] Run the four verification commands plus `bun run web-games:typecheck`, `web-games:test` and `web-games:build` from the repo root; if anything outside this game fails, prove it pre-existing in a throwaway worktree of `origin/main` and record it.
+- [x] Grep audit written as a test: no `fetch(`, `XMLHttpRequest`, `sendBeacon`, `WebSocket`, `http://` or `https://` URL literal in `src/` except the licence/credits source URLs listed in an allowlist; no `Math.random`, `Date.now` in the core; no `console.log`.
+- [x] Finish the knowledge base: `README.md` status set to "v1 complete, pending owner QA" with the final quick-facts numbers; `product.md` and `economy.md` match shipped behaviour; `content-plan.md` matches data; `store-listing.md` final draft; `assets-index.md` provenance complete (art, fonts, audio with sizes); `decisions-log.md` has the epic's final entries; `open-questions.md` resolved or carried with owners.
+- [x] Write the owner QA checklist `.agents/resources/2026-10-23/web-games/floodplain-dispatch/qa-checklist.md` covering: first launch and tutorial on v01; every screen (home, regions, levels, board, playback, result, inspector, daily, themes, records, settings, how-to, credits); one map per region and every mechanic (barrier, surge, pump, gate timing, reservoir with drought, tide and storm tide); 3-star and fail paths; undo, redo, clear, zoom, drag-to-paint, keyboard play; hints and streak freezes spending coins; daily on today's date, then with the device date moved forward one day and two days (streak, freeze, gap), and backwards; theme unlocks; share (clipboard fallback in a desktop browser); sound, music and haptics toggles; reduced motion and high contrast; text legibility and fonts (no fallback look); offline (network disabled, reload); save persistence across reload and the reset flow; Android back behaviour is device-only and listed as not covered; performance feel on the 12 x 16 map; any visual defects with a place to attach screenshots.
+- [x] Write `.agents/resources/2026-10-23/web-games/floodplain-dispatch/08/README.md`: command results (real output summaries), budget numbers (bundle KB gzip, art MB, fonts KB, audio KB), test counts, known gaps.
+- [x] Tick task 08 and the epic status in `tasks/epics/20-web-floodplain-dispatch/STATUS.md` (status: done, pending owner browser QA).
 
 ## Files Touched
 

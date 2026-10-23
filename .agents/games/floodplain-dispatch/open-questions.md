@@ -1,6 +1,6 @@
 # Floodplain Dispatch - open questions
 
-None of these block v1 tasks 01 to 08; each has a stated default.
+None of these block v1; each has a stated default. After task 08 the open items are owned by the owner (browser QA or a later step); nothing is left for an agent task in this epic.
 
 | # | Question | Default used until answered | Owner |
 |---|---|---|---|
@@ -32,7 +32,7 @@ workaround used inside this game; the kit itself is read-only for this epic.
 | # | Question | Default used until answered | Owner |
 |---|---|---|---|
 | Q13 | Daily maps are valid and proven, but their par is the generator's own reference (a connected canal tree). Cheaper "sump" placements can exist, as on the campaign (Q10). The terrain is also less landscape-like than the hand-authored campaign (lower half is mostly flat plain with woods). Good enough for v1? | Ship as generated; the owner judges the daily in browser QA. A later pass can add a cheaper-solution search and scenery hardening. | owner at QA |
-| Q14 | The bounded solver fails on 5 campaign maps (v10, d09, h10, e01, e02; table in the resources README). It never affects shipped play because campaign hints use the committed references. | Keep; improving the solver is optional polish. | task 08 or later |
+| Q14 | The bounded solver fails on 5 campaign maps (v10, d09, h10, e01, e02; table in the resources README). It never affects shipped play because campaign hints use the committed references. | Keep; improving the solver is optional polish. | owner, later step (carried past v1) |
 | Q15 | Q8 answered: 14 fallback templates (2 per weekday). Observed use over 365 dates: 0. | Keep the 14 templates as a safety net. | closed |
 | Q16 | Kit: `SaveStore.update` always writes, even when the callback returns the same profile (a rejected purchase). Harmless. | Left as is. | kit follow-up, optional |
 
@@ -94,3 +94,16 @@ workaround used inside this game; the kit itself is read-only for this epic.
 | Q30 | `android:allowBackup` is `true` so progress survives a device change (local save, no personal data). Keep it? | Keep; set `false` in `AndroidManifest.xml` (test `test/native.test.ts` pins the value) if the owner prefers a clean slate on reinstall. | owner |
 | Q31 | Splash is the code-drawn badge, not key-art (rejected). Is the badge acceptable as launch image, or should the splash wait for a new key-art round? | Keep the badge; re-run `scripts/build-icons.ts` and `bunx capacitor-assets generate --android --ios` if a key-art is accepted later. | owner, later step |
 | Q32 | No icon, splash, adaptive-icon mask or launch screen was seen on a device or in Xcode or Android Studio. | Files validated by tests only; owner checks on a device when one is available. | owner |
+
+## Task 08 notes
+
+| # | Question | Default used until answered | Owner |
+|---|---|---|---|
+| Q33 | Nobody has run the game in a browser, on Android or on iOS; every check in this epic is headless (Vitest with happy-dom, `tsc`, `vite build`, Biome). Layout, motion, sound, fonts and touch feel are unverified. | The owner works through `.agents/resources/2026-10-23/web-games/floodplain-dispatch/qa-checklist.md` in a desktop browser at 360 x 640, 390 x 844 and 430 x 932; Android back behaviour is device-only and listed as not covered. | owner at QA |
+| Q34 | Final status of art: 19 of 20 slots accepted; `key-art` rejected (Q25) and kept as the code-drawn placeholder. No slot is "not generated". | See Q25. | owner, later step |
+| Q35 | The budget test builds with `publicDir: false` so art, fonts and audio are measured separately from the JS; CSS is not counted in the 300 KB JS figure. | Keep; CSS is small and listed in the `vite build` output. | none |
+| Q36 | Store submission (screenshots, privacy policy URL, signing) is out of scope for v1. `store-listing.md` is a final draft only. | Owner decides when to submit (Q3, Q9, Q30 to Q32 apply). | owner, later step |
+
+### Kit follow-ups found in task 08
+
+None. The budget and audit tests needed no kit change.

@@ -1,6 +1,6 @@
 # Epic 20 - Floodplain Dispatch (full v1 web game)
 
-Status: in progress (tasks 00 to 06 done; task 07 in progress; task 08 todo)
+Status: done, pending owner browser QA (tasks 00 to 08 done; v1 awaits owner browser QA)
 
 ## Purpose
 
@@ -76,7 +76,7 @@ Rules for every task:
 | 05 | [CC0 audio, haptics, motion polish, onboarding and how-to-play](05-audio-haptics-onboarding.md) | code | agent | [x] |
 | 06 | [Integrate reviewed art from the designer inbox](06-art-integration.md) | art | agent | [x] |
 | 07 | [Capacitor Android/iOS projects, icons and splash](07-capacitor-packaging.md) | code | agent | [x] |
-| 08 | [Release readiness, budgets, knowledge base, owner QA checklist](08-release-readiness.md) | code | agent | [ ] |
+| 08 | [Release readiness, budgets, knowledge base, owner QA checklist](08-release-readiness.md) | code | agent | [x] |
 
 Filename order is execution order. `[~]` means in progress.
 
