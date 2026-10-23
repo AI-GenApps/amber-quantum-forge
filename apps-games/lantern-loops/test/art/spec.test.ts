@@ -68,6 +68,14 @@ describe("slot resolution with any subset of files", () => {
   });
 });
 
+describe("bundled files", () => {
+  it("resolve every accepted in-app slot to a file and keep the placeholder for the rest", () => {
+    const placeholders = SLOT_IDS.filter((id) => resolveSlot(id).kind === "fallback");
+    expect(placeholders.sort()).toEqual(["empty-archive", "feature-graphic", "icon"]);
+    expect(bundledArtUrls()).toHaveLength(12);
+  });
+});
+
 describe("centre edge density", () => {
   const size = 100;
 

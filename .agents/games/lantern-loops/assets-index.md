@@ -42,59 +42,77 @@ fallback so the game is complete without it. Budget: all shipped art <= 8 MB (te
 | Batch | Slot id | Shape | Display size (css) | Shipped size (px) | Use | Fallback | Status |
 |---|---|---|---|---|---|---|---|
 | B1 | `icon` | square, opaque, single lantern motif, legible at 48 px | launcher | 1024x1024 master | App icon via @capacitor/assets (task 07) | code-drawn lantern on indigo | shipped |
-| B1 | `key-art` | portrait 2:3, title-safe empty band in the upper third | full screen | 800x1200 | Home, Boot, splash source | layered paper-cut SVG dusk scene | placeholder |
+| B1 | `key-art` | portrait 2:3, title-safe empty band in the upper third | full screen | 800x1200 | Home, Boot, splash source | layered paper-cut SVG dusk scene | shipped |
 | B1 | `lantern-amber` | square, transparent | 56 | 112x112 | Lists, chapter cards, win sheet | SVG lantern | shipped |
-| B1 | `backdrop-harbor` | portrait 2:3, calm low-detail centre for the board | full screen | 800x1200 | Harbor puzzles and list | indigo gradient + SVG water and boat silhouettes | placeholder |
-| B2 | `lantern-rose` | square, transparent, same silhouette as amber | 56 | 112x112 | Sky legend, how-to, share | SVG lantern | placeholder |
-| B2 | `lantern-jade` | same | 56 | 112x112 | same | SVG lantern | placeholder |
-| B2 | `lantern-azure` | same | 56 | 112x112 | same | SVG lantern | placeholder |
-| B2 | `lantern-violet` | same | 56 | 112x112 | same | SVG lantern | placeholder |
-| B2 | `lantern-unlit` | same | 56 | 112x112 | Locked puzzles, unlit lantern in lists | SVG lantern, grey | placeholder |
-| B2 | `backdrop-garden` | portrait 2:3, same rules as harbor | full screen | 800x1200 | Garden | gradient + SVG blossoms and walls | placeholder |
-| B2 | `backdrop-bridge` | portrait 2:3 | full screen | 800x1200 | Bridge | gradient + SVG arches and reflections | placeholder |
-| B2 | `backdrop-sky` | portrait 2:3 | full screen | 800x1200 | Sky | gradient + SVG clouds and drifting lanterns | placeholder |
-| B2 | `daily-medallion` | square, transparent | 120 | 240x240 | Daily screen, streak milestones | SVG medallion ring | placeholder |
+| B1 | `backdrop-harbor` | portrait 2:3, calm low-detail centre for the board | full screen | 800x1200 | Harbor puzzles and list | indigo gradient + SVG water and boat silhouettes | shipped |
+| B2 | `lantern-rose` | square, transparent, same silhouette as amber | 56 | 112x112 | Sky legend, how-to, share | SVG lantern | shipped |
+| B2 | `lantern-jade` | same | 56 | 112x112 | same | SVG lantern | shipped |
+| B2 | `lantern-azure` | same | 56 | 112x112 | same | SVG lantern | shipped |
+| B2 | `lantern-violet` | same | 56 | 112x112 | same | SVG lantern | shipped |
+| B2 | `lantern-unlit` | same | 56 | 112x112 | Locked puzzles, unlit lantern in lists | SVG lantern, grey | shipped |
+| B2 | `backdrop-garden` | portrait 2:3, same rules as harbor | full screen | 800x1200 | Garden | gradient + SVG blossoms and walls | shipped |
+| B2 | `backdrop-bridge` | portrait 2:3 | full screen | 800x1200 | Bridge | gradient + SVG arches and reflections | shipped |
+| B2 | `backdrop-sky` | portrait 2:3 | full screen | 800x1200 | Sky | gradient + SVG clouds and drifting lanterns | shipped |
+| B2 | `daily-medallion` | square, transparent | 120 | 240x240 | Daily screen, streak milestones | SVG medallion ring | shipped |
 | B2 | `empty-archive` | square, transparent spot illustration | 160 | 320x320 | Archive "Completed" empty state | SVG lantern outline | placeholder |
-| B2 | `feature-graphic` | landscape 3:2, no text | store only (not bundled) | 1500x1000 master | Store feature graphic after crop | none (store asset) | placeholder |
+| B2 | `feature-graphic` | landscape 3:2, no text | store only (not bundled) | 1536x1024 master | Store feature graphic after crop | none (store asset) | shipped |
 
 Art rules: layered cut-paper shapes with subtle paper-fibre texture, warm amber/rose glow on deep
 indigo and teal, soft rim light, depth through layered paper shadows. No text, no logos, no faces,
 no AI artefacts (warped lines, garbled glyphs) in anything shipped. The board itself (tiles, loops,
 glow) is always drawn by code in the same palette.
 
-### Art provenance (task 06, 2026-10-23)
+### Art provenance (task 06, 2026-10-23, updated after the full designer loop)
 
-Art track result: the designer review loop ended with status `style_anchor_failed`. Only two of the
-15 slots were accepted; the other 13 keep their code-drawn placeholder. Nothing outside
-`accepted/` was used. Inbox: `/Users/ashutosh/Dev/W3DevMobile/aqf-art-inbox/lantern-loops/`
-(read-only). Evidence copy: art bible, accepted manifest, review notes of rounds 1 to 4 and the
-conversion report under `.agents/resources/2026-10-23/web-games/lantern-loops/art/`
-(`art-bible.md`, `accepted-manifest.json`, `review/b1-round-<n>-review.md`, `report.json`).
+Art track result: status `ok`. 14 of 15 slots were accepted; `empty-archive` was rejected in its
+final round and keeps its code-drawn placeholder. Nothing outside `accepted/` was used. Inbox:
+`/Users/ashutosh/Dev/W3DevMobile/aqf-art-inbox/lantern-loops/` (read-only). Evidence copy: art bible,
+accepted manifest, the brief and review notes of every round (batches b1 rounds 1 to 4, b2 rounds 1 to 4,
+retry rounds 1 to 3) and the conversion report under
+`.agents/resources/2026-10-23/web-games/lantern-loops/art/` (`art-bible.md`, `accepted-manifest.json`,
+`review/<batch>-round-<n>-review.md`, `review/<batch>-round-<n>-brief.md`, `report.json`).
 
 Conversion: `apps-games/lantern-loops/scripts/convert-art.ts` (run `bun scripts/convert-art.ts` in the
 app folder; deterministic, idempotent: a second run reproduces every byte). Masters are WebP q90 at the
 generation size (`.../art/masters/<slot>.webp`); shipped files are WebP q82 at 2x display size in
-`apps-games/lantern-loops/src/art/files/<slot>.webp`. The `icon` is not bundled in the web build: its
-master feeds the Capacitor icon and splash assets in task 07.
+`apps-games/lantern-loops/src/art/files/<slot>.webp`. `icon` and `feature-graphic` are not bundled in the
+web build: the icon master feeds the Capacitor icon and splash assets (task 07), the feature-graphic
+master (1536x1024, not 1500x1000 as first specified) is the source for the store feature graphic
+(1024x500 centre crop).
+
+Shipped total: 12 files, 162,934 bytes (159 KB) of the 8 MB budget (largest `backdrop-garden` 39,448 bytes).
 
 | Slot | Inbox file | Review (round, verdict) | Date | SHA-256 (source PNG) | SHA-256 (master) | SHA-256 (shipped) | Notes |
 |---|---|---|---|---|---|---|---|
-| `icon` | `icon.png` (accepted folder; `b1/round-4/out/icon.png`) | b1 round 4, ACCEPTED (rounds 1 to 3 rejected: wave too bright and flat) | 2026-10-23 | `3f6966f1dd4b3845860900e7dd48a5a6c0f5a01a38e175a0bceb301d05699627` | `5f5fb19b1c13d386dcfca6319fb73ab989ee02691ad91c12e3129d92eac72eaa` | `not bundled` | 1024x1024 opaque, 38,590 byte master; Capacitor source for task 07, not in the web bundle |
-| `lantern-amber` | `lantern-amber.png` (accepted folder; `b1/round-3/out/lantern-amber.png`) | b1 round 3, ACCEPTED (rounds 1 and 2 rejected: cap and hanger construction) | 2026-10-23 | `e191d5294e0a565559dce5d82de5d52a6a8bdef613fcb159f9b48e1969984270` | `51c9c6ab913fc470820d5f6a9c6034da0e847af7733b9990e253556c703ac37c` | `8f3d5bc82102990d35a05215f9e93b7b1a330a992a688978a6c7733dbba9b0b0` | 1024x1024 transparent; shipped 112x112, 2,832 bytes; minor note from review: loop is small and thin, tassel bead is a dark disc |
+| `icon` | `icon.png` (accepted folder; `b1/round-4/out/icon.png`) | b1 round 4, ACCEPTED (rounds 1 to 3 rejected: wave too bright and flat) | 2026-10-23 | `3f6966f1dd4b3845860900e7dd48a5a6c0f5a01a38e175a0bceb301d05699627` | `5f5fb19b1c13d386dcfca6319fb73ab989ee02691ad91c12e3129d92eac72eaa` | `not bundled` | 1024x1024 opaque; 1024x1024 opaque, Capacitor source for task 07, not in the web bundle |
+| `key-art` | `key-art.png` (accepted folder; `retry/round-1/out/key-art.png`) | retry round 1, ACCEPTED | 2026-10-23 | `c65b9a5110326ad7f269b5848c0f9d3a94e995cec39c6266855fd24899fc8f1a` | `08e21e80b1bdf2d1a9abb06fd35ca49789e21a8253a7fb6bf6ca25fdf8680d8a` | `e1cf481aff883df62e391f9ce1767fbabcf1efa970331bd3ccd9584af909242b` | 1024x1536 opaque; shipped 800x1200, 34,768 bytes; title band calm; hero is the accepted amber sprite |
+| `lantern-amber` | `lantern-amber.png` (accepted folder; `b1/round-3/out/lantern-amber.png`) | b1 round 3, ACCEPTED (rounds 1 and 2 rejected: cap and hanger construction) | 2026-10-23 | `e191d5294e0a565559dce5d82de5d52a6a8bdef613fcb159f9b48e1969984270` | `51c9c6ab913fc470820d5f6a9c6034da0e847af7733b9990e253556c703ac37c` | `8f3d5bc82102990d35a05215f9e93b7b1a330a992a688978a6c7733dbba9b0b0` | 1024x1024 transparent; shipped 112x112, 2,832 bytes; minor review note: loop is small and thin, tassel bead is a dark disc |
+| `lantern-rose` | `lantern-rose.png` (accepted folder; `b2/round-1/out/lantern-rose.png`) | b2 round 1, ACCEPTED | 2026-10-23 | `8f6bbf7204d186681de822d616ad209021e4628b78b9f709754dfc923143b27e` | `c73eca29c553ba2996e38ef5e10d884a3d4d028c0271c053e52b8ad493606d45` | `e64f0b38214482aee5983db1c66a8346f63488d05c789b28d50d1e8875f5bc85` | 1024x1024 transparent; shipped 112x112, 2,762 bytes; same silhouette as amber; review note: amber tassel kept on every colour |
+| `lantern-jade` | `lantern-jade.png` (accepted folder; `b2/round-1/out/lantern-jade.png`) | b2 round 1, ACCEPTED | 2026-10-23 | `d7ebeac4dd585c0e1102acadce2c822fe79d140c0bcfdaf70fbd1167311a7f43` | `7775f3d2bd99e46877c305da5cd7c15ce9c70abac3878b208b330cee7d44af69` | `cd59dc6b94c1185edbd03b849f0f532e3a8dae02f434fcde2114e9f752fc730f` | 1024x1024 transparent; shipped 112x112, 2,756 bytes; same silhouette as amber; square window |
+| `lantern-azure` | `lantern-azure.png` (accepted folder; `b2/round-1/out/lantern-azure.png`) | b2 round 1, ACCEPTED | 2026-10-23 | `6b144924a3d9b2f647e38357e56574c3332b631dc5a6920faf53f0cbbd7b3d31` | `060cea725e9aff285f038bed235feb422a8202c450f61f8bd3f5f3dffe81c302` | `b9d2afa1fa471a31aa589d34cb485ac2f5457a618a2c6b95193485901ad18b1e` | 1024x1024 transparent; shipped 112x112, 2,780 bytes; same silhouette as amber; triangle window |
+| `lantern-violet` | `lantern-violet.png` (accepted folder; `b2/round-1/out/lantern-violet.png`) | b2 round 1, ACCEPTED | 2026-10-23 | `650e3632cde4a1a44b6f5c59fcd05f6c795b74110c3f4ef802fc8df574adbbf0` | `aabb6e0cd61d07e219bb3dfb60362023cd9797008a57228b0e9ee861fd900ec3` | `9685465d87eeffa45bd6a5ff2668702a370607229373ea5aaf0b106e3b5a250d` | 1024x1024 transparent; shipped 112x112, 2,722 bytes; same silhouette as amber; star window |
+| `lantern-unlit` | `lantern-unlit.png` (accepted folder; `b2/round-1/out/lantern-unlit.png`) | b2 round 1, ACCEPTED | 2026-10-23 | `3dcfab8aefd2ab479d8f1fc52cdced81f727f5d673430bab3dd058fb06886a6b` | `2244d7220334824e1f704f78233425df34dd5a4af8e7a397d9974a7b73ff9cef` | `28fa82cf8c09482e3b8e6fe01dc73a6c6d1b821dce40ca96051fa99ae28842bd` | 1024x1024 transparent; shipped 112x112, 2,460 bytes; no window; outer panels are close to the night colour, so the app keeps it on its light list chip |
+| `backdrop-harbor` | `backdrop-harbor.png` (accepted folder; `retry/round-3/out/backdrop-harbor.png`) | retry round 3, ACCEPTED (b1 rounds 1 to 4 and retry rounds 1 and 2 rejected) | 2026-10-23 | `cc9f0d199cfe747cc508afae4ebd19a1615c6d39bc2171013cc4026808fd62a2` | `5d13e8cd5fbf0f39a38a067a996aadc94ac153dd417da7aafaf57dfc2fa0cde0` | `7252450a1c8cc32d2accd7d0e3eef956e9ff636ff30c9aa61287362dbc432c85` | 1024x1536 opaque; shipped 800x1200, 18,676 bytes; centre edge density 0.0059; calm board zone; minor clone seams only at 300 percent zoom |
+| `backdrop-garden` | `backdrop-garden.png` (accepted folder; `b2/round-1/out/backdrop-garden.png`) | b2 round 1, ACCEPTED | 2026-10-23 | `c95182778ba8715a4e494670597f37b8650047f554562009342ca2cf201d4009` | `b61ed10b7704674ea3a16babe65f53f60e011ac3a9e5d568c9205b5d3574fa8c` | `0c065c7d3c101c6fcf0a6e1e4ca4e85b68a6557af6134ea886fedd03dc4ed839` | 1024x1536 opaque; shipped 800x1200, 39,448 bytes; centre edge density 0.0081; calm board zone (mean luma 0.17); blossoms a warmer coral, tolerated |
+| `backdrop-bridge` | `backdrop-bridge.png` (accepted folder; `b2/round-1/out/backdrop-bridge.png`) | b2 round 1, ACCEPTED (weakest accepted) | 2026-10-23 | `492f0795af456c37e15fe0b97b8047cf7d2b561c0492262e85d57b82749073ef` | `972098927163716f5ee115e5b2e0d41a8cb305a83ba26b20c7fcad2e1ae891a0` | `774347cfb4515ddd78ece83238552eac54b3218f977e612768980be10b2a7930` | 1024x1536 opaque; shipped 800x1200, 17,440 bytes; centre edge density 0.0042; very monochrome indigo, acceptable under the scrim |
+| `backdrop-sky` | `backdrop-sky.png` (accepted folder; `b2/round-2/out/backdrop-sky.png`) | b2 round 2, ACCEPTED (round 1 rejected: airbrushed gradient, near-monochrome sky) | 2026-10-23 | `c619e8d8f976d50e4b718016f6cc8844f6eb3fb551253368951ead629bcbffb6` | `13449ba4c79ce86645a3ffb04db7d6f42b709c074db91f26435364b973e1baac` | `17b8f52dc29cbe1308fc0da506e74ee33ee0f4f8953455863faa2e73d9ec3d4a` | 1024x1536 opaque; shipped 800x1200, 25,470 bytes; centre edge density 0.0042; rose band sits inside the board zone at 61 to 66 percent, low contrast |
+| `daily-medallion` | `daily-medallion.png` (accepted folder; `b2/round-2/out/daily-medallion.png`) | b2 round 2, ACCEPTED (round 1 rejected: clipped petals) | 2026-10-23 | `1aaa0f6edf3da5e9d8341f89abaa4504b50a3b0bf648d5c5b1e0f086fc465a3c` | `adf509254cff4716453fa7a4ea1680274dcd4c2f3ac17e7cbeec8eb890558cc3` | `26047aa1dd148ffb79eebef6afbfb551bbf9b9dac88c5551d20780e754aa0269` | 1024x1024 transparent; shipped 240x240, 10,820 bytes; 16 petals, empty indigo centre plate for the numeral |
+| `feature-graphic` | `feature-graphic.png` (accepted folder; `retry/round-2/out/feature-graphic.png`) | retry round 2, ACCEPTED (b2 rounds 1 to 4 and retry round 1 rejected) | 2026-10-23 | `4056e3b45e2989a03bd42d6c6842b303b8899be610867f2a8f3fcd19bdb0e55b` | `25e0837feac42a87e9d3e0499b1136769c97b87ef022b17a5084775f7b4b98ec` | `not bundled` | 1536x1024 opaque; 1536x1024 master, store-only; survives the 1024x500 crop |
 
-### Placeholder slots (13)
+Where the art is used in the app: Boot, Home and onboarding show `key-art` behind the screen; the
+chapter backdrops sit behind the puzzle list and the puzzle screen (the chapters screen uses
+`backdrop-harbor`); `lantern-amber` and `lantern-unlit` mark solved and open puzzles in the list;
+the Puzzle screen shows a colour legend (`lantern-amber`, `-rose`, `-jade`, `-azure`, `-violet`) when a
+board has more than one lantern colour or any gate; `daily-medallion` sits on the Daily screen.
 
-Each keeps its code-drawn fallback (see the Fallback column above); every one is also listed in
-`open-questions.md` (Q11).
+### Placeholder slots (1)
+
+The code-drawn fallback stays (see the Fallback column above); it is also listed in `open-questions.md`
+(Q11).
 
 | Slot | Why it has no art | Review round |
 |---|---|---|
-| `key-art` | Missing: `out/key-art.png` was not delivered in round 4 and is not in the manifest (rounds 1 to 3 rejected: chained lantern columns, impaled hero, ziggurat pier) | b1 round 4, REJECTED (missing) |
-| `backdrop-harbor` | Rejected in all four rounds. Round 4: the two bottom-corner mooring posts still carry bright cream-tan rims (max about RGB 211,188,167, not dimmed) on the caps and all three bars and read as a stacked game piece (Hanoi tower style), the brightest and most contrasty items in the bottom band; the posts-without-coils fallback was not taken. The rest is calm (board-zone luminance about 12%) but very sparse | b1 round 4, REJECTED |
-| `lantern-rose`, `lantern-jade`, `lantern-azure`, `lantern-violet`, `lantern-unlit` | Not requested: the style anchor (batch b1) failed, so batch b2 was never generated | none |
-| `backdrop-garden`, `backdrop-bridge`, `backdrop-sky` | Not requested: style anchor failed | none |
-| `daily-medallion`, `empty-archive` | Not requested: style anchor failed | none |
-| `feature-graphic` | Not requested: style anchor failed (store asset; the store bank needs a feature graphic before any submission) | none |
+| `empty-archive` | Rejected in every round (b2 rounds 2 to 4, retry rounds 1 to 3). Final verdict: the ribbon still reads as a bracket or handle at 160 px, because the bottom run merges into the tray lip and the 50 px notch is too small to read as a gap. On the paper background the cream ribbon and tray almost vanish. The lantern and ribbon read as two unrelated objects, and the lantern looks like a squat grey pumpkin. Same fault cited in rounds 1 and 2 | retry round 3, REJECTED (final) |
 
 ## Audio (CC0 only, task 05, done)
 

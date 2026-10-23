@@ -27,7 +27,7 @@ slot that was rejected or not delivered. The game must be complete and consisten
   the task prompt; trust it over file presence.
 - The 15 slots, shapes, display sizes and fallbacks are in `assets-index.md`. Shipped size is 2x display
   size: lanterns 112x112, daily-medallion 240x240, empty-archive 320x320, key-art and the four backdrops
-  800x1200. `icon` (1024x1024 master) and `feature-graphic` (1500x1000 master) are not bundled in the
+  800x1200. `icon` (1024x1024 master) and `feature-graphic` (1536x1024 master as delivered) are not bundled in the
   web build: they feed Capacitor assets (task 07) and the store bank.
 - Format: WebP via `sharp` (already a devDependency); shipped quality 82 (alpha preserved for transparent
   slots); masters WebP q90 at the original generation size under
@@ -61,9 +61,16 @@ slot that was rejected or not delivered. The game must be complete and consisten
 - [x] Art budget test and objective property tests (below).
 - [x] Update `README.md` quick facts (art slots shipped N of 15) and `decisions-log.md`.
 
-Result (2026-10-23): the designer loop ended `style_anchor_failed`; 2 of 15 slots integrated
+Result (2026-10-23, first pass): the designer loop ended `style_anchor_failed`; 2 of 15 slots integrated
 (`lantern-amber` bundled, `icon` master for task 07), 13 placeholders kept (Q11). The slots.ts change
 was `icon` -> `inApp: false`; `ArtImage` got an optional `files` prop so tests inject the glob result.
+
+Update pass (2026-10-23): the full loop ended `ok` with 14 of 15 slots accepted (12 bundled files,
+162,934 bytes; `icon` and `feature-graphic` masters only). `empty-archive` was rejected in its final
+round and keeps its code-drawn placeholder (Q11). Changes: `art-spec.ts` feature-graphic master is
+1536x1024; the evidence folder holds every brief and review note (b1, b2, retry); the Puzzle screen
+shows a `ColourLegend` with the accepted coloured lanterns; tests count 12 shipped files and 1
+placeholder; the knowledge base, QA checklist and the budget evidence were updated.
 
 ## Files Touched
 

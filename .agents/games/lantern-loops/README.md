@@ -35,7 +35,7 @@ every decision or number change is updated here in the same commit as the code. 
 | Hint tokens | Start 3, cap 20, cost 1 per hint; earned from dailies, streak milestones, archive, chapter clears; never sold |
 | Streak freeze | 1 per ISO week (cap 1), spent automatically on exactly one missed day |
 | Fonts | Fraunces (display) + Nunito (body), OFL, bundled woff2 |
-| Art | 15 slots (icon, key art, 6 lanterns, 4 backdrops, daily medallion, empty archive, feature graphic); budget <= 8 MB WebP; code-drawn fallbacks for every slot. Task 06: 2 of 15 art slots shipped (`lantern-amber` in the web bundle, 2.8 KB; `icon` as a 1024 px master for the Capacitor assets of task 07), 13 placeholders (the designer style anchor failed; see `assets-index.md` and `open-questions.md` Q11) |
+| Art | 15 slots (icon, key art, 6 lanterns, 4 backdrops, daily medallion, empty archive, feature graphic); budget <= 8 MB WebP; code-drawn fallbacks for every slot. Task 06: 14 of 15 art slots shipped (12 files in the web bundle, 163 KB; `icon` and `feature-graphic` stay masters for the Capacitor assets and the store), 1 placeholder (`empty-archive` was rejected in its final round; see `assets-index.md` and `open-questions.md` Q11) |
 | Audio | CC0 only: Kenney packs for 17 effects (mono MP3, 1 to 13 KB each) and one OpenGameArt music loop (`calm-loop`, 307 KB); 386 KB in total, budget 1.5 MB (effects <= 60 KB, music <= 1 MB); source URL, licence and SHA-256 recorded per file in `assets-index.md` |
 | Budgets | JS bundle <= 300 KB gzip (art, fonts, audio excluded), art <= 8 MB, audio <= 1.5 MB, each woff2 <= 120 KB |
 | Monetization | None in v1: no ads, no IAP, no accounts, no network calls |

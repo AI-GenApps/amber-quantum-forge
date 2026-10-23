@@ -2,7 +2,7 @@ Lantern Loops no-data audit
 ===========================
 
 Scope: apps-games/lantern-loops/src, apps-games/lantern-loops/public and index.html
-(95 text files; binary fonts, audio and images are skipped).
+(96 text files; binary fonts, audio and images are skipped).
 
 Network APIs searched for (case-sensitive substrings):
   fetch(

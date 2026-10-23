@@ -1,0 +1,53 @@
+# Lantern Loops - batch b1 (STYLE ANCHOR), round 1
+
+Read `../../art-bible.md` first. This batch sets the look of the whole game. Everything in b2 is judged against what is accepted here, so spend the effort here: deliver four excellent assets rather than rushing. Recommended generation order: `lantern-amber` first (defines the lantern construction, paper texture and edge; section 8 of the bible), then `icon` and `key-art` (re-use the accepted lantern as a reference image so the very same lantern appears in both), then `backdrop-harbor` (re-use the key-art as a style reference so the harbor shares its layers, water and boats).
+
+Use only amber lanterns in this batch (rose, jade, azure, violet arrive in b2).
+
+## Assets
+
+| assetId (file) | Aspect class | Generation size | Background | Used for |
+|---|---|---|---|---|
+| `icon` (`icon.png`) | square 1:1 | 1024x1024 | opaque | App icon and splash source |
+| `key-art` (`key-art.png`) | portrait 2:3 | 1024x1536 | opaque | Boot and Home background, splash source |
+| `lantern-amber` (`lantern-amber.png`) | square 1:1 | 1024x1024 | transparent | Lists, chapter cards, win sheet; the lantern anchor |
+| `backdrop-harbor` (`backdrop-harbor.png`) | portrait 2:3 | 1024x1536 | opaque | Harbor puzzle screens and puzzle list |
+
+## lantern-amber
+
+- Purpose: the anchor lantern. It is the clue object of every Harbor puzzle and the most-used image in the game (lists, chapter cards, win sheet). All other lanterns copy its construction exactly.
+- Subject: one festival paper lantern in straight-on front elevation, built exactly as bible section 8: rounded barrel body of five vertical translucent paper panels with thin darker ribs, amber body (#F2A33A mid, #FFD68A light core, #B9661A deep edge and shade side), lacquer top and bottom caps (#2B1F3A with a thin paper-2 rim on the top-left), short hanging cord with a small loop above, short tassel below (bead plus 5 to 7 stepped strands). In the centre of the body a single crisp circular cut-out window (about 24 percent of the body width), the brightest spot (light core near #FFF1CF), geometrically exact. Lit from within: warm bright centre, richer toward the edges and the right/bottom shade side. Paper fibre texture on every sheet, thin paper edge (rim light top-left, darker bottom-right).
+- Composition: transparent, 1024x1024. Vertical axis of symmetry at x = 50 percent. Proportions per bible section 8: cord loop top at 6 percent of the height, top cap 18 to 22 percent, body 22 to 72 percent, bottom cap 72 to 77 percent, tassel end at 91 percent. Body width about 58 percent of the canvas. Whole object inside the central 88 percent; outer 4 percent border fully transparent. Lower 10 percent (tassel) holds only simple strands, no fragile detail.
+- Must-nots: no text, letters, numbers or markings on the paper; no outer glow, halo, bloom, sparkle or light rays; no cast shadow or ground; no outline stroke; no gloss or glassy highlight; no second glyph; the window must be a perfect circle (not an ellipse, not a sun face); no face; asymmetric ribs; cord that does not touch the cap; unequal tassel strands that look like hair.
+- Self-check: at 48 px it must read as "amber lantern with a bright dot"; the caps give it a strong silhouette; over night #12132E the body is the brightest thing.
+
+## icon
+
+- Purpose: the app icon. Must say "a glowing lantern" instantly at 48 px. Shown through adaptive masks (circle, squircle, rounded square) beside polished store icons.
+- Subject: one hero amber lantern (the accepted `lantern-amber`, same construction, same glyph window) hanging in the centre of a deep dusk field. Behind it, a calm paper-cut dusk: a field of night/indigo (#12132E to #1E2050) with 2 large concentric cut-paper discs behind the lantern (like a rising moon made of layers) in indigo-light (#2B2F78) and plum (#3A2A5E), and one thin teal (#0E5A5F) paper wave band across the bottom third (two layers at most) with a soft layer shadow. The lantern casts a warm tint on the nearest disc edge only (spill within one lantern radius). Three major shapes: dark field with discs, amber lantern, teal wave.
+- Composition: front view, light top-left, layer shadows down-right. Full-bleed square: the field is painted to every edge (no pre-rounded corners). All essential content (lantern and the discs' focal area) inside the central circle of 62 percent of the canvas width (about 635 px diameter), centred. Lantern height about 52 percent of the canvas, centred at about 49 percent height; its cord can start at about 18 percent. The lantern is the brightest and most saturated mass; the background corners carry quiet texture only.
+- Values: lantern body light, discs and field dark, wave band mid-dark. Strong silhouette: dark caps against the lighter discs.
+- Must-nots: no text or letters of any kind, no border, no inner frame, no rounded-corner mask baked in, no drop shadow, no gloss, no outer glow bloom, no sparkles or stars scattered around, no extra lanterns, no boats, no rope loop, no gradient "app-icon" sheen, no glowing neon rim. It is a paper-cut scene, not a badge.
+
+## key-art
+
+- Purpose: the cover of the game: boot screen, Home background, splash source. The title and the buttons are added by code; the image must feel like the cover of a premium paper-craft game.
+- Subject: a harbor at dusk as a layered paper-theatre scene. Centre: a dark lacquer mooring post at the end of a short pier rising in the lower-middle, with the hero amber lantern (same design as `lantern-amber`) hanging from a bracket on the post. From the post a gently sagging garland rope runs left and another runs right to two lower posts at the edges, carrying 3 smaller amber lanterns on each side (same construction, smaller, varied heights, not identical copies). Behind: 3 layers of still indigo water as cut-paper wave bands (indigo #1E2050, indigo-light #2B2F78, teal #0E5A5F accents), broken amber reflection bars under the lanterns (horizontal cut-paper strips), 2 or 3 small moored boats (simple hulls and one paper-2 sail each, lacquer silhouettes) far back, and a far shore of low dock roofs and masts in dark indigo-mist with 2 or 3 tiny amber lamp dots. Sky: night/indigo with a few flat cut-paper cloud strips; no stars.
+- Composition and safe areas (percent of 1024x1536): TITLE BAND y 0 to 28 percent (0 to 430 px): calm, low-detail dark indigo sky with at most one faint cloud strip; mean value dark so cream title text will contrast; no subject, no lantern, no strong shape. SUBJECT ZONE y 28 to 78 percent (430 to 1198 px): the hero lantern with its focal point near x 50 percent, y 50 percent; the garland spans x 12 to 88 percent. BUTTON BAND y 78 to 100 percent (1198 to 1536 px): calm dark foreground water layers and pier planks, low detail, mid-dark value; the lantern reflection may start fading at about y 76 percent. Keep everything essential inside the central 70 percent of the width (x 15 to 85 percent); the outer 15 percent each side is cropped on tall phones and may carry boats, posts and roofs as decoration.
+- Mood: the quiet moment just before the evening lanterns are lit one by one; warm, hopeful, calm.
+- Must-nots: no text, no title, no signboard or banner, no logo, no UI, no board/grid/tiles/stones, no people, no animals or birds, no smoke, no rain, no fire, no stars or sparkles, no bokeh or lens flare, no glow bloom or god rays, no vignette, no frame/border, no oversized copy-pasted lanterns of identical size, no coloured lanterns other than amber, no recognisable existing game or artwork. Water is cut-paper bars, not a photographic reflection.
+
+## backdrop-harbor
+
+- Purpose: background of the Harbor chapter puzzle screens and its puzzle list. The code-drawn puzzle board sits on top, in the centre, on a translucent panel; this image must stay calm there. First chapter, the most-seen backdrop.
+- Subject: a harbor at dusk as a layered paper-theatre scene, same world as `key-art` (same water layers, same boat/post language, same amber lamp style). Top band: a far shore skyline of low dock roofs, warehouse gables and thin masts in indigo-mist (#3B3F8F) over a night-indigo sky, with 2 or 3 tiny amber lamp points (under 1.5 percent of the width each). Board zone: nothing but large calm still-water paper bands (indigo #1E2050, indigo-light #2B2F78, night #12132E) with a few very low-contrast broken reflection bars; no boats, no lamps, no posts in the zone. Bottom band: dark foreground pier planks and a lacquer mooring post and a rope coil at the left and right margins only, two layers of near-black indigo paper with soft layer shadows.
+- Composition: frontal paper-theatre view, light top-left, shadows down-right. Safe-zone map per bible section 13: top band y 0 to 16 percent (detail allowed, mid-dark), board zone y 17 to 77 percent and x 5 to 95 percent (calm, low contrast, mean luminance 12 to 28 percent, no detail brighter or sharper than 8 percent value difference), bottom band y 78 to 100 percent (darker, low detail). Side margins (outer 15 percent) may carry boats and posts at full richness but nothing essential. Horizon line (shore) in the top band at about y 12 percent.
+- Mood: still, amber-lit, nautical; lamp-lit docks at dusk.
+- Must-nots: no text, no boat names, no signs, no people, no animals or birds, no lanterns larger than 7 percent of the width, no bright glints in the board zone, no moon, no stars, no sparkle, no bokeh, no vignette, no frame/border, no baked board or grid, no strong centre focal point, no warm fill across large areas.
+
+## Delivery contract
+
+- Save every image as PNG to `<batch>/round-<n>/out/<assetId>.png` (this round: `b1/round-1/out/<assetId>.png`) with the EXACT asset ids listed above (`icon`, `key-art`, `lantern-amber`, `backdrop-harbor`), at the exact generation size stated per asset. One file per asset; no extra files in `out/` other than `manifest.json`.
+- Transparent assets: 8-bit RGBA PNG, straight alpha, corners and the outer 4 percent border fully transparent. Opaque assets: PNG with no alpha channel (or alpha 255 everywhere).
+- Write `out/manifest.json` as a JSON array with one object per delivered asset: `{assetId, file, model, prompt, size, transparent, notes}` where `file` is the file name (for example `lantern-amber.png`), `model` is the generator used, `prompt` is the full final prompt (and the reference images used), `size` is `"WIDTHxHEIGHT"`, `transparent` is a boolean, and `notes` records the background-removal method, seeds, rejected attempts and anything the reviewer should know.
+- Read `../../art-bible.md` first. Anything in this brief that is more specific than the bible wins.

@@ -87,6 +87,8 @@ body { -webkit-tap-highlight-color: transparent; overscroll-behavior: none; }
 .ll-hint-count { font-family: var(--wg-font-display); font-weight: 700; }
 .ll-coach-line { display: flex; align-items: center; gap: var(--wg-space); }
 .ll-coach-line .ll-body { flex: 1; margin: 0; }
+.ll-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px var(--wg-space); font-size: 0.8rem; color: var(--wg-color-text-muted); }
+.ll-legend-item { display: inline-flex; align-items: center; gap: 4px; }
 .ll-board-area { display: flex; justify-content: center; align-items: center; flex: 1; padding: 4px 0; }
 .ll-board-wrap { position: relative; max-width: 100%; }
 .ll-board { max-width: 100%; height: auto; display: block; touch-action: none; user-select: none; -webkit-user-select: none; border-radius: 10px; box-shadow: var(--wg-shadow-raised); outline: none; }

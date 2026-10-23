@@ -87,7 +87,7 @@ thumbs can judge. Tick each box, and write down anything odd with the screen nam
 - [ ] Every piece of text is Fraunces (headings, numerals) or Nunito (body); nothing falls back to Times, Arial or the system font, also on first load before fonts arrive (inspect with the browser dev tools).
 - [ ] Contrast is readable in a bright room and in the dark; the muted text is still legible.
 - [ ] Each chapter has its own backdrop (Harbor, Garden, Bridge, Sky) and the board stays the calmest zone.
-- [ ] Placeholders: 13 of 15 art slots are code-drawn (Q11). Only `lantern-amber` is final art. Judge whether the amber art lantern next to the code-drawn grey unlit lantern looks consistent.
+- [ ] Art: 14 of 15 art slots are reviewed designer art; only `empty-archive` (Archive "Completed" empty state) is code-drawn (Q11). Judge the set as a whole: lanterns in the puzzle list (amber lit, unlit), the colour legend on a gate puzzle, the medallion on Daily, key art on Boot/Home, and the four backdrops (the Bridge backdrop is the weakest).
 - [ ] Nothing is cut off or overlapping at browser text size 130% and at 360 px width, on every screen including the win sheet and Settings.
 
 ## 11. Audio and haptics
@@ -108,5 +108,5 @@ thumbs can judge. Tick each box, and write down anything odd with the screen nam
 ## 13. Store bank (your step)
 
 - [ ] Capture phone screenshots from the browser build: Home, a Harbor board, a Garden board with stones, a Bridge board, a Sky board with colours, the win sheet, the Daily screen, Statistics. Save them under `.agents/resources/<date>/web-games/lantern-loops/screenshots/`.
-- [ ] A feature graphic still has to be produced (no art exists for it, see Q11).
+- [ ] The accepted `feature-graphic` master is `art/masters/feature-graphic.webp` (1536x1024); crop it to 1024x500 for Play and judge it (Q12).
 - [ ] Decide Q1 (name), Q6 (Android INTERNET permission) and Q8 (account, contact, privacy policy URL) before any submission.

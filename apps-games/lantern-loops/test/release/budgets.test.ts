@@ -68,7 +68,7 @@ describe("size budgets", () => {
       18,
     );
     expect(walk(join(APP_DIR, "src", "art", "files")).filter((p) => ART_EXT.test(p))).toHaveLength(
-      1,
+      12,
     );
   });
 });

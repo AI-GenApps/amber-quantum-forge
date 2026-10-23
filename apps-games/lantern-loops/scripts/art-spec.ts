@@ -78,8 +78,8 @@ export const ART_SPECS: readonly ArtSpec[] = [
   spot("empty-archive", 320),
   {
     id: "feature-graphic",
-    masterWidth: 1500,
-    masterHeight: 1000,
+    masterWidth: 1536,
+    masterHeight: 1024,
     shipped: null,
     transparent: false,
     maxShippedBytes: 0,

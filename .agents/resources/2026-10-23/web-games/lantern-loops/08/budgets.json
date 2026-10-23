@@ -8,47 +8,91 @@
   "js": {
     "chunks": [
       {
-        "file": "assets/index-CShhire5.js",
-        "raw": 227734,
-        "gzip": 76859
+        "file": "assets/index-DVE8Pcnk.js",
+        "raw": 247327,
+        "gzip": 85812
       },
       {
-        "file": "assets/web-BaXeckx8.js",
-        "raw": 1058,
-        "gzip": 347
-      },
-      {
-        "file": "assets/web-CEikbY6C.js",
-        "raw": 365,
-        "gzip": 247
-      },
-      {
-        "file": "assets/web-CipXoJKU.js",
-        "raw": 1192,
-        "gzip": 539
-      },
-      {
-        "file": "assets/web-CllDhEbO.js",
-        "raw": 844,
-        "gzip": 399
-      },
-      {
-        "file": "assets/web-CQYyt8cg.js",
+        "file": "assets/web-2jzfFIU0.js",
         "raw": 894,
-        "gzip": 457
+        "gzip": 459
+      },
+      {
+        "file": "assets/web-BRyv3TaD.js",
+        "raw": 1192,
+        "gzip": 542
+      },
+      {
+        "file": "assets/web-DIYUiudx.js",
+        "raw": 844,
+        "gzip": 401
+      },
+      {
+        "file": "assets/web-pf7QsT4i.js",
+        "raw": 365,
+        "gzip": 249
+      },
+      {
+        "file": "assets/web-Z579GUIi.js",
+        "raw": 1058,
+        "gzip": 348
       }
     ],
-    "gzipBytes": 78848,
-    "rawBytes": 232087
+    "gzipBytes": 87811,
+    "rawBytes": 251680
   },
   "art": {
     "files": [
       {
+        "file": "apps-games/lantern-loops/src/art/files/backdrop-bridge.webp",
+        "bytes": 17440
+      },
+      {
+        "file": "apps-games/lantern-loops/src/art/files/backdrop-garden.webp",
+        "bytes": 39448
+      },
+      {
+        "file": "apps-games/lantern-loops/src/art/files/backdrop-harbor.webp",
+        "bytes": 18676
+      },
+      {
+        "file": "apps-games/lantern-loops/src/art/files/backdrop-sky.webp",
+        "bytes": 25470
+      },
+      {
+        "file": "apps-games/lantern-loops/src/art/files/daily-medallion.webp",
+        "bytes": 10820
+      },
+      {
+        "file": "apps-games/lantern-loops/src/art/files/key-art.webp",
+        "bytes": 34768
+      },
+      {
         "file": "apps-games/lantern-loops/src/art/files/lantern-amber.webp",
         "bytes": 2832
+      },
+      {
+        "file": "apps-games/lantern-loops/src/art/files/lantern-azure.webp",
+        "bytes": 2780
+      },
+      {
+        "file": "apps-games/lantern-loops/src/art/files/lantern-jade.webp",
+        "bytes": 2756
+      },
+      {
+        "file": "apps-games/lantern-loops/src/art/files/lantern-rose.webp",
+        "bytes": 2762
+      },
+      {
+        "file": "apps-games/lantern-loops/src/art/files/lantern-unlit.webp",
+        "bytes": 2460
+      },
+      {
+        "file": "apps-games/lantern-loops/src/art/files/lantern-violet.webp",
+        "bytes": 2722
       }
     ],
-    "bytes": 2832
+    "bytes": 162934
   },
   "audio": {
     "files": 18,

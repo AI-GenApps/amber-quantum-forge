@@ -173,8 +173,11 @@ describe("masters", () => {
 
   it("ship the evidence copies of the art bible and every review note", () => {
     expect(existsSync(join(EVIDENCE, "art-bible.md"))).toBe(true);
-    for (const round of [1, 2, 3, 4]) {
-      expect(existsSync(join(EVIDENCE, `review/b1-round-${round}-review.md`))).toBe(true);
+    const batches = { b1: 4, b2: 4, retry: 3 } as const;
+    for (const [batch, rounds] of Object.entries(batches)) {
+      for (let round = 1; round <= rounds; round++) {
+        expect(existsSync(join(EVIDENCE, `review/${batch}-round-${round}-review.md`))).toBe(true);
+      }
     }
   });
 });
@@ -211,6 +214,6 @@ describe("knowledge base", () => {
     for (const id of placeholders) expect(questions, id).toContain(`\`${id}\``);
     const shipped = SLOT_IDS.length - placeholders.length;
     expect(readme).toContain(`${shipped} of ${SLOT_IDS.length} art slots shipped`);
-    expect(readme).toContain(`${placeholders.length} placeholders`);
+    expect(readme).toContain(`${placeholders.length} placeholder`);
   });
 });

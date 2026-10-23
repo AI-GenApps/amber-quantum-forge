@@ -32,7 +32,7 @@ browser QA from [`../qa-checklist.md`](../qa-checklist.md).
 |---|---|---|
 | JS bundle (gzip, sum of 6 chunks) | 78,848 bytes (77.0 KB) | 307,200 bytes (300 KB) |
 | JS raw | 232,087 bytes | n/a |
-| Art (shipped WebP) | 2,832 bytes (1 file, `lantern-amber`) | 8 MB |
+| Art (shipped WebP) | 162,934 bytes (12 files; task 06 update pass, was 2,832 bytes with `lantern-amber` only) | 8 MB |
 | Audio (18 MP3 files, largest 314,222 bytes) | 394,979 bytes (385.7 KB) | 1.5 MB |
 | Fraunces woff2 | 109,868 bytes | 122,880 bytes |
 | Nunito woff2 | 32,776 bytes | 122,880 bytes |

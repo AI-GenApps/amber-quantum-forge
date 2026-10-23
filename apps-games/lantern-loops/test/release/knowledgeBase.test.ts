@@ -158,7 +158,7 @@ describe("README quick facts match the code constants", () => {
     const shipped = rows.filter((r) => r.status === "shipped").length;
     expect(fact("Art")).toContain(`${SLOT_IDS.length} slots`);
     expect(fact("Art")).toContain(`${shipped} of ${SLOT_IDS.length} art slots shipped`);
-    expect(fact("Art")).toContain(`${SLOT_IDS.length - shipped} placeholders`);
+    expect(fact("Art")).toContain(`${SLOT_IDS.length - shipped} placeholder`);
   });
 
   it("budgets", () => {

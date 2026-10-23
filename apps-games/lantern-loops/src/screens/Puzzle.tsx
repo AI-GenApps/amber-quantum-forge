@@ -8,6 +8,7 @@ import { computeMarks } from "../board/marks";
 import { PlayBoard } from "../board/PlayBoard";
 import { playWinSequence, winTimeline } from "../board/winSequence";
 import { Backdrop } from "../components/Backdrop";
+import { ColourLegend } from "../components/ColourLegend";
 import {
   CornerIcon,
   EmberIcon,
@@ -262,6 +263,7 @@ function PuzzlePlay({ source, session, onReplay }: PlayProps) {
       {tutorial ? (
         <TutorialBanner step={stateForPuzzle(source.key).step} onSkip={skipTutorial} />
       ) : null}
+      <ColourLegend puzzle={source.puzzle} />
       <div class="ll-board-area" ref={boardRef}>
         <PlayBoard
           session={session}
