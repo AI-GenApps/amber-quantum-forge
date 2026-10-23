@@ -1,6 +1,6 @@
 # Epic 21 — Cloud Observatory (web, full v1)
 
-Status: in progress (tasks 00 to 06 done, 07 and 08 pending)
+Status: in progress (tasks 00 to 07 done, 08 pending)
 
 ## Purpose
 
@@ -91,7 +91,7 @@ checklist.
 | 04 | [All screens, navigation, design tokens, fonts, accessibility](04-screens-and-ui.md) | agent | [x] |
 | 05 | [CC0 audio, haptics, motion polish, onboarding and how-to-play](05-audio-haptics-onboarding.md) | agent | [x] |
 | 06 | [Integrate reviewed art from the designer inbox](06-art-integration.md) | agent | [x] |
-| 07 | [Capacitor Android/iOS projects, icons and splash](07-capacitor-packaging.md) | agent | [ ] |
+| 07 | [Capacitor Android/iOS projects, icons and splash](07-capacitor-packaging.md) | agent | [x] |
 | 08 | [Release readiness, budgets, knowledge base, owner QA checklist](08-release-readiness.md) | agent | [ ] |
 
 ## Verification gate (every code task)

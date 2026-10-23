@@ -277,3 +277,26 @@ critical slots preloaded with the kit `preloadImages` behind the title screen, e
 `loading="lazy"`. (4) `icon` stays a placeholder; task 07 makes a code-drawn icon from `sharp` unless
 the owner orders another designer round. No economy number, content or rule changed. *Rationale: the
 task's own rule that rejected or missing slots keep placeholders, plus no visual judgement by agents.*
+
+### 2026-10-24 — Capacitor projects, icons and splash (task 07)
+
+`android/` and `ios/` were generated with `bunx cap add android` and `bunx cap add ios` (Capacitor
+8.5.3, iOS through Swift Package Manager, so nothing needed CocoaPods or Xcode), then branded:
+application id and namespace and bundle id `app.w3dev.cloudobservatory`, name Cloud Observatory,
+version 1.0.0 (Android `versionCode` 1, iOS build 1), Android debug id suffix `.debug`. SDK values are
+the template defaults and were not changed: Android minSdk 24, compileSdk and targetSdk 36 (Gradle
+8.14.3, AGP 8.13.0, Java 21); iOS deployment target 15.0. Decisions: (1) **Portrait only**: Android
+`screenOrientation="portrait"` on the main activity; iOS iPhone and iPad lists reduced to Portrait,
+with `UIRequiresFullScreen` so the iPad build is valid with one orientation. (2) **`INTERNET`
+removed** from the manifest (the game never touches the network and the bridge serves the bundle
+in-process); the manifest now declares no permissions. Unverified on a device, with the one-line
+restore recorded in the evidence README and `store-listing.md`. (3) **Icon is a code-drawn stopgap**
+because the designer `icon` was rejected; the foreground is the star mark alone (not the opaque icon
+square, which would show a box in the adaptive mask) and the background is the blurred, enlarged icon.
+The splash uses the accepted key art, feathered into a flat ink field (`#101A33`, dark `#0B1226`).
+(4) The android `.gitignore` now ignores `*.jks`, `*.keystore`, `keystore.properties` and
+`google-services.json` (the template left keystores commented out), the iOS one ignores `*.p12`,
+`*.mobileprovision` and `GoogleService-Info.plist`; the root `.gitignore` is untouched. (5) Stale
+template defaults (grid launcher vectors, three default iOS splash files) were deleted after
+`capacitor-assets` ran. No economy number, content or rule changed. *Rationale: the task's own
+rules, with the smallest permission surface for the store form.*

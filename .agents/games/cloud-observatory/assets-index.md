@@ -64,7 +64,7 @@ Until a slot is accepted the app draws a tasteful code-drawn placeholder (SVG/CS
 
 | Batch | Slot | Shape | Alpha | Display (CSS px) | App file (2x) | Used by | Status |
 |---|---|---|---|---|---|---|---|
-| B1 | icon | square | opaque | n/a (store/launcher) | not bundled; master 1024 | Capacitor icon, favicon | placeholder |
+| B1 | icon | square | opaque | n/a (store/launcher) | not bundled; code-drawn stopgap `resources/icon-only.png` 1024 (task 07) | Capacitor icon, favicon | placeholder |
 | B1 | key-art | portrait 2:3, title-safe band | opaque | 360×540 | 720×1080 | Title screen | accepted |
 | B1 | observatory-building | square | transparent | 320×320 | 640×640 | Observe tab foreground | accepted |
 | B1 | emblem-lyre | square, round emblem framing | transparent | 144×144 | 288×288 | Atlas card, journal | accepted |
@@ -212,6 +212,24 @@ Filled by task 06. Verdicts quote the reviewer (strict loop, 4 rounds on batch b
 The same designer model produced all three (built-in image generator, exact version not exposed); the
 prompts, notes and source paths are in `art/accepted-manifest.json`. `icon` was never accepted, so it has
 no master and no row here.
+
+## Launcher icon and splash (task 07)
+
+Sources are in `apps-games/cloud-observatory/resources/`, all written by
+`apps-games/cloud-observatory/scripts/build-icons.mjs` (sharp, deterministic). Native outputs come
+from `bunx capacitor-assets generate --android --ios --assetPath resources` and are committed under
+`android/app/src/main/res` and `ios/App/App/Assets.xcassets`.
+
+| File | Provenance |
+|---|---|
+| `icon-only.png` (1024, opaque) | Code-drawn stopgap: gold-foil four-point star on a `#22335C` to `#101A33` field with two thin rings, art-bible palette. Used because `icon` was rejected (open-questions 15). Not a designer image |
+| `icon-foreground.png` (1024, transparent) | The same star mark alone at 66% for the adaptive-icon safe zone |
+| `icon-background.png` (1024, opaque) | `icon-only.png` enlarged 1.6x and blurred, so no hard shape shows |
+| `splash.png` (2732, opaque) | `#101A33` field with the accepted `key-art` master (read from `art/masters/key-art.webp`) at 40% of the width, edges feathered |
+| `splash-dark.png` (2732, opaque) | The same on `#0B1226` |
+
+Replacing the stopgap with a painted icon: add the accepted master, point `build-icons.mjs` at it,
+re-run both commands, update this section and open-questions row 15.
 
 ## Where things live
 

@@ -1,0 +1,18 @@
+App/build
+App/Pods
+App/output
+App/App/public
+DerivedData
+xcuserdata
+
+# Cordova plugins for Capacitor
+capacitor-cordova-ios-plugins
+
+# Generated Config files
+App/App/capacitor.config.json
+App/App/config.xml
+
+# Cloud Observatory: never commit signing or Firebase files
+*.p12
+*.mobileprovision
+GoogleService-Info.plist

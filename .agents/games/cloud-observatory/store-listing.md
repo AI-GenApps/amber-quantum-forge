@@ -101,7 +101,7 @@ First release of Cloud Observatory.
 | Data deletion request | Not applicable; progress lives on the device and is removed on uninstall or via Settings > Reset progress |
 | Third-party SDKs that collect data | None (Capacitor core plugins only: App, Haptics, Preferences, Screen Orientation, Share, Status Bar) |
 | Advertising ID | Not used |
-| Permissions requested | None that the game uses: no location, camera, microphone or storage. The Capacitor Android template declares `INTERNET` although the game makes no network calls; task 07 decides whether to remove it and records the outcome here |
+| Permissions requested | None. The Capacitor Android template declared `INTERNET`; task 07 removed it because the game makes no network calls and the bridge serves the bundled build in-process (nothing in Capacitor Android, the six plugins or the template requires it). Not proven on a device: if the app opens blank, restore the line (see evidence `07/README.md`). iOS declares no usage-description keys |
 | Share feature | Opens the system share sheet only when the player taps Share; the game sends no data itself |
 | App Store privacy label | "Data Not Collected" |
 
@@ -112,7 +112,7 @@ Evidence for these claims is a grep audit recorded in task 08 (no `fetch`, `XMLH
 
 | Asset | Source |
 |---|---|
-| App icon 512 / 1024 | art slot `icon` |
+| App icon 512 / 1024 | art slot `icon` was rejected; today the code-drawn stopgap `apps-games/cloud-observatory/resources/icon-only.png` (1024, opaque) from `scripts/build-icons.mjs`. A painted icon needs another designer round (open-questions row 15) |
 | Feature graphic 1024×500 | art slot `feature-graphic` (3:2 master, no text; cropped at submission) |
 | Screenshots | Captured by the owner during browser/device QA, never by agents |
 | Promo text overlays | Added at submission, not baked into art |
