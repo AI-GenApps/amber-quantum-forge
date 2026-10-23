@@ -262,3 +262,18 @@ changed in this task.
   Journal) with a code-drawn SVG diagram each; reachable from Title, the shell menu and Settings.
 - **No economy number changed.**
 
+
+### 2026-10-24 — Art integration (task 06): 3 of 33 slots accepted, 30 stay placeholders
+The designer loop ended `style_anchor_failed`. Accepted: `key-art` (b1 round 2), `observatory-building`
+(b1 round 2), `emblem-lyre` (b1 round 4). Rejected: `icon` (final verdict in `assets-index.md`). Never
+requested: the other 29 slots. Decisions: (1) `scripts/build-art.mjs` is the only way art enters the
+repo and refuses to write anything if any accepted image fails its checks (aspect class, alpha and
+transparent corners on transparent slots, source at least the 2x target); it resizes and encodes only.
+(2) Bundled files are WebP q82 (alpha q90) at 2x the display size; masters are WebP q90 in the
+evidence folder; `src/ui/art-entries.ts` is generated from the same run, and `ArtEntry` gained a
+`background` (mean colour of opaque images) used while the image decodes. (3) The `<img>` is sized to
+the slot's display size (the file is 2x), `key-art`, `sky-far` and `observatory-building` are the
+critical slots preloaded with the kit `preloadImages` behind the title screen, everything else is
+`loading="lazy"`. (4) `icon` stays a placeholder; task 07 makes a code-drawn icon from `sharp` unless
+the owner orders another designer round. No economy number, content or rule changed. *Rationale: the
+task's own rule that rejected or missing slots keep placeholders, plus no visual judgement by agents.*

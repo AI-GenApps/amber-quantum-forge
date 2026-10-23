@@ -62,41 +62,41 @@ The designer thread delivers masters; the app uses WebP at 2x the display size. 
 as WebP q90 under `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/`.
 Until a slot is accepted the app draws a tasteful code-drawn placeholder (SVG/CSS in the palette).
 
-| Batch | Slot | Shape | Alpha | Display (CSS px) | App file (2x) | Used by |
-|---|---|---|---|---|---|---|
-| B1 | icon | square | opaque | n/a (store/launcher) | not bundled; master 1024 | Capacitor icon, favicon |
-| B1 | key-art | portrait 2:3, title-safe band | opaque | 360×540 | 720×1080 | Title screen |
-| B1 | observatory-building | square | transparent | 320×320 | 640×640 | Observe tab foreground |
-| B1 | emblem-lyre | square, round emblem framing | transparent | 144×144 | 288×288 | Atlas card, journal |
-| B2 | sky-far | portrait 2:3 | opaque | full-bleed (cover) | 780×1170 | Observe/Chart background |
-| B2 | nebula-mid | portrait 2:3 | transparent | full-bleed (cover) | 780×1170 | Parallax layer |
-| B2 | horizon-hills | portrait 2:3, bottom third only | transparent | bottom-anchored | 780×1170 | Observe foreground |
-| B2 | emblem-whale | square | transparent | 144×144 | 288×288 | Atlas card |
-| B2 | emblem-archer | square | transparent | 144×144 | 288×288 | Atlas card |
-| B2 | emblem-crown | square | transparent | 144×144 | 288×288 | Atlas card |
-| B2 | emblem-serpent | square | transparent | 144×144 | 288×288 | Atlas card |
-| B2 | emblem-lantern | square | transparent | 144×144 | 288×288 | Atlas card |
-| B2 | emblem-ship | square | transparent | 144×144 | 288×288 | Atlas card |
-| B2 | emblem-fox | square | transparent | 144×144 | 288×288 | Atlas card |
-| B2 | emblem-key | square | transparent | 144×144 | 288×288 | Atlas card |
-| B2 | emblem-harp | square | transparent | 144×144 | 288×288 | Atlas card |
-| B2 | emblem-tower | square | transparent | 144×144 | 288×288 | Atlas card |
-| B2 | emblem-owl | square | transparent | 144×144 | 288×288 | Atlas card |
-| B3 | instrument-telescope | square | transparent | 112×112 | 224×224 | Build row |
-| B3 | instrument-lens | square | transparent | 112×112 | 224×224 | Build row |
-| B3 | instrument-prism | square | transparent | 112×112 | 224×224 | Build row |
-| B3 | instrument-orrery | square | transparent | 112×112 | 224×224 | Build row |
-| B3 | instrument-star-map | square | transparent | 112×112 | 224×224 | Build row |
-| B3 | instrument-beacon | square | transparent | 112×112 | 224×224 | Build row |
-| B3 | instrument-archive | square | transparent | 112×112 | 224×224 | Build row |
-| B3 | instrument-aurora-coil | square | transparent | 112×112 | 224×224 | Build row |
-| B3 | lore-1 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 1 card, journal |
-| B3 | lore-2 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 2 |
-| B3 | lore-3 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 3 |
-| B3 | lore-4 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 4 |
-| B3 | lore-5 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 5 |
-| B3 | lore-6 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 6 |
-| B3 | feature-graphic | landscape 3:2, no text | opaque | n/a (store) | not bundled; master 1536×1024 | Store feature graphic |
+| Batch | Slot | Shape | Alpha | Display (CSS px) | App file (2x) | Used by | Status |
+|---|---|---|---|---|---|---|---|
+| B1 | icon | square | opaque | n/a (store/launcher) | not bundled; master 1024 | Capacitor icon, favicon | placeholder |
+| B1 | key-art | portrait 2:3, title-safe band | opaque | 360×540 | 720×1080 | Title screen | accepted |
+| B1 | observatory-building | square | transparent | 320×320 | 640×640 | Observe tab foreground | accepted |
+| B1 | emblem-lyre | square, round emblem framing | transparent | 144×144 | 288×288 | Atlas card, journal | accepted |
+| B2 | sky-far | portrait 2:3 | opaque | full-bleed (cover) | 780×1170 | Observe/Chart background | placeholder |
+| B2 | nebula-mid | portrait 2:3 | transparent | full-bleed (cover) | 780×1170 | Parallax layer | placeholder |
+| B2 | horizon-hills | portrait 2:3, bottom third only | transparent | bottom-anchored | 780×1170 | Observe foreground | placeholder |
+| B2 | emblem-whale | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
+| B2 | emblem-archer | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
+| B2 | emblem-crown | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
+| B2 | emblem-serpent | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
+| B2 | emblem-lantern | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
+| B2 | emblem-ship | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
+| B2 | emblem-fox | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
+| B2 | emblem-key | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
+| B2 | emblem-harp | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
+| B2 | emblem-tower | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
+| B2 | emblem-owl | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
+| B3 | instrument-telescope | square | transparent | 112×112 | 224×224 | Build row | placeholder |
+| B3 | instrument-lens | square | transparent | 112×112 | 224×224 | Build row | placeholder |
+| B3 | instrument-prism | square | transparent | 112×112 | 224×224 | Build row | placeholder |
+| B3 | instrument-orrery | square | transparent | 112×112 | 224×224 | Build row | placeholder |
+| B3 | instrument-star-map | square | transparent | 112×112 | 224×224 | Build row | placeholder |
+| B3 | instrument-beacon | square | transparent | 112×112 | 224×224 | Build row | placeholder |
+| B3 | instrument-archive | square | transparent | 112×112 | 224×224 | Build row | placeholder |
+| B3 | instrument-aurora-coil | square | transparent | 112×112 | 224×224 | Build row | placeholder |
+| B3 | lore-1 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 1 card, journal | placeholder |
+| B3 | lore-2 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 2 | placeholder |
+| B3 | lore-3 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 3 | placeholder |
+| B3 | lore-4 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 4 | placeholder |
+| B3 | lore-5 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 5 | placeholder |
+| B3 | lore-6 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 6 | placeholder |
+| B3 | feature-graphic | landscape 3:2, no text | opaque | n/a (store) | not bundled; master 1536×1024 | Store feature graphic | placeholder |
 
 Count: B1 4 + B2 14 + B3 15 = 33 slots (31 bundled, 2 store/launcher only). The 12 emblems share
 identical framing so the atlas grid is consistent. Vignette subjects are in `content-plan.md`
@@ -105,8 +105,51 @@ section 5. Every slot has a stable code-drawn fallback keyed by the same name.
 Art budget: bundled art at most 8 MB total (estimate under 2 MB), any single file at most 600 KB;
 enforced by a test using the kit's `checkAssetBudget`.
 
-Image status (update in task 06): all slots `pending` until the designer inbox delivers and the
-review accepts them. Rejected slots keep their placeholders.
+### Image status (task 06, 2026-10-24)
+
+The designer review loop ended with status `style_anchor_failed`: the style anchor batch (B1) delivered
+3 accepted images, and the batches that depend on an accepted anchor (B2 to B5) were never requested.
+Integrated: 3 of 33 slots (`key-art`, `observatory-building`, `emblem-lyre`). The other 30 keep their
+code-drawn placeholders (`placeholder` in the Status column above), each with its reason below. The app
+builds and runs with any subset of art, including none; `ArtImage` falls back to the placeholder when a
+slot is missing from the manifest or its file fails to load.
+
+Integration is done by `apps-games/cloud-observatory/scripts/build-art.mjs` (reads the inbox
+`accepted/manifest.json`, checks aspect class, alpha on transparent slots and source size against
+`scripts/art-slots.json`, refuses to write anything if one check fails, then writes the masters, the
+bundled files, `src/ui/art-entries.ts` and the build report). Run it with
+`bun apps-games/cloud-observatory/scripts/build-art.mjs <inbox>/accepted`. Images are only resized and
+encoded, never edited or upscaled; nothing was looked at by the agent for judgement.
+
+| Where | What | Bytes |
+|---|---|---|
+| `public/art/key-art.webp` | 720x1080, WebP q82 | 44,254 |
+| `public/art/observatory-building.webp` | 640x640 with alpha, WebP q82, alpha q90 | 50,002 |
+| `public/art/emblem-lyre.webp` | 288x288 with alpha, WebP q82, alpha q90 | 14,656 |
+| Total bundled art | 3 files (budget 8,000,000 total, 600,000 per file) | 108,912 |
+| Masters (evidence, WebP q90) | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/` | 128,542 + 212,198 + 170,328 |
+
+Loading: `key-art`, `sky-far` and `observatory-building` are the critical slots. The kit
+`preloadImages` warms them behind the title screen (only slots that are in the manifest; `sky-far`
+is a placeholder today). Every other image is `loading="lazy"`. Opaque images are painted on their mean
+colour while they decode (key-art `#1F2A40`), transparent sprites on nothing, and a failed file drops to
+the placeholder, so no box is ever blank. Emblems, instruments, lore vignettes and background layers
+are decorative (`alt=""`, `aria-hidden`); `key-art` and `observatory-building` carry a description.
+
+### Placeholder slots (30) and why
+
+| Slot(s) | Reason | Follow-up |
+|---|---|---|
+| `icon` | Rejected in round 4 (final round of batch b1). The teal/rose bloom still has blocky, polygonal, pixel-stepped edges (the named hard fix was not made); the star is still a clip-art vector eight-point star with its core overlapped by the telescope tube; the telescope lies pasted across the dome face instead of rising from the slit; the base is a bare free-standing stone pillar, not the keeper's-house terrace. Dome, foil and corners are good and it reads at 48 px, but the flaws are visible at 96 px. | Task 07 builds a code-drawn gold-star-on-navy icon with `sharp` (open question 7) or the owner orders another designer round |
+| `sky-far`, `nebula-mid`, `horizon-hills` | Not requested: style anchor failed (batch b2 brief written, never run) | New designer round once an icon-quality anchor exists |
+| `emblem-whale`, `emblem-archer`, `emblem-crown`, `emblem-serpent`, `emblem-lantern`, `emblem-ship`, `emblem-fox`, `emblem-key`, `emblem-harp`, `emblem-tower`, `emblem-owl` | Not requested: style anchor failed. `emblem-lyre` was accepted as the anchor for them, so they are the best next batch | Designer batch b2 with `emblem-lyre` as the reference |
+| `instrument-telescope`, `instrument-lens`, `instrument-prism`, `instrument-orrery`, `instrument-star-map`, `instrument-beacon`, `instrument-archive`, `instrument-aurora-coil` | Not requested: style anchor failed (batch b4 brief written, never run) | Designer batch b4 |
+| `lore-1` to `lore-6` | Not requested: style anchor failed (batch b5 brief written, never run) | Designer batch b5 |
+| `feature-graphic` | Not requested: style anchor failed (store feature graphic, not bundled) | Designer batch b5; needed for the store listing, not for the app |
+
+Reviewer verdict files and the art bible are copied under
+`.agents/resources/2026-10-23/web-games/cloud-observatory/art/` (`art-bible.md`, `review/b1-round-N.md`,
+the batch briefs, `accepted-manifest.json`, `build-report.json`).
 
 ## Audio (CC0 only)
 
@@ -157,9 +200,18 @@ explicit loop file.
 
 ### Art provenance (filled by task 06)
 
-| Slot | Designer batch / thread message | Review verdict | Master path | App path | Date |
+Filled by task 06. Verdicts quote the reviewer (strict loop, 4 rounds on batch b1); full text in the
+`review/` folder of the evidence directory.
+
+| Slot | Designer batch / round | Review verdict | Master path | App path | Date |
 |---|---|---|---|---|---|
-| (none yet) | | | | | |
+| `key-art` | b1, round 2 (third full-scene attempt; star dab composited by the designer) | ACCEPTED with notes, `art/review/b1-round-2.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/key-art.webp` | `public/art/key-art.webp` | 2026-10-24 |
+| `observatory-building` | b1, round 2 | ACCEPTED with notes, `art/review/b1-round-2.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/observatory-building.webp` | `public/art/observatory-building.webp` | 2026-10-24 |
+| `emblem-lyre` | b1, round 4 (final) | ACCEPTED, minor residual flaws not visible at 144 px, `art/review/b1-round-4.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/emblem-lyre.webp` | `public/art/emblem-lyre.webp` | 2026-10-24 |
+
+The same designer model produced all three (built-in image generator, exact version not exposed); the
+prompts, notes and source paths are in `art/accepted-manifest.json`. `icon` was never accepted, so it has
+no master and no row here.
 
 ## Where things live
 

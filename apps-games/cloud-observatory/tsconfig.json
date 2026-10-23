@@ -17,5 +17,12 @@
     "skipLibCheck": true,
     "noEmit": true
   },
-  "include": ["src", "test", "vite.config.ts", "vitest.config.ts", "capacitor.config.ts"]
+  "include": [
+    "src",
+    "test",
+    "scripts/art-lib.ts",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "capacitor.config.ts"
+  ]
 }

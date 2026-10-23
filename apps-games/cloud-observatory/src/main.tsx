@@ -15,6 +15,7 @@ import { createFeedback } from "./audio/feedback";
 import { createProfileStore } from "./save/profile-store";
 import { createClock } from "./session/clock";
 import { createGameSession, GAME_ID } from "./session/game-session";
+import { preloadCriticalArt } from "./ui/art-preload";
 import { registerAppFonts } from "./ui/fonts";
 import { injectAppStyles } from "./ui/styles";
 import { applyAppTheme, PALETTE } from "./ui/tokens";
@@ -49,6 +50,7 @@ async function boot(): Promise<void> {
 
   const root = document.getElementById("app");
   if (!root) return;
+  void preloadCriticalArt();
   render(
     <App
       session={session}

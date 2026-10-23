@@ -1,7 +1,7 @@
 ---
 epic: 21-web-cloud-observatory
 task: 06-art-integration
-status: todo
+status: in-progress
 commit_scope: cloud-observatory
 depends_on: [21-web-cloud-observatory/04-screens-and-ui]
 estimate: M
@@ -40,45 +40,45 @@ itself: it only integrates what the review loop accepted.
 
 ## Implementation Checklist
 
-- [ ] Read `accepted/manifest.json`; list accepted vs rejected vs missing against the 33 slots.
+- [x] Read `accepted/manifest.json`; list accepted vs rejected vs missing against the 33 slots.
       If the inbox has no accepted assets at all, finish the task with the tooling in place, the
       manifest empty, and the status recorded in `assets-index.md` (the task is then "done with
       all placeholders", not blocked).
-- [ ] Copy `art-bible.md` and every `review.md` into
+- [x] Copy `art-bible.md` and every `review.md` into
       `.agents/resources/2026-10-23/web-games/cloud-observatory/art/` as evidence.
-- [ ] `apps-games/cloud-observatory/scripts/build-art.mjs` (uses the existing `sharp` dev
+- [x] `apps-games/cloud-observatory/scripts/build-art.mjs` (uses the existing `sharp` dev
       dependency; run with `bun apps-games/cloud-observatory/scripts/build-art.mjs <inbox-accepted-dir>`):
       reads the slot table (a JSON file `art-slots.json` in the same folder with id, display size,
       transparent flag, bundled flag), writes masters (WebP q90) and bundled files (WebP at 2x),
       refuses to write a file that fails checks (wrong aspect class, missing alpha on a transparent
       slot, source smaller than the target), prints a summary table.
-- [ ] Write bundled files to `apps-games/cloud-observatory/public/art/<assetId>.webp` and update
+- [x] Write bundled files to `apps-games/cloud-observatory/public/art/<assetId>.webp` and update
       `src/ui/art-manifest.ts` with exactly the accepted bundled slots (width, height, alt text
       or decorative flag, dominant background colour for the loading state).
-- [ ] Preload strategy: critical slots (`key-art`, `sky-far`, `observatory-building`) preloaded
+- [x] Preload strategy: critical slots (`key-art`, `sky-far`, `observatory-building`) preloaded
       with the kit `preloadImages` behind the title screen; the rest lazy; the loading state shows
       the placeholder, never a blank box.
-- [ ] Alt texts: emblems and instruments get meaningful alt text only where they are the sole
+- [x] Alt texts: emblems and instruments get meaningful alt text only where they are the sole
       carrier of information; otherwise decorative (`alt=""`).
-- [ ] Update `assets-index.md`: the art provenance table (slot, designer batch and round, review
+- [x] Update `assets-index.md`: the art provenance table (slot, designer batch and round, review
       verdict and path, master path, app path, date), per-slot status (`accepted` / `placeholder`
       with reason), sizes, and the total bundled bytes.
-- [ ] Update `open-questions.md` with every placeholder slot and a recommended follow-up.
+- [x] Update `open-questions.md` with every placeholder slot and a recommended follow-up.
 
 Tests:
 
-- [ ] `art/manifest.test.ts`: every manifest entry has a file under `public/art/`, the WebP header
+- [x] `art/manifest.test.ts`: every manifest entry has a file under `public/art/`, the WebP header
       is valid (`RIFF....WEBP`), dimensions equal 2x display size (read with `sharp`), transparent
       slots have an alpha channel, opaque slots do not need one, slot names are within the 33.
-- [ ] `art/budget.test.ts`: kit `assertAssetBudget` with `totalBytes: 8_000_000` and
+- [x] `art/budget.test.ts`: kit `assertAssetBudget` with `totalBytes: 8_000_000` and
       `perFileBytes: 600_000` over `public/art/**`, plus the fonts and audio budgets from tasks 04
       and 05 still passing.
-- [ ] `art/masters.test.ts`: a master exists for every accepted slot (including `icon` and
+- [x] `art/masters.test.ts`: a master exists for every accepted slot (including `icon` and
       `feature-graphic`), as WebP; no master for a slot that is not in the manifest or accepted
       list; provenance table in `assets-index.md` has a row per accepted slot.
-- [ ] `art/placeholders.test.ts`: every slot not in the manifest renders its placeholder, every
+- [x] `art/placeholders.test.ts`: every slot not in the manifest renders its placeholder, every
       slot in the manifest renders an `<img>` with the right `src`, `width` and `height`.
-- [ ] Emblem framing check: the 12 emblem files have identical dimensions (same square size) and
+- [x] Emblem framing check: the 12 emblem files have identical dimensions (same square size) and
       alpha-bordered corners (corner pixels fully transparent), which proves the shared framing
       mechanically; visual identity remains the reviewer's call.
 

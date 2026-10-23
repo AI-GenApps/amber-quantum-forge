@@ -33,7 +33,7 @@ change is updated here in the same commit. Evidence lives under
 | Pacing targets | First constellation under 3 min; first Eclipse between 2.5 and 4 h active play; no gap over 6 min between purchases |
 | Numbers | Doubles only, formatter to 1e300 |
 | Fonts | Cormorant Garamond (display) + Manrope (body), OFL, bundled woff2 |
-| Art | 33 image slots from the MobileGamesDesigner thread; code-drawn placeholders until accepted; art budget 8 MB |
+| Art | 33 image slots from the MobileGamesDesigner thread; 3 accepted and bundled (`key-art`, `observatory-building`, `emblem-lyre`), 30 code-drawn placeholders (see assets-index.md); art budget 8 MB |
 | Audio | CC0 only (Kenney packs or pages stating CC0); source and licence recorded per file |
 | Budgets | JS bundle at most 300 KB gzip excluding art; woff2 total at most 400 KB; audio at most 2.5 MB |
 | Monetization | None in v1 (no ads, no IAP, no accounts, no network). Economy leaves room for IAP later |

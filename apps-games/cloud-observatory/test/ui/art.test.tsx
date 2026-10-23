@@ -45,15 +45,17 @@ describe("art slots", () => {
     expect([...ART_SLOTS].sort()).toEqual(documented);
   });
 
-  it("ships an empty manifest until the art task fills it", () => {
-    expect(Object.keys(ART_MANIFEST)).toHaveLength(0);
+  it("ships a manifest that only names real slots", () => {
+    for (const slot of Object.keys(ART_MANIFEST)) {
+      expect(ART_SLOTS as readonly string[]).toContain(slot);
+    }
   });
 });
 
 describe("placeholders", () => {
   for (const slot of ART_SLOTS) {
     it(`${slot} draws a code placeholder when the manifest is empty`, async () => {
-      const box = await draw(slot);
+      const box = await draw(slot, {});
       const art = box.querySelector(`[data-art-slot='${slot}']`);
       expect(art?.getAttribute("data-art")).toBe("placeholder");
       expect(art?.tagName.toLowerCase()).toBe("svg");
@@ -72,8 +74,13 @@ describe("placeholders", () => {
 
 describe("manifest images", () => {
   const manifest: ArtManifest = {
-    "key-art": { src: "/art/key-art.webp", width: 360, height: 540 },
-    "emblem-lyre": { src: "/art/emblem-lyre.webp", width: 144, height: 144 },
+    "key-art": { src: "/art/key-art.webp", width: 720, height: 1080, background: "#1F2A40" },
+    "emblem-lyre": {
+      src: "/art/emblem-lyre.webp",
+      width: 288,
+      height: 288,
+      background: "transparent",
+    },
   };
 
   it("uses an img with size, async decoding and alt when the slot is in the manifest", async () => {

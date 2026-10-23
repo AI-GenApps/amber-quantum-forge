@@ -1,5 +1,5 @@
 import { useState } from "preact/hooks";
-import { ART_MANIFEST, type ArtManifest } from "./art-manifest";
+import { ART_MANIFEST, type ArtManifest, CRITICAL_SLOTS } from "./art-manifest";
 import { type ArtSlot, slotSpec } from "./art-slots";
 import { cx } from "./cx";
 import { placeholderFor } from "./placeholders";
@@ -16,6 +16,8 @@ export interface ArtImageProps {
 /**
  * One named art slot. Draws the accepted image from the manifest when there is one, and a
  * code-drawn placeholder otherwise (or when the file fails to load), so nothing ever looks broken.
+ * The image is sized to the slot's display size (the file is 2x) and painted on its mean colour
+ * while it decodes, so a slow disk never shows a blank box.
  */
 export function ArtImage({ slot, class: className, manifest = ART_MANIFEST, alt }: ArtImageProps) {
   const [failed, setFailed] = useState<string | null>(null);
@@ -30,9 +32,13 @@ export function ArtImage({ slot, class: className, manifest = ART_MANIFEST, alt 
       <img
         class={classes}
         src={entry.src}
-        width={entry.width}
-        height={entry.height}
+        width={spec.width}
+        height={spec.height}
         decoding="async"
+        loading={CRITICAL_SLOTS.includes(slot) ? "eager" : "lazy"}
+        style={
+          entry.background === "transparent" ? undefined : { backgroundColor: entry.background }
+        }
         alt={decorative ? "" : description}
         aria-hidden={decorative ? "true" : undefined}
         data-art-slot={slot}

@@ -1,0 +1,47 @@
+[
+  {
+    "id": "emblem-lyre",
+    "batch": "B1",
+    "transparent": true,
+    "sourceSha256": "b59644da42fad0c6064af10245d35ab2afeb8e65b3bd7a212e7c1c2c7e6a156b",
+    "sourceBytes": 1428009,
+    "source": "1024x1024",
+    "masterBytes": 128542,
+    "bundled": {
+      "file": "public/art/emblem-lyre.webp",
+      "size": "288x288",
+      "bytes": 14656,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "key-art",
+    "batch": "B1",
+    "transparent": false,
+    "sourceSha256": "0098891b8bf60d9b865f59ba14b10cade5ff2c75d92fec87605f18c0d3b069ff",
+    "sourceBytes": 2823940,
+    "source": "1024x1536",
+    "masterBytes": 212198,
+    "bundled": {
+      "file": "public/art/key-art.webp",
+      "size": "720x1080",
+      "bytes": 44254,
+      "background": "#1F2A40"
+    }
+  },
+  {
+    "id": "observatory-building",
+    "batch": "B1",
+    "transparent": true,
+    "sourceSha256": "ed2f6ed670ef3d1f1da425e038731b34786d2bf7279a39a357385bb110375044",
+    "sourceBytes": 1470798,
+    "source": "1024x1024",
+    "masterBytes": 170328,
+    "bundled": {
+      "file": "public/art/observatory-building.webp",
+      "size": "640x640",
+      "bytes": 50002,
+      "background": "transparent"
+    }
+  }
+]
