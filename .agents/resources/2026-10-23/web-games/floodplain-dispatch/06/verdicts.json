@@ -1,0 +1,187 @@
+{
+  "inbox": "/Users/ashutosh/Dev/W3DevMobile/aqf-art-inbox/floodplain-dispatch",
+  "source": "Orchestrator-reviewed designer loop; each verdict is the heading or bullet recorded in the review notes copied under art/review/",
+  "threadMessageIds": "not recorded: the designer inbox manifest lists batch and round only",
+  "slots": [
+    {
+      "slot": "house-cottage",
+      "verdict": "accepted",
+      "batch": "b1",
+      "round": 1,
+      "review": "b1/round-1/review/review.md",
+      "evidence": "art/review/b1-round-1.md",
+      "match": "## house-cottage: ACCEPTED"
+    },
+    {
+      "slot": "pump",
+      "verdict": "accepted",
+      "batch": "b1",
+      "round": 2,
+      "review": "b1/round-2/review/review.md",
+      "evidence": "art/review/b1-round-2.md",
+      "match": "## pump: ACCEPTED"
+    },
+    {
+      "slot": "icon",
+      "verdict": "accepted",
+      "batch": "b1",
+      "round": 4,
+      "review": "b1/round-4/review/review.md",
+      "evidence": "art/review/b1-round-4.md",
+      "match": "## icon - ACCEPTED"
+    },
+    {
+      "slot": "house-townhouse",
+      "verdict": "accepted",
+      "batch": "b2",
+      "round": 1,
+      "review": "b2/round-1/review/review.md",
+      "evidence": "art/review/b2-round-1.md",
+      "match": "- house-townhouse: ACCEPT"
+    },
+    {
+      "slot": "house-mill",
+      "verdict": "accepted",
+      "batch": "b2",
+      "round": 1,
+      "review": "b2/round-1/review/review.md",
+      "evidence": "art/review/b2-round-1.md",
+      "match": "- house-mill: ACCEPT"
+    },
+    {
+      "slot": "house-barn",
+      "verdict": "accepted",
+      "batch": "b2",
+      "round": 1,
+      "review": "b2/round-1/review/review.md",
+      "evidence": "art/review/b2-round-1.md",
+      "match": "- house-barn: ACCEPT"
+    },
+    {
+      "slot": "house-school",
+      "verdict": "accepted",
+      "batch": "b2",
+      "round": 1,
+      "review": "b2/round-1/review/review.md",
+      "evidence": "art/review/b2-round-1.md",
+      "match": "- house-school: ACCEPT"
+    },
+    {
+      "slot": "reservoir",
+      "verdict": "accepted",
+      "batch": "b2",
+      "round": 1,
+      "review": "b2/round-1/review/review.md",
+      "evidence": "art/review/b2-round-1.md",
+      "match": "- reservoir: ACCEPT"
+    },
+    {
+      "slot": "sluice-gate",
+      "verdict": "accepted",
+      "batch": "b2",
+      "round": 1,
+      "review": "b2/round-1/review/review.md",
+      "evidence": "art/review/b2-round-1.md",
+      "match": "- sluice-gate: ACCEPT"
+    },
+    {
+      "slot": "sandbag-barrier",
+      "verdict": "accepted",
+      "batch": "b2",
+      "round": 1,
+      "review": "b2/round-1/review/review.md",
+      "evidence": "art/review/b2-round-1.md",
+      "match": "- sandbag-barrier: ACCEPT"
+    },
+    {
+      "slot": "windmill",
+      "verdict": "accepted",
+      "batch": "b2",
+      "round": 1,
+      "review": "b2/round-1/review/review.md",
+      "evidence": "art/review/b2-round-1.md",
+      "match": "- windmill: ACCEPT"
+    },
+    {
+      "slot": "tree-oak",
+      "verdict": "accepted",
+      "batch": "b2",
+      "round": 1,
+      "review": "b2/round-1/review/review.md",
+      "evidence": "art/review/b2-round-1.md",
+      "match": "- tree-oak: ACCEPT"
+    },
+    {
+      "slot": "tree-poplar",
+      "verdict": "accepted",
+      "batch": "b2",
+      "round": 1,
+      "review": "b2/round-1/review/review.md",
+      "evidence": "art/review/b2-round-1.md",
+      "match": "- tree-poplar: ACCEPT"
+    },
+    {
+      "slot": "tree-willow",
+      "verdict": "accepted",
+      "batch": "b2",
+      "round": 1,
+      "review": "b2/round-1/review/review.md",
+      "evidence": "art/review/b2-round-1.md",
+      "match": "- tree-willow: ACCEPT"
+    },
+    {
+      "slot": "backdrop-valley",
+      "verdict": "accepted",
+      "batch": "b3",
+      "round": 2,
+      "review": "b3/round-2/review/review.md",
+      "evidence": "art/review/b3-round-2.md",
+      "match": "## backdrop-valley - ACCEPTED"
+    },
+    {
+      "slot": "backdrop-highland",
+      "verdict": "accepted",
+      "batch": "b3",
+      "round": 2,
+      "review": "b3/round-2/review/review.md",
+      "evidence": "art/review/b3-round-2.md",
+      "match": "## backdrop-highland - ACCEPTED"
+    },
+    {
+      "slot": "feature-graphic",
+      "verdict": "accepted",
+      "batch": "b3",
+      "round": 2,
+      "review": "b3/round-2/review/review.md",
+      "evidence": "art/review/b3-round-2.md",
+      "match": "## feature-graphic - ACCEPTED"
+    },
+    {
+      "slot": "backdrop-delta",
+      "verdict": "accepted",
+      "batch": "b3",
+      "round": 3,
+      "review": "b3/round-3/review/review.md",
+      "evidence": "art/review/b3-round-3.md",
+      "match": "## backdrop-delta: ACCEPTED"
+    },
+    {
+      "slot": "backdrop-estuary",
+      "verdict": "accepted",
+      "batch": "b3",
+      "round": 3,
+      "review": "b3/round-3/review/review.md",
+      "evidence": "art/review/b3-round-3.md",
+      "match": "## backdrop-estuary: ACCEPTED"
+    },
+    {
+      "slot": "key-art",
+      "verdict": "rejected",
+      "batch": "retry",
+      "round": 3,
+      "review": "retry/round-3/review/review.md",
+      "evidence": "art/review/retry-round-3.md",
+      "match": "## key-art: REJECTED (final round, stays rejected)"
+    }
+  ]
+}

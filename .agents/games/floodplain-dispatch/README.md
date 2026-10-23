@@ -1,8 +1,49 @@
 # Floodplain Dispatch
 
-Compact strategy puzzles: place pumps, canals and barriers to supply a riverside town with water before the flood season, without drowning anyone.
+Compact strategy puzzles: place pumps, canals and barriers to supply a riverside town with water
+before the flood season, without drowning anyone.
 
-- Status: skeleton only (epic 20). The game is built as a full v1 web game with the shared kit.
-- Epic: [`tasks/epics/20-web-floodplain-dispatch`](../../../tasks/epics/20-web-floodplain-dispatch/STATUS.md) (created by this game's own task 00).
-- Code: `apps-games/floodplain-dispatch` (`@web-games/floodplain-dispatch`) and `apps-games/floodplain-dispatch-core` (`@web-games/floodplain-dispatch-core`).
-- Shared kit: [`.agents/games/web-games-kit/`](../web-games-kit/README.md).
+- Status: v1 complete, pending owner QA (epic 20 tasks 00 to 08 done). Built as a full v1 web game with the shared kit; the owner browser checklist is `.agents/resources/2026-10-23/web-games/floodplain-dispatch/qa-checklist.md`.
+- Epic: [`tasks/epics/20-web-floodplain-dispatch`](../../../tasks/epics/20-web-floodplain-dispatch/STATUS.md)
+- Code: `apps-games/floodplain-dispatch` (`@web-games/floodplain-dispatch`) and
+  `apps-games/floodplain-dispatch-core` (`@web-games/floodplain-dispatch-core`).
+- Shared kit: [`.agents/games/web-games-kit/`](../web-games-kit/README.md)
+
+## Quick facts
+
+| Fact | Value |
+|---|---|
+| Slug / epic | `floodplain-dispatch` / 20 |
+| Working title (public name in v1) | Floodplain Dispatch |
+| App id | `app.w3dev.floodplaindispatch` |
+| Platforms | Android and iOS (Capacitor 8), plus browser; portrait only |
+| Stack | TypeScript, Preact, Vite, Vitest, DOM/SVG/Canvas 2D, Capacitor 8 |
+| Genre | Top-down water-routing puzzle with a deterministic simulation |
+| Campaign | 4 regions x 10 maps = 40 maps, 120 stars |
+| Map size | 8 x 12 up to 12 x 16; 20 to 30 weeks (4 steps each) |
+| Pieces | canal 1, barrier 1, sluice gate 2, pump 3, reservoir 4 |
+| Houses / fields in campaign | 193 / 133 |
+| Mechanics by region | Valley surges, Delta sluice timing, Highland reservoirs and droughts, Estuary tides |
+| Stars | 1 supply, 2 zero flooded houses, 3 spend within par |
+| Region unlocks | Delta 12, Highland 33, Estuary 60 stars |
+| Daily | generated per local date, weekday difficulty ladder, streak, 3-star solution proven |
+| Currency | coins (1250 from the campaign), spent on hints (25 / 40) and streak freezes (30) |
+| Themes | 7 cosmetic map themes unlocked by stars (0 to 120) |
+| Fonts | Bricolage Grotesque (display), Atkinson Hyperlegible (body), OFL |
+| Audio | CC0 only: 25 sounds and 2 music loops, 962,201 bytes, Kenney packs plus three CC0 OpenGameArt pages (`assets-index.md`) |
+| Art | 20 designer slots (B1 4, B2 11, B3 5): 19 accepted (17 runtime WebP, 153,586 bytes; icon and feature graphic as masters), key-art rejected and code-drawn; terrain and water are code-drawn |
+| Budgets | JS bundle <= 300 KB gzip excluding art (shipped 78.6 KB); art <= 8 MB (shipped 153,586 bytes, largest file <= 400 KB); fonts <= 300 KB (shipped 73,364 bytes); audio <= 2 MB (shipped 962,201 bytes). Enforced by `test/budgets.test.ts` |
+| Monetization | none in v1 |
+| Data collected | none |
+
+## Files in this knowledge base
+
+| File | Contents |
+|---|---|
+| `product.md` | Precise loop, simulation rules, screens, controls, onboarding, accessibility |
+| `economy.md` | Currencies, sources, sinks, numbers |
+| `content-plan.md` | All 40 maps, pieces, scenery, themes, mechanic cards, chapter texts |
+| `store-listing.md` | Draft store answers, data safety |
+| `assets-index.md` | Art slots, fonts, audio plan, where things live |
+| `decisions-log.md` | Dated decisions and rationale |
+| `open-questions.md` | Open items |

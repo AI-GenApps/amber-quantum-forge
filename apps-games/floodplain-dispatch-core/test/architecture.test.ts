@@ -27,6 +27,13 @@ describe("core purity", () => {
     expect(files.length).toBeGreaterThan(0);
   });
 
+  it("src never imports the kit, Preact, Capacitor or Node modules", () => {
+    const offenders = files.filter((file) =>
+      /from "(?:@web-games|preact|@capacitor|node:)/.test(readFileSync(file, "utf8")),
+    );
+    expect(offenders).toEqual([]);
+  });
+
   for (const token of FORBIDDEN_TOKENS) {
     it(`src never references ${token}`, () => {
       const offenders = files.filter((file) => readFileSync(file, "utf8").includes(token));

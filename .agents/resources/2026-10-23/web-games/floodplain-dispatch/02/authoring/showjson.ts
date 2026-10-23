@@ -1,0 +1,12 @@
+import { readFileSync } from "node:fs";
+import { loadSpecs } from "./spec";
+import { show, evaluate, runSeason, type MapDef } from "./lib";
+const [id, which] = [process.argv[2] as string, Number(process.argv[3] ?? 0)];
+const lines = readFileSync(`${process.env.OUTDIR ?? "out"}/${id}.jsonl`, "utf8").trim().split("\n").map((l) => JSON.parse(l));
+const rec = lines[which];
+const spec = loadSpecs().find((s) => s.id === id)!;
+const def: MapDef = { layout: rec.layout, inlets: Array.from({ length: spec.inlets }, () => spec.rate), houseKinds: rec.houseKinds, events: spec.events, tide: spec.tide, weeks: spec.weeks, pieces: spec.pieces, par: spec.par, budget: spec.budget };
+console.log(rec.layout.join("\n"));
+console.log(JSON.stringify(rec.ref));
+console.log(show(def, rec.ref, spec.weeks - 1));
+console.log(JSON.stringify(evaluate(def, runSeason(def, rec.ref), rec.ref)));
