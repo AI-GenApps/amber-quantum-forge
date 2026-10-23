@@ -10,7 +10,7 @@ task finds a new one. Kit follow-ups are listed separately because this game nev
 |---|---|---|---|---|
 | Q1 | Public name, trademark clearance and store listing name | Before any submission | Owner | Working title is the public name in v1 (owner decision) |
 | Q2 | Is there a CC0 calm music loop that fits? | Task 05 | Agent, then owner | If none, ship without music and log the decision |
-| Q3 | Is 9x9 daily generation fast enough on a low-end Android WebView? | Owner browser QA | Owner | Core budget is measured in Node (task 01); if the device feels slow, add chunked async generation or cap Sunday at 8x8 |
+| Q3 | Is 9x9 daily generation fast enough on a low-end Android WebView? | Owner browser QA | Owner | Core budget is measured in Node (task 01: a dense 9x9 uniqueness proof takes about 1 ms, `propagate` 0.3 ms; the sparsest random 9x9 boards tried needed up to 120,000 nodes, about 70 ms); if the device feels slow, add chunked async generation or cap Sunday at 8x8 |
 | Q4 | Does "path hidden by default" feel right for shared grids? | Owner QA | Owner | Setting exists either way |
 | Q5 | Do the weekday tiers feel right (Thu and Sat jump in mechanics)? | Owner QA | Owner | Tier table lives in one core constant so retuning is cheap, but it changes dailies (bump `ll-gen-1`) |
 | Q6 | Strip `android.permission.INTERNET` from the Capacitor manifest? | Task 07 note, store submission | Owner | The app makes no requests; the default Capacitor template declares it. Verify offline-only claims in the no-data audit |

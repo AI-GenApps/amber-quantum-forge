@@ -1,7 +1,7 @@
 ---
 epic: 19-web-lantern-loops
 task: 01-core-rules
-status: pending
+status: in-progress
 commit_scope: lantern-loops
 depends_on: []
 estimate: L
@@ -40,49 +40,49 @@ Read first: `.agents/games/lantern-loops/product.md` (exact rules), `content-pla
 
 ## Implementation Checklist
 
-- [ ] `src/tile.ts`: mask constants `N,E,S,W`; `TILE_MASKS`; `isStraight`, `isCorner`, `isLegalTile`;
+- [x] `src/tile.ts`: mask constants `N,E,S,W`; `TILE_MASKS`; `isStraight`, `isCorner`, `isLegalTile`;
       `openings(mask)`; `opposite(dir)`; `rotateCorner`; the tap cycles `STRAIGHT_CYCLE = [0,10,5]` and
       `CORNER_CYCLE = [0,3,6,12,9]`; `MIRROR_CORNERS = { "/": [9,6], "\\": [12,3] }`.
-- [ ] `src/puzzle.ts`: types `Colour = "amber"|"rose"|"jade"|"azure"|"violet"`, `Cell` (`kind: "open"|"stone"`,
+- [x] `src/puzzle.ts`: types `Colour = "amber"|"rose"|"jade"|"azure"|"violet"`, `Cell` (`kind: "open"|"stone"`,
       optional `clue` lantern/mirror/gate, optional `fixed` mask, `stone` number), `Puzzle { id, size, cells }`,
       `cellIndex`, `neighbours(size, i)`, `validatePuzzleShape(puzzle)` (size 4 to 9, 4 only for tutorials;
       anchors legal for their clue; no clue on stones; stone 0..4).
-- [ ] `src/code.ts`: `encodePuzzle` / `decodePuzzle` for a compact single-string format (one row per
+- [x] `src/code.ts`: `encodePuzzle` / `decodePuzzle` for a compact single-string format (one row per
       segment, one token per cell: `.` open, `L<colour letter>` lantern, `S<0-4>` stone, `M/` `M\` mirror,
       `G<colour letter>` gate, optional `=<hex digit of fixed mask>` suffix) plus `encodeTiles` /
       `decodeTiles` for boards and solutions (one hex digit per cell). Round-trip tested; malformed input
       returns a typed error result, never throws or loops.
-- [ ] `src/board.ts`: `Tiles = Uint8Array` (length size squared) helpers `emptyTiles(puzzle)` (fixed tiles
+- [x] `src/board.ts`: `Tiles = Uint8Array` (length size squared) helpers `emptyTiles(puzzle)` (fixed tiles
       pre-placed), `withTile(tiles, i, mask)` (returns a copy), `equalTiles`, `lockedMask(puzzle, hintCells)`.
-- [ ] `src/loops.ts`: `analyseLoops(puzzle, tiles)` returning closed loops (cell lists), open chains, each
+- [x] `src/loops.ts`: `analyseLoops(puzzle, tiles)` returning closed loops (cell lists), open chains, each
       loop's lanterns and derived colour (or `mixed`), and loose ends (cell + direction).
-- [ ] `src/rules.ts`: `evaluate(puzzle, tiles)` returns `{ solved, violations, incomplete }` where each
+- [x] `src/rules.ts`: `evaluate(puzzle, tiles)` returns `{ solved, violations, incomplete }` where each
       violation has `kind` (`loose-end`, `lantern-dark`, `dark-loop`, `stone-count`, `mirror-shape`,
       `gate-shape`, `colour-mix`, `gate-colour`, `fixed-changed`), the cells involved, and `severity`
       (`conflict` = cannot be repaired by adding tiles, `pending` = still fixable). `conflicts(puzzle,
       tiles)` returns only `conflict` items for the live feedback (stone exceeded or unreachable, dark
       closed loop, mixed colours, wrong mirror/gate shape, closed loop through a wrong-colour gate).
-- [ ] `src/solver.ts`: `solve(puzzle, { limit = 2, nodeBudget = 2_000_000, partial? })` returning
+- [x] `src/solver.ts` (search is smallest-domain-first with arc consistency per node, see decisions-log; a lantern reachability prune was built and measured, it cut no nodes and cost 10x time, so it is not included): `solve(puzzle, { limit = 2, nodeBudget = 2_000_000, partial? })` returning
       `{ solutions: Tiles[], count, exhausted, nodes }`; row-major search over the 7 states per cell
       with edge consistency against already assigned neighbours, stone count bounds, mirror/gate/fixed
       restrictions, union-find loop tracking (reject a closed loop with no lantern or two colours,
       reject a gate crossed by the wrong colour), lantern reachability pruning. `countSolutions`,
       `isUnique(puzzle)`, `solveOne`, and `propagate(puzzle, partial)` returning forced cell values and a
       `contradiction` flag; `exhausted` is true only when the node budget stopped the search.
-- [ ] `src/history.ts`: `createHistory(initial)` with `push`, `undo`, `redo`, `canUndo`, `canRedo`,
+- [x] `src/history.ts`: `createHistory(initial)` with `push`, `undo`, `redo`, `canUndo`, `canRedo`,
       `current`, step grouping for one drag (`beginGroup`/`endGroup`), cap of 2,000 steps (oldest dropped).
-- [ ] `src/edit.ts`: `Brush = "straight"|"corner"|"erase"`; `tapCell(puzzle, tiles, locked, i, brush)`
+- [x] `src/edit.ts`: `Brush = "straight"|"corner"|"erase"`; `tapCell(puzzle, tiles, locked, i, brush)`
       following the cycles and family conversion in `product.md`; `dragPath(puzzle, tiles, locked, cells)`
       (tile joins previous and next cell; first and last cell get a straight tile along the drag; skips stones,
       fixed and hint-locked cells; ignores non-adjacent jumps by splitting the path); `eraseCells`;
       `longPressErase`. All return a new `Tiles` and the list of changed cells (empty list = no-op, so no
       undo step is recorded).
-- [ ] `src/hint.ts`: `pickHint(puzzle, tiles, solution, locked)` implementing the rule in `product.md`
+- [x] `src/hint.ts`: `pickHint(puzzle, tiles, solution, locked)` implementing the rule in `product.md`
       (forced-by-propagation first, then row-major), returning `{ cell, mask } | null`; `applyHint`
       adds the cell to the locked set.
-- [ ] `src/index.ts`: re-export the public API; keep `version`.
-- [ ] Tests in `test/` (Vitest, no DOM): see Acceptance Criteria for the minimum coverage.
-- [ ] Update the knowledge base only if a rule detail changed while implementing (same commit).
+- [x] `src/index.ts`: re-export the public API; keep `version`.
+- [x] Tests in `test/` (Vitest, no DOM): see Acceptance Criteria for the minimum coverage.
+- [x] Update the knowledge base only if a rule detail changed while implementing (same commit).
 
 ## Files Touched
 
@@ -95,35 +95,35 @@ Read first: `.agents/games/lantern-loops/product.md` (exact rules), `content-pla
 
 ## Acceptance Criteria
 
-- [ ] `tile` tests: all six masks, rotation cycles, `opposite`, mirror corner sets; every illegal mask
+- [x] `tile` tests: all six masks, rotation cycles, `opposite`, mirror corner sets; every illegal mask
       (0 and the nine others from 1 to 15 not in the six) is rejected by `isLegalTile` except 0 as empty.
-- [ ] `rules` tests, at least 40 table-driven cases: a solved fixture per mechanic (lanterns only, stones,
+- [x] `rules` tests, at least 40 table-driven cases: a solved fixture per mechanic (lanterns only, stones,
       mirrors both slashes with both corners, gates with matching colour, two loops, adjacent loops,
       stone 0, edge stone) and a failing fixture per violation kind, including each of: loose end at the
       board edge, loose end facing a stone, lantern empty, loop with no lantern, stone count too high and
       too low, mirror straight tile, mirror wrong corner, gate on a corner, gate crossed by wrong colour,
       two colours on one loop, moved fixed tile, empty board (not solved, only pending violations).
-- [ ] `solver` tests: unique, multiple (count stops at the limit 2), unsolvable and trivially solved
+- [x] `solver` tests: unique, multiple (count stops at the limit 2), unsolvable and trivially solved
       fixtures; `nodeBudget` exhaustion reports `exhausted: true` and never a wrong `count`; solutions
       returned always satisfy `evaluate(...).solved`; `partial` boards respect existing tiles.
-- [ ] Brute-force cross-check: for at least 300 seeded random puzzles on 3x3 and 4x4 (lanterns, stones,
+- [x] Brute-force cross-check: for at least 300 seeded random puzzles on 3x3 and 4x4 (lanterns, stones,
       mirrors, gates, fixed tiles mixed), `solve` count (capped at 2) equals the independent enumerator's
       count, and the solution sets match when the count is 1.
-- [ ] Performance guards (generous thresholds so CI is stable): `isUnique` on a dense 9x9 fixture with
+- [x] Performance guards (generous thresholds so CI is stable): `isUnique` on a dense 9x9 fixture with
       all mechanics under 500 ms; on a 5x5 under 50 ms; `propagate` on a 9x9 under 100 ms. The measured
       times are printed once in the test output.
-- [ ] `edit` tests: tap cycles for both brushes from every start state; family conversion; drag draws
+- [x] `edit` tests: tap cycles for both brushes from every start state; family conversion; drag draws
       straight and L-shaped paths in all 8 direction combinations; drag overwrites own tiles but skips
       stones, fixed and hint-locked cells; a random edit fuzz of 2,000 operations on a seeded puzzle
       never places a tile on a stone, never changes a locked cell and only ever produces legal masks.
-- [ ] `history` tests: undo/redo order, drag grouped into one step, redo cleared after a new edit, cap of
+- [x] `history` tests: undo/redo order, drag grouped into one step, redo cleared after a new edit, cap of
       2,000 steps, no-op edits not recorded.
-- [ ] `hint` tests: never picks a cell that already matches, prefers forced cells, falls back to row-major,
+- [x] `hint` tests: never picks a cell that already matches, prefers forced cells, falls back to row-major,
       returns `null` when solved, locked cell then rejects edits.
-- [ ] `code` tests: round trip for 200 seeded random puzzles and boards; at least 20 malformed strings
+- [x] `code` tests: round trip for 200 seeded random puzzles and boards; at least 20 malformed strings
       (wrong row count, bad token, illegal anchor, stone with fixed tile, size 10) produce typed errors.
-- [ ] Core purity: `test/architecture.test.ts` still passes (no forbidden tokens in `src`).
-- [ ] All verification commands below pass; no file in `src` exceeds 800 lines; no `any`.
+- [x] Core purity: `test/architecture.test.ts` still passes (no forbidden tokens in `src`).
+- [x] All verification commands below pass; no file in `src` exceeds 800 lines; no `any`.
 
 ## Verification Commands
 

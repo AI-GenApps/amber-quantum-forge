@@ -61,3 +61,17 @@ decisions are mine to refine; change them only with a new dated row and a reason
 | 2026-10-23 | Timer hidden by default (setting to show); time is recorded for best times and stats | Calm tone; no pressure |
 | 2026-10-23 | Music is optional: if no CC0 loop fits, v1 ships without it | CC0 rule is stricter than the feature wish |
 | 2026-10-23 | Budgets: JS bundle <= 300 KB gzip (art, fonts and audio excluded), art <= 8 MB, audio <= 1.5 MB (effects <= 60 KB each), each woff2 <= 120 KB | Fast cold start on low-end Android WebView |
+
+## Core engine decisions (task 01, 2026-10-23)
+
+| Date | Decision | Rationale / notes |
+|---|---|---|
+| 2026-10-23 | Puzzle text code: rows joined by `\|`, one token per cell: `.` open, `L<c>` lantern, `G<c>` gate, `S<0-4>` stone, `M/` or `M\` mirror, optional `=<hex digit>` fixed tile; colour letters `a` amber, `r` rose, `j` jade, `b` azure, `v` violet. Boards and solutions are one hex digit per cell | Compact, human-checkable, typed errors instead of exceptions |
+| 2026-10-23 | `isLegalTile(0)` is true (a cell value); `isTileMask` is true only for the six tiles | The edit model stores 0 for empty |
+| 2026-10-23 | Violation severity `conflict` means adding tiles cannot repair it; `conflicts()` (live feedback) returns conflicts except loose ends, because loose ends are drawn as open ribbon ends. Open chains with two lantern colours, or a gate whose chain holds another colour, are conflicts too (a solved board has no chains, so they can never be repaired) | Earlier feedback than waiting for the loop to close |
+| 2026-10-23 | Two extra violation kinds beyond the task list: `invalid-tile` (a tile on a stone or an illegal mask value) | Defensive; the edit model never produces it |
+| 2026-10-23 | The solver keeps row-major semantics for the API but searches smallest-domain-first (ties in row-major order) with arc consistency and stone bounds at every node, and union-find loop tracking over forced edges | Pure row-major search thrashed on sparse 9x9 boards (millions of nodes); smallest-domain-first needs about 100 to 100,000 nodes. Dense 9x9 uniqueness proof: about 1 ms in Node |
+| 2026-10-23 | `exhausted` is true only when the node budget stopped the search; `count` is then a lower bound and `isUnique` is false | Never claim uniqueness without a finished search |
+| 2026-10-23 | Hint with a wrong tile on a cell whose solution is empty clears and locks that cell as empty | The rule says "among cells whose tile differs from the solution"; the UI shows the lock on an empty cell |
+| 2026-10-23 | Drag: stones break the path, a drag that backs up shortens it, a drag that returns to its start closes the ring, fixed and locked cells keep their tile | Predictable drawing on small cells |
+
