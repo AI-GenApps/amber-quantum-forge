@@ -1,6 +1,6 @@
 # Epic 24 - Lost Parcel Desk (full v1 web game)
 
-Status: planned (task 00 done: knowledge base and task files; tasks 01 to 08 pending)
+Status: in progress (task 00 done; task 01 done; tasks 02 to 08 pending)
 
 ## Purpose
 
@@ -74,7 +74,7 @@ Rules for every task:
 | ID | Task | Kind | Owner | Status |
 |---|---|---|---|---|
 | 00 | Knowledge base, design spec and epic task files (no task file; this epic folder) | docs | agent | [x] |
-| 01 | [Core rules engine (headless, in lost-parcel-desk-core)](01-core-rules.md) | code | agent | [ ] |
+| 01 | [Core rules engine (headless, in lost-parcel-desk-core)](01-core-rules.md) | code | agent | [x] |
 | 02 | [Full v1 content + validators](02-content.md) | code | agent | [ ] |
 | 03 | [Progression, economy, daily mode, versioned save](03-progression-and-save.md) | code | agent | [ ] |
 | 04 | [All screens, navigation, design tokens, fonts, accessibility](04-screens-and-ui.md) | code | agent | [ ] |

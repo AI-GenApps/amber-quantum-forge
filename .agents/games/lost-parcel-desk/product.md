@@ -41,7 +41,7 @@ A case takes 5 to 8 minutes. There is no failure state and no time pressure.
 
 - Each object has a **front** and a **back**. A clue sits on one face: `front`, `back` or `zoom` (a
   hotspot on the front, found with the magnifier). Up to three clues per object, at most one per face.
-- A `front` clue is found when the object is picked up; a `back` clue when it is flipped; a `zoom`
+- A `front` clue is found when the object is picked up; a `back` clue when the (already picked-up) object is flipped; a `zoom`
   clue when its hotspot is tapped with the magnifier on. Found clues are listed in the clue tray with
   their tag and a one-sentence text. Nothing is ever lost or hidden twice.
 - Clue text on objects is code-drawn (paper note, stamp, label), never baked into art.

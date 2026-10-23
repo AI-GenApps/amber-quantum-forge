@@ -127,3 +127,13 @@ most likely to have no Kenney source; fallbacks are CC0 OpenGameArt pages, other
 ### Task files follow the sibling epics
 Structure, file names, verification commands and commit format copy epic 20 (Floodplain Dispatch) so the
 orchestrator can run the same workflow. Game-specific content is in each task's checklist.
+
+### Core engine details settled in task 01
+Refinements that keep every number unchanged: a back clue is found by flipping an object that is already open
+(picked up); repeating an inspect, flip, pin or identical link is a harmless no-op that returns the same state;
+a hint on a deduction that is already resolved is refused as NOTHING_TO_HINT before the 2-hint limit is checked,
+so HINT_LIMIT only appears when the player has undone a hinted deduction; a pair deduction is only "proved" by
+the wrong-accusation feedback once both of its clues are found; the analyser runs in stages (candidates, then
+structure, then logic) so each defect reports its own code, and an unmarked clue that no deduction uses is
+reported as FLAVOUR_CLUE_IN_DEDUCTION. The core carries its own sfc32 PRNG (seeded from a 32-bit integer or an
+FNV-1a string hash) because it cannot import the kit.
