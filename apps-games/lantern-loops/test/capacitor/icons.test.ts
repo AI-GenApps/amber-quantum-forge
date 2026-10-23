@@ -1,4 +1,3 @@
-import { createHash } from "node:crypto";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import sharp from "sharp";
@@ -73,6 +72,9 @@ describe("key-art splash", () => {
     return [data[at] ?? -1, data[at + 1] ?? -1, data[at + 2] ?? -1];
   };
   const centre = Math.floor(SPLASH_SIZE / 2);
+  // Measured on macOS: 0 against the committed splash, about 6.3 against the fallback.
+  const MATCH_TOLERANCE = 2;
+  const FALLBACK_MIN_DIFFERENCE = 4;
 
   it("builds the splash from the accepted key-art master, not the lantern sprite or the fallback", async () => {
     expect(existsSync(MASTER)).toBe(true);
@@ -80,13 +82,30 @@ describe("key-art splash", () => {
     const fallback = await renderBrandSources(true);
     const splash = accepted["splash.png"] ?? Buffer.alloc(0);
     const committed = join(APP_DIR, "resources/splash.png");
-    const digest = async (input: string | Buffer) =>
-      createHash("sha256")
-        .update(await sharp(input).raw().toBuffer())
-        .digest("hex");
-    expect(await digest(splash)).toBe(await digest(committed));
+    // sharp/libvips resampling and palette quantisation are not bit-identical across platforms,
+    // so compare decoded pixels by mean absolute difference (0-255 scale) instead of a hash.
+    const meanAbsDiff = async (a: string | Buffer, b: string | Buffer): Promise<number> => {
+      const [left, right] = await Promise.all([
+        sharp(a).raw().toBuffer({ resolveWithObject: true }),
+        sharp(b).raw().toBuffer({ resolveWithObject: true }),
+      ]);
+      expect([left.info.width, left.info.height, left.info.channels]).toEqual([
+        right.info.width,
+        right.info.height,
+        right.info.channels,
+      ]);
+      let sum = 0;
+      for (let i = 0; i < left.data.length; i++) {
+        sum += Math.abs((left.data[i] ?? 0) - (right.data[i] ?? 0));
+      }
+      return sum / left.data.length;
+    };
+    expect(await meanAbsDiff(splash, committed)).toBeLessThan(MATCH_TOLERANCE);
+    // The code-drawn fallback (lantern sprite) renders visibly different pixels.
+    expect(await meanAbsDiff(splash, fallback["splash.png"] ?? Buffer.alloc(0))).toBeGreaterThan(
+      FALLBACK_MIN_DIFFERENCE,
+    );
     expect(splash.length).toBeGreaterThan(1000);
-    expect(splash.equals(fallback["splash.png"] ?? Buffer.alloc(0))).toBe(false);
     expect(splash.equals(accepted["splash-dark.png"] ?? Buffer.alloc(0))).toBe(true);
   });
 
