@@ -9,10 +9,10 @@ None of these block v1 tasks 01 to 08; each has a stated default.
 | Q3 | Privacy policy URL for store submission | Not needed in v1 (no submission); a one-page "no data collected" policy is needed later. | owner |
 | Q4 | Public name beyond the working title | Floodplain Dispatch stays the public name in v1. | owner, later step |
 | Q5 | Which CC0 water and ambience sources exist for the sound slots? | Answered in task 05: every slot has a CC0 file (Kenney packs, plus three OpenGameArt CC0 pages for the water loop and the two music loops). No slot ships silent. See Task 05 notes. | closed |
-| Q6 | Does the iOS Capacitor 8 project need CocoaPods for `cap sync`? | Capacitor 8 uses Swift Package Manager; if `cap sync` insists on CocoaPods, record and skip. | task 07 |
+| Q6 | Does the iOS Capacitor 8 project need CocoaPods for `cap sync`? | Answered in task 07: no. `cap add ios` and `cap sync` ran with Swift Package Manager only and finished without errors; Xcode was never run. | closed |
 | Q7 | Designer art delivery timing | Placeholders are code-drawn; task 06 integrates whatever passed review and keeps placeholders elsewhere. | orchestrator |
 | Q8 | Daily fallback templates: how many are needed? | 14 templates (2 per weekday tier); task 03 sizes it from the 365-date test. | task 03 |
-| Q9 | Remove the default Android `INTERNET` permission since the game is fully offline? | Keep Capacitor's default (WebView loader not verified without a device); data safety stays "no data collected". Owner decides after device QA. | task 07, owner |
+| Q9 | Remove the default Android `INTERNET` permission since the game is fully offline? | Keep Capacitor's default (WebView loader not verified without a device); data safety stays "no data collected". Owner decides after device QA. Task 07 kept it and added a test that it is the only permission. | owner |
 
 ## Kit follow-ups
 
@@ -86,3 +86,11 @@ workaround used inside this game; the kit itself is read-only for this epic.
 | Q27 | Designer sprites came at 1024 px (above the planned 768) and backdrops at 1024 x 1536 (below the planned 1600 x 2400). Runtime sizes are unaffected (192 and 800 x 1200); 800 x 1200 is a 22 percent downscale. | Masters stay at the delivered resolution. | none |
 | Q28 | The designer inbox manifest has no thread message id per image. Provenance uses batch and round plus the quoted verdict. | Keep. | none |
 | Q29 | Backdrop edges: the designer noted scenery only at the top and bottom corner fragments and a flat centre, so the board area shows mostly flat colour. | Keep; owner judges at QA. | owner at QA |
+
+## Task 07 notes
+
+| # | Question | Default used until answered | Owner |
+|---|---|---|---|
+| Q30 | `android:allowBackup` is `true` so progress survives a device change (local save, no personal data). Keep it? | Keep; set `false` in `AndroidManifest.xml` (test `test/native.test.ts` pins the value) if the owner prefers a clean slate on reinstall. | owner |
+| Q31 | Splash is the code-drawn badge, not key-art (rejected). Is the badge acceptable as launch image, or should the splash wait for a new key-art round? | Keep the badge; re-run `scripts/build-icons.ts` and `bunx capacitor-assets generate --android --ios` if a key-art is accepted later. | owner, later step |
+| Q32 | No icon, splash, adaptive-icon mask or launch screen was seen on a device or in Xcode or Android Studio. | Files validated by tests only; owner checks on a device when one is available. | owner |

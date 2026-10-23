@@ -407,3 +407,20 @@ and never calls `animate`; the pop ring's final frame is invisible so nothing is
   the valley backdrop. A test checks light text keeps 4.5:1 on the scrim over the brightest and darkest
   backdrop pixel for all seven map themes. Only the owner's browser QA can judge how much art shows.
 - Credits: one grouped art row (licence "Owned by the project", source "MobileGamesDesigner thread").
+
+## 2026-10-23 - Task 07 Capacitor packaging
+
+- **Icon path:** accepted `icon` master for `icon-only.png` and the Android adaptive foreground (flat
+  `#8aa468` background). Splash is the code-drawn roof-and-wave badge on `#18231d` because `key-art`
+  was rejected in the final art round; light and dark splash are the same file.
+- **Portrait only** in `AndroidManifest.xml` (`screenOrientation="portrait"`) and in both iOS
+  orientation lists. Status bar: light content over `#18231d` (`UIStatusBarStyle`, plugin config
+  `style: "DARK"`); launch storyboard background is the same colour so there is no white flash.
+- **INTERNET permission kept** (Capacitor default; open question Q9). No cleartext flag, no other
+  permission.
+- **`allowBackup="true"` kept.** The game has no accounts and saves progress locally only; Android
+  Auto Backup lets coins and stars survive a device change. The save holds no personal data, so data
+  safety stays "no data collected". Owner can flip it if a restored save is unwanted.
+- iOS uses Swift Package Manager (`ios/App/CapApp-SPM`), so `cap sync` needs no CocoaPods (Q6).
+- Template leftovers removed: Capacitor's default vector launcher drawables and the three unreferenced
+  `splash-2732x2732*.png` template images. No gameplay number changed.

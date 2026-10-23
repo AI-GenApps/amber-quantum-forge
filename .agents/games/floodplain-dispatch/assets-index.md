@@ -2,7 +2,7 @@
 
 Status after task 06: the three fonts, all 27 CC0 audio files and 19 of the 20 designer art slots are
 bundled or archived (below). 17 slots ship as runtime WebP in `public/art/`; `icon` and `feature-graphic`
-are accepted store assets kept as masters only (task 07 and the store listing use them); `key-art` was
+are accepted store assets kept as masters only (task 07 turns `icon` into the app icon; the store listing uses both); `key-art` was
 rejected in the designer loop's final round and keeps its code-drawn placeholder (the title screen
 shows the gradient and river drawing). Every one of the 20 slots has a code-drawn fallback
 (`src/art/fallbacks.ts`), so the game renders completely with zero, some or all slots present.
@@ -158,3 +158,19 @@ with a short crossfade of the tail into the head so they loop; the music loops a
 Haptics (no files): light impact on placing or rotating a piece, `warning` on an illegal placement,
 medium impact on Run, `error` when a house floods, `success` on each earned star, region unlock and
 theme unlock. Nothing on plain button taps.
+
+## Capacitor icon and splash (task 07)
+
+Sources live in `apps-games/floodplain-dispatch/assets/` and are written by
+`scripts/build-icons.ts` (`bun scripts/build-icons.ts`, deterministic); `@capacitor/assets` turns them
+into the Android and iOS resources. Nothing outside the accepted designer folder is used.
+
+| File | Content | Path used |
+|---|---|---|
+| `assets/icon-only.png` | 1024 x 1024 opaque, the accepted `icon` master | accepted art |
+| `assets/icon-foreground.png` | Android adaptive foreground, the same icon (the tool insets it 16.7 percent, so the cottage stays inside the mask safe zone) | accepted art |
+| `assets/icon-background.png` | flat `meadow` `#8aa468`, matches the icon ground | palette token |
+| `assets/splash.png`, `assets/splash-dark.png` | 2732 x 2732, code-drawn roof-and-wave badge (`scripts/draw-fallback-icon.ts`, palette tokens only) centred in 1200 px on `night` `#18231d`; the two files are identical (one dark look) | code-drawn, because `key-art` is rejected |
+
+`bun scripts/build-icons.ts --fallback` draws the icon in code as well. The `feature-graphic` is not
+used by Capacitor.
