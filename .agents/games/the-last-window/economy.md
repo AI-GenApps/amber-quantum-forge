@@ -87,18 +87,26 @@ appear on a fixed calendar of 5 campaign visits on Days 1 to 13 plus the Day 14 
 | 11 | Ginger Loaf |
 | 12 to 14 | nothing new (story focus) |
 
-## Balance targets (estimates, verified by a scripted bot in tasks 01 and 03)
+## Balance targets (measured by a scripted bot in tasks 01 and 03)
 
-Assumptions: average payment per served customer about 9 coins (drink 4.8, pastry share 57 percent at
-4.2, book share 32 percent at 6.6), average tip 2 to 3 coins. 130 customers over the 14 campaign days.
+Task 03 plays the real 14 days with the task 01 bot (`test/balance-report.test.ts`, numbers copied to
+`.agents/resources/2026-10-23/web-games/the-last-window/03/README.md`). "Net" is start grant plus
+shift coins (payments, tips, closing bonus) plus scene gifts minus pastry stock, with no decor bought.
 
-| Player | Served share | Net campaign coins (after stock) | Decor affordable by Day 14 |
-|---|---|---|---|
-| Casual (mostly satisfied, 75 percent served) | 75 percent | 700 to 900 | about 5 to 6 items |
-| Strong (mostly delighted, 90 percent served) | 90 percent | 1,300 to 1,700 | all 8 items around Day 11 to 13 |
+| Player | Served share | Net campaign coins (after stock) | Decor | Scenes by Day 14 |
+|---|---|---|---|---|
+| Casual (reacts every 2.5 s, 20 percent wrong taps, presses Suggest stock every day) | 71 percent | 1,100 to 1,200 (bot 1,148) | 7 of 8 affordable from the net; buying as it goes, all 8 owned on Day 13 | 29 of 40 |
+| Strong (reacts every 0.3 s, no mistakes, plans stock with foresight) | 100 percent | 1,900 to 2,050 (bot 1,980) | all 8 affordable; buying as it goes, all 8 owned on Day 10 | 40 of 40 |
 
-If the bot in task 03 puts the strong player outside 1,300 to 1,700 or the casual player outside 700 to
-900, adjust prices (decor first) and record it in `decisions-log.md` with the new table.
+Shift coins alone (without the start grant, scene gifts and stock) are 1,900 for the strong bot, so a
+served customer is worth about 12.5 coins including tips and closing bonuses.
+
+The first estimate for this table (casual 700 to 900, strong 1,300 to 1,700, with all 8 decor around
+Day 11 to 13) assumed 9 coins per customer plus 2.5 tip and did not add the fixed income (closing bonuses
+up to 280, scene gifts 280). The bot proves the estimate was about 25 percent low. The decor total stays
+1,200 (it is asserted in several places), so the targets moved to the measured values. A casual player
+therefore finishes the campaign with the whole shop bought and little left to spend; that is accepted for
+v1 (Q9 in `open-questions.md`) and the owner judges the pace at browser QA.
 
 ## IAP room (not in v1)
 

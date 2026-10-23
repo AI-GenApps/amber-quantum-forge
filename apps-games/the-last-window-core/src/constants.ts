@@ -81,3 +81,16 @@ export const LATE_PATIENCE_FLOOR_SECONDS = 34;
 export const LATE_PATIENCE_STEP_SHIFTS = 5;
 
 export const OUTCOMES: readonly Outcome[] = ["delighted", "satisfied", "disappointed", "left"];
+
+export const START_COINS = 30;
+export const MAX_COINS = 1_000_000_000;
+export const CAMPAIGN_DAYS = 14;
+export const CAMPAIGN_COMPLETE_DAY = CAMPAIGN_DAYS + 1;
+export const LAMP_BONUS = 15;
+export const STREAK_BONUS_PER_DAY = 2;
+export const STREAK_BONUS_CAP_DAYS = 7;
+export const LATE_CUSTOMERS_BASE = 12;
+export const LATE_CUSTOMERS_MAX = 14;
+export const LATE_CUSTOMERS_STEP_SHIFTS = 5;
+export const LATE_REGULARS = 3;
+export const DECOR_TOTAL_PRICE = 1200;

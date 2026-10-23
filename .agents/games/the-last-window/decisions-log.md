@@ -243,3 +243,48 @@ two plan rows changed wording (below). Evidence: `.agents/resources/2026-10-23/w
   copy of the config without that exclusion (a temporary copy, not committed); the verification
   command is unchanged.
 - **Casual pace.** With the casual bot 29 of 40 scenes are played by Day 14 (Q8); with `perfect` play all 40.
+
+## 2026-10-24 - Task 03: progression, economy, Late Shifts, versioned save
+
+- **Profile v1.** `PROFILE_VERSION = 1`, key `the-last-window.profile` (the key lives in the app,
+  `src/state/saveStores.ts`, because the core architecture test forbids the lowercase word `window` in
+  non-content source). Fields: `coins` (start 30), `day` (1 to 14, 15 when the campaign is complete),
+  `daysDone`, `owned`, `stock`, `regulars`, `pendingEvening`, `diary`, `late`, `flags`, `settings`
+  (`recipeGuide`, `relaxed`, `textSize` normal or large), `stats`. `migrations` is empty; the chain is
+  proven by a local version 2 test schema. `sanitizeProfile` rejects wrong types, clamps numbers, drops
+  unknown keys and ids, and keeps an `ending` only when scene 5 is done.
+- **Late state adds `todayCount`.** The Late Shift seed is forked by the index of today's shift, so the
+  profile stores how many Late Shifts were finished on `lastKey` (`todayCount`) next to `count`. A new local
+  date restarts the index at 0.
+- **Streak rules.** The app maps the kit `streakStep` plus "first" (no earlier Late Shift) to the core.
+  `first` and `gap` start the streak at 1, `next-day` adds 1, `same-day` pays nothing again,
+  `clock-went-back` changes no streak data and pays no bonus (the shift itself still pays and counts).
+  Bonus = `15 + 2 x min(streak, 7)` once per local date.
+- **Replays.** A replay of a finished campaign day pays coins, adds friendship and visits and keeps the
+  better star record, but never advances the day or duplicates the diary. A Late Shift is refused until
+  Day 14 is complete.
+- **Visits.** A visit counts for every regular who was served (delighted, satisfied or disappointed) and
+  not for one who left, as in the task 02 campaign helper.
+- **Evening queue.** After every shift the reducer builds the queue once: scenes already pending come
+  first, new eligible scenes follow in regular order, cap 4 (8 after Day 14's shift). The rest stay
+  eligible and are carried to the next evening. The app is not asked again within the same evening.
+- **Shelf rules in `buyStock`.** Duplicates are removed, and when fewer books are unlocked than there are
+  slots the shelf is filled with all unlocked books (the task 01 `shelfBooks` rule), so the plan never
+  fails with "need a book" in the early days. `defaultStockPlan` reuses the last plan filtered by unlocks,
+  fills a missing book shelf from the suggestion, and drops pastries from the end until the plan is
+  affordable.
+- **Campaign shift builder in the core.** `buildCampaignShift(day, {decor, relaxed, shelfEmpty})` (seed
+  `day x 7919`, Day 1 uses the tutorial script) lives in the core so task 04 and the balance report share
+  it. `buildLateShift(seed, index, lateCount, regulars, options)` forks the seed by `late-{index}`; weather,
+  the three regulars and the arrivals all come from that fork.
+- **Reset.** `resetProgress` returns the profile to defaults but keeps the accessibility extras
+  (`recipeGuide`, `relaxed`, `textSize`); the kit settings (sound, music, haptics, reduced motion, high
+  contrast) live in their own store and are untouched.
+- **Balance targets rewritten.** The bot measured casual 1,148 and strong 1,980 net coins against the
+  estimates 700 to 900 and 1,300 to 1,700. The estimate left out the fixed income (closing bonuses up to
+  280, scene gifts 280). The decor total (1,200) is fixed by the task acceptance criteria, so
+  `economy.md` "Balance targets" now states the measured values: casual 1,100 to 1,200 net, 29 of 40 scenes,
+  all 8 decor owned on Day 13; strong 1,900 to 2,050, 40 of 40 scenes, all 8 owned on Day 10. Evidence:
+  `.agents/resources/2026-10-23/web-games/the-last-window/03/README.md`. A test fails if the bot leaves the
+  documented range.
+

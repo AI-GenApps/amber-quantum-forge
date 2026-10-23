@@ -225,6 +225,7 @@ chosen weather variant. Decor never needs placement choices (one fixed spot per 
 - 3 distinct regulars (from the seed) are due each time; their orders use their favourites, they gain
   friendship, and pending scenes play afterwards.
 - The first Late Shift of each local date pays the Lamp Bonus and the streak bonus (`economy.md`).
+  A clock that went back pays no bonus and leaves the streak unchanged; a gap of two or more days restarts the streak at 1.
 - Records: best shift earnings, longest run of delighted serves, Late Shifts completed, streak.
 
 ## Screens

@@ -3,6 +3,7 @@ export const version = "0.0.0";
 export * from "./constants";
 export * from "./content";
 export * from "./prng";
+export * from "./progress";
 export * from "./rules/day";
 export * from "./rules/decor";
 export * from "./rules/items";

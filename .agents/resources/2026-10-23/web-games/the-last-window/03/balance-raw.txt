@@ -1,0 +1,75 @@
+BALANCE
+casual  plain  net=1148 income=1308 stock=190 scenes=29/40 decorAffordable=7 owned=0 finalCoins=1148
+strong  plain  net=1980 income=2180 stock=230 scenes=40/40 decorAffordable=8 owned=0 finalCoins=1980
+casual  buying net=1330 income=1495 stock=195 scenes=31/40 decorAffordable=8 owned=8 finalCoins=130
+strong  buying net=2284 income=2484 stock=230 scenes=40/40 decorAffordable=8 owned=8 finalCoins=1084
+
+casual (no decor)
+day arrived served stars shift stock scenes coins decor
+  1       6      6     3    80     5     15   120 
+  2       6      6     3    86     5     15   216 
+  3       8      8     3    70     5     20   301 
+  4       7      6     2    89    10     15   395 
+  5       8      8     3   134    15     15   529 
+  6       9      7     2    78    20     10   597 
+  7       9      6     2    58     5      5   655 
+  8       9      7     2    77    15     15   732 
+  9      11      7     2    83    15      5   805 
+ 10      10      7     2    85    15     20   895 
+ 11      11      8     2    87    20     20   982 
+ 12      12      8     2   103    15     15  1085 
+ 13      12      4     1    52    25      0  1112 
+ 14      12      4     1    51    20      5  1148 
+
+strong (no decor)
+day arrived served stars shift stock scenes coins decor
+  1       6      6     3    80     5     15   120 
+  2       6      6     3    91    10     15   216 
+  3       8      8     3    89     5     20   320 
+  4       7      7     3   111    10     15   436 
+  5       8      8     3   139    20     15   570 
+  6       9      9     3   118    15     15   688 
+  7       9      9     3   109    20     15   792 
+  8       9      9     3   130    20     15   917 
+  9      11     11     3   157    15     15  1074 
+ 10      10     10     3   135    20     25  1214 
+ 11      11     11     3   182    20     25  1401 
+ 12      12     12     3   161    20     45  1587 
+ 13      12     12     3   200    25     45  1807 
+ 14      12     12     3   198    25      0  1980 
+
+casual (buying decor)
+day arrived served stars shift stock scenes coins decor
+  1       6      6     3    80     5     15    40 decor-1
+  2       6      6     3    86     5     15   136 
+  3       8      8     3    70     5     20   111 decor-2
+  4       7      6     2    95    10     15   121 decor-3
+  5       8      8     3   161    15     15   102 decor-4
+  6       9      7     2    91    20     10    43 decor-6
+  7       9      6     2    69     5      5   112 
+  8       9      7     2    90    15     15    52 decor-7
+  9      11      7     2   110    15      5   152 
+ 10      10      7     2    95    15      5    37 decor-5
+ 11      11      8     2   105    20     20   142 
+ 12      12      8     2   124    15     15   266 
+ 13      12      5     1    81    25     20    92 decor-8
+ 14      12      4     1    53    25     10   130 
+
+strong (buying decor)
+day arrived served stars shift stock scenes coins decor
+  1       6      6     3    80     5     15    40 decor-1
+  2       6      6     3    91    10     15   136 
+  3       8      8     3    89     5     20    40 decor-2,decor-3
+  4       7      7     3   127    10     15   172 
+  5       8      8     3   168    20     15   155 decor-4
+  6       9      9     3   137    15     15    92 decor-5
+  7       9      9     3   124    20     15    71 decor-6
+  8       9      9     3   151    20     15    67 decor-7
+  9      11     11     3   178    15     15   245 
+ 10      10     10     3   155    20     25   155 decor-8
+ 11      11     11     3   223    20     25   383 
+ 12      12     12     3   195    20     45   603 
+ 13      12     12     3   243    25     45   866 
+ 14      12     12     3   243    25      0  1084 
+
+

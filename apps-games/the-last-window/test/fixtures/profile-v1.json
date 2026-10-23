@@ -1,0 +1,49 @@
+{
+  "v": 1,
+  "data": {
+    "coins": 642,
+    "day": 15,
+    "daysDone": {
+      "1": { "stars": 3, "earned": 80, "served": 6, "delighted": 4 },
+      "2": { "stars": 3, "earned": 86, "served": 6, "delighted": 3 },
+      "3": { "stars": 2, "earned": 70, "served": 7, "delighted": 3 },
+      "4": { "stars": 3, "earned": 97, "served": 7, "delighted": 5 },
+      "5": { "stars": 2, "earned": 101, "served": 7, "delighted": 4 },
+      "6": { "stars": 3, "earned": 120, "served": 9, "delighted": 6 },
+      "7": { "stars": 3, "earned": 118, "served": 9, "delighted": 7 },
+      "8": { "stars": 2, "earned": 95, "served": 8, "delighted": 4 },
+      "9": { "stars": 3, "earned": 150, "served": 11, "delighted": 8 },
+      "10": { "stars": 3, "earned": 141, "served": 10, "delighted": 7 },
+      "11": { "stars": 3, "earned": 160, "served": 11, "delighted": 8 },
+      "12": { "stars": 2, "earned": 128, "served": 11, "delighted": 6 },
+      "13": { "stars": 3, "earned": 170, "served": 12, "delighted": 9 },
+      "14": { "stars": 3, "earned": 190, "served": 12, "delighted": 10 }
+    },
+    "owned": ["decor-1", "decor-2", "decor-3", "decor-4", "decor-6"],
+    "stock": { "pastries": ["pastry-1", "pastry-3", "pastry-4"], "books": ["book-1", "book-2", "book-4"] },
+    "regulars": {
+      "1": { "fp": 8, "visits": 6, "scenesDone": 5, "choices": { "r1-c1": "b" }, "ending": "b" },
+      "2": { "fp": 8, "visits": 6, "scenesDone": 5, "choices": { "r2-c1": "a", "r2-c2": "b" }, "ending": "b" },
+      "3": { "fp": 7, "visits": 6, "scenesDone": 4, "choices": { "r3-c1": "a" }, "ending": null },
+      "4": { "fp": 8, "visits": 6, "scenesDone": 5, "choices": { "r4-c1": "a", "r4-c2": "a" }, "ending": "a" },
+      "5": { "fp": 6, "visits": 5, "scenesDone": 3, "choices": { "r5-c1": "b" }, "ending": null },
+      "6": { "fp": 6, "visits": 5, "scenesDone": 4, "choices": { "r6-c1": "b" }, "ending": null },
+      "7": { "fp": 5, "visits": 5, "scenesDone": 3, "choices": { "r7-c1": "a" }, "ending": null },
+      "8": { "fp": 4, "visits": 5, "scenesDone": 3, "choices": { "r8-c1": "a" }, "ending": null }
+    },
+    "pendingEvening": ["scene-3-5", "scene-6-5"],
+    "diary": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+    "late": {
+      "count": 5,
+      "todayCount": 2,
+      "lastKey": "2026-10-22",
+      "streak": 3,
+      "bestStreak": 4,
+      "firstOfDayClaimed": true,
+      "records": { "bestEarnings": 168, "bestDelightedRun": 9 }
+    },
+    "flags": { "tutorial": true, "first-rain": true, "card-decor": true },
+    "settings": { "recipeGuide": false, "relaxed": true, "textSize": "large" },
+    "stats": { "served": 131, "delighted": 80, "itemsMade": 262, "mistakes": 17, "scenesRead": 31 }
+  }
+}
