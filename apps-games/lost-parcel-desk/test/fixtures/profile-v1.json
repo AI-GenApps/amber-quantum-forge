@@ -1,0 +1,149 @@
+{
+  "v": 1,
+  "data": {
+    "postage": 109,
+    "cases": {
+      "01": {
+        "stamps": 3,
+        "bestTimeMs": 62000,
+        "hintsOnBest": 0,
+        "closedCount": 1
+      },
+      "02": {
+        "stamps": 2,
+        "bestTimeMs": 63000,
+        "hintsOnBest": 0,
+        "closedCount": 1
+      },
+      "03": {
+        "stamps": 3,
+        "bestTimeMs": 64000,
+        "hintsOnBest": 1,
+        "closedCount": 1
+      }
+    },
+    "chapterBonusClaimed": {},
+    "themeSelected": "teal-blotter",
+    "streakFreezes": 1,
+    "ledgerSeen": {
+      "01": true
+    },
+    "achievements": {
+      "first-delivery": true,
+      "clean-sheet": true,
+      "unaided": true,
+      "sharp-eyes": true
+    },
+    "session": {
+      "kind": "campaign",
+      "id": "04",
+      "state": {
+        "caseId": "04",
+        "candidateIds": [
+          "p04",
+          "p09",
+          "p12"
+        ],
+        "seenObjectIds": [
+          "04-1",
+          "04-2"
+        ],
+        "foundClueIds": [
+          "04-c3",
+          "04-c1"
+        ],
+        "pinnedClueIds": [
+          "04-c3",
+          "04-c1"
+        ],
+        "links": [
+          {
+            "clueId": "04-c3",
+            "personId": "p04",
+            "kind": "fits"
+          },
+          {
+            "clueId": "04-c1",
+            "personId": "p09",
+            "kind": "rules-out"
+          }
+        ],
+        "returnedIds": [],
+        "wrongAccusations": 0,
+        "hintsUsed": 0,
+        "elapsedMs": 37500,
+        "closed": false,
+        "deliveredId": null,
+        "stamps": null,
+        "byElimination": false
+      }
+    },
+    "daily": {
+      "lastKey": "2026-10-22",
+      "streak": 3,
+      "bestStreak": 3,
+      "results": {
+        "2026-10-22": {
+          "stamps": 3
+        },
+        "2026-10-21": {
+          "stamps": 2
+        },
+        "2026-10-20": {
+          "stamps": 3
+        }
+      }
+    },
+    "history": [
+      {
+        "kind": "campaign",
+        "id": "01",
+        "stamps": 3,
+        "hints": 0
+      },
+      {
+        "kind": "campaign",
+        "id": "02",
+        "stamps": 2,
+        "hints": 0
+      },
+      {
+        "kind": "campaign",
+        "id": "03",
+        "stamps": 3,
+        "hints": 1
+      },
+      {
+        "kind": "daily",
+        "id": "2026-10-20",
+        "stamps": 3,
+        "hints": 0
+      },
+      {
+        "kind": "daily",
+        "id": "2026-10-21",
+        "stamps": 2,
+        "hints": 0
+      },
+      {
+        "kind": "daily",
+        "id": "2026-10-22",
+        "stamps": 3,
+        "hints": 0
+      }
+    ],
+    "flags": {
+      "tutorial-done": true,
+      "card-look-closer": true,
+      "card-the-board": true
+    },
+    "stats": {
+      "accusations": 4,
+      "wrongAccusations": 1,
+      "hintsUsed": 0,
+      "cluesFound": 15,
+      "casesClosed": 3,
+      "dailiesCleared": 3
+    }
+  }
+}

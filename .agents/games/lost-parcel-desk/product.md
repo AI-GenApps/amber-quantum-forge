@@ -101,6 +101,18 @@ A case takes 5 to 8 minutes. There is no failure state and no time pressure.
   device clock that moves backwards never advances or breaks the streak (kit `streakStep`). Rewards:
   `economy.md`.
 - The generator is proven over 365 dates by test: every date validates with the shipped validator.
+- Generation (task 03): `generateDaily(seed, weekday)` draws a plan (owner, the two decoys, two facets, which
+  template side each clue uses, the neutral flavour lines, object order and faces) with the core PRNG. The
+  decoys are chosen by construction so that deduction 1 rules out exactly one decoy and deduction 2 the other
+  (a direct deduction needs the other decoy to be the owner's partner on that facet; a rule-out takes the
+  target decoy's own value). Every attempt is checked with `analyseCase` and the flavour hygiene; up to 12
+  attempts (`fork("attempt-N")`), then one of 14 committed fallback plans (2 per weekday, picked by
+  `seed mod 2`). Daily clues sit on the front or back of an object (no magnifier hotspots), one clue per
+  object. Object glyphs for the task 04 pictograms: street bag / cloth, pastime tin / card, look glove /
+  paper, pet box / ticket, rule-out notes paper, flavour per line (`FLAVOUR_POOL`).
+- Saving: one in-progress case at a time (`profile.session`, campaign case id or daily date key). Starting
+  another case replaces it. Closing a case clears the session; the reveal screen reads the closed state
+  the game store keeps in memory.
 
 ## Screens
 

@@ -54,6 +54,13 @@ Desk themes are unlocked by stamps, not postage, so there are no postage cosmeti
   otherwise the streak restarts at 1 and no freeze is consumed.
 - Hints and freezes are rejected (profile unchanged) when postage is short; a hint never touches
   stamps. A hint on a deduction that is already resolved is rejected without charge.
+  A hint request is validated before it is priced: a closed case, nothing left to hint or the 2-hint
+  limit are refused first, then a short purse (`INSUFFICIENT_POSTAGE`); a third freeze is refused
+  (`FREEZES_FULL`) before the price is checked. Rejections never change the profile.
+- Stamp accounting is campaign only: daily stamps are stored in `daily.results` and never reach
+  `cases`, the 36 total, chapter unlocks or desk themes.
+- Achievements pay nothing. Clean Sheet, Unaided and Sharp Eyes can also be earned on a Daily Parcel;
+  Second Look needs a campaign replay that raises the best stamps.
 - Save: the profile is clamped and stripped on every load (`sanitizeProfile`). A selected theme the
   stamps have not unlocked falls back to the default theme.
 

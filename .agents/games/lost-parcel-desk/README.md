@@ -3,7 +3,7 @@
 Bite-sized detective stories at a small-town post office: examine what is inside each lost parcel and
 work out who it belongs to.
 
-- Status: planned (task 00 of epic 24 done: knowledge base and task files). The code is still the skeleton; tasks 01 to 08 build the full v1 web game with the shared kit.
+- Status: in progress. Tasks 00 to 03 of epic 24 are built: knowledge base, core rules engine, full content and validators, progression / economy / Daily Parcel generator / versioned save. Screens, audio, art and packaging (tasks 04 to 08) are still to come.
 - Epic: [`tasks/epics/24-web-lost-parcel-desk`](../../../tasks/epics/24-web-lost-parcel-desk/STATUS.md)
 - Code: `apps-games/lost-parcel-desk` (`@web-games/lost-parcel-desk`) and
   `apps-games/lost-parcel-desk-core` (`@web-games/lost-parcel-desk-core`).

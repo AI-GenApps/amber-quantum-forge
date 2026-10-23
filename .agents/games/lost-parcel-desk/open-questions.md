@@ -19,5 +19,11 @@ None of these block v1; each has a stated default. After task 08 the open items 
 
 ## Kit follow-ups
 
-None known at planning time. Any kit limitation found while building is recorded here with the workaround
-used inside this game; the kit itself is read-only for this epic.
+Found while building task 03 (the kit is read-only for this epic; the workaround lives in this game):
+
+- `SaveStore.update` re-reads and re-parses the stored value on every call, which is wasteful for a save per
+  tap. Workaround: the game store keeps the profile in memory, publishes at once and writes the whole
+  profile through `update(() => profile)`. A `save`-only fast path or a cached read would help every game.
+- The kit has no weekday helper and `streakStep` has no state for "no previous day". Workaround: the game
+  derives the weekday from `dayNumber` (the epoch 2026-01-01 is a Thursday, tested against `Date`) and
+  passes `first` itself when `daily.lastKey` is null.

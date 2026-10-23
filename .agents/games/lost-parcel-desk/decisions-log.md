@@ -152,3 +152,22 @@ is never shared by all three candidates, so every candidate value counts as sepa
 names are barred from clue text, tags, captions and labels but object names keep the plan's wording
 ("Ferry timetable", "Tailor's ticket"); texts are printable ASCII only so every glyph exists in Courier Prime and
 IBM Plex Sans.
+
+### Progression, economy, daily and save details settled in task 03
+No number moved (30 grant; 10 first close; 5 per stamp; 40 chapter bonus; daily 5 / 7 / 10; streak bonus
+2 x min(streak, 7); hints 20 / 15; freeze 30; 450 campaign total; unlocks 7 / 18 and themes 0 / 6 / 14 / 24 /
+33). Refinements: the profile is `lost-parcel-desk.profile` version 1 with no migrations, and
+`sanitizeProfile` is the only parse (clamps, strips unknown keys, rejects wrong top-level types, drops a stale
+session instead of the whole save, and falls back to the default theme if the stamps do not unlock the saved
+one); `ledgerSeen` only keeps closed cases; stats are added when a case closes except `hintsUsed`, which counts
+at purchase; history appends on every counted run (campaign replays and every daily result) and keeps the last
+50; best time is the fastest of any close, `hintsOnBest` follows the best run (more stamps, then fewer hints).
+The core owns the date helpers it needs (`dailySeedOf`, `weekdayOf`, `isDateKey`) so `sanitizeProfile` can
+regenerate a saved daily session; a test proves they equal the kit `dailySeed` and a weekday derived from the
+kit `dayNumber`. Achievements: Clean Sheet, Unaided and Sharp Eyes can fire on a daily as well as on a
+campaign case; Second Look is campaign only. A daily clear is attributed to the date of the puzzle that was
+played, so a clock that went back (`clock-went-back`) makes the close neutral but still ends the session.
+The game store updates its in-memory model first and saves in the background, so taps never wait for storage;
+a failed save sets `saveFailed` and the next good write clears it. Over 365 dates from 2026-01-01 the
+generator never needed a fallback (attempts: 316 first try, max 5 tries); the 14 fallback plans are still
+tested on their own and for every date with attempts forced to zero.
