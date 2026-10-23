@@ -1,5 +1,3 @@
-import { readdirSync } from "node:fs";
-import { join } from "node:path";
 import { render } from "preact";
 import { act } from "preact/test-utils";
 import { afterEach, describe, expect, it } from "vitest";
@@ -46,13 +44,6 @@ describe("art slots", () => {
     expect(bundledArtUrls(new Map([["feature-graphic.webp", "/x.webp"]]))).toEqual([]);
   });
 
-  it("ships no art files before task 06", () => {
-    const names = readdirSync(join(import.meta.dirname, "../src/art/files")).filter((n) =>
-      n.endsWith(".webp"),
-    );
-    expect(names).toEqual([]);
-  });
-
   it("renders every slot as an svg fallback without text elements", async () => {
     const container = document.createElement("div");
     document.body.appendChild(container);
@@ -60,7 +51,12 @@ describe("art slots", () => {
       render(
         <div>
           {SLOT_IDS.map((id) => (
-            <ArtImage key={id} slot={id} alt={id === "daily-medallion" ? "Medallion" : ""} />
+            <ArtImage
+              key={id}
+              slot={id}
+              files={new Map()}
+              alt={id === "daily-medallion" ? "Medallion" : ""}
+            />
           ))}
         </div>,
         container,
@@ -88,7 +84,7 @@ describe("art slots", () => {
       render(
         <div>
           {ids.map((id) => (
-            <ArtImage key={id} slot={id} />
+            <ArtImage key={id} slot={id} files={new Map()} />
           ))}
         </div>,
         container,
@@ -97,5 +93,26 @@ describe("art slots", () => {
     const markup = ids.map((id) => container.querySelector(`[data-art='${id}']`)?.innerHTML ?? "");
     expect(new Set(markup).size).toBe(4);
     for (const html of markup) expect(html.length).toBeGreaterThan(300);
+  });
+
+  it("renders a delivered file as an image sized to the slot and keeps fallbacks elsewhere", async () => {
+    const container = document.createElement("div");
+    document.body.appendChild(container);
+    const files = new Map([["lantern-amber.webp", "/assets/lantern-amber-1.webp"]]);
+    await act(() =>
+      render(
+        <div>
+          <ArtImage slot="lantern-amber" alt="Amber lantern" files={files} />
+          <ArtImage slot="lantern-rose" files={files} />
+        </div>,
+        container,
+      ),
+    );
+    const image = container.querySelector("img");
+    expect(image?.getAttribute("src")).toBe("/assets/lantern-amber-1.webp");
+    expect(image?.getAttribute("width")).toBe("56");
+    expect(image?.getAttribute("alt")).toBe("Amber lantern");
+    expect(container.querySelector("[data-art='lantern-amber']")).toBeNull();
+    expect(container.querySelector("[data-art='lantern-rose'] svg")).not.toBeNull();
   });
 });

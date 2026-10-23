@@ -1,0 +1,66 @@
+{
+  "masterQuality": 90,
+  "shippedQuality": 82,
+  "slots": [
+    {
+      "slot": "icon",
+      "batch": "b1",
+      "round": 4,
+      "transparent": false,
+      "source": {
+        "path": "icon.png",
+        "bytes": 1184923,
+        "sha256": "3f6966f1dd4b3845860900e7dd48a5a6c0f5a01a38e175a0bceb301d05699627",
+        "width": 1024,
+        "height": 1024
+      },
+      "master": {
+        "path": "masters/icon.webp",
+        "bytes": 38590,
+        "sha256": "5f5fb19b1c13d386dcfca6319fb73ab989ee02691ad91c12e3129d92eac72eaa",
+        "width": 1024,
+        "height": 1024
+      },
+      "shipped": null,
+      "cornerAlpha": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "slot": "lantern-amber",
+      "batch": "b1",
+      "round": 3,
+      "transparent": true,
+      "source": {
+        "path": "lantern-amber.png",
+        "bytes": 705736,
+        "sha256": "e191d5294e0a565559dce5d82de5d52a6a8bdef613fcb159f9b48e1969984270",
+        "width": 1024,
+        "height": 1024
+      },
+      "master": {
+        "path": "masters/lantern-amber.webp",
+        "bytes": 57464,
+        "sha256": "51c9c6ab913fc470820d5f6a9c6034da0e847af7733b9990e253556c703ac37c",
+        "width": 1024,
+        "height": 1024
+      },
+      "shipped": {
+        "path": "src/art/files/lantern-amber.webp",
+        "bytes": 2832,
+        "sha256": "8f3d5bc82102990d35a05215f9e93b7b1a330a992a688978a6c7733dbba9b0b0",
+        "width": 112,
+        "height": 112
+      },
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

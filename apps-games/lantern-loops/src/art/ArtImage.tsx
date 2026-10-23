@@ -7,11 +7,13 @@ export interface ArtImageProps {
   class?: string;
   /** Overrides the slot's display width in css pixels. */
   size?: number;
+  /** Delivered files by name; tests inject it, the app uses the bundled set. */
+  files?: ReadonlyMap<string, string> | undefined;
 }
 
 /** Shows the delivered image of a slot or its code-drawn fallback. Never throws on missing files. */
-export function ArtImage({ slot, alt = "", class: className, size }: ArtImageProps) {
-  const source = resolveSlot(slot);
+export function ArtImage({ slot, alt = "", class: className, size, files }: ArtImageProps) {
+  const source = resolveSlot(slot, files);
   const width = size ?? source.slot.width;
   const height = size ?? source.slot.height;
   const sizing = width > 0 ? { width, height } : {};

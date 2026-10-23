@@ -1,7 +1,7 @@
 ---
 epic: 19-web-lantern-loops
 task: 06-art-integration
-status: pending
+status: in-progress
 commit_scope: lantern-loops
 depends_on: [19-web-lantern-loops/04-screens-and-ui, 19-web-lantern-loops/05-audio-haptics-onboarding]
 estimate: M
@@ -46,20 +46,24 @@ slot that was rejected or not delivered. The game must be complete and consisten
 
 ## Implementation Checklist
 
-- [ ] Read the accepted manifest; copy art bible, review notes and manifest into
+- [x] Read the accepted manifest; copy art bible, review notes and manifest into
       `.agents/resources/2026-10-23/web-games/lantern-loops/art/` (evidence).
-- [ ] `scripts/convert-art.ts` (app `scripts/` dir; add it to the tsconfig include): reads accepted PNGs,
+- [x] `scripts/convert-art.ts` (app `scripts/` dir; add it to the tsconfig include): reads accepted PNGs,
       writes masters (q90) and shipped WebP (2x display size, q82), prints a table (slot, source size,
       shipped bytes, SHA-256 of the source PNG and master). Deterministic and idempotent.
-- [ ] Run it for the accepted slots; commit masters and shipped files.
-- [ ] `src/art/slots.ts`: no change needed if filenames match slot ids; otherwise adjust the mapping, and
+- [x] Run it for the accepted slots; commit masters and shipped files.
+- [x] `src/art/slots.ts`: no change needed if filenames match slot ids; otherwise adjust the mapping, and
       mark each slot `shipped` or `placeholder` through the glob result.
-- [ ] Use the shipped art where the layout expects it (Home key-art, chapter backdrops, lantern icons in
+- [x] Use the shipped art where the layout expects it (Home key-art, chapter backdrops, lantern icons in
       lists and legends, medallion, empty-archive) and keep the fallback for any slot without a file.
-- [ ] `assets-index.md`: fill the provenance table (slot, inbox file, review round and verdict, SHA-256,
+- [x] `assets-index.md`: fill the provenance table (slot, inbox file, review round and verdict, SHA-256,
       date, notes) and set each slot's status to `shipped` or `placeholder`.
-- [ ] Art budget test and objective property tests (below).
-- [ ] Update `README.md` quick facts (art slots shipped N of 15) and `decisions-log.md`.
+- [x] Art budget test and objective property tests (below).
+- [x] Update `README.md` quick facts (art slots shipped N of 15) and `decisions-log.md`.
+
+Result (2026-10-23): the designer loop ended `style_anchor_failed`; 2 of 15 slots integrated
+(`lantern-amber` bundled, `icon` master for task 07), 13 placeholders kept (Q11). The slots.ts change
+was `icon` -> `inApp: false`; `ArtImage` got an optional `files` prop so tests inject the glob result.
 
 ## Files Touched
 
@@ -71,18 +75,18 @@ slot that was rejected or not delivered. The game must be complete and consisten
 
 ## Acceptance Criteria
 
-- [ ] Every shipped file has dimensions equal to 2x its display size, is WebP, and has a provenance row
+- [x] Every shipped file has dimensions equal to 2x its display size, is WebP, and has a provenance row
       whose SHA-256 matches the recorded master; no file exists without a row.
-- [ ] Transparent slots (all lanterns, medallion, empty-archive) have alpha and transparent corner pixels;
+- [x] Transparent slots (all lanterns, medallion, empty-archive) have alpha and transparent corner pixels;
       opaque slots (key-art, backdrops) have none.
-- [ ] Total shipped art bytes <= 8,000,000 and per-file limits hold (test using the kit `assertAssetBudget`).
-- [ ] With zero art files present the whole app still renders (placeholder test from task 04 still
+- [x] Total shipped art bytes <= 8,000,000 and per-file limits hold (test using the kit `assertAssetBudget`).
+- [x] With zero art files present the whole app still renders (placeholder test from task 04 still
       passes), and with any subset present each slot resolves to its file URL or its fallback; a test
       deletes nothing, it injects the glob result.
-- [ ] Rejected or undelivered slots are listed in `assets-index.md` with status `placeholder` and in
+- [x] Rejected or undelivered slots are listed in `assets-index.md` with status `placeholder` and in
       `open-questions.md`; the counts in `README.md` match.
-- [ ] No unreviewed file: a test compares the shipped slot list to the committed accepted manifest copy.
-- [ ] All verification commands below pass.
+- [x] No unreviewed file: a test compares the shipped slot list to the committed accepted manifest copy.
+- [x] All verification commands below pass.
 
 ## Verification Commands
 

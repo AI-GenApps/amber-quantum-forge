@@ -40,7 +40,7 @@ export interface ArtSlot {
   /** Display size in css pixels; 0 means the slot fills its container. */
   width: number;
   height: number;
-  /** False for store-only art that is never shown in the app. */
+  /** False for art that is never bundled in the web build (launcher icon, store graphic). */
   inApp: boolean;
   Fallback: ComponentType<SceneProps>;
 }
@@ -54,7 +54,7 @@ const slot = (
 ): ArtSlot => ({ id, file: `${id}.webp`, width, height, inApp, Fallback });
 
 export const ART_SLOTS: readonly ArtSlot[] = [
-  slot("icon", 48, 48, AppIcon),
+  slot("icon", 48, 48, AppIcon, false),
   slot("key-art", 0, 0, KeyArt),
   slot("lantern-amber", 56, 56, LanternAmber),
   slot("lantern-rose", 56, 56, LanternRose),
