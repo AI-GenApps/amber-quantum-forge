@@ -137,3 +137,18 @@ the wrong-accusation feedback once both of its clues are found; the analyser run
 structure, then logic) so each defect reports its own code, and an unmarked clue that no deduction uses is
 reported as FLAVOUR_CLUE_IN_DEDUCTION. The core carries its own sfc32 PRNG (seeded from a 32-bit integer or an
 FNV-1a string hash) because it cannot import the kit.
+
+### Content details settled in task 02
+No binding number moved (12 cases, 49 objects, 70 clues = 33 lead + 37 flavour, 24 deductions = 12 direct + 9
+pair + 3 rule-out, 12 townsfolk, 24 almanac entries). Refinements: the one-line reveal drafts in
+`content-plan.md` were under the 200 character minimum, so the plan now carries the shipped 200 to 420
+character reveal texts and `test/content-plan.test.ts` keeps plan and code identical; ids are `p01` to `p12`
+for townsfolk, `NN` for cases, `NN-k` for objects, `NN-cK` for clues and `NN-D1` / `NN-D2` for deductions;
+the almanac keeps the plan keywords verbatim and adds a short `avoid` list per value (stems such as "alto" or
+"soot") that only the validator reads; the keyword-hygiene rule covers flavour clue text and tags, and the
+names and captions of objects that carry no lead clue, because an object that carries a lead clue may name what
+the clue is about (case 09 "Matchbox of foam domes"); since every value is held by exactly two people, a value
+is never shared by all three candidates, so every candidate value counts as separating; trade and townsperson
+names are barred from clue text, tags, captions and labels but object names keep the plan's wording
+("Ferry timetable", "Tailor's ticket"); texts are printable ASCII only so every glyph exists in Courier Prime and
+IBM Plex Sans.

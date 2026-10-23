@@ -147,6 +147,8 @@ Difficulty 1 to 5 and par minutes (target solve time; a record only, never a rul
 
 Each case lists its evidence objects (art slots), its clues and the logic data. A face is `front`, `zoom` (a hotspot on the front) or `back`. Clue roles: `D1`/`D2` lead clue; `D1 key`/`D1 lock` a pair (both must be pinned and linked together); `flavour` has no logic effect. `fits` means the deduction keeps the candidate; `rules out` removes the candidate.
 
+The `Reveal` line of each case is the shipped text (200 to 420 characters). Clue sentences, object captions and torn-label texts are original writing that lives in `apps-games/lost-parcel-desk-core/src/content/cases/` and is policed by the validator, not repeated here.
+
 ### Case 01 - The Seaside Postcard
 
 - Slug: `seaside-postcard`; chapter 1; found at: The dead-letter shelf; delivered to: Ferry Landing.
@@ -173,7 +175,7 @@ Each case lists its evidence objects (art slots), its clues and the logic data. 
 | D1 | Look | owner's look is red hair | direct | rules out Ambrose Quill (tall) |
 | D2 | Street | owner's street is Quay Road | direct | rules out Tobias Thimble (Tanner's Row) |
 
-Reveal: Red hair in the scarf and river mud on the glove: Odalie Fenn, who pilots the ferry, lost her bundle in the March flood.
+Reveal: Copper hair in the scarf and river mud on the glove point to one person: Odalie Fenn. Her hair is red and her home is on Quay Road, which rules out Ambrose Quill, who is tall, and Tobias Thimble, who lives on Tanner's Row. She pilots the ferry, and the flood took her bundle.
 
 Ledger fragment "Water at the Door": 4 March 1974, 11 pm: the river comes over the sill and Mr. Hobb counts the sacks twice.
 
@@ -203,7 +205,7 @@ Ledger fragment "Water at the Door": 4 March 1974, 11 pm: the river comes over t
 | D1 | Pet | owner's pet is dog | direct | rules out Priya Lowell (canary) |
 | D2 | Pastime | owner's pastime is choir | direct | rules out Dennis Gault (angling) |
 
-Reveal: A paw print on the tin and an alto line on the hymn sheet: Barnaby Crumb, the baker who sings in the choir and walks his dog before dawn.
+Reveal: A paw print on the tin and an alto line on the hymn sheet: Barnaby Crumb. His pet is a dog, which rules out Priya Lowell and her canary, and he sings in the choir, which rules out Dennis Gault, who would rather be angling. The baker walks his dog before dawn and keeps the tin by the ovens.
 
 Ledger fragment "Hobb's Lantern": Hobb keeps one lantern lit on the counter so anyone on the road can see the office is open.
 
@@ -233,7 +235,7 @@ Ledger fragment "Hobb's Lantern": Hobb keeps one lantern lit on the counter so a
 | D1 | Street | owner's street is Tanner's Row | direct | rules out Priya Lowell (Orchard Close) |
 | D2 | Pet | owner's pet is canary | direct | rules out Tobias Thimble (goldfish) |
 
-Reveal: A tea towel that smells of the tannery and birdseed in a velvet bag: Winifred Pike, whose canary sings over the clippers.
+Reveal: A tea towel that smells of the tannery and birdseed in a velvet bag: Winifred Pike. Her street is Tanner's Row, which rules out Priya Lowell of Orchard Close, and her pet is a canary, which rules out Tobias Thimble and his goldfish. Her canary sings over the clippers, so the hat box goes home to the barbershop.
 
 Ledger fragment "Sacks on the Sorting Table": Parcels are stacked on the table above the waterline, labels already running.
 
@@ -263,7 +265,7 @@ Ledger fragment "Sacks on the Sorting Table": Parcels are stacked on the table a
 | D1 | Pastime | owner's pastime is model trains | direct | rules out Iggy Marsh (crosswords) |
 | D2 | Look | owner's look is hearing aid | direct | rules out Ambrose Quill (tall) |
 
-Reveal: A scale signal lamp and a hearing-aid battery card: Cosmo Vane, who runs the Roxy's projector and builds railways at home.
+Reveal: A scale signal lamp and a hearing-aid battery card: Cosmo Vane. He builds model trains, which rules out Iggy Marsh, who prefers crosswords, and he wears a hearing aid, which rules out the tall Ambrose Quill. He threads the Roxy's projector by night and lays track at home, so the tin of buttons goes to the Roxy.
 
 Ledger fragment "Ink Runs Faster Than Water": By midnight half the addresses are blue streaks. Hobb copies what he can read into the ledger.
 
@@ -294,7 +296,7 @@ Ledger fragment "Ink Runs Faster Than Water": By midnight half the addresses are
 | D1 | Pastime | owner's pastime is birdwatching | pair | rules out Barnaby Crumb (choir) |
 | D2 | Look | owner's look is spectacles | direct | rules out Hettie Bloom (walking stick) |
 
-Reveal: The lens cap matches the binocular warranty and the cloth belongs to spectacles: Marguerite Oake, who watches wrens between shelves.
+Reveal: The lens cap matches the binocular warranty, so this owner is into birdwatching, which rules out Barnaby Crumb and his choir. The cloth is covered in thumbprints, so the owner wears spectacles, which rules out Hettie Bloom and her walking stick. That is Marguerite Oake, who watches wrens between the shelves.
 
 Ledger fragment "The Wrong Pigeonhole": Sorting by touch in the dark, Hobb drops a handful into the wrong pigeonholes and writes down which.
 
@@ -324,7 +326,7 @@ Ledger fragment "The Wrong Pigeonhole": Sorting by touch in the dark, Hobb drops
 | D1 | Street | owner's street is Station Hill | direct | rules out Marguerite Oake (Orchard Close) |
 | D2 | Look | owner's look is not hearing aid | rule-out | rules out Iggy Marsh (hearing aid) |
 
-Reveal: Cinders point to Station Hill and the clinic card rules out the hearing aid: Dennis Gault, mechanic, left-handed and stubbornly healthy.
+Reveal: Cinders point to Station Hill, which rules out Marguerite Oake of Orchard Close. The clinic card says hearing normal, so the owner wears no hearing aid, which rules out Iggy Marsh. That leaves Dennis Gault, who fixes engines, is left-handed and is stubbornly healthy.
 
 Ledger fragment "Cinders and Candle": The stove stays lit all night and singes the corner of the ledger page.
 
@@ -355,7 +357,7 @@ Ledger fragment "Cinders and Candle": The stove stays lit all night and singes t
 | D1 | Pet | owner's pet is canary | direct | rules out Barnaby Crumb (dog) |
 | D2 | Pastime | owner's pastime is choir | pair | rules out Winifred Pike (crosswords) |
 
-Reveal: The fork and the Tuesday notice make a choir member, and the yellow feather a canary: Priya Lowell, the tallest voice in the hall.
+Reveal: The yellow feather means a canary, which rules out Barnaby Crumb and his dog. The fork and the Tuesday notice make a choir member, which rules out Winifred Pike and her crosswords. That is Priya Lowell, the tallest voice in the hall, who keeps the school singing.
 
 Ledger fragment "Seven Knocks at Midnight": Neighbours knock seven times and form a chain to carry sacks up the stairs.
 
@@ -386,7 +388,7 @@ Ledger fragment "Seven Knocks at Midnight": Neighbours knock seven times and for
 | D1 | Pet | owner's pet is cat | direct | rules out Rosalind Kettle (none) |
 | D2 | Look | owner's look is walking stick | pair | rules out Odalie Fenn (red hair) |
 
-Reveal: A tabby-haired cushion and a ferrule that matches the receipt: Hettie Bloom, whose cat guards the shop and whose stick has seen better days.
+Reveal: Tabby hairs on the cushion mean a cat, which rules out Rosalind Kettle, who keeps no pet. The ferrule matches the chemist's receipt, so the owner uses a walking stick, which rules out Odalie Fenn and her red hair. That is Hettie Bloom, whose cat guards the shop and whose stick has seen better days.
 
 Ledger fragment "The Upstairs Shelf": The dead-letter shelf is built that night from a door off its hinges.
 
@@ -418,7 +420,7 @@ Ledger fragment "The Upstairs Shelf": The dead-letter shelf is built that night 
 | D1 | Look | owner's look is hearing aid | pair | rules out Dennis Gault (left-handed) |
 | D2 | Street | owner's street is Station Hill | pair | rules out Cosmo Vane (Lamplight Street) |
 
-Reveal: Domes for a hearing aid and a key tagged 31 on Station Hill: Iggy Marsh, who holds the night trains with a lamp and a ledger of crosswords.
+Reveal: Foam domes and a reorder card mean a hearing aid, which rules out Dennis Gault. A key tagged 31 matches the housing list for Station Hill, which rules out Cosmo Vane of Lamplight Street. That is Iggy Marsh, who holds the night trains with a lamp and does the crossword while he waits.
 
 Ledger fragment "The Telegram That Wasn't": A signal holds the mail train outside town so the sacks can be saved before it arrives.
 
@@ -449,7 +451,7 @@ Ledger fragment "The Telegram That Wasn't": A signal holds the mail train outsid
 | D1 | Pastime | owner's pastime is chess | pair | rules out Ambrose Quill (model trains) |
 | D2 | Look | owner's look is not walking stick | rule-out | rules out Rosalind Kettle (walking stick) |
 
-Reveal: A boxwood knight matching a postal scorecard, and a tower climb done unaided: Tobias Thimble, who plays by post and stitches by lamplight.
+Reveal: The boxwood knight matches the postal scorecard, so the owner plays chess, which rules out Ambrose Quill and his model trains. The certificate says 212 steps unaided, so the owner has no walking stick, which rules out Rosalind Kettle. That is Tobias Thimble, who plays by post and stitches by lamplight.
 
 Ledger fragment "Wet Wool and Thread": Wet gloves and scarves are hung to dry along the counter, and nobody remembers whose.
 
@@ -480,7 +482,7 @@ Ledger fragment "Wet Wool and Thread": Wet gloves and scarves are hung to dry al
 | D1 | Street | owner's street is Lamplight Street | pair | rules out Hettie Bloom (Mill Lane) |
 | D2 | Pastime | owner's pastime is not model trains | rule-out | rules out Cosmo Vane (model trains) |
 
-Reveal: The soot-black number matches the lamplighter's round, and the refund slip rules out railways: Rosalind Kettle, who sells every lamp on her street.
+Reveal: The soot-black number matches the lamplighter's round, so the owner lives on Lamplight Street, which rules out Hettie Bloom of Mill Lane. The refund slip says the train set was not wanted, so the owner has no model trains, which rules out Cosmo Vane. That is Rosalind Kettle, who sells every lamp on her street.
 
 Ledger fragment "Lamps Along the Road": Every lamp on the lane is lit so the last neighbours can find their way to the office.
 
@@ -514,7 +516,7 @@ Ledger fragment "Lamps Along the Road": Every lamp on the lane is lit so the las
 | D1 | Look | owner's look is tall | pair | rules out Odalie Fenn (red hair) |
 | D2 | Street | owner's street is Quay Road | pair | rules out Priya Lowell (Orchard Close) |
 
-Reveal: A hem let down for a tall man and a note about the last door before Quay Steps: Ambrose Quill, who tuned the post office piano and kept Hobb's key safe.
+Reveal: The let-down hem and the inside leg of 36 mean a tall man, which rules out Odalie Fenn and her red hair. The timetable and the note about the last door before the steps mean Quay Road, which rules out Priya Lowell. That is Ambrose Quill, who tuned the post office piano and kept Hobb's key safe.
 
 Ledger fragment "A Key for the Next Clerk": Hobb retires at dawn and leaves the counter key, the ledger and the whole backlog to whoever comes next.
 
