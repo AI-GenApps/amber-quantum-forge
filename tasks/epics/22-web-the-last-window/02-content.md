@@ -1,7 +1,7 @@
 ---
 epic: 22-web-the-last-window
 task: 02-content
-status: todo
+status: in-progress
 commit_scope: the-last-window
 depends_on: [22-web-the-last-window/01-core-rules]
 estimate: XL
@@ -36,25 +36,25 @@ Ship the complete v1 content as typed data in `apps-games/the-last-window-core`:
 
 ## Implementation Checklist
 
-- [ ] `src/content/types.ts`: `DayDef`, `RegularDef` (id, name, art slot prefix, likes, moods, visit days, story title, ending titles), `FinaleLine`, `DiaryEntry`, `DayCard`, `TutorialStep`, `ScriptedOrder`, `ArtSlotDef`.
-- [ ] `src/content/days.ts`: the 14 days (title, weather, shift ticks, customers, patience seconds, regulars due, unlocks) exactly as in the plan; `src/content/calendar.ts` derives visit numbers per regular and per day and the Day 14 finale list.
-- [ ] `src/content/regulars.ts`: the 8 regulars with favourite drink and pastry ids, two moods, visit days and titles.
-- [ ] Eight scene files with all 40 scenes, 12 choices and 16 ending blocks.
-- [ ] `src/content/finale.ts`: 24 lines (8 regulars x ending A, ending B, unfinished; at most 20 words each) plus the closing caption from Marit's notebook (at most 30 words).
-- [ ] `src/content/diary.ts` (14 entries, title from the day table, text at most 40 words) and `dayCards.ts` (14 intro cards, at most 30 words, each mentions the weather or a regular due).
-- [ ] `src/content/itemText.ts`: flavour lines for 6 drinks, 5 pastries and 5 books (at most 12 words), 5 mood descriptions, 8 decor descriptions that state the effect in plain words using the effect numbers from the decor table.
-- [ ] `src/content/tutorial.ts`: the 7 coach steps of the Day 1 plan and the 6 scripted Day 1 orders (ids, customers, components) so the app and tests share them; Day 1 uses regulars 1, 2, 3 and three walk-ins.
-- [ ] `src/content/strings.ts`: game title, tagline, Marit's opening note, button and section labels the screens need that are content rather than UI chrome (Journal tab names, mood names, outcome words); task 04 adds the rest through the kit string table.
-- [ ] `src/content/index.ts`: `DAYS`, `REGULARS`, `SCENES` (40, ordered), `SCENE_BY_ID`, `getDay(n)`, `regularsDue(day)`, `sceneFor(regularId, index)`, `ENDING_TITLES`, `FINALE`, `DIARY`, `ART_SLOTS`.
-- [ ] `src/content/validate.ts`: `validateContent()` returning typed issues with codes `DAY_TABLE`, `CALENDAR`, `VISIT_COUNT`, `SCENE_COUNT`, `DANGLING_SCENE`, `DANGLING_GUARD`, `BAD_CHOICE_COUNT`, `BAD_ENDING`, `UNREACHABLE_ARC`, `BEAT_LENGTH`, `BEAT_COUNT`, `READING_LEVEL`, `BAD_SPEAKER`, `UNKNOWN_ART_SLOT`, `UNKNOWN_ITEM`, `BAD_CHARACTER`, covering every rule listed in `content-plan.md` "Content counts the validators enforce".
-- [ ] Reachability check: for each regular, simulate the best case (2 FP per serve, no decor) and the calendar; scene k must be eligible at visit k, and both endings must be reachable by at least one choice combination (including the tie-break rule).
-- [ ] `test/content-plan.test.ts`: parse the tables of `.agents/games/the-last-window/content-plan.md` (days, calendar, decor, endings) and `economy.md` (unlock schedule) with `node:fs` and assert they equal the data, so documentation and code stay identical.
-- [ ] `test/scenes.test.ts`: 8 regulars x 5 scenes, one chain each, ids unique, beat counts 6 to 9, beat length at most 25 words, speakers valid, 12 choices with the 4 regulars that have two, 24 option reactions, 16 ending blocks, guards resolve, scene 4 or 5 reacts to a choice for every regular, gifts 5 and 15.
-- [ ] `test/readability.test.ts`: unit tests for the helper and a per-scene grade table assertion (at most 7.0 average, no beat above 10).
-- [ ] `test/validators.test.ts`: deliberately broken copies (dangling next scene, bad guard, third choice, missing ending, 10-beat scene, unknown speaker, unknown art slot, wrong visit count, unreachable arc) produce exactly the expected issue codes; the real content produces none.
-- [ ] `test/campaign-smoke.test.ts`: with the task 01 bot, play all 14 real days with `perfect` and check each shift closes, Day 1 follows the scripted orders, the regulars served on each day match the calendar, and each regular's scene k becomes eligible at visit k under `perfect` play; with `casual` play, report (not assert) how many scenes are eligible by Day 14.
-- [ ] `test/text-hygiene.test.ts`: no empty strings, no duplicate scene titles, no `TODO` or placeholder tokens, every character inside Latin-1 plus the font subset punctuation.
-- [ ] Update `content-plan.md` and `decisions-log.md` if any binding number moved; write `.agents/resources/2026-10-23/web-games/the-last-window/02/README.md` with counts (beats, words), the per-scene reading-grade table, and the casual-play scene report.
+- [x] `src/content/types.ts`: `DayDef`, `RegularDef` (id, name, art slot prefix, likes, moods, visit days, story title, ending titles), `FinaleLine`, `DiaryEntry`, `DayCard`, `TutorialStep`, `ScriptedOrder`, `ArtSlotDef`.
+- [x] `src/content/days.ts`: the 14 days (title, weather, shift ticks, customers, patience seconds, regulars due, unlocks) exactly as in the plan; `src/content/calendar.ts` derives visit numbers per regular and per day and the Day 14 finale list.
+- [x] `src/content/regulars.ts`: the 8 regulars with favourite drink and pastry ids, two moods, visit days and titles.
+- [x] Eight scene files with all 40 scenes, 12 choices and 16 ending blocks.
+- [x] `src/content/finale.ts`: 24 lines (8 regulars x ending A, ending B, unfinished; at most 20 words each) plus the closing caption from Marit's notebook (at most 30 words).
+- [x] `src/content/diary.ts` (14 entries, title from the day table, text at most 40 words) and `dayCards.ts` (14 intro cards, at most 30 words, each mentions the weather or a regular due).
+- [x] `src/content/itemText.ts`: flavour lines for 6 drinks, 5 pastries and 5 books (at most 12 words), 5 mood descriptions, 8 decor descriptions that state the effect in plain words using the effect numbers from the decor table.
+- [x] `src/content/tutorial.ts`: the 7 coach steps of the Day 1 plan and the 6 scripted Day 1 orders (ids, customers, components) so the app and tests share them; Day 1 uses regulars 1, 2, 3 and three walk-ins.
+- [x] `src/content/strings.ts`: game title, tagline, Marit's opening note, button and section labels the screens need that are content rather than UI chrome (Journal tab names, mood names, outcome words); task 04 adds the rest through the kit string table.
+- [x] `src/content/index.ts`: `DAYS`, `REGULARS`, `SCENES` (40, ordered), `SCENE_BY_ID`, `getDay(n)`, `regularsDue(day)`, `sceneFor(regularId, index)`, `ENDING_TITLES`, `FINALE`, `DIARY`, `ART_SLOTS`.
+- [x] `src/content/validate.ts`: `validateContent()` returning typed issues with codes `DAY_TABLE`, `CALENDAR`, `VISIT_COUNT`, `SCENE_COUNT`, `DANGLING_SCENE`, `DANGLING_GUARD`, `BAD_CHOICE_COUNT`, `BAD_ENDING`, `UNREACHABLE_ARC`, `BEAT_LENGTH`, `BEAT_COUNT`, `READING_LEVEL`, `BAD_SPEAKER`, `UNKNOWN_ART_SLOT`, `UNKNOWN_ITEM`, `BAD_CHARACTER`, covering every rule listed in `content-plan.md` "Content counts the validators enforce".
+- [x] Reachability check: for each regular, simulate the best case (2 FP per serve, no decor) and the calendar; scene k must be eligible at visit k, and both endings must be reachable by at least one choice combination (including the tie-break rule).
+- [x] `test/content-plan.test.ts`: parse the tables of `.agents/games/the-last-window/content-plan.md` (days, calendar, decor, endings) and `economy.md` (unlock schedule) with `node:fs` and assert they equal the data, so documentation and code stay identical.
+- [x] `test/scenes.test.ts`: 8 regulars x 5 scenes, one chain each, ids unique, beat counts 6 to 9, beat length at most 25 words, speakers valid, 12 choices with the 4 regulars that have two, 24 option reactions, 16 ending blocks, guards resolve, scene 4 or 5 reacts to a choice for every regular, gifts 5 and 15.
+- [x] `test/readability.test.ts`: unit tests for the helper and a per-scene grade table assertion (at most 7.0 average, no beat above 10).
+- [x] `test/validators.test.ts`: deliberately broken copies (dangling next scene, bad guard, third choice, missing ending, 10-beat scene, unknown speaker, unknown art slot, wrong visit count, unreachable arc) produce exactly the expected issue codes; the real content produces none.
+- [x] `test/campaign-smoke.test.ts`: with the task 01 bot, play all 14 real days with `perfect` and check each shift closes, Day 1 follows the scripted orders, the regulars served on each day match the calendar, and each regular's scene k becomes eligible at visit k under `perfect` play; with `casual` play, report (not assert) how many scenes are eligible by Day 14.
+- [x] `test/text-hygiene.test.ts`: no empty strings, no duplicate scene titles, no `TODO` or placeholder tokens, every character inside Latin-1 plus the font subset punctuation.
+- [x] Update `content-plan.md` and `decisions-log.md` if any binding number moved; write `.agents/resources/2026-10-23/web-games/the-last-window/02/README.md` with counts (beats, words), the per-scene reading-grade table, and the casual-play scene report.
 
 ## Files Touched
 

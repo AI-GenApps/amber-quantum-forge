@@ -2,7 +2,7 @@
 
 A cosy cafe-bookshop at the edge of a harbour town: run short shifts, choose what to stock, decorate, and get to know the regulars whose stories unfold across two weeks.
 
-- Status: planned (task 00 of epic 22 done: knowledge base, design spec and epic task files). Code is still the skeleton; tasks 01 to 08 build the full v1 web game with the shared kit.
+- Status: in progress (tasks 00 and 01 of epic 22 done: knowledge base and the headless rules engine; task 02 adds the full v1 content data and validators in `apps-games/the-last-window-core/src/content`). Tasks 03 to 08 build progression, screens, audio, art, packaging and release readiness.
 - Epic: [`tasks/epics/22-web-the-last-window`](../../../tasks/epics/22-web-the-last-window/STATUS.md)
 - Code: `apps-games/the-last-window` (`@web-games/the-last-window`) and
   `apps-games/the-last-window-core` (`@web-games/the-last-window-core`).

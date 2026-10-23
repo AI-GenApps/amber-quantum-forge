@@ -209,7 +209,7 @@ beats. Ending rule in `product.md`. Scene gifts: scenes 1 to 4 pay 5 coins, scen
   headphones around her neck, notebook with taped corners, quick shy smile.
 - Likes: Lamplight Cocoa, Lemon Cream Bun; moods adventurous, funny. Visits: Days 2, 4, 7, 9, 12.
 - Scenes: (1) "Flour on the Pages": a baker's apprentice hides a notebook full of story drafts.
-  (2) "The Open Mic Poster": the Lantern Night open-mic poster goes up in your window. (3) "Draft Nine": she
+  (2) "The Open Mic Poster": the Lantern Night open-mic poster goes up in your window. (3) "The Girl in the Fog": she
   reads you a page about a girl who walks into sea fog to find a lighthouse; you give honest, kind
   feedback. (4) "Stage Fright": the open-mic list closes in three days and she is shaky and unsure. (5) "Draft
   Nine": the ending.
@@ -262,8 +262,8 @@ beats. Ending rule in `product.md`. Scene gifts: scenes 1 to 4 pay 5 coins, scen
   long ago and became a poet. (3) "Postmarks": Marit's ledger shows where she bought the book, which gives
   an old address. (4) "A Reply, or Not": waiting, he checks the mail each day. (5) "The Book That Came
   Home": the ending.
-- Choice c1 (scene 3), "What should Abel do?": a "Write a letter to Ines"; b "Leave the book in the window
-  with a note".
+- Choice c1 (scene 3), "What should Abel do?": a "Write a letter to Ines"; b "Leave the book in the window"
+  (the note goes with it in the story).
 - Endings: A "The Reply": Ines writes back and comes to Lantern Night. B "The Shelf Where It Waits": the
   book stays in the window, and Abel reads poems aloud there every Thursday.
 

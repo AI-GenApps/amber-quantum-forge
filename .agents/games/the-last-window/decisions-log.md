@@ -197,3 +197,49 @@ Rules the spec left open, fixed while implementing the headless engine. Numbers 
   urgency ordering. On a Day 14 sized shift (14 customers, cake stand, ladder, cushions, chart frame)
   perfect earns 226 coins (3 stars, nobody left) and casual 104 coins (1 star, 7 left); task 03 reports
   the campaign balance against `economy.md`.
+
+## 2026-10-24 - Task 02 content (full v1 content and validators)
+
+Data lives in `apps-games/the-last-window-core/src/content/`. No rule, price, threshold or count changed;
+two plan rows changed wording (below). Evidence: `.agents/resources/2026-10-23/web-games/the-last-window/02/README.md`.
+
+- **Ids.** Scene ids are `scene-R-K` (regular R, scene K). Choice ids are `rR-cK` (for example `r2-c2`),
+  unique across the game so guards never clash. A beat speaker is `regular-R` (the core's `Customer.id`
+  for a regular), `you` or `narration`. `SceneDef` extends the core `SceneScript` with `gift` (5 or 15) and
+  `next` (the id of scene K+1, `null` for scene 5).
+- **Plan row changed: Juno scene 3.** The plan titled both scene 3 and scene 5 "Draft Nine". Scene titles
+  must be unique (text-hygiene test), so scene 3 is now "The Girl in the Fog"; scene 5 keeps the story
+  title "Draft Nine".
+- **Plan row changed: Abel's choice.** Option b "Leave the book in the window with a note" was nine words
+  and the rule is at most eight, so the label is "Leave the book in the window" (the note stays in the
+  story text).
+- **Scene 5 holds no choice.** All 12 choices sit in scenes 2 to 4. Each of the two-choice regulars makes
+  the second choice in scene 4, so the "last choice breaks a tie" rule is exercised by real content.
+- **Guards.** Each regular has a pair of guarded beats (one per option) in scene 4 or scene 5, so a replay
+  with the other option reads differently. Authored `beats` count both variants, so a path shows one fewer
+  beat; the validator checks 6 to 9 for the authored array and for every guarded path.
+- **Choice position.** `afterBeat` is the number of authored beats before the choice. The choice sits
+  after the beat that asks the question; where that is the last main beat (Tobias 2, Juno 2, Henrik 3,
+  Leona 2 and 4, Abel 3, Sunniva 2 and 4) the two reaction beats close the scene on a hook for the next
+  visit, otherwise the remaining main beats do.
+- **Reading level.** The scene grade is the Flesch-Kincaid grade of the whole scene text (main beats, both
+  reactions, both endings). `countSyllables` is a vowel-group heuristic with rules for silent e, `-le`,
+  `-ed`, `-es`, `-ing` and common split vowels; it is verified on 19 known words. The beat limit (grade 10)
+  applies to whole beats, because one-word beats such as "Another." score above 20.
+- **Day 1 script.** `TUTORIAL_ORDERS` (6 orders): Tobias Harbour Black at tick 10; Priya Fog Tea and
+  Salted Butter Roll at 200; a walk-in Fog Tea at 260; Odile Harbour Black and a comforting book at 560;
+  a walk-in Harbour Black and roll at 900; a walk-in Fog Tea and a curious book at 1250. The first two
+  arrivals do not lose patience (`TUTORIAL_PATIENCE_FREE = 2`). `tutorialArrivals()` returns core
+  `Arrival` objects so task 03 and the tests share them.
+- **Validator model.** `validateContent(bundle = defaultBundle())` takes the whole content as one object so
+  tests can pass broken copies. Reachability uses the best case (2 FP per serve, no decor) and counts only
+  the five campaign visits on Days 1 to 13 (the Day 14 visit does not count for scene 5). Ending
+  reachability enumerates every choice combination with the core's `resolveEnding`.
+- **Core purity test.** `architecture.test.ts` scans `src` for DOM names. Story prose says "window" (the
+  shop is the Last Window), so the DOM-name scan skips `src/content`, and a second test checks the content
+  folder for the non-prose tokens and for any `window.` or `document.` access.
+- **Biome.** The repo `biome.json` ignores every folder named `content` (`!apps-games/**/content`), so
+  `src/content` is not covered by `bunx biome check`. The files were formatted and linted once with a
+  copy of the config without that exclusion (a temporary copy, not committed); the verification
+  command is unchanged.
+- **Casual pace.** With the casual bot 29 of 40 scenes are played by Day 14 (Q8); with `perfect` play all 40.

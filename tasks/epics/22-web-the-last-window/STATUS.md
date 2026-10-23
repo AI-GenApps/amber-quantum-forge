@@ -1,6 +1,6 @@
 # Epic 22 - The Last Window (full v1 web game)
 
-Status: in progress (tasks 00 and 01 done; tasks 02 to 08 todo)
+Status: in progress (tasks 00 to 02 done; tasks 03 to 08 todo)
 
 ## Purpose
 
@@ -72,7 +72,7 @@ Rules for every task:
 |---|---|---|---|---|
 | 00 | Knowledge base, design spec and epic task files (no task file; this epic folder) | docs | agent | [x] |
 | 01 | [Core rules engine (headless, in the-last-window-core)](01-core-rules.md) | code | agent | [x] |
-| 02 | [Full v1 content + validators](02-content.md) | code | agent | [ ] |
+| 02 | [Full v1 content + validators](02-content.md) | code | agent | [x] |
 | 03 | [Progression, economy, daily mode, versioned save](03-progression-and-save.md) | code | agent | [ ] |
 | 04 | [All screens, navigation, design tokens, fonts, accessibility](04-screens-and-ui.md) | code | agent | [ ] |
 | 05 | [CC0 audio, haptics, motion polish, onboarding and how-to-play](05-audio-haptics-onboarding.md) | code | agent | [ ] |
