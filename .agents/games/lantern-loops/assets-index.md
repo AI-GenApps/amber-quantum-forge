@@ -168,11 +168,13 @@ committed under `android/` and `ios/`.
 | `resources/icon.png` | 1024x1024, opaque RGB | accepted `icon` master (`art/masters/icon.webp`), unchanged | accepted art |
 | `resources/icon-foreground.png` | 1024x1024, RGBA | accepted `lantern-amber` master, trimmed and fitted into the central 66% (676 px) | accepted art |
 | `resources/icon-background.png` | 1024x1024, opaque | flat indigo `#12132E` | code |
-| `resources/splash.png`, `splash-dark.png` | 2732x2732, opaque | indigo `#12132E` field with the accepted `lantern-amber` centred inside the safe 1200 px square, posterised to 32 colours (median 5) to keep the committed splash copies small; light and dark are identical because the game has one dark look | accepted art lantern, not `key-art` |
+| `resources/splash.png`, `splash-dark.png` | 2732x2732, opaque | indigo `#12132E` field with the centre lantern of the accepted `key-art` master (`art/masters/key-art.webp`, crop 380x430 around (512, 790), soft elliptical mask so the neighbouring garland lanterns stay out and the edge fades into the indigo) centred inside the safe 1200 px box, posterised to 32 colours (median 5) to keep the committed splash copies small; light and dark are identical because the game has one dark look | accepted art (`key-art`) |
 
-`key-art` was rejected (undelivered), so the splash motif is the accepted `lantern-amber` instead of the
-key-art lantern; `bun scripts/render-brand-sources.ts --fallback` draws the code-drawn lantern on
-indigo for the case where no accepted art exists. Evidence:
+Update pass, 2026-10-23: the first task 07 pass ran before `key-art` was accepted and used `lantern-amber`
+for the splash; the splash now comes from the accepted `key-art` (retry round 1). The icon and the
+adaptive foreground are unchanged (same bytes). `bun scripts/render-brand-sources.ts --fallback` draws the
+code-drawn lantern on indigo for the case where no accepted art exists. `empty-archive` (rejected, see
+the art table above) has no Capacitor role. Evidence:
 `.agents/resources/2026-10-23/web-games/lantern-loops/07/README.md`.
 
 ## Evidence

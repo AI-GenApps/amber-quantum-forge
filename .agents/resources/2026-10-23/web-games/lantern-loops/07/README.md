@@ -32,23 +32,35 @@ Accepted-art path (not the code-drawn fallback):
 - `resources/icon-foreground.png`: accepted `lantern-amber` master trimmed and fitted into the central
   66% (676 px) of 1024x1024 on transparent.
 - `resources/icon-background.png`: flat `#12132E`.
-- `resources/splash.png` and `splash-dark.png`: 2732x2732 `#12132E` with the accepted `lantern-amber`
-  inside the central 1200 px square (identical files; one dark look).
+- `resources/splash.png` and `splash-dark.png`: 2732x2732 `#12132E` with the centre lantern of the accepted
+  `key-art` inside the central 1200 px box (identical files; one dark look; first pass used `lantern-amber`,
+  see the update pass below).
 
-`key-art` was never delivered (designer status `style_anchor_failed`), so the splash uses the accepted
-lantern, not a key-art scene. The splash lantern is posterised to 32 colours (median 5) so the 12
+Update pass (art track finished, status `ok`): `key-art` was accepted (retry round 1), so
+`resources/splash.png` and `splash-dark.png` now use the centre lantern of the accepted `key-art` master
+(`../art/masters/key-art.webp`): a 380x430 crop around (512, 790) with a soft elliptical mask (radii
+148x210, 12 px blur) so the neighbouring garland lanterns, 172 px from the centre, stay out and the edge
+fades into `#12132E`, centred in the 1200 px safe box. The first pass had used `lantern-amber` because
+`key-art` was then undelivered (`style_anchor_failed`). Icon, foreground and background are unchanged byte
+for byte. Re-run: `bun scripts/render-brand-sources.ts`, `bunx capacitor-assets generate --android --ios`
+(log `capacitor-assets.log` replaced; totals android 3.57 MB, ios 3.11 MB generated), `bunx cap sync`
+(`cap-sync.log` unchanged apart from timings, so kept). Only the splash files changed:
+`resources/splash*.png`, 26 Android `drawable*/splash.png` and the 6 iOS `Splash.imageset` PNGs. The
+splash lantern is posterised to 32 colours (median 5) so the 12
 committed splash copies stay small (otherwise 6.4 MB android and 12.8 MB ios). The code-drawn fallback is
 available as `bun scripts/render-brand-sources.ts --fallback` and is covered by a test. Nothing outside the
-accepted folder was used. The art bible and review notes are in `../art/` (task 06 copied them; the
-`b2` batch has only a brief and an empty `out/`, so it has no review notes).
+accepted folder was used. The art bible and every review note (b1 rounds 1 to 4, b2 rounds 1 to 4, retry
+rounds 1 to 3) are in `../art/` and `../art/review/` (checked identical to the inbox copies in this pass).
+Not used here: `empty-archive` (rejected in its final round, code-drawn placeholder kept, no Capacitor
+role), `feature-graphic` (a store graphic, only noted) and the in-app art slots.
 
 ## File counts and sizes
 
 | Folder | Files a commit would contain | Bytes |
 |---|---|---|
-| `android/` | 77 | 2,367,544 (2.3 MB) |
-| `ios/` | 23 | 2,152,708 (2.1 MB) |
-| `resources/` | 5 | about 1.3 MB source PNGs (icon 321 KB, foreground 383 KB, background 16 KB, splash 2 x 300 KB) |
+| `android/` | 77 | 2,134,732 (2.1 MB) |
+| `ios/` | 23 | 2,377,300 (2.4 MB) |
+| `resources/` | 5 | about 1.4 MB source PNGs (icon 321 KB, foreground 383 KB, background 16 KB, splash 2 x 338 KB) |
 
 Counts come from `git ls-files --cached --others --exclude-standard`, so ignored build output, the synced
 web copies (`android/app/src/main/assets/public`, `ios/App/App/public`), the generated
@@ -70,7 +82,9 @@ Android SDK tooling was installed. The step left `android/.gradle`, `android/app
 - `platforms.test.ts`: both platform structures, Android `namespace` and `applicationId`, iOS bundle id in
   every configuration, app name in `strings.xml` and `Info.plist`, versions 0.1.0 / 1, portrait only on
   Android and on iPhone and iPad, INTERNET as the only permission (Q6 untouched), indigo launch colours.
-- `icons.test.ts`: the five `resources/` PNGs at their sizes and alpha rules, both render paths, Android
+- `icons.test.ts`: the five `resources/` PNGs at their sizes and alpha rules, both render paths, the key-art
+  splash (committed pixels equal a fresh render from the master, differ from the fallback, indigo corners,
+  lit centre, no neighbour lantern in the crop), Android
   launcher / round / foreground icons in all five densities, adaptive icon XML, Android light and dark splash,
   iOS 1024 icon without alpha, six iOS splash images.
 - `sync.test.ts`: the synced `index.html` equals `dist/index.html` (skipped with a console message when `dist`

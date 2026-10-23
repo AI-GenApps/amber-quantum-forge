@@ -5,8 +5,9 @@
  *   bun scripts/render-brand-sources.ts [--fallback]
  *
  * Accepted path (default): the accepted `icon` master gives `icon.png`; the accepted
- * `lantern-amber` master (transparent) gives the adaptive foreground and the splash motif. Both read
- * the evidence masters, never the inbox. `--fallback` draws the code-drawn lantern on indigo instead
+ * `lantern-amber` master (transparent) gives the adaptive foreground, and the accepted `key-art` master
+ * gives the splash motif (its centre lantern and halo, feathered into the indigo field). All read the
+ * evidence masters, never the inbox. `--fallback` draws the code-drawn lantern on indigo instead
  * (the same drawing as the in-app placeholder), for when no accepted art exists.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -34,6 +35,20 @@ export const SPLASH_SAFE = 1200;
  * splash scale and would otherwise add about 1 MB per splash copy, 12 copies across both platforms.
  */
 export const SPLASH_COLOURS = 32;
+/**
+ * The key-art splash motif: the centre lantern and its halo from the 1024x1536 master, cropped to a
+ * soft ellipse. The ellipse is narrower than the halo so the neighbouring garland lanterns (their near
+ * edges are 172 px from the centre) stay out of the splash.
+ */
+export const KEY_ART_CROP = {
+  cx: 512,
+  cy: 790,
+  halfW: 190,
+  halfH: 215,
+  rx: 148,
+  ry: 210,
+  blur: 12,
+} as const;
 
 export const SOURCE_FILES = [
   "icon.png",
@@ -59,6 +74,42 @@ async function loadMotif(useFallback: boolean): Promise<Buffer> {
     return sharp(readFileSync(lantern)).ensureAlpha().trim().png().toBuffer();
   }
   return sharp(Buffer.from(FALLBACK_LANTERN(1024, false)))
+    .png()
+    .toBuffer();
+}
+
+function softEllipseMask(): Buffer {
+  const { halfW, halfH, rx, ry, blur } = KEY_ART_CROP;
+  return Buffer.from(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${halfW * 2}" height="${halfH * 2}">
+  <defs><filter id="b" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="${blur}"/></filter></defs>
+  <rect width="100%" height="100%" fill="#000"/>
+  <ellipse cx="${halfW}" cy="${halfH}" rx="${rx}" ry="${ry}" fill="#fff" filter="url(#b)"/>
+</svg>`,
+  );
+}
+
+/**
+ * The key-art centre lantern with its halo, cropped to a soft ellipse that fades to the flat indigo of
+ * the splash field, so no hard seam shows where the paper scene ends. Opaque RGB.
+ */
+async function loadKeyArtMotif(): Promise<Buffer | null> {
+  const master = join(MASTERS, "key-art.webp");
+  if (!existsSync(master)) return null;
+  const { cx, cy, halfW, halfH } = KEY_ART_CROP;
+  const width = halfW * 2;
+  const height = halfH * 2;
+  const crop = await sharp(readFileSync(master))
+    .removeAlpha()
+    .extract({ left: cx - halfW, top: cy - halfH, width, height })
+    .toBuffer();
+  const mask = await sharp(softEllipseMask()).greyscale().raw().toBuffer();
+  const rgba = await sharp(crop)
+    .joinChannel(mask, { raw: { width, height, channels: 1 } })
+    .png()
+    .toBuffer();
+  return sharp({ create: { width, height, channels: 3, background: INDIGO_RGB } })
+    .composite([{ input: rgba }])
     .png()
     .toBuffer();
 }
@@ -101,7 +152,8 @@ async function fitCentred(
 export async function renderBrandSources(useFallback: boolean): Promise<Record<string, Buffer>> {
   const motif = await loadMotif(useFallback);
   const opaque = { ...INDIGO_RGB, alpha: 1 };
-  const splashMotif = await sharp(motif)
+  const keyArt = useFallback ? null : await loadKeyArtMotif();
+  const splashMotif = await sharp(keyArt ?? motif)
     .median(5)
     .png({ palette: true, colours: SPLASH_COLOURS, dither: 0 })
     .toBuffer();

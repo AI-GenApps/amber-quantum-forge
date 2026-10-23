@@ -1,7 +1,15 @@
+import { createHash } from "node:crypto";
 import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import sharp from "sharp";
 import { describe, expect, it } from "vitest";
-import { renderBrandSources, SOURCE_FILES } from "../../scripts/render-brand-sources";
+import {
+  INDIGO_RGB,
+  KEY_ART_CROP,
+  renderBrandSources,
+  SOURCE_FILES,
+  SPLASH_SIZE,
+} from "../../scripts/render-brand-sources";
 import { ANDROID_RES, APP_DIR, hasAlpha, IOS_APP, pngInfo, read } from "./files";
 
 const DENSITIES = [
@@ -47,6 +55,66 @@ describe("resources/ brand sources", () => {
         expect(data.readUInt32BE(16), name).toBe((sizes[name] ?? [0, 0])[0]);
       }
     }
+  });
+});
+
+describe("key-art splash", () => {
+  const MASTER = join(
+    APP_DIR,
+    "../../.agents/resources/2026-10-23/web-games/lantern-loops/art/masters/key-art.webp",
+  );
+  const pixel = async (
+    input: string | Buffer,
+    x: number,
+    y: number,
+  ): Promise<[number, number, number]> => {
+    const { data, info } = await sharp(input).raw().toBuffer({ resolveWithObject: true });
+    const at = (y * info.width + x) * info.channels;
+    return [data[at] ?? -1, data[at + 1] ?? -1, data[at + 2] ?? -1];
+  };
+  const centre = Math.floor(SPLASH_SIZE / 2);
+
+  it("builds the splash from the accepted key-art master, not the lantern sprite or the fallback", async () => {
+    expect(existsSync(MASTER)).toBe(true);
+    const accepted = await renderBrandSources(false);
+    const fallback = await renderBrandSources(true);
+    const splash = accepted["splash.png"] ?? Buffer.alloc(0);
+    const committed = join(APP_DIR, "resources/splash.png");
+    const digest = async (input: string | Buffer) =>
+      createHash("sha256")
+        .update(await sharp(input).raw().toBuffer())
+        .digest("hex");
+    expect(await digest(splash)).toBe(await digest(committed));
+    expect(splash.length).toBeGreaterThan(1000);
+    expect(splash.equals(fallback["splash.png"] ?? Buffer.alloc(0))).toBe(false);
+    expect(splash.equals(accepted["splash-dark.png"] ?? Buffer.alloc(0))).toBe(true);
+  });
+
+  it("keeps the corners flat indigo and the centre lit (amber channel well above blue)", async () => {
+    const committed = join(APP_DIR, "resources/splash.png");
+    const [r, g, b] = [INDIGO_RGB.r, INDIGO_RGB.g, INDIGO_RGB.b];
+    for (const [x, y] of [
+      [0, 0],
+      [SPLASH_SIZE - 1, 0],
+      [0, SPLASH_SIZE - 1],
+      [SPLASH_SIZE - 1, SPLASH_SIZE - 1],
+    ] as const) {
+      expect(await pixel(committed, x, y)).toEqual([r, g, b]);
+    }
+    const [cr, , cb] = await pixel(committed, centre, centre - 150);
+    expect(cr).toBeGreaterThan(200);
+    expect(cr).toBeGreaterThan(cb + 60);
+  });
+
+  it("crops only the centre lantern, so no neighbouring garland lantern enters the splash", async () => {
+    const { halfW, rx } = KEY_ART_CROP;
+    const NEIGHBOUR_NEAR_EDGE = 172;
+    expect(rx).toBeLessThan(NEIGHBOUR_NEAR_EDGE);
+    const scale = (SPLASH_SIZE * 0.44) / (halfW * 2);
+    const where = centre + Math.round((NEIGHBOUR_NEAR_EDGE + 14) * scale);
+    const [r, , b] = await pixel(join(APP_DIR, "resources/splash.png"), where, centre);
+    expect(r).toBeLessThan(40);
+    expect(Math.abs(b - INDIGO_RGB.b)).toBeLessThan(6);
   });
 });
 
