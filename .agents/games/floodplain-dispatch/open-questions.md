@@ -18,3 +18,11 @@ None of these block v1 tasks 01 to 08; each has a stated default.
 
 None known at planning time. Any kit limitation found while building is recorded here with the
 workaround used inside this game; the kit itself is read-only for this epic.
+
+## Task 02 notes
+
+| # | Question | Default used until answered | Owner |
+|---|---|---|---|
+| Q10 | The integer snapshot flow model lets water creep overland and puddle into any canal cell dug beside it, so cheap "tap" solutions exist on open ground. The shipped maps were hardened against the cheaper placements the authoring search found, but a final three-seed re-check still finds cheaper placements on 27 of 40 maps (table in `.agents/resources/2026-10-23/web-games/floodplain-dispatch/02/README.md`). Is par tight enough in play? | Ship as authored (a cheaper placement still earns three stars); the owner judges in browser QA. Task 03's exact solver can measure par gaps and, if wanted, par can be lowered per map with the content-plan row, decisions log and tests changed together. | owner at QA, task 03 |
+| Q11 | Several maps carry a small sea cell near the inlet (the river outfall that keeps overland water local). Does it read as a river mouth in the art, or should the renderer draw it as a drain? | Draw sea cells as water everywhere; revisit after the owner sees the board. | task 04, owner |
+| Q12 | Houses sit inside rings of trees (sealed cells). Is the amount of scenery acceptable visually? | Keep; task 04 draws trees as light woods and hedges. | task 04, owner |

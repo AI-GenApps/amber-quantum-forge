@@ -146,3 +146,56 @@ Rules the spec left open, fixed by the core engine and pinned by tests. None cha
   cell); legality is the job of `checkPlacement`.
 - **Gate weeks.** `opensWeek` defaults to 0 and `closesWeek` to the season length; `checkPlacement`
   requires `0 <= opens < closes <= weeks`. Only gates may carry weeks and only pumps a direction.
+
+## 2026-10-23 - Task 02 content (40 maps, validators)
+
+No binding number moved. Names, sizes, weeks, inlet rates, house kinds, fields, inlets, pieces, par,
+budget, tide, forecast events, briefs, chapter texts, mechanic cards, theme thresholds and region
+unlock stars are exactly the rows of `content-plan.md`; `test/content-plan.test.ts` parses that file
+and fails on any drift. `product.md` and `economy.md` are unchanged.
+
+### Map data model
+`MapDef` gained an optional `reference` (the committed solution). Shipped maps are `CampaignMap`
+(`MapDef` plus `id`, `name`, `region`, `brief`, and a required `reference`). One data file per
+region under `src/content/`, built with a tiny constructor DSL (`c`, `b`, `p`, `g`, `r`, `surge`,
+`drought`, `stormTide`). House kinds are listed in row-major order of the `H` cells; which kind sits on
+which house is decided by a seeded shuffle and is cosmetic (all kinds behave the same).
+
+### How the maps were authored (repeatable, simulation-checked)
+Maps are authored reference-first, then the terrain is solved, never hand-tuned by eye:
+
+1. A river layout: each inlet gets a short drain (a sea cell two to three cells away, reached over
+   falling ground), so overland water stays local instead of flooding the whole board; Estuary
+   maps add a tidal bay at the bottom edge. Ground follows a cone that falls away from the inlets.
+2. Houses and fields are scattered, and a Steiner tree of canal cells from the inlets to a cell beside
+   every target is built. Special pieces (barrier, pump, gate, reservoir) are placed per map recipe so
+   the total cost is exactly par (tree cells + the extra cost of each special piece).
+3. Terrain heights are found by simulated annealing against the real engine until: the reference earns
+   three stars, removing any single piece loses a star, and replacing a gate, pump or reservoir by a
+   plain canal also loses a star (so those pieces are needed, not decorative). A polishing pass pulls
+   the heights back toward the smooth cone so the board reads as a landscape.
+4. Scenery (trees) is then added. Scenery is physically identical to land and only removes buildable
+   cells, so it can never break a proof. Cells within two steps of every house and field that the
+   reference does not use are sealed with trees, and any cell used by a cheaper solution found by a
+   separate stochastic placement search is blocked, until that search finds nothing cheaper than par
+   (a tolerance of 1 is allowed). Remaining empty land is decorated.
+
+The authoring tools and logs are kept under
+`.agents/resources/2026-10-23/web-games/floodplain-dispatch/02/` (not shipped, not imported by `src/`).
+
+### What "par is honest" means
+Par is the cost of the committed reference and every piece is needed (tests re-run each map with each
+piece removed). Par is not claimed to be the global minimum: the authoring pipeline blocked every
+cheaper placement its stochastic search found, but a final re-check with three fresh seeds still
+finds cheaper placements on 27 of the 40 maps (largest gaps: e04 13, d09 12, h06 12, d07 10, d08 10).
+The per-map search minimum is recorded in the resources README. Such a placement still earns three
+stars (cost at most par), so the effect is a looser par, not a broken map. Task 03's exact solver is
+the tool to measure and, if the owner asks, tighten this.
+
+Map d10 uses a single gate in its reference (a two-gate recipe found no design); the `Pieces`
+column is the set the player may use and did not change.
+
+### Scenery and the unbuildable cells
+Because trees block canals, the sealed ring around houses and fields is part of the puzzle: the
+reference cells are the only buildable cells touching a house. Task 04 should draw reference-free
+scenery as woods or hedges rather than as obstacles with their own meaning.

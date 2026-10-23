@@ -1,7 +1,7 @@
 ---
 epic: 20-web-floodplain-dispatch
 task: 02-content
-status: todo
+status: in-progress
 commit_scope: floodplain-dispatch
 depends_on: [20-web-floodplain-dispatch/01-core-rules]
 estimate: XL
@@ -36,20 +36,20 @@ Ship the complete v1 content in `apps-games/floodplain-dispatch-core`: all 40 ca
 
 ## Implementation Checklist
 
-- [ ] `src/content/types.ts` additions: `RegionDef`, `ChapterText`, `MechanicCard`, `ThemeDef`, `ResultHeadline`; `MapDef.reference`.
-- [ ] `src/content/valley.ts` v01 to v10, `delta.ts` d01 to d10, `highland.ts` h01 to h10, `estuary.ts` e01 to e10 with the exact names, sizes, weeks, rates, house kinds, fields, inlets, pieces, par, budget, tide and events from `content-plan.md`, and the briefs verbatim.
-- [ ] A reference solution for each of the 40 maps, committed in the map data; gate maps set `opensWeek` and `closesWeek`; reservoir maps (h08 needs two reservoirs) and tide maps are solved the way the brief implies.
-- [ ] `src/content/chapters.ts`: four chapter titles with intro and outro texts verbatim from `content-plan.md`.
-- [ ] `src/content/cards.ts`: the seven mechanic cards (titles, shown-on map ids, text) and the five tutorial steps as data.
-- [ ] `src/content/themes.ts`: the seven themes with star thresholds 0, 9, 27, 48, 75, 100, 120.
-- [ ] `src/content/headlines.ts`: result headlines for 3, 2, 1 and 0 stars, tagline and game title strings.
-- [ ] `src/content/index.ts`: `REGIONS`, `MAPS` (40, ordered), `MAP_BY_ID`, `getMap(id)`, `nextMapId(id)`, `regionOf(id)`, `TOTAL_STARS = 120`, `TOTAL_HOUSES`, `TOTAL_FIELDS`.
-- [ ] `src/content/validate.ts`: `validateMap(def)` returning a list of typed issues (layout parse, size bounds 8 x 12 to 12 x 16, weeks 20 to 30, at least one inlet, at least one sea, inlet rates count, house kinds count equals `H` tokens, pieces allowed by region gating, events allowed by region gating, tide only in Estuary, budget = par + 3, reference legality through `checkPlacement`, reference result three stars at cost = par, irredundancy, empty placement not cleared) and `validateContent()` for the whole set (unique ids and names, ids in order, 10 per region, totals).
-- [ ] `test/content-plan.test.ts`: parse the tables of `.agents/games/floodplain-dispatch/content-plan.md` (read with `node:fs`) and assert every map row (id, name, size, weeks, rate, houses by kind, fields, inlets, pieces, par, budget, tide, events, brief) equals the data, plus region unlock stars, theme thresholds and mechanic cards. This keeps documentation and code identical.
-- [ ] `test/reference-solutions.test.ts`: for each of the 40 maps, run the reference and assert 3 stars, cost = par, 0 flooded houses, all fields irrigated, irredundancy (40 x pieces re-runs), and that the empty placement is not cleared.
-- [ ] `test/content-validators.test.ts`: validator unit tests that build deliberately broken copies of a map (bad token, wrong size, extra event, missing reference, over budget, forbidden piece, par off) and expect the exact issue codes.
-- [ ] `test/content-text.test.ts`: brief length at most 90, no empty strings anywhere, no duplicate names, headlines present, cards reference existing map ids, tutorial steps ordered.
-- [ ] Update `content-plan.md` and `decisions-log.md` if any binding number moved; record the final per-map reference cost table in `.agents/resources/2026-10-23/web-games/floodplain-dispatch/02/README.md`.
+- [x] `src/content/types.ts` additions: `RegionDef`, `ChapterText`, `MechanicCard`, `ThemeDef`, `ResultHeadline`; `MapDef.reference`.
+- [x] `src/content/valley.ts` v01 to v10, `delta.ts` d01 to d10, `highland.ts` h01 to h10, `estuary.ts` e01 to e10 with the exact names, sizes, weeks, rates, house kinds, fields, inlets, pieces, par, budget, tide and events from `content-plan.md`, and the briefs verbatim.
+- [x] A reference solution for each of the 40 maps, committed in the map data; gate maps set `opensWeek` and `closesWeek`; reservoir maps (h08 needs two reservoirs) and tide maps are solved the way the brief implies.
+- [x] `src/content/chapters.ts`: four chapter titles with intro and outro texts verbatim from `content-plan.md`.
+- [x] `src/content/cards.ts`: the seven mechanic cards (titles, shown-on map ids, text) and the five tutorial steps as data.
+- [x] `src/content/themes.ts`: the seven themes with star thresholds 0, 9, 27, 48, 75, 100, 120.
+- [x] `src/content/headlines.ts`: result headlines for 3, 2, 1 and 0 stars, tagline and game title strings.
+- [x] `src/content/index.ts`: `REGIONS`, `MAPS` (40, ordered), `MAP_BY_ID`, `getMap(id)`, `nextMapId(id)`, `regionOf(id)`, `TOTAL_STARS = 120`, `TOTAL_HOUSES`, `TOTAL_FIELDS`.
+- [x] `src/content/validate.ts`: `validateMap(def)` returning a list of typed issues (layout parse, size bounds 8 x 12 to 12 x 16, weeks 20 to 30, at least one inlet, at least one sea, inlet rates count, house kinds count equals `H` tokens, pieces allowed by region gating, events allowed by region gating, tide only in Estuary, budget = par + 3, reference legality through `checkPlacement`, reference result three stars at cost = par, irredundancy, empty placement not cleared) and `validateContent()` for the whole set (unique ids and names, ids in order, 10 per region, totals).
+- [x] `test/content-plan.test.ts`: parse the tables of `.agents/games/floodplain-dispatch/content-plan.md` (read with `node:fs`) and assert every map row (id, name, size, weeks, rate, houses by kind, fields, inlets, pieces, par, budget, tide, events, brief) equals the data, plus region unlock stars, theme thresholds and mechanic cards. This keeps documentation and code identical.
+- [x] `test/reference-solutions.test.ts`: for each of the 40 maps, run the reference and assert 3 stars, cost = par, 0 flooded houses, all fields irrigated, irredundancy (40 x pieces re-runs), and that the empty placement is not cleared.
+- [x] `test/content-validators.test.ts`: validator unit tests that build deliberately broken copies of a map (bad token, wrong size, extra event, missing reference, over budget, forbidden piece, par off) and expect the exact issue codes.
+- [x] `test/content-text.test.ts`: brief length at most 90, no empty strings anywhere, no duplicate names, headlines present, cards reference existing map ids, tutorial steps ordered.
+- [x] Update `content-plan.md` and `decisions-log.md` if any binding number moved; record the final per-map reference cost table in `.agents/resources/2026-10-23/web-games/floodplain-dispatch/02/README.md`.
 
 ## Files Touched
 

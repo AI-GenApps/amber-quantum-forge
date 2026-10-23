@@ -37,6 +37,7 @@ export interface MapDef {
   pieces: readonly PieceKind[];
   par: number;
   budget: number;
+  reference?: readonly Placement[];
 }
 
 export interface Board {
