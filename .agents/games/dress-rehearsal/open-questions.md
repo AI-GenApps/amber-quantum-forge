@@ -31,3 +31,18 @@ The kit stays read-only for this epic. Known at planning time:
 - The prototype in `.agents/resources/2026-10-23/web-games/dress-rehearsal/00/prototype/` is
   JavaScript and not part of the build; tasks 01 and 02 port its rules and data to TypeScript and
   must reproduce its numbers (the `content-plan.test.ts` and `proof` tests compare them).
+
+## Task 01 notes
+
+- No constant or rule changed; `product.md`, `economy.md`, `content-plan.md` and `decisions-log.md`
+  are untouched. The core reproduces the prototype: riv-01 24 of 72, riv-02 9 of 72, rai-03 4 of 16,
+  and all 14 starting-closet proof rows of `content-plan.md`.
+- API choices the spec left open (tests pin them): `SLOT_SETS` keeps the `content-plan.md` listing
+  order while `openSlots` returns board order; `missingSlots` on a dress-capable set with an empty
+  base reports `top` and `bottom`; a dress together with a top or bottom is a conflict, not a
+  complete look; `livePreview` is honest on a partial board (rules that hold vacuously, such as
+  "Nothing navy", show as met on an empty board, so the UI may want to hide chips until the first
+  piece is placed); `ruleDetail` takes an optional third argument with the piece name for
+  `include-piece` and `avoid-piece`; the solver counts one visit per complete look it scores.
+- Hint solver speed: about 0.8 microseconds per complete look in Node, so the 400,000 cap costs
+  roughly a third of a second there; expect several times that on a phone.
