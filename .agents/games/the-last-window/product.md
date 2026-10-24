@@ -267,7 +267,8 @@ Evening flow after a shift: Result -> scenes (0 to 4) -> Home with "Plan tomorro
 ## Onboarding
 
 - Day 1 is a guided shift (flag `tutorial` in the profile): six scripted customers, patience 60 s and
-  the first two do not lose patience. Steps: (1) shop note from Marit on the title-to-home hand-off;
+  the first two do not lose patience. Steps: (1) a modal shop note from Marit as the first card of the shift ("Keep the lamp lit", action "Open the
+  shop"; the clock is held until it is dismissed);
   (2) tap a seat; (3) make Harbour Black step by step; (4) serve and see a tip; (5) a pastry with the
   oven timer while a second customer waits; (6) a book mood request from Odile; (7) read the patience
   bar and the closing grade. Each step is a coach card with one action; a Skip tutorial button is always

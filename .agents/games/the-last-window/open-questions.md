@@ -1,7 +1,8 @@
 # The Last Window - open questions
 
-None of these block v1; each has a stated default. After task 08 the open items are owned by the owner
-(browser QA or a later step).
+None of these block v1; each has a stated default. After task 08 every open item is owned by the owner
+(browser QA at the end or a later step). Closed: Q5 (audio sources, task 05), Q6 (CocoaPods, task 07), Q7
+(art delivery, task 06: all 54 slots accepted).
 
 | # | Question | Default used until answered | Owner |
 |---|---|---|---|
@@ -18,6 +19,7 @@ None of these block v1; each has a stated default. After task 08 the open items 
 | Q11 | Are 3 to 4 scenes in one evening too much reading right after a shift? | Cap of 4 per evening (8 on Day 14), tap to advance, each scene about 40 seconds; the owner judges at QA. | owner at QA |
 | Q12 | Walk-ins are code-drawn silhouettes. Do they read as people next to painted regulars? | Keep; a later art pass can add painted walk-ins. | owner at QA |
 | Q13 | Do the launcher icon, adaptive mask, splash and launch storyboard look right? | Built from the accepted `icon` and `key-art` masters and checked only as files (sizes, opacity, safe-box maths); never seen on a device, in Android Studio or in Xcode. The splash is a soft-edged cottage panel on `night`. Owner judges on a device later. | owner at QA |
+| Q14 | The web build has no service worker, so a browser reload with no network and no dev or preview server fails (only the Capacitor shells bundle the files). Is a browser offline mode wanted? | No service worker in v1: the game is offline-first as a Capacitor app, and in a browser it keeps working offline once loaded because it makes no network calls. Needs a kit feature or a per-game worker; not added. | owner, later step |
 
 ## Kit follow-ups
 
@@ -72,3 +74,12 @@ Found in task 07:
   `com.getcapacitor.myapp`; they are never built here.
 - The key art (1024 x 1536) is upscaled 1.17x to fit the 1200 px safe box of the splash; a 1600 x 2400 key art
   would remove that, but the delivered resolution is fine for a splash that Android and iOS scale anyway.
+
+Found in task 08:
+
+- Browser offline reload (Q14): the kit offers no service-worker or precache helper, so a browser build cannot be
+  reloaded offline. A kit `registerPrecache(manifest)` would fix it for all web games.
+- `createSaveStore` keeps the raw envelope `{ v, data }` under the plain game key in `localStorage`; handy for the
+  owner QA saves (`qa-saves/` in the evidence folder), but the kit has no documented import or export helper.
+- Owner QA inputs still needed from a human: browser pass of `qa-checklist.md`, a device look at the icon and
+  splash (Q13), the privacy policy URL (Q3).

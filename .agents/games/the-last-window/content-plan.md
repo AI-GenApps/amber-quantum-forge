@@ -124,6 +124,8 @@ copy of her first poems. Task 02 keeps this link consistent.)
 | `decor-7` | Rain Chime | 150 | Day 7 | +8 s patience in rain | Hanging brass tubes with a glass drop |
 | `decor-8` | Brass Gramophone | 250 | Day 9 | +10 tip points | Brass-horn gramophone on a stool |
 
+The eight prices total 1,200 (`economy.md`).
+
 ## Weather variants
 
 | Variant | Art slot | Light and mood |

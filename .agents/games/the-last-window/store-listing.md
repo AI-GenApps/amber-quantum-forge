@@ -1,7 +1,9 @@
-# The Last Window - store listing (draft)
+# The Last Window - store listing (final draft)
 
-Draft for a later submission; v1 does not submit to any store (owner decision 2026-10-23). Screenshots
-are left to the owner. Working title is the public name for v1.
+Final draft after task 08, for a later submission; v1 does not submit to any store (owner decision
+2026-10-23). Every length in the first table is checked against the text by `test/kb-consistency.test.ts`.
+Screenshots are left to the owner (planned list below). The privacy policy URL (Q3) and the public name
+beyond the working title (Q4) are the only open inputs. Working title is the public name for v1.
 
 ## Names and text
 
