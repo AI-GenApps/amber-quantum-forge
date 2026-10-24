@@ -10,7 +10,14 @@ export interface CreditEntry {
   source: string;
 }
 
-/** Fonts (task 04) and audio (task 05); task 06 appends the art rows. */
+const ART_GROUPS = [
+  "Key art and interiors",
+  "Regulars (24 busts)",
+  "Drinks, pastries and books",
+  "Decor objects",
+] as const;
+
+/** Fonts, art and audio rows; the audio rows come from `audioCredits.ts`. */
 export const CREDITS: readonly CreditEntry[] = [
   {
     group: "fonts",
@@ -26,6 +33,15 @@ export const CREDITS: readonly CreditEntry[] = [
     licence: "SIL Open Font License 1.1",
     source: "https://github.com/google/fonts/tree/main/ofl/nunitosans",
   },
+  ...ART_GROUPS.map(
+    (name): CreditEntry => ({
+      group: "art",
+      name,
+      author: "MobileGamesDesigner thread",
+      licence: "Owned by the project",
+      source: "Commissioned for The Last Window and reviewed before release",
+    }),
+  ),
   ...AUDIO_CREDITS,
 ];
 

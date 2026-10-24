@@ -19,7 +19,7 @@ import {
 } from "../src/art/fallbacks";
 import { ItemIcon } from "../src/art/ItemIcon";
 import { ART_MANIFEST, artUrls, hasArt } from "../src/art/manifest";
-import { Portrait } from "../src/art/Portrait";
+import { bustImageSlot, Portrait } from "../src/art/Portrait";
 import {
   ART_SLOT_IDS,
   ART_SLOTS,
@@ -51,7 +51,9 @@ afterEach(() => {
 async function mountNode(node: preact.ComponentChild): Promise<HTMLElement> {
   host = document.createElement("div");
   document.body.appendChild(host);
-  await act(() => render(node, host as HTMLElement));
+  await act(() =>
+    render(<ArtContext.Provider value={[]}>{node}</ArtContext.Provider>, host as HTMLElement),
+  );
   return host;
 }
 
@@ -71,10 +73,13 @@ describe("art slots", () => {
     expect(walkinId(-1)).toBe(WALKIN_IDS[5]);
   });
 
-  it("ships an empty manifest and lists only existing runtime files when it grows", () => {
-    expect(ART_MANIFEST).toEqual([]);
-    expect(artUrls()).toEqual([]);
-    expect(hasArt("drink-1")).toBe(false);
+  it("lists only existing runtime files and keeps the two store assets out of the bundle", () => {
+    expect(ART_MANIFEST).toHaveLength(52);
+    expect(ART_MANIFEST).not.toContain("icon");
+    expect(ART_MANIFEST).not.toContain("feature-graphic");
+    expect(artUrls()).toHaveLength(52);
+    expect(hasArt("drink-1")).toBe(true);
+    expect(hasArt("drink-1", [])).toBe(false);
     const publicArt = join(import.meta.dirname, "../public/art");
     for (const slot of ART_MANIFEST) {
       expect(isSlotId(slot)).toBe(true);
@@ -251,7 +256,11 @@ describe("image slots", () => {
   });
 
   it("renders a complete game with an empty manifest: every screen draws only fallbacks", async () => {
-    rig = await mountApp({ route: ["shop"], profile: { day: 15, owned: ["decor-1", "decor-8"] } });
+    rig = await mountApp({
+      route: ["shop"],
+      profile: { day: 15, owned: ["decor-1", "decor-8"] },
+      artManifest: [],
+    });
     const container = rig.container;
     expect(container.querySelectorAll("img")).toHaveLength(0);
     expect(container.querySelectorAll("svg[data-art='fallback']").length).toBeGreaterThan(10);
@@ -269,6 +278,71 @@ describe("image slots", () => {
     );
     expect(srcs).toContain("/art/customer-1-neutral.webp");
     expect(srcs).toContain("/art/interior-morning.webp");
+  });
+
+  it("renders every screen with the full shipped manifest and the code-drawn fallback gone", async () => {
+    rig = await mountApp({ route: ["shop"], profile: { day: 15, owned: ["decor-1", "decor-8"] } });
+    const container = rig.container;
+    expect(container.querySelectorAll("img").length).toBeGreaterThan(10);
+    expect(container.querySelectorAll(".tlw-preview .tlw-decor img")).toHaveLength(2);
+    expect(q(container, ".tlw-preview [data-art='image']")).toBeTruthy();
+  });
+
+  it("renders a partial manifest: images where listed, fallbacks elsewhere, same layout", async () => {
+    const partial = ["interior-evening", "drink-1", "customer-2-neutral"];
+    const node = await mountNode(
+      <ArtContext.Provider value={partial}>
+        <Backdrop slot="interior-evening" owned={["decor-1"]} />
+        <Backdrop slot="interior-rain" />
+        <ItemIcon slot="drink-1" />
+        <ItemIcon slot="drink-2" />
+        <Portrait slot="customer-1" />
+        <Portrait slot="customer-2" />
+      </ArtContext.Provider>,
+    );
+    const kinds = Array.from(node.querySelectorAll(".tlw-backdrop, .tlw-icon, .tlw-portrait")).map(
+      (el) => `${el.getAttribute("data-slot")}:${el.getAttribute("data-art")}`,
+    );
+    expect(kinds).toEqual([
+      "interior-evening:image",
+      "decor-1:fallback",
+      "interior-rain:fallback",
+      "drink-1:image",
+      "drink-2:fallback",
+      "customer-1-neutral:fallback",
+      "customer-2-neutral:image",
+    ]);
+  });
+
+  it("falls back from a missing happy or sad bust to the neutral image, then to the drawing", async () => {
+    const neutralOnly = ["customer-1-neutral", "customer-2-neutral", "customer-2-happy"];
+    expect(bustImageSlot("customer-2", "happy", neutralOnly)).toBe("customer-2-happy");
+    expect(bustImageSlot("customer-2", "sad", neutralOnly)).toBe("customer-2-neutral");
+    expect(bustImageSlot("customer-1", "happy", neutralOnly)).toBe("customer-1-neutral");
+    expect(bustImageSlot("customer-3", "sad", neutralOnly)).toBe("customer-3-sad");
+    expect(bustImageSlot("customer-3", "neutral", neutralOnly)).toBe("customer-3-neutral");
+    expect(bustImageSlot("walkin-umbrella", "happy", neutralOnly)).toBe("walkin-umbrella");
+    const node = await mountNode(
+      <ArtContext.Provider value={neutralOnly}>
+        <Portrait slot="customer-1" mood="sad" />
+        <Portrait slot="customer-3" mood="happy" />
+      </ArtContext.Provider>,
+    );
+    expect(node.querySelector("img")?.getAttribute("src")).toBe("/art/customer-1-neutral.webp");
+    const drawn = node.querySelector("svg[data-slot]");
+    expect(drawn?.getAttribute("data-slot")).toBe("customer-3-happy");
+    expect(drawn?.querySelector("[data-face='happy']")).not.toBeNull();
+  });
+
+  it("sizes decor images at 256 and item images at 192", async () => {
+    const node = await mountNode(
+      <ArtContext.Provider value={["decor-2", "book-1"]}>
+        <ItemIcon slot="decor-2" />
+        <ItemIcon slot="book-1" />
+      </ArtContext.Provider>,
+    );
+    const sizes = Array.from(node.querySelectorAll("img")).map((img) => img.getAttribute("width"));
+    expect(sizes).toEqual(["256", "192"]);
   });
 
   it("keeps the runtime art folder aligned with the manifest", () => {

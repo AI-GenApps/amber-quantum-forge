@@ -1,7 +1,7 @@
 ---
 epic: 22-web-the-last-window
 task: 06-art-integration
-status: todo
+status: in-progress
 commit_scope: the-last-window
 depends_on: [22-web-the-last-window/04-screens-and-ui]
 estimate: L
@@ -35,13 +35,13 @@ Integrate the art that the MobileGamesDesigner thread delivered and the orchestr
 
 ## Implementation Checklist
 
-- [ ] Read the inbox listing and the recorded verdicts; write `.agents/resources/2026-10-23/web-games/the-last-window/06/README.md` with the per-slot decision table (accepted, rejected, missing).
-- [ ] `scripts/build-art.ts`: reads accepted inbox files, runs the automated checks above (fails loudly with the slot id on any violation), writes masters (WebP q90) and runtime WebP, regenerates `src/art/manifest.ts` and the provenance table.
-- [ ] Update `src/art/manifest.ts` so accepted slots point at `public/art/<slot>.webp` with their pixel size; rejected and missing slots stay out of the manifest and keep fallbacks.
-- [ ] Wire the accepted slots into the screens that already reference them (title key art, three interiors by weather on Shift and Shop, busts on Seats and Scene by expression, item icons on stations, tray and recipe book, decor objects on the interior and the shop). A regular whose `happy` or `sad` slot is missing falls back to the neutral image, and a missing neutral falls back to the code-drawn bust; no layout change when a slot is missing.
-- [ ] Update the provenance table in `assets-index.md` and the Credits screen data (art: MobileGamesDesigner thread, licence: owned by the project).
-- [ ] `test/art.test.tsx` (rendering with empty, partial and full manifests, expression fallback chain, Backdrop) and `test/art-assets.test.ts` (files, checks, masters, provenance, budget): reads `public/art/*.webp` with sharp and re-runs the checks for every manifest entry; asserts every manifest entry has a file and every file has a manifest entry; masters exist for every accepted slot; `assertAssetBudget` from the kit with `totalBytes: 8_000_000`; provenance rows exist for all 54 slots.
-- [ ] Delete nothing from the inbox; do not copy rejected files anywhere.
+- [x] Read the inbox listing and the recorded verdicts; write `.agents/resources/2026-10-23/web-games/the-last-window/06/README.md` with the per-slot decision table (accepted, rejected, missing).
+- [x] `scripts/build-art.ts`: reads accepted inbox files, runs the automated checks above (fails loudly with the slot id on any violation), writes masters (WebP q90) and runtime WebP, regenerates `src/art/manifest.ts` and the provenance table.
+- [x] Update `src/art/manifest.ts` so accepted slots point at `public/art/<slot>.webp` with their pixel size; rejected and missing slots stay out of the manifest and keep fallbacks.
+- [x] Wire the accepted slots into the screens that already reference them (title key art, three interiors by weather on Shift and Shop, busts on Seats and Scene by expression, item icons on stations, tray and recipe book, decor objects on the interior and the shop). A regular whose `happy` or `sad` slot is missing falls back to the neutral image, and a missing neutral falls back to the code-drawn bust; no layout change when a slot is missing.
+- [x] Update the provenance table in `assets-index.md` and the Credits screen data (art: MobileGamesDesigner thread, licence: owned by the project).
+- [x] `test/art.test.tsx` (rendering with empty, partial and full manifests, expression fallback chain, Backdrop) and `test/art-assets.test.ts` (files, checks, masters, provenance, budget): reads `public/art/*.webp` with sharp and re-runs the checks for every manifest entry; asserts every manifest entry has a file and every file has a manifest entry; masters exist for every accepted slot; `assertAssetBudget` from the kit with `totalBytes: 8_000_000`; provenance rows exist for all 54 slots.
+- [x] Delete nothing from the inbox; do not copy rejected files anywhere.
 
 ## Files Touched
 

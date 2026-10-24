@@ -2,7 +2,7 @@
 
 A cosy cafe-bookshop at the edge of a harbour town: run short shifts, choose what to stock, decorate, and get to know the regulars whose stories unfold across two weeks.
 
-- Status: in progress (tasks 00 and 01 of epic 22 done: knowledge base and the headless rules engine; task 02 adds the full v1 content data and validators in `apps-games/the-last-window-core/src/content`; task 03 adds progression, economy, Late Shifts and the versioned save in `src/progress` and the app's `src/state`; task 04 adds the 14 screens, 5 sheets, design tokens, the two bundled fonts, the shift runner and code-drawn art for all 54 slots in the app; task 05 adds the 36 CC0 audio files, haptics, motion polish, the Day 1 coach, the first-time cards and the final how-to pages). Tasks 06 to 08 build art, packaging and release readiness.
+- Status: in progress (tasks 00 and 01 of epic 22 done: knowledge base and the headless rules engine; task 02 adds the full v1 content data and validators in `apps-games/the-last-window-core/src/content`; task 03 adds progression, economy, Late Shifts and the versioned save in `src/progress` and the app's `src/state`; task 04 adds the 14 screens, 5 sheets, design tokens, the two bundled fonts, the shift runner and code-drawn art for all 54 slots in the app; task 05 adds the 36 CC0 audio files, haptics, motion polish, the Day 1 coach, the first-time cards and the final how-to pages; task 06 integrates all 54 reviewed art slots). Tasks 07 and 08 build packaging and release readiness.
 - Epic: [`tasks/epics/22-web-the-last-window`](../../../tasks/epics/22-web-the-last-window/STATUS.md)
 - Code: `apps-games/the-last-window` (`@web-games/the-last-window`) and
   `apps-games/the-last-window-core` (`@web-games/the-last-window-core`).

@@ -18,7 +18,7 @@ afterEach(() => {
 describe("preload", () => {
   it("registers both font faces and reports a rising fraction that ends at 1", async () => {
     const seen: number[] = [];
-    await createPreload()((fraction) => seen.push(fraction));
+    await createPreload({ manifest: [] })((fraction) => seen.push(fraction));
     const css = document.getElementById("wg-fonts")?.textContent ?? "";
     for (const face of FONT_FACES) expect(css).toContain(face.src);
     expect(css).toContain('"Young Serif"');

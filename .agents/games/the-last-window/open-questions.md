@@ -47,3 +47,19 @@ Found in task 05 (workarounds inside the game):
 - `Sheet` has no open callback or ref, so the sheet sound and slide are driven by an effect that looks up the
   newest `.wg-sheet` in the document.
 - `StarRating` and the hearts expose no per-star refs; the reveal and heart fill query the rendered SVGs.
+
+Found in task 06:
+
+- Rejected or missing art slots: none. All 54 slots were accepted by the designer loop. The code-drawn
+  placeholders remain in code as the fallback for any future rejected slot.
+- Delivered resolutions are below the planned masters for interiors, key art and busts (1024 x 1536 instead
+  of 1600 x 2400, 1020 x 1360 instead of 1536 x 2048); objects are 1024 x 1024, above the planned 768.
+  Runtime sizes are unaffected and nothing is upscaled. Task 07 must plan its 2732 x 2732 splash around the
+  1024 x 1536 key art.
+- The object occupancy rule of the task (25 to 90 percent and an 85 percent safe area) was replaced by
+  longest side 50 to 90 percent, coverage at least 10 percent and margin at least 3 percent; the owner may
+  want to ask the designer for slightly more air above the Brass Reading Lamp and Glass Cake Stand (3.9
+  percent top margin) in a later art pass.
+- Kit follow-up: `preloadImages` has no concurrency or priority option, so all 52 runtime images load at
+  boot; fine at 1.05 MB, but a lazy tier for the busts would help if the art grows.
+

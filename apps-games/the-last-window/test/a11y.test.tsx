@@ -176,7 +176,13 @@ describe("every screen", () => {
       return;
     }
     auditChrome(container, name);
-    expect(container.querySelectorAll("img"), `${name}: empty manifest`).toHaveLength(0);
+    for (const img of Array.from(container.querySelectorAll("img"))) {
+      expect(img.hasAttribute("alt"), `${name}: image alt`).toBe(true);
+    }
+    const bare = await mountRoute({ ...options, artManifest: [] });
+    if (name === "scene") await press(q(bare, "[data-testid='dialogue']"), "Enter");
+    auditChrome(bare, `${name} (fallbacks)`);
+    expect(bare.querySelectorAll("img"), `${name}: empty manifest`).toHaveLength(0);
   });
 
   it("audits the scene choice and done cards too", async () => {
