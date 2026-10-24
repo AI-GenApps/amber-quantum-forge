@@ -1,10 +1,18 @@
 import { Button, Screen } from "@web-games/kit";
-import { bestStamps, caseUnlocked, getCase } from "@web-games/lost-parcel-desk-core";
+import {
+  bestStamps,
+  caseUnlocked,
+  getCase,
+  type MechanicCard,
+} from "@web-games/lost-parcel-desk-core";
 import { useState } from "preact/hooks";
 import { Sprite } from "../art/Sprite";
 import { dailyIntro } from "../lib/daily";
 import { type CaseTarget, isDailyTarget } from "../nav";
-import { useApp, useArtManifest, useProfile } from "../state/app";
+import { cardFlag, pendingCards } from "../onboarding/cards";
+import { useCoachStep } from "../onboarding/TutorialProvider";
+import { CardSheet } from "../sheets/CardSheet";
+import { useApp, useArtManifest, useFeedback, useProfile } from "../state/app";
 import { t } from "../strings";
 import { Header } from "../ui/Header";
 import { PaperCard } from "../ui/PaperCard";
@@ -14,7 +22,10 @@ export function Intro({ target }: { target: CaseTarget }) {
   const { router, game, clock } = useApp();
   const profile = useProfile();
   const manifest = useArtManifest();
+  const feedback = useFeedback();
+  const coach = useCoachStep();
   const [busy, setBusy] = useState(false);
+  const [queue, setQueue] = useState<MechanicCard[]>([]);
   const daily = isDailyTarget(target);
   const item = daily ? undefined : getCase(target.caseId);
   const meta = daily
@@ -38,12 +49,28 @@ export function Intro({ target }: { target: CaseTarget }) {
     : profile.session?.kind === "campaign" && profile.session.id === item?.id;
   const best = item ? bestStamps(profile, item.id) : 0;
 
-  const open = async (): Promise<void> => {
+  const begin = async (): Promise<void> => {
     if (busy) return;
     setBusy(true);
     const outcome = daily ? await game.startDaily() : await game.startCase(item?.id ?? "");
     setBusy(false);
-    if (outcome.ok) router.replace("table", target);
+    if (outcome.ok) {
+      feedback.fire({ type: "parcel-open" });
+      router.replace("table", target);
+    }
+  };
+
+  const open = (): void => {
+    const cards = item ? pendingCards(profile.flags, item.id) : [];
+    if (cards.length > 0) setQueue(cards);
+    else void begin();
+  };
+
+  const closeCard = (): void => {
+    const [shown, ...rest] = queue;
+    if (shown) void game.markFlag(cardFlag(shown.id));
+    setQueue(rest);
+    if (rest.length === 0) void begin();
   };
 
   return (
@@ -71,9 +98,16 @@ export function Intro({ target }: { target: CaseTarget }) {
           {t("introBest")} <StampRow earned={best} size={18} />
         </p>
       ) : null}
-      <Button size="large" fullWidth disabled={busy} onClick={() => void open()}>
+      <Button
+        size="large"
+        fullWidth
+        disabled={busy}
+        class={`lp-own-sfx${coach === 1 ? " lp-coach-target" : ""}`}
+        onClick={open}
+      >
         {resumable ? t("introResume") : t("introOpen")}
       </Button>
+      <CardSheet open={queue.length > 0} cardId={queue[0]?.id ?? ""} onClose={closeCard} />
     </Screen>
   );
 }

@@ -1,6 +1,6 @@
 # Epic 24 - Lost Parcel Desk (full v1 web game)
 
-Status: in progress (task 00 done; task 01 done; task 02 done; task 03 done; task 04 done; tasks 05 to 08 pending)
+Status: in progress (task 00 done; task 01 done; task 02 done; task 03 done; task 04 done; task 05 done; tasks 06 to 08 pending)
 
 ## Purpose
 
@@ -78,7 +78,7 @@ Rules for every task:
 | 02 | [Full v1 content + validators](02-content.md) | code | agent | [x] |
 | 03 | [Progression, economy, daily mode, versioned save](03-progression-and-save.md) | code | agent | [x] |
 | 04 | [All screens, navigation, design tokens, fonts, accessibility](04-screens-and-ui.md) | code | agent | [x] |
-| 05 | [CC0 audio, haptics, motion polish, onboarding and how-to-play](05-audio-haptics-onboarding.md) | code | agent | [ ] |
+| 05 | [CC0 audio, haptics, motion polish, onboarding and how-to-play](05-audio-haptics-onboarding.md) | code | agent | [x] |
 | 06 | [Integrate reviewed art from the designer inbox](06-art-integration.md) | art | agent | [ ] |
 | 07 | [Capacitor Android/iOS projects, icons and splash](07-capacitor-packaging.md) | code | agent | [ ] |
 | 08 | [Release readiness, budgets, knowledge base, owner QA checklist](08-release-readiness.md) | code | agent | [ ] |

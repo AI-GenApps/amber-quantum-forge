@@ -6,9 +6,10 @@ import { chipState } from "../lib/board";
 import { openAlmanac } from "../lib/openAlmanac";
 import { caseTitle } from "../lib/titles";
 import { type CaseTarget, isDailyTarget } from "../nav";
+import { useCoachStep } from "../onboarding/TutorialProvider";
 import { Confirm } from "../sheets/Confirm";
 import { Pause } from "../sheets/Pause";
-import { useApp, useArtManifest } from "../state/app";
+import { useApp, useArtManifest, useFeedback } from "../state/app";
 import { useCase } from "../state/useCase";
 import { t } from "../strings";
 import { ClueChip } from "../ui/ClueChip";
@@ -21,6 +22,8 @@ import { arrowNav } from "../ui/useHotkeys";
 
 export function Table({ target }: { target: CaseTarget }) {
   const { router, game } = useApp();
+  const feedback = useFeedback();
+  const coach = useCoachStep();
   const manifest = useArtManifest();
   const { active, failed } = useCase(target);
   const [pausing, setPausing] = useState(false);
@@ -38,6 +41,7 @@ export function Table({ target }: { target: CaseTarget }) {
   const { def, state } = active;
   const found = def.clues.filter((clue) => state.foundClueIds.includes(clue.id));
   const open = (objectId: string): void => {
+    feedback.fire({ type: "object-open" });
     void game.inspect(objectId);
     router.push("viewer", { ...target, objectId });
   };
@@ -69,7 +73,7 @@ export function Table({ target }: { target: CaseTarget }) {
             <button
               type="button"
               key={object.id}
-              class={`lp-object${seen ? " lp-object--seen" : ""}`}
+              class={`lp-object${seen ? " lp-object--seen" : ""}${coach === 2 && object.id === "01-2" ? " lp-coach-target" : ""}`}
               style={{ "--lp-tilt": `${tiltFor(object.id, 3)}deg` }}
               data-nav="true"
               data-object={object.id}

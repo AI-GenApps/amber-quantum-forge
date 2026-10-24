@@ -11,12 +11,13 @@ import {
 } from "@web-games/lost-parcel-desk-core";
 import { useEffect, useState } from "preact/hooks";
 import { Sprite } from "../art/Sprite";
+import { revealFeedback } from "../audio/events";
 import { dailyReveal, todayKey } from "../lib/daily";
 import { summarizeEvents } from "../lib/events";
 import { type CaseTarget, isDailyTarget } from "../nav";
 import { AchievementToast } from "../sheets/AchievementToast";
 import { ChapterSheet } from "../sheets/ChapterSheet";
-import { useApp, useArtManifest, useProfile } from "../state/app";
+import { useApp, useArtManifest, useFeedback, useProfile, useReducedMotion } from "../state/app";
 import { dailyCaseFor } from "../state/dailyCase";
 import { useGame } from "../state/useGame";
 import { t } from "../strings";
@@ -31,6 +32,8 @@ export function Reveal({ target }: { target: CaseTarget }) {
   const profile = useProfile();
   const { active } = useGame();
   const manifest = useArtManifest();
+  const feedback = useFeedback();
+  const reduced = useReducedMotion();
   const [sharing, setSharing] = useState<string | null>(null);
   const [outro, setOutro] = useState<number | null>(null);
   const daily = isDailyTarget(target);
@@ -55,6 +58,16 @@ export function Reveal({ target }: { target: CaseTarget }) {
   const fragment = item ? LEDGER.find((entry) => entry.caseId === item.id) : undefined;
   const nextId = item ? nextCaseId(item.id) : null;
   const canNext = nextId !== null && caseUnlocked(profile, nextId);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: the reveal plays once per accusation outcome
+  useEffect(() => {
+    if (last === null) return undefined;
+    const plan = revealFeedback(last.stamps, last.events, !reduced);
+    const cancels = plan.map((step) => feedback.fireLater(step.event, step.delayMs));
+    return () => {
+      for (const cancel of cancels) cancel();
+    };
+  }, [last, feedback]);
 
   useEffect(() => {
     if (item) void game.markLedgerSeen(item.id);
@@ -125,7 +138,7 @@ export function Reveal({ target }: { target: CaseTarget }) {
         <Typewriter text={revealText} />
       </PaperCard>
       <p class="lp-stampline">
-        <StampRow earned={stamps} size={28} />
+        <StampRow earned={stamps} size={28} reveal={last !== null} />
         <span data-testid="stamps-text">{t("revealStamps", { stamps })}</span>
       </p>
       {last ? (

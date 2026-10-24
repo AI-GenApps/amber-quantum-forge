@@ -4,6 +4,7 @@ import {
   createMemoryAdapter,
   injectKitStyles,
   type Settings,
+  type SettingsStore,
   type ShareContent,
   type ShareResult,
 } from "@web-games/kit";
@@ -16,6 +17,7 @@ import {
 import { render } from "preact";
 import { act } from "preact/test-utils";
 import { App } from "../src/App";
+import type { Feedback } from "../src/feedback/feedback";
 import { createAppRouter, type Routes } from "../src/nav";
 import type { AppContextValue } from "../src/state/app";
 import { createProfileStore } from "../src/state/saveStores";
@@ -23,7 +25,7 @@ import { createServices, loadServices } from "../src/state/services";
 import { installTheme } from "../src/theme/install";
 
 const SRC = join(import.meta.dirname, "../src");
-export const GAME_CSS = ["styles.css", "screens.css", "motion.css"]
+export const GAME_CSS = ["styles.css", "screens.css", "motion.css", "onboarding/onboarding.css"]
   .map((name) => readFileSync(join(SRC, name), "utf8"))
   .join("\n");
 
@@ -42,6 +44,7 @@ export interface RigOptions {
   reducedMotion?: boolean;
   artManifest?: string[];
   preload?: AppContextValue["preload"];
+  feedback?: (settings: SettingsStore) => Feedback;
 }
 
 export interface Rig {
@@ -74,6 +77,11 @@ export const SEEN_FLAGS: Record<string, true> = {
   "chapter-1-intro": true,
   "chapter-2-intro": true,
   "chapter-3-intro": true,
+  "tutorial-done": true,
+  "card-look-closer": true,
+  "card-the-board": true,
+  "card-key-and-lock": true,
+  "card-rule-outs": true,
 };
 
 export async function mountApp(options: RigOptions = {}): Promise<Rig> {
@@ -107,6 +115,7 @@ export async function mountApp(options: RigOptions = {}): Promise<Rig> {
     prefersReducedMotion: () => options.reducedMotion ?? true,
     outcome: { last: null },
     ...(options.preload ? { preload: options.preload } : {}),
+    ...(options.feedback ? { feedback: options.feedback(services.settings) } : {}),
     ...(options.artManifest ? { artManifest: options.artManifest } : {}),
   };
   injectKitStyles();

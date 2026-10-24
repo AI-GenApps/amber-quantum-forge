@@ -10,6 +10,7 @@ import type { Profile } from "@web-games/lost-parcel-desk-core";
 import { createContext } from "preact";
 import { useContext, useEffect, useState } from "preact/hooks";
 import type { SlotId } from "../art/slots";
+import { type Feedback, noopFeedback } from "../feedback/feedback";
 import type { AppRouter } from "../nav";
 import type { AccuseOutcome, GameStore } from "./game";
 import { useGame } from "./useGame";
@@ -32,6 +33,8 @@ export interface AppContextValue {
   /** Boot waits for this before leaving the loading screen (fonts and art). */
   preload?: (onProgress: (fraction: number) => void) => Promise<void>;
   outcome: OutcomeBox;
+  /** Sound and haptics; absent in tests that do not need them. */
+  feedback?: Feedback;
 }
 
 export const AppContext = createContext<AppContextValue | null>(null);
@@ -65,4 +68,8 @@ export function useProfile(): Profile {
 
 export function useArtManifest(): readonly SlotId[] | undefined {
   return useApp().artManifest;
+}
+
+export function useFeedback(): Feedback {
+  return useApp().feedback ?? noopFeedback;
 }

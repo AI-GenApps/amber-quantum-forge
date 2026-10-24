@@ -3,7 +3,7 @@
 Bite-sized detective stories at a small-town post office: examine what is inside each lost parcel and
 work out who it belongs to.
 
-- Status: in progress. Tasks 00 to 03 of epic 24 are built (knowledge base, core rules engine, full content and validators, progression / economy / Daily Parcel generator / versioned save) and task 04 adds all 18 screens, the sheets, design tokens, bundled fonts and accessibility, with code-drawn fallbacks for all 67 art slots. Audio, onboarding, designer art and packaging (tasks 05 to 08) are still to come.
+- Status: in progress. Tasks 00 to 03 of epic 24 are built (knowledge base, core rules engine, full content and validators, progression / economy / Daily Parcel generator / versioned save) and task 04 adds all 18 screens, the sheets, design tokens, bundled fonts and accessibility, with code-drawn fallbacks for all 67 art slots. Task 05 adds the CC0 audio (27 sounds and 2 music loops), haptics, motion polish, the case 01 tutorial, the four mechanic cards and the six how-to pages. Designer art and packaging (tasks 06 to 08) are still to come.
 - Epic: [`tasks/epics/24-web-lost-parcel-desk`](../../../tasks/epics/24-web-lost-parcel-desk/STATUS.md)
 - Code: `apps-games/lost-parcel-desk` (`@web-games/lost-parcel-desk`) and
   `apps-games/lost-parcel-desk-core` (`@web-games/lost-parcel-desk-core`).

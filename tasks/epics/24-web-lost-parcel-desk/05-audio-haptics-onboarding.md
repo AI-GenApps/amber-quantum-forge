@@ -1,7 +1,7 @@
 ---
 epic: 24-web-lost-parcel-desk
 task: 05-audio-haptics-onboarding
-status: pending
+status: in-progress
 commit_scope: lost-parcel-desk
 depends_on: [24-web-lost-parcel-desk/04-screens-and-ui]
 estimate: L
@@ -37,15 +37,15 @@ Add the sound layer (27 CC0 sounds and 2 music loops with source and licence per
 
 ## Implementation Checklist
 
-- [ ] Select and download the CC0 files, copy the chosen ogg files into `apps-games/lost-parcel-desk/public/audio/` (names equal slot ids), write `LICENSES.md`, copy pack licences, delete the scratch downloads, and write the evidence README `.agents/resources/2026-10-23/web-games/lost-parcel-desk/05/README.md` (candidates considered, choices, silent slots).
-- [ ] `src/audio/slots.ts` (slot table with file, kind, gain, loop flag), `src/audio/engine.ts` (create manager, preload on first gesture with progress, music crossfade between `music-desk` and `music-case`, typewriter loop only while the reveal is typing, suspend on pause and resume).
-- [ ] `src/audio/events.ts`: one table mapping game events (object open, flip, zoom toggle, clue found, pin, unpin, link, unlink, hint, accuse, wrong accusation, stamp thud, stamp 1 to 3, ledger fragment, map fill, achievement, chapter unlock, theme unlock, streak, sheet open, back, toggle, tap) to sounds and haptics, with unit tests.
-- [ ] `src/feedback/haptics.ts` wiring `createHaptics` and `syncSettings`; settings screen toggles take effect immediately.
-- [ ] `src/motion/` helpers: object pick-up (scale and lift), flip (Web Animations API), pin drop, link line draw, stamp fall (fall, thud, slight bounce), stamp reveal stagger of 140 ms, typewriter pace (about 40 characters per second, tap to finish), toast slide; every helper falls back to the final frame when motion is reduced.
-- [ ] `src/onboarding/tutorial.ts` (pure step machine fed by core state changes), `Coachmark.tsx` overlay, `src/onboarding/cards.tsx` (mechanic card sheet and first-time logic using profile flags), `src/screens/HowTo.tsx` filled with the six pages.
-- [ ] Credits screen data: add audio rows from `LICENSES.md` (parsed in a test to prove they match).
-- [ ] Tests: slot table complete (each slot has a file or an explicit `silent` reason); every listed file exists, is ogg, within size budgets and total at most 2 MB; `LICENSES.md` has a row for each file with a URL, "CC0" and a SHA-256 that matches the file (computed in the test); no audio file lacks a licence row; fake `AudioContext` (kit `createFakeAudioContext`) proves events trigger the right sound ids, music crossfades between desk and case, the typewriter loop stops when typing ends, mute and volume follow settings, nothing plays before unlock, pause suspends; fake haptics receive the exact map above and nothing when haptics are off; the tutorial machine advances only on the matching action, can be skipped and never repeats; each mechanic card shows once and only on its case; how-to renders six pages with prices read from the constants; reduced motion makes every motion helper apply the final frame without calling `animate`.
-- [ ] Update `assets-index.md` (audio table with sources and sizes), `open-questions.md` (silent slots), `decisions-log.md` (source choices).
+- [x] Select and download the CC0 files, copy the chosen ogg files into `apps-games/lost-parcel-desk/public/audio/` (names equal slot ids), write `LICENSES.md`, copy pack licences, delete the scratch downloads, and write the evidence README `.agents/resources/2026-10-23/web-games/lost-parcel-desk/05/README.md` (candidates considered, choices, silent slots).
+- [x] `src/audio/slots.ts` (slot table with file, kind, gain, loop flag), `src/audio/engine.ts` (create manager, preload on first gesture with progress, music crossfade between `music-desk` and `music-case`, typewriter loop only while the reveal is typing, suspend on pause and resume).
+- [x] `src/audio/events.ts`: one table mapping game events (object open, flip, zoom toggle, clue found, pin, unpin, link, unlink, hint, accuse, wrong accusation, stamp thud, stamp 1 to 3, ledger fragment, map fill, achievement, chapter unlock, theme unlock, streak, sheet open, back, toggle, tap) to sounds and haptics, with unit tests.
+- [x] `src/feedback/haptics.ts` wiring `createHaptics` and `syncSettings`; settings screen toggles take effect immediately.
+- [x] `src/motion/` helpers: object pick-up (scale and lift), flip (Web Animations API), pin drop, link line draw, stamp fall (fall, thud, slight bounce), stamp reveal stagger of 140 ms, typewriter pace (about 40 characters per second, tap to finish), toast slide; every helper falls back to the final frame when motion is reduced.
+- [x] `src/onboarding/tutorial.ts` (pure step machine fed by core state changes), `Coachmark.tsx` overlay, `src/onboarding/cards.tsx` (mechanic card sheet and first-time logic using profile flags), `src/screens/HowTo.tsx` filled with the six pages.
+- [x] Credits screen data: add audio rows from `LICENSES.md` (parsed in a test to prove they match).
+- [x] Tests: slot table complete (each slot has a file or an explicit `silent` reason); every listed file exists, is ogg, within size budgets and total at most 2 MB; `LICENSES.md` has a row for each file with a URL, "CC0" and a SHA-256 that matches the file (computed in the test); no audio file lacks a licence row; fake `AudioContext` (kit `createFakeAudioContext`) proves events trigger the right sound ids, music crossfades between desk and case, the typewriter loop stops when typing ends, mute and volume follow settings, nothing plays before unlock, pause suspends; fake haptics receive the exact map above and nothing when haptics are off; the tutorial machine advances only on the matching action, can be skipped and never repeats; each mechanic card shows once and only on its case; how-to renders six pages with prices read from the constants; reduced motion makes every motion helper apply the final frame without calling `animate`.
+- [x] Update `assets-index.md` (audio table with sources and sizes), `open-questions.md` (silent slots), `decisions-log.md` (source choices).
 
 ## Files Touched
 

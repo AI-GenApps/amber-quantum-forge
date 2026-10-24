@@ -1,5 +1,7 @@
 import { useCurrentScreen } from "@web-games/kit";
 import { useEffect, useState } from "preact/hooks";
+import { useGameFeedback, useUiSounds } from "./feedback/useGameFeedback";
+import { TutorialProvider } from "./onboarding/TutorialProvider";
 import { Achievements } from "./screens/Achievements";
 import { Almanac } from "./screens/Almanac";
 import { BoardScreen } from "./screens/Board";
@@ -23,6 +25,7 @@ import {
   AppContext,
   type AppContextValue,
   useApp,
+  useFeedback,
   useProfile,
   useReducedMotion,
   useSettings,
@@ -79,6 +82,7 @@ function Shell() {
   const profile = useProfile();
   const settings = useSettings();
   const reducedMotion = useReducedMotion();
+  const feedback = useFeedback();
   const [quit, setQuit] = useState(false);
   const entry = useCurrentScreen(app.router);
 
@@ -92,6 +96,13 @@ function Shell() {
     [profile.themeSelected, settings.highContrast, reducedMotion],
   );
 
+  useEffect(() => {
+    feedback.setScene(entry.name === "board" ? "case" : "desk");
+  }, [feedback, entry.name]);
+
+  useGameFeedback();
+  useUiSounds();
+
   useEffect(
     () => app.lifecycle?.onBack(() => app.router.handleBack(), { onExit: () => setQuit(true) }),
     [app],
@@ -99,7 +110,7 @@ function Shell() {
 
   const key = `${entry.name}:${JSON.stringify(entry.params ?? null)}`;
   return (
-    <>
+    <TutorialProvider>
       <div class="lp-app" key={key} data-route={entry.name}>
         <CurrentScreen />
       </div>
@@ -115,7 +126,7 @@ function Shell() {
           app.exitApp?.();
         }}
       />
-    </>
+    </TutorialProvider>
   );
 }
 

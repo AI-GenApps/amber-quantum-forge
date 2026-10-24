@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "preact/hooks";
+import { useMotion } from "../motion/useMotion";
 import { t } from "../strings";
 import { Icon } from "./Icon";
 import { arrowNav } from "./useHotkeys";
@@ -23,6 +25,15 @@ const STATE_WORD: Record<ChipState, "chipFound" | "chipPinned" | "chipLinked"> =
 
 export function ClueChip({ clueId, tag, state, selected, onClick, onAlmanac }: ClueChipProps) {
   const pressed = selected ?? state !== "found";
+  const motion = useMotion();
+  const icon = useRef<HTMLSpanElement>(null);
+  const last = useRef<ChipState>(state);
+  useEffect(() => {
+    if (last.current === "found" && state === "pinned" && icon.current) {
+      void motion.pinDrop(icon.current);
+    }
+    last.current = state;
+  }, [state, motion]);
   return (
     <div class="lp-chipwrap">
       <button
@@ -35,10 +46,12 @@ export function ClueChip({ clueId, tag, state, selected, onClick, onAlmanac }: C
         onClick={onClick}
         onKeyDown={arrowNav}
       >
-        <Icon
-          name={state === "found" ? "question" : state === "pinned" ? "pin" : "link"}
-          size={18}
-        />
+        <span class="lp-chip__icon" ref={icon}>
+          <Icon
+            name={state === "found" ? "question" : state === "pinned" ? "pin" : "link"}
+            size={18}
+          />
+        </span>
         <span class="lp-chip__tag">{tag}</span>
         <span class="lp-chip__state">{t(STATE_WORD[state])}</span>
       </button>

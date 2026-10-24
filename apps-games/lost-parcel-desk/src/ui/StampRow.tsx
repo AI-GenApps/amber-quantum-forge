@@ -1,16 +1,32 @@
 import { MAX_STAMPS } from "@web-games/lost-parcel-desk-core";
+import { useEffect, useRef } from "preact/hooks";
+import { useMotion } from "../motion/useMotion";
 import { t } from "../strings";
 
 export interface StampRowProps {
   earned: number;
   total?: number;
   size?: number;
+  /** Earned stamps appear one after another, 140 ms apart. */
+  reveal?: boolean;
 }
 
-export function StampRow({ earned, total = MAX_STAMPS, size = 22 }: StampRowProps) {
+export function StampRow({ earned, total = MAX_STAMPS, size = 22, reveal = false }: StampRowProps) {
   const count = Math.max(0, Math.min(total, Math.floor(earned)));
+  const motion = useMotion();
+  const row = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    if (!reveal || !row.current) return;
+    const icons = Array.from(row.current.querySelectorAll<SVGElement>(".lp-stampicon--on"));
+    void motion.stampReveal(icons);
+  }, [reveal, motion]);
   return (
-    <span class="lp-stamps" role="img" aria-label={t("stampsOf", { earned: count, total })}>
+    <span
+      class="lp-stamps"
+      role="img"
+      aria-label={t("stampsOf", { earned: count, total })}
+      ref={row}
+    >
       {Array.from({ length: total }, (_, index) => (
         <svg
           key={index}

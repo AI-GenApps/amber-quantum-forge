@@ -8,7 +8,7 @@ import {
 import { Sprite } from "../art/Sprite";
 import { useArtManifest, useSettings } from "../state/app";
 import { t } from "../strings";
-import { Icon } from "./Icon";
+import { LinkItem } from "./LinkItem";
 import { RubberStamp } from "./RubberStamp";
 import { arrowNav } from "./useHotkeys";
 
@@ -109,13 +109,7 @@ export function ProfileCard({
       {links.length > 0 ? (
         <ul class="lp-pcard__links">
           {links.map((link) => (
-            <li key={link.clueId} class={`lp-link lp-link--${link.kind}`} data-link={link.kind}>
-              <Icon name={link.kind === "fits" ? "tick" : "cross"} size={16} />
-              <span class="lp-link__word">
-                {link.kind === "fits" ? t("linkFits") : t("linkRulesOut")}
-              </span>
-              <span class="lp-link__tag">{link.tag}</span>
-            </li>
+            <LinkItem key={link.clueId} tag={link.tag} kind={link.kind} />
           ))}
         </ul>
       ) : null}

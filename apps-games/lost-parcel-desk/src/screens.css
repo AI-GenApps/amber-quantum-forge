@@ -197,7 +197,7 @@
 }
 
 .lp-face--flipping {
-  animation: lp-flip 420ms ease-in-out;
+  will-change: transform;
 }
 
 .lp-artbox {
@@ -376,6 +376,7 @@
 }
 
 .lp-link {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -391,6 +392,16 @@
 
 .lp-link--rules-out {
   background: var(--lp-brick);
+}
+
+.lp-link__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: currentColor;
+  opacity: 0.8;
 }
 
 .lp-link__word {

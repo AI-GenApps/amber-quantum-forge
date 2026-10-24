@@ -3,8 +3,11 @@ import type { CaseDef, CaseState, Clue, EvidenceObject } from "@web-games/lost-p
 import { useEffect, useRef, useState } from "preact/hooks";
 import { chipState, hotspotOf, objectClues } from "../lib/board";
 import { openAlmanac } from "../lib/openAlmanac";
+import { FLIP_MS } from "../motion/timing";
+import { useMotion } from "../motion/useMotion";
 import type { ViewerTarget } from "../nav";
-import { useApp, useReducedMotion } from "../state/app";
+import { useCoachStep } from "../onboarding/TutorialProvider";
+import { useApp, useFeedback, useReducedMotion } from "../state/app";
 import { useCase } from "../state/useCase";
 import { t } from "../strings";
 import { EvidenceArt } from "../ui/EvidenceArt";
@@ -14,7 +17,6 @@ import { PaperCard } from "../ui/PaperCard";
 import { useHotkeys } from "../ui/useHotkeys";
 
 const SWIPE_MIN = 56;
-const FLIP_MS = 420;
 
 interface BodyProps {
   target: ViewerTarget;
@@ -26,6 +28,11 @@ interface BodyProps {
 function ViewerBody({ target, def, state, object }: BodyProps) {
   const { router, game } = useApp();
   const reduced = useReducedMotion();
+  const motion = useMotion();
+  const feedback = useFeedback();
+  const coach = useCoachStep();
+  const faceBox = useRef<HTMLDivElement>(null);
+  const artBox = useRef<HTMLDivElement>(null);
   const [face, setFace] = useState<"front" | "back">("front");
   const [magnifier, setMagnifier] = useState(false);
   const [flipping, setFlipping] = useState(false);
@@ -41,6 +48,10 @@ function ViewerBody({ target, def, state, object }: BodyProps) {
   }, [game, object.id]);
 
   useEffect(() => {
+    if (artBox.current) void motion.pickUp(artBox.current);
+  }, [motion]);
+
+  useEffect(() => {
     if (!flipping) return undefined;
     const timer = setTimeout(() => setFlipping(false), FLIP_MS);
     return () => clearTimeout(timer);
@@ -53,15 +64,19 @@ function ViewerBody({ target, def, state, object }: BodyProps) {
       setMagnifier(false);
       void game.flip(object.id);
     }
+    feedback.fire({ type: "flip" });
     if (!reduced) setFlipping(true);
+    if (faceBox.current) void motion.flip(faceBox.current);
   };
   const toggleMagnifier = (): void => {
     if (face === "back") return;
+    feedback.fire({ type: "zoom" });
     setMagnifier((on) => !on);
   };
   const go = (step: number): void => {
     const count = def.objects.length;
     const next = def.objects[(index + step + count) % count];
+    if (next) feedback.fire({ type: "object-open" });
     if (next) router.replace("viewer", { ...target, objectId: next.id });
   };
   const togglePin = (clue: Clue): void => {
@@ -112,9 +127,12 @@ function ViewerBody({ target, def, state, object }: BodyProps) {
           if (Math.abs(dx) >= SWIPE_MIN && Math.abs(dy) < Math.abs(dx) / 2) flip();
         }}
       >
-        <div class={`lp-face lp-face--${face}${flipping ? " lp-face--flipping" : ""}`}>
+        <div
+          class={`lp-face lp-face--${face}${flipping ? " lp-face--flipping" : ""}`}
+          ref={faceBox}
+        >
           {face === "front" ? (
-            <div class="lp-artbox">
+            <div class="lp-artbox" ref={artBox}>
               <EvidenceArt object={object} size={220} />
               {magnifier
                 ? zooms.map((clue, at) => {
@@ -162,14 +180,14 @@ function ViewerBody({ target, def, state, object }: BodyProps) {
         {magnifier ? ` ${t("magnifierOn", { count: zooms.length })}` : ""}
       </p>
       <div class="lp-actions">
-        <Button variant="secondary" onClick={flip}>
+        <Button variant="secondary" class="lp-own-sfx" onClick={flip}>
           <Icon name="flip" size={18} /> {face === "front" ? t("viewerFlip") : t("viewerFlipBack")}
         </Button>
         <Button
           variant={magnifier ? "primary" : "secondary"}
           disabled={face === "back"}
           onClick={toggleMagnifier}
-          class="lp-magnifier"
+          class={`lp-magnifier${coach === 3 ? " lp-coach-target" : ""}`}
         >
           <Icon name="magnifier" size={18} />{" "}
           {magnifier ? t("viewerMagnifierOff") : t("viewerMagnifierOn")}
@@ -201,7 +219,7 @@ function ViewerBody({ target, def, state, object }: BodyProps) {
                 <Button
                   size="small"
                   variant={pinned ? "primary" : "secondary"}
-                  class="lp-pinbutton"
+                  class={`lp-pinbutton${coach === 4 ? " lp-coach-target" : ""}`}
                   onClick={() => togglePin(clue)}
                 >
                   <Icon name="pin" size={16} /> {pinned ? t("viewerUnpin") : t("viewerPin")}
@@ -213,10 +231,10 @@ function ViewerBody({ target, def, state, object }: BodyProps) {
         </ul>
       </section>
       <div class="lp-actions">
-        <Button variant="secondary" onClick={() => go(-1)}>
+        <Button variant="secondary" class="lp-own-sfx" onClick={() => go(-1)}>
           <Icon name="back" size={18} /> {t("viewerPrev")}
         </Button>
-        <Button variant="secondary" onClick={() => go(1)}>
+        <Button variant="secondary" class="lp-own-sfx" onClick={() => go(1)}>
           {t("viewerNext")} <Icon name="next" size={18} />
         </Button>
       </div>

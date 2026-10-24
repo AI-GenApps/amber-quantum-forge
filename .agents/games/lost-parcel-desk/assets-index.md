@@ -1,9 +1,9 @@
 # Lost Parcel Desk - assets index
 
-Status after task 04: the two font families are bundled and the 67 art slots all have code-drawn fallbacks
+Status after task 05: the two font families are bundled, the 67 art slots all have code-drawn fallbacks
 (`src/art/slots.ts`, `manifest.ts`, `fallbacks.tsx`, `src/ui/Glyph.tsx`), with an empty manifest, so the game
-renders completely today. Audio (task 05), designer art (task 06) and icons and splash (task 07) are still to come
-and follow the plan below.
+renders completely today, and all 27 sound slots and both music loops ship as CC0 Ogg files (913,216 bytes).
+Designer art (task 06) and icons and splash (task 07) are still to come and follow the plan below.
 
 ## Where things live
 
@@ -145,48 +145,59 @@ the stamp-and-envelope icon badge. No fallback draws text except the portrait in
 ## Audio (CC0 only, delivered in task 05)
 
 Sources, in the order tried: Kenney audio packs at `kenney.nl/assets` (Interface Sounds, Impact Sounds,
-RPG Audio, Digital Audio, Music Jingles, Music Loops); otherwise a page that explicitly states CC0 for the
-file (OpenGameArt entries that show `License(s): CC0`). Nothing is synthesised. Every file gets a row in
-`public/audio/LICENSES.md` (author, source URL, licence, download date, SHA-256) and pack licence texts are
-copied to `public/audio/licenses/`. A slot with no CC0 source ships silent and is listed in `open-questions.md`.
-Budget: all audio at most 2 MB, each sound effect at most 60 KB (mono Ogg Vorbis), each music loop at most
-600 KB.
+RPG Audio, Digital Audio, Music Jingles); otherwise a page that explicitly states CC0 for the file (OpenGameArt
+entries that show `License(s): CC0`). Kenney has no Music Loops pack page (`kenney.nl/assets/music-loops` is a
+404), so both music loops and the typing loop come from CC0 OpenGameArt pages. Nothing is synthesised: the
+loops are excerpts of CC0 recordings with a crossfaded tail. Every file has a row in `public/audio/LICENSES.md`
+(author, source URL, licence, download date, SHA-256) and the pack and page licence texts are in
+`public/audio/licenses/`. `test/audio-assets.test.ts` proves the rows match the files and that the credits
+screen lists the same rows. Budget: all audio at most 2 MB, each sound effect at most 60 KB (mono Ogg Vorbis),
+each music loop at most 600 KB.
 
-| Slot id | Trigger | Preferred pack |
-|---|---|---|
-| `ui-tap` | any button tap | Kenney Interface Sounds |
-| `ui-back` | Back button | Kenney Interface Sounds |
-| `ui-toggle` | a settings toggle | Kenney Interface Sounds |
-| `ui-open-sheet` | a sheet opens | Kenney Interface Sounds |
-| `parcel-open` | the parcel is opened | Kenney RPG Audio (cloth, paper) |
-| `object-open` | an object is picked up | Kenney RPG Audio (paper) |
-| `object-flip` | an object is turned over | Kenney RPG Audio (book flip) |
-| `zoom-toggle` | the magnifier is switched on or off | Kenney Interface Sounds |
-| `clue-found` | a clue is found | Kenney Interface Sounds |
-| `clue-pin` | a clue is pinned | Kenney Impact Sounds |
-| `clue-unpin` | a clue is unpinned | Kenney Impact Sounds |
-| `clue-link` | a clue is linked to a card | Kenney Interface Sounds |
-| `clue-unlink` | a link is removed | Kenney Interface Sounds |
-| `hint-use` | a hint is bought | Kenney Interface Sounds |
-| `accuse` | Accuse is confirmed | Kenney Impact Sounds |
-| `wrong-guess` | wrong accusation, "Return to sender" | Kenney Digital Audio |
-| `stamp-thud` | the rubber stamp lands on the reveal | Kenney Impact Sounds |
-| `typewriter` | the reveal text types out (short loop) | Kenney if present, else a CC0 OpenGameArt page |
-| `stamp-1` | reveal, 1 stamp | Kenney Music Jingles |
-| `stamp-2` | reveal, 2 stamps | Kenney Music Jingles |
-| `stamp-3` | reveal, 3 stamps | Kenney Music Jingles |
-| `ledger-found` | a ledger fragment is unlocked | Kenney Music Jingles |
-| `map-fill` | a place on the town map fills in | Kenney Interface Sounds |
-| `achievement` | an achievement toast | Kenney Music Jingles |
-| `chapter-unlock` | a chapter opens | Kenney Music Jingles |
-| `theme-unlock` | a desk theme unlocks | Kenney Music Jingles |
-| `streak-up` | the daily streak is extended | Kenney Music Jingles |
-| `music-desk` | menus and the evidence table (loop) | Kenney Music Loops, else a CC0 OpenGameArt track |
-| `music-case` | the deduction board (loop) | Kenney Music Loops, else a CC0 OpenGameArt track |
+| Slot id | Trigger | File | Bytes | Source | Original |
+|---|---|---|---|---|---|
+| `ui-tap` | any button tap | `ui-tap.ogg` | 4,275 | https://kenney.nl/assets/interface-sounds | `Audio/click_002.ogg` |
+| `ui-back` | Back button | `ui-back.ogg` | 7,029 | https://kenney.nl/assets/interface-sounds | `Audio/back_002.ogg` |
+| `ui-toggle` | a settings toggle | `ui-toggle.ogg` | 8,056 | https://kenney.nl/assets/interface-sounds | `Audio/toggle_002.ogg` |
+| `ui-open-sheet` | a sheet opens | `ui-open-sheet.ogg` | 14,975 | https://kenney.nl/assets/interface-sounds | `Audio/open_002.ogg` |
+| `parcel-open` | the parcel is opened | `parcel-open.ogg` | 7,346 | https://kenney.nl/assets/rpg-audio | `Audio/cloth2.ogg` |
+| `object-open` | an object is picked up | `object-open.ogg` | 10,701 | https://kenney.nl/assets/rpg-audio | `Audio/bookFlip1.ogg` |
+| `object-flip` | an object is turned over | `object-flip.ogg` | 7,813 | https://kenney.nl/assets/rpg-audio | `Audio/bookFlip2.ogg` |
+| `zoom-toggle` | the magnifier is switched on or off | `zoom-toggle.ogg` | 5,629 | https://kenney.nl/assets/interface-sounds | `Audio/switch_003.ogg` |
+| `clue-found` | a clue is found | `clue-found.ogg` | 8,968 | https://kenney.nl/assets/interface-sounds | `Audio/confirmation_001.ogg` |
+| `clue-pin` | a clue is pinned | `clue-pin.ogg` | 9,196 | https://kenney.nl/assets/impact-sounds | `Audio/impactPlank_medium_000.ogg` |
+| `clue-unpin` | a clue is unpinned | `clue-unpin.ogg` | 5,048 | https://kenney.nl/assets/impact-sounds | `Audio/impactWood_light_001.ogg` |
+| `clue-link` | a clue is linked to a card | `clue-link.ogg` | 4,679 | https://kenney.nl/assets/interface-sounds | `Audio/pluck_001.ogg` |
+| `clue-unlink` | a link is removed | `clue-unlink.ogg` | 8,989 | https://kenney.nl/assets/interface-sounds | `Audio/scratch_001.ogg` |
+| `hint-use` | a hint is bought | `hint-use.ogg` | 4,848 | https://kenney.nl/assets/interface-sounds | `Audio/bong_001.ogg` |
+| `accuse` | Accuse is confirmed | `accuse.ogg` | 4,547 | https://kenney.nl/assets/impact-sounds | `Audio/impactWood_heavy_000.ogg` |
+| `wrong-guess` | wrong accusation, "Return to sender" | `wrong-guess.ogg` | 5,416 | https://kenney.nl/assets/digital-audio | `Audio/lowRandom.ogg` |
+| `stamp-thud` | the rubber stamp lands on the reveal | `stamp-thud.ogg` | 4,997 | https://kenney.nl/assets/impact-sounds | `Audio/impactSoft_heavy_001.ogg` |
+| `typewriter` | the reveal text types out (loop, only while typing) | `typewriter.ogg` | 22,540 | https://opengameart.org/content/keyboard-soundpack-1-typing-and-single-keystrokes | `Generated Typing/generated-006_faster.wav` |
+| `stamp-1` | reveal, 1 stamp | `stamp-1.ogg` | 7,359 | https://kenney.nl/assets/music-jingles | `Audio/Pizzicato jingles/jingles_PIZZI05.ogg` |
+| `stamp-2` | reveal, 2 stamps | `stamp-2.ogg` | 8,002 | https://kenney.nl/assets/music-jingles | `Audio/Pizzicato jingles/jingles_PIZZI09.ogg` |
+| `stamp-3` | reveal, 3 stamps | `stamp-3.ogg` | 10,630 | https://kenney.nl/assets/music-jingles | `Audio/Pizzicato jingles/jingles_PIZZI14.ogg` |
+| `ledger-found` | a ledger fragment is unlocked | `ledger-found.ogg` | 13,565 | https://kenney.nl/assets/music-jingles | `Audio/Steel jingles/jingles_STEEL01.ogg` |
+| `map-fill` | a place on the town map fills in | `map-fill.ogg` | 6,767 | https://kenney.nl/assets/interface-sounds | `Audio/select_005.ogg` |
+| `achievement` | an achievement toast | `achievement.ogg` | 11,066 | https://kenney.nl/assets/music-jingles | `Audio/Sax jingles/jingles_SAX03.ogg` |
+| `chapter-unlock` | a chapter opens | `chapter-unlock.ogg` | 10,658 | https://kenney.nl/assets/music-jingles | `Audio/Steel jingles/jingles_STEEL05.ogg` |
+| `theme-unlock` | a desk theme unlocks | `theme-unlock.ogg` | 9,116 | https://kenney.nl/assets/music-jingles | `Audio/Hit jingles/jingles_HIT10.ogg` |
+| `streak-up` | the daily streak is extended | `streak-up.ogg` | 11,253 | https://kenney.nl/assets/music-jingles | `Audio/Pizzicato jingles/jingles_PIZZI01.ogg` |
+| `music-desk` | menus and the evidence table (loop) | `music-desk.ogg` | 298,776 | https://opengameart.org/content/calm-piano-1-vaporware | `003_Vaporware_2.mp3` |
+| `music-case` | the deduction board (loop) | `music-case.ogg` | 380,972 | https://opengameart.org/content/another-august | `013_Another_August_0.mp3` |
 
-That is 27 sound slots (the first 27 rows) and 2 music loops: 29 slots. Haptics (no files): light impact
-when pinning, linking or flipping; `warning` on a wrong accusation; medium impact on Accuse; `success` on
-a correct delivery, each stamp, a chapter unlock and a theme unlock. Nothing on plain button taps.
+That is 27 sound slots (the first 27 rows) and 2 music loops: 29 files, 913,216 bytes in total against the 2 MB
+budget; the largest are `music-case` (380,972 bytes) and `music-desk` (298,776 bytes). No slot is silent. The
+`typewriter` slot is a loop of a Cherry KC 1000 keyboard recording (the pack calls it "perfect for typewriter
+effects"); it runs only while the reveal text is typing. Choices were made by licence, pack, name, duration and
+slot fit; nothing was listened to (owner reviews the sound in browser QA).
+
+Haptics (no files): light impact when pinning, linking or flipping; `warning` on a wrong accusation; medium
+impact on Accuse; `success` on a correct delivery, each stamp earned, a chapter unlock and a theme unlock.
+Nothing on plain button taps. The map lives in `src/audio/events.ts` (`cueFor`).
+
+Music: `music-desk` plays on every screen except the deduction board, which plays `music-case`; the two
+cross-fade over 1.2 s. Both honour the Music switch and the sound effects honour the Sound switch.
 
 ## Release totals and budgets (filled in by task 08)
 

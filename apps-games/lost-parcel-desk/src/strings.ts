@@ -262,6 +262,9 @@ const strings = defineStrings({
 
   cardGotIt: "Got it",
 
+  coachStep: "Step {step} of {total}",
+  coachSkip: "Skip tutorial",
+
   creditsTitle: "Credits and licences",
   creditsIntro: "{title} is made with open fonts and, as they arrive, open audio and art.",
   creditsFonts: "Fonts",

@@ -122,7 +122,7 @@ variable woff2.
 ### Audio plan: 27 sounds and 2 loops
 Paper, flip, pin, link, stamp and typewriter sounds suit the desk. The typewriter and music loops are the slots
 most likely to have no Kenney source; fallbacks are CC0 OpenGameArt pages, otherwise the slot ships silent
-(open question Q5).
+(open question Q5, answered in task 05: every slot has a CC0 file).
 
 ### Task files follow the sibling epics
 Structure, file names, verification commands and commit format copy epic 20 (Floodplain Dispatch) so the
@@ -220,8 +220,53 @@ No binding number moved. Refinements, all recorded because they change what the 
   (the full reveal text is on screen at once); the full text is always in the DOM for screen readers.
 - **Fonts.** One variable Plex file and two Courier Prime files, 79,884 bytes in total; see `assets-index.md`.
 - **How to play** ships six short pages written from the product rules so the screen is useful today; task 05
-  replaces the copy and adds the tutorial. Credits lists the two font families; the audio and art lists are empty
-  data files that tasks 05 and 06 extend.
+  replaced the copy and added the tutorial. Credits lists the two font families and, since task 05, the 29 audio
+  files; the art list is an empty data file that task 06 extends.
 - **Map.** The town is one SVG (six streets, 12 place markers filled when the case is delivered, dashed when locked)
   with a list of 12 real buttons under it for keyboards and screen readers; tapping a marker or a button opens the
   case intro, or says the case is locked.
+
+### Audio, haptics, motion and onboarding settled in task 05
+
+- **Sources.** 26 sounds are Kenney (CC0) files from Interface Sounds, Impact Sounds, RPG Audio, Digital Audio and
+  Music Jingles; stereo originals were downmixed to mono Ogg Vorbis (q4), mono ones copied byte for byte. Kenney has no
+  Music Loops pack page (404), so `music-desk` (Calm Piano 1 "Vaporware") and `music-case` ("Another August"), both by The
+  Cynic Project, and the `typewriter` loop (a keyboard recording from Keyboard Soundpack #1 by unicaegames) come from
+  OpenGameArt pages that state CC0. The loops are 45 s and 2.5 s excerpts with a crossfaded tail, not synthesis. No slot is
+  silent, so Q5 is closed.
+- **Two audio managers.** The sound-effect manager also carries the two music tracks (cross-fade 1.2 s, desk music on every
+  screen except the board); a second manager carries the typewriter loop so it can run over the music. The loop runs only
+  while a Typewriter is typing and stops on a tap, on completion and on unmount. Both follow the Sound and Music switches
+  (the loop follows Sound).
+- **One event table.** `src/audio/events.ts` maps 21 game events to a sound and a haptic. Pins, unpins, links, unlinks,
+  clue finds, hints and wrong accusations are detected by comparing the open case before and after every store change
+  (`boardFeedback`), so pointer, keyboard and hint paths sound the same. Picking up an object, flipping, the magnifier,
+  Accuse, the parcel and the reveal are fired by the screens. A hint plays only the hint sound. Buttons with their own sound
+  carry the class `lp-own-sfx` (or are chips, objects, hotspots, pin buttons, the magnifier and Accuse) and skip the
+  generic tap; sheets play the sheet sound when they open.
+- **Haptics.** Exactly the spec: light on pin, link and flip; warning on a wrong accusation; medium on Accuse; success
+  on a correct delivery (when the stamp lands), on each earned stamp, on a chapter unlock and on a theme unlock; nothing
+  on plain taps, unpins or unlinks. The Haptics switch applies immediately.
+- **Reveal timing.** The stamp lands 520 ms after the screen opens (0 under reduced motion), then each earned stamp follows
+  140 ms apart (only the last plays the 1, 2 or 3 stamp jingle), then the ledger fragment and map fill, chapter and
+  theme unlocks and the streak, 520 ms apart. The achievement toast plays its own sound when it slides in.
+- **Motion.** The flip, stamp fall and typewriter moved from CSS keyframes to kit motion helpers (`src/motion/game.ts`):
+  pick-up (scale and lift), flip (420 ms), pin drop, link line draw, stamp fall (520 ms with a slight bounce), stamp
+  reveal (140 ms stagger), toast slide. Under reduced motion every helper applies its final frame and never calls
+  `animate`. The `lp-face--flipping` and `lp-rstamp--fall` classes stay as state markers. The typewriter types at 40
+  characters per second (25 ms each) and a tap finishes it.
+- **Tutorial.** A pure step machine (`src/onboarding/tutorial.ts`) reads only the open case: step n advances when the
+  trigger of step n holds, so a later action never advances an earlier step; steps whose action already happened are
+  passed in order. It shows on the case 01 intro, table, viewer and board while the flag `tutorial-done` is unset and case
+  01 is not delivered, in a coachmark under the screen (Skip tutorial included), with a glow on the Open button, the scarf,
+  the magnifier, the Pin buttons and Accuse. Finishing (a first accusation, wrong or right) or skipping saves
+  `tutorial-done`; erasing progress clears it and the tutorial starts again.
+- **Mechanic cards.** Shown when the player taps Open parcel on the case listed in `content-plan.md`, one sheet after the
+  other, before the case starts; each saves `card-<id>` when "Got it" is tapped, so a card shows once. Look closer and
+  The deduction board on case 01, Key and lock on 05, Rule-outs on 06.
+- **How to play.** Six pages (The job, The evidence table, The deduction board, Stamps and postage, Pairs and rule-outs,
+  Daily Parcel) whose numbers (3 stamps, 2 fits, hints 20 and 15, freeze 30, up to 2 freezes, chapters at 7 and 18, 2
+  hints per case) are read from the core constants.
+- **Flags used.** `tutorial-done`, `card-look-closer`, `card-the-board`, `card-key-and-lock`, `card-rule-outs` (5 of the
+  64 flag slots, alongside the 6 chapter flags).
+

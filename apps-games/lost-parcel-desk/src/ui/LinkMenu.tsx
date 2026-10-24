@@ -23,6 +23,7 @@ export function LinkMenu({ open, clueTag, personName, current, onChoose, onClose
       <div class="lp-linkmenu" data-testid="link-menu">
         <Button
           fullWidth
+          class="lp-own-sfx"
           variant={current === "fits" ? "primary" : "secondary"}
           onClick={() => onChoose("fits")}
         >
@@ -30,6 +31,7 @@ export function LinkMenu({ open, clueTag, personName, current, onChoose, onClose
         </Button>
         <Button
           fullWidth
+          class="lp-own-sfx"
           variant={current === "rules-out" ? "primary" : "secondary"}
           onClick={() => onChoose("rules-out")}
         >
@@ -37,6 +39,7 @@ export function LinkMenu({ open, clueTag, personName, current, onChoose, onClose
         </Button>
         <Button
           fullWidth
+          class="lp-own-sfx"
           variant="ghost"
           disabled={current === null}
           onClick={() => onChoose(null)}

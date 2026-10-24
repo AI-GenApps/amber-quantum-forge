@@ -382,7 +382,8 @@ describe("how to play and credits", () => {
     expect(text(c)).toContain("Courier Prime");
     expect(text(c)).toContain("IBM Plex Sans");
     expect(text(c)).toContain("SIL Open Font License 1.1");
-    expect(text(c)).toContain("No audio files are bundled yet.");
+    expect(text(c)).toContain("ui-tap.ogg");
+    expect(text(c)).toContain("music-case.ogg");
   });
 });
 

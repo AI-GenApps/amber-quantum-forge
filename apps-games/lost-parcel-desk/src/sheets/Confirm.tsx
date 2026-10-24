@@ -8,6 +8,8 @@ export interface ConfirmProps {
   confirmLabel: string;
   cancelLabel: string;
   danger?: boolean;
+  /** Extra class on the confirm button. */
+  confirmClass?: string;
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -19,6 +21,7 @@ export function Confirm({
   confirmLabel,
   cancelLabel,
   danger = false,
+  confirmClass,
   onConfirm,
   onCancel,
 }: ConfirmProps) {
@@ -29,7 +32,11 @@ export function Confirm({
         <Button variant="secondary" onClick={onCancel}>
           {cancelLabel}
         </Button>
-        <Button variant={danger ? "danger" : "primary"} onClick={onConfirm}>
+        <Button
+          variant={danger ? "danger" : "primary"}
+          onClick={onConfirm}
+          {...(confirmClass ? { class: confirmClass } : {})}
+        >
           {confirmLabel}
         </Button>
       </div>

@@ -1,6 +1,7 @@
 import { CASES, getCase } from "@web-games/lost-parcel-desk-core";
 import { act } from "preact/test-utils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { TYPEWRITER_MS_PER_CHAR } from "../src/motion/timing";
 import { linkCanonical, openEverything } from "./fixtures/game";
 import { click, mountApp, progress, q, qa, type Rig, tap, tapStarting, text } from "./helpers";
 
@@ -51,7 +52,7 @@ describe("reveal motion", () => {
     );
     expect(rig.container.querySelector(".lp-rstamp--fall")).not.toBeNull();
     await act(() => {
-      vi.advanceTimersByTime(24 * (getCase("01")?.reveal.length ?? 0) + 100);
+      vi.advanceTimersByTime(TYPEWRITER_MS_PER_CHAR * (getCase("01")?.reveal.length ?? 0) + 100);
     });
     expect(typed().getAttribute("data-complete")).toBe("true");
     expect(text(q(typed(), "[aria-hidden='true']"))).toBe(getCase("01")?.reveal);

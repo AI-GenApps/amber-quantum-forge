@@ -18,6 +18,7 @@ export function AccuseConfirm({ open, name, wrongSoFar, onConfirm, onCancel }: A
       body={t("accuseBody", { stamps: Math.max(1, MAX_STAMPS - wrongSoFar - 1) })}
       confirmLabel={t("accuseYes")}
       cancelLabel={t("cancel")}
+      confirmClass="lp-own-sfx"
       onConfirm={onConfirm}
       onCancel={onCancel}
     />

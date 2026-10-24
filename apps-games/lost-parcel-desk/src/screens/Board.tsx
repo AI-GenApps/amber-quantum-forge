@@ -12,9 +12,10 @@ import { openAlmanac } from "../lib/openAlmanac";
 import { caseTitle } from "../lib/titles";
 import { wrongNote } from "../lib/wrong";
 import { type CaseTarget, isDailyTarget, leaveCaseTo } from "../nav";
+import { useCoachStep } from "../onboarding/TutorialProvider";
 import { AccuseConfirm } from "../sheets/AccuseConfirm";
 import { WrongNote } from "../sheets/WrongNote";
-import { useApp } from "../state/app";
+import { useApp, useFeedback } from "../state/app";
 import type { ActiveCase } from "../state/game";
 import { useCase } from "../state/useCase";
 import { t } from "../strings";
@@ -47,6 +48,8 @@ export function BoardScreen({ target }: { target: CaseTarget }) {
 function BoardBody({ target, active }: { target: CaseTarget; active: ActiveCase }) {
   const app = useApp();
   const { router, game } = app;
+  const feedback = useFeedback();
+  const coach = useCoachStep();
   const [clueId, setClueId] = useState<string | null>(null);
   const [cardId, setCardId] = useState<string | null>(null);
   const [menu, setMenu] = useState(false);
@@ -109,6 +112,7 @@ function BoardBody({ target, active }: { target: CaseTarget; active: ActiveCase 
     const personId = cardId;
     setConfirming(false);
     if (personId === null) return;
+    feedback.fire({ type: "accuse" });
     const outcome = await game.accuse(personId);
     if (!outcome.ok) {
       setNotice(t("accuseUnavailable"));
@@ -195,7 +199,7 @@ function BoardBody({ target, active }: { target: CaseTarget; active: ActiveCase 
           variant="danger"
           disabled={state.closed}
           onClick={ask}
-          class="lp-accuse"
+          class={`lp-accuse${coach === 6 ? " lp-coach-target" : ""}`}
         >
           {selectedName
             ? t("accuseNamed", { name: selectedName.split(" ")[0] ?? selectedName })
