@@ -1,5 +1,6 @@
 import { Button, Sheet } from "@web-games/kit";
 import type { ComponentChildren } from "preact";
+import { useSheetFx } from "../feedback/hooks";
 import { useApp, useBack } from "../state/app";
 
 export interface ConfirmProps {
@@ -29,6 +30,7 @@ export function Confirm({
   children,
 }: ConfirmProps) {
   const { router } = useApp();
+  useSheetFx(open);
   useBack(router, open, () => {
     onCancel();
     return true;

@@ -1,20 +1,29 @@
 import { Button, Screen } from "@web-games/kit";
 import { useState } from "preact/hooks";
 import { HOWTO_PAGES } from "../data/howto";
+import { FLAG_TUTORIAL } from "../onboarding/flags";
+import { useApp } from "../state/app";
+import { useGameStore } from "../state/useGame";
 import { t } from "../strings";
 import { Header } from "../ui/Header";
 
 export function HowTo() {
+  const { router } = useApp();
+  const store = useGameStore();
   const [page, setPage] = useState(0);
   const entry = HOWTO_PAGES[page] ?? HOWTO_PAGES[0];
   if (!entry) return null;
+  const replay = async (): Promise<void> => {
+    await store.clearFlag(FLAG_TUTORIAL);
+    router.push("day", { day: 1 });
+  };
   return (
     <Screen name="howto" class="tlw-page">
       <Header title={t("howtoTitle")} />
       <p class="tlw-muted" data-testid="howto-page">
         {t("howtoPage", { page: page + 1, total: HOWTO_PAGES.length })}
       </p>
-      <article class="wg-card tlw-card">
+      <article class="wg-card tlw-card" data-testid="howto-article">
         <h2 class="wg-card__title">{entry.title}</h2>
         {entry.lines.map((line) => (
           <p key={line}>{line}</p>
@@ -28,6 +37,9 @@ export function HowTo() {
           {t("howtoNext")}
         </Button>
       </div>
+      <Button variant="secondary" fullWidth onClick={() => void replay()}>
+        {t("howtoReplay")}
+      </Button>
     </Screen>
   );
 }

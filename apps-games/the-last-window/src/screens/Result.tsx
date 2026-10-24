@@ -9,8 +9,12 @@ import {
   type ProgressEvent,
   type ShiftResult,
 } from "@web-games/the-last-window-core";
+import { useEffect, useRef } from "preact/hooks";
 import { Backdrop } from "../art/Backdrop";
+import { progressFeedback, starFeedback } from "../audio/events";
+import { useFeedback } from "../feedback/hooks";
 import { coinsText } from "../labels";
+import { useMotion } from "../motion/useMotion";
 import type { ResultParams } from "../nav";
 import { useApp } from "../state/app";
 import { t } from "../strings";
@@ -87,10 +91,36 @@ function Earnings({ result, summary }: { result: ShiftResult; summary: ResultSum
 }
 
 export function Result({ params }: { params: ResultParams }) {
+  if (params.finale || params.summary === null) return <Finale />;
+  return <ShiftResultView params={params} summary={params.summary} />;
+}
+
+const PROGRESS_START_MS = 520;
+const PROGRESS_STEP_MS = 260;
+
+function ShiftResultView({ params, summary }: { params: ResultParams; summary: ResultSummary }) {
   const { router, share } = useApp();
   const toast = useToast();
-  const summary = params.summary;
-  if (params.finale || summary === null) return <Finale />;
+  const feedback = useFeedback();
+  const motion = useMotion();
+  const stars = useRef<HTMLSpanElement>(null);
+  const earned = summary.result.grade.stars;
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: the reveal plays once per result
+  useEffect(() => {
+    const cancels = starFeedback(earned).map((cue) => feedback.fireLater(cue.event, cue.delayMs));
+    const later = [...progressFeedback(summary.events)];
+    if (summary.streakBonus > 0) later.push({ type: "streak" });
+    later.forEach((event, i) => {
+      cancels.push(feedback.fireLater(event, PROGRESS_START_MS + i * PROGRESS_STEP_MS));
+    });
+    const faces = stars.current?.querySelectorAll<SVGElement>(".wg-star--on");
+    if (faces) void motion.starReveal([...faces] as unknown as HTMLElement[]);
+    return () => {
+      for (const cancel of cancels) cancel();
+    };
+  }, []);
+
   const result = summary.result;
   const levelUps = summary.events.filter((event) => event.type === "friendship-level");
   const unlocks = unlockLines(summary.events);
@@ -130,10 +160,12 @@ export function Result({ params }: { params: ResultParams }) {
         {summary.kind === "late" ? t("resultLate") : t("resultDay", { day: summary.day })}
       </h1>
       <div class="tlw-stars-row">
-        <StarRating
-          value={result.grade.stars}
-          label={t("resultStars", { stars: result.grade.stars })}
-        />
+        <span ref={stars}>
+          <StarRating
+            value={result.grade.stars}
+            label={t("resultStars", { stars: result.grade.stars })}
+          />
+        </span>
         <span>{t("resultStars", { stars: result.grade.stars })}</span>
       </div>
       <Earnings result={result} summary={summary} />
@@ -158,7 +190,11 @@ export function Result({ params }: { params: ResultParams }) {
             .map((row) => (
               <p key={row.regularId} class="tlw-heartline">
                 <span>{getRegular(row.regularId).shortName}</span>
-                <Hearts level={row.level} name={getRegular(row.regularId).shortName} />
+                <Hearts
+                  level={row.level}
+                  name={getRegular(row.regularId).shortName}
+                  fresh={levelUps.find((event) => event.regularId === row.regularId)?.level}
+                />
               </p>
             ))}
           {levelUps.map((event) => (

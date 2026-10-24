@@ -1,3 +1,5 @@
+import { AUDIO_CREDITS } from "./audioCredits";
+
 export type CreditGroup = "fonts" | "audio" | "art";
 
 export interface CreditEntry {
@@ -8,7 +10,7 @@ export interface CreditEntry {
   source: string;
 }
 
-/** Fonts are shipped by task 04; tasks 05 (audio) and 06 (art) append their rows here. */
+/** Fonts (task 04) and audio (task 05); task 06 appends the art rows. */
 export const CREDITS: readonly CreditEntry[] = [
   {
     group: "fonts",
@@ -24,6 +26,7 @@ export const CREDITS: readonly CreditEntry[] = [
     licence: "SIL Open Font License 1.1",
     source: "https://github.com/google/fonts/tree/main/ofl/nunitosans",
   },
+  ...AUDIO_CREDITS,
 ];
 
 export function creditsFor(group: CreditGroup): CreditEntry[] {

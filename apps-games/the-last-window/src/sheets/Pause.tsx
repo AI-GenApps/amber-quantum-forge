@@ -1,6 +1,7 @@
 import { Button, Sheet, Toggle } from "@web-games/kit";
 import type { Unlocked } from "@web-games/the-last-window-core";
 import { useState } from "preact/hooks";
+import { useSheetFx } from "../feedback/hooks";
 import { RecipeList } from "../screens/Recipes";
 import { useApp, useBack, useProfile, useSettings } from "../state/app";
 import { useGameStore } from "../state/useGame";
@@ -19,6 +20,7 @@ export function Pause({ open, unlocked, onResume, onQuit }: PauseProps) {
   const profile = useProfile();
   const current = useSettings();
   const [recipes, setRecipes] = useState(false);
+  useSheetFx(open);
   useBack(router, open, () => {
     onResume();
     return true;

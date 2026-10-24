@@ -17,7 +17,10 @@ import {
 import { useEffect, useRef, useState } from "preact/hooks";
 import { Backdrop } from "../art/Backdrop";
 import { Portrait } from "../art/Portrait";
+import { progressFeedback } from "../audio/events";
+import { useFeedback, usePageTurn } from "../feedback/hooks";
 import type { SceneParams } from "../nav";
+import { FirstTimeCard, useFirstTime, useFirstTimeOnMount } from "../onboarding/cards";
 import { useApp, useProfile } from "../state/app";
 import { useGameStore } from "../state/useGame";
 import { t } from "../strings";
@@ -40,6 +43,10 @@ export function Scene({ params }: { params: SceneParams }) {
   const [applied, setApplied] = useState<SceneApplied | null>(null);
   const saved = useRef(false);
   const focusRef = useRef<HTMLButtonElement>(null);
+  const feedback = useFeedback();
+  usePageTurn("scene");
+  const sceneCard = useFirstTimeOnMount("scene", script !== undefined && !params.replay);
+  const choiceCard = useFirstTime("choice");
 
   const leave = (): void => {
     if (params.index + 1 < params.ids.length) {
@@ -69,6 +76,28 @@ export function Scene({ params }: { params: SceneParams }) {
     void store.finishScene(script.id, scene.own ?? undefined).then(setApplied);
   }, [scene, script, done, params.replay, store]);
 
+  useEffect(() => {
+    if (script) feedback.fire({ type: "scene-open" });
+  }, [script, feedback]);
+
+  const atChoice = view?.kind === "choice";
+  const showChoiceCard = choiceCard.show;
+  useEffect(() => {
+    if (atChoice && !params.replay) showChoiceCard();
+  }, [atChoice, params.replay, showChoiceCard]);
+
+  const atEnding = view?.kind === "beat" && view.section === "ending";
+  useEffect(() => {
+    if (atEnding) feedback.fire({ type: "ending" });
+  }, [atEnding, feedback]);
+
+  useEffect(() => {
+    if (!applied) return;
+    for (const event of progressFeedback(applied.events)) {
+      if (event.type === "friendship") feedback.fire(event);
+    }
+  }, [applied, feedback]);
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: refocus on each step
   useEffect(() => {
     focusRef.current?.focus();
@@ -80,7 +109,10 @@ export function Scene({ params }: { params: SceneParams }) {
   const endingTitle = lean !== null ? script.endings?.[lean].title : undefined;
   const inEnding = view.kind === "beat" && view.section === "ending";
   const advance = (): void => setScene(advanceBeat(scene));
-  const pick = (option: OptionKey): void => setScene(chooseOption(scene, option));
+  const pick = (option: OptionKey): void => {
+    feedback.fire({ type: "choice" });
+    setScene(chooseOption(scene, option));
+  };
   const mood = view.kind === "beat" ? (view.beat.mood ?? "neutral") : "neutral";
 
   return (
@@ -135,6 +167,8 @@ export function Scene({ params }: { params: SceneParams }) {
           </div>
         </section>
       ) : null}
+      <FirstTimeCard id="scene" card={sceneCard} />
+      <FirstTimeCard id="choice" card={choiceCard} />
       {done ? (
         <section class="wg-card tlw-card" data-testid="scene-done">
           {script.index === SCENES_PER_REGULAR && endingTitle ? (

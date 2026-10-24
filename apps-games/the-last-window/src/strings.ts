@@ -225,6 +225,13 @@ export const strings = defineStrings({
   howtoPrev: "Previous page",
   howtoNext: "Next page",
 
+  coachRegion: "Tutorial",
+  coachStep: "Step {step} of {total}",
+  coachSkip: "Skip tutorial",
+  coachGotIt: "Got it",
+  howtoReplay: "Replay the guided shift",
+  cardGotIt: "Got it",
+
   creditsTitle: "Credits",
   creditsFonts: "Fonts",
   creditsAudio: "Audio",

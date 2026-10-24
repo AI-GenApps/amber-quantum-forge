@@ -59,6 +59,7 @@ export interface GameStore {
   buyStock(plan: StockPlan, day?: number): Promise<StockPurchase>;
   buyDecor(id: DecorId, day?: number): Promise<DecorPurchase>;
   markFlag(name: string): Promise<void>;
+  clearFlag(name: string): Promise<void>;
   setPreference<K extends keyof ProfileSettings>(key: K, value: ProfileSettings[K]): Promise<void>;
   resetProgress(): Promise<void>;
   flush(): Promise<void>;
@@ -180,6 +181,13 @@ export function createGameStore(deps: GameDeps): GameStore {
           profile: { ...profile, flags: { ...profile.flags, [name]: true } },
           value: undefined,
         };
+      }),
+    clearFlag: (name) =>
+      change((profile) => {
+        if (profile.flags[name] !== true) return { profile, value: undefined };
+        const flags = { ...profile.flags };
+        delete flags[name];
+        return { profile: { ...profile, flags }, value: undefined };
       }),
     setPreference: (key, value) =>
       change((profile) => ({

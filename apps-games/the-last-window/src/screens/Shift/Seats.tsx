@@ -7,10 +7,12 @@ import {
   type SeatState,
   type ShiftState,
 } from "@web-games/the-last-window-core";
+import { useEffect, useRef } from "preact/hooks";
 import { ItemIcon } from "../../art/ItemIcon";
 import { Portrait } from "../../art/Portrait";
 import { regularPrefix, walkinId } from "../../art/slots";
 import { customerName, orderText, secondsLeft } from "../../labels";
+import { useMotion } from "../../motion/useMotion";
 import { t } from "../../strings";
 import { Glyph } from "../../ui/Glyph";
 import { MoodChip } from "../../ui/MoodChip";
@@ -21,6 +23,8 @@ export interface Reaction {
   face: Face;
   outcome: Outcome;
   until: number;
+  /** Coins paid (price plus tip) when the customer was served. */
+  coins?: number;
 }
 
 export function portraitSlot(customer: Customer): string {
@@ -46,11 +50,25 @@ function SeatView({
   active: boolean;
   onSelect: (seat: number) => void;
 }) {
+  const motion = useMotion();
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const barRef = useRef<HTMLSpanElement>(null);
   const customer = seat.customer;
   const order = seat.order;
-  if (customer === null || order === null) return null;
+  const customerId = customer?.id ?? null;
   const seconds = secondsLeft(seat.patienceLeft);
-  const low = !seat.patienceFree && seconds < 10;
+  const low = customer !== null && !seat.patienceFree && seconds < 10;
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: slide in once per customer
+  useEffect(() => {
+    if (buttonRef.current && customerId !== null) void motion.customerArrive(buttonRef.current);
+  }, [customerId]);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: one beat per whole second under 10 s
+  useEffect(() => {
+    if (low && barRef.current) void motion.patiencePulse(barRef.current);
+  }, [low, seconds]);
+
+  if (customer === null || order === null) return null;
   const fraction = seat.patienceTotal > 0 ? seat.patienceLeft / seat.patienceTotal : 1;
   const name = customerName(customer);
   const selected = active ? t("shiftSelected") : "";
@@ -59,6 +77,7 @@ function SeatView({
     : t("shiftSeatFull", { n: index + 1, name, order: orderText(order), seconds, selected });
   return (
     <button
+      ref={buttonRef}
       type="button"
       class={`tlw-seat${active ? " tlw-seat--active" : ""}${low ? " tlw-seat--low" : ""}`}
       aria-pressed={active}
@@ -75,7 +94,7 @@ function SeatView({
         {order.pastry !== null ? <ItemIcon slot={order.pastry} /> : null}
         {order.mood !== null ? <MoodChip mood={order.mood} /> : null}
       </span>
-      <span class="tlw-patience" aria-hidden="true" data-testid={`patience-${index}`}>
+      <span ref={barRef} class="tlw-patience" aria-hidden="true" data-testid={`patience-${index}`}>
         <span class="tlw-patience__track">
           <span class="tlw-patience__fill" style={{ width: `${Math.round(fraction * 100)}%` }} />
         </span>
@@ -86,6 +105,20 @@ function SeatView({
         ) : null}
       </span>
     </button>
+  );
+}
+
+function CoinPop({ coins }: { coins: number }) {
+  const motion = useMotion();
+  const ref = useRef<HTMLSpanElement>(null);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: pop once when the chip appears
+  useEffect(() => {
+    if (ref.current) void motion.coinPop(ref.current);
+  }, []);
+  return (
+    <span ref={ref} class="tlw-coinpop" aria-hidden="true" data-testid="coin-pop">
+      +{coins}
+    </span>
   );
 }
 
@@ -122,6 +155,7 @@ export function Seats({ state, reactions, onSelect }: SeatsProps) {
               <span class="tlw-seat__name" aria-hidden="true">
                 {OUTCOME_WORDS[ghost.outcome]}
               </span>
+              {ghost.coins ? <CoinPop coins={ghost.coins} /> : null}
             </button>
           );
         }

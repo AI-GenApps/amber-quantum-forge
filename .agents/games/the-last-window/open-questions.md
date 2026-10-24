@@ -9,7 +9,7 @@ None of these block v1; each has a stated default. After task 08 the open items 
 | Q2 | Do 3 seats, 8 step buttons and a book shelf fit a 360 x 640 phone with 44 px hit areas? | Task 04 stacks HUD, seats, ticket and the three stations in one column that scrolls; hit areas are asserted at 44 px but nothing was looked at in a browser. Owner judges at 360 x 640. | owner at QA |
 | Q3 | Privacy policy URL for store submission | Not needed in v1 (no submission); a one-page "no data collected" policy is needed later. | owner |
 | Q4 | Public name beyond the working title | The Last Window stays the public name in v1. | owner, later step |
-| Q5 | Which CC0 sources exist for the 36 audio slots (door bell, oven ding, rain loop, three warm music loops)? | Task 05 searches Kenney packs and OpenGameArt CC0 pages and records the result; a slot may reuse a generic sound if no better CC0 file exists. No slot ships silent. | task 05 |
+| Q5 | Which CC0 sources exist for the 36 audio slots (door bell, oven ding, rain loop, three warm music loops)? | Answered in task 05: all 36 slots have a CC0 file (32 Kenney sounds, an OpenGameArt rain recording and three OpenGameArt music tracks), none ships silent. The doorbell is Kenney `glass_004` (the closest CC0 chime; the pack has no door bell), the oven ding is an `impactMetal_light`, steam is a cloth-belt hiss, brewing a pot clank: stand-ins chosen by file name and spectrum, not by ear. The owner judges every sound and the three loops in browser QA; any slot can be swapped by replacing the ogg and its `LICENSES.md` row. | owner at QA |
 | Q6 | Does the iOS Capacitor 8 project need CocoaPods for `cap sync`? | Expected no (Swift Package Manager); task 07 confirms and records it. | task 07 |
 | Q7 | Designer art delivery timing and rejects | Placeholders are code-drawn; task 06 integrates whatever passed review and keeps placeholders elsewhere. | orchestrator |
 | Q8 | Is a casual player's pace right (scenes 1 to 4 by Day 14, scene 5 in Late Shifts)? Task 02 and task 03 reports: the casual bot plays 29 of 40 scenes by Day 14, `perfect` plays all 40; the bot loses 8 of 12 customers on Days 13 and 14, so the real answer needs a human. | Thresholds `[1, 2, 4, 6, 8]` stay; the scripted bot in task 03 reports scene counts for a casual and a strong player, and the owner judges at QA. | task 03, owner |
@@ -37,3 +37,13 @@ Found in task 04 (the kit is read-only for this epic; each has a workaround insi
   `tealLight` and `brickLight`.
 
 Still unverified for this game: nothing in the kit blocked task 04.
+
+Found in task 05 (workarounds inside the game):
+
+- `createAudioManager` holds one music track per manager, so the rain loop runs on a second manager (two
+  `AudioContext`s). A kit "ambience layer" next to the music track would remove the second context.
+- The audio manager has volume buses but `Settings` has only on/off switches, so there is no volume slider
+  in v1; the music bus is fixed at 0.5 and the rain at 0.45.
+- `Sheet` has no open callback or ref, so the sheet sound and slide are driven by an effect that looks up the
+  newest `.wg-sheet` in the document.
+- `StarRating` and the hearts expose no per-star refs; the reveal and heart fill query the rendered SVGs.

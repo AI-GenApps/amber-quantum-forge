@@ -28,6 +28,7 @@ import { Backdrop } from "../art/Backdrop";
 import { ItemIcon } from "../art/ItemIcon";
 import { moodLine } from "../labels";
 import type { ShiftTarget } from "../nav";
+import { FirstTimeCard, useFirstTimeOnMount } from "../onboarding/cards";
 import { useApp, useProfile } from "../state/app";
 import { useGame, useGameStore } from "../state/useGame";
 import { t } from "../strings";
@@ -62,6 +63,7 @@ export function Prep({ target }: { target: ShiftTarget }) {
   const slots = ownedEffects(profile).shelfSlots;
   const [plan, setPlan] = useState<StockPlan>(() => defaultStockPlan(profile, day, due));
   const [notice, setNotice] = useState<string | null>(null);
+  const stockCard = useFirstTimeOnMount("stock");
 
   const clean = normalizePlan(plan, unlocked, slots);
   const errors = validateStockPlan(clean, unlocked, slots, profile.coins);
@@ -214,6 +216,7 @@ export function Prep({ target }: { target: ShiftTarget }) {
           {t("prepOpen")}
         </Button>
       </div>
+      <FirstTimeCard id="stock" card={stockCard} />
     </Screen>
   );
 }

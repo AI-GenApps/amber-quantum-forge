@@ -11,7 +11,9 @@ import { defaultProfile, type Profile } from "@web-games/the-last-window-core";
 import { render } from "preact";
 import { act } from "preact/test-utils";
 import { App } from "../src/App";
+import type { Feedback } from "../src/feedback/feedback";
 import { createAppRouter, type Routes } from "../src/nav";
+import { CARD_FLAGS, FLAG_TUTORIAL } from "../src/onboarding/flags";
 import { createManualScheduler, type ManualScheduler } from "../src/shift/scheduler";
 import type { AppContextValue } from "../src/state/app";
 import { createProfileStore } from "../src/state/saveStores";
@@ -20,7 +22,7 @@ import { installTheme } from "../src/theme/install";
 
 const SRC = join(import.meta.dirname, "../src");
 
-export const GAME_CSS = ["styles.css", "screens.css", "shift.css"]
+export const GAME_CSS = ["styles.css", "screens.css", "shift.css", "onboarding.css"]
   .map((name) => readFileSync(join(SRC, name), "utf8"))
   .join("\n");
 
@@ -67,7 +69,14 @@ export interface RigOptions {
   noLifecycle?: boolean;
   preload?: AppContextValue["preload"];
   systemReducedMotion?: boolean;
+  /** Leave the tutorial and the first-time cards unseen (default: all seen). */
+  onboarding?: boolean;
+  feedback?: Feedback;
 }
+
+export const SEEN_FLAGS: Record<string, true> = Object.fromEntries(
+  [FLAG_TUTORIAL, ...Object.values(CARD_FLAGS)].map((name) => [name, true as const]),
+);
 
 export interface Rig {
   container: HTMLElement;
@@ -87,7 +96,11 @@ export interface Rig {
 /** Mounts the whole app with an in-memory save, a manual frame scheduler and a fake visibility. */
 export async function mountApp(options: RigOptions = {}): Promise<Rig> {
   const adapter = createMemoryAdapter();
-  await createProfileStore(adapter).save({ ...defaultProfile(), ...options.profile });
+  const flags = {
+    ...(options.onboarding ? {} : SEEN_FLAGS),
+    ...(options.profile?.flags ?? {}),
+  };
+  await createProfileStore(adapter).save({ ...defaultProfile(), ...options.profile, flags });
   const now = options.now ?? FIXED_NOW;
   const services = createServices(adapter, { clock: () => now });
   if (options.settings) {
@@ -121,6 +134,7 @@ export async function mountApp(options: RigOptions = {}): Promise<Rig> {
     },
     ...(options.artManifest ? { artManifest: options.artManifest } : {}),
     ...(options.preload ? { preload: options.preload } : {}),
+    ...(options.feedback ? { feedback: options.feedback } : {}),
     ...(options.noLifecycle
       ? {}
       : {

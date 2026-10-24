@@ -10,7 +10,9 @@ import { useState } from "preact/hooks";
 import { Backdrop } from "../art/Backdrop";
 import { ItemIcon } from "../art/ItemIcon";
 import { interiorSlot } from "../art/slots";
+import { useFeedback, useRain } from "../feedback/hooks";
 import { coinsText } from "../labels";
+import { FirstTimeCard, useFirstTime } from "../onboarding/cards";
 import { Purchase } from "../sheets/Purchase";
 import { useProfile } from "../state/app";
 import { useGameStore } from "../state/useGame";
@@ -26,6 +28,9 @@ export function Shop() {
   const toast = useToast();
   const [weather, setWeather] = useState<Weather>("evening");
   const [pending, setPending] = useState<DecorRule | null>(null);
+  const feedback = useFeedback();
+  const decorCard = useFirstTime("decor");
+  useRain(weather === "rain");
 
   const open = (rule: DecorRule): void => {
     if (profile.owned.includes(rule.id) || profile.day < rule.unlockDay) return;
@@ -36,6 +41,10 @@ export function Shop() {
     setPending(null);
     if (rule === null) return;
     const result = await store.buyDecor(rule.id);
+    if (result.ok) {
+      feedback.fire({ type: "decor-buy" });
+      decorCard.show();
+    }
     toast.show(
       result.ok ? t("purchaseDone", { name: rule.name }) : t("purchaseFail"),
       result.ok ? "success" : "danger",
@@ -110,6 +119,7 @@ export function Shop() {
           );
         })}
       </ul>
+      <FirstTimeCard id="decor" card={decorCard} />
       <Purchase
         rule={pending}
         coins={profile.coins}

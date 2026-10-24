@@ -322,6 +322,53 @@ two plan rows changed wording (below). Evidence: `.agents/resources/2026-10-23/w
   interior, so real art and drawings use the same placement.
 - **Image slots.** `ART_MANIFEST` is empty in this task. `Portrait`, `ItemIcon` and `Backdrop` read the
   manifest from a context (default the constant), so tests inject one; task 06 only appends entries.
-- **Credits data.** `src/data/credits.ts` lists the fonts; tasks 05 and 06 append audio and art rows.
+- **Credits data.** `src/data/credits.ts` lists the fonts; task 05 added the audio rows (`audioCredits.ts`); task 06 appends art rows.
 - **Not done here (by design).** Audio, haptics, the guided tutorial, first-time cards and final how-to text
   (task 05); real art (06); native projects (07). The How to play pages hold short placeholder wording.
+
+## Task 05 decisions (audio, haptics, motion, onboarding)
+
+- **Sources.** All 36 slots have a CC0 file, none ships silent. The 32 short sounds are Kenney originals
+  (Interface Sounds, Impact Sounds, RPG Audio, Digital Audio, Music Jingles), stereo files downmixed to mono.
+  The rain loop is the quiet opening of OpenGameArt "Light rain and heavy rain" (haruta, CC0). The music is
+  OpenGameArt CC0: menu "Coffee House Bump" (OatCog), shift "Jazz Slower" and story "Just you and me Guitar"
+  (Pro Sensory, Alex McCulloch). The sibling web games use the Cynic Project tracks and other Pro Sensory
+  tracks, so none of these three is shared. Loop lengths are whole bars of the source (19.2 s, 3.53 s, 6 s
+  grids) with a 2 s crossfade so the seam is soft; nothing was heard by the agent, the owner judges by ear.
+- **Mix.** Sound effects run at slot gains 0.5 to 0.8. Music has its own bus at 0.5 and the rain at 0.45 on a
+  second audio manager (the kit manager holds one music track), so rain and music play together. Rain follows
+  the sound switch, music follows the music switch. Audio loads on the first gesture; the music chosen
+  before it starts when it arrives.
+- **Event map** (`src/audio/events.ts`, the only table). Seated customer: `customer-arrive`; seat tap:
+  `seat-select`; a correct step: `step-tap` plus `step-brew`, `step-steam`, `step-pour` or `oven-start` on
+  those tokens (light haptic); a wrong step: `step-wrong` and a warning haptic; oven done: `oven-ready`; a
+  book placed: `book-pick` (light); serve: `serve` (medium), `coin` 140 ms later when anything was paid, then
+  `delighted` (plus a success haptic) or `disappointed` 360 ms after the serve; customer left: `customer-left`
+  and a warning; turned away: `customer-left` without a haptic; under 10 s: `patience-warning`. Stars are
+  revealed 120 ms apart, each with a success haptic, and the jingle of the final star (`star-N`) plays once.
+  Friendship levels and unlocks follow the stars (520 ms, then 260 ms apart); a Late Shift streak bonus adds
+  `streak-up`. Buttons play `ui-tap`; Back plays `ui-back`; switches play `ui-toggle`; sheets play
+  `ui-open-sheet`. Buttons inside the stations, seats, ticket and dialogue play their own sound only.
+- **Music by route.** `music-shift` in a shift, `music-story` in a scene, `music-menu` everywhere else
+  (title, home, plan, shop, journal, result). `rain-loop` in rain shifts and while the shop preview shows rain.
+- **Audio follows the app lifecycle.** Pause suspends both audio contexts; resume restarts them and the music.
+- **Motion.** Eight helpers (customer slide-in, patience pulse once per second under 10 s, steam wisp after
+  each cup step, coin chip pop on a serve, heart fill on a new friendship level, page turn on a scene, star
+  reveal 120 ms apart, sheet slide) over the kit `createMotion`. With reduced motion (system or setting) each
+  applies its final frame and calls no `animate`.
+- **Tutorial.** The 7 steps of `content-plan.md` are a pure machine over engine events
+  (`src/onboarding/tutorial.ts`). A card appears when its moment has come (Tobias seated, Priya seated, Odile
+  seated) and ends only by the real action (seat tapped, drink ready, Tobias served, Priya served, book
+  placed); the first card (Marit's note) halts the clock until "Open the shop", the last ends on its button
+  or the shift close. An action that already happened is not waited for, so the guide cannot get stuck.
+  "Skip tutorial" is always on the card. The saved flag `tutorial` is set when it ends, is skipped or the
+  shift closes; it only runs on Day 1 and never repeats. How to play has "Replay the guided shift", which
+  clears the flag and opens Day 1 (a normal replay of Day 1: replay coins apply, as for any replayed day).
+- **First-time cards.** Flags `card-stock`, `card-rain`, `card-scene`, `card-choice`, `card-decor`,
+  `card-late`; each card is a sheet with one button, saved as soon as it opens, and in a shift it halts the
+  clock behind it. A first Late Shift that is also rainy shows the Late Shift card only (rain waits for a
+  later shift).
+- **How to play.** Six pages; every number (shift length, patience 60 to 40 s, brew and warm times, tip
+  percentages, friendship thresholds, shelf slots, portions, decor total) is read from the core constants.
+- **Credits.** The 36 audio rows come from `src/data/audioCredits.ts`, which a test compares with
+  `LICENSES.md` row for row.

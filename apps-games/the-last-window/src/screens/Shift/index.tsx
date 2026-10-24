@@ -3,7 +3,12 @@ import { type Component, WEATHER_NAMES } from "@web-games/the-last-window-core";
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 import { Backdrop } from "../../art/Backdrop";
 import { interiorSlot } from "../../art/slots";
+import { useFeedback, useRain } from "../../feedback/hooks";
 import type { ShiftTarget } from "../../nav";
+import { Coachmark } from "../../onboarding/Coachmark";
+import { FirstTimeCard, useFirstTime } from "../../onboarding/cards";
+import { FLAG_TUTORIAL, hasFlag } from "../../onboarding/flags";
+import { useTutorial } from "../../onboarding/useTutorial";
 import { Pause } from "../../sheets/Pause";
 import { Quit } from "../../sheets/Quit";
 import { ServeEmpty } from "../../sheets/ServeEmpty";
@@ -47,6 +52,33 @@ export function Shift({ target }: { target: ShiftTarget }) {
   const [live, setLive] = useState<string[]>([]);
   const [reactions, setReactions] = useState<Reaction[]>([]);
   const finished = useRef(false);
+  const feedback = useFeedback();
+  const [coachOn] = useState(
+    () => target.kind === "day" && target.day === 1 && !hasFlag(profile, FLAG_TUTORIAL),
+  );
+  const coach = useTutorial(runner, coachOn);
+  const raining = runner.state.def.weather === "rain";
+  const lateCard = useFirstTime("late");
+  const rainCard = useFirstTime("rain");
+  useRain(raining);
+
+  useEffect(() => {
+    feedback.fire({ type: "shift-start" });
+  }, [feedback]);
+
+  const showLate = lateCard.show;
+  const showRain = rainCard.show;
+  useEffect(() => {
+    if (target.kind === "late") showLate();
+    else if (raining) showRain();
+  }, [target.kind, raining, showLate, showRain]);
+
+  const cardOpen = lateCard.open || rainCard.open;
+  useEffect(() => {
+    if (cardOpen) runner.pause("card");
+    else runner.resume("card");
+    return () => runner.resume("card");
+  }, [runner, cardOpen]);
 
   useEffect(() => {
     runner.start();
@@ -74,6 +106,7 @@ export function Shift({ target }: { target: ShiftTarget }) {
       if (messages.length > 0) setLive(messages);
       const fresh: Reaction[] = [];
       for (const event of events) {
+        feedback.fire({ type: "shift", event });
         if (event.type !== "served" && event.type !== "customer-left") continue;
         const customer = customerById(next, event.customerId);
         if (!customer) continue;
@@ -83,13 +116,14 @@ export function Shift({ target }: { target: ShiftTarget }) {
           face: event.face,
           outcome: event.type === "served" ? event.outcome : "left",
           until: next.tick + REACTION_TICKS,
+          coins: event.type === "served" ? event.payment + event.tip : 0,
         });
       }
       if (fresh.length > 0) {
         setReactions((old) => [...old.filter((item) => item.until > next.tick), ...fresh]);
       }
     },
-    [],
+    [feedback],
   );
   useShiftEvents(runner, onEvents);
 
@@ -178,6 +212,7 @@ export function Shift({ target }: { target: ShiftTarget }) {
         owned={profile.owned}
         class="tlw-backdrop--dim"
       />
+      <Coachmark view={coach} />
       <Hud state={state} title={title} onPause={() => setSheet("pause")} />
       <div
         class="tlw-sr"
@@ -235,6 +270,8 @@ export function Shift({ target }: { target: ShiftTarget }) {
           router.pop();
         }}
       />
+      <FirstTimeCard id="late" card={lateCard} />
+      <FirstTimeCard id="rain" card={rainCard} />
       <ServeEmpty
         open={sheet === "empty"}
         onCancel={() => setSheet(null)}

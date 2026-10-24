@@ -4,7 +4,9 @@ import {
   drinkRule,
   type ShiftState,
 } from "@web-games/the-last-window-core";
+import { useEffect, useRef } from "preact/hooks";
 import { drinkName, TOKEN_WORDS } from "../../labels";
+import { useMotion } from "../../motion/useMotion";
 import { t } from "../../strings";
 import { drinkGuide } from "./expected";
 
@@ -25,10 +27,18 @@ export function drinkTokens(state: ShiftState): DrinkToken[] {
 export function DrinkStation({ state, guide, onStep }: DrinkStationProps) {
   const info = drinkGuide(state);
   const cup = state.cup;
+  const motion = useMotion();
+  const steam = useRef<HTMLSpanElement>(null);
+  const cupStep = cup === null ? 0 : cup.step;
+  // biome-ignore lint/correctness/useExhaustiveDependencies: a wisp per finished cup step
+  useEffect(() => {
+    if (cupStep > 1 && steam.current) void motion.steamRise(steam.current);
+  }, [cupStep]);
   const waiting = cup !== null && cup.lock > 0;
   return (
     <section class="tlw-station" aria-label={t("shiftDrinkStation")} data-testid="drink-station">
       <h2 class="tlw-station__title">{t("shiftDrinkStation")}</h2>
+      <span ref={steam} class="tlw-steam" aria-hidden="true" data-testid="steam" />
       <p class="tlw-station__state" data-testid="cup-state">
         {cup === null
           ? t("shiftCupIdle")

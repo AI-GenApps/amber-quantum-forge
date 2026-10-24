@@ -15,7 +15,7 @@ import type { FrameHandle, Scheduler } from "./scheduler";
 
 export const MAX_CATCH_UP_TICKS = 5 as const;
 
-export type PauseReason = "sheet" | "hidden";
+export type PauseReason = "sheet" | "hidden" | "coach" | "card";
 
 export interface VisibilitySource {
   readonly hidden?: boolean;

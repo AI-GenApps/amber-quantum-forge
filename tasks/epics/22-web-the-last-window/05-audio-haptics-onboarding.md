@@ -1,7 +1,7 @@
 ---
 epic: 22-web-the-last-window
 task: 05-audio-haptics-onboarding
-status: todo
+status: done
 commit_scope: the-last-window
 depends_on: [22-web-the-last-window/04-screens-and-ui]
 estimate: L
@@ -37,15 +37,15 @@ Add the CC0 sound effects and three music loops, wire sounds and haptics to ever
 
 ## Implementation Checklist
 
-- [ ] Select and download the CC0 files, copy the chosen ogg files into `apps-games/the-last-window/public/audio/` (names equal slot ids), write `LICENSES.md`, copy pack licences, delete the scratch downloads, and write the evidence README `.agents/resources/2026-10-23/web-games/the-last-window/05/README.md` (candidates considered, choices, silent slots).
-- [ ] `src/audio/slots.ts` (slot table with file, kind, gain, loop flag), `src/audio/engine.ts` (create manager, preload on first gesture with progress, music crossfade by route, rain loop by weather, suspend on pause and resume).
-- [ ] `src/audio/events.ts` as described, with unit tests of the table.
-- [ ] `src/feedback/haptics.ts` wiring `createHaptics` and `syncSettings`; settings toggles take effect immediately.
-- [ ] `src/motion/` helpers: customer arrival slide-in, patience bar pulse under 10 s, steam rising on the cup, coin pop on payment, heart fill on friendship, page-turn between scenes, star reveal stagger of 120 ms, sheet slide; every helper applies the final frame when motion is reduced.
-- [ ] `src/onboarding/tutorial.ts` (pure step machine fed by engine events), `Coachmark.tsx` overlay, `src/onboarding/cards.tsx` (first-time card sheets and flags), `src/screens/HowTo.tsx` filled with the six pages.
-- [ ] Credits data: add audio rows from `LICENSES.md` (parsed in a test to prove they match).
-- [ ] Tests: slot table complete (each slot has a file or an explicit `silent` reason); every listed file exists, is ogg, within size budgets and total at most 2 MB; `LICENSES.md` has a row for each file with a URL, "CC0" and a SHA-256 that matches the file (computed in the test); no audio file lacks a licence row; the fake `AudioContext` (kit `createFakeAudioContext`) proves events trigger the right sound ids, music switches between menu, shift and story, rain loop follows weather, mute and volumes follow settings, nothing plays before unlock, pause suspends; fake haptics receive the exact map above and nothing when haptics are off; the tutorial machine advances only on the matching action, can be skipped and never repeats; each first-time card shows once; how-to renders six pages with numbers from the constants; reduced motion makes every motion helper apply the final frame without calling `animate`.
-- [ ] Update `assets-index.md` (audio table with sources and sizes), `open-questions.md` (silent slots, Q5 outcome) and `decisions-log.md` (source choices).
+- [x] Select and download the CC0 files, copy the chosen ogg files into `apps-games/the-last-window/public/audio/` (names equal slot ids), write `LICENSES.md`, copy pack licences, delete the scratch downloads, and write the evidence README `.agents/resources/2026-10-23/web-games/the-last-window/05/README.md` (candidates considered, choices, silent slots).
+- [x] `src/audio/slots.ts` (slot table with file, kind, gain, loop flag), `src/audio/engine.ts` (create manager, preload on first gesture with progress, music crossfade by route, rain loop by weather, suspend on pause and resume).
+- [x] `src/audio/events.ts` as described, with unit tests of the table.
+- [x] `src/feedback/haptics.ts` wiring `createHaptics` and `syncSettings`; settings toggles take effect immediately.
+- [x] `src/motion/` helpers: customer arrival slide-in, patience bar pulse under 10 s, steam rising on the cup, coin pop on payment, heart fill on friendship, page-turn between scenes, star reveal stagger of 120 ms, sheet slide; every helper applies the final frame when motion is reduced.
+- [x] `src/onboarding/tutorial.ts` (pure step machine fed by engine events), `Coachmark.tsx` overlay, `src/onboarding/cards.tsx` (first-time card sheets and flags), `src/screens/HowTo.tsx` filled with the six pages.
+- [x] Credits data: add audio rows from `LICENSES.md` (parsed in a test to prove they match).
+- [x] Tests: slot table complete (each slot has a file or an explicit `silent` reason); every listed file exists, is ogg, within size budgets and total at most 2 MB; `LICENSES.md` has a row for each file with a URL, "CC0" and a SHA-256 that matches the file (computed in the test); no audio file lacks a licence row; the fake `AudioContext` (kit `createFakeAudioContext`) proves events trigger the right sound ids, music switches between menu, shift and story, rain loop follows weather, mute and volumes follow settings, nothing plays before unlock, pause suspends; fake haptics receive the exact map above and nothing when haptics are off; the tutorial machine advances only on the matching action, can be skipped and never repeats; each first-time card shows once; how-to renders six pages with numbers from the constants; reduced motion makes every motion helper apply the final frame without calling `animate`.
+- [x] Update `assets-index.md` (audio table with sources and sizes), `open-questions.md` (silent slots, Q5 outcome) and `decisions-log.md` (source choices).
 
 ## Files Touched
 

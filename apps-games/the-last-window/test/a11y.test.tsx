@@ -315,6 +315,8 @@ describe("live announcements and mood tags", () => {
   });
 });
 
+const CREDIT_FILES = new Set(["data/credits.ts", "data/audioCredits.ts"]);
+
 describe("source hygiene", () => {
   const srcDir = join(import.meta.dirname, "../src");
   const files = (readdirSync(srcDir, { recursive: true }) as string[])
@@ -329,7 +331,18 @@ describe("source hygiene", () => {
       expect(file.text, file.name).not.toMatch(/sendBeacon/);
       expect(file.text, file.name).not.toMatch(/\bWebSocket\b/);
       expect(file.text, file.name).not.toMatch(/\bEventSource\b/);
-      if (file.name !== "data/credits.ts") expect(file.text, file.name).not.toMatch(/https?:\/\//);
+      if (!CREDIT_FILES.has(file.name)) expect(file.text, file.name).not.toMatch(/https?:\/\//);
+    }
+  });
+
+  it("allows only CC0 source links in the audio credits file", () => {
+    const credits = files.find((entry) => entry.name === "data/audioCredits.ts");
+    const urls = credits?.text.match(/https?:\/\/[^"'`\s)]+/g) ?? [];
+    expect(urls.length).toBeGreaterThan(30);
+    for (const url of urls) {
+      expect(/^https:\/\/(kenney\.nl\/assets\/|opengameart\.org\/content\/)/.test(url), url).toBe(
+        true,
+      );
     }
   });
 

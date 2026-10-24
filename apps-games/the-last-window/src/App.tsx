@@ -2,6 +2,8 @@ import { useCurrentScreen } from "@web-games/kit";
 import { useEffect, useState } from "preact/hooks";
 import { ArtContext } from "./art/context";
 import { ART_MANIFEST } from "./art/manifest";
+import { musicSceneFor, uiEventForClick } from "./feedback/clicks";
+import { useFeedback, useMusicScene } from "./feedback/hooks";
 import { Credits } from "./screens/Credits";
 import { Day } from "./screens/Day";
 import { Home } from "./screens/Home";
@@ -83,6 +85,17 @@ function Shell() {
   const reducedMotion = useReducedMotion();
   const [quit, setQuit] = useState(false);
   const entry = useCurrentScreen(app.router);
+  const feedback = useFeedback();
+  useMusicScene(musicSceneFor(entry.name));
+
+  useEffect(() => {
+    const onClick = (event: Event): void => {
+      const cue = uiEventForClick(event.target);
+      if (cue) feedback.fire(cue);
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, [feedback]);
 
   useEffect(() => {
     installTheme({

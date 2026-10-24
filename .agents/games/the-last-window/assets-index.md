@@ -1,6 +1,6 @@
 # The Last Window - assets index
 
-Status after task 04: the two fonts are delivered (below); art and audio are not yet. This file plans every art
+Status after task 05: the two fonts and the 36 audio files are delivered (below); art is not yet. This file plans every art
 slot and the audio slots. Later tasks fill in provenance, sizes and hashes: 05 (audio), 06 (art), 07 (icon
 and splash), 08 (totals). Every one of the 54 art slots has a code-drawn fallback so the game
 renders completely with zero, some or all slots present.
@@ -128,50 +128,57 @@ every source character inside the subset. Both fonts are preloaded from `index.h
 
 Sources, in the order tried: Kenney audio packs (Interface Sounds, Impact Sounds, Digital Audio, RPG
 Audio, Music Jingles) at `kenney.nl/assets`; otherwise a page that explicitly states CC0 for the file
-(for example OpenGameArt entries showing `License(s): CC0`). Nothing is synthesised. Every file gets a
-row in `public/audio/LICENSES.md` (author, source URL, licence, download date, SHA-256 of the shipped
-file). Slot ids are fixed here; task 05 chooses the files and fills the source column.
+(OpenGameArt entries showing `License(s): CC0`). Nothing is synthesised. Every file has a row in
+`public/audio/LICENSES.md` (author, source URL, licence, download date, SHA-256 of the shipped file,
+what was done to it); pack and page licence records are copied to `public/audio/licenses/`. Sound
+effects are Kenney originals, mono (stereo originals were downmixed with ffmpeg, libvorbis q4).
+The rain loop and the three music loops are excerpts of OpenGameArt CC0 recordings with a 1.5 to 2 s
+equal-power tail-to-head crossfade, mono, loudness-normalised. No slot ships silent. Candidates and
+choices are in `.agents/resources/2026-10-23/web-games/the-last-window/05/README.md`.
 
-| Slot id | Trigger |
-|---|---|
-| `ui-tap` | any button tap |
-| `ui-back` | Back button |
-| `ui-toggle` | settings toggle |
-| `ui-open-sheet` | pause, quit, purchase or plan sheet opens |
-| `customer-arrive` | a customer takes a seat (door bell) |
-| `seat-select` | a seat is selected |
-| `step-tap` | a correct recipe step |
-| `step-wrong` | a wrong recipe step (cup emptied) |
-| `step-brew` | brew step starts |
-| `step-steam` | steam step starts |
-| `step-pour` | pour step |
-| `oven-start` | warm step starts |
-| `oven-ready` | pastry out of the oven (ding) |
-| `book-pick` | a book is placed on the ticket |
-| `serve` | tray handed over |
-| `coin` | tip and payment shown |
-| `delighted` | delighted outcome |
-| `disappointed` | disappointed outcome |
-| `customer-left` | customer leaves or is turned away |
-| `patience-warning` | a seated customer drops under 10 s |
-| `shift-start` | shift begins |
-| `shift-end` | closing bell |
-| `star-1`, `star-2`, `star-3` | shift result by stars |
-| `scene-open` | a story scene opens (page turn) |
-| `choice-pick` | a choice option is picked |
-| `friendship-up` | a friendship level is reached |
-| `ending` | scene 5 ending block starts |
-| `decor-buy` | decor purchased |
-| `unlock` | new recipe or book unlocked |
-| `streak-up` | Late Shift streak extended |
-| `rain-loop` | ambient rain during rain shifts and in the rain interior (loop) |
-| `music-menu` | title, home, plan, shop, journal (loop) |
-| `music-shift` | during a shift (loop) |
-| `music-story` | during a story scene (loop) |
+| Slot id | Trigger | File | Bytes | Author | Source |
+|---|---|---|---|---|---|
+| `ui-tap` | any button tap | `ui-tap.ogg` | 4,371 | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds |
+| `ui-back` | Back button | `ui-back.ogg` | 7,208 | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds |
+| `ui-toggle` | settings toggle | `ui-toggle.ogg` | 8,654 | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds |
+| `ui-open-sheet` | pause, quit, purchase or plan sheet opens | `ui-open-sheet.ogg` | 15,046 | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds |
+| `customer-arrive` | a customer takes a seat (door bell) | `customer-arrive.ogg` | 8,323 | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds |
+| `seat-select` | a seat is selected | `seat-select.ogg` | 5,106 | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds |
+| `step-tap` | a correct recipe step | `step-tap.ogg` | 5,031 | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds |
+| `step-wrong` | a wrong recipe step (cup emptied) | `step-wrong.ogg` | 8,288 | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds |
+| `step-brew` | brew step starts | `step-brew.ogg` | 12,647 | Kenney (Kenney Vleugels) | kenney.nl/assets/rpg-audio |
+| `step-steam` | steam step starts | `step-steam.ogg` | 11,310 | Kenney (Kenney Vleugels) | kenney.nl/assets/rpg-audio |
+| `step-pour` | pour step | `step-pour.ogg` | 5,691 | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds |
+| `oven-start` | warm step starts | `oven-start.ogg` | 6,481 | Kenney (Kenney Vleugels) | kenney.nl/assets/rpg-audio |
+| `oven-ready` | pastry out of the oven (ding) | `oven-ready.ogg` | 5,856 | Kenney (Kenney Vleugels) | kenney.nl/assets/impact-sounds |
+| `book-pick` | a book is placed on the ticket | `book-pick.ogg` | 6,377 | Kenney (Kenney Vleugels) | kenney.nl/assets/rpg-audio |
+| `serve` | tray handed over | `serve.ogg` | 8,665 | Kenney (Kenney Vleugels) | kenney.nl/assets/impact-sounds |
+| `coin` | tip and payment shown | `coin.ogg` | 12,876 | Kenney (Kenney Vleugels) | kenney.nl/assets/rpg-audio |
+| `delighted` | delighted outcome | `delighted.ogg` | 8,517 | Kenney (Kenney Vleugels) | kenney.nl/assets/music-jingles |
+| `disappointed` | disappointed outcome | `disappointed.ogg` | 5,956 | Kenney (Kenney Vleugels) | kenney.nl/assets/digital-audio |
+| `customer-left` | customer leaves or is turned away | `customer-left.ogg` | 9,819 | Kenney (Kenney Vleugels) | kenney.nl/assets/rpg-audio |
+| `patience-warning` | a seated customer drops under 10 s | `patience-warning.ogg` | 8,233 | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds |
+| `shift-start` | shift begins | `shift-start.ogg` | 7,598 | Kenney (Kenney Vleugels) | kenney.nl/assets/music-jingles |
+| `shift-end` | closing bell | `shift-end.ogg` | 6,637 | Kenney (Kenney Vleugels) | kenney.nl/assets/impact-sounds |
+| `star-1` | shift result by stars | `star-1.ogg` | 9,370 | Kenney (Kenney Vleugels) | kenney.nl/assets/music-jingles |
+| `star-2` | shift result by stars | `star-2.ogg` | 11,066 | Kenney (Kenney Vleugels) | kenney.nl/assets/music-jingles |
+| `star-3` | shift result by stars | `star-3.ogg` | 14,977 | Kenney (Kenney Vleugels) | kenney.nl/assets/music-jingles |
+| `scene-open` | a story scene opens (page turn) | `scene-open.ogg` | 10,701 | Kenney (Kenney Vleugels) | kenney.nl/assets/rpg-audio |
+| `choice-pick` | a choice option is picked | `choice-pick.ogg` | 6,909 | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds |
+| `friendship-up` | a friendship level is reached | `friendship-up.ogg` | 12,686 | Kenney (Kenney Vleugels) | kenney.nl/assets/music-jingles |
+| `ending` | scene 5 ending block starts | `ending.ogg` | 12,809 | Kenney (Kenney Vleugels) | kenney.nl/assets/music-jingles |
+| `decor-buy` | decor purchased | `decor-buy.ogg` | 9,535 | Kenney (Kenney Vleugels) | kenney.nl/assets/interface-sounds |
+| `unlock` | new recipe or book unlocked | `unlock.ogg` | 11,083 | Kenney (Kenney Vleugels) | kenney.nl/assets/music-jingles |
+| `streak-up` | Late Shift streak extended | `streak-up.ogg` | 11,253 | Kenney (Kenney Vleugels) | kenney.nl/assets/music-jingles |
+| `rain-loop` | ambient rain during rain shifts and in the rain interior (loop) | `rain-loop.ogg` | 61,271 | haruta (user haruta on OpenGameArt) | opengameart.org/content/light-rain-and-heavy-rain |
+| `music-menu` | title, home, plan, shop, journal (loop) | `music-menu.ogg` | 326,323 | OatCog (user OatCog on OpenGameArt) | opengameart.org/content/coffee-house-bump |
+| `music-shift` | during a shift (loop) | `music-shift.ogg` | 233,916 | Pro Sensory (Alex McCulloch) | opengameart.org/content/jazz-slower |
+| `music-story` | during a story scene (loop) | `music-story.ogg` | 291,999 | Pro Sensory (Alex McCulloch) | opengameart.org/content/just-you-and-me-guitar |
 
-Count: 33 sounds (including the `rain-loop` ambience) and 3 music loops = 36 slots. Budget: audio at most 2 MB total, each
-sound at most 60 KB, `rain-loop` at most 150 KB, each music loop at most 500 KB. Sound effects are mono
-Ogg Vorbis; loops get a short tail-to-head crossfade.
+Total audio: 1,202,588 bytes (36 files, 1.15 MB; budget 2 MB). Each sound effect is at most 60 KB,
+`rain-loop` at most 150 KB, each music loop at most 500 KB (`test/audio-assets.test.ts`).
+
+Count: 33 sounds (including the `rain-loop` ambience) and 3 music loops = 36 slots.
 
 Haptics (no files): light impact on step taps and book picks, medium impact on serve, `success` on
 delighted and on each earned star, `warning` on a wrong step and when a customer leaves, `success` on

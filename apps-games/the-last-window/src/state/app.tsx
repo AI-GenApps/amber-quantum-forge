@@ -9,6 +9,7 @@ import {
 import type { Profile } from "@web-games/the-last-window-core";
 import { createContext } from "preact";
 import { useContext, useEffect, useRef, useState } from "preact/hooks";
+import type { Feedback } from "../feedback/feedback";
 import type { AppRouter } from "../nav";
 import type { VisibilitySource } from "../shift/Runner";
 import type { Scheduler } from "../shift/scheduler";
@@ -21,7 +22,9 @@ export interface AppContextValue {
   settings: SettingsStore;
   clock: () => Date;
   share: (content: ShareContent) => Promise<ShareResult>;
-  lifecycle?: Pick<Lifecycle, "onBack">;
+  lifecycle?: Pick<Lifecycle, "onBack"> & Partial<Pick<Lifecycle, "onPause" | "onResume">>;
+  /** Sounds and haptics; absent in tests that do not care, which makes every cue a no-op. */
+  feedback?: Feedback;
   exitApp?: () => void;
   /** Slots that have a runtime image; empty means every picture is code-drawn. */
   artManifest?: readonly string[];
