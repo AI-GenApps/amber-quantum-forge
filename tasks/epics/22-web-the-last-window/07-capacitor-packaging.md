@@ -1,7 +1,7 @@
 ---
 epic: 22-web-the-last-window
 task: 07-capacitor-packaging
-status: todo
+status: in-progress
 commit_scope: the-last-window
 depends_on: [22-web-the-last-window/06-art-integration]
 estimate: M
@@ -35,14 +35,14 @@ Add the Capacitor 8 Android and iOS projects to the app, generate icons and spla
 
 ## Implementation Checklist
 
-- [ ] Build the web bundle, add both platforms, generate assets, run `cap sync`; capture the command output (trimmed) in `.agents/resources/2026-10-23/web-games/the-last-window/07/README.md`.
-- [ ] Write `scripts/build-icons.ts` (composes `assets/icon-only.png`, `icon-foreground.png`, `icon-background.png`, `splash.png`, `splash-dark.png` with sharp from masters or the fallback) and `scripts/draw-fallback-icon.ts`; add `assets/` sources to the repo.
-- [ ] Set portrait orientation in `android/app/src/main/AndroidManifest.xml` and `ios/App/App/Info.plist`; set the display name, status bar style and `viewport-fit` consistent with `index.html`.
-- [ ] Confirm `capacitor.plugins.json` (Android) and the iOS package manifest list `@capacitor/app`, `haptics`, `preferences`, `screen-orientation`, `share` and `status-bar`, and nothing else.
-- [ ] Add `.gitignore` entries and verify `git status` shows only intended native files.
-- [ ] `test/native.test.ts` (reads files with `node:fs`): Android `applicationId` and `namespace` equal the appId, app name string equals "The Last Window", manifest has portrait orientation and the `android:allowBackup` decision is recorded, no `usesCleartextTraffic="true"`, `INTERNET` is the only permission, launcher icon resources exist at every density, splash drawable exists; iOS bundle identifier equals the appId, display name equals the title, portrait-only orientations, icon set contains the 1024 marketing icon, launch storyboard or splash image set exists; both `capacitor.config.json` copies match `capacitor.config.ts` values (no `server.url`); plugin lists exactly match the dependency list in `package.json`; `dist` is gitignored but `android` and `ios` project files are tracked.
-- [ ] `test/assets-sources.test.ts`: `assets/icon-only.png` is 1024 x 1024 and opaque, splash images are 2732 x 2732, read with sharp.
-- [ ] Update `decisions-log.md` (icon path used, INTERNET decision) and `open-questions.md` (Q6 outcome, Q10 carried).
+- [x] Build the web bundle, add both platforms, generate assets, run `cap sync`; capture the command output (trimmed) in `.agents/resources/2026-10-23/web-games/the-last-window/07/README.md`.
+- [x] Write `scripts/build-icons.ts` (composes `assets/icon-only.png`, `icon-foreground.png`, `icon-background.png`, `splash.png`, `splash-dark.png` with sharp from masters or the fallback) and `scripts/draw-fallback-icon.ts`; add `assets/` sources to the repo.
+- [x] Set portrait orientation in `android/app/src/main/AndroidManifest.xml` and `ios/App/App/Info.plist`; set the display name, status bar style and `viewport-fit` consistent with `index.html`.
+- [x] Confirm `capacitor.plugins.json` (Android) and the iOS package manifest list `@capacitor/app`, `haptics`, `preferences`, `screen-orientation`, `share` and `status-bar`, and nothing else.
+- [x] Add `.gitignore` entries and verify `git status` shows only intended native files.
+- [x] `test/native.test.ts` (reads files with `node:fs`): Android `applicationId` and `namespace` equal the appId, app name string equals "The Last Window", manifest has portrait orientation and the `android:allowBackup` decision is recorded, no `usesCleartextTraffic="true"`, `INTERNET` is the only permission, launcher icon resources exist at every density, splash drawable exists; iOS bundle identifier equals the appId, display name equals the title, portrait-only orientations, icon set contains the 1024 marketing icon, launch storyboard or splash image set exists; both `capacitor.config.json` copies match `capacitor.config.ts` values (no `server.url`); plugin lists exactly match the dependency list in `package.json`; `dist` is gitignored but `android` and `ios` project files are tracked.
+- [x] `test/assets-sources.test.ts`: `assets/icon-only.png` is 1024 x 1024 and opaque, splash images are 2732 x 2732, read with sharp.
+- [x] Update `decisions-log.md` (icon path used, INTERNET decision) and `open-questions.md` (Q6 outcome, Q10 carried).
 
 ## Files Touched
 

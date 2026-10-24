@@ -1,6 +1,6 @@
 # Epic 22 - The Last Window (full v1 web game)
 
-Status: in progress (tasks 00 to 06 done; tasks 07 and 08 todo)
+Status: in progress (tasks 00 to 06 done; task 07 in progress; task 08 todo)
 
 ## Purpose
 
@@ -77,7 +77,7 @@ Rules for every task:
 | 04 | [All screens, navigation, design tokens, fonts, accessibility](04-screens-and-ui.md) | code | agent | [x] |
 | 05 | [CC0 audio, haptics, motion polish, onboarding and how-to-play](05-audio-haptics-onboarding.md) | code | agent | [x] |
 | 06 | [Integrate reviewed art from the designer inbox](06-art-integration.md) | art | agent | [x] |
-| 07 | [Capacitor Android/iOS projects, icons and splash](07-capacitor-packaging.md) | code | agent | [ ] |
+| 07 | [Capacitor Android/iOS projects, icons and splash](07-capacitor-packaging.md) | code | agent | [x] |
 | 08 | [Release readiness, budgets, knowledge base, owner QA checklist](08-release-readiness.md) | code | agent | [ ] |
 
 Filename order is execution order. `[~]` means in progress.

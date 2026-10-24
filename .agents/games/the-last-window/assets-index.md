@@ -259,10 +259,19 @@ friendship level up, light impact on a choice. Nothing on plain navigation taps.
 | Fonts (`public/fonts`) | at most 300 KB | `test/budgets.test.ts` |
 | Audio (`public/audio`) | at most 2 MB | `test/budgets.test.ts`, `test/audio-assets.test.ts` |
 
-## Capacitor icon and splash (planned, task 07)
+## Capacitor icon and splash (task 07)
 
-Sources in `apps-games/the-last-window/assets/`, written by `scripts/build-icons.ts`: the accepted `icon`
-master (1024 x 1024 opaque) as `icon-only.png` and `icon-foreground.png`, a flat `night` `#1F2F45`
-`icon-background.png`, and 2732 x 2732 `splash.png` and `splash-dark.png` built from the accepted
-`key-art` (or the code-drawn lamp-in-window badge on `night` if `key-art` is rejected). The
-`feature-graphic` is a store asset only.
+Sources in `apps-games/the-last-window/assets/`, written by `scripts/build-icons.ts` from the evidence masters
+(never the inbox); `capacitor-assets` turns them into the Android and iOS files.
+
+| Source | Content | Size |
+|---|---|---|
+| `icon-only.png` | accepted `icon` master, opaque RGB | 1024 x 1024 |
+| `icon-foreground.png` | the same icon with its outer 200 px faded to transparent so the wall melts into the background layer | 1024 x 1024 |
+| `icon-background.png` | flat `night` `#1F2F45` | 1024 x 1024 |
+| `splash.png`, `splash-dark.png` | accepted `key-art` master scaled to 1200 x 1800 (from 1024 x 1536, 1.17x), edges softened over 220 px, centred on `night` `#1F2F45`; the cottage and lit window sit inside the central 1200 px safe box. Identical files (one dark look). | 2732 x 2732 |
+
+Path used: accepted masters for both (no code-drawn fallback needed; `icon` and `key-art` were accepted).
+`scripts/draw-fallback-icon.ts` (lamp-in-window badge from the palette tokens) stays as the fallback for a
+future rejected slot (`bun scripts/build-icons.ts --fallback`). Rejected or not generated slots: none.
+`feature-graphic` is a store asset only and has no Capacitor role.

@@ -390,3 +390,21 @@ two plan rows changed wording (below). Evidence: `.agents/resources/2026-10-23/w
   fallbacks pass `artManifest: []` (or an `ArtContext` with an empty list); the preload test passes an empty
   manifest so no image is fetched in happy-dom.
 
+## Task 07 (Capacitor packaging)
+
+- **Icon path.** Both slots were accepted, so the icon is the accepted `icon` master and the splash is the
+  accepted `key-art` master (scaled to 1200 x 1800, soft edges, centred on `night` `#1F2F45`); no code-drawn
+  fallback is used. The adaptive foreground is the icon with its outer 200 px faded to transparent, over a
+  flat `night` background layer, so the launcher mask shows no hard square. One dark look: `splash.png` and
+  `splash-dark.png` are identical.
+- **Native look.** `backgroundColor` and the StatusBar plugin (`DARK`, `#1F2F45`) are set in
+  `capacitor.config.ts`; the iOS launch storyboard background is `night`; iOS status bar style is light
+  content; the Android adaptive background colour resource is `night`.
+- **Portrait only.** Android activity `screenOrientation="portrait"`; iOS iPhone and iPad orientation lists
+  contain only `UIInterfaceOrientationPortrait`.
+- **INTERNET kept, backup kept.** `INTERNET` stays the only Android permission (Capacitor default; WebView
+  loader unverified without a device, open question Q10) and `allowBackup="true"` stays so progress survives
+  a phone change; no cleartext traffic flag. The game still makes no network calls.
+- **Plugins.** Exactly `app`, `haptics`, `preferences`, `screen-orientation`, `share`, `status-bar` on both
+  platforms, equal to the `package.json` dependency list (test).
+- **Swift Package Manager.** iOS needs no CocoaPods (Q6 closed).
