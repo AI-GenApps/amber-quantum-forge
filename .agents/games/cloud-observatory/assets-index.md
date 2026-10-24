@@ -280,7 +280,7 @@ art bible and every reviewer verdict are in the evidence folder
 
 | Budget | Limit | Measured | Test |
 |---|---|---|---|
-| JavaScript, gzip level 9, all `dist/assets/*.js` | 300 KB (307,200 bytes) | 63,346 bytes (6 files) | `test/release/bundle.test.ts` (programmatic Vite build into `node_modules/.cache/bundle-check`) |
+| JavaScript, gzip level 9, all `dist/assets/*.js` | 300 KB (307,200 bytes) | 63,768 bytes (6 files) | `test/release/bundle.test.ts` (programmatic Vite build into `node_modules/.cache/bundle-check`) |
 | woff2 fonts | 400,000 bytes | 76,792 bytes (4 files) | `test/release/budgets.test.ts` |
 | Audio | 2,500,000 bytes | 1,920,489 bytes (14 files) | `test/release/budgets.test.ts` |
 | Art | 8,000,000 bytes, 600,000 per file | 683,760 bytes (31 files, largest 81,154) | `test/release/budgets.test.ts` |

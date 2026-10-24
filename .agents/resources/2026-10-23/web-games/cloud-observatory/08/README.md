@@ -9,11 +9,11 @@ emulator, device, screenshot, APK or JDK was used. The owner QA checklist is
 | Command (from the worktree root) | Result |
 |---|---|
 | `bun run --filter '@web-games/cloud-observatory*' typecheck` | pass: core and app `tsc --noEmit` both exit 0 |
-| `bun run --filter '@web-games/cloud-observatory*' test` | pass: core 26 files, 471 tests; app 45 files, 492 tests (963 tests in 71 files) |
-| `bun run --filter '@web-games/cloud-observatory' build` | pass: 168 modules, `dist/assets/index-DelbJy6N.js` 189.19 kB (61.83 kB gzip at the build default level), `index.html` 0.69 kB |
+| `bun run --filter '@web-games/cloud-observatory*' test` | pass: core 26 files, 471 tests; app 45 files, 556 tests (1,027 tests in 71 files) |
+| `bun run --filter '@web-games/cloud-observatory' build` | pass: 168 modules, `dist/assets/index-CEpZ93L3.js` 191.78 kB (62.26 kB gzip at the build default level), `index.html` 0.69 kB |
 | `bunx biome check apps-games/cloud-observatory apps-games/cloud-observatory-core` | pass: 181 files, no fixes, no diagnostics |
 
-Before task 08 the app had 37 files and 447 tests; task 08 added 8 app files (45 tests:
+Before task 08 the app had 37 files and 447 tests; task 08 added 8 app files (45 tests in the first pass:
 `test/release/{bundle,budgets,no-network,content-contract,store-listing,save-roundtrip,accessibility-audit,performance}`)
 and 1 core file (`test/performance.test.ts`, 2 tests).
 
@@ -23,7 +23,7 @@ Pre-existing failures: none. Every command is green, so no throwaway `origin/mai
 
 | Budget | Limit | Measured |
 |---|---|---|
-| JavaScript, gzip level 9, `dist/assets/*.js` summed | 307,200 bytes (300 KB) | 63,346 bytes in 6 files (193,552 bytes raw; main chunk 61,348 gzip) |
+| JavaScript, gzip level 9, `dist/assets/*.js` summed | 307,200 bytes (300 KB) | 63,768 bytes in 6 files (196,141 bytes raw; main chunk 61,763 gzip) |
 | woff2 fonts | 400,000 bytes | 76,792 bytes, 4 files |
 | Audio | 2,500,000 bytes | 1,920,489 bytes, 14 files (13 cues and 1 loop) |
 | Art | 8,000,000 bytes, 600,000 per file | 683,760 bytes, 31 files (largest 81,154; updated in the task 06 update pass) |
@@ -33,7 +33,7 @@ Pre-existing failures: none. Every command is green, so no throwaway `origin/mai
 
 The bundle number comes from `test/release/bundle.test.ts`, which runs Vite's JavaScript `build()` API
 with `NODE_ENV=production` into `apps-games/cloud-observatory/node_modules/.cache/bundle-check`
-(git-ignored). Its output is byte-identical to `vite build` (same `index-DelbJy6N.js` hash), so it does
+(git-ignored). Its output is byte-identical to `vite build` (same `index-CEpZ93L3.js` hash), so it does
 not depend on a previous build.
 
 ## What each release test proves

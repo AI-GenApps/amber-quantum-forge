@@ -36,7 +36,7 @@ change is updated here in the same commit. Evidence lives under
 | Art | 33 image slots from the MobileGamesDesigner thread; 33 accepted (31 bundled as WebP; `icon` is the Capacitor launcher icon and `feature-graphic` the store graphic, both masters only), 0 code-drawn placeholders (kept in code as the fallback for a missing file, see assets-index.md); art budget 8 MB |
 | Audio | CC0 only (Kenney packs or pages stating CC0); source and licence recorded per file |
 | Budgets | JS bundle at most 300 KB gzip excluding art; woff2 total at most 400 KB; audio at most 2.5 MB; art at most 8 MB (no file over 600 KB); first-load HTML under 5 KB. All enforced by `test/release/` |
-| Measured (task 08) | JS 63,346 bytes gzip level 9 (6 files, 193,552 raw); woff2 76,792 (4 files); audio 1,920,489 (14 files); art 683,760 (31 files); `index.html` 694 bytes; a saved late game is under 2.1 KB |
+| Measured (task 08) | JS 63,768 bytes gzip level 9 (6 files, 196,141 raw); woff2 76,792 (4 files); audio 1,920,489 (14 files); art 683,760 (31 files); `index.html` 694 bytes; a saved late game is under 2.1 KB |
 | Monetization | None in v1 (no ads, no IAP, no accounts, no network). Economy leaves room for IAP later |
 | Data | Local save only (Capacitor Preferences on device, localStorage on web); nothing collected |
 | Epic | [`tasks/epics/21-web-cloud-observatory`](../../../tasks/epics/21-web-cloud-observatory/STATUS.md) |

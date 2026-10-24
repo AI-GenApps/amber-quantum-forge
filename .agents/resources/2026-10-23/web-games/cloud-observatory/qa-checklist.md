@@ -6,7 +6,7 @@ at the end (section 20) and write what you saw in Notes. Known placeholders, del
 risks are listed in `.agents/games/cloud-observatory/assets-index.md` and `open-questions.md`; a
 step that names one of them says so.
 
-Machine-checked already (do not re-test by eye): the gzip JavaScript budget (63,346 bytes against
+Machine-checked already (do not re-test by eye): the gzip JavaScript budget (63,768 bytes against
 307,200), font, audio and art byte budgets, contrast of every text pair, 44 px hit rules in the
 stylesheet, accessible names on every screen at three progress points, no `NaN` or `undefined` text,
 the no-network source audit, save round trip, 8 hours of simulation in about a second. See
