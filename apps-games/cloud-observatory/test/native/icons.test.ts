@@ -1,8 +1,13 @@
 import { existsSync, readdirSync, statSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import sharp from "sharp";
 import { describe, expect, it } from "vitest";
 import { ANDROID_RES, IOS_APP_DIR, RESOURCES_DIR } from "./paths";
+
+const MASTERS_DIR = resolve(
+  RESOURCES_DIR,
+  "../../../.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters",
+);
 
 async function stats(path: string) {
   const image = sharp(path);
@@ -53,6 +58,46 @@ describe("capacitor asset sources", () => {
       }
     }
     expect(outside).toBe(0);
+  });
+
+  it("icon-only is the accepted painted icon master, not a code-drawn stopgap", async () => {
+    const size = 256;
+    const read = async (path: string) =>
+      sharp(path).resize(size, size).removeAlpha().raw().toBuffer();
+    const [shipped, master] = await Promise.all([
+      read(join(RESOURCES_DIR, "icon-only.png")),
+      read(join(MASTERS_DIR, "icon.webp")),
+    ]);
+    let diff = 0;
+    for (let i = 0; i < shipped.length; i += 1)
+      diff += Math.abs((shipped[i] ?? 0) - (master[i] ?? 0));
+    expect(diff / shipped.length).toBeLessThan(2);
+  });
+
+  it("icon-foreground carries the icon centre and feathers to transparent at the safe-zone edge", async () => {
+    const path = join(RESOURCES_DIR, "icon-foreground.png");
+    const { data, info } = await sharp(path).raw().toBuffer({ resolveWithObject: true });
+    const px = (x: number, y: number): number[] => {
+      const at = (y * info.width + x) * info.channels;
+      return [data[at] ?? 0, data[at + 1] ?? 0, data[at + 2] ?? 0, data[at + 3] ?? 0];
+    };
+    const master = await sharp(join(MASTERS_DIR, "icon.webp"))
+      .resize(1024, 1024)
+      .removeAlpha()
+      .raw()
+      .toBuffer();
+    const safe = Math.round(1024 * 0.66);
+    const margin = Math.round((1024 - safe) / 2);
+    const sampleX = margin + Math.round(safe * 0.6);
+    const sampleY = margin + Math.round(safe * 0.62);
+    const masterX = Math.round(sampleX - margin) * (1024 / safe);
+    const masterY = Math.round(sampleY - margin) * (1024 / safe);
+    const at = (Math.round(masterY) * 1024 + Math.round(masterX)) * 3;
+    const fg = px(sampleX, sampleY);
+    for (let c = 0; c < 3; c += 1)
+      expect(Math.abs((fg[c] ?? 0) - (master[at + c] ?? 0))).toBeLessThan(40);
+    expect(fg[3]).toBe(255);
+    expect(px(margin, margin + Math.round(safe / 2))[3]).toBeLessThan(128);
   });
 
   it.each(["splash.png", "splash-dark.png"])("%s is 2732 square and opaque", async (file) => {

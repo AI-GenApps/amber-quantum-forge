@@ -307,8 +307,8 @@ the template defaults and were not changed: Android minSdk 24, compileSdk and ta
 with `UIRequiresFullScreen` so the iPad build is valid with one orientation. (2) **`INTERNET`
 removed** from the manifest (the game never touches the network and the bridge serves the bundle
 in-process); the manifest now declares no permissions. Unverified on a device, with the one-line
-restore recorded in the evidence README and `store-listing.md`. (3) **Icon is a code-drawn stopgap**
-because the designer `icon` was rejected; the foreground is the star mark alone (not the opaque icon
+restore recorded in the evidence README and `store-listing.md`. (3) **Icon was a code-drawn stopgap**
+(superseded by the update pass below) because the designer `icon` was rejected; the foreground is the star mark alone (not the opaque icon
 square, which would show a box in the adaptive mask) and the background is the blurred, enlarged icon.
 The splash uses the accepted key art, feathered into a flat ink field (`#101A33`, dark `#0B1226`).
 (4) The android `.gitignore` now ignores `*.jks`, `*.keystore`, `keystore.properties` and
@@ -317,6 +317,20 @@ The splash uses the accepted key art, feathered into a flat ink field (`#101A33`
 template defaults (grid launcher vectors, three default iOS splash files) were deleted after
 `capacitor-assets` ran. No economy number, content or rule changed. *Rationale: the task's own
 rules, with the smallest permission surface for the store form.*
+
+### 2026-10-24 — Painted launcher icon (task 07 update pass)
+
+The designer `icon` was accepted (retry round 1) after the first task 07 pass, so the code-drawn
+stopgap star is gone. Decisions: (1) **`icon-only.png` is the accepted painted master** (iOS 1024 icon
+and legacy Android icon). (2) **Adaptive icon without retouching**: the foreground is the whole
+painting scaled to the 66% safe zone with a 7% feathered edge, over `icon-background.png` (the painting
+enlarged 1.6x and blurred), instead of cutting a mark out of the scene (a transparent cut-out was
+the open-questions 15 blocker). Trade-off: the dome is smaller inside round masks; the owner judges it
+on a device and can ask the designer for a foreground-only variant later. (3) The splash is unchanged
+(accepted key art), so the generated splash drawables are byte-identical; only launcher mipmaps and
+the iOS `AppIcon` changed. (4) The icon test now asserts the shipped icon equals the accepted master and
+that the foreground carries its centre and fades out at the safe-zone edge. No economy number,
+content or rule changed. *Rationale: use accepted art everywhere it was meant, never edit it.*
 
 ### 2026-10-24 — Release readiness (task 08)
 

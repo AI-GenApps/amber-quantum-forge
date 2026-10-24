@@ -33,7 +33,7 @@ change is updated here in the same commit. Evidence lives under
 | Pacing targets | First constellation under 3 min; first Eclipse between 2.5 and 4 h active play; no gap over 6 min between purchases |
 | Numbers | Doubles only, formatter to 1e300 |
 | Fonts | Cormorant Garamond (display) + Manrope (body), OFL, bundled woff2 |
-| Art | 33 image slots from the MobileGamesDesigner thread; 33 accepted (31 bundled as WebP, `icon` and `feature-graphic` as masters only), 0 code-drawn placeholders (kept in code as the fallback for a missing file, see assets-index.md); art budget 8 MB |
+| Art | 33 image slots from the MobileGamesDesigner thread; 33 accepted (31 bundled as WebP; `icon` is the Capacitor launcher icon and `feature-graphic` the store graphic, both masters only), 0 code-drawn placeholders (kept in code as the fallback for a missing file, see assets-index.md); art budget 8 MB |
 | Audio | CC0 only (Kenney packs or pages stating CC0); source and licence recorded per file |
 | Budgets | JS bundle at most 300 KB gzip excluding art; woff2 total at most 400 KB; audio at most 2.5 MB; art at most 8 MB (no file over 600 KB); first-load HTML under 5 KB. All enforced by `test/release/` |
 | Measured (task 08) | JS 63,346 bytes gzip level 9 (6 files, 193,552 raw); woff2 76,792 (4 files); audio 1,920,489 (14 files); art 683,760 (31 files); `index.html` 694 bytes; a saved late game is under 2.1 KB |

@@ -118,7 +118,7 @@ README `08/README.md`.
 
 | Asset | Source |
 |---|---|
-| App icon 512 / 1024 | painted master `icon` (accepted, retry round 1) at `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/icon.webp` (1024×1024). The shipped launcher icon is still the code-drawn stopgap `apps-games/cloud-observatory/resources/icon-only.png` (1024, opaque) from `scripts/build-icons.mjs`; swapping in the painted icon is open-questions row 15 |
+| App icon 512 / 1024 | painted master `icon` (accepted, retry round 1) at `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/icon.webp` (1024×1024). The shipped launcher icon is the same painting: `apps-games/cloud-observatory/resources/icon-only.png` (1024, opaque) from `scripts/build-icons.mjs`, with a feathered 66% adaptive foreground over a blurred copy (open-questions row 15, closed) |
 | Feature graphic 1024×500 | art slot `feature-graphic` (accepted, retry round 3; 1536×1024 master at `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/feature-graphic.webp`, no text; cropped at submission) |
 | Screenshots | Captured by the owner during browser/device QA, never by agents |
 | Promo text overlays | Added at submission, not baked into art |

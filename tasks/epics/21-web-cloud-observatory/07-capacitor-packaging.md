@@ -74,6 +74,10 @@ binaries later.
 - [x] Update `assets-index.md` (icon and splash provenance), `store-listing.md` (permissions),
       `decisions-log.md` (SDK values, INTERNET outcome).
 
+- [x] Update pass (2026-10-24): `icon` accepted after the first pass; `build-icons.mjs` now reads the
+      accepted master (painted `icon-only.png`, feathered 66% adaptive foreground, blurred background),
+      icons regenerated, `cap sync` re-run, docs and icon tests updated.
+
 Tests (headless, in `apps-games/cloud-observatory/test/native/`):
 
 - [x] `native-projects.test.ts`: `android/` and `ios/` exist; `AndroidManifest.xml` contains

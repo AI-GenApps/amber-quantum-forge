@@ -229,8 +229,9 @@ builds ignore it). Use 1x for the first two checks.
    at 144 px. Instrument icons (112 px) are distinguishable from each other in the Build list.
 4. Chapter art and the key art are not badly cropped on tall screens (19.5:9, for example 390 x 844
    and 360 x 800) or short ones (320 x 568).
-5. The launcher icon is still the code-drawn gold star on navy (open question 15); the painted
-   `icon` was accepted later and is stored as a master. Decide whether to swap it in.
+5. The launcher icon is the accepted painted `icon` (open question 15, closed). The Android adaptive
+   foreground is the whole painting at 66% with a feathered edge over a blurred copy: check the dome and
+   star read inside round and squircle masks; if too small, ask for a foreground-only variant.
 
 ## 17. Save and recovery
 

@@ -59,19 +59,26 @@ first device run (Owner step 4 below).
 
 ## Icons and splash
 
-The designer `icon` was rejected in the last round of batch b1 (bloom has blocky pixel-stepped
-edges; vector eight-point star overlapped by the telescope tube; telescope pasted across the dome
-face; bare pillar base), so the launcher icon is a code-drawn stopgap. The accepted `key-art` master
-is the splash source. `scripts/build-icons.mjs` (sharp only, deterministic, re-runnable with
-`bun scripts/build-icons.mjs`) writes:
+Update pass (2026-10-24): the designer `icon` was accepted after the first pass (retry round 1, review in
+`art/review/retry-round-1.md`; the art bible and all review notes are in `art/`), so the launcher icon is now
+the painted master and the code-drawn stopgap star was removed. The accepted `key-art` master is the splash
+source, unchanged. `scripts/build-icons.mjs` (sharp only, deterministic, re-runnable with
+`bun scripts/build-icons.mjs`, reads only `art/masters/icon.webp` and `art/masters/key-art.webp`) writes:
 
 | File | Size | Content |
 |---|---|---|
-| `resources/icon-only.png` | 1024, opaque | Gold-foil four-point star (`#EBCB85` light upper left, `#D8A94B` base, `#A47C30` shade lower right) in two thin rings on a radial `#22335C` to `#101A33` field |
-| `resources/icon-foreground.png` | 1024, transparent | The star mark alone at 66% (adaptive-icon safe zone); the icon square is not used because its navy field would show a box inside the adaptive mask |
-| `resources/icon-background.png` | 1024, opaque | `icon-only.png` enlarged 1.6x and blurred (sigma 40) so no hard shape shows |
-| `resources/splash.png` | 2732, opaque | `#101A33` field, accepted key art (read from `art/masters/key-art.webp`) at 40% of the width, edges feathered so no box shows |
+| `resources/icon-only.png` | 1024, opaque | The accepted painted `icon` master (WebP to PNG only). iOS icon and legacy Android icon |
+| `resources/icon-foreground.png` | 1024, transparent | The painting at 66% (adaptive-icon safe zone), centred, edge feathered (7%) into transparency so no box shows inside the adaptive mask |
+| `resources/icon-background.png` | 1024, opaque | `icon-only.png` enlarged 1.6x and blurred (sigma 40) under the foreground |
+| `resources/splash.png` | 2732, opaque | `#101A33` field, accepted key art (from `art/masters/key-art.webp`) at 40% of the width, edges feathered so no box shows |
 | `resources/splash-dark.png` | 2732, opaque | Same on `#0B1226` (ink-950) |
+
+Update pass commands, all headless: `bun scripts/build-icons.mjs`, then
+`bunx capacitor-assets generate --android --ios --assetPath resources` (android 74 files, 10.3 MB; ios 7
+files, 3.81 MB), then `bun run build`, `bunx cap sync android`, `bunx cap sync ios` (both succeeded, same six
+plugins). The generated splash files came out byte-identical to the committed ones; only the launcher mipmaps
+(`ic_launcher`, `_round`, `_foreground`, `_background` in five densities) and `AppIcon-512@2x.png` changed.
+`android/local.properties`, written by `cap sync`, was deleted again.
 
 Generated outputs (committed): Android `mipmap-{ldpi..xxxhdpi}` launcher, round, foreground and
 background PNGs, `mipmap-anydpi-v26` adaptive XML, `drawable*/splash.png` in 6 port, 6 land and
@@ -102,7 +109,7 @@ and Android SDK 36; Xcode 26 on macOS for iOS. Run `bun install` at the repo roo
    Capabilities, pick a device or simulator and Run. Packages resolve through Swift Package Manager
    on the first open (needs network once).
 4. First-run checks on device: the game boots past the splash (if blank, see the INTERNET note),
-   rotating the device does not rotate the app, the star icon shows in the launcher and as a round
+   rotating the device does not rotate the app, the painted observatory icon shows in the launcher and as a round
    and adaptive icon, the dark-mode splash is the darker field, save persists across a relaunch.
 5. Release signing (left for submission, nothing is committed): create an upload keystore outside
    the repo, reference it from a git-ignored `android/keystore.properties`, then
@@ -110,10 +117,10 @@ and Android SDK 36; Xcode 26 on macOS for iOS. Run `bun install` at the repo roo
 
 ## Known limits
 
-- The stopgap icon is vector-flat by design. Open question 15 recommends one more designer round
-  (accepted building as reference, bloom fix first) so a painted icon can replace it: run the
-  art pipeline, change `scripts/build-icons.mjs` to read the accepted master, re-run
-  `capacitor-assets generate` and update `assets-index.md`.
+- The adaptive foreground is the whole painting scaled into the safe zone, so the dome is smaller inside round
+  launcher masks than it would be in a purpose-made foreground. Nobody has seen it on a device: the owner
+  judges it in QA. If it is too small, ask the designer for a foreground-only variant (transparent dome, star and
+  telescope) and point `build-icons.mjs` at it.
 - Landscape splash drawables are generated by `capacitor-assets` although the app is portrait only;
   they are never selected and cost about 5 MB of the repository. They could be deleted later.
 - `ios/App/CapApp-SPM/Package.swift` and `android/capacitor.settings.gradle` hold relative paths into
