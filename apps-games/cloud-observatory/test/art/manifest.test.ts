@@ -17,6 +17,12 @@ describe("slot table", () => {
     expect(table.scale).toBe(2);
   });
 
+  it("only waives the bottom corners for the bottom-anchored horizon-hills layer", () => {
+    const waived = table.slots.filter((row) => row.transparentCorners === "top");
+    expect(waived.map((row) => row.id)).toEqual(["horizon-hills"]);
+    for (const row of waived) expect(row.transparent).toBe(true);
+  });
+
   it("agrees with the app's display sizes, and bundles every slot but icon and feature-graphic", () => {
     for (const row of table.slots) {
       if (!row.bundled) {
@@ -76,12 +82,14 @@ describe("shipped art manifest", () => {
           .raw()
           .toBuffer({ resolveWithObject: true });
         const alphaAt = (x: number, y: number): number => data[(y * info.width + x) * 4 + 3] ?? 255;
-        expect([
-          alphaAt(0, 0),
-          alphaAt(info.width - 1, 0),
-          alphaAt(0, info.height - 1),
-          alphaAt(info.width - 1, info.height - 1),
-        ]).toEqual([0, 0, 0, 0]);
+        const top = [alphaAt(0, 0), alphaAt(info.width - 1, 0)];
+        const bottom = [alphaAt(0, info.height - 1), alphaAt(info.width - 1, info.height - 1)];
+        expect(top).toEqual([0, 0]);
+        if (row.transparentCorners === "top") {
+          expect(bottom).toEqual([255, 255]);
+        } else {
+          expect(bottom).toEqual([0, 0]);
+        }
       });
     });
   }

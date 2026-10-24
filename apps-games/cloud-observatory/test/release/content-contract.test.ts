@@ -85,8 +85,8 @@ describe("knowledge base README quick facts", () => {
     const readme = readText(join(KB, "README.md"));
     const art = readme.split("\n").find((line) => line.startsWith("| Art |")) ?? "";
     expect(art).toContain(`${ART_SLOTS.length} image slots`);
-    expect(art).toContain("3 accepted");
-    expect(art).toContain("30 code-drawn placeholders");
+    expect(art).toContain("33 accepted");
+    expect(art).toContain("0 code-drawn placeholders");
   });
 
   it("states the budgets that the release tests enforce", () => {

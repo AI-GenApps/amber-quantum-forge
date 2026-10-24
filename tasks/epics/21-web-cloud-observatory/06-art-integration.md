@@ -65,6 +65,10 @@ itself: it only integrates what the review loop accepted.
       with reason), sizes, and the total bundled bytes.
 - [x] Update `open-questions.md` with every placeholder slot and a recommended follow-up.
 
+Update pass (2026-10-24): the designer loop later accepted all 33 slots (`status=ok`); the 30 new images
+were integrated with the same tooling, `art-slots.json` gained `transparentCorners: "top"` for the
+bottom-anchored `horizon-hills`, and the art tests now assert 33 accepted, 31 bundled, 0 placeholders.
+
 Tests:
 
 - [x] `art/manifest.test.ts`: every manifest entry has a file under `public/art/`, the WebP header

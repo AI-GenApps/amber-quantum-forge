@@ -1,5 +1,95 @@
 [
   {
+    "id": "emblem-archer",
+    "batch": "B2",
+    "transparent": true,
+    "sourceSha256": "265ec57ae49344b65b42aea04633fb65dfd75ecb26befa30bc04d0994437648b",
+    "sourceBytes": 1360053,
+    "source": "1024x1024",
+    "masterBytes": 108010,
+    "bundled": {
+      "file": "public/art/emblem-archer.webp",
+      "size": "288x288",
+      "bytes": 13764,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "emblem-crown",
+    "batch": "B2",
+    "transparent": true,
+    "sourceSha256": "ba3f4dc7a01b28c9d96a60cb5486e716d694a5781ced570cac1893c82edacddd",
+    "sourceBytes": 1440566,
+    "source": "1024x1024",
+    "masterBytes": 128210,
+    "bundled": {
+      "file": "public/art/emblem-crown.webp",
+      "size": "288x288",
+      "bytes": 14708,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "emblem-fox",
+    "batch": "B2",
+    "transparent": true,
+    "sourceSha256": "93461510556e08b9a93f6d4fad72ef6084d4aecd16f1184710f6b142e2ec1610",
+    "sourceBytes": 1500834,
+    "source": "1024x1024",
+    "masterBytes": 137786,
+    "bundled": {
+      "file": "public/art/emblem-fox.webp",
+      "size": "288x288",
+      "bytes": 14876,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "emblem-harp",
+    "batch": "B2",
+    "transparent": true,
+    "sourceSha256": "b9925c22328231eb8f065d96ba88ab531aa24f4e1a19c5f4e3bf6029c4c0ca05",
+    "sourceBytes": 1463439,
+    "source": "1024x1024",
+    "masterBytes": 125270,
+    "bundled": {
+      "file": "public/art/emblem-harp.webp",
+      "size": "288x288",
+      "bytes": 14030,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "emblem-key",
+    "batch": "B2",
+    "transparent": true,
+    "sourceSha256": "9e8204ab9eb3c06515d20c9f951f3d42b8ed3d2190418e5889ab4bc7eac7633f",
+    "sourceBytes": 1433717,
+    "source": "1024x1024",
+    "masterBytes": 119634,
+    "bundled": {
+      "file": "public/art/emblem-key.webp",
+      "size": "288x288",
+      "bytes": 14010,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "emblem-lantern",
+    "batch": "B2",
+    "transparent": true,
+    "sourceSha256": "3633e9a2fe3e2dc031442322deba1277766f1415650f2789cc259d5dabc0dcc4",
+    "sourceBytes": 1473102,
+    "source": "1024x1024",
+    "masterBytes": 128774,
+    "bundled": {
+      "file": "public/art/emblem-lantern.webp",
+      "size": "288x288",
+      "bytes": 14374,
+      "background": "transparent"
+    }
+  },
+  {
     "id": "emblem-lyre",
     "batch": "B1",
     "transparent": true,
@@ -11,6 +101,236 @@
       "file": "public/art/emblem-lyre.webp",
       "size": "288x288",
       "bytes": 14656,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "emblem-owl",
+    "batch": "B2",
+    "transparent": true,
+    "sourceSha256": "7af8bb8abea719f65cc2f54599e261756409896cec559f677524fb2715a89a3d",
+    "sourceBytes": 1507242,
+    "source": "1024x1024",
+    "masterBytes": 143726,
+    "bundled": {
+      "file": "public/art/emblem-owl.webp",
+      "size": "288x288",
+      "bytes": 15832,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "emblem-serpent",
+    "batch": "B2",
+    "transparent": true,
+    "sourceSha256": "7329778a2e6bdc0a33ca44ae73493f165dd76c102a0aac374fab588cb7e26872",
+    "sourceBytes": 1441753,
+    "source": "1024x1024",
+    "masterBytes": 132640,
+    "bundled": {
+      "file": "public/art/emblem-serpent.webp",
+      "size": "288x288",
+      "bytes": 14432,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "emblem-ship",
+    "batch": "B2",
+    "transparent": true,
+    "sourceSha256": "f6774fdb206a240d9c721d330d8fea208c5f66bf1d24016c021016dc6a606cb4",
+    "sourceBytes": 1445346,
+    "source": "1024x1024",
+    "masterBytes": 129160,
+    "bundled": {
+      "file": "public/art/emblem-ship.webp",
+      "size": "288x288",
+      "bytes": 14142,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "emblem-tower",
+    "batch": "B2",
+    "transparent": true,
+    "sourceSha256": "2c6adc589246a8912e5b871bfeb4bb7583b831c22aa8bc2bdf1b746a93ccf8da",
+    "sourceBytes": 1466884,
+    "source": "1024x1024",
+    "masterBytes": 125280,
+    "bundled": {
+      "file": "public/art/emblem-tower.webp",
+      "size": "288x288",
+      "bytes": 14044,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "emblem-whale",
+    "batch": "B2",
+    "transparent": true,
+    "sourceSha256": "f2099c2bd54d655237679dfe6ed3d226344856e1dd893d4b87b273f001f807d6",
+    "sourceBytes": 1443000,
+    "source": "1024x1024",
+    "masterBytes": 130108,
+    "bundled": {
+      "file": "public/art/emblem-whale.webp",
+      "size": "288x288",
+      "bytes": 14560,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "feature-graphic",
+    "batch": "B3",
+    "transparent": false,
+    "sourceSha256": "52ac297bb4bdaa22dbc6d04e394dbfef31062f3d3a2fe08b55d40572325c8be9",
+    "sourceBytes": 2822568,
+    "source": "1536x1024",
+    "masterBytes": 209258,
+    "bundled": null
+  },
+  {
+    "id": "horizon-hills",
+    "batch": "B2",
+    "transparent": true,
+    "sourceSha256": "70d4828bcfaf3397ba2efbe479bd078b4771bd7f21565e3d4d923db692caad13",
+    "sourceBytes": 665549,
+    "source": "1024x1536",
+    "masterBytes": 50772,
+    "bundled": {
+      "file": "public/art/horizon-hills.webp",
+      "size": "780x1170",
+      "bytes": 16118,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "icon",
+    "batch": "B1",
+    "transparent": false,
+    "sourceSha256": "5e370c67aaadb4cb877b7d55bbfddda142df28f2d076f702b1ab4c637a7f88e3",
+    "sourceBytes": 1821976,
+    "source": "1024x1024",
+    "masterBytes": 119686,
+    "bundled": null
+  },
+  {
+    "id": "instrument-archive",
+    "batch": "B3",
+    "transparent": true,
+    "sourceSha256": "c0694697cf42a571c681210aaed7187d6e38541f6fe4f29a14f8ad5de03da649",
+    "sourceBytes": 1069589,
+    "source": "1024x1024",
+    "masterBytes": 125534,
+    "bundled": {
+      "file": "public/art/instrument-archive.webp",
+      "size": "224x224",
+      "bytes": 7886,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "instrument-aurora-coil",
+    "batch": "B3",
+    "transparent": true,
+    "sourceSha256": "55dc810d6ea73096c858731c70223261aefb6d0bad3c4c961ba58eb4a8483a20",
+    "sourceBytes": 678163,
+    "source": "1024x1024",
+    "masterBytes": 106218,
+    "bundled": {
+      "file": "public/art/instrument-aurora-coil.webp",
+      "size": "224x224",
+      "bytes": 8846,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "instrument-beacon",
+    "batch": "B3",
+    "transparent": true,
+    "sourceSha256": "e946cac4622384b1bd52716bd6153d0d4fdac5f1a81ec57ab094bad2b033a5e9",
+    "sourceBytes": 528553,
+    "source": "1024x1024",
+    "masterBytes": 95646,
+    "bundled": {
+      "file": "public/art/instrument-beacon.webp",
+      "size": "224x224",
+      "bytes": 9050,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "instrument-lens",
+    "batch": "B3",
+    "transparent": true,
+    "sourceSha256": "6b7765feeb9acaf84aba4a056606948a76e69d4f20876e56e8e8b50f8a2f8802",
+    "sourceBytes": 404377,
+    "source": "1024x1024",
+    "masterBytes": 91648,
+    "bundled": {
+      "file": "public/art/instrument-lens.webp",
+      "size": "224x224",
+      "bytes": 8766,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "instrument-orrery",
+    "batch": "B3",
+    "transparent": true,
+    "sourceSha256": "0e2fdd515cce541da313f2528392adf636f911e9234e3227bc9457074d61bb4a",
+    "sourceBytes": 912285,
+    "source": "1024x1024",
+    "masterBytes": 218298,
+    "bundled": {
+      "file": "public/art/instrument-orrery.webp",
+      "size": "224x224",
+      "bytes": 19204,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "instrument-prism",
+    "batch": "B3",
+    "transparent": true,
+    "sourceSha256": "b1cf4374d2f3831c81b40b6c6545e74ad2c6f3ef0b25435cc6cc0880152414f5",
+    "sourceBytes": 871114,
+    "source": "1024x1024",
+    "masterBytes": 150246,
+    "bundled": {
+      "file": "public/art/instrument-prism.webp",
+      "size": "224x224",
+      "bytes": 11932,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "instrument-star-map",
+    "batch": "B3",
+    "transparent": true,
+    "sourceSha256": "e65d4d9c202931b7931f2ebb032a59c20b8fc829fac9a218f19626e0611f5580",
+    "sourceBytes": 1164392,
+    "source": "1024x1024",
+    "masterBytes": 176896,
+    "bundled": {
+      "file": "public/art/instrument-star-map.webp",
+      "size": "224x224",
+      "bytes": 12372,
+      "background": "transparent"
+    }
+  },
+  {
+    "id": "instrument-telescope",
+    "batch": "B3",
+    "transparent": true,
+    "sourceSha256": "6f2acd1b4a5b4611e1d79198823972240713c709cbb40f41169baa61d30a7bf0",
+    "sourceBytes": 598307,
+    "source": "1024x1024",
+    "masterBytes": 111676,
+    "bundled": {
+      "file": "public/art/instrument-telescope.webp",
+      "size": "224x224",
+      "bytes": 9868,
       "background": "transparent"
     }
   },
@@ -30,6 +350,111 @@
     }
   },
   {
+    "id": "lore-1",
+    "batch": "B3",
+    "transparent": false,
+    "sourceSha256": "35b66360cf197aba24869bceaa5b9f04bd02d11ccae079004c9b547dfd274425",
+    "sourceBytes": 2401539,
+    "source": "1024x1536",
+    "masterBytes": 150056,
+    "bundled": {
+      "file": "public/art/lore-1.webp",
+      "size": "600x900",
+      "bytes": 27150,
+      "background": "#2A3046"
+    }
+  },
+  {
+    "id": "lore-2",
+    "batch": "B3",
+    "transparent": false,
+    "sourceSha256": "9c37feee8b0936b8b0a7eb9c5f47b43a195cff23e41306af53dc97513a28549d",
+    "sourceBytes": 3342013,
+    "source": "1024x1536",
+    "masterBytes": 306186,
+    "bundled": {
+      "file": "public/art/lore-2.webp",
+      "size": "600x900",
+      "bytes": 72256,
+      "background": "#3A302A"
+    }
+  },
+  {
+    "id": "lore-3",
+    "batch": "B3",
+    "transparent": false,
+    "sourceSha256": "45f55efdd47da3ee51cbce7c3a91ded520820907e0df0bf0c406745e733a01e6",
+    "sourceBytes": 3448782,
+    "source": "1024x1536",
+    "masterBytes": 309876,
+    "bundled": {
+      "file": "public/art/lore-3.webp",
+      "size": "600x900",
+      "bytes": 81154,
+      "background": "#413733"
+    }
+  },
+  {
+    "id": "lore-4",
+    "batch": "B3",
+    "transparent": false,
+    "sourceSha256": "217f4652c07aa970b5fd95b722e0132660cac78563ab656828f6eb0a2af9afe4",
+    "sourceBytes": 2114049,
+    "source": "1024x1536",
+    "masterBytes": 98256,
+    "bundled": {
+      "file": "public/art/lore-4.webp",
+      "size": "600x900",
+      "bytes": 16606,
+      "background": "#081427"
+    }
+  },
+  {
+    "id": "lore-5",
+    "batch": "B3",
+    "transparent": false,
+    "sourceSha256": "485e18d6bad23731c64f1f0094caa12b47201375c9de0979e6f78d84b9a67b5a",
+    "sourceBytes": 1826475,
+    "source": "1024x1536",
+    "masterBytes": 70972,
+    "bundled": {
+      "file": "public/art/lore-5.webp",
+      "size": "600x900",
+      "bytes": 9528,
+      "background": "#070E1E"
+    }
+  },
+  {
+    "id": "lore-6",
+    "batch": "B3",
+    "transparent": false,
+    "sourceSha256": "77d8c239014d9d6c23e07c043b1a0d36569ef530946d1b8acbbe5a07cbce4b70",
+    "sourceBytes": 2350882,
+    "source": "1024x1536",
+    "masterBytes": 112494,
+    "bundled": {
+      "file": "public/art/lore-6.webp",
+      "size": "600x900",
+      "bytes": 16840,
+      "background": "#7B727E"
+    }
+  },
+  {
+    "id": "nebula-mid",
+    "batch": "B2",
+    "transparent": true,
+    "sourceSha256": "db2b8bd71d345a06b2d9a6c3401494b2e59c9ff0e5bbccaa536219ed155176d8",
+    "sourceBytes": 1170501,
+    "source": "1024x1536",
+    "masterBytes": 109408,
+    "bundled": {
+      "file": "public/art/nebula-mid.webp",
+      "size": "780x1170",
+      "bytes": 75992,
+      "background": "transparent"
+    }
+  },
+  {
     "id": "observatory-building",
     "batch": "B1",
     "transparent": true,
@@ -42,6 +467,21 @@
       "size": "640x640",
       "bytes": 50002,
       "background": "transparent"
+    }
+  },
+  {
+    "id": "sky-far",
+    "batch": "B2",
+    "transparent": false,
+    "sourceSha256": "ff6530cf0270eb7782a5c9d05cd165c3d2f40ea003042b119b8fbb5cf7159ccd",
+    "sourceBytes": 1933363,
+    "source": "1024x1536",
+    "masterBytes": 78658,
+    "bundled": {
+      "file": "public/art/sky-far.webp",
+      "size": "780x1170",
+      "bytes": 12508,
+      "background": "#071735"
     }
   }
 ]

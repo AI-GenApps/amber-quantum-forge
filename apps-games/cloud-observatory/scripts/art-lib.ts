@@ -11,6 +11,8 @@ export interface SlotRow {
   display: [number, number] | null;
   /** Generation size the designer delivers. */
   master: [number, number];
+  /** Corners that must be fully transparent: all four (default) or only the top two (bottom-anchored layers). */
+  transparentCorners?: "all" | "top";
 }
 
 export interface SlotTable {
@@ -48,6 +50,11 @@ export function targetSize(slot: SlotRow, scale: number): [number, number] | nul
   return slot.display ? [slot.display[0] * scale, slot.display[1] * scale] : null;
 }
 
+/** Alpha of the corners the slot requires to be transparent (top two only for bottom-anchored layers). */
+export function cornersToCheck(slot: SlotRow, cornerAlpha: SourceInfo["cornerAlpha"]): number[] {
+  return slot.transparentCorners === "top" ? cornerAlpha.slice(0, 2) : [...cornerAlpha];
+}
+
 /** Every reason a source image cannot be used for its slot; empty means it passes. */
 export function checkSource(slot: SlotRow, info: SourceInfo, scale: number): string[] {
   const problems: string[] = [];
@@ -60,7 +67,7 @@ export function checkSource(slot: SlotRow, info: SourceInfo, scale: number): str
   }
   if (slot.transparent) {
     if (!info.hasAlpha) problems.push(`${slot.id}: transparent slot but the source has no alpha`);
-    else if (info.cornerAlpha.some((alpha) => alpha !== 0)) {
+    else if (cornersToCheck(slot, info.cornerAlpha).some((alpha) => alpha !== 0)) {
       problems.push(`${slot.id}: transparent slot but a corner pixel is not fully transparent`);
     }
   }

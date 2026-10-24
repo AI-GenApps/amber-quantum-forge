@@ -26,7 +26,7 @@ Pre-existing failures: none. Every command is green, so no throwaway `origin/mai
 | JavaScript, gzip level 9, `dist/assets/*.js` summed | 307,200 bytes (300 KB) | 63,346 bytes in 6 files (193,552 bytes raw; main chunk 61,348 gzip) |
 | woff2 fonts | 400,000 bytes | 76,792 bytes, 4 files |
 | Audio | 2,500,000 bytes | 1,920,489 bytes, 14 files (13 cues and 1 loop) |
-| Art | 8,000,000 bytes, 600,000 per file | 108,912 bytes, 3 files (largest 50,002) |
+| Art | 8,000,000 bytes, 600,000 per file | 683,760 bytes, 31 files (largest 81,154; updated in the task 06 update pass) |
 | First-load `index.html` | under 5,120 bytes | 694 bytes |
 | Source maps emitted | none | none |
 | Saved game | under 20 KB | 1,673 to 2,002 bytes across a 30-hour scripted session |
@@ -72,20 +72,14 @@ not depend on a previous build.
 - README quick facts now state the 105 shards (so the contract test can parse them) and the measured
   budgets.
 
-## Art evidence (designer review loop result: `style_anchor_failed`)
+## Art evidence (designer review loop result: `status=ok`, updated in the task 06 update pass)
 
-Accepted and bundled: `observatory-building`, `key-art`, `emblem-lyre`. Rejected: `icon` (round 4: the
-teal and rose bloom still has blocky pixel-stepped edges, the star is a clip-art vector eight-point star
-overlapped by the telescope tube, the telescope lies across the dome face instead of rising from the slit,
-the base is a bare pillar instead of the keeper's-house terrace; dome, foil and corners are good and it
-reads at 48 px). Not requested (style anchor failed): the other 29 slots. All 30 keep the code-drawn
-placeholder and are listed with reasons in `assets-index.md` and `open-questions.md` (rows 15 to 20).
-
-`art/` here holds the art bible, `accepted-manifest.json`, `build-report.json`, the three masters and
-`review/` with the b1 round 1 to 4 verdicts and briefs plus the b2 to b5 briefs. Compared in task 08
-with the designer inbox (`aqf-art-inbox/cloud-observatory`): `art-bible.md`, `accepted/manifest.json`
-and every `review.md` and `brief.md` of b1 rounds 1 to 4 are identical (`diff -q` printed nothing). No
-image outside the accepted folder is used anywhere.
+All 33 slots were accepted and integrated (31 bundled, `icon` and `feature-graphic` as masters only);
+see `assets-index.md` for the provenance table. `art/` here holds the art bible,
+`accepted-manifest.json`, `build-report.json`, the 33 masters and `review/` with the verdict
+(`<batch>-round-<n>.md`) and brief (`<batch>-round-<n>-brief.md`) of every round of batches b1 to b5
+and retry. The art bible and each review file are copies of the designer inbox
+(`aqf-art-inbox/cloud-observatory`) files. No image outside the accepted folder is used anywhere.
 
 ## Simulator re-run
 

@@ -18,7 +18,7 @@ export const skyCss = `
 .co-sky { position: relative; width: 100%; height: 100%; overflow: hidden; background: linear-gradient(180deg, var(--co-ink-950) 0%, var(--co-ink-900) 60%, #1b2a55 100%); }
 .co-sky__layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .co-sky__nebula { opacity: var(--co-wash-opacity); }
-.co-sky__hills { top: auto; bottom: 0; height: 45%; }
+.co-sky__hills { top: auto; bottom: 0; height: 45%; object-position: center bottom; }
 .co-sky__map { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: manipulation; }
 .co-dot { fill: var(--wg-color-text); opacity: 0.7; }
 .co-twinkle { animation: co-twinkle 4.8s ease-in-out infinite; }

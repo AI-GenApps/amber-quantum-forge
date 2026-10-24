@@ -60,43 +60,43 @@ minus); static instances of the display family made with fontTools `instancer`, 
 
 The designer thread delivers masters; the app uses WebP at 2x the display size. Masters are kept
 as WebP q90 under `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/`.
-Until a slot is accepted the app draws a tasteful code-drawn placeholder (SVG/CSS in the palette).
+All 33 slots are accepted (task 06 update, 2026-10-24). A slot that is missing from the manifest, or whose file fails to load, still draws its code-drawn placeholder (SVG in the palette), so the app builds and runs with any subset of art.
 
 | Batch | Slot | Shape | Alpha | Display (CSS px) | App file (2x) | Used by | Status |
 |---|---|---|---|---|---|---|---|
-| B1 | icon | square | opaque | n/a (store/launcher) | not bundled; code-drawn stopgap `resources/icon-only.png` 1024 (task 07) | Capacitor icon, favicon | placeholder |
+| B1 | icon | square | opaque | n/a (store/launcher) | not bundled; master 1024×1024 only. The launcher still uses the code-drawn stopgap `resources/icon-only.png` (task 07, open-questions 15) | Capacitor icon, favicon | accepted |
 | B1 | key-art | portrait 2:3, title-safe band | opaque | 360×540 | 720×1080 | Title screen | accepted |
 | B1 | observatory-building | square | transparent | 320×320 | 640×640 | Observe tab foreground | accepted |
 | B1 | emblem-lyre | square, round emblem framing | transparent | 144×144 | 288×288 | Atlas card, journal | accepted |
-| B2 | sky-far | portrait 2:3 | opaque | full-bleed (cover) | 780×1170 | Observe/Chart background | placeholder |
-| B2 | nebula-mid | portrait 2:3 | transparent | full-bleed (cover) | 780×1170 | Parallax layer | placeholder |
-| B2 | horizon-hills | portrait 2:3, bottom third only | transparent | bottom-anchored | 780×1170 | Observe foreground | placeholder |
-| B2 | emblem-whale | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
-| B2 | emblem-archer | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
-| B2 | emblem-crown | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
-| B2 | emblem-serpent | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
-| B2 | emblem-lantern | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
-| B2 | emblem-ship | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
-| B2 | emblem-fox | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
-| B2 | emblem-key | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
-| B2 | emblem-harp | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
-| B2 | emblem-tower | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
-| B2 | emblem-owl | square | transparent | 144×144 | 288×288 | Atlas card | placeholder |
-| B3 | instrument-telescope | square | transparent | 112×112 | 224×224 | Build row | placeholder |
-| B3 | instrument-lens | square | transparent | 112×112 | 224×224 | Build row | placeholder |
-| B3 | instrument-prism | square | transparent | 112×112 | 224×224 | Build row | placeholder |
-| B3 | instrument-orrery | square | transparent | 112×112 | 224×224 | Build row | placeholder |
-| B3 | instrument-star-map | square | transparent | 112×112 | 224×224 | Build row | placeholder |
-| B3 | instrument-beacon | square | transparent | 112×112 | 224×224 | Build row | placeholder |
-| B3 | instrument-archive | square | transparent | 112×112 | 224×224 | Build row | placeholder |
-| B3 | instrument-aurora-coil | square | transparent | 112×112 | 224×224 | Build row | placeholder |
-| B3 | lore-1 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 1 card, journal | placeholder |
-| B3 | lore-2 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 2 | placeholder |
-| B3 | lore-3 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 3 | placeholder |
-| B3 | lore-4 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 4 | placeholder |
-| B3 | lore-5 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 5 | placeholder |
-| B3 | lore-6 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 6 | placeholder |
-| B3 | feature-graphic | landscape 3:2, no text | opaque | n/a (store) | not bundled; master 1536×1024 | Store feature graphic | placeholder |
+| B2 | sky-far | portrait 2:3 | opaque | full-bleed (cover) | 780×1170 | Observe/Chart background | accepted |
+| B2 | nebula-mid | portrait 2:3 | transparent | full-bleed (cover) | 780×1170 | Parallax layer | accepted |
+| B2 | horizon-hills | portrait 2:3, bottom third only | transparent | bottom-anchored | 780×1170 | Observe foreground | accepted |
+| B2 | emblem-whale | square | transparent | 144×144 | 288×288 | Atlas card | accepted |
+| B2 | emblem-archer | square | transparent | 144×144 | 288×288 | Atlas card | accepted |
+| B2 | emblem-crown | square | transparent | 144×144 | 288×288 | Atlas card | accepted |
+| B2 | emblem-serpent | square | transparent | 144×144 | 288×288 | Atlas card | accepted |
+| B2 | emblem-lantern | square | transparent | 144×144 | 288×288 | Atlas card | accepted |
+| B2 | emblem-ship | square | transparent | 144×144 | 288×288 | Atlas card | accepted |
+| B2 | emblem-fox | square | transparent | 144×144 | 288×288 | Atlas card | accepted |
+| B2 | emblem-key | square | transparent | 144×144 | 288×288 | Atlas card | accepted |
+| B2 | emblem-harp | square | transparent | 144×144 | 288×288 | Atlas card | accepted |
+| B2 | emblem-tower | square | transparent | 144×144 | 288×288 | Atlas card | accepted |
+| B2 | emblem-owl | square | transparent | 144×144 | 288×288 | Atlas card | accepted |
+| B3 | instrument-telescope | square | transparent | 112×112 | 224×224 | Build row | accepted |
+| B3 | instrument-lens | square | transparent | 112×112 | 224×224 | Build row | accepted |
+| B3 | instrument-prism | square | transparent | 112×112 | 224×224 | Build row | accepted |
+| B3 | instrument-orrery | square | transparent | 112×112 | 224×224 | Build row | accepted |
+| B3 | instrument-star-map | square | transparent | 112×112 | 224×224 | Build row | accepted |
+| B3 | instrument-beacon | square | transparent | 112×112 | 224×224 | Build row | accepted |
+| B3 | instrument-archive | square | transparent | 112×112 | 224×224 | Build row | accepted |
+| B3 | instrument-aurora-coil | square | transparent | 112×112 | 224×224 | Build row | accepted |
+| B3 | lore-1 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 1 card, journal | accepted |
+| B3 | lore-2 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 2 | accepted |
+| B3 | lore-3 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 3 | accepted |
+| B3 | lore-4 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 4 | accepted |
+| B3 | lore-5 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 5 | accepted |
+| B3 | lore-6 | portrait 2:3 vignette | opaque | 300×450 | 600×900 | Chapter 6 | accepted |
+| B3 | feature-graphic | landscape 3:2, no text | opaque | n/a (store) | not bundled; master 1536×1024 | Store feature graphic | accepted |
 
 Count: B1 4 + B2 14 + B3 15 = 33 slots (31 bundled, 2 store/launcher only). The 12 emblems share
 identical framing so the atlas grid is consistent. Vignette subjects are in `content-plan.md`
@@ -105,14 +105,14 @@ section 5. Every slot has a stable code-drawn fallback keyed by the same name.
 Art budget: bundled art at most 8 MB total (estimate under 2 MB), any single file at most 600 KB;
 enforced by a test using the kit's `checkAssetBudget`.
 
-### Image status (task 06, 2026-10-24)
+### Image status (task 06, updated 2026-10-24)
 
-The designer review loop ended with status `style_anchor_failed`: the style anchor batch (B1) delivered
-3 accepted images, and the batches that depend on an accepted anchor (B2 to B5) were never requested.
-Integrated: 3 of 33 slots (`key-art`, `observatory-building`, `emblem-lyre`). The other 30 keep their
-code-drawn placeholders (`placeholder` in the Status column above), each with its reason below. The app
-builds and runs with any subset of art, including none; `ArtImage` falls back to the placeholder when a
-slot is missing from the manifest or its file fails to load.
+The designer review loop finished with `status=ok`: all 33 slots were accepted by the strict reviewer
+(batches b1 to b5 plus the `retry` batch for `icon`, `lore-1`, `lore-6`, `instrument-aurora-coil` and
+`feature-graphic`). The first task 06 pass ran earlier with only 3 accepted images (the loop had
+stopped at `style_anchor_failed`); this update integrated the other 30. Integrated: 31 bundled slots
+(WebP at 2x) plus 2 master-only slots (`icon`, `feature-graphic`). No slot is a placeholder any more;
+the code-drawn placeholders remain in the code as the fallback for a missing or failing file.
 
 Integration is done by `apps-games/cloud-observatory/scripts/build-art.mjs` (reads the inbox
 `accepted/manifest.json`, checks aspect class, alpha on transparent slots and source size against
@@ -121,31 +121,37 @@ bundled files, `src/ui/art-entries.ts` and the build report). Run it with
 `bun apps-games/cloud-observatory/scripts/build-art.mjs <inbox>/accepted`. Images are only resized and
 encoded, never edited or upscaled; nothing was looked at by the agent for judgement.
 
-| Where | What | Bytes |
-|---|---|---|
-| `public/art/key-art.webp` | 720x1080, WebP q82 | 44,254 |
-| `public/art/observatory-building.webp` | 640x640 with alpha, WebP q82, alpha q90 | 50,002 |
-| `public/art/emblem-lyre.webp` | 288x288 with alpha, WebP q82, alpha q90 | 14,656 |
-| Total bundled art | 3 files (budget 8,000,000 total, 600,000 per file) | 108,912 |
-| Masters (evidence, WebP q90) | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/` | 128,542 + 212,198 + 170,328 |
+One slot-table rule was added: `horizon-hills` is a bottom-anchored layer (transparent above the far
+ridge, opaque from the ridges down to the bottom and both side edges, round-2 review). The corner check
+for it is `transparentCorners: "top"` in `art-slots.json` (top two corners transparent, bottom two
+opaque, both asserted by `test/art/manifest.test.ts`); every other transparent slot keeps all four
+corners transparent. The layer is anchored to the bottom (`object-position: center bottom`).
+
+| Group | Files | Size | Bytes each |
+|---|---|---|---|
+| Opaque scenes | `key-art` | 720x1080 | 44,254 |
+| Sky layers | `sky-far` (opaque), `nebula-mid`, `horizon-hills` (alpha) | 780x1170 | 12,508 / 75,992 / 16,118 |
+| Building | `observatory-building` (alpha) | 640x640 | 50,002 |
+| Emblems | 12 files (alpha) | 288x288 | 13,764 to 15,832 |
+| Instruments | 8 files (alpha) | 224x224 | 7,886 to 19,204 |
+| Lore vignettes | `lore-1` to `lore-6` (opaque) | 600x900 | 9,528 to 81,154 |
+| **Total bundled art** | 31 files (budget 8,000,000 total, 600,000 per file) | | **683,760** (largest 81,154) |
+| Masters (evidence, WebP q90) | 33 files in `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/` | | 4,611,450 |
 
 Loading: `key-art`, `sky-far` and `observatory-building` are the critical slots. The kit
-`preloadImages` warms them behind the title screen (only slots that are in the manifest; `sky-far`
-is a placeholder today). Every other image is `loading="lazy"`. Opaque images are painted on their mean
-colour while they decode (key-art `#1F2A40`), transparent sprites on nothing, and a failed file drops to
-the placeholder, so no box is ever blank. Emblems, instruments, lore vignettes and background layers
-are decorative (`alt=""`, `aria-hidden`); `key-art` and `observatory-building` carry a description.
+`preloadImages` warms them behind the title screen (only slots that are in the manifest). Every other
+image is `loading="lazy"`. Opaque images are painted on their mean colour while they decode (key-art
+`#1F2A40`, sky-far `#071735`, lore-1 to lore-6 `#2A3046 #3A302A #413733 #081427 #070E1E #7B727E`),
+transparent sprites on nothing, and a failed file drops to the placeholder, so no box is ever blank.
+Emblems, instruments, lore vignettes and background layers are decorative (`alt=""`, `aria-hidden`);
+`key-art` and `observatory-building` carry a description.
 
-### Placeholder slots (30) and why
+### Placeholder slots
 
-| Slot(s) | Reason | Follow-up |
-|---|---|---|
-| `icon` | Rejected in round 4 (final round of batch b1). The teal/rose bloom still has blocky, polygonal, pixel-stepped edges (the named hard fix was not made); the star is still a clip-art vector eight-point star with its core overlapped by the telescope tube; the telescope lies pasted across the dome face instead of rising from the slit; the base is a bare free-standing stone pillar, not the keeper's-house terrace. Dome, foil and corners are good and it reads at 48 px, but the flaws are visible at 96 px. | Task 07 builds a code-drawn gold-star-on-navy icon with `sharp` (open question 7) or the owner orders another designer round |
-| `sky-far`, `nebula-mid`, `horizon-hills` | Not requested: style anchor failed (batch b2 brief written, never run) | New designer round once an icon-quality anchor exists |
-| `emblem-whale`, `emblem-archer`, `emblem-crown`, `emblem-serpent`, `emblem-lantern`, `emblem-ship`, `emblem-fox`, `emblem-key`, `emblem-harp`, `emblem-tower`, `emblem-owl` | Not requested: style anchor failed. `emblem-lyre` was accepted as the anchor for them, so they are the best next batch | Designer batch b2 with `emblem-lyre` as the reference |
-| `instrument-telescope`, `instrument-lens`, `instrument-prism`, `instrument-orrery`, `instrument-star-map`, `instrument-beacon`, `instrument-archive`, `instrument-aurora-coil` | Not requested: style anchor failed (batch b4 brief written, never run) | Designer batch b4 |
-| `lore-1` to `lore-6` | Not requested: style anchor failed (batch b5 brief written, never run) | Designer batch b5 |
-| `feature-graphic` | Not requested: style anchor failed (store feature graphic, not bundled) | Designer batch b5; needed for the store listing, not for the app |
+None. Every slot of the 33 is accepted. The code-drawn drawings in `src/ui/placeholders/` are kept as the
+fallback and are exercised by `test/art/placeholders.test.tsx` (empty and partial manifests). The only
+slot whose art is not used where it was meant is `icon`: the painted master is stored, but the Capacitor
+launcher icon is still the task 07 code-drawn stopgap (open-questions 15).
 
 Reviewer verdict files and the art bible are copied under
 `.agents/resources/2026-10-23/web-games/cloud-observatory/art/` (`art-bible.md`, `review/b1-round-N.md`,
@@ -198,20 +204,52 @@ from them shipped. Other OpenGameArt candidates that also state CC0 (Outer Space
 Another Space Background Track) were not used; Cosmic Navigation fits the game best and ships an
 explicit loop file.
 
-### Art provenance (filled by task 06)
+### Art provenance (task 06)
 
-Filled by task 06. Verdicts quote the reviewer (strict loop, 4 rounds on batch b1); full text in the
-`review/` folder of the evidence directory.
+Verdicts are the reviewer's, quoted from the review file named in each row (strict loop; the full text of
+every round and every brief is in the `review/` folder of the evidence directory). The date is the day the
+file was integrated (first pass 2026-10-24 for the first three, update pass 2026-10-24 for the rest).
 
 | Slot | Designer batch / round | Review verdict | Master path | App path | Date |
 |---|---|---|---|---|---|
-| `key-art` | b1, round 2 (third full-scene attempt; star dab composited by the designer) | ACCEPTED with notes, `art/review/b1-round-2.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/key-art.webp` | `public/art/key-art.webp` | 2026-10-24 |
+| `key-art` | b1, round 2; third full-scene attempt; star dab composited by the designer | ACCEPTED with notes, `art/review/b1-round-2.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/key-art.webp` | `public/art/key-art.webp` | 2026-10-24 |
 | `observatory-building` | b1, round 2 | ACCEPTED with notes, `art/review/b1-round-2.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/observatory-building.webp` | `public/art/observatory-building.webp` | 2026-10-24 |
-| `emblem-lyre` | b1, round 4 (final) | ACCEPTED, minor residual flaws not visible at 144 px, `art/review/b1-round-4.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/emblem-lyre.webp` | `public/art/emblem-lyre.webp` | 2026-10-24 |
+| `emblem-lyre` | b1, round 4 | ACCEPTED, minor residual flaws not visible at 144 px, `art/review/b1-round-4.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/emblem-lyre.webp` | `public/art/emblem-lyre.webp` | 2026-10-24 |
+| `emblem-archer` | b2, round 1 | ACCEPTED, `art/review/b2-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/emblem-archer.webp` | `public/art/emblem-archer.webp` | 2026-10-24 |
+| `emblem-crown` | b2, round 1 | ACCEPTED, `art/review/b2-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/emblem-crown.webp` | `public/art/emblem-crown.webp` | 2026-10-24 |
+| `emblem-fox` | b3, round 1 | ACCEPTED, `art/review/b3-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/emblem-fox.webp` | `public/art/emblem-fox.webp` | 2026-10-24 |
+| `emblem-harp` | b3, round 1 | ACCEPTED, `art/review/b3-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/emblem-harp.webp` | `public/art/emblem-harp.webp` | 2026-10-24 |
+| `emblem-key` | b3, round 1 | ACCEPTED, `art/review/b3-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/emblem-key.webp` | `public/art/emblem-key.webp` | 2026-10-24 |
+| `emblem-lantern` | b2, round 1 | ACCEPTED, `art/review/b2-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/emblem-lantern.webp` | `public/art/emblem-lantern.webp` | 2026-10-24 |
+| `emblem-owl` | b3, round 1 | ACCEPTED, `art/review/b3-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/emblem-owl.webp` | `public/art/emblem-owl.webp` | 2026-10-24 |
+| `emblem-serpent` | b2, round 1 | ACCEPTED, `art/review/b2-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/emblem-serpent.webp` | `public/art/emblem-serpent.webp` | 2026-10-24 |
+| `emblem-ship` | b2, round 2 | ACCEPTED, `art/review/b2-round-2.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/emblem-ship.webp` | `public/art/emblem-ship.webp` | 2026-10-24 |
+| `emblem-tower` | b3, round 1 | ACCEPTED, `art/review/b3-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/emblem-tower.webp` | `public/art/emblem-tower.webp` | 2026-10-24 |
+| `emblem-whale` | b2, round 1 | ACCEPTED, `art/review/b2-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/emblem-whale.webp` | `public/art/emblem-whale.webp` | 2026-10-24 |
+| `feature-graphic` | retry, round 3 | ACCEPTED, `art/review/retry-round-3.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/feature-graphic.webp` | not bundled | 2026-10-24 |
+| `horizon-hills` | b2, round 2 | ACCEPTED, `art/review/b2-round-2.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/horizon-hills.webp` | `public/art/horizon-hills.webp` | 2026-10-24 |
+| `icon` | retry, round 1 | ACCEPTED, `art/review/retry-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/icon.webp` | not bundled | 2026-10-24 |
+| `instrument-archive` | b4, round 3 | ACCEPTED, `art/review/b4-round-3.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/instrument-archive.webp` | `public/art/instrument-archive.webp` | 2026-10-24 |
+| `instrument-aurora-coil` | retry, round 3 | ACCEPTED, `art/review/retry-round-3.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/instrument-aurora-coil.webp` | `public/art/instrument-aurora-coil.webp` | 2026-10-24 |
+| `instrument-beacon` | b4, round 3 | ACCEPTED, `art/review/b4-round-3.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/instrument-beacon.webp` | `public/art/instrument-beacon.webp` | 2026-10-24 |
+| `instrument-lens` | b4, round 3 | ACCEPTED, `art/review/b4-round-3.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/instrument-lens.webp` | `public/art/instrument-lens.webp` | 2026-10-24 |
+| `instrument-orrery` | b4, round 3 | ACCEPTED, `art/review/b4-round-3.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/instrument-orrery.webp` | `public/art/instrument-orrery.webp` | 2026-10-24 |
+| `instrument-prism` | b4, round 3 | ACCEPTED (marginal), `art/review/b4-round-3.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/instrument-prism.webp` | `public/art/instrument-prism.webp` | 2026-10-24 |
+| `instrument-star-map` | b4, round 3 | ACCEPTED, `art/review/b4-round-3.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/instrument-star-map.webp` | `public/art/instrument-star-map.webp` | 2026-10-24 |
+| `instrument-telescope` | b4, round 3 | ACCEPTED, `art/review/b4-round-3.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/instrument-telescope.webp` | `public/art/instrument-telescope.webp` | 2026-10-24 |
+| `lore-1` | retry, round 3 | ACCEPTED, `art/review/retry-round-3.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/lore-1.webp` | `public/art/lore-1.webp` | 2026-10-24 |
+| `lore-2` | b5, round 1 | ACCEPTED, `art/review/b5-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/lore-2.webp` | `public/art/lore-2.webp` | 2026-10-24 |
+| `lore-3` | b5, round 1 | ACCEPTED, `art/review/b5-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/lore-3.webp` | `public/art/lore-3.webp` | 2026-10-24 |
+| `lore-4` | b5, round 1 | ACCEPTED, `art/review/b5-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/lore-4.webp` | `public/art/lore-4.webp` | 2026-10-24 |
+| `lore-5` | b5, round 1 | ACCEPTED, `art/review/b5-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/lore-5.webp` | `public/art/lore-5.webp` | 2026-10-24 |
+| `lore-6` | retry, round 1 | ACCEPTED, `art/review/retry-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/lore-6.webp` | `public/art/lore-6.webp` | 2026-10-24 |
+| `nebula-mid` | b2, round 1 | ACCEPTED, `art/review/b2-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/nebula-mid.webp` | `public/art/nebula-mid.webp` | 2026-10-24 |
+| `sky-far` | b2, round 1 | ACCEPTED, `art/review/b2-round-1.md` | `.agents/resources/2026-10-23/web-games/cloud-observatory/art/masters/sky-far.webp` | `public/art/sky-far.webp` | 2026-10-24 |
 
-The same designer model produced all three (built-in image generator, exact version not exposed); the
-prompts, notes and source paths are in `art/accepted-manifest.json`. `icon` was never accepted, so it has
-no master and no row here.
+One designer model produced everything (built-in image generator, exact version not exposed); the
+prompts, notes and source paths are in `art/accepted-manifest.json`. Rejected earlier rounds (for example
+`icon` in b1 rounds 1 to 4, `lore-1` in b5 rounds 1 to 4 and retry rounds 1 to 2) are in the review files but
+were never used; only the final accepted file of each slot is.
 
 ## Launcher icon and splash (task 07)
 
@@ -222,7 +260,7 @@ from `bunx capacitor-assets generate --android --ios --assetPath resources` and 
 
 | File | Provenance |
 |---|---|
-| `icon-only.png` (1024, opaque) | Code-drawn stopgap: gold-foil four-point star on a `#22335C` to `#101A33` field with two thin rings, art-bible palette. Used because `icon` was rejected (open-questions 15). Not a designer image |
+| `icon-only.png` (1024, opaque) | Code-drawn stopgap: gold-foil four-point star on a `#22335C` to `#101A33` field with two thin rings, art-bible palette. Used because the painted `icon` was accepted only after task 07 and cannot be cut into an adaptive foreground without retouching (open-questions 15). Not a designer image |
 | `icon-foreground.png` (1024, transparent) | The same star mark alone at 66% for the adaptive-icon safe zone |
 | `icon-background.png` (1024, opaque) | `icon-only.png` enlarged 1.6x and blurred, so no hard shape shows |
 | `splash.png` (2732, opaque) | `#101A33` field with the accepted `key-art` master (read from `art/masters/key-art.webp`) at 40% of the width, edges feathered |
@@ -233,20 +271,18 @@ re-run both commands, update this section and open-questions row 15.
 
 ## Release status (task 08, 2026-10-24)
 
-Final art status, from the designer review loop (`status=style_anchor_failed`): 33 slots, 3 accepted
-and bundled, 1 rejected, 29 never requested. The 30 non-accepted slots keep code-drawn placeholders; the
-per-slot status is the table above and the reasons are in "Placeholder slots (30) and why". Only images
-from the designer `accepted/` folder are used (checked by `test/art/manifest.test.ts` and
-`test/art/masters.test.ts`). The art bible and every reviewer verdict are in the evidence folder
-`.agents/resources/2026-10-23/web-games/cloud-observatory/art/` and were compared byte for byte with the
-designer inbox in task 08 (no differences).
+Final art status, from the designer review loop (`status=ok`, updated in the task 06 update pass): 33
+slots, all 33 accepted (31 bundled, 2 master-only), no placeholder slot. Only images from the designer
+`accepted/` folder are used (checked by `test/art/manifest.test.ts` and `test/art/masters.test.ts`). The
+art bible and every reviewer verdict are in the evidence folder
+`.agents/resources/2026-10-23/web-games/cloud-observatory/art/`.
 
 | Budget | Limit | Measured | Test |
 |---|---|---|---|
 | JavaScript, gzip level 9, all `dist/assets/*.js` | 300 KB (307,200 bytes) | 63,346 bytes (6 files) | `test/release/bundle.test.ts` (programmatic Vite build into `node_modules/.cache/bundle-check`) |
 | woff2 fonts | 400,000 bytes | 76,792 bytes (4 files) | `test/release/budgets.test.ts` |
 | Audio | 2,500,000 bytes | 1,920,489 bytes (14 files) | `test/release/budgets.test.ts` |
-| Art | 8,000,000 bytes, 600,000 per file | 108,912 bytes (3 files, largest 50,002) | `test/release/budgets.test.ts` |
+| Art | 8,000,000 bytes, 600,000 per file | 683,760 bytes (31 files, largest 81,154) | `test/release/budgets.test.ts` |
 | First-load `index.html` | under 5 KB | 694 bytes | `test/release/bundle.test.ts` |
 
 Every font folder has an `OFL.txt`; every audio file has a row with a source URL and `CC0` in

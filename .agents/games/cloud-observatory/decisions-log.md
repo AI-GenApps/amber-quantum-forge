@@ -278,6 +278,23 @@ critical slots preloaded with the kit `preloadImages` behind the title screen, e
 the owner orders another designer round. No economy number, content or rule changed. *Rationale: the
 task's own rule that rejected or missing slots keep placeholders, plus no visual judgement by agents.*
 
+### 2026-10-24 — Art integration update (task 06): all 33 slots accepted
+The designer review loop finished `status=ok`: all 33 slots were accepted (b1 to b5 and the `retry`
+batch; the full list with round and review file is the provenance table in `assets-index.md`). The
+earlier decision above (3 of 33, 30 placeholders) is superseded; its tooling and rules are unchanged.
+New decisions: (1) `horizon-hills` is a bottom-anchored layer (transparent above the far ridge, opaque
+from the ridges down and to both sides, round-2 review waiver), so the slot table gained
+`transparentCorners: "top"` for it (top two corners transparent, bottom two opaque; every other
+transparent slot still needs four transparent corners), and the layer uses `object-position: center
+bottom`. (2) `icon` and `feature-graphic` are masters only; the launcher icon stays the task 07 code-drawn
+stopgap because the painted icon is a full scene that cannot be cut into an adaptive foreground without
+retouching (open-questions 15). (3) The art bible and the review and brief of every round (b1 to b5,
+retry) were copied into the evidence folder as `<batch>-round-<n>.md` and `-brief.md`. (4) The
+code-drawn placeholders stay in the code as the fallback for a missing or failing file and are tested
+with empty and partial manifests. No economy number, content or rule changed. Bundled art grew from
+108,912 to 683,760 bytes (budget 8,000,000). *Rationale: only accepted inbox files are used, resized
+and encoded only; the corner rule follows the reviewer-accepted design of a bottom-anchored layer.*
+
 ### 2026-10-24 — Capacitor projects, icons and splash (task 07)
 
 `android/` and `ios/` were generated with `bunx cap add android` and `bunx cap add ios` (Capacitor

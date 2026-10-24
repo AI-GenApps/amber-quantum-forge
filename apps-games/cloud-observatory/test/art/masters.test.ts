@@ -26,8 +26,22 @@ describe("accepted list", () => {
     for (const id of ids) expect(ART_SLOTS as readonly string[]).toContain(id);
   });
 
-  it("is the designer's list: observatory-building, key-art and emblem-lyre", () => {
-    expect(ids).toEqual(["emblem-lyre", "key-art", "observatory-building"]);
+  it("is the designer's list: all 33 slots", () => {
+    expect(ids).toEqual([...ART_SLOTS].sort());
+  });
+
+  it("names a review file that accepts each slot", () => {
+    for (const entry of accepted) {
+      const file = join(EVIDENCE, "review", `${entry.batch}-round-${entry.round}.md`);
+      expect(existsSync(file), entry.assetId).toBe(true);
+      const lines = readFileSync(file, "utf8")
+        .split("\n")
+        .filter((line) => line.includes(entry.assetId));
+      expect(
+        lines.some((line) => line.includes("ACCEPTED")),
+        entry.assetId,
+      ).toBe(true);
+    }
   });
 });
 
@@ -65,9 +79,9 @@ describe("evidence", () => {
   it("keeps the art bible, every review and the accepted manifest", () => {
     expect(existsSync(join(EVIDENCE, "art-bible.md"))).toBe(true);
     const reviews = readdirSync(join(EVIDENCE, "review")).filter((name) =>
-      /^b\d-round-\d\.md$/.test(name),
+      /^(b\d|retry)-round-\d\.md$/.test(name),
     );
-    expect(reviews.length).toBeGreaterThanOrEqual(4);
+    expect(reviews.length).toBe(18);
     for (const name of reviews) {
       expect(readFileSync(join(EVIDENCE, "review", name), "utf8")).toMatch(
         /ACCEPTED|REJECTED|accepted/i,

@@ -8,12 +8,38 @@ import { cleanup } from "../ui/harness";
 
 afterEach(cleanup);
 
-async function draw(slot: ArtSlot): Promise<HTMLElement> {
+async function draw(slot: ArtSlot, manifest = ART_MANIFEST): Promise<HTMLElement> {
   const container = document.createElement("div");
   document.body.appendChild(container);
-  await act(() => render(<ArtImage slot={slot} />, container));
+  await act(() => render(<ArtImage slot={slot} manifest={manifest} />, container));
   return container;
 }
+
+describe("any subset of art", () => {
+  it("draws a code-drawn placeholder for every slot when the manifest is empty", async () => {
+    for (const slot of ART_SLOTS) {
+      const box = await draw(slot, {});
+      expect(box.querySelector(`[data-art-slot='${slot}']`)?.getAttribute("data-art"), slot).toBe(
+        "placeholder",
+      );
+      expect(box.querySelector("img"), slot).toBeNull();
+    }
+  });
+
+  it("mixes images and placeholders when only some slots are accepted", async () => {
+    const owl = ART_MANIFEST["emblem-owl"];
+    const partial = owl ? { "emblem-owl": owl } : {};
+    expect((await draw("emblem-owl", partial)).querySelector("img")).not.toBeNull();
+    expect((await draw("emblem-fox", partial)).querySelector("img")).toBeNull();
+    expect((await draw("emblem-fox", partial)).querySelector("svg")).not.toBeNull();
+  });
+
+  it("ships all 33 slots as accepted except the two master-only ones", () => {
+    expect(Object.keys(ART_MANIFEST).sort()).toEqual(
+      ART_SLOTS.filter((slot) => slot !== "icon" && slot !== "feature-graphic").sort(),
+    );
+  });
+});
 
 describe("shipped manifest rendering", () => {
   for (const slot of ART_SLOTS) {

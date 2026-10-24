@@ -98,14 +98,14 @@ Expected: no red errors in the console on load. Record any yellow warnings in No
 ## 7. Atlas, Journal and lore
 
 1. Atlas shows 12 constellation cards in a grid: charted, ready and locked states differ clearly.
-   Only the Lyre emblem is painted art; the other 11 are code-drawn placeholders (open question 17).
+   All 12 emblems are painted art (one shared frame); check they read as a consistent set.
 2. Journal tab: 6 chapter cards and 30 entries in all. Locked entries show a hint about what
    unlocks them (an instrument, a constellation or a boon), never a blank.
 3. Open an unlocked entry: the reading view is comfortable at 130% zoom, the text is in Manrope
    or Cormorant, the Back control returns to the list. Entries read as a quiet story: check for
    typos, odd line breaks and any word that sounds wrong.
-4. Chapter art is a code-drawn placeholder for all 6 chapters (open question 19). Judge whether it
-   looks deliberate. New entries show a "new" marker until read.
+4. Chapter art is painted for all 6 chapters. Judge whether the six vignettes feel like one set
+   and whether the caption band at the bottom stays readable. New entries show a "new" marker until read.
 
 ## 8. Eclipse
 
@@ -219,19 +219,18 @@ builds ignore it). Use 1x for the first two checks.
 
 ## 16. Art
 
-1. Accepted painted art (3 slots): the key art, the observatory building on Observe and the Lyre
-   emblem. Do they look like one artist's hand? The reviewer noted these are cel-inked and a little
-   crisper than the soft code-drawn sky and placeholders around them (open question 21): decide
-   whether the mix is acceptable.
-2. Code-drawn placeholders (30 slots, listed in `assets-index.md`): background sky, nebula, hills,
-   11 emblems, 8 instruments, 6 chapter vignettes. Do they look deliberate and in the same palette,
-   or like unfinished boxes? Note any that look broken.
-3. Atlas emblem alignment: the painted Lyre and the 11 placeholder emblems sit on the same grid,
-   same size and baseline.
+1. All 31 bundled slots are painted art: key art, sky, nebula, hills, building, 12 emblems, 8
+   instruments and 6 chapter vignettes. Do they look like one artist's hand? The reviewer noted the
+   key art and building are cel-inked and a little crisper than the soft sky (open question 21):
+   decide whether the mix is acceptable.
+2. The hills layer is bottom-anchored under the Observe tab: no bare sky shows at the sides or bottom
+   (taller and wider screens), and the building does not look like it floats away from the ridge. If the shelf and the building do not line up, note the viewport (open question 25).
+3. Atlas emblem alignment: the 12 emblems sit on the same grid, same size and baseline, and read
+   at 144 px. Instrument icons (112 px) are distinguishable from each other in the Build list.
 4. Chapter art and the key art are not badly cropped on tall screens (19.5:9, for example 390 x 844
    and 360 x 800) or short ones (320 x 568).
-5. The launcher icon is a code-drawn gold star on navy because the painted icon was rejected
-   (open question 15); the owner may order another designer round.
+5. The launcher icon is still the code-drawn gold star on navy (open question 15); the painted
+   `icon` was accepted later and is stored as a master. Decide whether to swap it in.
 
 ## 17. Save and recovery
 
