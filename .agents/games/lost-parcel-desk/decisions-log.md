@@ -270,3 +270,28 @@ No binding number moved. Refinements, all recorded because they change what the 
 - **Flags used.** `tutorial-done`, `card-look-closer`, `card-the-board`, `card-key-and-lock`, `card-rule-outs` (5 of the
   64 flag slots, alongside the 6 chapter flags).
 
+
+## 2026-10-23 - Task 06: art integration
+
+- **What shipped.** 63 of the 67 art slots passed the designer review loop and are integrated: 61 runtime WebP files in
+  `public/art/` (1,848,678 bytes, 22 percent of the 8 MB budget; the largest is 44,542 bytes) and the `icon` and
+  `feature-graphic` as masters only. `key-art`, `evidence-04-3`, `evidence-08-1` and `townsfolk-9` were rejected in the
+  final designer round and keep their code-drawn placeholders (open question Q19). Nothing from a rejected delivery is
+  committed.
+- **Verdict rule.** A slot is integrated only when a quoted line of the copied review note (`art/review/`) says ACCEPT, the
+  designer manifest batch and round agree, and the file sits in the inbox `accepted/` folder. One slot, `evidence-09-4`,
+  is integrated on the orchestrator's accepted list because its review note has no line for it (Q17).
+- **Sizes and quality.** Evidence objects and parcels 560 x 560, busts 360 x 480, scenes 800 x 1200, WebP quality 82 with
+  full alpha quality; masters at original size, WebP q90. These numbers are unchanged from `assets-index.md`.
+- **Automated checks stand in for visual QA.** Per-slot size and exact aspect, alpha channel, corner and 3 percent border
+  alpha 0, opaque coverage 25 to 90 percent, bounding box inside the 90 percent safe area, no animation, no EXIF, caps of
+  250,000 bytes (sprites and busts) and 400,000 bytes (scenes), 8,000,000 bytes in total. Two measured exceptions are named in
+  `scripts/art-lib.ts`: ten slim objects (13 to 25 percent coverage; minimum 10 percent) and the two tall busts
+  `townsfolk-7` and `townsfolk-12` (90.1 percent tall, limit 91 percent, as the art bible puts the head high in the frame).
+- **Backdrop.** `desk-backdrop` sits behind the table, viewer and board and `key-art` behind the title and boot screens, as an
+  absolutely positioned layer behind the screens, so the layout cannot move when a slot is missing. A scrim of the desk colour
+  at 85 percent covers it (80 percent failed muted-text contrast 4.5 on the mustard desk over the darkest backdrop pixel;
+  tested for all five desk themes), and high contrast covers it fully. Without art the layer is empty and the screen colour
+  shows, which is how the title looks while `key-art` is rejected.
+- **Credits.** Two grouped rows: in-game illustrations and icon with the store graphic; author MobileGamesDesigner thread,
+  licence owned by the project.

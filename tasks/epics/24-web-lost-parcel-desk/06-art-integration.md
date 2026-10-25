@@ -1,7 +1,7 @@
 ---
 epic: 24-web-lost-parcel-desk
 task: 06-art-integration
-status: pending
+status: in-progress
 commit_scope: lost-parcel-desk
 depends_on: [24-web-lost-parcel-desk/05-audio-haptics-onboarding]
 estimate: M
@@ -36,13 +36,13 @@ Integrate the art that passed the strict review in the designer loop: runtime We
 
 ## Implementation Checklist
 
-- [ ] Read the inbox listing and the recorded verdicts; write `.agents/resources/2026-10-23/web-games/lost-parcel-desk/06/README.md` with the per-slot decision table (67 rows).
-- [ ] `scripts/build-art.ts`: reads accepted inbox files, runs the automated checks above (fails loudly with the slot id on any violation), writes masters (WebP q90) and runtime WebP, and regenerates `src/art/manifest.ts` entries.
-- [ ] Update `src/art/manifest.ts` so accepted slots point at `public/art/<slot>.webp` with their pixel size; rejected and missing slots stay out of the manifest and keep fallbacks.
-- [ ] Use `desk-backdrop` behind the evidence table, viewer and board, `key-art` on the title, `townsfolk-N` on the profile cards, the Townsfolk Book and the Almanac, `parcel-closed` on the case intro and `parcel-open` on the table, and the evidence slots in the table and viewer, all behind `Sprite` and `Backdrop` with fallbacks; no layout change when a slot is missing.
-- [ ] Update the provenance table in `assets-index.md` and the Credits screen data (art: MobileGamesDesigner thread, licence: owned by the project).
-- [ ] `test/art.test.tsx` (rendering with empty, partial and full manifests, `Backdrop`, `Sprite`) and `test/art-assets.test.ts` (files, checks, masters, provenance, budget): reads `public/art/*.webp` with sharp and re-runs the checks for every manifest entry; asserts every manifest entry has a file and every file has a manifest entry; masters exist for every accepted slot; `assertAssetBudget` from the kit with `totalBytes: 8_000_000`; rendering with an empty manifest and with a full manifest both work; provenance rows exist for all 67 slots.
-- [ ] Delete nothing from the inbox; do not copy rejected files anywhere.
+- [x] Read the inbox listing and the recorded verdicts; write `.agents/resources/2026-10-23/web-games/lost-parcel-desk/06/README.md` with the per-slot decision table (67 rows).
+- [x] `scripts/build-art.ts`: reads accepted inbox files, runs the automated checks above (fails loudly with the slot id on any violation), writes masters (WebP q90) and runtime WebP, and regenerates `src/art/manifest.ts` entries.
+- [x] Update `src/art/manifest.ts` so accepted slots point at `public/art/<slot>.webp` with their pixel size; rejected and missing slots stay out of the manifest and keep fallbacks.
+- [x] Use `desk-backdrop` behind the evidence table, viewer and board, `key-art` on the title, `townsfolk-N` on the profile cards, the Townsfolk Book and the Almanac, `parcel-closed` on the case intro and `parcel-open` on the table, and the evidence slots in the table and viewer, all behind `Sprite` and `Backdrop` with fallbacks; no layout change when a slot is missing.
+- [x] Update the provenance table in `assets-index.md` and the Credits screen data (art: MobileGamesDesigner thread, licence: owned by the project).
+- [x] `test/art.test.tsx` (rendering with empty, partial and full manifests, `Backdrop`, `Sprite`) and `test/art-assets.test.ts` (files, checks, masters, provenance, budget): reads `public/art/*.webp` with sharp and re-runs the checks for every manifest entry; asserts every manifest entry has a file and every file has a manifest entry; masters exist for every accepted slot; `assertAssetBudget` from the kit with `totalBytes: 8_000_000`; rendering with an empty manifest and with a full manifest both work; provenance rows exist for all 67 slots.
+- [x] Delete nothing from the inbox; do not copy rejected files anywhere.
 
 ## Files Touched
 

@@ -199,5 +199,18 @@ export const AUDIO_CREDITS: readonly CreditEntry[] = [
   },
 ];
 
-/** Task 06 appends the reviewed designer art. */
-export const ART_CREDITS: readonly CreditEntry[] = [];
+/** The designer art. Counts are checked against the manifest and the masters in `test/art-assets.test.ts`. */
+export const ART_CREDITS: readonly CreditEntry[] = [
+  {
+    name: "In-game illustrations: evidence objects, townsfolk busts, parcels and the desk backdrop",
+    author: "MobileGamesDesigner thread (designer review loop, batches b1 to b7 and retry)",
+    licence: "Owned by the project",
+    source: "Commissioned for Lost Parcel Desk; art bible in the project evidence folder",
+  },
+  {
+    name: "Icon and store feature graphic",
+    author: "MobileGamesDesigner thread (designer review loop, batches b1 and b7)",
+    licence: "Owned by the project",
+    source: "Commissioned for Lost Parcel Desk; store assets, not shipped in the web bundle",
+  },
+];

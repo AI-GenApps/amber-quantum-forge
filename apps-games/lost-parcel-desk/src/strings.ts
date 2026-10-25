@@ -266,13 +266,13 @@ const strings = defineStrings({
   coachSkip: "Skip tutorial",
 
   creditsTitle: "Credits and licences",
-  creditsIntro: "{title} is made with open fonts and, as they arrive, open audio and art.",
+  creditsIntro: "{title} is made with open fonts, open audio and commissioned art.",
   creditsFonts: "Fonts",
   creditsAudio: "Audio",
   creditsArt: "Art",
   creditsNone: "None listed.",
   creditsAudioNone: "No audio files are bundled yet.",
-  creditsArtNone: "All art is drawn in code for now.",
+  creditsArtNone: "All art is drawn in code.",
   creditsPrivacy: "No accounts, no ads, no network access. Progress stays on this device.",
 });
 

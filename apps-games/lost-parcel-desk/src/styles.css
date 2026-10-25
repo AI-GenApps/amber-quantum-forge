@@ -52,12 +52,35 @@ ol {
 }
 
 .lp-shell {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
+.lp-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: var(--wg-color-background, #141a22);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.lp-backdrop__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--wg-color-background, #141a22);
+}
+
+.lp-app[data-backdrop="image"] .wg-screen {
+  background: transparent;
+}
+
 .lp-app {
+  position: relative;
   flex: 1 1 auto;
   min-height: 0;
   height: 100%;

@@ -1,5 +1,7 @@
 import { useCurrentScreen } from "@web-games/kit";
 import { useEffect, useState } from "preact/hooks";
+import { Backdrop, backdropFor } from "./art/Backdrop";
+import { hasArt } from "./art/manifest";
 import { useGameFeedback, useUiSounds } from "./feedback/useGameFeedback";
 import { TutorialProvider } from "./onboarding/TutorialProvider";
 import { Achievements } from "./screens/Achievements";
@@ -109,9 +111,23 @@ function Shell() {
   );
 
   const key = `${entry.name}:${JSON.stringify(entry.params ?? null)}`;
+  const scene = backdropFor(entry.name);
+  const sceneArt = scene !== null && hasArt(scene, app.artManifest);
   return (
     <TutorialProvider>
-      <div class="lp-app" key={key} data-route={entry.name}>
+      {scene !== null ? (
+        <Backdrop
+          slot={scene}
+          plain={settings.highContrast}
+          {...(app.artManifest ? { manifest: app.artManifest } : {})}
+        />
+      ) : null}
+      <div
+        class="lp-app"
+        key={key}
+        data-route={entry.name}
+        data-backdrop={sceneArt ? "image" : "none"}
+      >
         <CurrentScreen />
       </div>
       <Confirm
