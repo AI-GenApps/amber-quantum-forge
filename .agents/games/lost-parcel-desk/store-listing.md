@@ -1,7 +1,8 @@
-# Lost Parcel Desk - store listing (draft)
+# Lost Parcel Desk - store listing (final draft)
 
-Draft for a later submission (finalised in task 08; screenshots are left to the owner). v1 does not submit to
-any store (owner decision 2026-10-23). The working title is the public name for v1.
+Final draft for a later submission (finalised in task 08; screenshots are left to the owner). v1 does not submit to
+any store (owner decision 2026-10-23). The working title is the public name for v1. `test/kb-consistency.test.ts` checks the
+field lengths below against the store limits and the content counts against the code.
 
 ## Names and text
 
@@ -63,10 +64,10 @@ A privacy policy URL is still required by both stores even with no data collecte
 
 | Asset | Source |
 |---|---|
-| App icon 512 / 1024 | `icon` art slot (opaque square) |
-| Feature graphic 1024 x 500 | `feature-graphic` art slot (landscape, no text), cropped |
+| App icon 512 / 1024 | `icon` art slot (accepted master, opaque square) |
+| Feature graphic 1024 x 500 | `feature-graphic` art slot (accepted master, landscape, no text), cropped |
 | Phone screenshots (planned 6) | Owner captures in a browser later: the evidence table, an object flipped with the magnifier, the deduction board, the reveal with a stamp, the town map, the Daily Parcel |
-| Key art | `key-art` slot |
+| Key art | `key-art` slot: rejected in the final designer round (`open-questions.md` Q19), so there is no key art yet; the feature graphic stands in |
 
 ## Release notes (first release)
 

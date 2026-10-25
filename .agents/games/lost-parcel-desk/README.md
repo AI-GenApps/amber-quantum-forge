@@ -3,7 +3,7 @@
 Bite-sized detective stories at a small-town post office: examine what is inside each lost parcel and
 work out who it belongs to.
 
-- Status: in progress. Tasks 00 to 03 of epic 24 are built (knowledge base, core rules engine, full content and validators, progression / economy / Daily Parcel generator / versioned save) and task 04 adds all 18 screens, the sheets, design tokens, bundled fonts and accessibility, with code-drawn fallbacks for all 67 art slots. Task 05 adds the CC0 audio (27 sounds and 2 music loops), haptics, motion polish, the case 01 tutorial, the four mechanic cards and the six how-to pages. Task 06 integrates the reviewed designer art: 63 of the 67 slots passed (61 runtime WebP files in the bundle, the icon and the feature graphic as masters), and `key-art`, `evidence-04-3`, `evidence-08-1` and `townsfolk-9` keep their code-drawn placeholders. Packaging and release readiness (tasks 07 and 08) are still to come.
+- Status: v1 complete, pending owner QA. Tasks 00 to 08 of epic 24 are built: knowledge base, core rules engine, full content and validators, progression / economy / Daily Parcel / versioned save, all 18 screens with fonts and accessibility, CC0 audio with haptics and onboarding, the reviewed designer art (63 of 67 slots; `key-art`, `evidence-04-3`, `evidence-08-1` and `townsfolk-9` keep code-drawn placeholders, see `open-questions.md` Q19), Capacitor Android and iOS projects, and the release budgets, audits and owner QA checklist (task 08). Nothing was seen in a browser or on a device: the owner runs `.agents/resources/2026-10-23/web-games/lost-parcel-desk/qa-checklist.md`. No store submission.
 - Epic: [`tasks/epics/24-web-lost-parcel-desk`](../../../tasks/epics/24-web-lost-parcel-desk/STATUS.md)
 - Code: `apps-games/lost-parcel-desk` (`@web-games/lost-parcel-desk`) and
   `apps-games/lost-parcel-desk-core` (`@web-games/lost-parcel-desk-core`).
@@ -31,9 +31,9 @@ work out who it belongs to.
 | Currency | postage (450 from the campaign), spent on hints (20 / 15) and streak freezes (30) |
 | Themes / achievements | 5 desk themes (0 to 33 stamps), 12 achievements (no reward) |
 | Fonts | Courier Prime (display), IBM Plex Sans (body), OFL |
-| Audio | CC0 only: 27 sounds and 2 music loops planned (`assets-index.md`) |
-| Art | 67 designer slots: B1 4, B2 to B5 48 evidence objects, B6 15 (12 portraits, 2 parcels, feature graphic); code-drawn fallback for every slot |
-| Budgets | JS bundle <= 300 KB gzip excluding art; art <= 8 MB; fonts <= 300 KB; audio <= 2 MB (enforced in task 08) |
+| Audio | CC0 only: 27 sounds and 2 music loops shipped, 29 Ogg files (`assets-index.md`) |
+| Art | 67 designer slots: B1 4, B2 to B5 48 evidence objects, B6 15 (12 portraits, 2 parcels, feature graphic); 63 accepted (61 runtime WebP files), 4 rejected with code-drawn placeholders |
+| Budgets | JS bundle <= 300 KB gzip excluding art; art <= 8 MB; fonts <= 300 KB; audio <= 2 MB (enforced by `test/budgets.test.ts`; measured 75 KB gzip JS, 1.76 MB art, 78 KB fonts, 892 KB audio) |
 | Monetization | none in v1 |
 | Data collected | none |
 

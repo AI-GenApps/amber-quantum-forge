@@ -1,6 +1,6 @@
 # Epic 24 - Lost Parcel Desk (full v1 web game)
 
-Status: in progress (task 00 done; task 01 done; task 02 done; task 03 done; task 04 done; task 05 done; task 06 done; task 07 in progress; task 08 pending)
+Status: tasks 00 to 08 done; pending owner browser QA
 
 ## Purpose
 
@@ -81,9 +81,9 @@ Rules for every task:
 | 05 | [CC0 audio, haptics, motion polish, onboarding and how-to-play](05-audio-haptics-onboarding.md) | code | agent | [x] |
 | 06 | [Integrate reviewed art from the designer inbox](06-art-integration.md) | art | agent | [x] |
 | 07 | [Capacitor Android/iOS projects, icons and splash](07-capacitor-packaging.md) | code | agent | [x] |
-| 08 | [Release readiness, budgets, knowledge base, owner QA checklist](08-release-readiness.md) | code | agent | [ ] |
+| 08 | [Release readiness, budgets, knowledge base, owner QA checklist](08-release-readiness.md) | code | agent | [x] |
 
-Filename order is execution order. `[~]` means in progress.
+Filename order is execution order. `[~]` means in progress. Owner browser QA is pending (see `qa-checklist.md`).
 
 ## Verification gate (every code task)
 

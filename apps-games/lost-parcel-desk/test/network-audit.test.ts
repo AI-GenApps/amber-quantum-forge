@@ -5,7 +5,8 @@ import { describe, expect, it } from "vitest";
 const APP = join(import.meta.dirname, "..");
 const APP_SRC = join(APP, "src");
 const CORE_SRC = join(APP, "../lost-parcel-desk-core/src");
-const URL_ALLOWLIST = ["data/credits.ts"];
+/** Files that may hold URL literals: licence and credits source links shown to the player. */
+const URL_ALLOWLIST: readonly string[] = ["data/credits.ts"];
 
 const NETWORK_APIS: readonly [string, RegExp][] = [
   ["fetch(", /\bfetch\s*\(/],
@@ -57,6 +58,16 @@ describe("network audit", () => {
     expect(outside).toEqual([]);
   });
 
+  it("allows only https licence source links in the credits file", () => {
+    expect(URL_ALLOWLIST).toEqual(["data/credits.ts"]);
+    const credits = APP_FILES.find((entry) => entry.file === "data/credits.ts");
+    const urls = credits?.text.match(/https?:\/\/[^"'`\s)]+/g) ?? [];
+    expect(urls.length).toBeGreaterThan(20);
+    const hosts = new Set(urls.map((url) => new URL(url).host));
+    expect([...hosts].sort()).toEqual(["github.com", "kenney.nl", "opengameart.org"]);
+    for (const url of urls) expect(url.startsWith("https://")).toBe(true);
+  });
+
   it("loads no remote stylesheet, font or image", () => {
     expect(
       offenders(
@@ -65,6 +76,22 @@ describe("network audit", () => {
       ),
     ).toEqual([]);
     expect(readFileSync(join(APP, "index.html"), "utf8")).not.toMatch(/(src|href)="https?:/);
+  });
+});
+
+describe("determinism and logging audit", () => {
+  it("has no Math.random or Date.now in the core", () => {
+    expect(offenders(CORE_FILES, /\bMath\.random\b/)).toEqual([]);
+    expect(offenders(CORE_FILES, /\bDate\.now\b/)).toEqual([]);
+  });
+
+  it("has no Math.random in the app (the daily and every shuffle stay seeded)", () => {
+    expect(offenders(APP_FILES, /\bMath\.random\b/)).toEqual([]);
+  });
+
+  it("has no console.log in the app or the core", () => {
+    expect(offenders(APP_FILES, /\bconsole\.log\b/)).toEqual([]);
+    expect(offenders(CORE_FILES, /\bconsole\.log\b/)).toEqual([]);
   });
 });
 

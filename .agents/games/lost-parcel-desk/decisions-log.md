@@ -315,3 +315,24 @@ No binding number moved. Refinements, all recorded because they change what the 
 - **`INTERNET` kept (Q9).** The game makes no network calls but Capacitor's WebView loader is not verified without a device, so the
   default permission stays as the only permission; there is no cleartext flag and no `server.url`.
 - **Q6 closed.** `cap add ios` and `cap sync` needed no CocoaPods; nothing was built natively.
+
+## 2026-10-23 - Task 08: release readiness
+
+- **Budgets as tests.** `test/budgets.test.ts` calls the Vite JS API (`build()` into `node_modules/.cache/bundle-check`, silent, no
+  public dir), gzips the emitted `.js` files with `node:zlib` and checks the JS total against 300 KB, then walks `public/` for art
+  (61 files, 8 MB, any file 400 KB), fonts (3 files, 300 KB) and audio (29 files, 2 MB). It runs in the normal `test` command
+  (timeout 60 s); `scripts/check-bundle.ts` prints the same numbers as a table for humans. Release numbers: JS 75.0 KB gzip, art
+  1,848,678 bytes, fonts 79,884 bytes, audio 913,216 bytes (all in `assets-index.md`).
+- **Audits as tests.** `test/network-audit.test.ts` (the earlier `audit.test.ts`, extended) scans `src/` of the app and the core:
+  no `fetch(`, `XMLHttpRequest`, `sendBeacon`, `WebSocket` or `EventSource`; no `http(s)://` literal except `data/credits.ts`, whose
+  links are only https licence sources on kenney.nl, opengameart.org and github.com; no `Math.random` or `Date.now` in the core, no
+  `Math.random` in the app, no `console.log`, no service worker or analytics, no file of 800 lines or more, no `any`.
+- **Knowledge base proven against the code.** `test/kb-consistency.test.ts` reads the documents and the code: 12 cases, 3 chapters, 36
+  stamps, 49 objects, 70 clues (33 lead, 37 flavour), 24 deductions (12 direct, 9 pair, 3 rule-out), 12 townsfolk, 24 almanac
+  entries, 12 achievements, unlock stamps 7 and 18, theme thresholds 0 / 6 / 14 / 24 / 33, postage 450 (30 + 120 + 180 + 120),
+  hints 20 and 15, freeze 30, 67 art slots, 27 sounds and 2 music loops, port 4016, app id, the four rejected slots, the measured
+  art / font / audio totals and every case index row. No number moved in this task.
+- **Open items.** Everything left is a judgement the owner makes in browser or device QA (Q1, Q2, Q8, Q10 to Q18, Q22), a later
+  step (Q3, Q4, Q19, Q21), or an orchestrator tooling note (Q20). The four rejected art slots keep their placeholders.
+- **No store step, no browser.** Nothing in this task opened a browser, device or emulator. The owner checklist is
+  `.agents/resources/2026-10-23/web-games/lost-parcel-desk/qa-checklist.md`.

@@ -1,6 +1,6 @@
 # Lost Parcel Desk - assets index
 
-Status after task 06: the two font families are bundled, all 27 sound slots and both music loops ship as CC0 Ogg
+Status after task 08 (release readiness): the two font families are bundled, all 27 sound slots and both music loops ship as CC0 Ogg
 files (913,216 bytes), and the reviewed designer art is integrated. Of the 67 art slots 63 were accepted in the
 designer review loop: 61 have a runtime WebP in `public/art/` (listed in `src/art/manifest.ts`) and the `icon` and
 `feature-graphic` are masters only. `key-art`, `evidence-04-3`, `evidence-08-1` and `townsfolk-9` were rejected in the
@@ -278,14 +278,18 @@ Nothing on plain button taps. The map lives in `src/audio/events.ts` (`cueFor`).
 Music: `music-desk` plays on every screen except the deduction board, which plays `music-case`; the two
 cross-fade over 1.2 s. Both honour the Music switch and the sound effects honour the Sound switch.
 
-## Release totals and budgets (filled in by task 08)
+## Release totals and budgets (task 08)
 
-| Group | Budget | Enforced by |
-|---|---|---|
-| JS bundle (gzip, art, fonts and audio excluded) | 300 KB | `test/budgets.test.ts` (runs a Vite build into `node_modules/.cache/bundle-check`) |
-| Runtime art (`public/art`) | 8 MB; any sprite 250 KB, any 800 x 1200 image 400 KB | `test/budgets.test.ts`, `test/art-assets.test.ts` |
-| Fonts (`public/fonts`) | 300 KB | `test/budgets.test.ts` |
-| Audio (`public/audio`) | 2 MB | `test/budgets.test.ts`, `test/audio-assets.test.ts` |
+| Group | Budget | Enforced by | Measured at release |
+|---|---|---|---|
+| JS bundle (gzip, art, fonts and audio excluded) | 300 KB | `test/budgets.test.ts` (runs a Vite build into `node_modules/.cache/bundle-check`); `scripts/check-bundle.ts` prints the table | 75.0 KB gzip (217.8 KB raw, 6 files) |
+| Runtime art (`public/art`) | 8 MB; any file 400 KB (sprites 250 KB in `test/art-assets.test.ts`) | `test/budgets.test.ts`, `test/art-assets.test.ts` | 61 runtime WebP files, 1,848,678 bytes; largest `evidence-02-2` 44,542 bytes |
+| Fonts (`public/fonts`) | 300 KB | `test/budgets.test.ts` | 3 woff2 files, 79,884 bytes |
+| Audio (`public/audio`) | 2 MB | `test/budgets.test.ts`, `test/audio-assets.test.ts` | 29 Ogg files, 913,216 bytes (27 sound slots and 2 music loops) |
+
+`test/kb-consistency.test.ts` reads the art, font and audio totals from `public/` and fails when these rows drift.
+Not in the bundle: 63 art masters (5,196,216 bytes, `.agents/resources/2026-10-23/web-games/lost-parcel-desk/art/masters/`) and the
+Capacitor sources in `assets/`.
 
 ## Capacitor icon and splash (task 07)
 

@@ -1,7 +1,7 @@
 # Lost Parcel Desk - open questions
 
-None of these block v1; each has a stated default. After task 08 the open items are owned by the owner
-(browser QA or a later step); nothing is left for an agent task in this epic.
+None of these block v1; each has a stated default. After task 08 (release readiness) every open item is owned by the owner
+(browser QA, device QA or a later step) or the orchestrator (Q20); nothing is left for an agent task in this epic.
 
 | # | Question | Default used until answered | Owner |
 |---|---|---|---|
@@ -26,6 +26,7 @@ None of these block v1; each has a stated default. After task 08 the open items 
 | Q19 | Four slots were rejected in the final designer round and keep their code-drawn placeholder: `key-art` (title), `evidence-04-3` (battery card), `evidence-08-1` (rubber ferrule) and `townsfolk-9` (Iggy Marsh, no hearing aid drawn, which is a key clue for cases 04 and 06). | Ship with placeholders. The game is complete without them (every one has a code-drawn drawing and a readable name); a follow-up designer round would only change files in `public/art/`, `verdicts.json` and a rerun of `bun run build:art`. | owner, later step |
 | Q20 | `bun run build:art` hangs in this environment: Bun 1.4.3 resolves sharp 0.35.5 for scripts and its first encode never returns (a one-line `sharp({create}).webp().toBuffer()` also hangs), while Node 22 with the installed sharp 0.35.3 works and Vitest (Node) is unaffected. | The task ran the script as a Node bundle (`bun build scripts/build-art.ts --target=node --external sharp --outfile scripts/.build-art.mjs`, then `node scripts/.build-art.mjs`, then removed the bundle). The `build:art` package script keeps the Bun form used by the sibling games. Looks like a tooling issue (Bun runtime and sharp); not part of the shipped game. | orchestrator |
 | Q21 | The icon, adaptive-icon mask, splash and iOS launch screen were never seen on a device, in Android Studio or in Xcode, and the splash is the code-drawn badge (the `key-art` slot is rejected, Q19) beside the reviewed `icon`, so the two do not match in style. | Ship as built; the splash is the badge on `#141a22` and the launcher icon is the accepted master. A follow-up key-art round would only change `assets/` through `bun scripts/build-icons.ts` and a rerun of `bunx capacitor-assets generate`. Owner reviews in Android Studio and Xcode previews before any store step. | owner, later step |
+| Q22 | Android hardware back and the system gesture are device-only behaviour: the router back interceptor and the exit confirmation are tested in happy-dom, but the real button was never pressed. | Listed in `qa-checklist.md` as not covered by browser QA; the owner checks it on a device before any store step. | owner, device step |
 
 ## Kit follow-ups
 
