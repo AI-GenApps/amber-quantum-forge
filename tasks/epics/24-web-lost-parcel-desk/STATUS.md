@@ -1,6 +1,6 @@
 # Epic 24 - Lost Parcel Desk (full v1 web game)
 
-Status: in progress (task 00 done; task 01 done; task 02 done; task 03 done; task 04 done; task 05 done; task 06 done; tasks 07 and 08 pending)
+Status: in progress (task 00 done; task 01 done; task 02 done; task 03 done; task 04 done; task 05 done; task 06 done; task 07 in progress; task 08 pending)
 
 ## Purpose
 
@@ -80,7 +80,7 @@ Rules for every task:
 | 04 | [All screens, navigation, design tokens, fonts, accessibility](04-screens-and-ui.md) | code | agent | [x] |
 | 05 | [CC0 audio, haptics, motion polish, onboarding and how-to-play](05-audio-haptics-onboarding.md) | code | agent | [x] |
 | 06 | [Integrate reviewed art from the designer inbox](06-art-integration.md) | art | agent | [x] |
-| 07 | [Capacitor Android/iOS projects, icons and splash](07-capacitor-packaging.md) | code | agent | [ ] |
+| 07 | [Capacitor Android/iOS projects, icons and splash](07-capacitor-packaging.md) | code | agent | [x] |
 | 08 | [Release readiness, budgets, knowledge base, owner QA checklist](08-release-readiness.md) | code | agent | [ ] |
 
 Filename order is execution order. `[~]` means in progress.

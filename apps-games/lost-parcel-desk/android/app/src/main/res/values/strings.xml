@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Lost Parcel Desk</string>
+    <string name="title_activity_main">Lost Parcel Desk</string>
+    <string name="package_name">app.w3dev.lostparceldesk</string>
+    <string name="custom_url_scheme">app.w3dev.lostparceldesk</string>
+</resources>

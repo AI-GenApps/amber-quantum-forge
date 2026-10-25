@@ -5,7 +5,7 @@ files (913,216 bytes), and the reviewed designer art is integrated. Of the 67 ar
 designer review loop: 61 have a runtime WebP in `public/art/` (listed in `src/art/manifest.ts`) and the `icon` and
 `feature-graphic` are masters only. `key-art`, `evidence-04-3`, `evidence-08-1` and `townsfolk-9` were rejected in the
 final designer round and keep their code-drawn fallbacks (`src/art/fallbacks.tsx`, `src/ui/Glyph.tsx`), so the
-game renders completely with any subset of the art. Icons and splash (task 07) are still to come.
+game renders completely with any subset of the art. The Capacitor icon and splash sources are built in task 07 (see the last section).
 
 ## Where things live
 
@@ -289,8 +289,11 @@ cross-fade over 1.2 s. Both honour the Music switch and the sound effects honour
 
 ## Capacitor icon and splash (task 07)
 
-Sources are written to `apps-games/lost-parcel-desk/assets/` by `scripts/build-icons.ts`: `icon-only.png`
-(1024, opaque) from the accepted `icon` master and `splash.png` and `splash-dark.png` (2732) composed from
-the accepted `key-art` master centred on the `night` colour `#141a22`. If a slot is missing or rejected (`key-art` is rejected, see task 06),
-`scripts/draw-fallback-icon.ts` draws a code-drawn stamp-and-envelope badge from the palette tokens and the
-splash is that badge on `#141a22`. `@capacitor/assets` turns the sources into Android and iOS resources.
+Sources are written to `apps-games/lost-parcel-desk/assets/` by `scripts/build-icons.ts` (run with Bun, deterministic):
+`icon-only.png` (1024, opaque) is the accepted `icon` master from the evidence masters; `icon-foreground.png` is the same
+motif on a transparent 1024 canvas and `icon-background.png` the flat field colour `#015f64` (mean of the master's four
+corner patches); `splash.png` and `splash-dark.png` (2732, identical, one dark look) are the code-drawn stamp-and-envelope
+badge of `scripts/draw-fallback-icon.ts` (palette tokens only) in the central 1200 px on the `night` colour `#141a22`,
+because `key-art` is rejected (see task 06, Q19). `--fallback` also draws the icon in code when the master is absent.
+`@capacitor/assets` turns the sources into Android and iOS resources (24 launcher PNGs, 26 Android splash images, the
+1024 iOS marketing icon and six iOS splash images).

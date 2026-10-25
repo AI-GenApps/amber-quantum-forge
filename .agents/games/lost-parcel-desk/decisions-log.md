@@ -295,3 +295,23 @@ No binding number moved. Refinements, all recorded because they change what the 
   shows, which is how the title looks while `key-art` is rejected.
 - **Credits.** Two grouped rows: in-game illustrations and icon with the store graphic; author MobileGamesDesigner thread,
   licence owned by the project.
+
+## 2026-10-23 - Task 07: Capacitor Android and iOS projects, icons and splash
+
+- **Projects.** `android/` and `ios/` were generated with `bunx cap add android` and `bunx cap add ios` (Capacitor 8.5.3, iOS
+  through Swift Package Manager) and are committed as source files only; build outputs and the synced web copies are ignored by
+  the app `.gitignore`. App id `app.w3dev.lostparceldesk`, name Lost Parcel Desk, six plugins (`app`, `haptics`, `preferences`,
+  `screen-orientation`, `share`, `status-bar`) and nothing else, equal to the `package.json` dependency list.
+- **Icon path.** The launcher icon is the accepted `icon` master (opaque 1024 RGB). The adaptive background is the flat field
+  colour `#015f64` measured from the master. The splash is the code-drawn stamp-and-envelope badge on `#141a22` because `key-art`
+  is rejected (Q19); `splash.png` and `splash-dark.png` are identical. The style mismatch between icon and splash is Q21.
+- **Portrait only.** Android activity `android:screenOrientation="portrait"`; iOS `UISupportedInterfaceOrientations` and the iPad
+  variant contain only `UIInterfaceOrientationPortrait`. The kit lifecycle also locks portrait at runtime.
+- **Night colour everywhere.** `capacitor.config.ts` sets `backgroundColor` and the status bar (`DARK` style, `#141a22`); the iOS
+  launch storyboard background and `UIStatusBarStyle` (light content) follow, and `index.html` already carries `viewport-fit=cover`
+  and the `#141a22` theme colour.
+- **`android:allowBackup="true"` kept.** The Capacitor default stays: the save is small, local and holds no personal data, so
+  restoring it after a reinstall helps the player and exposes nothing. Revisit only if the owner wants a clean install every time.
+- **`INTERNET` kept (Q9).** The game makes no network calls but Capacitor's WebView loader is not verified without a device, so the
+  default permission stays as the only permission; there is no cleartext flag and no `server.url`.
+- **Q6 closed.** `cap add ios` and `cap sync` needed no CocoaPods; nothing was built natively.
