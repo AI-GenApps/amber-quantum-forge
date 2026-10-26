@@ -33,4 +33,16 @@ describe("core purity", () => {
       expect(offenders).toEqual([]);
     });
   }
+
+  it("src imports only relative modules (no kit, DOM framework or plugin)", () => {
+    const offenders = files.filter((file) => /from\s+["'](?!\.)/.test(readFileSync(file, "utf8")));
+    expect(offenders).toEqual([]);
+  });
+
+  it("package.json has no runtime dependencies", () => {
+    const manifest = JSON.parse(
+      readFileSync(join(SRC_DIR, "..", "package.json"), "utf8"),
+    ) as Record<string, unknown>;
+    expect(manifest.dependencies).toBeUndefined();
+  });
 });

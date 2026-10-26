@@ -1,0 +1,36 @@
+/* high contrast and motion */
+[data-contrast="high"] .wg-btn,
+[data-contrast="high"] .lp-chip,
+[data-contrast="high"] .lp-object,
+[data-contrast="high"] .lp-folder,
+[data-contrast="high"] .lp-placebtn {
+  border-width: 3px;
+}
+
+[data-contrast="high"] .lp-chip--linked,
+[data-contrast="high"] .lp-link--fits {
+  background-image: repeating-linear-gradient(45deg, rgba(243, 233, 210, 0.28) 0 4px, transparent 4px 8px);
+}
+
+@keyframes lp-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(240, 207, 122, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(240, 207, 122, 0);
+  }
+}
+
+[data-motion="reduced"] *,
+[data-motion="reduced"] *::before,
+[data-motion="reduced"] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-hotspot {
+    animation: none;
+  }
+}

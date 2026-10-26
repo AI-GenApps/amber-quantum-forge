@@ -1,0 +1,7 @@
+Title: Keyboard Soundpack #1 [Typing and Single Keystrokes]
+Author: unicaegames (OpenGameArt user unicaegames)
+Page: https://opengameart.org/content/keyboard-soundpack-1-typing-and-single-keystrokes
+Licence shown on the page: License(s): CC0 (https://creativecommons.org/publicdomain/zero/1.0/)
+Page text: "This pack includes 10 human typing sounds in different velocities, 7 generated sounds in different speeds and 32 single keypress sounds. Perfect for typewriter effects and in-game dialogue. Keyboard used: Cherry KC 1000. Recorded with: Shure SM7B. Free to use however you like."
+Source archive: unicae_games_keyboard_soundpack_1_0.zip (file Generated Typing/generated-006_faster.wav)
+Checked: 2026-10-23

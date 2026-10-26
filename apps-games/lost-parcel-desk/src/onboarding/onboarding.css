@@ -1,0 +1,46 @@
+.lp-coach {
+  flex: none;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 2px 12px;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 8px 12px calc(env(safe-area-inset-bottom, 0px) + 8px);
+  background: var(--wg-color-surface);
+  color: var(--wg-color-text);
+  border-top: 3px solid var(--wg-color-focus);
+}
+
+.lp-coach p {
+  margin: 0;
+}
+
+.lp-coach__step {
+  grid-column: 1;
+  font-size: 14px;
+  color: var(--wg-color-text-muted);
+}
+
+.lp-coach__text {
+  grid-column: 1;
+  font-family: var(--wg-font-display);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.lp-coach .wg-btn {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.lp-coach-target {
+  outline: 3px solid var(--wg-color-focus);
+  outline-offset: 3px;
+}
+
+html[data-motion="full"] .lp-coach-target {
+  animation: lp-glow 1.6s ease-in-out infinite;
+}

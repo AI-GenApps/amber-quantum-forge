@@ -1,0 +1,488 @@
+:root {
+  --wg-hit-min: 44px;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--wg-color-background, #141a22);
+  color: var(--wg-color-text, #f3e9d2);
+  font-family: var(--wg-font-body, "IBM Plex Sans", system-ui, sans-serif);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-text-size-adjust: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: var(--wg-font-body);
+}
+
+h1,
+h2,
+h3,
+caption,
+.lp-rstamp,
+.lp-typewriter,
+.lp-chip__tag,
+.lp-label {
+  font-family: var(--wg-font-display);
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.15;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lp-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.lp-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: var(--wg-color-background, #141a22);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.lp-backdrop__scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--wg-color-background, #141a22);
+}
+
+.lp-app[data-backdrop="image"] .wg-screen {
+  background: transparent;
+}
+
+.lp-app {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.lp-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.lp-app .wg-screen {
+  max-width: 520px;
+  margin: 0 auto;
+  gap: 12px;
+}
+
+.lp-hit,
+.lp-chip,
+.lp-chip__more,
+.lp-object,
+.lp-hotspot,
+.lp-pcard__head,
+.lp-folder,
+.lp-placebtn,
+.lp-linkbutton {
+  min-width: var(--wg-hit-min);
+  min-height: var(--wg-hit-min);
+}
+
+.lp-hotspot {
+  min-width: 48px;
+  min-height: 48px;
+}
+
+.wg-btn.wg-btn--danger {
+  color: var(--lp-cream);
+}
+
+.wg-btn.wg-btn--primary,
+.wg-btn.wg-btn--secondary,
+.wg-btn.wg-btn--danger {
+  font-weight: 700;
+}
+
+.wg-btn.wg-btn--secondary {
+  border-color: var(--wg-color-border);
+}
+
+.wg-toggle .wg-toggle__thumb {
+  background: var(--lp-thumb-off);
+}
+
+.wg-toggle[aria-checked="true"] .wg-toggle__thumb {
+  background: var(--lp-thumb-on);
+}
+
+.wg-toggle__track {
+  border: 2px solid var(--wg-color-border);
+}
+
+.wg-tab {
+  min-width: var(--wg-hit-min);
+  color: var(--wg-color-text);
+}
+
+.wg-tab[aria-selected="true"] {
+  font-weight: 700;
+}
+
+.wg-sheet {
+  border: 2px solid var(--wg-color-border);
+}
+
+.lp-title {
+  font-size: 30px;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.lp-subtitle,
+.lp-tagline {
+  text-align: center;
+  color: var(--wg-color-text-muted);
+}
+
+.lp-subnote,
+.lp-empty,
+.lp-section__note {
+  font-size: 14px;
+  color: var(--wg-color-text-muted);
+}
+
+.lp-section {
+  font-size: 18px;
+  margin: 8px 0 4px;
+}
+
+.lp-section__note {
+  font-family: var(--wg-font-body);
+  font-weight: 400;
+}
+
+.lp-warn,
+.lp-notice,
+.lp-locknote {
+  font-size: 14px;
+  color: var(--lp-warn);
+  font-weight: 600;
+}
+
+.lp-notice,
+.lp-hintnote {
+  padding: 8px 12px;
+  border: 2px solid var(--wg-color-border);
+  border-radius: var(--wg-radius-md);
+  background: var(--wg-color-surface-raised);
+  color: var(--wg-color-text);
+  font-size: 15px;
+}
+
+.lp-hintnote {
+  flex-basis: 100%;
+}
+
+/* top bar */
+.lp-topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lp-topbar__title {
+  flex: 1;
+  font-size: 20px;
+  min-width: 0;
+}
+
+.lp-topbar__extra {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lp-position,
+.lp-counter {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lp-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--wg-hit-min);
+}
+
+.lp-counter__icon {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+/* home */
+.lp-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-top: 8px;
+}
+
+.lp-statline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
+
+.lp-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lp-menu__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.lp-boot {
+  align-items: center;
+  justify-content: center;
+}
+
+/* paper, stamps, pins */
+.lp-paper {
+  box-sizing: border-box;
+  padding: 12px 14px;
+  background: var(--lp-cream);
+  color: var(--lp-ink);
+  border: 1px solid var(--lp-line);
+  border-radius: 3px;
+  box-shadow: 2px 3px 0 rgba(20, 26, 34, 0.28);
+  transform: rotate(var(--lp-tilt, 0deg));
+  font-family: var(--wg-font-body);
+}
+
+.lp-paper--cream2 {
+  background: var(--lp-cream-2);
+}
+
+.lp-paper--hc {
+  border: 3px solid var(--lp-ink);
+}
+
+.lp-rstamp {
+  display: inline-block;
+  padding: 4px 10px;
+  border: 3px double currentColor;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transform: rotate(var(--lp-tilt, -4deg));
+  background: var(--lp-cream);
+}
+
+.lp-rstamp--brick {
+  color: var(--lp-brick);
+}
+
+.lp-rstamp--teal {
+  color: var(--lp-teal-deep);
+}
+
+.lp-rstamp--large {
+  font-size: 22px;
+}
+
+.lp-rstamp--small {
+  font-size: 14px;
+}
+
+.lp-rstamp--fall {
+  will-change: transform;
+}
+
+.lp-stamps {
+  display: inline-flex;
+  gap: 4px;
+  vertical-align: middle;
+}
+
+.lp-stampicon {
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.lp-stampicon--on {
+  fill: var(--lp-stamp);
+  color: var(--wg-color-text);
+}
+
+.lp-stampicon--off {
+  color: var(--wg-color-border);
+}
+
+.lp-glyph,
+.lp-sprite {
+  flex: none;
+}
+
+/* clue chips */
+.lp-chipwrap {
+  display: inline-flex;
+  align-items: stretch;
+  max-width: 100%;
+}
+
+.lp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--lp-cream);
+  color: var(--lp-ink);
+  border: 2px solid var(--lp-ink);
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.lp-chip__icon {
+  display: inline-flex;
+}
+
+.lp-chip__tag {
+  font-weight: 700;
+}
+
+.lp-chip__state {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--lp-mustard-deep);
+}
+
+.lp-chip--pinned {
+  background: var(--lp-mustard-light);
+}
+
+.lp-chip--linked {
+  background: var(--lp-teal-light);
+}
+
+.lp-chip--selected {
+  outline: 3px solid var(--wg-color-focus);
+  outline-offset: 2px;
+}
+
+.lp-chip__more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: var(--wg-color-text);
+  border: 0;
+  cursor: pointer;
+}
+
+.lp-chip:focus-visible,
+.lp-chip__more:focus-visible,
+.lp-object:focus-visible,
+.lp-folder:focus-visible,
+.lp-pcard__head:focus-visible,
+.lp-hotspot:focus-visible,
+.lp-placebtn:focus-visible,
+.lp-linkbutton:focus-visible {
+  outline: 3px solid var(--wg-color-focus);
+  outline-offset: 2px;
+}
+
+.lp-tray__chips,
+.lp-pinned .lp-tray__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* actions */
+.lp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.lp-actions > .wg-btn {
+  flex: 1 1 140px;
+}
+
+.lp-actions--column {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.lp-sheetbody {
+  margin-bottom: 8px;
+}
+
+.lp-sheetactions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.lp-linkmenu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lp-linkbutton {
+  background: transparent;
+  border: 0;
+  color: var(--wg-color-text);
+  text-decoration: underline;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
