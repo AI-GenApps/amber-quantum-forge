@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "cap:sync": "vite build && cap sync"
+    "cap:sync": "vite build && cap sync",
+    "native:assets": "bun scripts/optimize-native-images.ts --generate",
+    "native:optimize": "bun scripts/optimize-native-images.ts"
   },
   "dependencies": {
     "@capacitor/android": "8.5.3",

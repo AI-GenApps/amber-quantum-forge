@@ -279,3 +279,8 @@ Path used: accepted masters for both (no code-drawn fallback needed; `icon` and 
 `scripts/draw-fallback-icon.ts` (lamp-in-window badge from the palette tokens) stays as the fallback for a
 future rejected slot (`bun scripts/build-icons.ts --fallback`). Rejected or not generated slots: none.
 `feature-graphic` is a store asset only and has no Capacitor role.
+
+Native output size (2026-10-26): `bun run native:assets` runs `capacitor-assets generate` and then
+`scripts/optimize-native-images.ts`, which re-encodes the splash PNGs and the iOS app icon as palette PNGs
+without changing dimensions or filenames. Android `res` 2.91 MB and iOS `Assets.xcassets` 2.57 MB
+(before: 13.62 MB and 12.83 MB); budget 3 MB per platform folder, enforced by `test/native-size-budget.test.ts`.

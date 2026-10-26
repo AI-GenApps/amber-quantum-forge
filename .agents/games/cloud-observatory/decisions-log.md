@@ -374,3 +374,24 @@ catalog the same number of times for 1 second, 8 hours and 10 days away; `perfor
 guard at one hour of ticks (36,000) with a 5 s budget, about 9x the CI measurement, still fastest of
 three. No economy number, rule, content or dependency changed. *Rationale: the product concern (no
 stall on resume) is met by construction and pinned by a step-count test, not by a timing race.*
+
+### 2026-10-26 — Native splash images compressed
+
+Context: the splash images `capacitor-assets` writes from the painted key art were large: the Android
+`res` folder was 10.81 MB and the iOS `Assets.xcassets` folder 4.00 MB (the other four web games sit at about 2 MB
+per platform). The tool saves untuned 8-bit truecolour, and the iOS set is six copies of a 2732 px square.
+Decisions: (1) **Re-encode, never resize.** `scripts/optimize-native-images.ts` re-encodes every splash and
+the iOS app icon as a dithered palette PNG (sharp, quality ladder 84, 90, 100, dither 0.2, effort 10), with the
+same dimensions, filenames and PNG format. Each result must beat the original on size, mean absolute difference
+under 3 (0-255 scale) and a 99th-percentile low-pass error of at most 3 (the banding check), or the next quality is
+tried, then lossless truecolour. Launcher mipmaps are small and untouched. (2) **Repeatable.** `bun run
+native:assets` runs `capacitor-assets generate` with the committed colours, puts `AndroidManifest.xml` back byte for
+byte, then runs the optimizer; `bun run native:optimize` only re-encodes. Images that are already palette PNGs
+are skipped, so the script is idempotent and never degrades its own output. Regenerating from the sources
+reproduced the previous committed files byte for byte before optimizing. (3) **Result:** Android `res`
+10.81 MB to 2.88 MB, iOS `Assets.xcassets` 4.00 MB to 2.18 MB. Worst mean difference
+from the original across all 57 PNGs is 1.20 (the iOS app icon); every splash is under 0.4. (4) **Budget test**: each platform folder must stay at 3 MB
+(3,000,000 bytes) or less, every splash and the iOS icon must be a palette PNG, and the iOS splash must stay
+within the error limits of its 2732 px source. No economy number, content or rule changed.
+*Rationale: the splash is a still painted image shown for a second; palette quantisation with light dither is
+invisible at device size and the repo should not carry 10 to 13 MB of launch images per platform.*

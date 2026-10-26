@@ -270,6 +270,11 @@ masters under `art/masters/`). Native outputs come from
 The earlier code-drawn gold-star stopgap (task 07 first pass, written while `icon` was rejected) was
 removed from the script when `icon` was accepted. No retouching of the painting was done.
 
+Native output size (2026-10-26): `bun run native:assets` runs `capacitor-assets generate` and then
+`scripts/optimize-native-images.ts`, which re-encodes the splash PNGs and the iOS app icon as palette PNGs
+without changing dimensions or filenames. Android `res` 2.88 MB and iOS `Assets.xcassets` 2.18 MB
+(before: 10.81 MB and 4.00 MB); budget 3 MB per platform folder, enforced by `test/native/size-budget.test.ts`.
+
 ## Release status (task 08, 2026-10-24)
 
 Final art status, from the designer review loop (`status=ok`, updated in the task 06 update pass): 33
