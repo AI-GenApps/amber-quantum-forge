@@ -1,0 +1,432 @@
+{
+ "plain": [
+  [
+   "fillRect",
+   0,
+   0,
+   1080,
+   1350,
+   "#f6efe4"
+  ],
+  [
+   "fillRect",
+   0,
+   0,
+   1080,
+   1170,
+   "#e2d5be"
+  ],
+  [
+   "fillRect",
+   0,
+   0,
+   1080,
+   1170,
+   "#2b6a9a"
+  ],
+  [
+   "fillText",
+   "Wide-Brim Sun Hat",
+   199,
+   551
+  ],
+  [
+   "fillText",
+   "Cat-Eye Sunglasses",
+   540,
+   551
+  ],
+  [
+   "fillText",
+   "Straw Basket Tote",
+   881,
+   551
+  ],
+  [
+   "fillText",
+   "Breton Stripe Tee",
+   199,
+   892
+  ],
+  [
+   "fillText",
+   "White Rope Espadrilles",
+   540,
+   892
+  ],
+  [
+   "fillText",
+   "Orange Wrap Skirt",
+   881,
+   892
+  ],
+  [
+   "fillText",
+   "Riviera Summer - Harbour Lunch",
+   540,
+   1202
+  ],
+  [
+   "fillText",
+   "Chapter 1 - Sun on the Water",
+   540,
+   1238
+  ],
+  [
+   "fillText",
+   "Styled for Mireille Vasseur  -  Harmony 84",
+   540,
+   1271
+  ],
+  [
+   "fillText",
+   "Dress Rehearsal",
+   540,
+   1328
+  ]
+ ],
+ "paper": [
+  [
+   "fillRect",
+   0,
+   0,
+   1080,
+   1350,
+   "#ebe0cc"
+  ],
+  [
+   "fillRect",
+   36,
+   36,
+   1008,
+   1278,
+   "#f6efe4"
+  ],
+  [
+   "strokeRect",
+   36,
+   36,
+   1008,
+   1278,
+   "#231d1a"
+  ],
+  [
+   "strokeRect",
+   52,
+   52,
+   976,
+   1246,
+   "#78674f"
+  ],
+  [
+   "fillRect",
+   84,
+   84,
+   912,
+   1010,
+   "#e2d5be"
+  ],
+  [
+   "fillRect",
+   84,
+   84,
+   912,
+   1010,
+   "#2b6a9a"
+  ],
+  [
+   "fillText",
+   "Wide-Brim Sun Hat",
+   255,
+   555
+  ],
+  [
+   "fillText",
+   "Cat-Eye Sunglasses",
+   540,
+   555
+  ],
+  [
+   "fillText",
+   "Straw Basket Tote",
+   825,
+   555
+  ],
+  [
+   "fillText",
+   "Breton Stripe Tee",
+   255,
+   840
+  ],
+  [
+   "fillText",
+   "White Rope Espadrilles",
+   540,
+   840
+  ],
+  [
+   "fillText",
+   "Orange Wrap Skirt",
+   825,
+   840
+  ],
+  [
+   "strokeRect",
+   84,
+   84,
+   912,
+   1010,
+   "#231d1a"
+  ],
+  [
+   "fillText",
+   "Riviera Summer - Harbour Lunch",
+   540,
+   1143
+  ],
+  [
+   "fillText",
+   "Chapter 1 - Sun on the Water",
+   540,
+   1180
+  ],
+  [
+   "fillText",
+   "Styled for Mireille Vasseur  -  Harmony 84",
+   540,
+   1213
+  ],
+  [
+   "fillText",
+   "Dress Rehearsal",
+   540,
+   1285
+  ]
+ ],
+ "polaroid": [
+  [
+   "fillRect",
+   0,
+   0,
+   1080,
+   1350,
+   "#d3dde0"
+  ],
+  [
+   "fillRect",
+   64,
+   76,
+   968,
+   1238,
+   "#231d1a"
+  ],
+  [
+   "fillRect",
+   52,
+   52,
+   976,
+   1246,
+   "#f6efe4"
+  ],
+  [
+   "strokeRect",
+   52,
+   52,
+   976,
+   1246,
+   "#78674f"
+  ],
+  [
+   "fillRect",
+   100,
+   100,
+   880,
+   930,
+   "#e2d5be"
+  ],
+  [
+   "fillRect",
+   100,
+   100,
+   880,
+   930,
+   "#2b6a9a"
+  ],
+  [
+   "fillText",
+   "Wide-Brim Sun Hat",
+   265,
+   531
+  ],
+  [
+   "fillText",
+   "Cat-Eye Sunglasses",
+   540,
+   531
+  ],
+  [
+   "fillText",
+   "Straw Basket Tote",
+   815,
+   531
+  ],
+  [
+   "fillText",
+   "Breton Stripe Tee",
+   265,
+   806
+  ],
+  [
+   "fillText",
+   "White Rope Espadrilles",
+   540,
+   806
+  ],
+  [
+   "fillText",
+   "Orange Wrap Skirt",
+   815,
+   806
+  ],
+  [
+   "strokeRect",
+   100,
+   100,
+   880,
+   930,
+   "#231d1a"
+  ],
+  [
+   "fillText",
+   "Riviera Summer - Harbour Lunch",
+   540,
+   1071
+  ],
+  [
+   "fillText",
+   "Chapter 1 - Sun on the Water",
+   540,
+   1117
+  ],
+  [
+   "fillText",
+   "Styled for Mireille Vasseur  -  Harmony 84",
+   540,
+   1159
+  ],
+  [
+   "fillText",
+   "Dress Rehearsal",
+   540,
+   1249
+  ]
+ ],
+ "magazine": [
+  [
+   "fillRect",
+   0,
+   0,
+   1080,
+   1350,
+   "#f6efe4"
+  ],
+  [
+   "fillRect",
+   0,
+   0,
+   1080,
+   250,
+   "#2b6a9a"
+  ],
+  [
+   "fillText",
+   "Mireille Vasseur",
+   540,
+   120
+  ],
+  [
+   "fillText",
+   "DRESS REHEARSAL",
+   540,
+   210
+  ],
+  [
+   "fillRect",
+   60,
+   280,
+   960,
+   800,
+   "#e2d5be"
+  ],
+  [
+   "fillRect",
+   60,
+   280,
+   960,
+   800,
+   "#2b6a9a"
+  ],
+  [
+   "fillText",
+   "Wide-Brim Sun Hat",
+   239,
+   646
+  ],
+  [
+   "fillText",
+   "Cat-Eye Sunglasses",
+   540,
+   646
+  ],
+  [
+   "fillText",
+   "Straw Basket Tote",
+   841,
+   646
+  ],
+  [
+   "fillText",
+   "Breton Stripe Tee",
+   239,
+   947
+  ],
+  [
+   "fillText",
+   "White Rope Espadrilles",
+   540,
+   947
+  ],
+  [
+   "fillText",
+   "Orange Wrap Skirt",
+   841,
+   947
+  ],
+  [
+   "strokeRect",
+   60,
+   280,
+   960,
+   800,
+   "#231d1a"
+  ],
+  [
+   "fillText",
+   "Riviera Summer - Harbour Lunch",
+   540,
+   1130
+  ],
+  [
+   "fillText",
+   "Chapter 1 - Sun on the Water",
+   540,
+   1174
+  ],
+  [
+   "fillText",
+   "Styled for Mireille Vasseur  -  Harmony 84",
+   540,
+   1213
+  ]
+ ]
+}

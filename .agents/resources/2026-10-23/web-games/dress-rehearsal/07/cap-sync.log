@@ -1,0 +1,29 @@
+✔ Copying web assets from dist to android/app/src/main/assets/public in 31.02ms
+✔ Creating capacitor.config.json in android/app/src/main/assets in 1.46ms
+✔ copy android in 38.46ms
+✔ Updating Android plugins in 1.55ms
+[info] Found 6 Capacitor plugins for android:
+       @capacitor/app@8.1.2
+       @capacitor/haptics@8.0.2
+       @capacitor/preferences@8.0.1
+       @capacitor/screen-orientation@8.0.2
+       @capacitor/share@8.0.3
+       @capacitor/status-bar@8.0.4
+✔ update android in 20.05ms
+✔ Copying web assets from dist to ios/App/App/public in 16.63ms
+✔ Creating capacitor.config.json in ios/App/App in 140.25μs
+✔ copy ios in 28.59ms
+✔ Updating iOS plugins in 1.06ms
+[info] All Capacitor plugins have a Package.swift file and will be included in Package.swift
+[info] Writing Package.swift
+[info] Found 6 Capacitor plugins for ios:
+       @capacitor/app@8.1.2
+       @capacitor/haptics@8.0.2
+       @capacitor/preferences@8.0.1
+       @capacitor/screen-orientation@8.0.2
+       @capacitor/share@8.0.3
+       @capacitor/status-bar@8.0.4
+✔ update ios in 8.39ms
+✔ copy web in 2.45ms
+✔ update web in 3.00ms
+[info] Sync finished in 0.122s

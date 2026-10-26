@@ -12,6 +12,8 @@ const config: CapacitorConfig = {
   // No `server.url`: the committed config always loads the bundled build.
   android: { webContentsDebuggingEnabled: false },
   ios: { contentInset: "never" },
+  backgroundColor: "#1c1816",
+  plugins: { StatusBar: { style: "DARK", backgroundColor: "#1c1816" } },
 };
 
 export default config;

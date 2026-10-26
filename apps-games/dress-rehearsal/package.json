@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
+    "art": "bun run scripts/build-art.ts",
     "cap:sync": "vite build && cap sync"
   },
   "dependencies": {
