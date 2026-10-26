@@ -1,0 +1,49 @@
+.tlw-coach {
+  position: sticky;
+  bottom: 8px;
+  z-index: 5;
+  border: 3px solid var(--wg-color-focus);
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.35);
+}
+
+.tlw-coach__title {
+  margin: 0 0 4px;
+  font-size: 1.25rem;
+}
+
+.tlw-coach__action {
+  margin: 8px 0 0;
+  font-weight: 800;
+}
+
+.tlw-coach-modal .wg-sheet__title,
+.tlw-card-sheet .wg-sheet__title {
+  font-size: 1.375rem;
+}
+
+.tlw-steam {
+  display: block;
+  width: 14px;
+  height: 22px;
+  margin: 0 auto -22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 70%, rgb(255 255 255 / 0.85), transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tlw-coinpop {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--tlw-lamp, #f1c565);
+  color: var(--tlw-ink, #231a12);
+  font-weight: 800;
+  font-size: 0.9375rem;
+}
+
+.tlw-seat--ghost {
+  position: relative;
+}

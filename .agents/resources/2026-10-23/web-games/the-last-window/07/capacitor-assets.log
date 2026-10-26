@@ -1,0 +1,91 @@
+[log] xml(load) at <repo>/apps-games/the-last-window/android/app/src/main/AndroidManifest.xml
+[log] xml(load) Found root namespaces in XML file: http://schemas.android.com/apk/res/android
+(node:4248) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Generating assets for ios, android
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-ldpi/ic_launcher.png (1.3 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-mdpi/ic_launcher.png (3 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-hdpi/ic_launcher.png (8.49 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png (16.63 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png (40.8 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png (75.52 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-ldpi/ic_launcher_round.png (3.38 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png (5.65 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png (11.86 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png (20.12 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png (43.57 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png (75.92 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-ldpi/ic_launcher_foreground.png (3.64 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.png (6.2 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png (13.36 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.png (22.92 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png (50.88 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png (88.79 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-ldpi/ic_launcher_background.png (145 B)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-mdpi/ic_launcher_background.png (175 B)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-hdpi/ic_launcher_background.png (272 B)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-xhdpi/ic_launcher_background.png (342 B)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_background.png (701 B)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_background.png (1.03 KB)
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/the-last-window/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android splash <repo>/apps-games/the-last-window/android/app/src/main/res/drawable/splash.png (112.69 KB)
+CREATE android splash <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-land-ldpi/splash.png (54.66 KB)
+CREATE android splash <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-land-mdpi/splash.png (114.14 KB)
+CREATE android splash <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-land-hdpi/splash.png (280.62 KB)
+CREATE android splash <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-land-xhdpi/splash.png (603.37 KB)
+CREATE android splash <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-land-xxhdpi/splash.png (901.02 KB)
+CREATE android splash <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-land-xxxhdpi/splash.png (1.19 MB)
+CREATE android splash <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-port-ldpi/splash.png (54.25 KB)
+CREATE android splash <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-port-mdpi/splash.png (112.69 KB)
+CREATE android splash <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-port-hdpi/splash.png (277.99 KB)
+CREATE android splash <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-port-xhdpi/splash.png (616.49 KB)
+CREATE android splash <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-port-xxhdpi/splash.png (891.64 KB)
+CREATE android splash <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-port-xxxhdpi/splash.png (1.17 MB)
+CREATE android splash-dark <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-night/splash.png (54.66 KB)
+CREATE android splash-dark <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-land-night-ldpi/splash.png (54.66 KB)
+CREATE android splash-dark <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-land-night-mdpi/splash.png (114.14 KB)
+CREATE android splash-dark <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-land-night-hdpi/splash.png (280.62 KB)
+CREATE android splash-dark <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-land-night-xhdpi/splash.png (603.37 KB)
+CREATE android splash-dark <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-land-night-xxhdpi/splash.png (901.02 KB)
+CREATE android splash-dark <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-land-night-xxxhdpi/splash.png (1.19 MB)
+CREATE android splash-dark <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-port-night-ldpi/splash.png (54.25 KB)
+CREATE android splash-dark <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-port-night-mdpi/splash.png (112.69 KB)
+CREATE android splash-dark <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-port-night-hdpi/splash.png (277.99 KB)
+CREATE android splash-dark <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-port-night-xhdpi/splash.png (616.49 KB)
+CREATE android splash-dark <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-port-night-xxhdpi/splash.png (891.64 KB)
+CREATE android splash-dark <repo>/apps-games/the-last-window/android/app/src/main/res/drawable-port-night-xxxhdpi/splash.png (1.17 MB)
+CREATE ios icon <repo>/apps-games/the-last-window/ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png (1.67 MB)
+CREATE ios splash <repo>/apps-games/the-last-window/ios/App/App/Assets.xcassets/Splash.imageset/Default@1x~universal~anyany.png (1.76 MB)
+CREATE ios splash <repo>/apps-games/the-last-window/ios/App/App/Assets.xcassets/Splash.imageset/Default@2x~universal~anyany.png (1.76 MB)
+CREATE ios splash <repo>/apps-games/the-last-window/ios/App/App/Assets.xcassets/Splash.imageset/Default@3x~universal~anyany.png (1.76 MB)
+CREATE ios splash-dark <repo>/apps-games/the-last-window/ios/App/App/Assets.xcassets/Splash.imageset/Default@1x~universal~anyany-dark.png (1.76 MB)
+CREATE ios splash-dark <repo>/apps-games/the-last-window/ios/App/App/Assets.xcassets/Splash.imageset/Default@2x~universal~anyany-dark.png (1.76 MB)
+CREATE ios splash-dark <repo>/apps-games/the-last-window/ios/App/App/Assets.xcassets/Splash.imageset/Default@3x~universal~anyany-dark.png (1.76 MB)
+
+
+Totals:
+android: 74 generated, 12.99 MB total
+ios: 7 generated, 12.24 MB total
