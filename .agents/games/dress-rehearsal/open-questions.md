@@ -17,6 +17,7 @@ notes" as they work.
 | Q10 | Colour-vision: is the high-contrast mode enough, or does the colour wheel need patterns on swatches beyond the planned hatching? | Swatch plus name everywhere and hatching in high contrast. | owner at QA |
 | Q11 | Hats are scarce (4 of 48 pieces) and the starting closet has one. Is that acceptable for 6-slot challenges that open the hat slot? | Yes: the tutorial challenges that use hats have one hat and tune the other slots; the Daily ladder only opens hats when a hat exists. | task 02 |
 | Q12 | Prices in dollars for a global audience | Dollar sign kept (in-fiction, not a currency). Could become plain numbers later. | owner |
+| Q13 | The splash is the code-drawn badge because `key-art` was never delivered. Should the owner commission a painted splash (or accept the badge)? | Badge on `night` ships; the painted icon master was not centred on the splash because its paper grain would show as a square on the flat ground and no visual check is allowed. | owner at QA |
 
 ## Kit follow-ups
 
@@ -126,7 +127,7 @@ The kit stays read-only for this epic. Known at planning time:
 
 - Three slots keep their code-drawn placeholder and need new designer work or an owner call:
   `key-art` (missing; the Home hero and Boot screen use the code-drawn hanger-and-board drawing, and
-  task 07 builds the splash from the accepted `icon` master instead of key-art), `item-rainy-city-5`
+  task 07 draws the splash badge in code instead of key-art (Q13)), `item-rainy-city-5`
   (Black Rubber Boots, missing; the glyph shows in the tray, board and Closet) and `item-studio-3`
   (White Drape Dress, rejected; the glyph shows). The designer loop ended its final round without an
   accepted file for any of them (`art/reviews/b2/round-4.md`, `art/reviews/retry/round-3.md`).
@@ -139,4 +140,16 @@ The kit stays read-only for this epic. Known at planning time:
   larger master would need the designer to regenerate, not an upscale.
 - Kit follow-ups: none. `Draw2D.drawImage` has no source-rect overload, so the backdrop cover-fit is
   done in the game with a clip and a scaled destination rect.
+
+## Task 07 notes
+
+- `cap add android`, `cap add ios`, `capacitor-assets generate` and `cap sync` all succeeded (logs in
+  `.agents/resources/2026-10-23/web-games/dress-rehearsal/07/`). iOS uses Swift Package Manager, so CocoaPods was
+  not needed; Xcode was not run. The Capacitor CLI prints a "Syncing Gradle" step, but it only writes
+  `android/local.properties` (`add.js` calls `createLocalProperties`); no Gradle, Java, JDK, Xcode or emulator
+  was used.
+- Q9 stays open: `INTERNET` is kept and pinned by `test/native.test.ts`. Q13 added: splash is the code-drawn badge.
+- The icon, adaptive mask, splash and launch screen were not seen on a device; the owner checks them (home
+  screen icon shape, splash on a dark status bar) during QA.
+- Kit follow-ups: none.
 

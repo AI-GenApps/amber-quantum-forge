@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Dress Rehearsal</string>
+    <string name="title_activity_main">Dress Rehearsal</string>
+    <string name="package_name">app.w3dev.dressrehearsal</string>
+    <string name="custom_url_scheme">app.w3dev.dressrehearsal</string>
+</resources>

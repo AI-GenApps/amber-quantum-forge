@@ -5,7 +5,7 @@ bundled or archived (tables below); 58 runtime WebP files are listed in `src/art
 `feature-graphic` masters are store assets, and `key-art`, `item-rainy-city-5` and `item-studio-3`
 keep their code-drawn fallback.
 This file is the plan for art slots and briefs (63 slots), fonts, the audio plan (24 sounds, 2
-music loops) and where everything lives. Task 06 filled the art provenance table; task 07 fills in the icon and splash section. Every art slot has a code-drawn fallback, so the game renders
+music loops) and where everything lives. Task 06 filled the art provenance table; task 07 filled in the icon and splash section. Every art slot has a code-drawn fallback, so the game renders
 completely with zero, some or all slots present.
 
 ## Where things live
@@ -280,7 +280,15 @@ Shipped numbers are recorded here by task 08.
 ## Capacitor icon and splash (task 07)
 
 Sources live in `apps-games/dress-rehearsal/assets/` and are written by `scripts/build-icons.ts`
-(deterministic); `@capacitor/assets` turns them into the Android and iOS resources. If the
-`icon` and `key-art` slots are accepted they are used; otherwise a code-drawn hanger-and-ribbon
-badge from the palette tokens on `night` `#1c1816` is used and the evidence README says which path
-was taken.
+(deterministic); `@capacitor/assets` turns them into the Android and iOS resources.
+
+| Source | Size | Made from |
+|---|---|---|
+| `icon-only.png` | 1024 x 1024, opaque | accepted `icon` master (`art/masters/icon.webp`) |
+| `icon-foreground.png` | 1024 x 1024, RGBA | the same accepted icon master (adaptive layer) |
+| `icon-background.png` | 1024 x 1024, opaque | flat `night` `#1c1816` |
+| `splash.png`, `splash-dark.png` | 2732 x 2732, opaque | code-drawn hanger-and-ribbon badge (`scripts/draw-fallback-icon.ts`, palette tokens) in the central 1200 px on `night` |
+
+`key-art` was never delivered, so it is not used for the splash; `item-rainy-city-5` and `item-studio-3`
+keep their code-drawn glyphs (see the provenance table). The evidence README is
+`.agents/resources/2026-10-23/web-games/dress-rehearsal/07/README.md`.

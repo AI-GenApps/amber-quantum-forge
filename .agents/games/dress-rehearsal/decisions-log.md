@@ -340,3 +340,16 @@ renderer cover-fits the 2:3 backdrop into the board rect, and `Sprite` takes its
 context when no prop is given. No number in the economy, content or UI changed.
 Rationale: automated checks stand in for visual QA (owner decision), and the placeholder rule keeps the
 game complete with any subset of art.
+
+### D33. Capacitor packaging (task 07)
+
+Android and iOS projects are generated with Capacitor 8 (`cap add`, `capacitor-assets generate`, `cap sync`) and
+committed as source files only; build outputs and synced web copies are gitignored. Icon path: `icon-only.png`
+and the adaptive foreground are the accepted `icon` master, the adaptive background and the launch colour are
+`night` `#1c1816`. The `key-art` slot was never delivered, so the splash (light and dark, identical) is the
+code-drawn hanger-and-ribbon badge from the palette tokens on `night`, inside the central 1200 px. Portrait only
+on both platforms (Android `screenOrientation`, both iOS orientation lists); status bar style light content on
+`night`; `capacitor.config.ts` gains `backgroundColor` and the StatusBar plugin defaults (`DARK`, `#1c1816`).
+`INTERNET` stays (Q9) and `allowBackup="true"` stays at the Capacitor default: the save is small, local and
+versioned, so a restore from backup is harmless and migrations handle older data. No number changed.
+

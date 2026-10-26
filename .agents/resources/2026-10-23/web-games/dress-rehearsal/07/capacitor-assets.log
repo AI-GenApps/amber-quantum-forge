@@ -1,0 +1,91 @@
+[log] xml(load) at <repo>/apps-games/dress-rehearsal/android/app/src/main/AndroidManifest.xml
+[log] xml(load) Found root namespaces in XML file: http://schemas.android.com/apk/res/android
+(node:90026) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Generating assets for ios, android
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-ldpi/ic_launcher.png (684 B)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-mdpi/ic_launcher.png (1.23 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-hdpi/ic_launcher.png (3.32 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png (5.65 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png (12.84 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png (21.7 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-ldpi/ic_launcher_round.png (1.62 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png (2.42 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png (4.71 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png (7.38 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png (14.53 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png (23.07 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-ldpi/ic_launcher_foreground.png (1.4 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.png (2.08 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png (4.43 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.png (6.7 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png (14.36 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png (21.03 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-ldpi/ic_launcher_background.png (144 B)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-mdpi/ic_launcher_background.png (174 B)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-hdpi/ic_launcher_background.png (271 B)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-xhdpi/ic_launcher_background.png (341 B)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_background.png (700 B)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_background.png (1.03 KB)
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+CREATE android icon <repo>/apps-games/dress-rehearsal/android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+CREATE android splash <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable/splash.png (19.34 KB)
+CREATE android splash <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-land-ldpi/splash.png (12.33 KB)
+CREATE android splash <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-land-mdpi/splash.png (19.6 KB)
+CREATE android splash <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-land-hdpi/splash.png (35.46 KB)
+CREATE android splash <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-land-xhdpi/splash.png (64.12 KB)
+CREATE android splash <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-land-xxhdpi/splash.png (91.67 KB)
+CREATE android splash <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-land-xxxhdpi/splash.png (123.63 KB)
+CREATE android splash <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-port-ldpi/splash.png (12.19 KB)
+CREATE android splash <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-port-mdpi/splash.png (19.34 KB)
+CREATE android splash <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-port-hdpi/splash.png (33.88 KB)
+CREATE android splash <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-port-xhdpi/splash.png (62.09 KB)
+CREATE android splash <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-port-xxhdpi/splash.png (88.7 KB)
+CREATE android splash <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-port-xxxhdpi/splash.png (119.65 KB)
+CREATE android splash-dark <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-night/splash.png (12.33 KB)
+CREATE android splash-dark <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-land-night-ldpi/splash.png (12.33 KB)
+CREATE android splash-dark <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-land-night-mdpi/splash.png (19.6 KB)
+CREATE android splash-dark <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-land-night-hdpi/splash.png (35.46 KB)
+CREATE android splash-dark <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-land-night-xhdpi/splash.png (64.12 KB)
+CREATE android splash-dark <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-land-night-xxhdpi/splash.png (91.67 KB)
+CREATE android splash-dark <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-land-night-xxxhdpi/splash.png (123.63 KB)
+CREATE android splash-dark <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-port-night-ldpi/splash.png (12.19 KB)
+CREATE android splash-dark <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-port-night-mdpi/splash.png (19.34 KB)
+CREATE android splash-dark <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-port-night-hdpi/splash.png (33.88 KB)
+CREATE android splash-dark <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-port-night-xhdpi/splash.png (62.09 KB)
+CREATE android splash-dark <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-port-night-xxhdpi/splash.png (88.7 KB)
+CREATE android splash-dark <repo>/apps-games/dress-rehearsal/android/app/src/main/res/drawable-port-night-xxxhdpi/splash.png (119.65 KB)
+CREATE ios icon <repo>/apps-games/dress-rehearsal/ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png (231.45 KB)
+CREATE ios splash <repo>/apps-games/dress-rehearsal/ios/App/App/Assets.xcassets/Splash.imageset/Default@1x~universal~anyany.png (164.38 KB)
+CREATE ios splash <repo>/apps-games/dress-rehearsal/ios/App/App/Assets.xcassets/Splash.imageset/Default@2x~universal~anyany.png (164.38 KB)
+CREATE ios splash <repo>/apps-games/dress-rehearsal/ios/App/App/Assets.xcassets/Splash.imageset/Default@3x~universal~anyany.png (164.38 KB)
+CREATE ios splash-dark <repo>/apps-games/dress-rehearsal/ios/App/App/Assets.xcassets/Splash.imageset/Default@1x~universal~anyany-dark.png (164.38 KB)
+CREATE ios splash-dark <repo>/apps-games/dress-rehearsal/ios/App/App/Assets.xcassets/Splash.imageset/Default@2x~universal~anyany-dark.png (164.38 KB)
+CREATE ios splash-dark <repo>/apps-games/dress-rehearsal/ios/App/App/Assets.xcassets/Splash.imageset/Default@3x~universal~anyany-dark.png (164.38 KB)
+
+
+Totals:
+android: 74 generated, 1.51 MB total
+ios: 7 generated, 1.19 MB total
