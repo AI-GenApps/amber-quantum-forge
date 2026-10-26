@@ -150,6 +150,25 @@ describe("export draw calls", () => {
     expect(tints).toHaveLength(0);
   });
 
+  it("cover-fits the 2:3 backdrop inside the board rect without stretching it", () => {
+    for (const frame of FRAME_IDS) {
+      const backdrop = { id: "backdrop-image" };
+      const ctx = record(frame, { images: { "backdrop-riviera": backdrop } });
+      const call = ctx.calls("drawImage").find((args) => args[0] === backdrop);
+      expect(call, frame).toBeDefined();
+      const [, x, y, w, h] = call as [unknown, number, number, number, number];
+      expect(w / h, frame).toBeCloseTo(2 / 3, 5);
+      const { board } = frameLayout(frame, EXPORT_SIZE);
+      expect(w, frame).toBeGreaterThanOrEqual(board.w - 1e-6);
+      expect(h, frame).toBeGreaterThanOrEqual(board.h - 1e-6);
+      expect(x + w / 2, frame).toBeCloseTo(board.x + board.w / 2, 5);
+      expect(y + h / 2, frame).toBeCloseTo(board.y + board.h / 2, 5);
+      const names = ctx.ops.map((op) => op.op);
+      expect(names.indexOf("clip"), frame).toBeGreaterThan(-1);
+      expect(names.indexOf("clip"), frame).toBeLessThan(names.indexOf("drawImage"));
+    }
+  });
+
   it("draws dashed outlines for empty slots and shrinks long names to fit", () => {
     const ctx = record("plain", { look: { hat: "item-riviera-7" } });
     const dashes = ctx.calls("setLineDash").map((args) => JSON.stringify(args[0]));

@@ -119,13 +119,18 @@ describe("source hygiene", () => {
     expect(strings.keys().length).toBeGreaterThan(150);
   });
 
-  it("keeps public assets other than fonts and audio out of the tree in this task", () => {
+  it("keeps public assets to fonts, audio and designer art", () => {
     const publicDir = join(APP, "public");
     const names = (readdirSync(publicDir, { recursive: true }) as string[]).filter((name) =>
       statSync(join(publicDir, name)).isFile(),
     );
-    expect(names.every((name) => name.startsWith("fonts/") || name.startsWith("audio/"))).toBe(
-      true,
-    );
+    expect(
+      names.every(
+        (name) =>
+          name.startsWith("fonts/") ||
+          name.startsWith("audio/") ||
+          /^art\/[a-z0-9-]+\.webp$/.test(name),
+      ),
+    ).toBe(true);
   });
 });

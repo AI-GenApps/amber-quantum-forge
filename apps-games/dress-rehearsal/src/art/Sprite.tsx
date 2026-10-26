@@ -1,4 +1,6 @@
 import { PIECE_BY_ID } from "@web-games/dress-rehearsal-core";
+import { useContext } from "preact/hooks";
+import { AppContext } from "../state/app";
 import { Fallback, RATIO } from "./fallbacks";
 import { ART_MANIFEST, hasArt } from "./manifest";
 import { type SlotId, slotDef, slotUrl } from "./slots";
@@ -24,17 +26,22 @@ export function defaultLabel(slot: SlotId): string {
   return "Dress Rehearsal feature graphic";
 }
 
-/** Renders designer art when the manifest lists the slot, otherwise the code-drawn fallback. */
+/**
+ * Renders designer art when the manifest lists the slot, otherwise the code-drawn fallback. The
+ * manifest is the prop, else the app context list, else the shipped manifest.
+ */
 export function Sprite({
   slot,
   size = 48,
   label,
   decorative = false,
-  manifest = ART_MANIFEST,
+  manifest,
   class: className,
 }: SpriteProps) {
   const name = label ?? defaultLabel(slot);
-  if (hasArt(slot, manifest)) {
+  const app = useContext(AppContext);
+  const listed = manifest ?? app?.artManifest ?? ART_MANIFEST;
+  if (hasArt(slot, listed)) {
     return (
       <img
         class={className}

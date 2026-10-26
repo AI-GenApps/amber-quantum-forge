@@ -1,6 +1,7 @@
 import {
   CHAPTERS,
   CLIENT_BY_ID,
+  CLIENT_IDS,
   type ProgressEvent,
   resultHeadline,
   type ScoreResult,
@@ -8,6 +9,8 @@ import {
 } from "@web-games/dress-rehearsal-core";
 import { Button, StarRating } from "@web-games/kit";
 import { useEffect, useRef } from "preact/hooks";
+import { Sprite } from "../art/Sprite";
+import { clientSlot } from "../art/slots";
 import { HarmonyMeter } from "../board/HarmonyMeter";
 import { RuleChips } from "../board/RuleChips";
 import { useMotion } from "../motion/useMotion";
@@ -101,10 +104,18 @@ export function Result(props: ResultProps) {
             {stars === 0 ? t("resultNotFinished") : STAR_NAMES[stars - 1]}
           </span>
         </div>
-        <p class="dr-quote" data-testid="result-reaction">
-          <span class="dr-quote__who">{session.client.name}</span>
-          {reactionFor(session, stars)}
-        </p>
+        <div class="dr-result__client">
+          <Sprite
+            slot={clientSlot(Math.max(0, CLIENT_IDS.indexOf(session.client.id)))}
+            size={60}
+            label={session.client.name}
+            decorative
+          />
+          <p class="dr-quote" data-testid="result-reaction">
+            <span class="dr-quote__who">{session.client.name}</span>
+            {reactionFor(session, stars)}
+          </p>
+        </div>
         <h3 class="dr-sheet__heading">
           {t("resultRules", { met: score.metCount, total: score.rules.length })}
         </h3>

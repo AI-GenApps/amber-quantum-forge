@@ -9,6 +9,25 @@ import { bodyFont, displayFont, fitSize } from "./text";
 import { EXPORT_SIZE, type ExportInput, type Rect, type Size } from "./types";
 
 const GRAIN_LINES = 46;
+/** Backdrop art is 2:3 portrait; it is cover-fitted so the central band of the image shows. */
+const BACKDROP_ASPECT = 2 / 3;
+
+function drawCover(draw: Draw2D, image: unknown, rect: Rect): void {
+  const width = Math.max(rect.w, rect.h * BACKDROP_ASPECT);
+  const height = width / BACKDROP_ASPECT;
+  draw.save();
+  draw.beginPath();
+  draw.rect(rect.x, rect.y, rect.w, rect.h);
+  draw.clip();
+  draw.drawImage(
+    image,
+    rect.x + (rect.w - width) / 2,
+    rect.y + (rect.h - height) / 2,
+    width,
+    height,
+  );
+  draw.restore();
+}
 
 function grainSeed(input: ExportInput): number {
   let hash = 17;
@@ -23,7 +42,7 @@ export function drawSurface(draw: Draw2D, rect: Rect, input: ExportInput): void 
   draw.fillRect(rect.x, rect.y, rect.w, rect.h);
   const backdrop = input.images?.[input.backdropSlot];
   if (backdrop !== undefined) {
-    draw.drawImage(backdrop, rect.x, rect.y, rect.w, rect.h);
+    drawCover(draw, backdrop, rect);
   } else {
     draw.globalAlpha = 0.12;
     draw.fillStyle = input.accent;

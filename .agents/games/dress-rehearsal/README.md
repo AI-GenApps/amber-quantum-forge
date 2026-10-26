@@ -2,7 +2,7 @@
 
 Fashion puzzles: assemble a look on a styled flat-lay board that satisfies a client's creative brief, then share it.
 
-- Status: in build (epic 23 tasks 00 to 03 done; task 04 adds all screens, design tokens, fonts and accessibility). Tasks 05 to 08 add audio, art, packaging and release readiness.
+- Status: in build (epic 23 tasks 00 to 03 done; task 04 adds all screens, design tokens, fonts and accessibility). Tasks 05 and 06 (audio and art) are done: 60 of 63 art slots are integrated; tasks 07 and 08 add packaging and release readiness.
 - Epic: [`tasks/epics/23-web-dress-rehearsal`](../../../tasks/epics/23-web-dress-rehearsal/STATUS.md)
 - Code: `apps-games/dress-rehearsal` (`@web-games/dress-rehearsal`) and
   `apps-games/dress-rehearsal-core` (`@web-games/dress-rehearsal-core`).

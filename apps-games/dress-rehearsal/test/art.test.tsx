@@ -16,8 +16,11 @@ import {
   slotUrl,
 } from "../src/art/slots";
 import { Glyph } from "../src/glyphs/Glyph";
+import { AppContext } from "../src/state/app";
 import { COLOUR_HEX } from "../src/theme/garment";
 import { PALETTE } from "../src/theme/tokens";
+import { buttonByText, click, mountApp, q, type Rig } from "./helpers";
+import { RIV01_LOOK, settle, startBoard, tapPlace } from "./play";
 
 afterEach(() => {
   document.body.replaceChildren();
@@ -73,16 +76,15 @@ describe("art slots", () => {
 });
 
 describe("empty manifest", () => {
-  it("is empty in this task, so no art URL is preloaded", () => {
-    expect(ART_ENTRIES).toHaveLength(0);
-    expect(ART_MANIFEST).toEqual([]);
-    expect(artUrls()).toEqual([]);
-    expect(hasArt("icon")).toBe(false);
+  it("lists no art URL to preload and finds no slot", () => {
+    expect(artUrls([])).toEqual([]);
+    expect(hasArt("icon", [])).toBe(false);
+    expect(hasArt("client-1", [])).toBe(false);
   });
 
   it("renders a code-drawn fallback for every one of the 63 slots", async () => {
     for (const slot of SLOT_IDS) {
-      const container = await draw(<Sprite slot={slot} size={64} />);
+      const container = await draw(<Sprite slot={slot} size={64} manifest={[]} />);
       const art = container.firstElementChild as HTMLElement;
       expect(art, slot).not.toBeNull();
       expect(art.dataset.art, slot).toBe("fallback");
@@ -98,7 +100,7 @@ describe("empty manifest", () => {
 
   it("draws each piece as its category garment in the piece colour", async () => {
     for (const piece of PIECES) {
-      const container = await draw(<Sprite slot={piece.id as SlotId} />);
+      const container = await draw(<Sprite slot={piece.id as SlotId} manifest={[]} />);
       const svg = container.querySelector("svg.dr-glyph") as SVGElement;
       expect(svg.dataset.category, piece.id).toBe(piece.category);
       expect(svg.dataset.colour, piece.id).toBe(piece.colour);
@@ -117,7 +119,7 @@ describe("empty manifest", () => {
   });
 
   it("draws the client badge with the initial in the chapter accent", async () => {
-    const container = await draw(<Sprite slot="client-3" size={60} />);
+    const container = await draw(<Sprite slot="client-3" size={60} manifest={[]} />);
     const badge = container.querySelector(".dr-badge") as HTMLElement;
     expect(badge.textContent).toBe("O");
     expect(badge.style.getPropertyValue("--dr-accent")).toBe("#a1281f");
@@ -126,12 +128,12 @@ describe("empty manifest", () => {
   });
 
   it("hides decorative art from assistive technology", async () => {
-    const piece = await draw(<Sprite slot="item-riviera-1" decorative />);
+    const piece = await draw(<Sprite slot="item-riviera-1" decorative manifest={[]} />);
     expect(piece.querySelector("svg")?.getAttribute("aria-hidden")).toBe("true");
     expect(piece.querySelector("svg")?.hasAttribute("aria-label")).toBe(false);
-    const client = await draw(<Sprite slot="client-1" decorative />);
+    const client = await draw(<Sprite slot="client-1" decorative manifest={[]} />);
     expect(client.querySelector(".dr-badge")?.getAttribute("aria-hidden")).toBe("true");
-    const backdrop = await draw(<Sprite slot="backdrop-gala" decorative />);
+    const backdrop = await draw(<Sprite slot="backdrop-gala" decorative manifest={[]} />);
     expect(backdrop.querySelector("svg")?.getAttribute("aria-hidden")).toBe("true");
   });
 });
@@ -161,6 +163,140 @@ describe("with art listed", () => {
     );
     expect(artUrls(["icon", "feature-graphic"])).toEqual([]);
     expect(hasArt("client-2", manifest)).toBe(true);
+  });
+});
+
+const NOT_SHIPPED: readonly SlotId[] = [
+  "icon",
+  "key-art",
+  "item-rainy-city-5",
+  "item-studio-3",
+  "feature-graphic",
+];
+
+describe("shipped manifest", () => {
+  it("lists every bundle slot except the rejected and missing ones", () => {
+    const expected = SLOTS.filter((slot) => slot.inBundle && !NOT_SHIPPED.includes(slot.id)).map(
+      (slot) => slot.id,
+    );
+    expect(ART_ENTRIES).toHaveLength(58);
+    expect(ART_MANIFEST).toEqual(expected);
+    expect(new Set(ART_MANIFEST).size).toBe(ART_MANIFEST.length);
+    for (const entry of ART_ENTRIES) {
+      expect(entry.file).toBe(slotUrl(entry.slot));
+      expect({ width: entry.width, height: entry.height }).toEqual(runtimeSize(entry.slot));
+    }
+    expect(artUrls()).toEqual(ART_ENTRIES.map((entry) => entry.file));
+  });
+
+  it("renders an image for every listed slot and a fallback for the other five", async () => {
+    for (const slot of SLOT_IDS) {
+      const container = await draw(<Sprite slot={slot} size={60} />);
+      const art = container.firstElementChild as HTMLElement;
+      const shipped = ART_MANIFEST.includes(slot);
+      expect(art.dataset.art, slot).toBe(shipped ? "image" : "fallback");
+      expect(art.dataset.artSlot, slot).toBe(slot);
+      if (shipped) {
+        expect(art.getAttribute("src"), slot).toBe(slotUrl(slot));
+        const size = runtimeSize(slot);
+        const ratio = (size?.height ?? 0) / (size?.width ?? 1);
+        expect(Number(art.getAttribute("height")), slot).toBe(Math.round(60 * ratio));
+      }
+      container.remove();
+    }
+  });
+
+  it("follows the app context list when no manifest prop is given", async () => {
+    const app = (artManifest: readonly SlotId[]) =>
+      ({ artManifest }) as unknown as NonNullable<
+        Parameters<typeof AppContext.Provider>[0]["value"]
+      >;
+    const empty = await draw(
+      <AppContext.Provider value={app([])}>
+        <Sprite slot="item-riviera-1" />
+      </AppContext.Provider>,
+    );
+    expect(empty.querySelector("img")).toBeNull();
+    const some = await draw(
+      <AppContext.Provider value={app(["item-riviera-1"])}>
+        <Sprite slot="item-riviera-1" />
+      </AppContext.Provider>,
+    );
+    expect(some.querySelector("img")?.getAttribute("src")).toBe("/art/item-riviera-1.webp");
+  });
+});
+
+describe("screens with zero, some and all art", () => {
+  let rig: Rig | null = null;
+
+  afterEach(() => {
+    rig?.unmount();
+    rig = null;
+  });
+
+  const lists: [string, readonly SlotId[]][] = [
+    ["empty", []],
+    ["partial", ["client-1", "client-2", "backdrop-riviera", "item-riviera-1", "item-riviera-2"]],
+    ["full", ART_MANIFEST],
+  ];
+
+  for (const [name, manifest] of lists) {
+    it(`renders closet, clients, chapters and the styling board with a ${name} manifest`, async () => {
+      for (const route of [["closet"], ["clients"], ["chapters"]] as const) {
+        rig = await mountApp({ route: [...route], artManifest: manifest });
+        const listed = Array.from(rig.container.querySelectorAll<HTMLElement>("[data-art-slot]"));
+        expect(listed.length, `${name} ${route[0]}`).toBeGreaterThan(0);
+        for (const el of listed) {
+          const slot = el.dataset.artSlot as SlotId;
+          expect(el.dataset.art, `${name} ${slot}`).toBe(
+            manifest.includes(slot) ? "image" : "fallback",
+          );
+        }
+        rig.unmount();
+      }
+      rig = await mountApp({
+        route: ["styling", { challengeId: "riv-01" }],
+        artManifest: manifest,
+      });
+      await startBoard();
+      const board = q(rig.container, ".dr-board__backdrop");
+      const backdrop = board.querySelector<HTMLElement>("[data-art-slot]");
+      expect(backdrop?.dataset.artSlot).toBe("backdrop-riviera");
+      expect(backdrop?.dataset.art).toBe(
+        manifest.includes("backdrop-riviera") ? "image" : "fallback",
+      );
+      const pieces = Array.from(
+        rig.container.querySelectorAll<HTMLElement>("[data-art-slot^='item-']"),
+      );
+      expect(pieces.length).toBeGreaterThan(0);
+      for (const el of pieces) {
+        expect(el.dataset.art).toBe(
+          manifest.includes(el.dataset.artSlot as SlotId) ? "image" : "fallback",
+        );
+      }
+      for (const id of RIV01_LOOK) await tapPlace(rig, id);
+      await click(buttonByText(rig.container, "Finish look"));
+      await settle(rig);
+      expect(q(document.body, "[data-testid='result']")).toBeTruthy();
+    });
+  }
+
+  it("shows the client portrait on the brief and result sheets", async () => {
+    rig = await mountApp({
+      route: ["styling", { challengeId: "riv-01" }],
+      artManifest: ART_MANIFEST,
+    });
+    const brief = q(document.body, "[data-testid='brief']");
+    expect(brief.querySelector("img[data-art-slot='client-1']")?.getAttribute("src")).toBe(
+      "/art/client-1.webp",
+    );
+    await startBoard();
+    for (const id of RIV01_LOOK) await tapPlace(rig, id);
+    await click(buttonByText(rig.container, "Finish look"));
+    await settle(rig);
+    const result = q(document.body, "[data-testid='result']");
+    expect(result.querySelector("img[data-art-slot='client-1']")).not.toBeNull();
+    expect(result.querySelector("img[aria-hidden='true']")).not.toBeNull();
   });
 });
 

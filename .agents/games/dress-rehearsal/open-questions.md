@@ -121,3 +121,22 @@ The kit stays read-only for this epic. Known at planning time:
   is silent until then.
 - Haptics fire only through the Capacitor driver; on the web the kit no-op driver is used, so the
   haptic map is exercised in tests with a fake driver only.
+
+## Task 06 notes
+
+- Three slots keep their code-drawn placeholder and need new designer work or an owner call:
+  `key-art` (missing; the Home hero and Boot screen use the code-drawn hanger-and-board drawing, and
+  task 07 builds the splash from the accepted `icon` master instead of key-art), `item-rainy-city-5`
+  (Black Rubber Boots, missing; the glyph shows in the tray, board and Closet) and `item-studio-3`
+  (White Drape Dress, rejected; the glyph shows). The designer loop ended its final round without an
+  accepted file for any of them (`art/reviews/b2/round-4.md`, `art/reviews/retry/round-3.md`).
+- Visual quality was not judged here (no browser). The owner checks in browser QA: portrait
+  crop and name-plate contrast on the Clients screen, Brief and Result sheets; backdrop crop behind the
+  board at 360 x 640, 390 x 844 and 430 x 932 and in the four export frames; piece sizes in the tray
+  at 56 px and on the board at 64 and 88 px; placeholders and art side by side (the Rainy City shoes
+  and the Studio dress still show code-drawn glyphs next to painted pieces).
+- The masters are the delivered generation size, so the store feature graphic is 1536 x 1024; a
+  larger master would need the designer to regenerate, not an upscale.
+- Kit follow-ups: none. `Draw2D.drawImage` has no source-rect overload, so the backdrop cover-fit is
+  done in the game with a clip and a scaled destination rect.
+

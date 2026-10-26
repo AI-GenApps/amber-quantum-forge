@@ -9,6 +9,7 @@ import {
   TOTAL_STARS,
 } from "@web-games/dress-rehearsal-core";
 import { afterEach, describe, expect, it } from "vitest";
+import { ART_ENTRIES, artUrls } from "../src/art/manifest";
 import { createPreload } from "../src/boot/preload";
 import { FONT_FACES } from "../src/fonts";
 import {
@@ -67,10 +68,12 @@ describe("boot", () => {
     expect(currentScreen(rig)).toBe("home");
   });
 
-  it("registers both bundled families and loads nothing when no art is listed", async () => {
+  it("registers both bundled families and preloads every listed art file", async () => {
     const urls: string[] = [];
     await createPreload({ loader: async (url) => void urls.push(url) })(() => undefined);
-    expect(urls).toEqual([]);
+    expect(urls).toEqual(artUrls());
+    expect(urls).toHaveLength(ART_ENTRIES.length);
+    expect(urls.every((url) => /^\/art\/[a-z0-9-]+\.webp$/.test(url))).toBe(true);
     expect(document.getElementById("wg-fonts")?.textContent).toContain('"Playfair Display"');
     expect(document.getElementById("wg-fonts")?.textContent).toContain('"DM Sans"');
     expect(FONT_FACES).toHaveLength(3);
@@ -362,7 +365,7 @@ describe("gallery", () => {
     expect(all(rig.container, "[data-empty='true']")).toHaveLength(22);
     const first = q(rig.container, ".dr-gallery__entry");
     expect(text(first)).toContain('Riviera Summer "Harbour Lunch": 3/3 stars, harmony 80');
-    expect(all(first, ".dr-thumb__cell svg")).toHaveLength(6);
+    expect(all(first, ".dr-thumb__cell svg, .dr-thumb__cell img")).toHaveLength(6);
     expect(all(first, ".wg-star--on")).toHaveLength(3);
   });
 
@@ -492,7 +495,7 @@ describe("how to play and credits", () => {
     expect(text(q(rig.container, "h2.dr-panel__title"))).toBe("Stars and scoring");
   });
 
-  it("lists both fonts with their licence and lists the sound credits and says no designer art ships yet", async () => {
+  it("lists both fonts with their licence and lists the sound credits and the designer art credit", async () => {
     rig = await mountApp({ route: ["credits"] });
     const page = text(rig.container);
     expect(page).toContain("Playfair Display");
@@ -501,7 +504,10 @@ describe("how to play and credits", () => {
     expect(page).toContain("ui-tap.ogg");
     expect(page).toContain("music-style.ogg");
     expect(page).toContain("CC0");
-    expect(page).toContain("All art in this build is drawn in code.");
+    expect(page).toContain("Dress Rehearsal illustrations");
+    expect(page).toContain("MobileGamesDesigner thread");
+    expect(page).toContain("Owned by the project");
+    expect(page).not.toContain("All art in this build is drawn in code.");
     expect(CHAPTERS).toHaveLength(6);
   });
 });

@@ -218,6 +218,8 @@ ul {
 .dr-brief__client { display: flex; align-items: center; gap: 12px; }
 .dr-brief__name { font-family: var(--wg-font-display); font-weight: 700; font-size: 20px; }
 .dr-brief__rules { display: flex; flex-direction: column; gap: 6px; list-style: none; }
+.dr-result__client { display: flex; align-items: flex-start; gap: 12px; }
+.dr-result__client > img, .dr-result__client > .dr-badge { flex: none; }
 .dr-result__stars { display: flex; align-items: center; gap: 12px; }
 .dr-result__star-name { font-family: var(--wg-font-display); font-weight: 700; font-size: 20px; }
 .dr-result__coins { font-weight: 700; }

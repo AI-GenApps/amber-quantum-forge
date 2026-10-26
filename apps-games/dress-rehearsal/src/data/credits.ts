@@ -180,5 +180,12 @@ export const AUDIO_CREDITS: readonly CreditEntry[] = [
   },
 ];
 
-/** Extended by the art task with one entry per accepted designer image. */
-export const ART_CREDITS: readonly CreditEntry[] = [];
+/** Designer art shipped in `public/art/`; slots without a file are drawn in code. */
+export const ART_CREDITS: readonly CreditEntry[] = [
+  {
+    name: "Dress Rehearsal illustrations",
+    role: "Client portraits, closet pieces and board backdrops by the MobileGamesDesigner thread",
+    licence: "Owned by the project",
+    source: "Made for this game, not reused from elsewhere",
+  },
+];

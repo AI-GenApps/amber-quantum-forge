@@ -324,3 +324,19 @@ Onboarding: the nine rule cards show once on their challenge before the Brief sh
 skippable, saved as flag `tutorial`. How to play opens the six pages and sets flag `howTo`; every
 number in its text is read from core constants.
 
+### D32. Art integration (task 06)
+
+Only the orchestrator's `accepted/` set is used: 60 of 63 slots (58 runtime WebP files plus the
+`icon` and `feature-graphic` masters). `key-art` and `item-rainy-city-5` were never delivered (missing) and
+`item-studio-3` was rejected; all three keep their code-drawn placeholder. Pieces ship at 256 x 256 and
+backdrops at 800 x 1200 (WebP q82); masters are WebP q90 at the delivered generation size
+(1024 x 1024, 1024 x 1536, 1536 x 1024), not the 1600 x 2400 and 1536 x 2048 of the earlier table, because
+those sizes would only be an upscale of the same pixels. The delivered client canvas is 2:3, so the client
+runtime is the designer's 3:4 content frame (x 2 to 1022, y 85 to 1445) resized to 360 x 480, not a
+distorted resize. The "within 12 points of the scale rules" check is read as the bible reads the
+scale: a maximum that the garment touches on one axis, so neither axis may exceed the scale by more than
+12 points and at least one axis must be within 12 points of it. The Result sheet shows the client portrait, the export
+renderer cover-fits the 2:3 backdrop into the board rect, and `Sprite` takes its manifest from the app
+context when no prop is given. No number in the economy, content or UI changed.
+Rationale: automated checks stand in for visual QA (owner decision), and the placeholder rule keeps the
+game complete with any subset of art.
