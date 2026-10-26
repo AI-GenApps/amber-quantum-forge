@@ -1,0 +1,9 @@
+## sequential run, boons bought by ascending cost between cycles
+cycle 1: boons at start []; first chart 90 s (1.5 min, 0.03 h); 5 shards 10293 s (171.6 min, 2.86 h); longest gap 30 s; charted at Eclipse 11; purchases 737; shards gained 5; boons bought after [dark-adapted, brass-polish]
+cycle 2: boons at start [dark-adapted, brass-polish]; first chart never; 5 shards 8605 s (143.4 min, 2.39 h); longest gap 30 s; charted at Eclipse 11; purchases 726; shards gained 5; boons bought after [clear-glass, night-watch]
+cycle 3: boons at start [dark-adapted, brass-polish, clear-glass, night-watch]; first chart never; 5 shards 8313 s (138.6 min, 2.31 h); longest gap 30 s; charted at Eclipse 11; purchases 730; shards gained 5; boons bought after [apprentice]
+## pinned scenarios (11 constellations charted, as after a first cycle)
+2 boons [dark-adapted, brass-polish]: 5 shards 8480 s (141.3 min, 2.36 h); ratio to cycle 1 0.824; longest gap 30 s; charted at Eclipse 11
+4 boons [dark-adapted, brass-polish, clear-glass, apprentice]: 5 shards 8309 s (138.5 min, 2.31 h); ratio to cycle 1 0.807; longest gap 30 s; charted at Eclipse 11
+6 boons [dark-adapted, brass-polish, clear-glass, apprentice, atlas-ink, corona]: 5 shards 4312 s (71.9 min, 1.20 h); ratio to cycle 1 0.419; longest gap 20 s; charted at Eclipse 12
+cycle2/cycle1 0.836 cycle3/cycle1 0.808

@@ -1,0 +1,8 @@
+cycle1 171.83333333333334 min life 2.50e+10 firstChart 90 maxGap 30 charted 11
+shards 8 220 min
+shards 10 255 min
+shards 15 318 min
+c2 early boons 137 min maxGap 30 null
+c3 133 min
+c4 5sh 68 min
+c4 15sh 146 min

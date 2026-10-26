@@ -1,0 +1,273 @@
+{
+  "scale": 2,
+  "masterQuality": 90,
+  "bundledQuality": 82,
+  "bundledAlphaQuality": 90,
+  "slots": [
+    {
+      "id": "icon",
+      "batch": "B1",
+      "transparent": false,
+      "bundled": false,
+      "display": null,
+      "master": [1024, 1024]
+    },
+    {
+      "id": "key-art",
+      "batch": "B1",
+      "transparent": false,
+      "bundled": true,
+      "display": [360, 540],
+      "master": [1024, 1536]
+    },
+    {
+      "id": "observatory-building",
+      "batch": "B1",
+      "transparent": true,
+      "bundled": true,
+      "display": [320, 320],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "emblem-lyre",
+      "batch": "B1",
+      "transparent": true,
+      "bundled": true,
+      "display": [144, 144],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "sky-far",
+      "batch": "B2",
+      "transparent": false,
+      "bundled": true,
+      "display": [390, 585],
+      "master": [1024, 1536]
+    },
+    {
+      "id": "nebula-mid",
+      "batch": "B2",
+      "transparent": true,
+      "bundled": true,
+      "display": [390, 585],
+      "master": [1024, 1536]
+    },
+    {
+      "id": "horizon-hills",
+      "batch": "B2",
+      "transparent": true,
+      "transparentCorners": "top",
+      "bundled": true,
+      "display": [390, 585],
+      "master": [1024, 1536]
+    },
+    {
+      "id": "emblem-whale",
+      "batch": "B2",
+      "transparent": true,
+      "bundled": true,
+      "display": [144, 144],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "emblem-archer",
+      "batch": "B2",
+      "transparent": true,
+      "bundled": true,
+      "display": [144, 144],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "emblem-crown",
+      "batch": "B2",
+      "transparent": true,
+      "bundled": true,
+      "display": [144, 144],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "emblem-serpent",
+      "batch": "B2",
+      "transparent": true,
+      "bundled": true,
+      "display": [144, 144],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "emblem-lantern",
+      "batch": "B2",
+      "transparent": true,
+      "bundled": true,
+      "display": [144, 144],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "emblem-ship",
+      "batch": "B2",
+      "transparent": true,
+      "bundled": true,
+      "display": [144, 144],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "emblem-fox",
+      "batch": "B2",
+      "transparent": true,
+      "bundled": true,
+      "display": [144, 144],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "emblem-key",
+      "batch": "B2",
+      "transparent": true,
+      "bundled": true,
+      "display": [144, 144],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "emblem-harp",
+      "batch": "B2",
+      "transparent": true,
+      "bundled": true,
+      "display": [144, 144],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "emblem-tower",
+      "batch": "B2",
+      "transparent": true,
+      "bundled": true,
+      "display": [144, 144],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "emblem-owl",
+      "batch": "B2",
+      "transparent": true,
+      "bundled": true,
+      "display": [144, 144],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "instrument-telescope",
+      "batch": "B3",
+      "transparent": true,
+      "bundled": true,
+      "display": [112, 112],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "instrument-lens",
+      "batch": "B3",
+      "transparent": true,
+      "bundled": true,
+      "display": [112, 112],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "instrument-prism",
+      "batch": "B3",
+      "transparent": true,
+      "bundled": true,
+      "display": [112, 112],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "instrument-orrery",
+      "batch": "B3",
+      "transparent": true,
+      "bundled": true,
+      "display": [112, 112],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "instrument-star-map",
+      "batch": "B3",
+      "transparent": true,
+      "bundled": true,
+      "display": [112, 112],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "instrument-beacon",
+      "batch": "B3",
+      "transparent": true,
+      "bundled": true,
+      "display": [112, 112],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "instrument-archive",
+      "batch": "B3",
+      "transparent": true,
+      "bundled": true,
+      "display": [112, 112],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "instrument-aurora-coil",
+      "batch": "B3",
+      "transparent": true,
+      "bundled": true,
+      "display": [112, 112],
+      "master": [1024, 1024]
+    },
+    {
+      "id": "lore-1",
+      "batch": "B3",
+      "transparent": false,
+      "bundled": true,
+      "display": [300, 450],
+      "master": [1024, 1536]
+    },
+    {
+      "id": "lore-2",
+      "batch": "B3",
+      "transparent": false,
+      "bundled": true,
+      "display": [300, 450],
+      "master": [1024, 1536]
+    },
+    {
+      "id": "lore-3",
+      "batch": "B3",
+      "transparent": false,
+      "bundled": true,
+      "display": [300, 450],
+      "master": [1024, 1536]
+    },
+    {
+      "id": "lore-4",
+      "batch": "B3",
+      "transparent": false,
+      "bundled": true,
+      "display": [300, 450],
+      "master": [1024, 1536]
+    },
+    {
+      "id": "lore-5",
+      "batch": "B3",
+      "transparent": false,
+      "bundled": true,
+      "display": [300, 450],
+      "master": [1024, 1536]
+    },
+    {
+      "id": "lore-6",
+      "batch": "B3",
+      "transparent": false,
+      "bundled": true,
+      "display": [300, 450],
+      "master": [1024, 1536]
+    },
+    {
+      "id": "feature-graphic",
+      "batch": "B3",
+      "transparent": false,
+      "bundled": false,
+      "display": null,
+      "master": [1536, 1024]
+    }
+  ]
+}
