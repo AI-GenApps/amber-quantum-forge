@@ -1,0 +1,9 @@
+{
+  "branch": "main",
+  "epicDir": "tasks/epics/15-ludo-launch",
+  "deviceWaitRounds": 3,
+  "tasks": [
+    { "id": "26g", "file": "26g-inventory-and-store-ui.md" },
+    { "id": "26h", "file": "26h-rewarded-ads-and-daily-rewards.md" }
+  ]
+}

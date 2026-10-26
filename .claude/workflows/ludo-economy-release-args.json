@@ -1,0 +1,11 @@
+{
+  "branch": "main",
+  "epicDir": "tasks/epics/15-ludo-launch",
+  "tasks": [
+    { "id": "26g", "file": "26g-inventory-and-store-ui.md", "deviceFlow": true },
+    { "id": "26h", "file": "26h-rewarded-ads-and-daily-rewards.md", "deviceFlow": true },
+    { "id": "26i", "file": "26i-economy-compliance-and-provisioning-docs.md" },
+    { "id": "27", "file": "27-release-hardening.md" },
+    { "id": "28", "file": "28-docs-and-release-checklist.md" }
+  ]
+}
