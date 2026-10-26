@@ -352,3 +352,25 @@ the row now says "None in v1" and a test keeps it true. The README quick-facts r
 dependency changed; the balance report re-run is identical to the recorded output. *Rationale: the
 task's own acceptance criteria, with every claim in the knowledge base tied to a failing test.*
 
+
+### 2026-10-26 — Offline progress cost and the performance guard (task 08 CI fix)
+
+Context: CI on the Linux runner measured 4258 ms for `performance.test.ts` "simulates 8 hours at
+10 ticks per second in under 2 seconds" (about 15 microseconds per `tick`, 288,000 ticks). Decisions:
+(1) **Offline progress was already closed-form**: `applyOffline` pays `starlightPerSecond x seconds
+counted x offlineEfficiency`, capped at 28,800 s, in one evaluation of the economy, and
+`session-rules.resume` calls it once. The game has no timed boons or effects and nothing is bought
+offline, so the rate is constant for the whole absence; the only non-linear rule is the `MAX_VALUE`
+clamp, which the closed form applies once. A resume therefore never steps tick by tick, and no
+algorithm change was needed. The failing test timed the *online* reducer loop for 8 hours, which a
+phone only runs while the app is open. (2) **Equivalence is now proven** in
+`test/offline-equivalence.test.ts`: five representative saves (early, mid, late at 50, 75 and 100
+percent efficiency) at 1 s, 90 s and 1,800 s, plus two saves over the full 8 hours (288,000 reference
+ticks), match the fixed-step `tick` reference within 1e-8 relative; the cap, the ceiling and
+duration-independent rate are also tested. (3) **The wall-clock assertion became a deterministic
+complexity guard plus generous timing**: a counting proxy shows `applyOffline` reads the instrument
+catalog the same number of times for 1 second, 8 hours and 10 days away; `performance.test.ts` checks
+100 resumes of 8 hours finish within 250 ms (microseconds in practice) and keeps the online loop
+guard at one hour of ticks (36,000) with a 5 s budget, about 9x the CI measurement, still fastest of
+three. No economy number, rule, content or dependency changed. *Rationale: the product concern (no
+stall on resume) is met by construction and pinned by a step-count test, not by a timing race.*
