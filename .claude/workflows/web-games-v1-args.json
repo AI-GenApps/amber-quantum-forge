@@ -1,0 +1,153 @@
+{
+  "mode": "kit",
+  "wave": [],
+  "repo": "/Users/ashutosh/Dev/W3DevMobile/amber-quantum-forge",
+  "worktreeRoot": "/Users/ashutosh/Dev/W3DevMobile/aqf-wt",
+  "artInbox": "/Users/ashutosh/Dev/W3DevMobile/aqf-art-inbox",
+  "date": "2026-10-23",
+  "designerThreadId": "32b55125-f70c-4032-9413-021fda631fd3",
+  "waves": {
+    "1": ["lantern-loops", "floodplain-dispatch", "cloud-observatory"],
+    "2": ["the-last-window", "dress-rehearsal", "lost-parcel-desk"]
+  },
+  "decisions": [
+    "Owner decisions 2026-10-23: build all six web games as FULL v1 (complete loop, full v1 content, progression, local save, reviewed art, custom OFL fonts, CC0 audio, haptics, onboarding, Capacitor Android/iOS projects). No store submission.",
+    "Two waves after a shared kit: wave 1 lantern-loops, floodplain-dispatch, cloud-observatory; wave 2 the-last-window, dress-rehearsal, lost-parcel-desk.",
+    "No monetization in v1: soft currency/unlocks only, no ads, no IAP, no accounts, no network calls. Economy leaves room for IAP later.",
+    "QA is browser-only and done by the owner at the end. Agents do NO visual QA: no browsers, no Playwright, no screenshots of the app, no device or emulator, no APK build, no JDK install.",
+    "Stack: TypeScript + Vite + Preact + Vitest (happy-dom), Capacitor 8 for Android/iOS project files. Rendering is DOM/SVG/Canvas 2D. No Babylon, no PixiJS, no game engines.",
+    "Each game = apps-games/<slug> (app, @web-games/<slug>) + apps-games/<slug>-core (pure headless TS rules, @web-games/<slug>-core). Shared code lives in apps-games/web-kit (@web-games/kit).",
+    "Portrait orientation, offline-first, local save only (Capacitor Preferences on device, localStorage on web), versioned with migrations. Daily modes are seeded from the local date, generated on device, no server.",
+    "All graphics come from the MobileGamesDesigner T3 thread and must pass a strict art review; no AI slop is integrated. Fonts are OFL (Google Fonts repo); audio is CC0 only (Kenney or sources that state CC0).",
+    "Working titles are used as public names in v1; naming research is a later step.",
+    "Every game ships through its own branch, worktree and PR; the orchestrator (main Claude session) creates, reviews and merges PRs and updates local main."
+  ],
+  "kit": {
+    "epic": "18",
+    "slug": "web-games-kit",
+    "branch": "feat/web-games-kit",
+    "pins": "Exact-pin every dependency. Reuse the exact versions already used by apps-games/city-drive/package.json for preact, vite, vitest, typescript, happy-dom, sharp, @types/node and all @capacitor/* packages it uses. @capacitor/share must be the newest 8.x release, exact-pinned. Add no other runtime dependency to the kit or any skeleton.",
+    "tasks": [
+      {
+        "id": "01",
+        "file": "01-kit-package.md",
+        "title": "Shared web-games kit package",
+        "scope": "Create apps-games/web-kit (@web-games/kit), framework code only, fully unit-tested with Vitest. Modules: (1) rng: seedable PRNG (sfc32 or mulberry32), hashing a string to a seed, shuffle/pick helpers; (2) daily: localDateKey(date) in the device time zone, dailySeed(gameId, dateKey), day-number since an epoch; (3) save: versioned save store with typed schema, ordered migrations, corrupt-data recovery, adapters for Capacitor Preferences, localStorage and in-memory (tests); (4) settings model: sound, music, haptics, reduced motion, high-contrast/colour-blind-safe toggle, persisted via save; (5) audio: WebAudio manager with unlock on first user gesture, sfx playback by id, one music loop with fade, master/sfx/music volume, mute honouring settings, safe no-op when AudioContext is missing; (6) haptics: wrapper over @capacitor/haptics with web no-op, honouring settings; (7) share: @capacitor/share, then navigator.share, then clipboard fallback, returning which path was used; (8) lifecycle: pause/resume events, Android back-button routing via @capacitor/app, status bar setup, portrait lock via @capacitor/screen-orientation, all no-ops on web where unavailable; (9) router: tiny typed screen stack (push/pop/replace, back handling); (10) Preact UI primitives themed only by CSS custom properties: Screen (safe-area aware), Button, IconButton, Sheet/Modal, Toggle, Tabs, Toast, StarRating, ProgressBar, Card, plus a ThemeTokens type and applyTheme(); (11) fonts: @font-face registration helper and a test helper that asserts no text falls back to the platform default; (12) assets: image preloader with progress and an asset-budget helper usable from tests; (13) motion: reduced-motion aware tween/spring helpers based on the Web Animations API; (14) strings: typed string table helper (en only). Include a README explaining each module with short examples."
+      },
+      {
+        "id": "02",
+        "file": "02-game-skeletons-and-registry.md",
+        "title": "Six game skeletons, workspace wiring and registry entries",
+        "scope": "For each of the six games create apps-games/<slug> (@web-games/<slug>) and apps-games/<slug>-core (@web-games/<slug>-core). App skeleton: package.json with scripts dev/build/preview/test/typecheck/cap:sync and EXACTLY the dependency set the game will need for all of v1 (preact, @web-games/kit, @web-games/<slug>-core, @capacitor/core, @capacitor/android, @capacitor/ios, @capacitor/app, @capacitor/haptics, @capacitor/preferences, @capacitor/screen-orientation, @capacitor/status-bar, @capacitor/share; dev: @capacitor/cli, @capacitor/assets, vite, vitest, happy-dom, typescript, sharp, @types/node), vite.config.ts, vitest.config.ts (happy-dom), tsconfig.json, index.html, capacitor.config.ts (appId app.w3dev.<slug without dashes>, appName = working title, webDir dist, portrait, no server.url), src/main.tsx rendering a minimal title screen through the kit, public/ folder, and one smoke test. Core skeleton: package.json, tsconfig, src/index.ts exporting a version constant, one test, no DOM types. Run bun install so bun.lock is final for all six games (game branches will not touch bun.lock). Add root package.json scripts web-games:test, web-games:typecheck, web-games:build (bun run --filter '@web-games/*' ...). Wire biome and knip for the new packages following the city-drive pattern. Add six GAME_REGISTRY entries in scripts/games/registry-games.ts (engine web, lifecycle concept, paths app + rulesPackage, source pointing at .agents/games/<slug>/ and tasks/epics/<epic>-web-<slug>/STATUS.md, platforms android+ios, a new rendering value \"dom\" added to registry-types.ts), and update scripts/games registry tests. Create a placeholder .agents/games/<slug>/README.md for each game (one-line pitch, epic link) so registry paths resolve."
+      },
+      {
+        "id": "03",
+        "file": "03-ci-and-docs.md",
+        "title": "Web-games CI and internal docs",
+        "scope": "Add .github/workflows/web-games-ci.yml: on pull_request and push to main with paths apps-games/web-kit/** and the six game dirs plus their -core dirs; bun (version from package.json packageManager) install --frozen-lockfile, then web-games:typecheck, web-games:test, web-games:build. Add docs-internal/gaming/web-games-kit.md (architecture, module list, how a game is structured, save/daily/audio conventions, art pipeline via the MobileGamesDesigner thread, owner QA is browser-only) and register it in docs-internal/docs.json navigation so mintlify validate passes."
+      }
+    ]
+  },
+  "gameTasks": [
+    { "id": "01", "file": "01-core-rules.md", "title": "Core rules engine (headless, in <slug>-core)", "kind": "code" },
+    { "id": "02", "file": "02-content.md", "title": "Full v1 content + validators", "kind": "code" },
+    { "id": "03", "file": "03-progression-and-save.md", "title": "Progression, economy, daily mode, versioned save", "kind": "code" },
+    { "id": "04", "file": "04-screens-and-ui.md", "title": "All screens, navigation, design tokens, fonts, accessibility", "kind": "code" },
+    { "id": "05", "file": "05-audio-haptics-onboarding.md", "title": "CC0 audio, haptics, motion polish, onboarding and how-to-play", "kind": "code" },
+    { "id": "06", "file": "06-art-integration.md", "title": "Integrate reviewed art from the designer inbox", "kind": "art" },
+    { "id": "07", "file": "07-capacitor-packaging.md", "title": "Capacitor Android/iOS projects, icons and splash", "kind": "code" },
+    { "id": "08", "file": "08-release-readiness.md", "title": "Release readiness, budgets, knowledge base, owner QA checklist", "kind": "code" }
+  ],
+  "games": {
+    "lantern-loops": {
+      "epic": "19",
+      "title": "Lantern Loops",
+      "pitch": "Daily logic puzzles: route light from lanterns through a grid so every lantern is lit, every path closes into loops, and board constraints are satisfied. Calm, clever, shareable.",
+      "coreLoop": "Tap/drag to place and rotate path tiles on an N x N grid (5x5 to 9x9). Each lantern must connect into a closed loop; numbered stones demand an exact count of adjacent lit edges; mirrors and colour gates appear in later chapters. Undo, restart, hints. A puzzle is solved when all constraints hold; the solver proves every shipped puzzle has exactly one solution.",
+      "content": "120 campaign puzzles in 4 chapters of 30 (Harbor, Garden, Bridge, Sky), each chapter introducing one mechanic; generated by an offline generator + uniqueness solver and committed as data, with a validator test. Daily puzzle generated on device from the date seed with weekday difficulty (Mon easy to Sun hardest), solvable and unique (checked in tests over 365 consecutive dates). 30-day archive of past dailies.",
+      "progression": "Stars per puzzle (0 hints = 3 stars), chapters unlock by stars, hint tokens earned from dailies and streaks (no purchase), daily streak with gentle freeze (1 per week), statistics screen, share result as an emoji grid text via the kit share helper.",
+      "fonts": "Fraunces (display) + Nunito (body), OFL",
+      "artStyle": "Paper-cut lantern festival at dusk: layered cut-paper shapes with subtle paper-fibre texture, warm amber/rose lantern glow against deep indigo and teal, soft rim light, depth via layered paper shadows. Calm, premium, uncluttered. The puzzle board itself (tiles, paths, glow) is drawn in SVG by code using the same palette.",
+      "artAssets": [
+        "B1 style anchor: icon (square, opaque, single lantern motif, legible at 48px), key-art (portrait 2:3, title-safe empty band in the upper third), lantern-amber (square, transparent), backdrop-harbor (portrait 2:3, calm low-detail centre where the board sits)",
+        "B2: lantern-rose, lantern-jade, lantern-azure, lantern-violet, lantern-unlit (square, transparent, same silhouette as lantern-amber); backdrop-garden, backdrop-bridge, backdrop-sky (portrait 2:3, same rules as backdrop-harbor); daily-medallion (square, transparent); empty-archive (square, transparent spot illustration); feature-graphic (landscape 3:2, no text)"
+      ]
+    },
+    "floodplain-dispatch": {
+      "epic": "20",
+      "title": "Floodplain Dispatch",
+      "pitch": "Compact strategy puzzles: place pumps, canals and barriers to supply a riverside town with water before the flood season, without drowning anyone.",
+      "coreLoop": "Top-down grid map (8x12 to 12x16) with river sources, terrain heights, houses, fields. Player has a limited budget of pieces (canal, pump, barrier, reservoir, sluice gate) and places them, then runs the season: a deterministic fixed-step water simulation (height-based flow, capacities, rain events) plays out over turns; goals are houses supplied, fields irrigated, zero flooded houses, budget left. Rewind and edit, then rerun.",
+      "content": "40 campaign maps across 4 regions of 10 (Valley, Delta, Highland, Estuary), each region adding one mechanic (rain surges, tides, sluice timing, reservoirs); hand-authored as data with a validator proving each map is solvable with a reference solution under budget (solution committed, simulated in tests). Daily map generated from the date seed with a solver/validator guaranteeing a 3-star solution exists (checked over 365 dates).",
+      "progression": "1 to 3 stars per map (supply, zero flood, under budget), regions unlock by stars, cosmetic map themes unlock with stars, daily streak, best-score history, share result text.",
+      "fonts": "Bricolage Grotesque (display) + Atkinson Hyperlegible (body), OFL",
+      "artStyle": "Hand-painted top-down diorama in gouache texture: muted greens and ochres, clean readable blue water, soft consistent top-left light and short shadows, toy-like charm without cuteness overload. Terrain, water flow and canals are drawn by code (Canvas 2D) in the same palette; generated art is standalone objects and backdrops only.",
+      "artAssets": [
+        "B1 style anchor: icon (square, opaque), key-art (portrait 2:3, title-safe band), house-cottage (square, transparent, strict top-down 3/4 view as specified in the art bible), pump (square, transparent, same view)",
+        "B2: house-townhouse, house-mill, house-barn, house-school, reservoir, sluice-gate, sandbag-barrier, windmill, tree-oak, tree-poplar, tree-willow (square, transparent, same view and light as B1)",
+        "B3: backdrop-valley, backdrop-delta, backdrop-highland, backdrop-estuary (portrait 2:3, used behind/around the board, low-detail centre), feature-graphic (landscape 3:2, no text)"
+      ]
+    },
+    "cloud-observatory": {
+      "epic": "21",
+      "title": "Cloud Observatory",
+      "pitch": "An incremental discovery game: build an observatory network, gather starlight, chart constellations and unlock a quiet cosmic story.",
+      "coreLoop": "Starlight accrues per second from instruments; spend it on instruments and upgrades with exponential cost curves; charting a constellation requires completing its star pattern (tap stars in order on a sky map) and unlocks multipliers and lore. Prestige layer 'Eclipse' resets instruments for Eclipse shards that buy permanent boons. Offline progress up to 8 hours, computed deterministically on resume.",
+      "content": "12 constellations (lyre, whale, archer, crown, serpent, lantern, ship, fox, key, harp, tower, owl), 8 instruments (telescope, lens, prism, orrery, star-map, beacon, archive, aurora-coil), 24 upgrades, 10 Eclipse boons, 30 lore entries (short, original prose). Doubles only (no bignum library) with a number formatter to 1e300. A headless balance simulator test proves pacing targets: first constellation under 3 minutes, first Eclipse between 2.5 and 4 hours of active play, no dead zone longer than 6 minutes between meaningful purchases.",
+      "progression": "Constellation atlas, achievements (20), Eclipse prestige, statistics, lore journal.",
+      "fonts": "Cormorant Garamond (display) + Manrope (body), OFL",
+      "artStyle": "Ink-and-watercolour celestial atlas: deep navy paper, gold-leaf linework, soft watercolour nebula washes, antique star-chart motifs; elegant, restrained, luminous. Star maps and constellation lines are drawn by code (SVG) in gold on navy.",
+      "artAssets": [
+        "B1 style anchor: icon (square, opaque), key-art (portrait 2:3, title-safe band), observatory-building (square, transparent), emblem-lyre (square, transparent, round emblem framing)",
+        "B2: sky-far (portrait 2:3, opaque), nebula-mid (portrait 2:3, transparent), horizon-hills (portrait 2:3, transparent, bottom third only), emblem-whale, emblem-archer, emblem-crown, emblem-serpent, emblem-lantern, emblem-ship, emblem-fox, emblem-key, emblem-harp, emblem-tower, emblem-owl (square, transparent, identical framing to emblem-lyre)",
+        "B3: instrument-telescope, instrument-lens, instrument-prism, instrument-orrery, instrument-star-map, instrument-beacon, instrument-archive, instrument-aurora-coil (square, transparent), lore-1..lore-6 (portrait 2:3 vignettes for the six story chapters defined in the content plan), feature-graphic (landscape 3:2, no text)"
+      ]
+    },
+    "the-last-window": {
+      "epic": "22",
+      "title": "The Last Window",
+      "pitch": "A cosy cafe-bookshop at the edge of a harbour town: run short shifts, choose what to stock, decorate, and get to know the regulars whose stories unfold across two weeks.",
+      "coreLoop": "A shift is 3 to 4 minutes: customers arrive with orders (drink + pastry + book recommendation); the player prepares items with simple tap sequences and matches book recommendations to customer moods; tips and satisfaction feed coins and friendship. Between shifts: stock choices for tomorrow (limited shelf space), decor purchases, and a story scene with a regular when friendship thresholds are hit.",
+      "content": "14-day story campaign; 8 recurring customers each with a 5-scene arc (40 scenes of original writing, branching on 1 to 2 choices per arc, 2 endings per customer), 6 drinks, 5 pastries, 5 books, 8 decor items, weather variants (morning, evening, rain). Endless mode after day 14. All dialogue in a typed content file with a validator (no dangling scene references, every arc reachable, reading level plain).",
+      "progression": "Coins, friendship levels, decor unlocks, recipe unlocks per day, journal of finished stories.",
+      "fonts": "Young Serif (display) + Nunito Sans (body), OFL",
+      "artStyle": "Warm painterly gouache, picture-book cosy: lamplight, rain on glass, harbour town; characters semi-realistic illustrated with consistent proportions, expressive but subtle faces, the same rendering on every character. Consistent warm key light from the window side.",
+      "artAssets": [
+        "B1 style anchor: icon (square, opaque), key-art (portrait 2:3, title-safe band), interior-evening (portrait 2:3, counter in the lower third, uncluttered centre for UI), customer-1-neutral (portrait 3:4 bust, transparent)",
+        "B2: interior-morning, interior-rain (portrait 2:3, same camera and layout as interior-evening), customer-2-neutral .. customer-8-neutral (portrait 3:4 bust, transparent, same framing and scale as customer-1)",
+        "B3: customer-1..8-happy and customer-1..8-sad (16 images; identity must match each neutral exactly: same face, hair, outfit, framing)",
+        "B4: drink-1..6, pastry-1..5, book-1..5 (square, transparent, names from the content plan), decor-1..8 (square, transparent), feature-graphic (landscape 3:2, no text)"
+      ]
+    },
+    "dress-rehearsal": {
+      "epic": "23",
+      "title": "Dress Rehearsal",
+      "pitch": "Fashion puzzles: assemble a look on a styled flat-lay board that satisfies a client's creative brief, then share it.",
+      "coreLoop": "Each challenge gives a client brief with 2 to 4 constraints (palette, era, formality, weather, budget, must/must-not pieces). The player drags garments and accessories into 6 to 8 slots on a flat-lay lookbook board (no body/mannequin, which avoids layer alignment). A transparent rule engine scores constraint satisfaction and style harmony (colour theory and set tags), giving 1 to 3 stars with clear feedback. Export the finished board as an image via canvas and share it.",
+      "content": "6 themes (Riviera Summer, Rainy City, Gala Night, Mountain Weekend, Studio Avant-garde, Vintage 70s) x 8 pieces = 48 items with tags (colour, era, formality, warmth, price, category); 40 challenges across the themes with a validator proving each challenge has at least one 3-star solution and no trivially full-marks empty board; 6 recurring clients with short original personality lines. Daily challenge generated from the date seed with guaranteed 3-star solvability (tested over 365 dates).",
+      "progression": "Stars, theme unlocks by stars, a closet that grows with unlocked items, client affinity, daily streak, gallery of saved boards (local).",
+      "fonts": "Playfair Display (display) + DM Sans (body), OFL",
+      "artStyle": "Editorial fashion illustration: gouache and marker on warm paper, confident brush strokes, flat-lay garments shot straight from above with consistent soft top lighting and the same scale rules for every category, sophisticated muted palette with one accent per theme.",
+      "artAssets": [
+        "B1 style anchor: icon (square, opaque), key-art (portrait 2:3, title-safe band), item-riviera-1 (square, transparent flat-lay), backdrop-studio (portrait 2:3 board surface/backdrop)",
+        "B2..B5: the remaining 47 items, named item-<theme>-<1..8> in the content plan with their category, 12 per batch (square, transparent, identical flat-lay camera and scale rules)",
+        "B6: client-1..6 (portrait 3:4 bust, transparent), backdrop-riviera, backdrop-rainy-city, backdrop-gala, backdrop-mountain, backdrop-vintage (portrait 2:3), feature-graphic (landscape 3:2, no text)"
+      ]
+    },
+    "lost-parcel-desk": {
+      "epic": "24",
+      "title": "Lost Parcel Desk",
+      "pitch": "Bite-sized detective stories at a small-town post office: examine what is inside each lost parcel and work out who it belongs to.",
+      "coreLoop": "Each case: open a parcel, inspect 4 to 5 evidence objects (zoom, flip to read notes and stamps), pin clues to a deduction board, then choose the owner from 3 townsfolk cards by linking clue tags to their profiles. Wrong guesses cost a stamp; hints reveal a clue link. Cases are short (5 to 8 minutes) with a satisfying reveal.",
+      "content": "12 cases of original writing, each with 4 to 5 evidence objects, a reveal text and logic data; a validator proves every case has exactly one owner consistent with the clues and that every clue is necessary or explicitly marked flavour. A recurring cast of 12 townsfolk with profiles; a light meta-story across the 12 cases.",
+      "progression": "Case file collection, stamps (score), a town map that fills in as cases close, achievements, replay with best score.",
+      "fonts": "Courier Prime (display) + IBM Plex Sans (body), OFL",
+      "artStyle": "1970s post-office cosy-noir in a risograph-print look: limited palette (mustard, teal, brick red, cream, ink), visible grain and slight misregistration, clean object illustrations on transparent backgrounds, portraits in the same riso style. No legible text on objects (code overlays any text).",
+      "artAssets": [
+        "B1 style anchor: icon (square, opaque), key-art (portrait 2:3, title-safe band), desk-backdrop (portrait 2:3), evidence-postcard (square, transparent)",
+        "B2..B5: the remaining evidence objects named in the content plan as evidence-<case>-<n>, 12 per batch (square, transparent, consistent light and scale rules)",
+        "B6: townsfolk-1..12 (portrait 3:4 bust, transparent), parcel-closed, parcel-open (square, transparent), feature-graphic (landscape 3:2, no text)"
+      ]
+    }
+  }
+}
