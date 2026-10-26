@@ -10,6 +10,7 @@ import { render } from "preact";
 import { App } from "./App";
 import { createPreload } from "./boot/preload";
 import { defaultExportEnv } from "./export/share";
+import { bindAudioLifecycle, createFeedback } from "./feedback/feedback";
 import { FONT_FACES } from "./fonts";
 import { createAppRouter } from "./nav";
 import { bootGame } from "./state/boot";
@@ -25,6 +26,10 @@ void lifecycle.setupDisplay({ lockPortrait: true, statusBarColor: PALETTE.night 
 
 const { game } = bootGame(lifecycle, createDefaultAdapter());
 void game.load();
+
+const feedback = createFeedback({ settings: game.settings });
+feedback.audio.start();
+bindAudioLifecycle(feedback.audio, lifecycle);
 
 const images: Record<string, unknown> = {};
 
@@ -43,6 +48,7 @@ if (root) {
         images,
         exportEnv: defaultExportEnv(),
         preload: createPreload({ images }),
+        feedback,
       }}
     />,
     root,

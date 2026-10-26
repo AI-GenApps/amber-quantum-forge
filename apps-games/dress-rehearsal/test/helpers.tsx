@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { defaultProfile, type Profile } from "@web-games/dress-rehearsal-core";
+import { defaultProfile, type Profile, RULE_CARD_IDS } from "@web-games/dress-rehearsal-core";
 import {
   createMemoryAdapter,
   injectKitStyles,
@@ -107,7 +107,16 @@ export interface RigOptions {
   exitApp?: () => void;
   preload?: AppContextValue["preload"];
   artManifest?: readonly SlotId[];
+  /** Leaves the tutorial and rule cards unseen; by default a rig has seen them all. */
+  freshOnboarding?: boolean;
+  feedback?: AppContextValue["feedback"];
 }
+
+export const SEEN_FLAGS: Profile["flags"] = {
+  tutorial: true,
+  howTo: true,
+  ruleCards: Object.fromEntries(RULE_CARD_IDS.map((id) => [id, true])),
+};
 
 export function installGameStyles(): void {
   if (document.getElementById("dr-test-styles")) return;
@@ -119,7 +128,11 @@ export function installGameStyles(): void {
 
 export async function mountApp(options: RigOptions = {}): Promise<Rig> {
   const adapter = createMemoryAdapter();
-  await createProfileStore(adapter).save({ ...defaultProfile(), ...options.profile });
+  await createProfileStore(adapter).save({
+    ...defaultProfile(),
+    ...(options.freshOnboarding ? {} : { flags: SEEN_FLAGS }),
+    ...options.profile,
+  });
   const now = options.now ?? FIXED_NOW;
   const game = createGame({ adapter, clock: () => now });
   await game.load();
@@ -144,6 +157,7 @@ export async function mountApp(options: RigOptions = {}): Promise<Rig> {
     exportEnv: exporter.env,
     ...(options.preload ? { preload: options.preload } : {}),
     ...(options.artManifest ? { artManifest: options.artManifest } : {}),
+    ...(options.feedback ? { feedback: options.feedback } : {}),
   };
   injectKitStyles();
   installGameStyles();

@@ -1,7 +1,7 @@
 ---
 epic: 23-web-dress-rehearsal
 task: 05-audio-haptics-onboarding
-status: todo
+status: in-progress
 commit_scope: dress-rehearsal
 depends_on: [23-web-dress-rehearsal/04-screens-and-ui]
 estimate: L
@@ -36,15 +36,15 @@ Add the CC0 sound set (24 sounds and 2 music loops), the haptic map, reduced-mot
 
 ## Implementation Checklist
 
-- [ ] Select and download the CC0 files, copy the chosen ogg files into `apps-games/dress-rehearsal/public/audio/` (names equal slot ids), write `LICENSES.md`, copy pack licences, delete the scratch downloads, and write the evidence README `.agents/resources/2026-10-23/web-games/dress-rehearsal/05/README.md` (candidates considered, choices, silent slots).
-- [ ] `src/audio/slots.ts` (slot table with file, kind, gain, loop flag), `src/audio/engine.ts` (create manager, preload on first gesture with progress, music crossfade between `music-menu` and `music-style`, suspend on pause and resume).
-- [ ] `src/audio/events.ts`: mapping from game events (tab change, pick, place, swap, remove, invalid drop, rule met, rule broken, look complete, finish, star reveals, miss, hint, coins, unlock, streak, export, frame change) to sounds and haptics, one table with unit tests.
-- [ ] `src/feedback/haptics.ts` wiring `createHaptics` and `syncSettings`; settings screen toggles take effect immediately.
-- [ ] `src/motion/` helpers: piece landing pop (spring), rule chip flip, harmony meter ease, sheet slide, star reveal stagger of 120 ms, frame switch fade; every helper falls back to the final frame when motion is reduced.
-- [ ] `src/onboarding/tutorial.ts` (pure step machine), `Coachmark.tsx` overlay, `src/onboarding/cards.tsx` (rule card sheet and first-time logic using profile flags), `src/screens/HowTo.tsx` filled with the six pages.
-- [ ] Credits screen data: add audio rows from `LICENSES.md` (parsed in a test to prove they match).
-- [ ] Tests: slot table complete (each slot has a file or an explicit `silent` reason); every listed file exists, is ogg, within size budgets and total at most 2 MB; `LICENSES.md` has a row for each file with a URL, "CC0" and a SHA-256 that matches the file (computed in the test); no audio file lacks a licence row; fake `AudioContext` (kit `createFakeAudioContext`) proves events trigger the right sound ids, music crossfades between menu and styling, mute and volume follow settings, nothing plays before unlock, pause suspends; fake haptics receive the exact map above and nothing when haptics are off; tutorial machine advances only on the matching action, can be skipped and never repeats; each rule card shows once and only on its challenge; how-to renders six pages with numbers from the constants; reduced motion makes every motion helper apply the final frame without calling `animate`.
-- [ ] Update `assets-index.md` (audio table with files, authors, sources and bytes), `open-questions.md` (silent slots, Q6), `decisions-log.md` (source choices).
+- [x] Select and download the CC0 files, copy the chosen ogg files into `apps-games/dress-rehearsal/public/audio/` (names equal slot ids), write `LICENSES.md`, copy pack licences, delete the scratch downloads, and write the evidence README `.agents/resources/2026-10-23/web-games/dress-rehearsal/05/README.md` (candidates considered, choices, silent slots).
+- [x] `src/audio/slots.ts` (slot table with file, kind, gain, loop flag), `src/audio/engine.ts` (create manager, preload on first gesture with progress, music crossfade between `music-menu` and `music-style`, suspend on pause and resume).
+- [x] `src/audio/events.ts`: mapping from game events (tab change, pick, place, swap, remove, invalid drop, rule met, rule broken, look complete, finish, star reveals, miss, hint, coins, unlock, streak, export, frame change) to sounds and haptics, one table with unit tests.
+- [x] `src/feedback/haptics.ts` wiring `createHaptics` and `syncSettings`; settings screen toggles take effect immediately.
+- [x] `src/motion/` helpers: piece landing pop (spring), rule chip flip, harmony meter ease, sheet slide, star reveal stagger of 120 ms, frame switch fade; every helper falls back to the final frame when motion is reduced.
+- [x] `src/onboarding/tutorial.ts` (pure step machine), `Coachmark.tsx` overlay, `src/onboarding/cards.tsx` (rule card sheet and first-time logic using profile flags), `src/screens/HowTo.tsx` filled with the six pages.
+- [x] Credits screen data: add audio rows from `LICENSES.md` (parsed in a test to prove they match).
+- [x] Tests: slot table complete (each slot has a file or an explicit `silent` reason); every listed file exists, is ogg, within size budgets and total at most 2 MB; `LICENSES.md` has a row for each file with a URL, "CC0" and a SHA-256 that matches the file (computed in the test); no audio file lacks a licence row; fake `AudioContext` (kit `createFakeAudioContext`) proves events trigger the right sound ids, music crossfades between menu and styling, mute and volume follow settings, nothing plays before unlock, pause suspends; fake haptics receive the exact map above and nothing when haptics are off; tutorial machine advances only on the matching action, can be skipped and never repeats; each rule card shows once and only on its challenge; how-to renders six pages with numbers from the constants; reduced motion makes every motion helper apply the final frame without calling `animate`.
+- [x] Update `assets-index.md` (audio table with files, authors, sources and bytes), `open-questions.md` (silent slots, Q6), `decisions-log.md` (source choices).
 
 ## Files Touched
 

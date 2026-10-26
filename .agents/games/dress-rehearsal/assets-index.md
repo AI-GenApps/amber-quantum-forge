@@ -1,9 +1,9 @@
 # Dress Rehearsal - assets index
 
-Status after task 04: the three font files are bundled (table below); no audio and no designer art
+Status after task 05: the three font files and 26 CC0 audio files are bundled (tables below); no designer art
 yet (`src/art/manifest.ts` is empty, so every one of the 63 slots shows its code-drawn fallback).
 This file is the plan for art slots and briefs (63 slots), fonts, the audio plan (24 sounds, 2
-music loops) and where everything lives. Tasks 05 to 07 fill in the remaining provenance tables. Every art slot has a code-drawn fallback, so the game renders
+music loops) and where everything lives. Tasks 06 and 07 fill in the remaining provenance tables. Every art slot has a code-drawn fallback, so the game renders
 completely with zero, some or all slots present.
 
 ## Where things live
@@ -158,37 +158,39 @@ SHA-256 of the shipped file); pack licence texts go in `public/audio/licenses/`.
 source ships silent and is listed in `open-questions.md`. Budgets: all audio at most 2 MB, each
 sound at most 60 KB (mono ogg), each music loop at most 600 KB.
 
-| Slot id | Trigger | Planned source family |
-|---|---|---|
-| `ui-tap` | any button tap | Kenney Interface Sounds |
-| `ui-back` | Back button | Kenney Interface Sounds |
-| `ui-toggle` | a settings toggle | Kenney Interface Sounds |
-| `ui-open-sheet` | brief, result, export, hint or exit sheet opens | Kenney Interface Sounds |
-| `ui-tab` | closet tray tab changes | Kenney Interface Sounds |
-| `item-pick` | a piece is lifted (drag start or tap-select) | Kenney Impact Sounds (soft) |
-| `item-place` | a piece lands in its slot | Kenney Impact Sounds (soft) |
-| `item-swap` | a piece replaces another | Kenney Impact Sounds (soft) |
-| `item-remove` | a slot is cleared | Kenney Interface Sounds |
-| `item-invalid` | drop refused (wrong slot) | Kenney Interface Sounds |
-| `rule-met` | a rule chip turns met | Kenney Digital Audio or Interface Sounds |
-| `rule-broken` | a met rule becomes unmet | Kenney Digital Audio or Interface Sounds |
-| `look-complete` | the last open slot is filled | Kenney Interface Sounds |
-| `finish-look` | Finish look pressed | Kenney Interface Sounds |
-| `star-1` | first star revealed | Kenney Music Jingles or Interface Sounds |
-| `star-2` | second star revealed | Kenney Music Jingles or Interface Sounds |
-| `star-3` | third star revealed | Kenney Music Jingles or Interface Sounds |
-| `result-miss` | result with 0 stars | Kenney Interface Sounds |
-| `hint-use` | hint bought and revealed | Kenney Interface Sounds |
-| `coin-gain` | coins added to the purse | Kenney Interface Sounds or RPG Audio |
-| `unlock` | chapter, frame or affinity level unlocked | Kenney Music Jingles |
-| `streak-up` | Daily streak increases | Kenney Music Jingles |
-| `export-shutter` | image export taken | a CC0 page (OpenGameArt) or a Kenney click if none |
-| `frame-select` | export frame changed | Kenney Interface Sounds |
-| `music-menu` (loop) | Home, lists, Closet, Gallery | a CC0 OpenGameArt page (calm editorial jazz or bossa style) |
-| `music-style` (loop) | Styling board | a CC0 OpenGameArt page (light, unobtrusive) |
+| Slot id | Trigger | File | Author | Source | Bytes |
+|---|---|---|---|---|---|
+| `ui-tap` | any button tap | `ui-tap.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/interface-sounds | 4,371 |
+| `ui-back` | Back button | `ui-back.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/interface-sounds | 7,208 |
+| `ui-toggle` | a settings toggle | `ui-toggle.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/interface-sounds | 8,654 |
+| `ui-open-sheet` | brief, result, export, hint or exit sheet opens | `ui-open-sheet.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/interface-sounds | 15,046 |
+| `ui-tab` | closet tray tab changes | `ui-tab.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/interface-sounds | 6,901 |
+| `item-pick` | a piece is lifted (drag start or tap-select) | `item-pick.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/rpg-audio | 9,449 |
+| `item-place` | a piece lands in its slot | `item-place.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/impact-sounds | 4,283 |
+| `item-swap` | a piece replaces another | `item-swap.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/rpg-audio | 6,971 |
+| `item-remove` | a slot is cleared | `item-remove.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/interface-sounds | 17,099 |
+| `item-invalid` | drop refused (wrong slot) | `item-invalid.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/interface-sounds | 5,154 |
+| `rule-met` | a rule chip turns met | `rule-met.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/digital-audio | 6,135 |
+| `rule-broken` | a met rule becomes unmet | `rule-broken.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/digital-audio | 5,956 |
+| `look-complete` | the last open slot is filled | `look-complete.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/interface-sounds | 12,391 |
+| `finish-look` | Finish look pressed | `finish-look.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/interface-sounds | 9,085 |
+| `star-1` | first star revealed | `star-1.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/music-jingles | 10,333 |
+| `star-2` | second star revealed | `star-2.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/music-jingles | 12,632 |
+| `star-3` | third star revealed | `star-3.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/music-jingles | 14,977 |
+| `result-miss` | result with 0 stars | `result-miss.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/interface-sounds | 8,288 |
+| `hint-use` | hint bought and revealed | `hint-use.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/interface-sounds | 9,455 |
+| `coin-gain` | coins added to the purse | `coin-gain.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/rpg-audio | 12,876 |
+| `unlock` | chapter, frame or affinity level unlocked | `unlock.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/music-jingles | 13,532 |
+| `streak-up` | Daily streak increases | `streak-up.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/music-jingles | 12,686 |
+| `export-shutter` | image export taken | `export-shutter.ogg` | themightyglider (user themightyglider on OpenGameArt) | https://opengameart.org/content/camera | 11,768 |
+| `frame-select` | export frame changed | `frame-select.ogg` | Kenney (Kenney Vleugels) | https://kenney.nl/assets/interface-sounds | 4,596 |
+| `music-menu` (loop) | Home, lists, Closet, Gallery | `music-menu.ogg` | Pro Sensory (Alex McCulloch) | https://opengameart.org/content/mocha-frapp | 339,602 |
+| `music-style` (loop) | Styling board | `music-style.ogg` | Pro Sensory (Alex McCulloch) | https://opengameart.org/content/one-step-at-a-time | 430,565 |
 
-Files, authors, URLs and bytes are filled in by task 05 (this table then gains the file, author,
-source and bytes columns).
+All 26 slots shipped with a CC0 file (no silent slot). Total 1,000,013 bytes (0.95 MB of the
+2 MB budget); every file is mono Ogg. Licence (CC0 1.0 for Kenney, CC0 for OpenGameArt), download date
+2026-10-23, SHA-256 and processing notes per file are in `public/audio/LICENSES.md`; candidates and
+commands are in `.agents/resources/2026-10-23/web-games/dress-rehearsal/05/README.md`.
 
 ## Release totals and budgets (task 08)
 

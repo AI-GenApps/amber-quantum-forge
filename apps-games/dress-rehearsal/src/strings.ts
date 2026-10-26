@@ -215,6 +215,22 @@ export const strings = defineStrings({
   confirmQuitBody: "Your progress is saved on this device.",
   confirmQuitYes: "Leave",
 
+  cardEyebrow: "New rule",
+  cardPosition: "Card {position} of {total}",
+  cardGotIt: "Got it",
+
+  coachStep: "Tutorial step {step} of {total}",
+  coachClient: "Your client is {name}, {role}.",
+  coachHint1:
+    "The rule chips list what the client asks for. A chip turns green with a tick when it is met.",
+  coachHint2: "Tap the Tops tab in the closet below the board.",
+  coachHint3: "Drag a piece onto its slot, or tap the piece and then tap the slot.",
+  coachHint4: "Fill every slot. Watch the rule chips and the harmony meter change.",
+  coachHint5:
+    "Press Finish look. One star for a complete look, two when every rule is met, three at harmony {bar} or more.",
+  coachGotIt: "Got it",
+  coachSkip: "Skip tutorial",
+
   howtoTitle: "How to play",
   howtoPage: "Page {page} of {total}",
   howtoPrev: "Previous",

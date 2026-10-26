@@ -62,11 +62,13 @@ describe("network and determinism audit", () => {
     expect(outside).toEqual([]);
   });
 
-  it("allows only https font licence source links in the credits file", () => {
+  it("allows only https font and CC0 audio source links in the credits file", () => {
     const credits = APP_FILES.find((entry) => entry.file === "data/credits.ts");
     const urls = credits?.text.match(/https?:\/\/[^"'`\s)]+/g) ?? [];
     expect(urls.length).toBeGreaterThanOrEqual(2);
-    expect(new Set(urls.map((url) => new URL(url).host))).toEqual(new Set(["github.com"]));
+    expect(new Set(urls.map((url) => new URL(url).host))).toEqual(
+      new Set(["github.com", "kenney.nl", "opengameart.org"]),
+    );
     for (const url of urls) expect(url.startsWith("https://")).toBe(true);
   });
 
@@ -117,11 +119,13 @@ describe("source hygiene", () => {
     expect(strings.keys().length).toBeGreaterThan(150);
   });
 
-  it("keeps public assets other than fonts out of the tree in this task", () => {
+  it("keeps public assets other than fonts and audio out of the tree in this task", () => {
     const publicDir = join(APP, "public");
     const names = (readdirSync(publicDir, { recursive: true }) as string[]).filter((name) =>
       statSync(join(publicDir, name)).isFile(),
     );
-    expect(names.every((name) => name.startsWith("fonts/"))).toBe(true);
+    expect(names.every((name) => name.startsWith("fonts/") || name.startsWith("audio/"))).toBe(
+      true,
+    );
   });
 });

@@ -1,0 +1,6 @@
+Title: Camera
+Author: themightyglider
+Page: https://opengameart.org/content/camera
+Licence shown on the page: License(s): CC0 (https://creativecommons.org/publicdomain/zero/1.0/)
+Page text: A cammera shutter SFX. Rearanged from original file (CC0): https://archive.org/details/CameraShutterSound
+Checked: 2026-10-23

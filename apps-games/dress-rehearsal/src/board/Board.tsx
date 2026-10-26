@@ -51,7 +51,7 @@ export function Board(props: BoardProps) {
           {...(props.manifest ? { manifest: props.manifest } : {})}
         />
       </div>
-      <div class="dr-board__grid">
+      <div class="dr-board__grid" data-sfx="own">
         {view.slots.map((slot) => {
           const isSelected = props.selected?.kind === "slot" && props.selected.slot === slot.slot;
           const wantsPiece =

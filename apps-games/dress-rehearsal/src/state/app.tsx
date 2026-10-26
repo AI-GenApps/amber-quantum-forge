@@ -11,6 +11,7 @@ import { createContext } from "preact";
 import { useContext, useEffect, useState } from "preact/hooks";
 import type { SlotId } from "../art/slots";
 import type { ExportEnv } from "../export/share";
+import { type Feedback, noopFeedback } from "../feedback/feedback";
 import type { AppRouter } from "../nav";
 import { type GameState, type GameStore, useGame } from "./game";
 
@@ -29,6 +30,8 @@ export interface AppContextValue {
   prefersReducedMotion?: () => boolean;
   /** Boot waits for this before leaving the loading screen (fonts and listed art). */
   preload?: (onProgress: (fraction: number) => void) => Promise<void>;
+  /** Sound, music and haptics; absent in tests that do not care, which then stay silent. */
+  feedback?: Feedback;
 }
 
 export const AppContext = createContext<AppContextValue | null>(null);
@@ -62,4 +65,8 @@ export function useReducedMotion(): boolean {
   const settings = useSettings();
   const system = (app.prefersReducedMotion ?? systemPrefersReducedMotion)();
   return app.settings.effectiveReducedMotion(system) || settings.reducedMotion;
+}
+
+export function useFeedback(): Feedback {
+  return useApp().feedback ?? noopFeedback;
 }

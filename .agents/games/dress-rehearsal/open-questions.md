@@ -10,7 +10,7 @@ notes" as they work.
 | Q3 | Privacy policy URL for store submission | Not needed in v1 (no submission); a one-page "no data collected" policy is needed later. | owner |
 | Q4 | Native image share: sharing a PNG from the Capacitor WebView needs `@capacitor/filesystem` (write a cache file, pass its URI to `@capacitor/share`), which is not in the frozen dependency set. | v1 shares text through the kit and the image through the Web Share API with files, or a download link, in a browser; on device it falls back to text. | owner / orchestrator (dependency decision) |
 | Q5 | Public name beyond the working title | Dress Rehearsal stays the public name in v1. | owner, later step |
-| Q6 | Which CC0 sources exist for `export-shutter` and the two music loops? | Task 05 searches Kenney first, then OpenGameArt pages that state CC0; a slot with none ships silent and is recorded here. | task 05 |
+| Q6 | Which CC0 sources exist for `export-shutter` and the two music loops? | Answered in task 05: Kenney covers 23 slots; `export-shutter` is the OpenGameArt entry Camera and the two loops are Pro Sensory's Mocha Frapp and One Step at a time, all stating CC0. No slot ships silent. | closed (task 05) |
 | Q7 | Designer art delivery timing (63 slots in six batches) | Placeholders are code-drawn; task 06 integrates whatever passed review and keeps placeholders elsewhere. | orchestrator |
 | Q8 | Rainy City is open from the first launch (the starting closet is 16 pieces). Is a free choice between chapters 1 and 2 acceptable? | Yes (`decisions-log.md` D5); both are gentle. Revisit if the owner prefers a strict chapter order with a bigger first closet. | owner at QA |
 | Q9 | Remove the default Android `INTERNET` permission since the game is fully offline? | Keep Capacitor's default (WebView loader not verified without a device); data safety stays "no data collected". Owner decides after device QA. | owner |
@@ -111,3 +111,13 @@ The kit stays read-only for this epic. Known at planning time:
   empty slots numbered up to 24.
 - The How to play screen is a shell of six titled pages with empty bodies (`src/data/howto.ts`),
   and the credits screen reads `src/data/credits.ts`; tasks 05 and 06 add their entries there.
+
+## Task 05 notes
+
+- No audio was listened to (no device or browser): the owner judges the sound set, the two music
+  excerpts (45 s loops with a 4 s crossfade) and the volume balance (`src/audio/slots.ts` gains) in
+  browser QA. Any slot can be swapped by replacing the ogg and its `LICENSES.md` row.
+- The `music-*` loops start after the first user gesture (browser autoplay rules); the first screen
+  is silent until then.
+- Haptics fire only through the Capacitor driver; on the web the kit no-op driver is used, so the
+  haptic map is exercised in tests with a fake driver only.

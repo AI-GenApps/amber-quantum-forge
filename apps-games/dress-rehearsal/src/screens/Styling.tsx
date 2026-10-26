@@ -1,6 +1,6 @@
 import { CLIENT_IDS, challengeUnlocked, type Slot } from "@web-games/dress-rehearsal-core";
 import { Button, IconButton, localDateKey, Screen, Toast } from "@web-games/kit";
-import { useMemo, useState } from "preact/hooks";
+import { useEffect, useMemo, useRef, useState } from "preact/hooks";
 import { Board } from "../board/Board";
 import { type DragSource, useDrag } from "../board/drag";
 import { HarmonyMeter } from "../board/HarmonyMeter";
@@ -9,14 +9,18 @@ import { pieceOf } from "../board/model";
 import { RuleChips } from "../board/RuleChips";
 import { moveFocus, Tray } from "../board/Tray";
 import { sessionExportInput, sessionShareText } from "../export/inputs";
+import { useMotion } from "../motion/useMotion";
 import type { StylingTarget } from "../nav";
+import { Coachmark } from "../onboarding/Coachmark";
+import { RuleCardSheet } from "../onboarding/cards";
+import { useOnboarding } from "../onboarding/useOnboarding";
 import { Brief } from "../sheets/Brief";
 import { Confirm } from "../sheets/Confirm";
 import { ExportSheet } from "../sheets/Export";
 import { HintConfirm } from "../sheets/HintConfirm";
 import { Pause } from "../sheets/Pause";
 import { Result } from "../sheets/Result";
-import { useApp, useProfile } from "../state/app";
+import { useApp, useFeedback, useProfile } from "../state/app";
 import { resolveSession, type Session } from "../state/session";
 import { useBack } from "../state/useBack";
 import { t } from "../strings";
@@ -55,8 +59,16 @@ export function Styling({ target }: { target: StylingTarget }) {
 function StylingBoard({ session }: { session: Session }) {
   const app = useApp();
   const { router } = app;
-  const styling = useStyling(session);
+  const feedback = useFeedback();
+  const motion = useMotion();
+  const onboarding = useOnboarding(session);
+  const { notify } = onboarding;
+  const styling = useStyling(session, {
+    onPlaced: () => notify({ type: "placed" }),
+    onFinished: () => notify({ type: "finish" }),
+  });
   const { state, view, dispatch, toast } = styling;
+  const root = useRef<HTMLDivElement>(null);
   const [briefOpen, setBriefOpen] = useState(true);
   const [pauseOpen, setPauseOpen] = useState(false);
   const [hintOpen, setHintOpen] = useState(false);
@@ -83,6 +95,7 @@ function StylingBoard({ session }: { session: Session }) {
   });
 
   const { drag, begin, consumeClick } = useDrag({
+    onStart: () => feedback.fire({ type: "pick" }),
     onDrop: (source: DragSource, targetSlot: Slot | null) => {
       if (source.origin === "board") {
         if (targetSlot === null && source.slot) dispatch({ type: "remove", slot: source.slot });
@@ -98,7 +111,6 @@ function StylingBoard({ session }: { session: Session }) {
 
   const placedIds = useMemo(() => new Set(Object.values(styling.look)), [styling.look]);
   const selectedPiece = state.selected?.kind === "piece" ? state.selected.pieceId : null;
-  const complete = view.preview.complete;
   const canUndo = state.history.past.length > 0;
 
   const onKeyDown = (event: KeyboardEvent): void => {
@@ -138,6 +150,18 @@ function StylingBoard({ session }: { session: Session }) {
     }
   };
 
+  const complete = view.preview.complete;
+  useEffect(() => {
+    notify({ type: "complete", complete });
+  }, [complete, notify]);
+
+  useEffect(() => {
+    const slot = styling.landing?.slot;
+    if (!slot) return;
+    const element = root.current?.querySelector<HTMLElement>(`[data-board-slot="${slot}"]`);
+    if (element) void motion.landingPop(element);
+  }, [styling.landing, motion]);
+
   const finish = async (): Promise<void> => {
     const outcome = await styling.finishLook();
     if (outcome) setResultOpen(true);
@@ -149,7 +173,13 @@ function StylingBoard({ session }: { session: Session }) {
 
   return (
     // biome-ignore lint/a11y/noStaticElementInteractions: key handling for the whole styling board (Ctrl+Z, Enter, Backspace)
-    <div class="dr-styling" onKeyDown={onKeyDown} style={accentStyle(session.accent)}>
+    <div
+      ref={root}
+      class="dr-styling"
+      onKeyDown={onKeyDown}
+      style={accentStyle(session.accent)}
+      data-coach={briefOpen ? "" : onboarding.targets}
+    >
       <Screen name="styling" class="dr-styling__screen">
         <header class="dr-header dr-header--board">
           <IconButton label={t("back")} onClick={requestLeave}>
@@ -166,6 +196,14 @@ function StylingBoard({ session }: { session: Session }) {
             <CoinBadge />
           </div>
         </header>
+        {onboarding.tutorial && !briefOpen && onboarding.cards.length === 0 ? (
+          <Coachmark
+            step={onboarding.tutorial.step}
+            client={session.client}
+            onClientSeen={() => notify({ type: "client-seen" })}
+            onSkip={() => notify({ type: "skip" })}
+          />
+        ) : null}
         <Board
           view={view}
           theme={session.themeId}
@@ -228,12 +266,16 @@ function StylingBoard({ session }: { session: Session }) {
           selectedId={selectedPiece}
           placedIds={placedIds}
           hintId={hintId}
-          onTab={(tab) => dispatch({ type: "set-tab", tab })}
+          onTab={(tab) => {
+            feedback.fire({ type: "tab" });
+            notify({ type: "tab-opened", tab });
+            dispatch({ type: "set-tab", tab });
+          }}
           onSelect={(piece) => dispatch({ type: "select-piece", pieceId: piece.id })}
           onPointerDown={(event, piece) => begin(event, { pieceId: piece.id, origin: "tray" })}
           consumeClick={consumeClick}
         />
-        <div class="dr-finish">
+        <div class="dr-finish" data-sfx="own">
           <Button
             size="large"
             fullWidth
@@ -267,8 +309,14 @@ function StylingBoard({ session }: { session: Session }) {
           onDismiss={toast.dismiss}
         />
       ) : null}
+      <RuleCardSheet
+        card={briefOpen ? (onboarding.cards[0] ?? null) : null}
+        position={onboarding.cardPosition}
+        total={onboarding.cardTotal}
+        onDismiss={onboarding.dismissCard}
+      />
       <Brief
-        open={briefOpen}
+        open={briefOpen && onboarding.cards.length === 0}
         challenge={session.challenge}
         client={session.client}
         clientIndex={clientIndex}

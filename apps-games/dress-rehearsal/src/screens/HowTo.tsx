@@ -1,11 +1,19 @@
 import { Button, Screen } from "@web-games/kit";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import { HOW_TO } from "../data/howto";
+import { useApp, useProfile } from "../state/app";
 import { t } from "../strings";
 import { Header } from "../ui/Header";
 
 export function HowTo() {
+  const app = useApp();
+  const seen = useProfile().flags.howTo;
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (!seen) void app.game.markFlag("howTo");
+  }, [seen, app.game]);
+
   const page = HOW_TO[index];
   return (
     <Screen name="howto">

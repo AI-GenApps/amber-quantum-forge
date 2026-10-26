@@ -1,5 +1,7 @@
 import { type HarmonyResult, THREE_STAR_HARMONY } from "@web-games/dress-rehearsal-core";
 import { ProgressBar } from "@web-games/kit";
+import { useEffect, useRef } from "preact/hooks";
+import { useMotion } from "../motion/useMotion";
 import { t } from "../strings";
 
 export function HarmonyParts({ harmony }: { harmony: HarmonyResult }) {
@@ -27,8 +29,20 @@ export interface HarmonyMeterProps {
 /** Live harmony score from 0 to 100 with the three-star bar marked and the five named parts. */
 export function HarmonyMeter({ harmony, empty, expandable = true }: HarmonyMeterProps) {
   const total = empty ? 0 : harmony.total;
+  const motion = useMotion();
+  const root = useRef<HTMLElement>(null);
+  const shown = useRef(total);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: the bar eases only when the score changes
+  useEffect(() => {
+    const from = shown.current;
+    shown.current = total;
+    const fill = root.current?.querySelector<HTMLElement>(".wg-progress__fill");
+    if (fill && from !== total) void motion.meterEase(fill, from, total);
+  }, [total]);
+
   return (
-    <section class="dr-meter" data-testid="harmony" aria-label={t("harmonyLabel")}>
+    <section ref={root} class="dr-meter" data-testid="harmony" aria-label={t("harmonyLabel")}>
       <div class="dr-meter__head">
         <span class="dr-meter__title">{t("harmonyLabel")}</span>
         <span class="dr-meter__value" data-testid="harmony-value">

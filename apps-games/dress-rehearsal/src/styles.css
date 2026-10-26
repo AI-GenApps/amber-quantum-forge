@@ -260,11 +260,22 @@ ul {
 [data-contrast="high"] .dr-glyph [stroke-width] { stroke-width: 4px; }
 [data-contrast="high"] .dr-swatch { background-image: repeating-linear-gradient(45deg, rgba(35, 29, 26, 0.7) 0 2px, transparent 2px 6px); border-width: 3px; }
 
-@keyframes dr-pop { from { transform: scale(0.2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes dr-pulse { 0%, 100% { outline-offset: 2px; } 50% { outline-offset: 6px; } }
 
-[data-motion="full"] .dr-result .wg-star--on { animation: dr-pop 240ms both; transform-origin: center; }
-[data-motion="full"] .dr-result .wg-star:nth-child(2) { animation-delay: 120ms; }
-[data-motion="full"] .dr-result .wg-star:nth-child(3) { animation-delay: 240ms; }
 [data-motion="full"] .dr-slot[data-hint="true"], [data-motion="full"] .dr-piece[data-hint="true"] { animation: dr-pulse 900ms ease-in-out infinite; }
 [data-motion="reduced"] *, [data-motion="reduced"] *::before, [data-motion="reduced"] *::after { animation: none !important; transition: none !important; }
+.dr-sheet-host { display: contents; }
+.dr-result .wg-star--on { transform-origin: center; transform-box: fill-box; }
+
+/* Tutorial coachmark and highlighted targets */
+.dr-coach { box-sizing: border-box; display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border: 2px solid var(--wg-color-focus); border-radius: var(--wg-radius-md); background: var(--wg-color-surface); color: var(--wg-color-text); }
+.dr-coach__title { font-family: var(--wg-font-display); font-size: 20px; font-weight: 700; }
+.dr-coach__client, .dr-coach__hint { font-size: 16px; }
+.dr-coach__actions { display: flex; gap: 8px; justify-content: flex-end; }
+.dr-styling[data-coach~="rule-chip"] .dr-chips { outline: 3px solid var(--wg-color-focus); outline-offset: 3px; border-radius: var(--wg-radius-md); }
+.dr-styling[data-coach~="tray-tab"] .dr-tray .wg-tab:first-child { outline: 3px solid var(--wg-color-focus); outline-offset: -3px; }
+.dr-styling[data-coach~="slot"] .dr-slot[data-filled="false"] { outline: 3px solid var(--wg-color-focus); outline-offset: 2px; }
+.dr-styling[data-coach~="finish-button"] .dr-finish .wg-btn { outline: 3px solid var(--wg-color-focus); outline-offset: 3px; }
+[data-motion="full"] .dr-styling[data-coach~="tray-tab"] .dr-tray .wg-tab:first-child,
+[data-motion="full"] .dr-styling[data-coach~="finish-button"] .dr-finish .wg-btn { animation: dr-pulse 900ms ease-in-out infinite; }
+.dr-rulecard .dr-sheet__body { font-size: 18px; }

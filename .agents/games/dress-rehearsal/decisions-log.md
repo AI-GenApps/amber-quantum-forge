@@ -297,3 +297,30 @@ Routes: `boot`, `home`, `chapters`, `challenges {chapter}`, `styling {challengeI
 export, pause, hint, confirm) are kit sheets that push a back interceptor while open. Back order:
 open sheet, then "Leave this look?" if pieces are on an unfinished board, then pop. At the root the
 kit exit hook asks "Leave Dress Rehearsal?".
+
+### D30. Audio sources and processing
+
+All 26 slots come from CC0 sources: Kenney packs (Interface Sounds, RPG Audio, Impact Sounds,
+Digital Audio, Music Jingles) for 23 slots, OpenGameArt "Camera" for the shutter, and two Pro
+Sensory tracks (Mocha Frapp, One Step at a time) for the loops. Stereo sources are downmixed to
+mono ogg; the loops are 45 s excerpts with a 4 s equal-power crossfade of the tail into the head.
+Kenney UI Audio was checked and not needed. Total 1,000,013 bytes (budget 2 MB).
+Rationale: Kenney first as required; the two OpenGameArt tracks were the only long calm pieces whose
+page states CC0 and that fit under 600 KB after trimming.
+
+### D31. Feedback map and onboarding rules
+
+One table (`src/audio/events.ts`) maps game events to a sound and a haptic. Haptics: light impact
+on a place or swap, `warning` on a refused drop, medium impact on Finish look, `success` on every
+star revealed (stars come 120 ms apart), on a chapter unlock or affinity level, on a frame
+purchase and on a Daily streak increase; plain button taps, tab changes, picks and scrolling never
+vibrate. The three-star jingle plays once, on the last star (`star-N` for N stars); a rule chip
+sound plays when a rule flips (a broken rule wins over a met one); the look-complete chime plays
+when the last slot fills. Several unlocks from one result share one chime. Music: menu loop on
+every screen except Styling, style loop on the board, 1.2 s crossfade, suspended on pause.
+Onboarding: the nine rule cards show once on their challenge before the Brief sheet (flag
+`ruleCards`); the riv-01 tutorial is a five-step inline card advanced only by the real action
+(client acknowledged, Tops tab opened, first placement by any input, look complete, Finish look),
+skippable, saved as flag `tutorial`. How to play opens the six pages and sets flag `howTo`; every
+number in its text is read from core constants.
+

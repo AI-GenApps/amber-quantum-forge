@@ -1,5 +1,6 @@
 import { useCurrentScreen } from "@web-games/kit";
 import { useEffect, useState } from "preact/hooks";
+import { uiCueFor } from "./audio/ui";
 import { Boot } from "./screens/Boot";
 import { Challenges } from "./screens/Challenges";
 import { Chapters } from "./screens/Chapters";
@@ -17,6 +18,7 @@ import {
   AppContext,
   type AppContextValue,
   useApp,
+  useFeedback,
   useReducedMotion,
   useSettings,
 } from "./state/app";
@@ -58,12 +60,22 @@ function Shell() {
   const app = useApp();
   const settings = useSettings();
   const reducedMotion = useReducedMotion();
+  const feedback = useFeedback();
   const [quit, setQuit] = useState(false);
   const entry = useCurrentScreen(app.router);
 
   useEffect(() => {
     installTheme({ highContrast: settings.highContrast, reducedMotion });
   }, [settings.highContrast, reducedMotion]);
+
+  useEffect(() => {
+    feedback.setScene(entry.name === "styling" ? "style" : "menu");
+  }, [feedback, entry.name]);
+
+  const onClickCapture = (event: MouseEvent): void => {
+    const cue = uiCueFor(event.target);
+    if (cue) feedback.fire({ type: "ui", ui: cue });
+  };
 
   useEffect(
     () => app.lifecycle?.onBack(() => app.router.handleBack(), { onExit: () => setQuit(true) }),
@@ -73,7 +85,7 @@ function Shell() {
   const key = `${entry.name}:${JSON.stringify(entry.params ?? null)}`;
   return (
     <>
-      <div class="dr-app" key={key}>
+      <div class="dr-app" key={key} onClickCapture={onClickCapture}>
         <CurrentScreen />
       </div>
       <Confirm

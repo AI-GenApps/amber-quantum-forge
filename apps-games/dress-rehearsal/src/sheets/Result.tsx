@@ -7,8 +7,10 @@ import {
   STAR_NAMES,
 } from "@web-games/dress-rehearsal-core";
 import { Button, StarRating } from "@web-games/kit";
+import { useEffect, useRef } from "preact/hooks";
 import { HarmonyMeter } from "../board/HarmonyMeter";
 import { RuleChips } from "../board/RuleChips";
+import { useMotion } from "../motion/useMotion";
 import type { Session } from "../state/session";
 import { t } from "../strings";
 import { AppSheet } from "./AppSheet";
@@ -69,14 +71,30 @@ export function Result(props: ResultProps) {
   const stars = score.stars;
   const coins = coinsFrom(props.events);
   const lines = progressLines(props.events);
+  const motion = useMotion();
+  const body = useRef<HTMLDivElement>(null);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: the reveal runs each time the sheet opens
+  useEffect(() => {
+    if (!props.open || !body.current) return;
+    const earned = Array.from(body.current.querySelectorAll<SVGElement>(".wg-star--on"));
+    void motion.starReveal(earned);
+  }, [props.open]);
+
   return (
     <AppSheet
       open={props.open}
       onClose={props.onEdit}
       title={resultHeadline(stars)}
       class="dr-result"
+      silentOpen
     >
-      <div class="dr-result__body" data-testid="result" style={{ "--dr-accent": session.accent }}>
+      <div
+        ref={body}
+        class="dr-result__body"
+        data-testid="result"
+        style={{ "--dr-accent": session.accent }}
+      >
         <div class="dr-result__stars">
           <StarRating value={stars} label={t("resultStarsLabel", { stars })} />
           <span class="dr-result__star-name" data-testid="result-star-name">

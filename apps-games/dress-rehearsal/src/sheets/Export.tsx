@@ -11,7 +11,8 @@ import {
   shareImage,
 } from "../export/share";
 import { EXPORT_SIZE, type ExportInput } from "../export/types";
-import { useApp, useProfile } from "../state/app";
+import { useMotion } from "../motion/useMotion";
+import { useApp, useFeedback, useProfile } from "../state/app";
 import { t } from "../strings";
 import { AppSheet } from "./AppSheet";
 
@@ -35,6 +36,8 @@ function previewContext(env: ExportEnv, canvas: HTMLCanvasElement) {
 export function ExportSheet({ open, build, shareText, onClose }: ExportSheetProps) {
   const app = useApp();
   const profile = useProfile();
+  const feedback = useFeedback();
+  const motion = useMotion();
   const env = app.exportEnv ?? defaultExportEnv();
   const [frame, setFrame] = useState<FrameId>(profile.frameSelected);
   const [note, setNote] = useState("");
@@ -66,6 +69,8 @@ export function ExportSheet({ open, build, shareText, onClose }: ExportSheetProp
   const choose = async (next: FrameId): Promise<void> => {
     setFrame(next);
     setNote("");
+    feedback.fire({ type: "frame" });
+    if (canvas.current) void motion.frameFade(canvas.current);
     if (profile.framesOwned.includes(next) && next !== profile.frameSelected) {
       await app.game.selectFrame(next);
     }
@@ -78,6 +83,7 @@ export function ExportSheet({ open, build, shareText, onClose }: ExportSheetProp
       return;
     }
     await app.game.selectFrame(frame);
+    feedback.fire({ type: "unlock", what: "frame" });
     setNote(t("exportBought", { name: FRAMES.find((f) => f.id === frame)?.name ?? frame }));
   };
 
@@ -94,8 +100,10 @@ export function ExportSheet({ open, build, shareText, onClose }: ExportSheetProp
         title: data.gameTitle,
         shareText: app.share,
       });
-      if (outcome === "shared" || outcome === "downloaded" || outcome === "downloaded-text")
+      if (outcome === "shared" || outcome === "downloaded" || outcome === "downloaded-text") {
+        feedback.fire({ type: "export" });
         await app.game.recordExport();
+      }
       setNote(t(`exportShare_${outcome}`));
     } finally {
       setBusy(false);
@@ -108,7 +116,10 @@ export function ExportSheet({ open, build, shareText, onClose }: ExportSheetProp
       const data = input();
       const blob = await renderToBlob(env, data);
       const ok = saveImage(env, blob, exportFileName(data));
-      if (ok) await app.game.recordExport();
+      if (ok) {
+        feedback.fire({ type: "export" });
+        await app.game.recordExport();
+      }
       setNote(ok ? t("exportSaved") : t("exportSaveFailed"));
     } finally {
       setBusy(false);
@@ -127,7 +138,7 @@ export function ExportSheet({ open, build, shareText, onClose }: ExportSheetProp
           role="img"
           aria-label={t("exportPreviewLabel")}
         />
-        <fieldset class="dr-frames">
+        <fieldset class="dr-frames" data-sfx="own">
           <legend class="dr-sr-only">{t("exportFrames")}</legend>
           {FRAME_IDS.map((id) => {
             const name = FRAMES.find((entry) => entry.id === id)?.name ?? id;

@@ -492,13 +492,15 @@ describe("how to play and credits", () => {
     expect(text(q(rig.container, "h2.dr-panel__title"))).toBe("Stars and scoring");
   });
 
-  it("lists both fonts with their licence and says no audio or designer art ships yet", async () => {
+  it("lists both fonts with their licence and lists the sound credits and says no designer art ships yet", async () => {
     rig = await mountApp({ route: ["credits"] });
     const page = text(rig.container);
     expect(page).toContain("Playfair Display");
     expect(page).toContain("DM Sans");
     expect(page).toContain("SIL Open Font License 1.1");
-    expect(page).toContain("No sound files are bundled yet.");
+    expect(page).toContain("ui-tap.ogg");
+    expect(page).toContain("music-style.ogg");
+    expect(page).toContain("CC0");
     expect(page).toContain("All art in this build is drawn in code.");
     expect(CHAPTERS).toHaveLength(6);
   });

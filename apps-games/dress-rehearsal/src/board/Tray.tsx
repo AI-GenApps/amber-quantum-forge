@@ -57,7 +57,7 @@ export function Tray(props: TrayProps) {
         onChange={(id) => props.onTab(id as Category)}
         class="dr-tray__tabs"
       >
-        <div class="dr-tray__grid" data-testid="tray-grid">
+        <div class="dr-tray__grid" data-testid="tray-grid" data-sfx="own">
           {pieces.length === 0 ? <p class="dr-note">{t("trayEmpty")}</p> : null}
           {pieces.map((piece) => {
             const selected = props.selectedId === piece.id;
