@@ -1,11 +1,11 @@
 # Dress Rehearsal - assets index
 
-Status after task 06: the three font files, 26 CC0 audio files and 60 of the 63 designer art slots are
+Status after task 08 (v1 complete, pending owner QA): the three font files, 26 CC0 audio files and 60 of the 63 designer art slots are
 bundled or archived (tables below); 58 runtime WebP files are listed in `src/art/manifest.ts`, the `icon` and
 `feature-graphic` masters are store assets, and `key-art`, `item-rainy-city-5` and `item-studio-3`
 keep their code-drawn fallback.
 This file is the plan for art slots and briefs (63 slots), fonts, the audio plan (24 sounds, 2
-music loops) and where everything lives. Task 06 filled the art provenance table; task 07 filled in the icon and splash section. Every art slot has a code-drawn fallback, so the game renders
+music loops) and where everything lives. Task 06 filled the art provenance table, task 07 the icon and splash section and task 08 the release totals. Every art slot has a code-drawn fallback, so the game renders
 completely with zero, some or all slots present.
 
 ## Where things live
@@ -268,14 +268,31 @@ commands are in `.agents/resources/2026-10-23/web-games/dress-rehearsal/05/READM
 
 ## Release totals and budgets (task 08)
 
-| Budget | Limit |
-|---|---|
-| JS bundle (gzip, excluding art, fonts and audio) | 300 KB |
-| Runtime art | 8 MB total; any single file at most 400 KB |
-| Fonts | each woff2 at most 120 KB; total at most 300 KB |
-| Audio | 2 MB total |
+Enforced by `apps-games/dress-rehearsal/test/budgets.test.ts` (runs in the normal `test` command: it
+builds the app through the Vite JS API into `node_modules/.cache/bundle-check`, gzips the emitted `.js`
+files and measures the files under `public/`). `bun run scripts/check-bundle.ts` prints the same table.
 
-Shipped numbers are recorded here by task 08.
+| Budget | Limit | Shipped |
+|---|---|---|
+| JS bundle (gzip, excluding art, fonts and audio) | 300 KB | 73,399 B (6 files; the main chunk is 71.4 KB) |
+| Runtime art | 8 MB total; any single file at most 400 KB (pieces 60 KB, clients 100 KB) | 754,078 B in 58 files; largest `client-6.webp` 42,024 B |
+| Fonts | each woff2 at most 120 KB; total at most 300 KB | 120,408 B in 3 files |
+| Audio | 2 MB total | 1,000,013 B in 26 files |
+
+Not in the runtime bundle: the 60 art masters (5,473,364 B, kept as evidence), the `icon` and
+`feature-graphic` store assets, and the Capacitor icon and splash sources.
+
+### Art slots without designer art (placeholders kept)
+
+| Slot | Final designer verdict | What the game shows | Next step |
+|---|---|---|---|
+| `key-art` | Rejected as missing: no `key-art.png` was delivered because the cover attempts failed (the assembled retry cover was also rejected for style drift) | code-drawn hanger-and-board drawing on Home and Boot; the splash is the code-drawn badge | new designer brief or accept the badge (Q13) |
+| `item-rainy-city-5` (Black Rubber Boots) | Rejected as missing: no file was delivered because all four candidates failed the designer's own self-review | code-drawn glyph in the tray, board and Closet | new designer brief (Q14) |
+| `item-studio-3` (White Drape Dress) | Rejected for a flat vector-sticker style, a ruler-straight cone skirt, an unreadable wrap band, airbrushed grey ribbons and a thin outline at small sizes | code-drawn glyph | new designer brief (Q14) |
+
+The art bible and every designer review note are copied under
+`.agents/resources/2026-10-23/web-games/dress-rehearsal/art/` (`art-bible.md`, `reviews/<batch>/round-<n>.md`,
+`accepted-manifest.json`).
 
 ## Capacitor icon and splash (task 07)
 

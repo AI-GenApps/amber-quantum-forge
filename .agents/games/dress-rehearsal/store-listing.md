@@ -1,6 +1,6 @@
-# Dress Rehearsal - store listing (draft)
+# Dress Rehearsal - store listing (final draft)
 
-Draft for a later submission (finalised in task 08; screenshots are left to the owner). v1 does not submit to any store (owner decision 2026-10-23).
+Final draft for a later submission (task 08). v1 does not submit to any store (owner decision 2026-10-23); screenshots, the privacy policy URL and signing are left to the owner.
 Working title is the public name for v1.
 
 ## Names and text
@@ -62,12 +62,13 @@ A privacy policy URL is still required by both stores even with no data collecte
 
 ## Assets for the listing
 
-| Asset | Source |
-|---|---|
-| App icon 512 / 1024 | `icon` art slot (opaque square) |
-| Feature graphic 1024 x 500 | `feature-graphic` art slot (landscape, no text), cropped |
-| Phone screenshots (planned 6) | Owner captures in a browser later: a challenge brief, the styling board mid-look, a result with 3 stars, the Daily Fitting, the chapter list, an exported board with a frame |
-| Key art | `key-art` slot |
+| Asset | Source | Status |
+|---|---|---|
+| App icon 512 / 1024 | accepted `icon` master (`art/masters/icon.webp`, 1024 x 1024, opaque square); `apps-games/dress-rehearsal/assets/icon-only.png` | ready; 512 is a downscale |
+| Feature graphic 1024 x 500 | accepted `feature-graphic` master (1536 x 1024, landscape, no text), cropped to 1024 x 500 | ready after the owner's crop |
+| Phone screenshots (planned 6) | Owner captures in a browser at 390 x 844 or 430 x 932: a challenge brief, the styling board mid-look, a result with 3 stars, the Daily Fitting, the chapter list, an exported board with a frame | left to the owner |
+| Key art | `key-art` slot was never delivered; the code-drawn badge is the splash | not available (Q13) |
+| Privacy policy URL | one page saying no data is collected | left to the owner (Q3) |
 
 ## Release notes (first release)
 

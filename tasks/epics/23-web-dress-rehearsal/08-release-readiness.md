@@ -1,7 +1,7 @@
 ---
 epic: 23-web-dress-rehearsal
 task: 08-release-readiness
-status: todo
+status: done
 commit_scope: dress-rehearsal
 depends_on: [23-web-dress-rehearsal/07-capacitor-packaging]
 estimate: M
@@ -34,13 +34,13 @@ Close the epic: enforce the budgets with tests, run every check, finish and cros
 
 ## Implementation Checklist
 
-- [ ] Write `test/budgets.test.ts` and `test/kb-consistency.test.ts` as described; add `scripts/check-bundle.ts` (same logic, printable table) for humans.
-- [ ] Run the four verification commands plus `bun run web-games:typecheck`, `web-games:test` and `web-games:build` from the repo root; if anything outside this game fails, prove it pre-existing in a throwaway worktree of `origin/main` and record it.
-- [ ] Grep audit written as a test: no `fetch(`, `XMLHttpRequest`, `sendBeacon`, `WebSocket`, `http://` or `https://` URL literal in `src/` except the licence and credits source URLs listed in an allowlist; no `Math.random`, `Date.now` in the core; no `console.log`.
-- [ ] Finish the knowledge base: `README.md` status set to "v1 complete, pending owner QA" with the final quick-facts numbers; `product.md` and `economy.md` match shipped behaviour; `content-plan.md` matches data; `store-listing.md` final draft; `assets-index.md` provenance complete (art, fonts, audio with sizes); `decisions-log.md` has the epic's final entries; `open-questions.md` resolved or carried with owners.
-- [ ] Write the owner QA checklist `.agents/resources/2026-10-23/web-games/dress-rehearsal/qa-checklist.md` covering: first launch and the `riv-01` tutorial; every screen (home, chapters, challenges, brief, styling, result, export, daily, closet, clients, gallery, settings, how-to, credits); one challenge per chapter and every rule family (palette, era, formality, warmth, features, budget, must and must-not pieces) and the one-piece rule on a dress; 3-star, 2-star, 1-star and 0-star paths; drag, tap and keyboard placement, wrong-slot drops, swap, remove, undo, redo, clear; hints and streak freezes spending coins; daily on today's date, then with the device date moved forward one day and two days (streak, freeze, gap), and backwards; chapter and closet unlocks at 12 / 27 / 45 / 66 stars; client affinity lines and coin payments; gallery save, full gallery and delete; export in all four frames and frame purchases; share (Web Share files, download link and clipboard fallback in a desktop browser); sound, music and haptics toggles; reduced motion and high contrast; text legibility and fonts (no fallback look); offline (network disabled, reload); save persistence across reload and the reset flow; Android back behaviour is device-only and listed as not covered; layout of 8-slot boards on 360 x 640; any visual defects with a place to attach screenshots.
-- [ ] Write `.agents/resources/2026-10-23/web-games/dress-rehearsal/08/README.md`: command results (real output summaries), budget numbers (bundle KB gzip, art MB, fonts KB, audio KB), test counts, known gaps.
-- [ ] Tick task 08 and the epic status in `tasks/epics/23-web-dress-rehearsal/STATUS.md` (status: done, pending owner browser QA).
+- [x] Write `test/budgets.test.ts` and `test/kb-consistency.test.ts` as described; add `scripts/check-bundle.ts` (same logic, printable table) for humans.
+- [x] Run the four verification commands plus `bun run web-games:typecheck`, `web-games:test` and `web-games:build` from the repo root; if anything outside this game fails, prove it pre-existing in a throwaway worktree of `origin/main` and record it.
+- [x] Grep audit written as a test: no `fetch(`, `XMLHttpRequest`, `sendBeacon`, `WebSocket`, `http://` or `https://` URL literal in `src/` except the licence and credits source URLs listed in an allowlist; no `Math.random`, `Date.now` in the core; no `console.log`.
+- [x] Finish the knowledge base: `README.md` status set to "v1 complete, pending owner QA" with the final quick-facts numbers; `product.md` and `economy.md` match shipped behaviour; `content-plan.md` matches data; `store-listing.md` final draft; `assets-index.md` provenance complete (art, fonts, audio with sizes); `decisions-log.md` has the epic's final entries; `open-questions.md` resolved or carried with owners.
+- [x] Write the owner QA checklist `.agents/resources/2026-10-23/web-games/dress-rehearsal/qa-checklist.md` covering: first launch and the `riv-01` tutorial; every screen (home, chapters, challenges, brief, styling, result, export, daily, closet, clients, gallery, settings, how-to, credits); one challenge per chapter and every rule family (palette, era, formality, warmth, features, budget, must and must-not pieces) and the one-piece rule on a dress; 3-star, 2-star, 1-star and 0-star paths; drag, tap and keyboard placement, wrong-slot drops, swap, remove, undo, redo, clear; hints and streak freezes spending coins; daily on today's date, then with the device date moved forward one day and two days (streak, freeze, gap), and backwards; chapter and closet unlocks at 12 / 27 / 45 / 66 stars; client affinity lines and coin payments; gallery save, full gallery and delete; export in all four frames and frame purchases; share (Web Share files, download link and clipboard fallback in a desktop browser); sound, music and haptics toggles; reduced motion and high contrast; text legibility and fonts (no fallback look); offline (network disabled, reload); save persistence across reload and the reset flow; Android back behaviour is device-only and listed as not covered; layout of 8-slot boards on 360 x 640; any visual defects with a place to attach screenshots.
+- [x] Write `.agents/resources/2026-10-23/web-games/dress-rehearsal/08/README.md`: command results (real output summaries), budget numbers (bundle KB gzip, art MB, fonts KB, audio KB), test counts, known gaps.
+- [x] Tick task 08 and the epic status in `tasks/epics/23-web-dress-rehearsal/STATUS.md` (status: done, pending owner browser QA).
 
 ## Files Touched
 

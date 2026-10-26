@@ -11,13 +11,15 @@ notes" as they work.
 | Q4 | Native image share: sharing a PNG from the Capacitor WebView needs `@capacitor/filesystem` (write a cache file, pass its URI to `@capacitor/share`), which is not in the frozen dependency set. | v1 shares text through the kit and the image through the Web Share API with files, or a download link, in a browser; on device it falls back to text. | owner / orchestrator (dependency decision) |
 | Q5 | Public name beyond the working title | Dress Rehearsal stays the public name in v1. | owner, later step |
 | Q6 | Which CC0 sources exist for `export-shutter` and the two music loops? | Answered in task 05: Kenney covers 23 slots; `export-shutter` is the OpenGameArt entry Camera and the two loops are Pro Sensory's Mocha Frapp and One Step at a time, all stating CC0. No slot ships silent. | closed (task 05) |
-| Q7 | Designer art delivery timing (63 slots in six batches) | Placeholders are code-drawn; task 06 integrates whatever passed review and keeps placeholders elsewhere. | orchestrator |
+| Q7 | Designer art delivery timing (63 slots in six batches) | Closed in task 06: 60 of 63 slots accepted and integrated; the other three are Q13 and Q14. | closed (task 06) |
 | Q8 | Rainy City is open from the first launch (the starting closet is 16 pieces). Is a free choice between chapters 1 and 2 acceptable? | Yes (`decisions-log.md` D5); both are gentle. Revisit if the owner prefers a strict chapter order with a bigger first closet. | owner at QA |
 | Q9 | Remove the default Android `INTERNET` permission since the game is fully offline? | Keep Capacitor's default (WebView loader not verified without a device); data safety stays "no data collected". Owner decides after device QA. | owner |
 | Q10 | Colour-vision: is the high-contrast mode enough, or does the colour wheel need patterns on swatches beyond the planned hatching? | Swatch plus name everywhere and hatching in high contrast. | owner at QA |
 | Q11 | Hats are scarce (4 of 48 pieces) and the starting closet has one. Is that acceptable for 6-slot challenges that open the hat slot? | Yes: the tutorial challenges that use hats have one hat and tune the other slots; the Daily ladder only opens hats when a hat exists. | task 02 |
 | Q12 | Prices in dollars for a global audience | Dollar sign kept (in-fiction, not a currency). Could become plain numbers later. | owner |
 | Q13 | The splash is the code-drawn badge because `key-art` was never delivered. Should the owner commission a painted splash (or accept the badge)? | Badge on `night` ships; the painted icon master was not centred on the splash because its paper grain would show as a square on the flat ground and no visual check is allowed. | owner at QA |
+| Q14 | `item-rainy-city-5` (Black Rubber Boots) and `item-studio-3` (White Drape Dress) have no accepted designer art: the first was never delivered, the second was rejected. Commission them again or keep the glyphs? | Code-drawn glyphs ship in the tray, board, Closet and exports; a new accepted file is added with `bun run art` and a provenance row, no code change. | owner / orchestrator (designer thread) |
+| Q15 | Owner browser QA (`qa-checklist.md`) has not been run; Q1, Q2, Q8, Q10 and Q13 are judged during it. | v1 is marked "complete, pending owner QA". | owner |
 
 ## Kit follow-ups
 
@@ -153,3 +155,17 @@ The kit stays read-only for this epic. Known at planning time:
   screen icon shape, splash on a dark status bar) during QA.
 - Kit follow-ups: none.
 
+
+## Task 08 notes
+
+- No number, rule or screen changed. Task 08 added tests and documents only: `test/budgets.test.ts`
+  (builds through the Vite JS API into `node_modules/.cache/bundle-check`), `test/kb-consistency.test.ts`
+  (the shared numbers of the knowledge base against the code), `test/network-audit.test.ts` (moved out of
+  `source-audit.test.ts` and extended: no `fetch`, XHR, `sendBeacon`, `WebSocket`, `EventSource`, `http://`,
+  https URL outside the credits file, `Math.random`, `Date.now` or `console.log` in the app or the core) and
+  `scripts/check-bundle.ts`.
+- Carried with owners: Q1, Q2, Q8, Q10 (owner at QA), Q3, Q5, Q12 (owner, later step), Q4 (dependency
+  decision), Q9 (owner after device QA), Q13, Q14 (designer thread). Kit follow-ups K1, K3, K4, K5 stay open
+  for the kit owner; none blocks v1.
+- Not covered by any agent check and listed in the checklist: Android back button, haptics, real pointer
+  and touch drag, the exported PNG, the Web Share sheet, font rendering, audio balance, the icon and splash.

@@ -353,3 +353,18 @@ on both platforms (Android `screenOrientation`, both iOS orientation lists); sta
 `INTERNET` stays (Q9) and `allowBackup="true"` stays at the Capacitor default: the save is small, local and
 versioned, so a restore from backup is harmless and migrations handle older data. No number changed.
 
+### D34. Release readiness (task 08)
+
+Budgets are enforced by tests that run in the normal `test` command: `test/budgets.test.ts` builds the app
+through the Vite JS API (`outDir` `node_modules/.cache/bundle-check`, `publicDir` off, silent), gzips the
+emitted `.js` files with `node:zlib` and sums them, then measures the files under `public/`. Shipped: JS 73,399 B
+gzip (limit 300 KB), art 754,078 B in 58 files (8 MB), fonts 120,408 B (300 KB), audio 1,000,013 B (2 MB); pieces
+stay at most 60 KB and clients at most 100 KB. `test/kb-consistency.test.ts` reads the knowledge base and asserts
+the numbers it shares with the code (6 chapters, 40 challenges, 120 stars, 48 pieces, 16 rule kinds, unlocks
+0 / 0 / 12 / 27 / 45 / 66, affinity 3 / 9 / 15, harmony 40 / 10 / 20 / 15 / 15 with the bar at 70, 1460 campaign
+coins, hints 20 / 30, freeze 25, frames 30 / 40 / 60, gallery 24, 63 art slots, 24 sounds and 2 loops, port 4015,
+app id). The network and determinism audit moved to `test/network-audit.test.ts` and also forbids `Date.now`
+in the core. The store listing is a final draft; screenshots, the privacy policy URL and signing stay with the
+owner. The game is marked "v1 complete, pending owner QA". Naming note: the log has two entries numbered D12
+(Daily brief wording and the gallery); both keep their number because other files cite them.
+Rationale: the owner does browser QA at the end, so every claim an agent can check headlessly is a test.

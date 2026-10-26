@@ -2,7 +2,9 @@
 
 Fashion puzzles: assemble a look on a styled flat-lay board that satisfies a client's creative brief, then share it.
 
-- Status: in build (epic 23 tasks 00 to 03 done; task 04 adds all screens, design tokens, fonts and accessibility). Tasks 05 and 06 (audio and art) are done: 60 of 63 art slots are integrated; tasks 07 and 08 add packaging and release readiness.
+- Status: v1 complete, pending owner QA. Epic 23 tasks 00 to 08 are done and verified headlessly (Vitest with
+  happy-dom, `tsc`, `vite build`, Biome); no browser, device or emulator was used. The owner runs the browser
+  checklist in `.agents/resources/2026-10-23/web-games/dress-rehearsal/qa-checklist.md` at the end. No store submission in v1.
 - Epic: [`tasks/epics/23-web-dress-rehearsal`](../../../tasks/epics/23-web-dress-rehearsal/STATUS.md)
 - Code: `apps-games/dress-rehearsal` (`@web-games/dress-rehearsal`) and
   `apps-games/dress-rehearsal-core` (`@web-games/dress-rehearsal-core`).
@@ -31,9 +33,9 @@ Fashion puzzles: assemble a look on a styled flat-lay board that satisfies a cli
 | Currency | coins (1460 from the campaign), spent on hints (20 / 30), streak freezes (25) and export frames (30 / 40 / 60) |
 | Gallery | up to 24 saved boards, local; export as 1080 x 1350 image with 4 frames |
 | Fonts | Playfair Display (display), DM Sans (body), OFL |
-| Audio | CC0 only: 24 sounds and 2 music loops planned (`assets-index.md`) |
-| Art | 63 designer slots: 48 closet pieces, 6 client portraits, 6 backdrops, key art, icon, feature graphic; code-drawn fallbacks for every slot |
-| Budgets | JS bundle <= 300 KB gzip excluding art; art <= 8 MB; fonts <= 300 KB; audio <= 2 MB |
+| Audio | CC0 only: 24 sounds and 2 music loops, 26 Ogg files, 1,000,013 bytes (`assets-index.md`) |
+| Art | 63 designer slots: 48 closet pieces, 6 client portraits, 6 backdrops, key art, icon, feature graphic; 60 accepted (58 runtime WebP, 754,078 bytes), 3 keep their code-drawn placeholder (`key-art`, `item-rainy-city-5`, `item-studio-3`); every slot has a code-drawn fallback |
+| Budgets | JS bundle <= 300 KB gzip excluding art; art <= 8 MB; fonts <= 300 KB; audio <= 2 MB. Shipped: JS 73,399 B gzip, art 754,078 B, fonts 120,408 B, audio 1,000,013 B (enforced by `test/budgets.test.ts`) |
 | Monetization | none in v1 |
 | Data collected | none |
 
@@ -44,7 +46,7 @@ Fashion puzzles: assemble a look on a styled flat-lay board that satisfies a cli
 | `product.md` | Precise loop, rules, scoring, screens, controls, onboarding, accessibility, palette |
 | `economy.md` | Currencies, sources, sinks, numbers |
 | `content-plan.md` | All chapters, 40 challenges, 48 pieces, 6 clients and their lines, rule cards, tutorial |
-| `store-listing.md` | Draft store answers, data safety |
-| `assets-index.md` | Art slots (63), fonts, audio plan, where things live |
+| `store-listing.md` | Final draft store answers, data safety (no submission in v1) |
+| `assets-index.md` | Art slots (63) with provenance, fonts, audio with licences, budgets and shipped sizes, where things live |
 | `decisions-log.md` | Dated decisions and rationale |
-| `open-questions.md` | Open items |
+| `open-questions.md` | Open items with owners, kit follow-ups, per-task notes |
